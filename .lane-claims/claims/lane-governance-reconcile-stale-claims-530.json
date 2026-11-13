@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/reconcile-stale-claims-530",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/reconcile-stale-claims-530",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "task": "Fuenf Register-Eintraege ohne Branch archivieren, Lane-Kollisionen freigeben",
+  "goal": "#530",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    "content/",
+    "src/core/sim/narrative/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "22e28c6af35346766bc3890bbd10aeac193b3c83"
+}

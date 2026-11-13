@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:05Z-claim-register-archive",
+  "contributionId": "claim-register-archive-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Kiez wird nichts vergessen: Erledigte Bauplätze stehen im Register weiter, sie versperren nur keinem mehr den Weg.",
+  "directives": []
+}

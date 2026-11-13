@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-reconcile-stale-claims-530",
+  "claimId": "lane/governance/reconcile-stale-claims-530",
+  "branch": "lane/governance/reconcile-stale-claims-530",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "phase": "IMPLEMENTING",
+  "title": "Fuenf Register-Eintraege ohne Branch archivieren",
+  "goal": "#530",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "verify:light und claims-Gate laufen lassen; danach turn:finish, PR und Merge.",
+  "revision": 1
+}
