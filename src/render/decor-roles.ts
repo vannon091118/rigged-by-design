@@ -41,6 +41,22 @@ const KIND_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
   STORAGE: { role: 'STORAGE', asset: 'machines/storage-shelves.png', key: 'kind:STORAGE' },
 };
 
+/**
+ * Wohnungsmoebel ueber ihre stabile Kunst-ID: eigene Rolle, kein Casino-Asset.
+ * Die Kennung bleibt gueltig, wenn ein Anzeigename umformuliert wird.
+ */
+const ART_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
+  'apartment:bed': { role: 'BED', asset: null, key: 'apt:BED' },
+  'apartment:wardrobe': { role: 'WARDROBE', asset: null, key: 'apt:WARDROBE' },
+  'apartment:sofa': { role: 'SOFA', asset: null, key: 'apt:SOFA' },
+  'apartment:table': { role: 'TABLE', asset: null, key: 'apt:TABLE' },
+  'apartment:kitchen_counter': { role: 'KITCHEN', asset: null, key: 'apt:KITCHEN' },
+  'apartment:fridge': { role: 'FRIDGE', asset: null, key: 'apt:FRIDGE' },
+  'apartment:toilet': { role: 'TOILET', asset: null, key: 'apt:TOILET' },
+  'apartment:sink': { role: 'SINK', asset: null, key: 'apt:SINK' },
+  'apartment:smartphone': { role: 'SMARTPHONE', asset: null, key: 'apt:SMARTPHONE' },
+};
+
 /** Nur exakte, bewusst registrierte Anzeigenamen; kein Muster, kein `includes`. */
 const LABEL_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
   'eigenes bett': { role: 'BED', asset: null, key: 'label:BED' },
@@ -76,6 +92,10 @@ const LABEL_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
 
 /** Löst eine Rolle ausschließlich aus stabilen IDs und exakten Labels. */
 export function resolveFurnitureRole(item: Furniture): FurnitureRoleResolution | null {
+  if (item.artId) {
+    const art = ART_ROLES[item.artId];
+    if (art) return art;
+  }
   if (item.gameId) return GAME_ROLES[item.gameId] ?? null;
   const kind = KIND_ROLES[item.kind];
   if (kind) return kind;

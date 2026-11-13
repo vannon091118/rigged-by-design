@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ac64767e8d939f0517415b6aca042e65250112de9e2a5409c32ddf96263b60e3",
+  "contentHash": "sha256:ac92a80d77d78a3c9f6ab0466064015280f498b49b2c1d360bd223bc1fa1c17f",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -2277,6 +2277,28 @@
       "text": "Bevor ein Team entsteht, steht die Grenze: E-Sport ist kein zweiter Kampfabend. Die Liga nimmt ihre Anker aus den vorhandenen Rivalen und Orten, ihre Historie aus dem vorhandenen Archiv und ihre Sicht aus dem Charakterfenster.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-task.json"
+    },
+    {
+      "contributionId": "apartment-walls-01",
+      "turnId": "2026-11-13T23:40Z-apartment-walls",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwischen Schlafen und Wohnen steht jetzt eine Wand; nur der Durchgang lässt das Licht durch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-apartment-walls.json"
     },
     {
       "contributionId": "apk-signing-01",

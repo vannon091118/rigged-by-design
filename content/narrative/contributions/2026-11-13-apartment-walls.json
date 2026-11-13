@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:40Z-apartment-walls",
+  "contributionId": "apartment-walls-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwischen Schlafen und Wohnen steht jetzt eine Wand; nur der Durchgang lässt das Licht durch.",
+  "directives": []
+}

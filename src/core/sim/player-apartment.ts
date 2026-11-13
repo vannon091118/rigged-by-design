@@ -5,7 +5,8 @@
  * Aufwachen im Schlafbereich, Kochnische, Bad, Wohnbereich und Flur mit Haustür.
  */
 import { ZERO_VC } from '../economy/vacoin';
-import type { FloorMaterialId, LayoutEdge, LayoutState, LayoutZone } from './layout-types';
+import { apartmentEdges } from './apartment-walls';
+import type { FloorMaterialId, LayoutState, LayoutZone } from './layout-types';
 import { navGrid, type NavGrid } from './nav-grid';
 import type { Furniture, Point } from './types-model';
 
@@ -16,6 +17,8 @@ export interface ApartmentFurnitureItem {
   readonly id: string;
   readonly name: string;
   readonly kind: ApartmentFurnitureKind;
+  /** Stabile Kunst-ID; Renderrollen lesen sie statt des Anzeigenamens. */
+  readonly artId: string;
   readonly position: Point;
   readonly interactive: boolean;
   readonly description: string;
@@ -57,13 +60,8 @@ export function createPlayerApartmentLayout(): LayoutState {
     { id: 'apt_zone_hallway', name: 'Wohnungsflur', kind: 'ENTRANCE', x: 10, y: 8, w: 3, h: 5, color: 0x8b5cf6 },
   ];
 
-  const edges: LayoutEdge[] = [
-    { axis: 'H', x: 11, y: 13, kind: 'DOOR', id: 'door_apt_exit_to_street', zoneId: 'apt_zone_hallway' },
-    { axis: 'V', x: 8, y: 5, kind: 'OPENING', id: 'opening_apt_bed_living', zoneId: 'apt_zone_bedroom' },
-    { axis: 'H', x: 4, y: 8, kind: 'DOOR', id: 'door_apt_bathroom', zoneId: 'apt_zone_bathroom' },
-  ];
-
-  return Object.freeze({ size, floor: Object.freeze(floor), zones: Object.freeze(zones), edges: Object.freeze(edges) });
+  // Waende und Durchgaenge kommen aus der Kantenliste, nicht aus einer zweiten Karte.
+  return Object.freeze({ size, floor: Object.freeze(floor), zones: Object.freeze(zones), edges: apartmentEdges() });
 }
 
 const APARTMENT_FURNITURE_RAW: readonly [string, string, ApartmentFurnitureKind, number, number, boolean, string][] = [
@@ -87,7 +85,10 @@ let cachedFurniture: readonly Furniture[] | null = null;
 export function createPlayerApartmentModel(): PlayerApartmentModel {
   const layout = createPlayerApartmentLayout();
   const furniture = APARTMENT_FURNITURE_RAW.map(([id, name, kind, x, y, interactive, description]) =>
-    Object.freeze({ id, name, kind, position: Object.freeze({ x, y }), interactive, description }),
+    Object.freeze({
+      id, name, kind, artId: `apartment:${kind.toLowerCase()}`,
+      position: Object.freeze({ x, y }), interactive, description,
+    }),
   );
 
   return Object.freeze({
@@ -129,6 +130,7 @@ export function playerApartmentFurniture(): readonly Furniture[] {
     h: 1,
     seats: 0,
     label: item.name,
+    artId: item.artId,
     price: ZERO_VC,
     quality: 100,
     condition: 100,
