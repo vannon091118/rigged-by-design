@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/claim-closeout-535",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-closeout-535",
+  "baseSha": "631c33a8a6f52babf248e75bddf0c1cc76f4c43f",
+  "task": "Gemergte Wohnungs-Lane aus dem aktiven Claim-Bestand nehmen",
+  "goal": "#535",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "content/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-claim-closeout-535.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "631c33a8a6f52babf248e75bddf0c1cc76f4c43f"
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:45Z-claim-closeout-535",
+  "contributionId": "claim-closeout-535-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Wohnung ist fertig eingerichtet; der Arbeitsbereich wird geräumt, damit der nächste Raum beginnen kann.",
+  "directives": []
+}
