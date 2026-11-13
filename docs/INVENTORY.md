@@ -3312,7 +3312,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 190 Zeilen
-- `src/render/assets/__tests__/textures-preload.test.ts` — R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 59 Zeilen
+- `src/render/assets/__tests__/textures-preload.test.ts` — R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 64 Zeilen
 - `src/render/assets/asset-semantics.json` — { — gelesen: 1319 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 56 Zeilen

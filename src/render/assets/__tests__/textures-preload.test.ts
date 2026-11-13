@@ -14,7 +14,7 @@
  */
 import { describe, expect, it, vi } from 'vitest';
 import manifest from '../manifest.json';
-import { preloadRuntimeArt } from '../textures';
+import { preloadRuntimeArt as productionPreload } from '../textures';
 
 const { assetsLoad } = vi.hoisted(() => ({ assetsLoad: vi.fn() }));
 
@@ -32,6 +32,11 @@ vi.mock('../atlas', () => ({
 
 describe('Stadt-Boot-Preload an der Assets.load-Grenze', () => {
   it('fordert alle zehn realen Stadttexturen ueber die Produktionsfunktion an', async () => {
+    expect(productionPreload).toBeTypeOf('function');
+    // Andere Tests koennen den Modulcache bereits gefuellt haben; der
+    // Produktionspfad muss fuer diese Messung frisch starten.
+    vi.resetModules();
+    const { preloadRuntimeArt } = await import('../textures');
     assetsLoad.mockImplementation(async () => ({ source: { scaleMode: 'linear' } }));
 
     await preloadRuntimeArt();
