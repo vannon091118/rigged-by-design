@@ -822,7 +822,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-snapshot-purity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
-- `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-polish-chrome.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen

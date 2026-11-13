@@ -10,8 +10,12 @@
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 511,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/511",
+    "state": "open"
+  },
   "findings": [],
-  "nextAction": "Push erfolgt; PR/Remote-Beleg vor Merge nachholen.",
-  "revision": 3
+  "nextAction": "PR #511 ist offen; Sichtabnahme (Screenshot/Pixel) und vollständiger App-Boot vor Merge nachholen.",
+  "revision": 4
 }
