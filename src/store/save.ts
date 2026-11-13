@@ -64,6 +64,7 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       lastEvent: world.lastEvent,
       journal: world.journal,
       archive: world.archive,
+      fightBets: world.fightBets,
       fightFx: world.fightFx,
       nextJournalId: world.nextJournalId,
       journaledSeq: world.journaledSeq,

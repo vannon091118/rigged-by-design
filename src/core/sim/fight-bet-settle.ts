@@ -1,17 +1,19 @@
 /**
- * Vorkampf und Abrechnung: der Vorkampf wird genau einmal simuliert, offene
- * Scheine werden gegen dieses Ergebnis gebucht. Ohne Vorkampf geht der Einsatz
- * zurueck. Der Aufruf ist idempotent, weil der Abrechnungsbeleg die
- * Schein-Nummer traegt.
+ * Vorkampf und Abrechnung: der Vorkampf wird genau einmal simuliert und im
+ * Schein-Register festgehalten, offene Scheine werden gegen dieses Ergebnis
+ * gebucht. Ohne Vorkampf geht der Einsatz zurueck. Der Aufruf ist idempotent,
+ * weil der Schein das Register verlaesst, sobald er gebucht ist — unabhaengig
+ * von der Journal-Retention.
  */
 import type { Ledger } from '../economy/ledger';
-import { toVCString, type VaCoinMicro } from '../economy/vacoin';
+import { toVCString } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { fighters, simulateFight } from './brawl-combat';
 import { liveTournament, rpgOf, undercardPair } from './fight-bets';
 import {
-  openSlips, SETTLE_SUBJECT, undercardOf, UNDERCARD_SUBJECT, type UndercardResult,
-} from './fight-bet-slips';
+  closeSlip, openSlipsOf, payoutOf, recordUndercard, SETTLE_SUBJECT, UNDERCARD_SUBJECT,
+  undercardOf, type UndercardResult,
+} from './fight-bet-register';
 import { fightOpponentOf } from './fight-career';
 import { recordJournal } from './journal';
 import { EXTERNAL, PORTEMONNAIE } from './money';
@@ -19,7 +21,7 @@ import { isLiveEventStatus } from './narrative/event-lifecycle';
 import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 
-/** Simuliert den Vorkampf genau einmal und legt das Ergebnis ins Archiv. */
+/** Simuliert den Vorkampf genau einmal und legt das Ergebnis ins Register. */
 export function runUndercard(world: WorldState, prng: Prng): UndercardResult | null {
   const live = liveTournament(world);
   const pair = undercardPair(world);
@@ -35,6 +37,7 @@ export function runUndercard(world: WorldState, prng: Prng): UndercardResult | n
     eventId: live.id, a: a.name, b: b.name, winner,
     method: loserHp === 0 ? 'KO' : 'PUNKTE', rounds: fight.rounds,
   };
+  recordUndercard(world, result);
   recordJournal(world, {
     kind: 'SYSTEM',
     subject: UNDERCARD_SUBJECT,
@@ -47,7 +50,8 @@ export function runUndercard(world: WorldState, prng: Prng): UndercardResult | n
 /** Rechnet offene Scheine ab, sobald der Abend terminal ist. */
 export function settleFightBets(world: WorldState, ledger: Ledger): number {
   let settled = 0;
-  for (const bet of openSlips(world)) {
+  // Snapshot: `closeSlip` veraendert das Register waehrend der Schleife.
+  for (const bet of [...openSlipsOf(world)]) {
     const event = world.narrative.events.find((entry) => entry.id === bet.eventId);
     if (!event || isLiveEventStatus(event.status)) continue;
     const result = undercardOf(world, bet.eventId);
@@ -60,27 +64,28 @@ export function settleFightBets(world: WorldState, ledger: Ledger): number {
       ledger.transfer(EXTERNAL, PORTEMONNAIE, bet.stake, TX_REASON.FIGHT_BET_REFUND, world.tick);
       recordJournal(world, {
         kind: 'SYSTEM', subject: SETTLE_SUBJECT,
-        cause: `schein:${bet.slip}|event:${bet.eventId}|rueckgabe`,
+        cause: `schein:${bet.id}|event:${bet.eventId}|rueckgabe`,
         effect: `Wette zurueck: Abend ohne Vorkampf beendet · ${toVCString(bet.stake)}.`,
         amount: bet.stake,
       });
     } else if (won) {
-      const payout = Math.round(bet.stake * bet.odds) as VaCoinMicro;
+      const payout = payoutOf(bet);
       ledger.transfer(EXTERNAL, PORTEMONNAIE, payout, TX_REASON.FIGHT_BET_PAYOUT, world.tick);
       recordJournal(world, {
         kind: 'SYSTEM', subject: SETTLE_SUBJECT,
-        cause: `schein:${bet.slip}|event:${bet.eventId}|gewonnen`,
-        effect: `Wette gewonnen: ${bet.pick} zu Quote ${bet.odds.toFixed(2)} · ${toVCString(payout)}.`,
+        cause: `schein:${bet.id}|event:${bet.eventId}|gewonnen`,
+        effect: `Wette gewonnen: ${bet.pick} zu Quote ${(bet.oddsBp / 100).toFixed(2)} · ${toVCString(payout)}.`,
         amount: payout,
       });
     } else {
       recordJournal(world, {
         kind: 'SYSTEM', subject: SETTLE_SUBJECT,
-        cause: `schein:${bet.slip}|event:${bet.eventId}|verloren`,
+        cause: `schein:${bet.id}|event:${bet.eventId}|verloren`,
         effect: `Wette verloren: ${bet.pick} · ${toVCString(bet.stake)}.`,
         amount: bet.stake,
       });
     }
+    closeSlip(world, bet.id);
     settled += 1;
   }
   return settled;

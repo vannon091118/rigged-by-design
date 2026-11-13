@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-549-bet-slip-register",
+  "claimId": "lane/sim/issue-549-bet-slip-register",
+  "branch": "lane/sim/issue-549-bet-slip-register",
+  "baseSha": "6566c1f51cc000698fee51ae311d58907b739e8f",
+  "phase": "CI_PENDING",
+  "title": "Offene Wettscheine als eigener, eviction-fester Register-Zustand mit Integer-Auszahlung",
+  "goal": "#549",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

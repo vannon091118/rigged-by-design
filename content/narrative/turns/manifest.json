@@ -4152,6 +4152,10 @@
     {
       "turnId": "2026-11-13T22:58Z-city-road-guard",
       "contributionId": "city-road-guard-01"
+    },
+    {
+      "turnId": "2026-11-13T23:18Z-bet-slip-register",
+      "contributionId": "bet-slip-register-01"
     }
   ]
 }
