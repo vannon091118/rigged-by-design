@@ -17,6 +17,7 @@ export function tickCity(world: WorldState, ledger: Ledger): void {
   tickCityLife(world);
   // Wege laufen in Kacheln, nicht in Stunden: erst der Tick macht Bewegung sichtbar.
   tickCityMovement(world);
-  // Wachstum folgt dem Signal (Joblose) und dem Kapital des Bautraegers.
+  // Wachstum folgt dem Signal (Joblose); finanziert wird aus Startkapital und
+  // Stadtfoerderung, jede Bewegung im Ledger (#525).
   advanceCityGrowth(world, ledger);
 }

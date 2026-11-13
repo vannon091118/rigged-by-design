@@ -6,9 +6,15 @@
  * freien Platz aus dem Grundstücksregister — samt neuem Slot durch die Stelle.
  * Ohne geladene Stadtszene gibt es keine Adresse, also wird gewartet; ein Bau
  * pro Tag reicht, und der Tag im Wachstumszustand macht den Schritt idempotent.
+ *
+ * Finanzierung: Das Startkapital ist der Anschub. Reicht das Konto fuer einen
+ * anstehenden Bau nicht, deckt die Stadtfoerderung genau die fehlende Differenz;
+ * sie wird nie auf Vorrat gezogen und steht wie jede Bauzahlung als eigene Zeile
+ * im Ledger. Damit endet das Wachstum an Joblosen und Grundstuecken, nicht an
+ * einem stillen Kapitaldeckel (#525).
  */
 import type { Ledger } from '../economy/ledger';
-import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
+import { fromVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { CITY_PRESET_BUILDINGS, createBuilding } from './building';
 import type { BuildingState } from './building-types';
 import { cityJobMarket, type CityJobMarket, type EmploymentCandidate } from './city-employment';
@@ -28,10 +34,17 @@ export interface CityGrowthState {
   readonly built: readonly string[];
 }
 
+/**
+ * Warum gerade nicht gebaut wird; ein sichtbarer Endzustand statt Stille.
+ * Fehlendes Kapital ist kein Grund mehr: diese Differenz traegt die Foerderung.
+ */
+type CityGrowthBlock = 'READY' | 'NO_JOBLESS' | 'NO_PLOTS';
+
 interface CityGrowthView extends CityJobMarket {
   readonly capital: VaCoinMicro;
   readonly freePlots: number;
   readonly canBuild: boolean;
+  readonly blockedReason: CityGrowthBlock;
 }
 
 interface BuildReport {
@@ -71,11 +84,14 @@ export function cityGrowthView(world: WorldState, ledger: Ledger): CityGrowthVie
   const market = jobMarket(buildings, world.cityLife?.residents ?? []);
   const capital = ledger.getBalance(BUILDER_ACCOUNT);
   const freePlots = CITY_PLOTS.filter((plot) => !buildings.some((b) => plotAtRect(b.footprint)?.id === plot.id)).length;
+  const blockedReason: CityGrowthBlock = market.jobless <= 0 ? 'NO_JOBLESS'
+    : freePlots <= 0 ? 'NO_PLOTS' : 'READY';
   return {
     ...market,
     capital,
     freePlots,
-    canBuild: market.jobless > 0 && freePlots > 0 && capital >= BUILD_COST,
+    canBuild: blockedReason === 'READY',
+    blockedReason,
   };
 }
 
@@ -109,6 +125,11 @@ function placeBuilding(world: WorldState, building: BuildingState): void {
   };
 }
 
+/** Ledger-Grund in Klartext; keine zweite Erzaehlmaschine. */
+function buildingLabel(plot: CityPlot): string {
+  return plot.zoning === 'HOME' ? 'Wohnhaus' : 'Gewerbebau';
+}
+
 /** Höchstens ein Bau pro Tag, nur bei Joblosen, nur mit Platz und Kapital. */
 export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildReport | null {
   const growth = ensureCityGrowth(world);
@@ -118,11 +139,18 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
   if (market.jobless <= 0) return null;
   const plot = freePlot(buildings);
   if (!plot) return null;
-  // Startkapital gibt es genau einmal; wer es verbraucht, baut nicht mehr.
+  // Startkapital gibt es genau einmal; danach traegt die Stadtfoerderung den
+  // naechsten Bau, sobald Arbeit und Platz dafuer da sind (#525). Die Foerderung
+  // deckt nur die fehlende Differenz, nie einen Vorrat, und steht als eigene
+  // Ledger-Zeile im Konto des Bautraegers.
   if (ledger.getBalance(BUILDER_ACCOUNT) <= ZERO_VC && growth.built.length === 0) {
     ledger.transfer(EXTERNAL, BUILDER_ACCOUNT, BUILDER_START_CAPITAL, 'Bautraeger: Startkapital', world.tick);
   }
-  if (ledger.getBalance(BUILDER_ACCOUNT) < BUILD_COST) return null;
+  const balance = ledger.getBalance(BUILDER_ACCOUNT);
+  if (balance < BUILD_COST) {
+    ledger.transfer(EXTERNAL, BUILDER_ACCOUNT, subVC(BUILD_COST, balance),
+      `Stadtfoerderung: ${buildingLabel(plot)}`, world.tick);
+  }
   const building = buildingFor(plot, growth.built.length);
   ledger.transfer(BUILDER_ACCOUNT, EXTERNAL_WORK, BUILD_COST, `Bau: ${building.name}`, world.tick);
   placeBuilding(world, building);

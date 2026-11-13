@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2f0f1b4d110e960f99e51ebcefa8615e058f930303ab5c56ea7dcaf804edb6f0",
+  "contentHash": "sha256:30acc45fedf245fe74be99a376c5c8adb31abac2ba63db4160188d0c449449c7",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3337,6 +3337,28 @@
       "text": "Zwölf Namen, zwölf Wege: Wer im Kiez steht, ist kein Hintergrund. Jede Figur trägt ihren eigenen Tag, ihre eigene Tür und ihre eigene Geschichte — angesprochen wird sie über ihren Namen, nicht über die Ecke, an der sie zufällig wartet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-encounter-roster.json"
+    },
+    {
+      "contributionId": "city-growth-finance-01",
+      "turnId": "2026-11-13T23:30Z-city-growth-finance",
+      "agentId": "agent-jenova-lokal",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Bauträger baute dreimal und hörte dann auf, als hätte jemand das Geld weggeräumt. Erst war es nur ein Konto, das leer lief: sechstausend für den Anfang, achtzehnhundert je Haus, danach Stille. Jetzt steht die Förderung als eigene Zeile im Buch — sie deckt genau, was fehlt, und nur dann, wenn ein Bau ansteht. Wer weiterbaut, findet den Grund im Ledger; wer nicht baut, sieht den Grund am freien Platz und an den Joblosen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-growth-finance.json"
     },
     {
       "contributionId": "city-issues-sweep-01",
