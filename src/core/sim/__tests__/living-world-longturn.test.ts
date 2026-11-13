@@ -39,7 +39,9 @@ const EVIDENCE_OUT = process.env.RBD_LIVING_WORLD_EVIDENCE_OUT;
 const EVIDENCE_COMMAND = 'RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json npx pnpm exec vitest run src/core/sim/__tests__/living-world-longturn.test.ts';
 
 describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
-  it('verbindet Stadtleben, Begegnung, Umgebung, Erfahrung und Spielerstufen', () => {
+  // Vier Sim-Tage plus Begegnungsketten sind CPU-gebunden; das globale 15-s-
+  // Budget ist fuer den parallelen Vollauf zu knapp. Kein Wall-Clock-Wait.
+  it('verbindet Stadtleben, Begegnung, Umgebung, Erfahrung und Spielerstufen', { timeout: 60_000 }, () => {
     const world = createWorld('SMALL');
     ensureStarter(world);
     // Der echte Spielstart setzt den Stadt-Seed; der Longturn bildet ihn nach.
