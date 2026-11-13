@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:be8238e6d99bfc6e51c25c5331b24b2b3b86d73a707f366073bf170d6c343fd0",
+  "contentHash": "sha256:7383c62a0a50421813cb26f50f98c839d328c632b9b50eb97066fe77d905b854",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -4481,6 +4481,28 @@
       "text": "Drei Gesichter waren der Anfang, nicht die Stadt. Mit dem ersten Schritt vor die Tür füllt sich der Kiez: Aushilfen, Kuriere und Croupiers mit eigenen Namen, Schichten und Eigenschaften, und keiner von ihnen ist Kulisse — jeder hat einen Tag, der irgendwohin führt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-npc-population.json"
+    },
+    {
+      "contributionId": "city-population-load-01",
+      "turnId": "2026-11-13T06:45Z-city-population-load",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kiez ist kein leerer Saal, der nur auf deinen ersten Schritt wartet. Auch wenn du mitten in der Stadt aufwachst, stehen die Türen offen und die Schichten laufen weiter — die Straße füllt sich, bevor du sie betrittst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-population-load.json"
     },
     {
       "contributionId": "city-scene-01",

@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/city-population-load",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/city-population-load",
+  "baseSha": "2fc6a5d3f01f744982007983dd27996d0c0eaf02",
+  "task": "Regression 3: geladener CITY-Save muss die Strasse auf 12 Bewohner heben; Kette Laden -> Sicht -> Begegnung absichern",
+  "goal": "Die Szenenregel beim Laden und beim erneuten Betreten anwenden, ohne die Snapshot-Purity zu verletzen.",
+  "pathAllowlist": [
+    "src/core/sim/city-life-state.ts",
+    "src/store/save.ts",
+    "src/store/scene-commands.ts",
+    "src/store/__tests__/loaded-city-population.test.ts",
+    "src/core/sim/narrative/composer/**",
+    "content/narrative/**",
+    "docs/**",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-city-population-load.json",
+    ".lane-claims/tasks/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2fc6a5d3f01f744982007983dd27996d0c0eaf02"
+}

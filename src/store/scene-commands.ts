@@ -5,8 +5,7 @@ import { cityDoorEffect } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { clearActionQueue } from '../core/sim/action-queue';
-import { ensureCityPopulation } from '../core/sim/city-life-state';
-import { CITY_POPULATION_STREET } from '../core/sim/city-npc-roster';
+import { ensureCityPopulationForScene } from '../core/sim/city-life-state';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -31,7 +30,12 @@ export class SceneCommands {
   /** Die Haustuer: aus der Wohnung auf die Strasse (und aus dem Casino in die Stadt). */
   enterCity(): void {
     const world = this.#deps.world();
-    if (world.scene.kind === 'CITY') return;
+    if (world.scene.kind === 'CITY') {
+      // Ein geladener CITY-Save kann noch die kuratierte Dreierbesetzung
+      // tragen. Der Weg in die Stadt ist auch dann der Wachstumspfad.
+      ensureCityPopulationForScene(world);
+      return;
+    }
     const fromCasino = world.scene.kind === 'OWN';
     clearActionQueue(world);
     // Nur der Weg aus dem Casino merkt sich die Rueckkehrposition; die Wohnung
@@ -41,7 +45,7 @@ export class SceneCommands {
     world.scene = { kind: 'CITY' };
     // Die Strasse ist keine Dreierbuehne: Beim ersten Schritt vor die Tuer
     // waechst die Bewohnerschaft, jeder Neue bekommt Profil und Schicht.
-    ensureCityPopulation(world, CITY_POPULATION_STREET);
+    ensureCityPopulationForScene(world);
     // Kein Teleport: Der Casino-Austritt landet an der eigenen Schwelle, der
     // Wohnungsaustritt am Wohnungseingang.
     world.player.position = { ...(fromCasino ? CASINO_STREET_SPAWN : CITY_SPAWN) };

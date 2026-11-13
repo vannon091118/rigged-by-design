@@ -13,6 +13,7 @@ import type { CityLifeState } from './city-life-types';
 import { createCityLifeState, growCityPopulation } from './city-life-create';
 import { normalizeCityLife } from './city-life-restore';
 import { bindCityIdentities } from './city-identity';
+import { CITY_POPULATION_STREET } from './city-npc-roster';
 import type { WorldState } from './types';
 
 export { createCityLifeState, normalizeCityLife, growCityPopulation };
@@ -43,4 +44,13 @@ export function ensureCityPopulation(world: WorldState, target: number): number 
   world.cityLife = next;
   bindCityIdentities(world);
   return added;
+}
+
+/**
+ * Wer in der Stadt steht, sieht die Strassenbesetzung. Der Szenenwert ist die
+ * eine Regel fuer Neustart, Laden und erneutes Betreten; ausserhalb der Stadt
+ * bleibt die Bewohnerschaft unangetastet.
+ */
+export function ensureCityPopulationForScene(world: WorldState): number {
+  return world.scene.kind === 'CITY' ? ensureCityPopulation(world, CITY_POPULATION_STREET) : 0;
 }
