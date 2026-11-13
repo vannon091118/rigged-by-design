@@ -40,10 +40,10 @@ RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json
 | R4 | sechs echte Boden-SVGs im Manifest, `floorTextureKey` testet Vorhandensein; `CarpetOverlay` entfernt, Teppichwahl tintet das Material | Code-/Testbeleg |
 | R5 | `light-pool.ts` + Test: 16 Slots, eine Radialtextur, BlendMode am Lichtkind; `drawLightSpill`-Ellipsenschleife entfernt | Code-/Testbeleg |
 | R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
-| R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest; S2-09–S2-11 bleiben offen |
+| R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest **und** Browserbild `24-r10-wohnung.png`; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
-| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad); R8–R9 offen; keine zweite Stadt erfunden |
-| R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene; Wetter fehlt | Teilbeleg; Wetter, reduced-motion und Browser-Sicht offen |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 FAIL** (Welt-/Skalierungs-/Rechtefelder fehlen), **R9 teilweise** (Bewohner haben jetzt Kachel, Weg und Ankunft; der Renderer `city-actors.ts` fehlt noch); keine zweite Stadt erfunden |
+| R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene, mit 24-Tick-Übergang an den Drittelgrenzen; Wetter fehlt | Teilbeleg; Tageszeit-Ambient, Straßenband, reduced-motion und Übergang im Browser gemessen; Wetter offen |
 
 Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
 `verify:assets` PASS, `verify:tree` PASS, `verify:dead-code` PASS,
@@ -64,7 +64,7 @@ Begegnungsloop, nicht aus einem zweiten Modell.
 
 | Beleg | Datei/Test |
 | --- | --- |
-| Tagesroutine und sichtbare Stats | `city-life.ts`, `city-popup.tsx`, `city-life.test.ts`: 09:00 WORK/KIEZ, 19:00 PUB/KIEZ, 23:00 SLEEP/HOME; alle Werte 0..100 |
+| Tagesroutine und sichtbare Stats | `city-life.ts`, `city-popup.tsx`, `city-life.test.ts`: Schichten 16–24 (Rita), 7–20 (Boris), 9–17 (Mira); 09:00 WORK/MARKT, 19:00 PUB/KIEZ bei Mira, 23:00 SLEEP/HOME bei Boris; alle Werte 0..100 |
 | Durst als echter Bedürfnis-Override | `npc-needs.ts` (`thirst`, `THIRST_THRESHOLD_URGENT`), `npc-schedule.test.ts`, `city-life.test.ts` |
 | Persistenz | `save.ts`/`migrate.ts`, `city-life.test.ts` mit Save/Load-Roundtrip |
 | Ereigniskette | `living-world-longturn.test.ts`: GEBEN -> Traits -> `CITY_ENCOUNTER_ARC` -> Warm-Echo nach 24 Ticks |
@@ -213,6 +213,412 @@ verlangt eine eigene Projektion für Boden, Figuren, Treffer und Tiefe und damit
 einen eigenen Slice auf R6/R7. Die Kamera bleibt top-down mit
 `WORLD_FLATTEN`; ein nachträgliches Kippen ohne diese Projektion würde Treffer
 und Simulation auseinanderziehen.
+
+### Browser-Sichtabnahme 2026-11-12 (lokal, Agent)
+
+**Umgebung:** lokaler Vite-Dev-Server (`http://localhost:3000`), lokaler
+Chromium des Desktops, Viewport 1024×768, frischer Spielstand (localStorage
+geleert, Eröffnung → Wohnung → Straße → Casino), `window.__rbdProbe` aktiv.
+Kein Cloud-Runner, kein Screenshot-Gate.
+
+**Korrektur der Cloud-Diagnose:** Der frühere Befund „Pixi hängt vor dem ersten
+Frame“ ist eine **Sichtbarkeitsgrenze**, kein Renderfehler. Im verdeckten Tab
+meldet der Browser `document.visibilityState: hidden`; damit ruht
+`requestAnimationFrame`, `onFirstFrame` feuert nie und der Loader bleibt bei
+`STARTET…`. Im sichtbaren Tab rendert dieselbe Seite mit 60,24 fps
+(`getRenderInfo`), inklusive Kamera, Licht, Ambient und Figuren. Der Beleg ist
+damit lokal reproduzierbar; die Cloud-Aussage bleibt als Umgebungsgrenze
+stehen.
+
+| Phase | Ergebnis | Beleg | Befund |
+| --- | --- | --- | --- |
+| R2 | PASS | `28-r2-platzhalter.png`, `29-r2-platzhalter-detail.png` | Unbekanntes `DECOR` („Röntgengerät") im Spielstand bleibt sichtbar unaufgelöst: Warnrahmen, Schraffur, Fragezeichen, Label — keine geratene Textur. Der Spielstand nimmt das Möbel an; die frühere Annahme „nicht erzeugbar" war falsch |
+| R3 | PASS (Teil) | `18-r4-materialien.png` (Casino, Gäste mit Sprechblasen), `20-r6-kamera.png` (FIT, kleine Figuren) | Figuren sind als Person erkennbar, kein 6×6-Pin im Bild; ein erzwungener LOD-Wechsel fehlt (FIT ist die kleinste Stufe) |
+| R4 | PASS | `18-r4-materialien.png` | Sechs Materialien unterscheidbar (Teppich, Holz, Fliese, Stein, Linoleum, Beton); genau ein Bodenknoten je Chunk |
+| R5 | PASS (Teil) | `18-r4-materialien.png` | Weiche Lichtfläche über dem Automaten und sichtbare Leuchten, keine Ellipsenschleife im Bild; die 16 Quellen sind nur im Test belegt |
+| R6 | PASS (Teil) | `20-r6-kamera.png` | Weltkante und Parallaxe sichtbar; FIT ist die kleinste Stufe, ein LOD-Wechsel an der Schwelle wurde nicht erzwungen |
+| R7 | PASS (Teil) | `21-r7-stadt.png` | Straßenraum, vier Fassaden und Türen sichtbar; Eintritt über die Wohnungstür, kein Teleport. Der Klick auf die Casino-Tür wurde im Browser nicht durchgeführt (nur Testbeleg) |
+| R8 | FAIL | `asset-semantics.json` (539 Einträge) | Alle Assets tragen `role`, aber keins `world`, `displayScale` oder `license`; `src/render/city/city-assets.ts` fehlt. Der Test prüft einen anderen Pflichtfeldsatz als der Plan |
+| R9 | teilweise | `30-r9-stadtbewohner.png` | Rita, Boris und Mira leben im echten Tick, haben jetzt Kachel, A*-Weg, Ankunftszeit und Zwischenstand (`city-life-movement.ts`); `city-actors.ts` fehlt noch, also zeichnet sie niemand auf der Straße |
+| R10 | PASS (Teil) | `24-r10-wohnung.png` | Vier Bereiche (Schlafen, Kochen, Bad, Wohnen) mit warmer Palette, ohne Neon und Automat; S2-09–S2-11 bleiben als Roadmap-Zeilen offen |
+| R11 | PASS (Teil) | `18-r4-materialien.png` | Figuren bewegen sich sichtbar (Sprechblasen und Positionen ändern sich); ein Richtungswechsel ist im Standbild nicht belegbar, der Frame kommt aus Tick und Phase |
+| R12 | PASS (Teil) | `21-r7-stadt.png` (Tag), `25-r12-strassenlicht.png` (Tag), `26-r12-nacht.png`, `31-r12-abend-stadt.png`, `32-r12-nacht-uebergang.png` | Tageszeit-Ambient wirkt; Strahlen nur über dem Straßenband (`getLocalBounds` 950×338). Der Wechsel Tag→Nacht→Tag ist im laufenden Spiel gemessen (409 Proben, Ticks 1528–1842): Schleier 0.20 → 0.42 → aus, Strahlen 0.10 → leer → 0.16, Radius aus → 390×332 `@0.22` → aus. Der Wechsel war damals ein Schnitt am Tagesdrittel und ist seit dem 13.11. ein 24-Tick-Übergang (`ambientPlanAt`, Browser-Messung im Abschnitt „Übergang statt Drittel-Sprung"). `prefers-reduced-motion` umgesetzt. Wetter fehlt |
+
+**Konsole:** keine JS-Fehler, keine fehlgeschlagenen Requests. Wiederholt
+meldet PixiJS `[Assets] Asset id … was not found in the Cache` für die
+Boden- und Lichttexturen, bevor das Lazy-Paket sie nachlädt (danach 200). Das
+ist Rauschen, kein Fehler, und bleibt offen.
+
+**In dieser Abnahme behoben**
+
+1. **Chunk-Überlauf der Raumdarstellung.** Zonen-Overlays, Weltkante und
+   Musterfugen wurden ungeschnitten in die 30×30-Chunk-Caches gezeichnet; in der
+   60×60-Stadt wuchs die Textur des ersten Chunks auf 1568 px (Chunk: 780 px)
+   und wurde verschoben gerendert. `room-art.ts`, `room-dressing.ts`,
+   `floor-surface.ts` und `floor-material.ts` schneiden jetzt auf den Chunk;
+   `room-chunk-clip.test.ts` misst die gezeichneten Rechtecke. Im Browser
+   betragen alle vier Chunks danach exakt 780×782 px.
+2. **Kein Rückweg aus dem eigenen Casino.** Die eigene Haustür trägt die ID
+   `door-<zone>`; `cityDoorEffect` kannte sie nicht, und die Szenenleiste
+   verschwindet nach dem Onboarding. Der Spieler saß im eigenen Haus fest.
+   `SceneCommands.enterStreetDoor` führt die eigene Tür jetzt auf die Straße und
+   setzt den Austritt an die Grand-Schwelle (22,23) statt an den
+   Wohnungseingang; `own-door-to-city.test.ts` belegt beide Wege.
+
+**Nachtfall (R12), Messung im Browser:** Tick 2250 (Tagesabschnitt 450 von 600
+→ Nacht), Szene `CITY`, Spieler bei (8,13). Gemessen an den drei Graphics des
+Ambient-Layers: Strahlen `visible:false` mit leerer Geometrie, Schleier
+`visible:true` über 1560×1560 Weltpixeln, Sichtradius `visible:true` mit echter
+256×256-Textur am Spieler (statt der 1×1-Platzhalterkante). Das Bild zeigt die
+abgedunkelte Straße ohne Strahlen und den Lichtkreis um die Figur.
+
+**Aufbau des Nachtfalls:** Der Tick steckt im Spielstand (`vcoin.casino.v11`).
+Ein Testfixture setzt ihn auf `floor(tick/600)*600 + 450` und lädt neu; die
+Ticks sind im verdeckten Tab pausiert (`visibilityState: hidden`), deshalb
+bleibt die Nacht für die Aufnahme stehen. Kein Cheat im Spielcode, keine
+Wartezeit von vier Minuten, kein Eingriff in die Simulation.
+
+**Nachgezogen (R12):** `streetBand(zones, bounds, tile)` leitet das Straßenband als
+Bounding-Box der Außen-Zonen ab und fällt ohne Zonen auf die Weltkante zurück;
+`AmbientLayer` zeichnet die drei Strahlen nur noch darin. `motion-preference.ts`
+liest `prefers-reduced-motion` (lazy, mit `change`-Listener); bei reduzierter
+Bewegung bleiben die Lampen steady (`lampPulse`) und die Parallaxe steht still.
+Tests: `ambient-plan.test.ts` (Band, Klemmen, Fallback, Flackern),
+`motion-preference.test.ts` (Fallback ohne `matchMedia`).
+
+**Übergang Tag→Nacht im laufenden Spiel (2026-11-12, ohne Neuladen):** Ein
+`setInterval` (400 ms) hat den Ambient-Layer über 409 Proben und 314 Ticks
+begleitet (`1528` → `1842`) und je Probe die echten Füllwerte aus den
+Graphics-Instruktionen gelesen. Die Szene wechselte an den Tagesdritteln
+(`TICKS_PER_DAY / 3 = 200`) exakt um, ohne Sprung im Trace und ohne Reload:
+
+| Probe | Tick | Phase | Schleier | Strahlen | Sichtradius |
+| --- | --- | --- | --- | --- | --- |
+| 0 ms | 1528 | `evening` | 0.20 | 0.05 / 0.065 / 0.08 (Plan 0.10) | aus |
+| 37 205 ms | 1600 | `night` | 0.42 | Grafik leer, `visible:false` | 390×332 `@0.22` an der Figur |
+| 141 266 ms | 1800 | `morning` | aus (Plan 0) | 0.08 / 0.104 / 0.128 (Plan 0.16) | aus |
+
+Reihenfolge im Umschaltframe: `AmbientLayer.update` zeichnet Schleier, Strahlen,
+Sichtradius in dieser Reihenfolge (Kinder `0:Graphics` Schleier,
+`1:Graphics` Strahlen, `2:Sprite` Radius, additiv). Der Nachtwechsel fällt
+damit zusammen: Schleier 0.20 → 0.42, Strahlen werden geleert (`fill: []`),
+Radius geht an — die Straßenlaternen und der Radius sind in der Nacht die
+einzige Lichtquelle, die Strahlen können den Radius nicht überdecken. Der
+Rückweg um 1800 nimmt alle drei im selben Frame zurück (Schleier aus, Strahlen
+0.16, Radius aus), also keine Einbahnstraße und kein hängender Zustand.
+Bilder: `31-r12-abend-stadt.png` (Abend, Strahlen an), `32-r12-nacht-uebergang.png`
+(Nacht, Strahlen aus, Lichtkreis an). Der harte Phasenwechsel je Drittel ist
+inzwischen durch einen kurzen Übergang ersetzt (nächster Abschnitt).
+
+### Übergang statt Drittel-Sprung (2026-11-13)
+
+Der Ambient-Plan war pro Phase eingefroren und wurde per Identitätsvergleich
+umgeschaltet: an `TICKS_PER_DAY / 3` sprang der Schleier in einem Tick von 0
+auf 0.2 bzw. 0.2 auf 0.42, die Strahlen von 0.16 auf 0.1 auf 0, der Sichtradius
+von aus auf 390×332. Jetzt blendet `ambientPlanAt(tick, scene)` zwischen den
+Nachbarphasen.
+
+**Regeln**
+
+- Fenster: `AMBIENT_TRANSITION_TICKS = 24` Ticks (knapp eine Stunde), je zur
+  Hälfte vor und nach der Grenze (`PHASE_TICKS = 200`, `PHASE_BOUNDARIES` aus
+  `day-phase.ts`). Außerhalb des Fensters ist das Ergebnis **identisch** zum
+  eingefrorenen Phasenplan (gleiches Objekt, kein Neuzeichnen).
+- Innerhalb wird linear gemischt: Schleier, Strahlen, Sonnenrichtung, Schatten,
+  Sichtradius und dessen Deckkraft. Farbe und Umgebung kommen von der Zielphase;
+  die Tints sind in allen Phasen gleich.
+- Rein aus Tick und Szene: keine Uhr, kein Zufall. Derselbe Tick ergibt dasselbe
+  Bild, auch nach einem Reload. Fehlt der Tick (Fixture, kaputter Save), gilt die
+  gemeldete Phase (`ambientPlanForView`) — kein NaN-Licht.
+- Gelesen wird der Plan an beiden Stellen: `AmbientLayer.update` (Schleier,
+  Strahlen, Radius) und `city.setAmbient` (Objektschatten der Straße).
+
+**Tests** — `src/render/__tests__/ambient-plan.test.ts`
+
+| Fall | Zusicherung |
+| --- | --- |
+| Plateaus | außerhalb des Fensters genau der eingefrorene Plan (Identität) |
+| Enden | `Grenze ± 12` trifft die Nachbarphase exakt |
+| Stetigkeit | kein Tick springt mehr als 1/24 des Phasenabstands (Schleier < 0.02, Strahlen < 0.08) |
+| Nachtradius | wächst von 0 über die halbe Distanz auf 7.5 Tiles, statt zu schalten |
+| Determinismus | gleicher Tick, gleiche Werte; auch im Innenraum stetig |
+
+**Messung im Browser (2026-11-13, laufendes Spiel, Szene `CITY`)** — der
+Ambient-Layer wurde über 3145 Proben (100 ms, 605 Ticks ≈ ein Spieltag)
+begleitet; größter Schritt zwischen zwei Ticks im ganzen Lauf: Schleier
+0.0175 (= 0.42 / 24), Strahlen 0.0034. Ausschnitt um die Grenze bei Tick 200
+(Morgen → Abend):
+
+| Tick | Schleier | Strahlen | Sichtradius |
+| --- | --- | --- | --- |
+| 188 | 0 | 0.08 / 0.104 / 0.128 | aus |
+| 189 | 0.0083 | 0.0788 / 0.1024 / 0.126 | aus |
+| 200 | 0.1 | 0.065 / 0.0845 / 0.104 | aus |
+| 205 | 0.1417 | 0.0575 / 0.0748 / 0.092 | aus |
+| 211 | 0.1917 | 0.0513 / 0.0666 / 0.082 | aus |
+| 212 | 0.2 | 0.05 / 0.065 / 0.08 | aus |
+
+Jeder Schritt ist 1/24 des Wegs (Schleier 0.0083, Strahlen 0.0012); es gibt
+keinen Tick mit dem alten Sprung.
+
+Dieselbe Messung an der Grenze bei Tick 600 (Nacht → Morgen), diesmal mit dem
+Sichtradius, der zuerst schrumpft und dann ausgeht:
+
+| Tick | Schleier | Strahlen | Sichtradius |
+| --- | --- | --- | --- |
+| 588 | 0.42 | aus | 390 `@0.22` |
+| 594 | 0.315 | 0.02 / 0.026 / 0.032 | 293 `@0.165` |
+| 600 | 0.21 | 0.04 / 0.052 / 0.064 | 195 `@0.11` |
+| 606 | 0.105 | 0.06 / 0.078 / 0.096 | 98 `@0.055` |
+| 612 | 0 | 0.08 / 0.104 / 0.128 | aus |
+
+Alle 25 Ticks des Fensters liegen lückenlos vor (keine fehlende Probe), und
+jeder Schritt ist derselbe 1/24-Anteil: 0.0175 Schleier, 0.0034 Strahlen,
+0.0025 Radiusdeckkraft, 16 px Radius. Der Radius verschwindet damit als
+Schrumpfen statt als Schnitt.
+
+Bilder: `33-r12-nacht-nach-uebergang.png` (Nachtplateau mit Lichtkreis),
+`34-r12-uebergang-beginn.png` (Straße kurz nach Beginn des Abendübergangs,
+Strahlen noch sichtbar), `35-r12-uebergang-mitte.png` (Mitte des
+Nacht→Morgen-Übergangs: halber Schleier, erste Strahlen, kleiner Radius),
+`36-r12-uebergang-ende.png` (Morgenplateau ohne Schleier und Radius).
+
+**Weiter offen:** Wetter, Stadt-NPCs als laufende Figuren (R9),
+Weltasset-Metadaten (R8).
+
+### Prüfung der offenen Punkte 2026-11-12
+
+**R2 ist abgenommen (PASS).** Die Annahme „ein unbekanntes Möbel ist im
+Spielstand nicht erzeugbar" war falsch: `migrate.ts` reicht Möbel
+unverändert durch (`{ ...raw }`), es prüft nur die Geräteidentität. Ein
+Testfixture hängt ein `DECOR` mit unbekanntem Label („Röntgengerät") in den
+Spielstand; `resolveFurnitureRole` liefert `null`, `furniture-atlas.ts` zeichnet
+`drawUnresolved` (Warnrahmen, Schraffur, Fragezeichen) statt einer geratenen
+Textur. Beleg: `28-r2-platzhalter.png` (Übersicht) und
+`29-r2-platzhalter-detail.png` (Zoom). Der Platzhalter ist kein Spielpfad,
+sondern die ehrliche Antwort auf Daten, die keine Rolle haben.
+
+**R8 ist nicht umgesetzt (FAIL).** Von den 539 Einträgen in
+`src/render/assets/asset-semantics.json` tragen alle `role`, aber **kein
+einziger** `world`, `displayScale` oder `license`. Der Test prüft die im JSON
+selbst hinterlegten `commonRequired`-Felder (`category`, `type`, `bounds`,
+`depth`, `occlusion`, `lod`, `interactive`, `usedBy`, `evidence`) — also einen
+anderen Vertrag als den im Plan geforderten. `src/render/city/city-assets.ts`
+fehlt. Damit fehlen die drei Nachweise der Akzeptanz (Welt, Skalierung,
+Rechte) vollständig; ein falscher `displayScale` kann nicht abgelehnt werden,
+weil das Feld nicht existiert.
+
+**R9: Fundament jetzt belegt, Darstellung offen.** `CityResidentState` trägt
+seit dem Bewegungs-Schnitt eine Kachel (`position`), einen laufenden Weg
+(`travel: { to, path, index }`) und damit eine Ankunftszeit; der Ort wechselt
+erst am Ziel statt mit dem Entschluss. `city-life-movement.ts` baut den Weg mit
+dem vorhandenen A* auf `cityNav(city)` (60×60 Straßen samt Requisiten) und läuft
+eine Kachel je Tick. `src/render/city/city-actors.ts` und
+`city-actors.test.ts` aus dem Plan existieren weiterhin nicht: Ein Renderer
+kann die drei Bewohner jetzt zeichnen, tut es aber noch nicht. Das Stadtfenster
+(`30-r9-stadtbewohner.png`: Rita 32/18/83, Boris 6/4/52, Mira 34/4/100 mit
+Intent, Ort und Traits) zeigt deshalb weiter Zustand, keine Figuren auf der
+Straße.
+
+#### Was der letzte Simulations-PR geändert hat
+
+Der letzte PR mit Simulationslogik ist #486 (Merge `e33e5ef6`,
+„Kausaler Living-World-Langlauf"); #488/#491 haben nur Evidenz nachgezogen,
+#490 Render, #493/#494 Test-Qualität. Inhaltlich kamen mit #480/#484/#485/#486:
+
+| Bereich | Neu |
+| --- | --- |
+| Stadtleben | `city-life*.ts` (Score, Entscheidung, Wirkung, Erinnerung, Normalisierung) — zwölf Module, `tickCityLife` in `tick.ts` |
+| Spielerbedürfnisse | `player-needs.ts`, `player-needs-tick.ts`, Leser in `player-jobs.ts`, `city-actions.ts`, `floor-actions.ts` |
+| Fremder Floor | `active-player.ts` (ein Spielerstand je Szene), `worldNav` über `foreign.layout`/`foreign.furniture`, Tastatur/Kamera freigegeben |
+| Evidenz | `living-world-longturn-*.ts` plus Artefakte unter `artifacts/`/`docs/evidence/` |
+
+**Nachgerechnet:** Der 5-Tage-Lauf mit Seed 424242 erzeugt 363 Entscheidungen und
+556 gekippte Gegenfakt-Proben — Routine 240, Umgebung 66, Fähigkeiten 55,
+Müdigkeit 44, Traits 41, Hunger 29, Attribute 21, Erinnerung 19, Beziehung 19,
+Emotion 16, Durst 4, Sozial 2; 110 Entscheidungen weichen vom Tagesplan ab. Die
+Zahlen sind nach dem Bewegungs-Schnitt neu erzeugt (vorher: 512 Proben, 86
+Abweichungen, Routine 254, Müdigkeit 51). Die Datei unter `artifacts/` wird dafür
+lokal nachgeschrieben (`RBD_LIVING_WORLD_OUT=artifacts/living-world/trace-424242-5d.json`,
+Befehl oben) und ist nicht Teil des Commits, weil `artifacts/` ignoriert wird;
+`docs/evidence/living-world-longturn-424242-4d.json` belegt den Weg im echten
+`tickWorld`.
+
+#### Wo es noch nicht wie geplant funktioniert
+
+1. **Behoben: Bedürfnis-Override war toter Code.** `needsOverrideIntent` hatte
+   nur `resolveNpcIntent` als Aufrufer, und der lief in keinem
+   Produktionspfad. Jetzt fragt `city-life-override.ts#urgentNeedVeto` dieselbe
+   Funktion und macht das dringende Bedürfnis zu einem Veto gegen Arbeit,
+   Einkauf, Freizeit und Besuche; Schlafen, Essen und Trinken bleiben offen.
+   Der Trace kennt seither **keine** Nachtarbeit mehr (vorher: Boris an Tag 5
+   um 01:00, 03:00, 04:00 und 06:00).
+2. **Behoben: keine Öffnungszeiten im Score.** `hoursForIntent`/`isOpenAt`
+   schließen Arbeit (ab 7 bis 20), Kneipe (ab 9 bis 23), Einkauf und Auswärts-
+   essen; eine geschlossene Handlung kostet 1000 Punkte und kann die Stunde
+   nicht gewinnen. Im Lauf gibt es jetzt **null** Kneipenbesuche vor 09:00
+   (vorher acht: Rita und Mira um 08:00).
+3. **Behoben: Bewegung war ein Etikett.** `COMMUTE` setzte die Stunde auf
+   „unterwegs" und wechselte nur `location`. Jetzt startet der Entschluss einen
+   Weg (`city-life-movement.ts`), der Bewohner läuft eine Kachel je Tick, der
+   Ort wechselt bei Ankunft, und die Ankunft kostet Müdigkeit (ein Punkt je acht
+   Kacheln). Im 4-Tage-Lauf: 64 Wege, 1878 Kacheln, 1817 Tick-Zustände „unterwegs",
+   nie mehr als eine Kachel je Tick, 107 Bewohner zur vollen Stunde noch auf dem
+   Weg. R9 bleibt nur noch die Darstellung offen (`city-actors.ts` fehlt).
+4. **Behoben: Identität hing am Namen.** Jeder Bewohner trägt jetzt eine
+   individuelle Kennung (`CityResidentState.visitorId`), gebunden in
+   `city-identity.ts#bindCityIdentities` und gespeichert wie die übrigen Stats.
+   `ensureCityVisitor` sucht das Profil über `Visitor.residentNpcId`, nie über
+   den Namen; `cityLifeView` liest `resident.visitorId`. Ein Namensvetter im
+   Gästepool hat damit eigene Traits und Beziehungen. Bewohnerprofile entstehen
+   über `recordResidentVisitor` mit `visits: 0` — sie waren nie im Casino — und
+   fallen aus `pickReturningVisitor`, bis sie wirklich da waren. Nur ein Save
+   ohne Kennungen wird einmal per Name adoptiert (`adoptLegacyProfile`), danach
+   trägt das Profil seine Kennung selbst. Der Start-Pool der Narrative-Domäne
+   bleibt bewusst bei `visits: 1`: Das sind kuratierte Stammgäste ab Tick 0,
+   keine behaupteten Stadtbesuche.
+5. **Hausbedarf liest Etiketten, nicht IDs.** `homeItem()` sucht
+   „Kochnische"/„Kühlschrank" per `label.includes` in
+   `playerApartmentFurniture()` und misst Manhattan-Distanz ≤ 3 zur
+   Möbel-Ursprungsecke — entgegen der eigenen Entscheidung „stabile IDs statt
+   Label-Regexe".
+6. **Anzeige ohne Schutz.** `hud.tsx` gibt `view.demand.perDay` ungeprüft aus;
+   mit einem inkonsistenten Spielstand (Tick nach vorn gesetzt, `nextArrivalTick`
+   zurück) stand dort `~NaN/Tag`. Mit frischem Spielstand nicht reproduzierbar —
+   ein Robustheitsloch, kein Planbruch.
+
+#### Nachgezogen: Slots und Öffnungszeiten aus der Stadt (2026-11-12)
+
+Die Stundentabelle ist weg. `city-life-venues.ts` liest die Stadt selbst:
+Gebäude tragen ihre Öffnungszeiten (`BuildingState.operatingHours`), Job-Slots
+tragen Schicht und Inhaber. `city-life-override.ts` verbietet nur noch, was
+wirklich zu ist: Arbeit außerhalb der eigenen Schicht, Kneipe vor 16, Einkauf
+vor 6, Auswärtsessen zwischen 4 und 6. Der Score rechnet diesen Ausschluss als
+Faktor, damit die Gegenfakt-Proben ihn neutralisieren können; der seedfeste
+Tie-Break liegt in `city-life-tiebreak.ts`.
+
+```
+slot_pub_host      bld_kiez_pub   16–24  rita
+slot_shop_counter  bld_corner_shop 7–20  boris
+slot_market_runner bld_corner_shop 9–17  mira
+```
+
+Der Tagesplan folgt jetzt der Schicht (`createDayPlan(..., shift)`): Aufstehen
+zwei Stunden vorher, Frühstück, Arbeit, Pause nach vier Stunden, danach Weg
+nach Hause, Einkauf, Kneipe, Schlaf. Ein Resident ohne Slot arbeitet nirgends;
+ein Slot ohne Inhaber bleibt offen und ist damit der Platz, an dem später der
+Spieler oder ein neu zugezogener Bewohner einsteigt.
+
+Zwei Schwellen waren im Modell tot: Durst zählte erst ab 25 und war ab 66
+gedeckelt (abends liegt er bei 4–20), die Laune wirkte erst unter 40 (der Lauf
+fällt nie unter 46). Jetzt zählt Durst ab 10 bis 55, Laune bis 55 — eine
+Sensitivitätskorrektur innerhalb des Bereichs, den die Simulation erreicht.
+
+**Beleg im Lauf (363 Entscheidungen, 5 Tage):** 555 gekippte Proben, 112
+Abweichungen vom Plan; Arbeit nur in den Schichten 7–19 Uhr, kein Kneipenbesuch
+vor 16, kein Einkauf vor 6, kein Auswärtsessen zwischen 4 und 6 (jeweils 0
+Verstöße). Die Familienzähler: Routine 242, Umgebung 67, Fähigkeiten 59,
+Fatigue 37, Traits 37, Hunger 29, Attribute 21, Beziehung 21, Erinnerung 20,
+Emotion 14, Durst 6, Sozial 2.
+
+Belege: `city-life-venues.ts` + `city-life-override.test.ts` (Öffnungszeiten,
+Schichten, Veto), `city-life.test.ts` (Schichtroutine, 08:00-Kneipe,
+Überstimmung des Plans), `npc-schedule.test.ts` (Standardplan bleibt
+gespeichert), `living-world-causal-trace.test.ts` (alle zwölf Familien kippen
+eine Entscheidung; Bargeld an einem armen, hungrigen Bewohner statt an einer
+Zufallszeile).
+
+### Nachgezogen: Bewegung als Weg (2026-11-13)
+
+`COMMUTE` war ein Etikett: Die Stunde hieß „unterwegs", `location` sprang, es
+gab weder Dauer noch Zwischenstand. Jetzt hat jeder Bewohner eine Kachel und
+einen Weg.
+
+**Modell** — `src/core/sim/city-life-movement.ts`
+
+```
+CityResident  position: Point                     Kachel auf der Stadtkarte
+              travel:   { to, path[], index } | null
+              location: Ziel erst bei Ankunft
+```
+
+**Regeln**
+
+- Das Ziel kommt aus der Not: Der Score wählt den Intent (Arbeit, Einkauf,
+  Kneipe, Besuch), der Intent wählt das Gebäude, `placeEntrance()` seine Tür.
+  Der Weg selbst ist A* (`findPath`) auf `cityNav(city)` — dieselbe Navigation
+  wie der Spieler, inklusive Requisiten-Fußabdrücken. Kein zweiter Graph, keine
+  Luftlinie.
+- Eine Kachel je Tick (25 je Stunde), höchstens acht je Aufruf. `tick.ts` ruft
+  `tickCityMovement` nach `tickCityLife`; der Weg läuft also auch, während der
+  Spieler im Casino steht.
+- Der Ort wechselt **nur** bei Ankunft. Vorher meldet die Sicht
+  `travelTo: 'Kiez'`, der alte Ort bleibt stehen — das ist der Zwischenstand.
+- Ankunft kostet Müdigkeit (ein Punkt je acht Kacheln, ganzzahlig, damit der
+  Save-Roundtrip nichts rundet). Ein Umweg verändert damit die nächste
+  Entscheidung.
+- Kein Weg, kein Sprung: Ist das Ziel unerreichbar, bleibt alles stehen.
+  Kaputte Positionen/Speicherwege werden in `normalizeCityLife` verworfen.
+
+**Beleg** — `docs/evidence/living-world-longturn-424242-4d.json`
+
+| Größe | Wert |
+| --- | --- |
+| Wege im 4-Tage-Lauf | 64 |
+| gelaufene Kacheln | 1878 |
+| Tick-Zustände „unterwegs" | 1817 |
+| Kacheln je Tick (Maximum) | 1 |
+| Bewohner zur vollen Stunde noch unterwegs | 107 |
+
+**Offen:** `src/render/city/city-actors.ts` (Figuren zeichnen), Zwischenstopps
+auf dem Weg (Essen, wenn der Hunger unterwegs kippt) und Stau/Umwege zwischen
+mehreren Bewohnern. Der Zustand dafür steht jetzt; es fehlen Leser.
+
+### Stadtwachstum, Grundstücke und Slots (Plan, 2026-11-12)
+
+Die Stadt ist die Wahrheit über Zeit, Arbeit und Platz — nicht der Score. Ein
+Gebäude trägt Öffnungszeiten und Grundfläche, ein Job-Slot trägt Schicht und
+Inhaber, ein Grundstück trägt Lage und Preis. Alles, was ein Bewohner tut, liest
+diese Daten; nichts davon steht als Sondertabelle in einer Entscheidungsdatei.
+
+**Regeln**
+
+- Jede Schicht liegt innerhalb der Öffnungszeit ihres Gebäudes; Arbeit außerhalb
+der Schicht ist keine Entscheidung, sondern ausgeschlossen.
+- Ein Slot ohne Inhaber ist offen. Offene Slots sind die Stellen, an denen der
+Spieler oder ein neu zugezogener Bewohner einsteigt.
+- Ein Bewohner ohne Slot ist das Wachstumssignal: Es gibt zu wenig Arbeit, also
+darf die Stadt bauen — aber nur, wenn ein Bauträger das Kapital hat.
+- Grundstücke sind feste Plätze im Kartenlayout. Der Spieler wählt keinen
+Standort; er fragt ein Grundstück an und bekommt es nur, wenn kein NPC mehr
+bietet. So entsteht Bodenwert aus Lage, Nachfrage und Auslastung.
+- Immobilien und Geschäftsübernahmen laufen über dieselbe Buchführung wie der
+bestehende Kauf (`property.ts`, Ledger, Journal) — kein zweiter Geldweg.
+
+**Datenmodell (Vorschlag)**
+
+```
+CitySlot      id, buildingId, label, from, to, holderId | null      (vorhanden)
+CityPlot      id, rect, zoning(HOME|BUSINESS|PUBLIC), ownerId|null,
+              askPriceVC, bids[], lastSaleDay
+CityBuilding  BuildingState + plotId + builtDay + builderId
+CityGrowth    openSlots, joblessResidents, builderCapitalVC, demand
+```
+
+**Slices**
+
+| Slice | Inhalt | Akzeptanz |
+| --- | --- | --- |
+| S1 | Slots und Schichten aus Gebäuden (erledigt) | Arbeit nur in der Schicht; Kneipe erst ab 16; 0 Verstöße im 5-Tage-Lauf |
+| S2 | Grundstücksregister mit festen Plätzen im Kartenlayout | Jedes Gebäude steht auf genau einem Grundstück; keine zwei Gebäude auf einem Platz; alte Saves bleiben lesbar |
+| S3 | Bauträger und Wachstum | Ohne offene Slots und ohne Joblose baut niemand; mit Kapital entsteht ein Gebäude samt neuem Slot |
+| S4 | Gebotsverfahren und Bodenwert | Der Spieler fragt an, ein NPC überbietet deterministisch (Seed), der Preis folgt Lage und Nachfrage; Verkauf landet im Journal |
+| S5 | Spieler nimmt einen offenen Slot an und übernimmt ein Geschäft | Derselbe Slot, dieselbe Schicht, dieselbe Buchführung wie beim NPC |
+
+S2 braucht das Kartenlayout als Datenquelle (Grundstücksraster statt freier
+Koordinaten), S3 die Verbindung von Bewohnerzahl, offenen Slots und
+Bauträgerkonto. Beides ist Headless prüfbar; der Renderer liest danach nur noch
+`buildings`/`plots`.
 
 ## 1. Ausgangslage
 

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5c45b2b54adc248f9a80a67e13c4609e3ca76991203d4130b7df7a8a375850df",
+  "contentHash": "sha256:e564c21575b803b8e36aeb4539bd37f8f40d89cbb4e7551b598c13fefe333023",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21772,6 +21772,28 @@
       "text": "Die Stadt bekommt eine eigene Helligkeit: Am Morgen liegt wenig Schleier auf dem Boden, am Abend werfen Laternen und Fassaden weiche Schatten, in der Nacht bleibt nur ein Radius um die Figur hell. Drinnen bleibt das Licht ruhig und der Radius aus, weil die Raeume schon beleuchtet sind.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-12-render-first-slices.json"
+    },
+    {
+      "contributionId": "render-ambient-transition-01",
+      "turnId": "2026-11-13T03:30Z-ambient-transition",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Abend kippt nicht mehr in einem Sprung: Über eine Stunde dunkeln die Fassaden nach, die Sonnenstrahlen ziehen sich zurück, und erst wenn der letzte Rest Tageslicht weg ist, übernimmt der Lichtkreis um die Figur. Wer stehen bleibt, sieht den Übergang, statt ihn zu verpassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-ambient-transition.json"
     },
     {
       "contributionId": "render-r7-doors",

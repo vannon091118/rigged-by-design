@@ -8,6 +8,10 @@
  */
 import { traitEffect } from './city-traits';
 import { bestFriend, locationForIntent, memoryAbout, presentAt } from './city-life-targets';
+import {
+  CLOSED_PENALTY, URGENT_NEED_VETO, isClosedAt, urgentNeedVeto, vetoesIntent,
+} from './city-life-override';
+import { seedTilt } from './city-life-tiebreak';
 import type {
   CityDecisionAlternative, CityDecisionFactor, CityDecisionFamily, CityLifePlace,
   CityResidentState,
@@ -43,22 +47,6 @@ const ORDER: readonly NpcIntentKind[] = [
 
 const round2 = (value: number): number => Math.round(value * 100) / 100;
 
-function hash(text: string): number {
-  let value = 0x811c9dc5;
-  for (let index = 0; index < text.length; index += 1) {
-    value ^= text.charCodeAt(index);
-    value = Math.imul(value, 0x01000193) >>> 0;
-  }
-  return value >>> 0;
-}
-
-/** Kleiner, seedfester Tie-Break: gleiche Eingabe, gleiche Entscheidung. */
-export function seedTilt(seed: number, npcId: string, tick: number): number {
-  if (seed === 0) return 0;
-  const raw = hash(`${seed}:${npcId}:${tick}`) % 71;
-  return round2((raw - 35) / 100);
-}
-
 /** Bewertet genau eine Alternative; jede Wirkung landet im Trace. */
 export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoice {
   const { resident, scheduled, hour, seed, tick } = input;
@@ -77,9 +65,19 @@ export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): Ci
     factors.push({ family, detail, value, delta: round2(delta) });
   };
 
+  const veto = urgentNeedVeto(needs);
+  if (vetoesIntent(veto, intent) && veto) {
+    add(veto.family, `Beduerfnis-Override ${veto.intent}`, veto.intent, -URGENT_NEED_VETO);
+  }
+  if (isClosedAt(intent, hour, { npcId: resident.npcId, workplace: input.workplace })) {
+    add('environment', `${intent} geschlossen (Stunde ${hour})`, hour, -CLOSED_PENALTY);
+  }
   if (intent === scheduled) add('routine', `Plan ${scheduled}`, scheduled, 60);
-  if (scheduled === 'PUB' && intent === 'VISIT_FRIEND' && friend) {
-    add('routine', 'soziale Variante des Abendplans', 'PUB', 18);
+  if (scheduled === 'PUB' && intent === 'VISIT_FRIEND' && friend && target) {
+    const pubPlace = locationForIntent('PUB', input.workplace, null);
+    if (target.location !== pubPlace) {
+      add('routine', 'soziale Variante des Abendplans', 'PUB', 18);
+    }
   }
   if (intent === 'SLEEP') {
     add('fatigue', `Muedigkeit ${needs.fatigue}`, needs.fatigue,
@@ -104,9 +102,9 @@ export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): Ci
   }
   if (intent === 'PUB') {
     add('thirst', `Durst ${needs.thirst}`, needs.thirst,
-      Math.min(50, Math.max(0, needs.thirst - 25) * 1.2) + (needs.thirst >= 70 ? 15 : 0));
+      Math.min(55, Math.max(0, needs.thirst - 10) * 1.2) + (needs.thirst >= 70 ? 15 : 0));
     add('social', `Sozialbedarf ${needs.social}`, needs.social, Math.min(40, Math.max(0, needs.social - 30) * 0.8));
-    add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 40 - needs.mood) * 1.2);
+    add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 55 - needs.mood) * 1.2);
     add('traits', `Redseligkeit ${share.toFixed(2)}`, share, share * 25);
     add('attributes', `Charisma ${attributes.charisma}`, attributes.charisma, attributes.charisma * 1.2);
     add('skills', `Soziale Faehigkeit ${skills.social}`, skills.social, skills.social * 0.7);
@@ -129,7 +127,7 @@ export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): Ci
       if (hour < 7) add('environment', `Nachtstunde ${hour}`, hour, -50);
     }
     add('social', `Sozialbedarf ${needs.social}`, needs.social, Math.min(40, Math.max(0, needs.social - 30) * 0.8));
-    add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 40 - needs.mood) * 1.2);
+    add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 55 - needs.mood) * 1.2);
   }
   if (intent === 'WORK') {
     add('skills', `Arbeitsfaehigkeit ${skills.work}`, skills.work, skills.work * 0.9);
@@ -137,7 +135,7 @@ export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): Ci
     add('environment', `Bargeld ${needs.money}`, needs.money, Math.max(0, 5000 - needs.money) * 0.008);
     add('fatigue', `Muedigkeit ${needs.fatigue}`, needs.fatigue, -Math.max(0, needs.fatigue - 55) * 0.5);
     add('traits', `Erwerbssinn ${gain.toFixed(2)}`, gain, gain * 6);
-    add('emotion', `Laune ${needs.mood}`, needs.mood, -Math.max(0, 40 - needs.mood) * 2);
+    add('emotion', `Laune ${needs.mood}`, needs.mood, -Math.max(0, 55 - needs.mood) * 2);
   }
   if (intent === 'LEISURE') {
     add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 40 - needs.mood) * 0.5);

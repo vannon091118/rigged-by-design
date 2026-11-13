@@ -9,14 +9,14 @@
  */
 import { CITY_NPCS, ensureCityVisitor, type CityNpcDef } from './city-npcs';
 import type {
-  CityLifeDecision, CityLifePlace, CityLifeState, CityResidentState, CityResidentView,
+  CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
 import { ensureCityLife, hourOf } from './city-life-state';
 import { createDayPlan, nextIntentForHour } from './npc-schedule';
+import { slotOf } from './city-life-venues';
+import { cityMap, startTravel } from './city-life-movement';
 import { applyCityDecision } from './city-life-apply';
 import { decideCityLife } from './city-life-decision';
-import { explainTraits } from './city-traits';
-import type { NpcIntentKind } from './npc-types';
 import type { TraitState } from './city-types';
 import type { WorldState } from './types';
 
@@ -29,27 +29,6 @@ export {
 } from './city-life-state';
 
 const HOME_BUILDING = 'bld_player_home';
-
-const INTENT_LABELS: Readonly<Record<NpcIntentKind, string>> = {
-  SLEEP: 'schläft',
-  WAKE_UP: 'wacht auf',
-  EAT_HOME: 'isst zu Hause',
-  EAT_OUT: 'isst auswärts',
-  WORK: 'arbeitet',
-  LEISURE: 'Freizeit',
-  VISIT_FRIEND: 'besucht jemanden',
-  SHOP: 'kauft ein',
-  PUB: 'in der Kneipe',
-  COMMUTE: 'unterwegs',
-  IDLE: 'untätig',
-};
-
-const PLACE_LABELS: Readonly<Record<CityLifePlace, string>> = {
-  HOME: 'Wohnung',
-  KIEZ: 'Kiez',
-  MARKT: 'Markt',
-  CASINO: 'Casino',
-};
 
 function workBuildingFor(def: CityNpcDef): string {
   return def.location === 'KIEZ' ? 'bld_kiez_pub' : 'bld_corner_shop';
@@ -97,7 +76,7 @@ export function tickCityLife(world: WorldState): void {
     }
     const def = CITY_NPCS.find((entry) => entry.id === record.npcId);
     if (!def) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
-    const plan = createDayPlan(def.id, HOME_BUILDING, workBuildingFor(def));
+    const plan = createDayPlan(def.id, HOME_BUILDING, workBuildingFor(def), slotOf(def.id) ?? undefined);
     const scheduled = nextIntentForHour(plan, hour);
     if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     const input = {
@@ -121,8 +100,21 @@ export function tickCityLife(world: WorldState): void {
     });
     decisionSeq += 1;
     memorySeq = applied.nextMemoryId;
+    // Ein Ortswechsel ist ein Weg, kein Sprung: Der Ort wechselt erst, wenn der
+    // Bewohner an der Tür steht. Ohne Weg bleibt alles, wie es ist.
+    // `applyCityDecision` hat den Ort schon gesetzt; fuer den Weg zaehlt der
+    // Ort davor. Erst der Weg macht daraus einen Aufbruch statt eines Sprungs.
+    const moved = applied.resident;
+    const target = applied.decision.location;
+    let resident = { ...moved, lastHour: hour, lastDay: world.day };
+    if (target !== record.location) {
+      const start = startTravel(moved.position, cityMap(world), target);
+      if (start.travel) resident = { ...resident, location: record.location, travel: start.travel };
+      else if (start.here) resident = { ...resident, location: target };
+      else resident = { ...resident, location: record.location };
+    }
     return {
-      resident: { ...applied.resident, lastHour: hour, lastDay: world.day },
+      resident,
       decision: applied.decision,
       relationshipTarget: applied.relationshipTarget,
       relationshipDelta: applied.relationshipDelta,
@@ -149,26 +141,4 @@ export function tickCityLife(world: WorldState): void {
   world.cityLife = next;
 }
 
-export function cityLifeView(world: WorldState): readonly CityResidentView[] {
-  const life = ensureCityLife(world);
-  return life.residents.map((resident) => {
-    const visitor = world.visitors.find((entry) => entry.name === resident.name);
-    return {
-      npcId: resident.npcId,
-      name: resident.name,
-      role: resident.role,
-      location: resident.location,
-      locationLabel: PLACE_LABELS[resident.location],
-      intent: resident.intent,
-      intentLabel: INTENT_LABELS[resident.intent],
-      hunger: resident.needs.hunger,
-      thirst: resident.needs.thirst,
-      fatigue: resident.needs.fatigue,
-      social: resident.needs.social,
-      mood: resident.needs.mood,
-      traits: visitor?.traits
-        ? explainTraits(visitor.traits).split(', ').filter((label) => label.length > 0)
-        : [],
-    };
-  });
-}
+export { cityLifeView } from './city-life-view';

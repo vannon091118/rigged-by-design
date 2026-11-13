@@ -15,11 +15,17 @@ import {
   type HouseBand, type NarrativeState, type VisitorMemory, type VisitorValence,
 } from './types';
 
-/** Der Start-Pool: drei wiederkehrende Figuren, die ab Tick 0 im Casino bekannt sind. */
-const START_ROSTER: ReadonlyArray<{ readonly name: string; readonly persona: Visitor['persona'] }> = [
-  { name: 'Rita Kern', persona: 'STAMMGAST' },
-  { name: 'Boris Falk', persona: 'BUSINESS' },
-  { name: 'Mira Sol', persona: 'STREET' },
+/**
+ * Der Start-Pool: drei wiederkehrende Figuren, die ab Tick 0 im Casino bekannt
+ * sind. Die Kennung steht hier, nicht der Name: Sie verbindet das Profil mit
+ * dem Stadtbewohner, auch wenn ein Gast denselben Namen traegt.
+ */
+const START_ROSTER: ReadonlyArray<{
+  readonly npcId: string; readonly name: string; readonly persona: Visitor['persona'];
+}> = [
+  { npcId: 'rita', name: 'Rita Kern', persona: 'STAMMGAST' },
+  { npcId: 'boris', name: 'Boris Falk', persona: 'BUSINESS' },
+  { npcId: 'mira', name: 'Mira Sol', persona: 'STREET' },
 ];
 
 export function createNarrativeState(): NarrativeState {
@@ -42,6 +48,7 @@ export function seedStartPool(world: WorldState, capital: VaCoinMicro): void {
   for (const entry of START_ROSTER.slice(0, NARRATIVE_LIMITS.startPool)) {
     const visitor: Visitor = {
       id: world.nextVisitorId, name: entry.name, persona: entry.persona,
+      residentNpcId: entry.npcId,
       visits: 1, lastSeenTick: 0, memories: [],
     };
     world.nextVisitorId += 1;

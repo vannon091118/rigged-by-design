@@ -1,5 +1,6 @@
 /** Bühnenhintergrund: ferne Fliesen plus eine naehere, gegenlaeufige Parallax-Ebene. */
 import { Container, Graphics } from 'pixi.js';
+import { prefersReducedMotion } from './motion-preference';
 
 interface ScreenSize { readonly width: number; readonly height: number }
 
@@ -36,6 +37,11 @@ export class StageBackdrop {
 
   /** Die naehere Ebene wandert staerker als die Welt; keine Bounds-Abfrage. */
   follow(worldX: number, worldY: number): void {
+    // Parallaxe ist reine Dekoration: bei reduzierter Bewegung steht sie still.
+    if (prefersReducedMotion()) {
+      this.#near.position.set(0, 0);
+      return;
+    }
     this.#near.position.set(-worldX * 0.055, -worldY * 0.035);
   }
 

@@ -8,6 +8,11 @@
 import type {
   NpcAttributes, NpcMemory, NpcSkills, CityLifeState,
 } from './city-life-types';
+import type { CityTravel } from './city-life-movement';
+import type { Point } from './types-model';
+
+/** Weltkante der Stadt; Punkte ausserhalb sind kaputte Daten, kein Weg. */
+const WORLD_LIMIT = 60;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
@@ -80,6 +85,41 @@ export function normalizeMemories(raw: unknown): NpcMemory[] {
     });
   }
   return memories;
+}
+
+/** Kennung des Profils: positive Ganzzahl oder `null` (wird beim Laden gebunden). */
+export function normalizeVisitorId(raw: unknown): number | null {
+  if (typeof raw !== 'number' || !Number.isFinite(raw)) return null;
+  const id = Math.round(raw);
+  return id > 0 ? id : null;
+}
+
+/** Kachel im Stadtmass; fehlende oder kaputte Positionen fallen auf den Start. */
+export function normalizePosition(raw: unknown, fallback: Point): Point {
+  if (!isRecord(raw)) return fallback;
+  const x = Math.round(number(raw.x, -1));
+  const y = Math.round(number(raw.y, -1));
+  if (x < 0 || y < 0 || x >= WORLD_LIMIT || y >= WORLD_LIMIT) return fallback;
+  return { x, y };
+}
+
+/** Ein gespeicherter Weg gilt nur vollstaendig; sonst steht der Bewohner still. */
+export function normalizeTravel(raw: unknown): CityTravel | null {
+  if (!isRecord(raw)) return null;
+  const to = raw.to;
+  if (to !== 'HOME' && to !== 'KIEZ' && to !== 'MARKT' && to !== 'CASINO') return null;
+  if (!Array.isArray(raw.path) || raw.path.length < 2) return null;
+  const path: Point[] = [];
+  for (const entry of raw.path) {
+    if (!isRecord(entry)) return null;
+    const x = Math.round(number(entry.x, -1));
+    const y = Math.round(number(entry.y, -1));
+    if (x < 0 || y < 0 || x >= WORLD_LIMIT || y >= WORLD_LIMIT) return null;
+    path.push({ x, y });
+  }
+  const index = Math.round(number(raw.index, 0));
+  if (index < 0 || index >= path.length) return null;
+  return { to, path, index };
 }
 
 /** Der Trace ist Lauf-Ausgabe, kein zweiter Spielzustand; alte Saves starten leer. */

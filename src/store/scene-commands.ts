@@ -12,6 +12,13 @@ interface Deps {
   readonly notice: (text: string) => void;
 }
 
+/**
+ * Austritt aus dem eigenen Haus: eine Kachel vor der Grand-Schwelle
+ * (`door_street_to_casino_grand`, x=22, y=22). Wer aus dem Casino kommt, steht
+ * dort und nicht am Wohnungseingang.
+ */
+const CASINO_STREET_SPAWN = Object.freeze({ x: 22, y: 23 });
+
 export class SceneCommands {
   readonly #deps: Deps;
 
@@ -23,13 +30,16 @@ export class SceneCommands {
   enterCity(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'CITY') return;
+    const fromCasino = world.scene.kind === 'OWN';
     clearActionQueue(world);
     // Nur der Weg aus dem Casino merkt sich die Rueckkehrposition; die Wohnung
     // hat ihren festen Platz am Flur, nicht die Koordinaten des Casinos.
-    if (world.scene.kind === 'OWN') world.sceneReturnPosition = { ...world.player.position };
+    if (fromCasino) world.sceneReturnPosition = { ...world.player.position };
     world.activeForeignFloorId = null;
     world.scene = { kind: 'CITY' };
-    world.player.position = { ...CITY_SPAWN };
+    // Kein Teleport: Der Casino-Austritt landet an der eigenen Schwelle, der
+    // Wohnungsaustritt am Wohnungseingang.
+    world.player.position = { ...(fromCasino ? CASINO_STREET_SPAWN : CITY_SPAWN) };
     world.player.path = [];
     world.player.pathIndex = 0;
     if (world.onboarding?.step === 'APARTMENT') world.onboarding = { step: 'CITY' };
@@ -73,7 +83,13 @@ export class SceneCommands {
    */
   enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | null {
     const effect = cityDoorEffect(doorId);
-    if (!effect) return null;
+    if (!effect) {
+      // Das eigene Casino traegt seine Tuer aus dem Layout (`door-<zone>`), nicht
+      // aus der Strassentabelle. Ohne diesen Zweig ginge es nach dem Onboarding
+      // nur ueber einen Reload wieder auf die Strasse.
+      if (this.#isOwnDoor(doorId)) { this.enterCity(); return 'CITY'; }
+      return null;
+    }
     if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
     if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
     const world = this.#deps.world();
@@ -88,6 +104,13 @@ export class SceneCommands {
     this.#deps.notice(world.lastEvent);
     this.#deps.emit();
     return 'CITY';
+  }
+
+  /** Ist die Tuer die eigene Haustuer des Casinos? */
+  #isOwnDoor(doorId: string): boolean {
+    const world = this.#deps.world();
+    if (world.scene.kind !== 'OWN') return false;
+    return world.layout.edges.some((edge) => edge.kind === 'DOOR' && edge.id === doorId);
   }
 
   /** Die Eroeffnung schliessen: der einzige Weg von OPENING in die Wohnung. */

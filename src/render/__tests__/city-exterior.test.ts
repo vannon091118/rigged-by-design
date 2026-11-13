@@ -44,7 +44,10 @@ describe('Stadt-Exterieur im Produktionspfad', () => {
     expect(view.scene.kind).toBe('CITY');
     expect(view.size).toBe(60);
     expect(view.layout.size).toBe(60);
-    expect(view.player.position).toEqual(CITY_SPAWN);
+    // `createWorld` steht im eigenen Haus; der Austritt landet an der Grand-Schwelle
+    // (`door_street_to_casino_grand` bei x=22, y=22), nicht am Wohnungseingang.
+    expect(view.player.position).toEqual({ x: 22, y: 23 });
+    // Der Wohnungsaustritt behaelt seinen festen Platz am Wohnungseingang.
     expect(CITY_SPAWN).toEqual({ x: 8, y: 13 });
     expect(view.cityExterior).not.toBeNull();
     expect(view.cityExterior?.layoutId).toBe('layout_city_street_quarter');

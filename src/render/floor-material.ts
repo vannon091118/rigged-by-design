@@ -110,11 +110,13 @@ export function drawFloorRegion(
 ): void {
   if (!layout) return;
   const runs = floorRuns(layout, area);
+  // Jeder Chunk backt nur seine Flaeche; Muster und Fugen laufen sonst in den Nachbarn.
+  const chunk = { x: area.x * tile, y: area.y * tile, w: area.w * tile, h: area.h * tile };
   for (const run of runs) {
     const rect = { x: run.x * tile, y: run.y * tile, w: run.w * tile, h: tile };
     const art = floorArtFor(run.material, theme);
     g.rect(rect.x, rect.y, rect.w, rect.h).fill(art.base);
-    drawPattern(g, art, rect, tile, false);
+    drawPattern(g, art, rect, tile, false, chunk);
   }
   if (!deco) return;
   const byMaterial = new Map<FloorMaterialId, FloorRun[]>();

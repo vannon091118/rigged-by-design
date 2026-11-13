@@ -9,7 +9,7 @@ import type { PersonaId, Visitor, WorldState } from './types';
 import { LOCATIONS } from './city-model';
 import type { CityLocationId, TraitId } from './city-types';
 import { seedTraits } from './city-traits';
-import { recordVisitor } from './visitors';
+import { recordResidentVisitor } from './visitors';
 
 export interface CityNpcDef {
   readonly id: string;
@@ -72,16 +72,31 @@ export function witnessFor(npc: CityNpcDef): CityNpcDef | null {
   return CITY_NPCS.find((entry) => entry.id !== npc.id && entry.id !== informant?.id) ?? null;
 }
 
-/** Der benannte NPC existiert genau einmal; ein alter Save behaelt seine ID. */
+/**
+ * Das Profil eines Bewohners wird ueber seine Kennung gefunden, nie ueber den
+ * Namen: Ein Gast mit demselben Namen ist ein anderer Mensch. Nur alte Saves
+ * ohne Kennung werden einmal adoptiert — danach traegt das Profil sie selbst.
+ */
 export function ensureCityVisitor(world: WorldState, def: CityNpcDef): Visitor {
-  const existing = world.visitors.find((visitor) => visitor.name === def.name);
-  const visitor = existing ?? recordVisitor(world, { name: def.name, persona: def.persona, tick: world.tick });
+  const linked = world.visitors.find((visitor) => visitor.residentNpcId === def.id);
+  const legacy = linked ? null : world.visitors.find((visitor) =>
+    visitor.residentNpcId === undefined && visitor.name === def.name);
+  const visitor = linked
+    ?? (legacy ? adoptLegacyProfile(legacy, def.id) : recordResidentVisitor(world, {
+      npcId: def.id, name: def.name, persona: def.persona,
+    }));
   if (visitor.charisma === undefined || visitor.intellect === undefined || !visitor.traits) {
     visitor.charisma = def.charisma;
     visitor.intellect = def.intellect;
     visitor.vice = def.vice;
     visitor.traits = seedTraits(def.traits, { charisma: def.charisma, intellect: def.intellect });
   }
+  return visitor;
+}
+
+/** Ein Profil aus einem Save vor den Kennungen bekommt seinen Bewohner. */
+function adoptLegacyProfile(visitor: Visitor, npcId: string): Visitor {
+  visitor.residentNpcId = npcId;
   return visitor;
 }
 

@@ -14,6 +14,9 @@ import { replaySave, toSavedGame } from '../../../store/save';
 import {
   changedFamilies, compactDecision, findCausalChain, runCityLifeSimulation,
 } from '../city-life-sim';
+import { decideCityLife } from '../city-life-decision';
+import type { CityDecisionInput } from '../city-life-score';
+import type { CityResidentState } from '../city-life-types';
 import type { CityDecisionFamily, CityLifeDecision } from '../city-life-types';
 import { TICKS_PER_DAY } from '../demand';
 
@@ -44,8 +47,23 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     expect(result.decisions.some((entry) => entry.outcome.cookingDelta > 0)).toBe(true);
     expect(result.decisions.some((entry) => entry.outcome.workDelta > 0)).toBe(true);
     expect(result.decisions.some((entry) => entry.outcome.socialSkillDelta > 0)).toBe(true);
-    expect(result.decisions.some((entry) =>
-      entry.counterfactuals.some((probe) => probe.detail.includes('Bargeld') && probe.changed))).toBe(true);
+    // Bargeld bindet nur, solange es knapp ist: Der Lauf reichert die Bewohner
+    // an, deshalb prueft dieselbe Entscheidungsfunktion hier einen armen,
+    // hungrigen Bewohner statt einer zufaelligen Trace-Zeile.
+    const poor: CityResidentState = {
+      npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: 'PUB',
+      position: { x: 8, y: 12 }, travel: null,
+      needs: { hunger: 20, thirst: 40, fatigue: 40, social: 70, money: 200, mood: 75 },
+      attributes: { charisma: 8, intellect: 4 }, skills: { cooking: 20, work: 100, social: 20 },
+      relationships: {}, memories: [], lastHour: 19, lastDay: 1,
+    };
+    const poorInput: CityDecisionInput = {
+      resident: poor, scheduled: 'PUB', workplace: 'KIEZ', hour: 19, day: 1, tick: 475,
+      peers: [], traits: [], seed: SEED,
+    };
+    const poorPlan = decideCityLife(poorInput);
+    expect(poorPlan.choice.intent).toBe('WORK');
+    expect(poorPlan.counterfactuals.some((probe) => probe.detail.includes('Bargeld') && probe.changed)).toBe(true);
 
     const chain = findCausalChain(result.decisions);
     expect(chain).not.toBeNull();
