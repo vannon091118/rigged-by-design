@@ -1,0 +1,21 @@
+{
+  "id": "lane/render/residence-role",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/residence-role",
+  "baseSha": "dc5d8e2262122d0d9908c7d6bbca0e91b6bd89b7",
+  "task": "RESIDENCE-Renderrolle fuer den dritten Stadtneubau",
+  "goal": "Der Bautraeger darf kein Gebaeude erzeugen, das den Renderplan wirft; RESIDENCE bekommt eine echte Rolle mit Asset und einen Integrationstest.",
+  "pathAllowlist": [
+    "src/render/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    ".lane-claims/**",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "dc5d8e2262122d0d9908c7d6bbca0e91b6bd89b7"
+}

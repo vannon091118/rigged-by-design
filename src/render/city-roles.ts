@@ -8,6 +8,7 @@ import { ASSET } from './assets/keys';
 
 export type CitySurfaceRole =
   | 'APARTMENT'
+  | 'RESIDENCE'
   | 'PUB'
   | 'SHOP'
   | 'CASINO'
@@ -27,7 +28,9 @@ interface CitySurfaceArt {
 /** Die vier preset-Gebaeude haben je eine Fassade; weitere Typen bleiben bewusst ohne. */
 const CITY_BUILDING_ART: Readonly<Record<BuildingKind, CitySurfaceArt | null>> = {
   APARTMENT: { role: 'APARTMENT', asset: ASSET.city.apartment },
-  RESIDENCE: null,
+  // Das Wohnhaus des Bautraegers teilt die Fassadenfamilie der Wohnung;
+  // ohne Rolle wuerde der dritte Neubau den Renderplan werfen lassen (#520).
+  RESIDENCE: { role: 'RESIDENCE', asset: ASSET.city.apartment },
   PUB: { role: 'PUB', asset: ASSET.city.pub },
   SHOP: { role: 'SHOP', asset: ASSET.city.shop },
   CASINO: { role: 'CASINO', asset: ASSET.city.casino },
