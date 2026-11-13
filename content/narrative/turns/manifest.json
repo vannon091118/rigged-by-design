@@ -4156,6 +4156,10 @@
     {
       "turnId": "2026-11-13T23:18Z-bet-slip-register",
       "contributionId": "bet-slip-register-01"
+    },
+    {
+      "turnId": "2026-11-13T23:26Z-claim-shelf-cleanup",
+      "contributionId": "claim-shelf-cleanup-01"
     }
   ]
 }

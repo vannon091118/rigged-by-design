@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:54ac5e5926bed810b005032d34e864161e186b8cf6901050ff31d7796e6b2c4c",
+  "contentHash": "sha256:fa00302309244a4f483346cfbdf7bc0fc40ea46093f8acaf4fdf41663e2ee3f1",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -5889,6 +5889,28 @@
       "text": "Im Kiez wird nichts vergessen: Erledigte Bauplätze bleiben verzeichnet, sie versperren aber keinem mehr den Weg.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-claim-register-archive.json"
+    },
+    {
+      "contributionId": "claim-shelf-cleanup-01",
+      "turnId": "2026-11-13T23:26Z-claim-shelf-cleanup",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Sims liegt nur noch, was heute gilt; was gestern war, steht im alten Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-claim-shelf-cleanup.json"
     },
     {
       "contributionId": "closeout-buchhaltung-1",
