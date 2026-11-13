@@ -2,7 +2,7 @@
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
 import { companyTier } from '../core/sim/progression';
-import { ensureCityLife } from '../core/sim/city-life-state';
+import { ensureCityLife, ensureCityPopulationForScene } from '../core/sim/city-life-state';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
@@ -111,6 +111,9 @@ export function replaySave(raw: unknown): LoadedSave | null {
     if (!saved.template || !Array.isArray(saved.guests) || !Array.isArray(saved.furniture)) return null;
     const world = createWorld(saved.template, saved.carpet ?? 'VIOLET');
     const legacyFiat = hydrateWorld(world, saved as SavedGame);
+    // Die Szene steht nach der Hydration fest: Ein alter CITY-Save wird auf
+    // die Strassenbesetzung gehoben, bevor Sicht oder Begegnung ihn lesen.
+    ensureCityPopulationForScene(world);
     ensureStarter(world);
     const ledger = new Ledger();
     // Schuldbuchungen duerfen beim Replay nicht als Unterdeckung gelten.
@@ -134,8 +137,8 @@ export function loadWorld(): LoadedSave | null {
     for (const key of LEGACY_KEYS) raw = raw ?? localStorage.getItem(key);
     if (!raw) return null;
     const loaded = replaySave(JSON.parse(raw));
-    // Der echte Ladepfad heilt alte Saves ohne gebundene Kennungen. `replaySave`
-    // bleibt die reine Rekonstruktion, damit alte Save-Tests ihre Semantik behalten.
+    // Auch ausserhalb der Stadt bekommen alte Saves ihre Bewohnerprofile; die
+    // Stadtszene selbst ist bereits in `replaySave` auf Mindestbesetzung.
     if (loaded) ensureCityLife(loaded.world);
     return loaded;
   } catch {

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T06:45Z-city-population-load",
+  "contributionId": "city-population-load-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Kiez ist kein leerer Saal, der nur auf deinen ersten Schritt wartet. Auch wenn du mitten in der Stadt aufwachst, stehen die Türen offen und die Schichten laufen weiter — die Straße füllt sich, bevor du sie betrittst.",
+  "directives": []
+}
