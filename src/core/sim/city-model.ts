@@ -85,19 +85,10 @@ export function cityNightText(key: string): string {
   return NIGHT_TEXTS[fnv(key) % NIGHT_TEXTS.length]!;
 }
 
-/**
- * Der Stadtzustand entsteht beim ersten Zugriff. Alte Saves tragen ihn nicht;
- * ein fehlendes Feld ist deshalb kein Save-Bruch, sondern der Startzustand.
- */
-export function cityOf(world: WorldState): CityState {
-  const existing = world.city;
-  if (existing) {
-    const energy = existing.energyDay === world.day ? clampEnergy(existing.energy) : CITY_ENERGY_PER_DAY;
-    return { ...existing, energyDay: world.day, energy, encounters: existing.encounters ?? [] };
-  }
-  const fresh: CityState = {
+function freshCity(day: number): CityState {
+  return {
     location: 'CASINO',
-    energyDay: world.day,
+    energyDay: day,
     energy: CITY_ENERGY_PER_DAY,
     KIEZ: 0,
     MARKT: 0,
@@ -107,6 +98,30 @@ export function cityOf(world: WorldState): CityState {
     completed: [],
     encounters: [],
   };
+}
+
+function normalizedCity(state: CityState, day: number): CityState {
+  const energy = state.energyDay === day ? clampEnergy(state.energy) : CITY_ENERGY_PER_DAY;
+  return { ...state, energyDay: day, energy, encounters: state.encounters ?? [] };
+}
+
+/**
+ * Reine Sicht auf den Stadtzustand: Ein fehlendes Feld wird fuer die Anzeige
+ * als Startzustand projiziert, aber nie in die Welt geschrieben.
+ */
+export function cityViewState(world: WorldState): CityState {
+  return world.city ? normalizedCity(world.city, world.day) : freshCity(world.day);
+}
+
+/**
+ * Der Stadtzustand entsteht beim ersten schreibenden Zugriff. Alte Saves tragen
+ * ihn nicht; ein fehlendes Feld ist deshalb kein Save-Bruch, sondern der
+ * Startzustand.
+ */
+export function cityOf(world: WorldState): CityState {
+  const existing = world.city;
+  if (existing) return normalizedCity(existing, world.day);
+  const fresh = freshCity(world.day);
   world.city = fresh;
   return fresh;
 }

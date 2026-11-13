@@ -2,6 +2,7 @@
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
 import { companyTier } from '../core/sim/progression';
+import { ensureCityLife } from '../core/sim/city-life-state';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
@@ -132,7 +133,11 @@ export function loadWorld(): LoadedSave | null {
     let raw = localStorage.getItem(KEY);
     for (const key of LEGACY_KEYS) raw = raw ?? localStorage.getItem(key);
     if (!raw) return null;
-    return replaySave(JSON.parse(raw));
+    const loaded = replaySave(JSON.parse(raw));
+    // Der echte Ladepfad heilt alte Saves ohne gebundene Kennungen. `replaySave`
+    // bleibt die reine Rekonstruktion, damit alte Save-Tests ihre Semantik behalten.
+    if (loaded) ensureCityLife(loaded.world);
+    return loaded;
   } catch {
     return null;
   }

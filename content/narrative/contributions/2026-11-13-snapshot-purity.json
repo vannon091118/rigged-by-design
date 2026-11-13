@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T06:40Z-snapshot-purity",
+  "contributionId": "snapshot-purity-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Stadt bleibt stehen, solange niemand handelt: Ein Blick durch das Fenster zählt keine neuen Namen, verschiebt keine Kennung und schreibt keinen Besuch ins Profil. Wer die Straße betritt, trifft dieselben Menschen wie vorher — beobachtet wird, ohne dass die Beobachtung den Tag verändert.",
+  "directives": []
+}
