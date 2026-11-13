@@ -10,7 +10,7 @@ import type { Ledger } from '../economy/ledger';
 import { fromVC, toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import {
-  applyFightOutcome, fighters, simulateFight, winProbability, type FightResult,
+  applyFightOutcome, crowdBonus, fighters, simulateFight, winProbability, type FightResult,
 } from './brawl-combat';
 import type { DuelOpponent } from './duel-opponent';
 import {
@@ -132,7 +132,8 @@ export function backyardView(world: WorldState, wallet: VaCoinMicro): BackyardVi
       ? `Startgeld fehlt: ${toVCString((rung.entryFee - wallet) as VaCoinMicro)}.`
       : `Startgeld ${toVCString(rung.entryFee)} · Preisgeld ${toVCString(rung.prize)}.`;
   return {
-    rung, totalRungs: LADDER.length, winChance: fightChance(world.player.rpg, rung, 0), ready, reason,
+    rung, totalRungs: LADDER.length,
+    winChance: fightChance(world.player.rpg, rung, crowdBonus(world.guests)), ready, reason,
     record: fightRecordOf(world.archive), history,
   };
 }
@@ -147,7 +148,7 @@ export function backyardFight(world: WorldState, ledger: Ledger, prng: Prng): Ba
   if (!view.ready) throw new Error(view.reason);
   const rung = view.rung;
   ledger.transfer(PORTEMONNAIE, EXTERNAL, rung.entryFee, TX_REASON.BACKYARD_ENTRY, world.tick);
-  const bout = fightBout(world, prng, rung, 0);
+  const bout = fightBout(world, prng, rung, crowdBonus(world.guests));
   const won = bout.won;
   const ko = bout.ko;
   let prize: VaCoinMicro = ZERO_VC;

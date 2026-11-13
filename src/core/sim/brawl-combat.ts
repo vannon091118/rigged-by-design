@@ -5,7 +5,7 @@ import type { DuelOpponent } from './duel-opponent';
 import { INJURY_TICKS, playerHp, playerMaxHp, type PlayerRpgState } from './player-rpg';
 import { clamp } from './num';
 
-interface Fighter {
+export interface Fighter {
   readonly name: string;
   readonly hp: number;
   readonly maxHp: number;

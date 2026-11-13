@@ -55,24 +55,27 @@ export function CareerBackyard({ backyard, onChallenge }: Props) {
       </button>
       <div className="career-head">
         <strong>WETTMARKT</strong>
-        <span>{market ? market.pair : 'kein Vorkampf'}</span>
+        <span>{market ? `${market.pair} · ${market.chance} % für ${market.a}` : 'kein Vorkampf'}</span>
         <span>{bets.pending.length} offene Scheine</span>
       </div>
       <p className={`career-hp${bets.open ? '' : ' warn'}`}>{bets.reason}</p>
       {market && (
         <div className="career-bets">
-          {(['A', 'B', 'KO', 'PUNKTE'] as const).map((pick) => (
-            <button
-              key={pick}
-              type="button"
-              className="btn small"
-              disabled={!bets.open}
-              onClick={() => worldStore.city({ kind: 'fightBet', pick, stakeVC: 1 })}
-            >
-              {pick === 'A' ? market.a : pick === 'B' ? market.b : pick}
-              {' · '}{market.odds[pick].toFixed(2)}
-            </button>
-          ))}
+          {(['A', 'B', 'KO', 'PUNKTE'] as const).map((pick) => {
+            const price = market.odds[pick];
+            return (
+              <button
+                key={pick}
+                type="button"
+                className="btn small"
+                disabled={!bets.open || price === undefined}
+                onClick={() => worldStore.city({ kind: 'fightBet', pick, stakeVC: 1 })}
+              >
+                {pick === 'A' ? market.a : pick === 'B' ? market.b : pick}
+                {' · '}{price === undefined ? 'kein Kurs' : price.toFixed(2)}
+              </button>
+            );
+          })}
         </div>
       )}
     </section>

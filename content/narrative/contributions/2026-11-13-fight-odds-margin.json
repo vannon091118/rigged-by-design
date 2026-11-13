@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:31Z-fight-odds-margin",
+  "contributionId": "fight-odds-margin-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Buchmacher rechnet mit der Laune im Saal, nicht mit der Zahl der Mäntel an der Garderobe.",
+  "directives": []
+}

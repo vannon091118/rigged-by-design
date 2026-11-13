@@ -4,14 +4,17 @@
  * Gewettet wird ausschliesslich auf den Vorkampf zweier Roster-Kaempfer; der
  * eigene Kampf ist bewusst kein Markt. Abgabe und Abrechnung liegen in eigenen
  * Modulen, hier steht nur der Markt und seine Sicht.
+ *
+ * Der Markt liest denselben Publikumswert wie Kampfabend, Duell und Hinterhof
+ * (`crowdBonus`, -5..+5 Prozentpunkte). Die Zuschauerzahl ist keine Trefferquote.
  */
 import { fromVC, toVCString, type VaCoinMicro } from '../economy/vacoin';
-import { fighters, winProbability } from './brawl-combat';
+import { crowdBonus, fighters, winProbability, type Fighter } from './brawl-combat';
 import { openSlips, type FightBetPick, type PendingBet } from './fight-bet-slips';
 import { fightNextRung, fightOpponentOf, fightRoster, type BackyardRung } from './fight-career';
 import { backyardHistoryOf } from './fight-history';
 import { newPlayerRpg, playerMaxHp, type PlayerRpgState } from './player-rpg';
-import { clamp, round2 } from './num';
+import { clamp } from './num';
 import type { WorldState } from './types';
 import { venueView } from './venue-event';
 
@@ -20,7 +23,10 @@ interface FightBetMarket {
   readonly pair: string;
   readonly a: string;
   readonly b: string;
-  readonly odds: Readonly<Record<FightBetPick, number>>;
+  /** Nur Paesse mit Kurs; fast sichere Ausgaenge sind ausgesetzt. */
+  readonly odds: Readonly<Partial<Record<FightBetPick, number>>>;
+  /** Gewinnwahrscheinlichkeit der Seite A in Prozent, aus derselben Rechnung. */
+  readonly chance: number;
   readonly open: boolean;
   readonly reason: string;
 }
@@ -32,16 +38,54 @@ export interface FightBetView {
   readonly reason: string;
 }
 
+interface FightQuotes {
+  readonly pA: number;
+  readonly pKo: number;
+  readonly odds: Readonly<Partial<Record<FightBetPick, number>>>;
+}
+
 const EVENT_KIND = 'TURNIER_ABEND';
 export const MIN_STAKE = fromVC(0.1);
 export const MAX_STAKE = fromVC(5);
-const ODDS_FLOOR = 1.2;
+const ODDS_MIN = 1;
 const ODDS_CAP = 6;
 /** Buchmacher-Marge: kein Markt wird zur Arbitrage. */
-const BOOK_MARGIN = 0.92;
+export const BOOK_MARGIN = 0.92;
 
-const roundOdds = (probability: number): number =>
-  round2(clamp(BOOK_MARGIN / Math.max(0.05, probability), ODDS_FLOOR, ODDS_CAP));
+/** Abrunden auf zwei Stellen: die Auszahlung bleibt unter der fairen Quote. */
+const floor2 = (value: number): number => Math.floor(value * 100) / 100;
+
+/**
+ * Quote zu einer bekannten Wahrscheinlichkeit: `Marge / p`, abgerundet und nach
+ * oben gedeckelt. Keine erfundene Untergrenze: Waere die Auszahlung kleiner als
+ * der Einsatz, gibt es keinen Kurs statt einer Wette mit Minusrendite.
+ */
+export function oddsFor(probability: number): number | null {
+  const fair = BOOK_MARGIN / clamp(probability, 0.01, 1);
+  if (fair < 1) return null;
+  return clamp(floor2(fair), ODDS_MIN, ODDS_CAP);
+}
+
+/** KO-Wahrscheinlichkeit aus Angriff und Lebenspunkten beider Seiten. */
+export function koProbability(left: Fighter, right: Fighter): number {
+  return clamp((left.attack + right.attack) / (left.maxHp + right.maxHp), 0.15, 0.85);
+}
+
+/** Quoten und Wahrscheinlichkeiten eines Kampfes, aus einer Rechnung. */
+export function marketQuotes(a: BackyardRung, b: BackyardRung, crowd: number): FightQuotes {
+  const [left, right] = fighters(rpgOf(a), fightOpponentOf(b), crowd);
+  const pA = winProbability(left, right);
+  const pKo = koProbability(left, right);
+  const odds: Partial<Record<FightBetPick, number>> = {};
+  const prices: readonly (readonly [FightBetPick, number])[] = [
+    ['A', pA], ['B', 1 - pA], ['KO', pKo], ['PUNKTE', 1 - pKo],
+  ];
+  for (const [pick, probability] of prices) {
+    const price = oddsFor(probability);
+    if (price !== null) odds[pick] = price;
+  }
+  return { pA, pKo, odds };
+}
 
 /** Dieselbe Koerper-Abbildung wie im Hinterhof: Kraft wird zur Brawl-Stufe. */
 export function rpgOf(rung: BackyardRung): PlayerRpgState {
@@ -69,16 +113,15 @@ function marketOf(world: WorldState): FightBetMarket | null {
   const pair = undercardPair(world);
   if (!live || !pair) return null;
   const [a, b] = pair;
-  const [left, right] = fighters(rpgOf(a), fightOpponentOf(b), world.guests.length);
-  const pA = winProbability(left, right);
-  const pKo = clamp((left.attack + right.attack) / (left.maxHp + right.maxHp), 0.15, 0.85);
+  const quotes = marketQuotes(a, b, crowdBonus(world.guests));
   const open = live.phase === 'ADMISSION';
   return {
     eventId: live.id,
     pair: `${a.name} gegen ${b.name}`,
     a: a.name,
     b: b.name,
-    odds: { A: roundOdds(pA), B: roundOdds(1 - pA), KO: roundOdds(pKo), PUNKTE: roundOdds(1 - pKo) },
+    odds: quotes.odds,
+    chance: Math.round(quotes.pA * 100),
     open,
     reason: open
       ? `Vorkampf ${a.name} gegen ${b.name} · Markt bis zum Kampfbeginn.`
