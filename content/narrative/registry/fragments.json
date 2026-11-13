@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ac92a80d77d78a3c9f6ab0466064015280f498b49b2c1d360bd223bc1fa1c17f",
+  "contentHash": "sha256:a6c9bdd5bac2e9e63e197a8bc307e635ffdaa21526768b59326fbcdac76ba7ba",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -5889,6 +5889,28 @@
       "text": "Jeder Schritt durch den Kiez hinterlaesst eine andere Spur; wer zweimal denselben Satz hoert, ist stehen geblieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
+    },
+    {
+      "contributionId": "claim-closeout-550-01",
+      "turnId": "2026-11-13T23:35Z-claim-closeout-550",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer den Abend abgerechnet hat, hängt den Schein nicht wieder ins Fenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-claim-closeout-550.json"
     },
     {
       "contributionId": "claim-register-archive-01",

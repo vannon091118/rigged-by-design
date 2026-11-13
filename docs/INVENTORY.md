@@ -675,10 +675,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2888 |
-| Gelistete Dateien | 2888 |
+| Getrackte Dateien | 2894 |
+| Gelistete Dateien | 2894 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (37), artifacts (1), content (1045), docs (103), packages (27), public (571), scripts (116), src (967) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (39), artifacts (1), content (1047), docs (103), packages (27), public (571), scripts (116), src (969) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -690,10 +690,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 19 Datei(en)
+- `.lane-claims/claims/` — 21 Datei(en)
 - `.lane-claims/tasks/` — 17 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1041 Datei(en)
+- `content/narrative/contributions/` — 1043 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -767,7 +767,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 173 Datei(en)
+- `src/core/sim/` — 174 Datei(en)
 - `src/core/sim/__tests__/` — 158 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
@@ -782,7 +782,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
-- `src/render/` — 63 Datei(en)
+- `src/render/` — 64 Datei(en)
 - `src/render/__tests__/` — 33 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 2 Datei(en)
@@ -819,12 +819,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-549.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-claim-closeout-550.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-568.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-verify-all-green.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-render-issue-535-apartment-room.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-render-residence-role.json` — { — gelesen: 21 Zeilen
@@ -1876,6 +1878,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-12-render-threshold-voice-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-test-quality-voice-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-ambient-transition.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-apartment-walls.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-bet-slip-register.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-assets.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-encounter-roster.json` — { — gelesen: 21 Zeilen
@@ -1884,6 +1887,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-city-plots-growth.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-population-load.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-road-guard.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-claim-closeout-550.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-register-archive.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-shelf-cleanup.json` — { — gelesen: 21 Zeilen
@@ -1899,8 +1903,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23346 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4173 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23368 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4177 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -3064,6 +3068,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/active-player.ts` — Der Spieler steht immer auf genau einem Floor. Dieses Modul beantwortet, — gelesen: 65 Zeilen
 - `src/core/sim/actor-continuity.ts` — import type { DayPlan, NpcLODLevel, NpcNeeds } from './npc-types'; — gelesen: 104 Zeilen
 - `src/core/sim/amenity-reaction.ts` — Ausstattungsreaktion (Agent 15): die Bedingung des Geraets, an dem ein Gast — gelesen: 43 Zeilen
+- `src/core/sim/apartment-walls.ts` — Die Zonen in `player-apartment` sind die Raumwahrheit; hier stehen nur die — gelesen: 56 Zeilen
 - `src/core/sim/arena.ts` — Eigene Arena als Ausbau der vorhandenen Immobilie: Stufen kommen aus — gelesen: 122 Zeilen
 - `src/core/sim/bar-service.ts` — Bedienung an der Bar: der Drink aus der Karte und der Toilettengang. — gelesen: 58 Zeilen
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
@@ -3376,6 +3381,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 25 Zeilen
 - `src/render/ambient-layer.ts` — Ambient-Schicht: statischer Schleier, statische Sonnenstrahlen und ein — gelesen: 109 Zeilen
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
+- `src/render/apartment-furniture-art.ts` — Die Wohnung teilt die Möbelmechanik mit dem Casino, aber nicht dessen Optik: — gelesen: 81 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 190 Zeilen
 - `src/render/assets/__tests__/textures-preload.test.ts` — R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 64 Zeilen
