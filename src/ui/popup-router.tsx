@@ -113,7 +113,7 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
   }
 
   if (popup.kind === 'city') {
-    return <CityPopup city={view.city} onClose={onClose} />;
+    return <CityPopup city={view.city} growth={view.cityGrowth} onClose={onClose} />;
   }
 
   if (popup.kind === 'dialogue' && popup.guestId !== undefined) {

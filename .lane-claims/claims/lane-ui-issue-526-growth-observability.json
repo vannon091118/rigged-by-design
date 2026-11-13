@@ -1,0 +1,22 @@
+{
+  "id": "lane/ui/issue-526-growth-observability",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/ui/issue-526-growth-observability",
+  "baseSha": "22e3dd4cd143f84af30f10653b8f108415eac878",
+  "task": "Stadtwachstum beobachtbar: BuildReport ins Journal, cityGrowth in GameView und CityPopup (#526)",
+  "goal": "Ein Neubau ist ein sichtbares Welt-Ereignis: Journal/Archiv, GameView-Projektion und Stadtfenster lesen dieselbe cityGrowthView samt letztem Bau und Stillstandsgrund.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/ui/**",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-ui-issue-526-growth-observability.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "22e3dd4cd143f84af30f10653b8f108415eac878"
+}

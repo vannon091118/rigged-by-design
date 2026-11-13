@@ -12,14 +12,20 @@
  * sie wird nie auf Vorrat gezogen und steht wie jede Bauzahlung als eigene Zeile
  * im Ledger. Damit endet das Wachstum an Joblosen und Grundstuecken, nicht an
  * einem stillen Kapitaldeckel (#525).
+ *
+ * Beobachtbarkeit: Jeder erfolgreiche Bau schreibt genau ein Journal-Ereignis mit
+ * Ursache (Joblose, Grundstueck) und Folge (Kosten, neue Stellen). Die Sicht
+ * liegt in `city-growth-view`, damit Snapshot und Stadtfenster dieselbe Quelle
+ * lesen, ohne dass der Bau-Pfad zum Anzeige-Modul wird (#526).
  */
 import type { Ledger } from '../economy/ledger';
-import { fromVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
+import { fromVC, subVC, toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { CITY_PRESET_BUILDINGS, createBuilding } from './building';
 import type { BuildingState } from './building-types';
-import { cityJobMarket, type CityJobMarket, type EmploymentCandidate } from './city-employment';
+import { cityJobMarket, JOB_CAPACITY, type CityJobMarket, type EmploymentCandidate } from './city-employment';
 import { cityBuildingWalls } from './city-exterior';
 import { CITY_PLOTS, plotAtRect, type CityPlot } from './city-plots';
+import { recordJournal } from './journal';
 import { EXTERNAL, EXTERNAL_WORK } from './money';
 import type { WorldState } from './types';
 
@@ -32,19 +38,6 @@ export const BUILD_COST = fromVC(1800);
 export interface CityGrowthState {
   readonly lastBuildDay: number;
   readonly built: readonly string[];
-}
-
-/**
- * Warum gerade nicht gebaut wird; ein sichtbarer Endzustand statt Stille.
- * Fehlendes Kapital ist kein Grund mehr: diese Differenz traegt die Foerderung.
- */
-type CityGrowthBlock = 'READY' | 'NO_JOBLESS' | 'NO_PLOTS';
-
-interface CityGrowthView extends CityJobMarket {
-  readonly capital: VaCoinMicro;
-  readonly freePlots: number;
-  readonly canBuild: boolean;
-  readonly blockedReason: CityGrowthBlock;
 }
 
 interface BuildReport {
@@ -77,22 +70,6 @@ function freePlot(buildings: readonly BuildingState[]): CityPlot | null {
   const free = CITY_PLOTS.filter((plot) =>
     !buildings.some((building) => plotAtRect(building.footprint)?.id === plot.id));
   return free.find((plot) => plot.zoning !== 'HOME') ?? free[0] ?? null;
-}
-
-export function cityGrowthView(world: WorldState, ledger: Ledger): CityGrowthView {
-  const buildings = cityBuildings(world);
-  const market = jobMarket(buildings, world.cityLife?.residents ?? []);
-  const capital = ledger.getBalance(BUILDER_ACCOUNT);
-  const freePlots = CITY_PLOTS.filter((plot) => !buildings.some((b) => plotAtRect(b.footprint)?.id === plot.id)).length;
-  const blockedReason: CityGrowthBlock = market.jobless <= 0 ? 'NO_JOBLESS'
-    : freePlots <= 0 ? 'NO_PLOTS' : 'READY';
-  return {
-    ...market,
-    capital,
-    freePlots,
-    canBuild: blockedReason === 'READY',
-    blockedReason,
-  };
 }
 
 /** Wohnfläche bleibt Wohnung, alles andere Geschäft. */
@@ -155,5 +132,16 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
   ledger.transfer(BUILDER_ACCOUNT, EXTERNAL_WORK, BUILD_COST, `Bau: ${building.name}`, world.tick);
   placeBuilding(world, building);
   world.cityGrowth = { lastBuildDay: world.day, built: [...growth.built, building.id] };
+  // Ein Zustandsübergang, ein Ereignis: Der Bericht wird nicht verworfen, sondern
+  // als Journal-Zeile mit Ursache und Folge persistiert (#526).
+  const slots = JOB_CAPACITY[building.kind] ?? 0;
+  recordJournal(world, {
+    kind: 'SYSTEM',
+    subject: `Neubau: ${building.name}`,
+    cause: `${market.jobless} Joblose vor dem Bau; Grundstück ${plot.label}.`,
+    effect: `${toVCString(BUILD_COST)} Baukosten gebucht; ${slots} neue Stellen.`,
+    amount: BUILD_COST,
+    refs: { buildingId: building.id },
+  });
   return { building, cost: BUILD_COST, plotId: plot.id, joblessBefore: market.jobless };
 }

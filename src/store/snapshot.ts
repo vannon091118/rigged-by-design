@@ -13,6 +13,7 @@ import { renovationView } from '../core/sim/renovation';
 import { machineHallView } from '../core/sim/machine-hall';
 import { floorWorkView } from '../core/sim/floor-work';
 import { cityView } from '../core/sim/city';
+import { cityGrowthView } from '../core/sim/city-growth-view';
 import { cityActorViews } from './city-actors-view';
 import { venueView } from '../core/sim/venue-event';
 import { dayPhaseOf } from '../core/sim/day-phase';
@@ -150,6 +151,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     ...worldSnapshot(world),
     // Die Stadt ist abgeleitet: kein zweiter Zustand, keine Rechnung in React.
     city: cityView(world),
+    // Stadtwachstum aus derselben Sicht, die auch das Stadtfenster liest (#526).
+    cityGrowth: cityGrowthView(world, ledger),
     // NAR-14: Szenen und Profile werden hier abgeleitet, nie in React nachgerechnet.
     narrative: buildNarrativeView(world, ledger),
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),

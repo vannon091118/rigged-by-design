@@ -4140,6 +4140,10 @@
     {
       "turnId": "2026-11-13T23:30Z-city-growth-finance",
       "contributionId": "city-growth-finance-01"
+    },
+    {
+      "turnId": "2026-11-13T23:55Z-city-growth-observability",
+      "contributionId": "city-growth-observability-01"
     }
   ]
 }
