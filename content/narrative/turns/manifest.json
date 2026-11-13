@@ -4080,6 +4080,10 @@
     {
       "turnId": "2026-11-13T06:20Z-city-encounter-roster",
       "contributionId": "city-encounter-roster-01"
+    },
+    {
+      "turnId": "2026-11-13T06:40Z-snapshot-purity",
+      "contributionId": "snapshot-purity-01"
     }
   ]
 }

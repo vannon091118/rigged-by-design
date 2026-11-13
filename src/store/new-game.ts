@@ -6,7 +6,7 @@ import { openHouse } from '../core/sim/money';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { seedStartPool } from '../core/sim/narrative/state';
 import { createWorld } from '../core/sim/templates';
-import { createCityLifeState } from '../core/sim/city-life-state';
+import { createCityLifeState, ensureCityLife } from '../core/sim/city-life-state';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import { flushNarrativeCmd } from './narrative-commands';
 
@@ -44,5 +44,8 @@ export function createNewGame(template: TemplateId): NewGameState {
   const ledger = new Ledger();
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);
+  // Profile entstehen beim Anlegen, nicht beim ersten Snapshot. Nach dem
+  // Start-Pool bleiben dessen Kennungen unveraendert.
+  ensureCityLife(world);
   return { world, ledger, prng: new Prng(seed), notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
 }

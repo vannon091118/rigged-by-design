@@ -1,11 +1,13 @@
 /**
  * @module city-life-view — Anzeige des Stadtlebens
  *
- * Die Sicht rechnet nichts nach: Ort, Intent, Bedürfnisse und Traits kommen aus
- * dem gespeicherten Bewohnerzustand. Die Labels sind Übersetzung, keine zweite
- * Wahrheit; ein neuer Intent ohne Label ist ein Typfehler, kein leerer Text.
+ * Die Sicht rechnet nichts nach und schreibt nichts: Ort, Intent, Bedürfnisse
+ * und Traits kommen aus dem gespeicherten Bewohnerzustand. Die Labels sind
+ * Übersetzung, keine zweite Wahrheit; ein neuer Intent ohne Label ist ein
+ * Typfehler, kein leerer Text. Das Binden von Profilen gehoert in den
+ * Anlage-/Ladepfad, nicht in einen Snapshot.
  */
-import { ensureCityLife } from './city-life-state';
+import { createCityLifeState } from './city-life-create';
 import { explainTraits } from './city-traits';
 import type { CityLifePlace, CityResidentView } from './city-life-types';
 import type { NpcIntentKind } from './npc-types';
@@ -33,7 +35,9 @@ const PLACE_LABELS: Readonly<Record<CityLifePlace, string>> = {
 };
 
 export function cityLifeView(world: WorldState): readonly CityResidentView[] {
-  const life = ensureCityLife(world);
+  // Ein fehlendes Stadtleben wird fuer die Anzeige nur projiziert. Der Zustand
+  // bleibt unangetastet; Profile entstehen beim Anlegen oder Laden.
+  const life = world.cityLife ?? createCityLifeState();
   return life.residents.map((resident) => {
     // Identitaet ist die Kennung, nicht der Name: Ein Namensvetter im
     // Gaestepool hat seine eigenen Traits und Beziehungen.

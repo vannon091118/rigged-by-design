@@ -9,6 +9,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { CITY_STREET_DOOR_IDS, cityDoorEffect } from '../../core/sim/city-doors';
+import { cityOf } from '../../core/sim/city-model';
 import { createWorld } from '../../core/sim/templates';
 import { TILE } from '../../core/sim/types';
 import { buildView } from '../../store/snapshot';
@@ -69,7 +70,7 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
     const { world, view, doors } = city();
     for (const door of doors) expect(buildDoorActions(view, door.id), door.id).toHaveLength(1);
     expect(buildDoorActions(view, 'door_street_to_corner_shop')[0]).toMatchObject({ enabled: false });
-    world.city = { ...world.city!, KIEZ: 9 };
+    world.city = { ...cityOf(world), KIEZ: 9 };
     const unlocked = buildView(world, new Ledger(), '');
     expect(buildDoorActions(unlocked, 'door_street_to_corner_shop')[0]?.enabled).toBe(true);
   });
@@ -86,7 +87,7 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
     expect(world.city?.location).toBe('KIEZ');
     expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBeNull();
     expect(world.city?.location).toBe('KIEZ');
-    world.city = { ...world.city!, KIEZ: 9 };
+    world.city = { ...cityOf(world), KIEZ: 9 };
     expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBe('CITY');
     expect(world.city?.location).toBe('MARKT');
     expect(scene.enterStreetDoor('door_street_to_unknown')).toBeNull();

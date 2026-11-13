@@ -22,6 +22,7 @@ import {
   TIERS,
   branchDone,
   cityOf,
+  cityViewState,
   marketUnlocked,
   tierOf,
 } from './city-model';
@@ -54,7 +55,7 @@ export function travel(world: WorldState, location: CityLocationId): CityState {
 
 /** Die Sicht der UI: alles abgeleitet, nichts davon ein zweiter Zustand. */
 export function cityView(world: WorldState): CityView {
-  const state = cityOf(world);
+  const state = cityViewState(world);
   const location = LOCATIONS.find((entry) => entry.id === state.location)!;
   const branches = (['KIEZ', 'MARKT'] as const).map((id): CityBranchView => {
     const points = id === 'KIEZ' ? state.KIEZ : state.MARKT;

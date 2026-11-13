@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:19d3a7f07149dd45249486842ad27d98a2a72af1b3ce759ac73cc74148f1a41a",
+  "contentHash": "sha256:be8238e6d99bfc6e51c25c5331b24b2b3b86d73a707f366073bf170d6c343fd0",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22115,6 +22115,28 @@
       "text": "Der Drucklader hat entladen; der Gast zählt das Geld nach, als hätte er nicht damit gerechnet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-slot-discharge-fact-01.json"
+    },
+    {
+      "contributionId": "snapshot-purity-01",
+      "turnId": "2026-11-13T06:40Z-snapshot-purity",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt bleibt stehen, solange niemand handelt: Ein Blick durch das Fenster zählt keine neuen Namen, verschiebt keine Kennung und schreibt keinen Besuch ins Profil. Wer die Straße betritt, trifft dieselben Menschen wie vorher — beobachtet wird, ohne dass die Beobachtung den Tag verändert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-snapshot-purity.json"
     },
     {
       "contributionId": "spatial-layout-contract-01",

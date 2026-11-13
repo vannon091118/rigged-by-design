@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/snapshot-purity",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/snapshot-purity",
+  "baseSha": "223f53df62418c706b1d70f58a7677cddddf7e52",
+  "task": "Snapshot-Purity: cityView und cityLifeView duerfen den Weltzustand nicht veraendern",
+  "goal": "Ansicht und Renderer lesen nur; Bewohnerprofile werden beim Anlegen und Laden gebunden, nicht beim Snapshot.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/render/__tests__/**",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-snapshot-purity.json",
+    ".lane-claims/tasks/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "223f53df62418c706b1d70f58a7677cddddf7e52"
+}
