@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cda4b7434f64f98c39bddd02f16220932e95fe38df4ba9d2f8a8b3f9012fdd25",
+  "contentHash": "sha256:1870647c9b7cf616ff6f8810776bdb0ca9e359a6352c06c5b4ea3f76a8f0b346",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -5823,6 +5823,28 @@
       "text": "Jeder Schritt durch den Kiez hinterlaesst eine andere Spur; wer zweimal denselben Satz hoert, ist stehen geblieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
+    },
+    {
+      "contributionId": "claim-register-archive-01",
+      "turnId": "2026-11-13T23:05Z-claim-register-archive",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Kiez wird nichts vergessen: Erledigte Bauplätze stehen im Register weiter, sie versperren nur keinem mehr den Weg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-claim-register-archive.json"
     },
     {
       "contributionId": "closeout-buchhaltung-1",
