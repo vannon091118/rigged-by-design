@@ -7,8 +7,8 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
-import type { AmbientPlan } from './ambient-plan';
-import { ambientPlanFor } from './ambient-plan';
+import type { AmbientBand, AmbientPlan } from './ambient-plan';
+import { ambientPlanForView, streetBand } from './ambient-plan';
 import { ASSET } from './assets/keys';
 import { textureFor } from './assets/textures';
 import type { WorldBounds } from './floor-camera';
@@ -25,6 +25,8 @@ export class AmbientLayer {
   #plan: AmbientPlan | null = null;
   #width = 0;
   #height = 0;
+  /** Straßenband: die Strahlen liegen ueber dem Weg, nicht ueber der ganzen Welt. */
+  #band: AmbientBand | null = null;
 
   constructor() {
     this.root.eventMode = 'none';
@@ -37,18 +39,24 @@ export class AmbientLayer {
 
   /** Snapshot-Wechsel: Plan und Weltkante; gleiche Eingabe zeichnet nicht neu. */
   update(view: GameView, bounds: WorldBounds): void {
-    const plan = ambientPlanFor(view.dayPhase, view.scene.kind);
+    // Der Tick statt der Phase: Die Drittel-Grenze ist ein kurzer Uebergang,
+    // kein Schnitt. Ausserhalb des Fensters ist der Plan derselbe wie vorher.
+    const plan = ambientPlanForView(view);
     const width = bounds.width * TILE;
     const height = bounds.height * TILE;
+    const band = streetBand(view.zones, bounds, TILE);
     // Die Lichttextur kommt aus dem Lazy-Paket. Fehlt sie beim ersten Frame,
     // darf der identische Plan den zweiten Versuch nicht fuer immer blockieren.
     const visionPending = plan.visionTiles > 0 && !this.#vision.visible;
-    if (plan === this.#plan && width === this.#width && height === this.#height && !visionPending) return;
+    const sameBand = this.#band !== null && this.#band.x === band.x && this.#band.y === band.y
+      && this.#band.width === band.width && this.#band.height === band.height;
+    if (plan === this.#plan && width === this.#width && height === this.#height && sameBand && !visionPending) return;
     this.#plan = plan;
     this.#width = width;
     this.#height = height;
+    this.#band = band;
     this.#drawShade(plan);
-    this.#drawRays(plan);
+    this.#drawRays(plan, band);
     this.#drawVision(plan);
   }
 
@@ -70,16 +78,18 @@ export class AmbientLayer {
   }
 
   /** Strahlen sind eine gebackene Grafik; sie kosten pro Frame nichts. */
-  #drawRays(plan: AmbientPlan): void {
+  #drawRays(plan: AmbientPlan, band: AmbientBand): void {
     this.#rays.clear();
-    this.#rays.visible = plan.rays > 0;
+    this.#rays.visible = plan.rays > 0 && band.width > 0 && band.height > 0;
     if (!this.#rays.visible) return;
     const slant = plan.sunX * 42;
+    const top = band.y;
+    const bottom = band.y + band.height;
     RAY_STARTS.forEach((start, index) => {
-      const x = start * this.#width;
-      const width = this.#width * RAY_WIDTHS[index]!;
+      const x = band.x + start * band.width;
+      const width = band.width * RAY_WIDTHS[index]!;
       this.#rays
-        .poly([x, 0, x + width, 0, x + width + slant, this.#height, x + slant, this.#height])
+        .poly([x, top, x + width, top, x + width + slant, bottom, x + slant, bottom])
         .fill({ color: 0xffe4a8, alpha: plan.rays * (0.5 + index * 0.15) });
     });
   }

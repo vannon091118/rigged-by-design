@@ -11,8 +11,10 @@ import type { CityLifePlace, CityLifeState, CityResidentState } from './city-lif
 import { createDefaultNeeds } from './npc-needs';
 import {
   defaultSkills, normalizeAttributes, normalizeLastDecisions, normalizeMemories,
-  normalizeRelationships, normalizeSkills, seedOffset,
+  normalizePosition, normalizeRelationships, normalizeSkills, normalizeTravel,
+  normalizeVisitorId, seedOffset,
 } from './city-life-normalize';
+import { bindCityIdentities } from './city-identity';
 import type { NpcIntentKind, NpcNeeds } from './npc-types';
 import type { WorldState } from './types';
 
@@ -39,9 +41,12 @@ function initialResident(def: CityNpcDef, seed: number): CityResidentState {
   const base = createDefaultNeeds(INITIAL_NEEDS[def.id]);
   return {
     npcId: def.id,
+    visitorId: null,
     name: def.name,
     role: def.role,
     location: 'HOME',
+    position: { x: 8, y: 12 },
+    travel: null,
     intent: 'SLEEP',
     needs: {
       ...base,
@@ -116,11 +121,14 @@ export function normalizeCityLife(raw: unknown): CityLifeState {
       : fresh.intent;
     return {
       npcId: def.id,
+      visitorId: normalizeVisitorId(record.visitorId),
       name: def.name,
       role: def.role,
       location,
       intent,
       needs,
+      position: normalizePosition(record.position, fresh.position),
+      travel: normalizeTravel(record.travel),
       attributes: normalizeAttributes(record.attributes, fresh.attributes),
       skills: normalizeSkills(record.skills, fresh.skills),
       relationships: normalizeRelationships(record.relationships, def.id, ids),
@@ -146,5 +154,7 @@ export function ensureCityLife(world: WorldState): CityLifeState {
   if (!containsResident(world.cityLife)) {
     world.cityLife = createCityLifeState();
   }
+  // Der Name ist Anzeige; die Kennung verbindet Bewohner und Profil.
+  bindCityIdentities(world);
   return world.cityLife;
 }

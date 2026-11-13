@@ -7,6 +7,8 @@ import { Container, Sprite, Text } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import { floorText, WORLD_FLATTEN } from './art-tokens';
 import type { AmbientPlan } from './ambient-plan';
+import { lampPulse } from './ambient-plan';
+import { prefersReducedMotion } from './motion-preference';
 import type { CityRenderPlan } from './city-plan';
 import type { DepthStage } from './depth';
 import { ASSET } from './assets/keys';
@@ -86,9 +88,10 @@ export class CityExteriorLayer {
       this.#rebuild(this.#plan);
     }
     const intensity = phase === 'night' ? 1 : phase === 'evening' ? 0.74 : 0.42;
+    const reduced = prefersReducedMotion();
     for (const entry of this.#entries) {
       if (!entry.light) continue;
-      entry.sprite.alpha = 0.68 + Math.sin(now / 720 + entry.node.zIndex) * 0.12 * intensity;
+      entry.sprite.alpha = lampPulse(now, entry.node.zIndex, intensity, reduced);
     }
   }
 

@@ -8,6 +8,8 @@
  * denselben Vertrag teilen.
  */
 import type { NpcIntentKind, NpcNeeds } from './npc-types';
+import type { CityTravel } from './city-life-movement';
+import type { Point } from './types-model';
 
 export type CityLifePlace = 'HOME' | 'KIEZ' | 'MARKT' | 'CASINO';
 
@@ -36,9 +38,15 @@ export interface NpcMemory {
 
 export interface CityResidentState {
   readonly npcId: string;
+  /** Individuelle Kennung des Profils; `null` nur bis zur ersten Bindung. */
+  readonly visitorId: number | null;
   readonly name: string;
   readonly role: string;
   readonly location: CityLifePlace;
+  /** Kachel in der Stadt; der Ort wechselt erst bei Ankunft. */
+  readonly position: Point;
+  /** Laufender Weg; `null` heisst: steht still. */
+  readonly travel: CityTravel | null;
   readonly intent: NpcIntentKind;
   readonly needs: NpcNeeds;
   readonly attributes: NpcAttributes;
@@ -136,6 +144,9 @@ export interface CityResidentView {
   readonly role: string;
   readonly location: CityLifePlace;
   readonly locationLabel: string;
+  /** Ziel des laufenden Wegs; `null` heisst: steht still. */
+  readonly travelTo: string | null;
+  readonly position: Point;
   readonly intent: NpcIntentKind;
   readonly intentLabel: string;
   readonly hunger: number;

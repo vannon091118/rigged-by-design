@@ -1,7 +1,7 @@
 /**
  * @module city-life-decision — Entscheidung plus Gegenfakt-Proben
  *
- * Der gewaehlte Intent und die elf Familien werden mit derselben Score-Funktion
+ * Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion
  * verglichen. Eine Probe neutralisiert genau eine Familie; nur wenn der Intent
  * dadurch kippt, traegt der Trace `changed: true`. Das ist die belegbare Kette
  * von Stat zu Entscheidung, keine nachtraegliche Behauptung.

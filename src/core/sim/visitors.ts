@@ -33,6 +33,10 @@ export function recordVisitor(
     for (let i = 0; i < world.visitors.length; i += 1) {
       // Der neue Besucher ist nie der Eviction-Kandidat; sonst verdraengt er sich selbst.
       if (world.visitors[i]!.id === visitor.id || pinned.has(world.visitors[i]!.id)) continue;
+      // Bewohnerprofile gehoeren zur Stadt, nicht zum Gastpool: Ihre Kennung
+      // muss den Speicher ueberleben, sonst verliert der Bewohner Traits und
+      // Erinnerungen an einen Gast, der zufaellig zuletzt da war.
+      if (world.visitors[i]!.residentNpcId !== undefined) continue;
       if (oldest < 0 || world.visitors[i]!.lastSeenTick < world.visitors[oldest]!.lastSeenTick) oldest = i;
     }
     if (oldest >= 0) world.visitors.splice(oldest, 1);
@@ -41,13 +45,38 @@ export function recordVisitor(
 }
 
 /**
+ * Profil eines Stadtbewohners. Es entsteht ohne Besuch (`visits: 0`) und traegt
+ * seine Kennung: Der Bewohner hat eine Identitaet, lange bevor er als Gast
+ * auftaucht. Erst ein echter Besuch macht ihn zum Rueckkehrer.
+ */
+export function recordResidentVisitor(
+  world: WorldState,
+  input: { npcId: string; name: string; persona: PersonaId },
+): Visitor {
+  const visitor: Visitor = {
+    id: world.nextVisitorId++,
+    name: input.name,
+    persona: input.persona,
+    residentNpcId: input.npcId,
+    visits: 0,
+    lastSeenTick: 0,
+    memories: [],
+  };
+  world.visitors.push(visitor);
+  return visitor;
+}
+
+/**
  * Waehlt deterministisch aus der Gast-ID (kein PRNG-Zug), damit der Zufallsablauf bestehender
- * Spielstaende und Tests unveraendert bleibt.
+ * Spielstaende und Tests unveraendert bleibt. Wer nie da war, ist kein Rueckkehrer:
+ * Profile ohne Besuch fallen aus der Auswahl, damit ein frisch angelegter Bewohner
+ * nicht als Stammgast gilt.
  */
 export function pickReturningVisitor(world: WorldState, guestId: number): Visitor | null {
-  if (world.visitors.length === 0) return null;
+  const eligible = world.visitors.filter((visitor) => visitor.visits > 0);
+  if (eligible.length === 0) return null;
   const hash = Math.imul(guestId, 2654435761) >>> 0;
-  const visitor = world.visitors[(hash >>> 8) % world.visitors.length];
+  const visitor = eligible[(hash >>> 8) % eligible.length];
   if (!visitor || hash % 100 >= returnChance(visitor, world.narrative.relationships)) return null;
   return visitor;
 }

@@ -4064,6 +4064,10 @@
     {
       "turnId": "2026-11-12T12:35Z-test-quality",
       "contributionId": "test-quality-voice-01"
+    },
+    {
+      "turnId": "2026-11-13T03:30Z-ambient-transition",
+      "contributionId": "render-ambient-transition-01"
     }
   ]
 }

@@ -7,7 +7,7 @@ import type { Container, Graphics } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
 import type { GameView } from '../store/types';
 import { INK, LIGHT, lightFor, materialFor } from './art-tokens';
-import { drawCeilingLight } from './floor-surface';
+import { drawCeilingLight, fillBand } from './floor-surface';
 import { drawFloorRegion, type FloorTheme } from './floor-material';
 import { drawDressing } from './room-dressing';
 import { WALL, drawDoors } from './wall-art';
@@ -26,6 +26,26 @@ function clipZone(zone: ZoneLike, area: Area, tile: number): Rect | null {
 }
 
 /**
+ * Die Weltkante laeuft ueber den ganzen Grundriss; in einem Chunk-Cache darf
+ * nur der Teil liegen, der in diesem Chunk wirklich sichtbar ist. Ohne Clip
+ * zieht die Kante eines 60er-Rasters die Textur des ersten Chunks auf.
+ */
+function drawWorldRim(g: Graphics, size: number, chunk: Rect): void {
+  for (const band of [
+    { x: -4, y: -4, w: size + 8, h: 8 },
+    { x: -4, y: size - 4, w: size + 8, h: 8 },
+    { x: -4, y: 4, w: 8, h: Math.max(0, size - 8) },
+    { x: size - 4, y: 4, w: 8, h: Math.max(0, size - 8) },
+  ]) fillBand(g, band, INK, 1, chunk);
+  for (const line of [
+    { x: 4, y: 4, w: size - 8, h: 1 },
+    { x: 4, y: size - 5, w: size - 8, h: 1 },
+    { x: 4, y: 5, w: 1, h: Math.max(0, size - 10) },
+    { x: size - 5, y: 5, w: 1, h: Math.max(0, size - 10) },
+  ]) fillBand(g, line, 0x4a3a66, 0.6, chunk);
+}
+
+/**
  * Licht und Ausstattung bleiben semantisch: die Zone bestimmt, wie ein Raum
  * wirkt, nie welches Bodenmaterial er hat. Deshalb liegt diese Schicht ueber
  * den Layout-Tiles und nicht in ihrer Aufloesung.
@@ -34,6 +54,9 @@ function drawZoneOverlay(
   g: Graphics, zone: ZoneLike, area: Area, tile: number, phase: GameView['dayPhase'], theme: FloorTheme, deco?: Container,
 ): void {
   if (!clipZone(zone, area, tile)) return;
+  // Jeder Chunk backt nur seine eigene Flaeche: eine 60-Tile-Zone darf nicht in
+  // den Nachbarchunk hineinragen, sonst zieht die Cache-Textur das ganze Band mit.
+  const chunk: Rect = { x: area.x * tile, y: area.y * tile, w: area.w * tile, h: area.h * tile };
   const zoneLight = lightFor(zone.kind, phase);
   // Die Wohnung ist warm beleuchtet; Neon bleibt dem Casino vorbehalten.
   const light = theme === 'apartment' ? { tint: LIGHT.warm, intensity: zoneLight.intensity } : zoneLight;
@@ -44,11 +67,11 @@ function drawZoneOverlay(
     w: zone.w * tile - WALL * 2, h: zone.h * tile - WALL * 2,
   };
   if (full.w <= 0 || full.h <= 0) return;
+  drawCeilingLight(g, full, light, chunk);
   const originInChunk = zone.x >= area.x && zone.x < area.x + area.w
     && zone.y >= area.y && zone.y < area.y + area.h;
   if (!originInChunk) return;
-  drawCeilingLight(g, full, light);
-  drawDressing(g, materialFor(zone.kind), full, zone, tile, deco, light);
+  drawDressing(g, materialFor(zone.kind), full, zone, tile, deco, light, chunk);
 }
 
 export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: number, deco?: Container): void {
@@ -58,11 +81,7 @@ export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: n
     drawZoneOverlay(g, zone, area, tile, view.dayPhase, theme, deco);
   }
   drawDoors(g, { size: view.size, layout: view.layout }, area, tile);
-  if (area.x === 0 && area.y === 0) {
-    const size = view.size * tile;
-    g.rect(0, 0, size, size).stroke({ width: 8, color: INK });
-    g.rect(4, 4, size - 8, size - 8).stroke({ width: 1, color: 0x4a3a66, alpha: 0.6 });
-  }
+  drawWorldRim(g, view.size * tile, { x: area.x * tile, y: area.y * tile, w: area.w * tile, h: area.h * tile });
 }
 
 export function drawRegionDirt(g: Graphics, view: GameView, area: Area, tile: number): void {

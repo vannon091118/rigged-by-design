@@ -5,6 +5,7 @@
  * versionierte JSON-Schema, damit die Testdatei im LOC-Budget bleibt.
  */
 import type { ArcSnapshot, CausalChainEvidence, ResidentSnapshot, RoutineSample } from './living-world-longturn-snapshots';
+import type { MovementEvidence } from './living-world-movement-evidence';
 
 export type LongTurnEvidenceInput = {
   readonly seed: number;
@@ -30,8 +31,10 @@ export type LongTurnEvidenceInput = {
   readonly routineSamples: readonly RoutineSample[];
   readonly scheduledDeviations: number;
   readonly causalChain: CausalChainEvidence | null;
+  readonly movement: MovementEvidence;
 };
 
+/** Bewegung ist messbar: Wege, Kacheln, Tick-Tempo und Zwischenstaende. */
 const routineView = (city: readonly ResidentSnapshot[]) =>
   city.map((person) => ({ npcId: person.npcId, intent: person.intent, location: person.location }));
 
@@ -40,7 +43,7 @@ export const buildLongTurnEvidence = (input: LongTurnEvidenceInput) => {
     seed, days, ticks, command, playerBeforeMeal, playerAfterMeal, cityBefore, cityAfter,
     traitsBefore, traitsAfter, trainedBefore, trainedAfter, arcBefore, arcAfter, echoSeen,
     actionTrust, moodOnDirt, moodOnClean, hungryGain, fedGain, routineSamples,
-    scheduledDeviations, causalChain,
+    scheduledDeviations, causalChain, movement,
   } = input;
 
   return {
@@ -72,6 +75,10 @@ export const buildLongTurnEvidence = (input: LongTurnEvidenceInput) => {
       traits: {
         before: [...traitsBefore], after: [...traitsAfter],
         changed: JSON.stringify(traitsBefore) !== JSON.stringify(traitsAfter),
+      },
+      movement: {
+        ...movement,
+        proof: 'positions come from A* on cityNav; one tile per tick; location changes only on arrival',
       },
       attributes: { before: trainedBefore, after: trainedAfter, source: 'JOB_CLEANER XP 400' },
       skills: {

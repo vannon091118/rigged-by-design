@@ -111,7 +111,10 @@ function fadeTo(state: AudibleState): void {
   }
   next.gain = 0;
   // Ohne Nutzergeste lehnt der Browser ab; das ist kein Fehler, nur Stille.
-  void next.audio.play().catch(() => undefined);
+  // Testumgebungen ohne Medien-Implementierung liefern kein Promise — auch das
+  // ist Stille, kein Absturz.
+  const playing = next.audio.play() as Promise<void> | undefined;
+  if (playing) void playing.catch(() => undefined);
 
   const start = performance.now();
   const from = previous.gain;

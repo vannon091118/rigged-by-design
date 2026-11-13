@@ -12,7 +12,7 @@ import type { Renderer } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import type { AmbientLayer } from './ambient-layer';
-import { ambientPlanFor } from './ambient-plan';
+import { ambientPlanForView } from './ambient-plan';
 import { cityRenderPlan, type CityExteriorLayer } from './city-exterior-layer';
 import type { EntitySync } from './entity-sync';
 import type { FloorCameraRig } from './floor-camera-rig';
@@ -48,7 +48,7 @@ export function syncViewLayers(
 ): void {
   layers.scene.redrawRoom(view);
   layers.city.update(cityRenderPlan(view.cityExterior));
-  layers.city.setAmbient(ambientPlanFor(view.dayPhase, view.scene.kind));
+  layers.city.setAmbient(ambientPlanForView(view));
   layers.ambient.update(view, worldBoundsOf(view));
   layers.lights.update(view);
   layers.scene.setLabels(view, layers.rig.lod === 1);

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-session-living-world-ambient",
+  "claimId": "lane/render/session-living-world-ambient",
+  "branch": "lane/render/session-living-world-ambient",
+  "baseSha": "8d6ba004200a61fe8c3abd2c9517ad1d130094ae",
+  "phase": "CI_PENDING",
+  "title": "Session-Baum: Stadtbewegung, Identitaet ueber Kennungen, Ambient-Uebergang und Render-Fixes",
+  "goal": "Der komplette lokale Session-Baum geht als ein PR auf main: Bewegung mit Weg, Kennung statt Name, stetiger Tagesdrittel-Uebergang, Belege im Browser.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 7
+}

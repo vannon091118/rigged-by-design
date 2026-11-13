@@ -17,7 +17,6 @@ import { replaySave, toSavedGame } from '../../../store/save';
 import { talkChance } from '../charisma-talk';
 import { CITY_NPCS, ensureCityVisitor } from '../city-npcs';
 import { cityOf, runCityAction, travel } from '../city';
-import { TICKS_PER_DAY } from '../demand';
 import { cityLifeView, ensureCityLife } from '../city-life';
 import { meetNpc, takeEncounterAction } from '../city-encounter';
 import { cleaningReach, maintenanceGain } from '../floor-work';
@@ -30,9 +29,9 @@ import { createWorld, ensureStarter } from '../templates';
 import { decay } from '../upkeep';
 import { tickWorld } from '../tick';
 import { buildLongTurnEvidence } from '../living-world-longturn-evidence';
-import { arcSnapshot, citySnapshot, rpgSnapshot, routineSample, summarizeCausalChain, type RoutineSample } from '../living-world-longturn-snapshots';
+import { runLongRun } from '../living-world-longrun';
+import { arcSnapshot, citySnapshot, rpgSnapshot, summarizeCausalChain } from '../living-world-longturn-snapshots';
 import { findCausalChain } from '../city-life-sim';
-import type { CityLifeDecision } from '../city-life-types';
 
 const SEED = 424242; const DAYS = 4;
 const EVIDENCE_OUT = process.env.RBD_LIVING_WORLD_EVIDENCE_OUT;
@@ -120,22 +119,9 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     // und auch der Spieler-Hunger läuft im echten Tick mit.
     const beforeLongRun = ensureCityLife(world);
     const cityBefore = citySnapshot(beforeLongRun);
-    let nonSleepSeen = false;
-    const routineSamples: RoutineSample[] = [];
-    const allDecisions: CityLifeDecision[] = [];
-    const seenDecisions = new Set<number>();
-    let scheduledDeviations = 0;
-    while (world.tick < TICKS_PER_DAY * 4) {
-      tickWorld(world, ledger, prng);
-      if (world.cityLife.residents.some((person) => person.intent !== 'SLEEP')) nonSleepSeen = true;
-      for (const decision of world.cityLife.lastDecisions ?? []) {
-        if (seenDecisions.has(decision.id)) continue;
-        seenDecisions.add(decision.id);
-        allDecisions.push(decision);
-        routineSamples.push(routineSample(decision));
-        if (decision.scheduledIntent !== decision.intent) scheduledDeviations += 1;
-      }
-    }
+    const run = runLongRun(world, ledger, prng, 4);
+    const { routineSamples, allDecisions, scheduledDeviations, movement } = run;
+    const nonSleepSeen = run.nonSleepSeen;
     const afterLongRun = ensureCityLife(world);
     const cityAfter = citySnapshot(afterLongRun);
     expect(world.day).toBeGreaterThanOrEqual(5);
@@ -191,6 +177,12 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     })).toBe(true);
     expect(routineSamples.length).toBeGreaterThan(100);
     expect(scheduledDeviations).toBeGreaterThan(0);
+    // Bewegung ist ein Weg: mehrere Wege, echte Kacheln, ein Tick je Kachel,
+    // und Bewohner, die zur vollen Stunde noch unterwegs sind statt zu springen.
+    expect(movement.trips).toBeGreaterThan(10);
+    expect(movement.tilesWalked).toBeGreaterThan(100);
+    expect(movement.maxTilesPerTick).toBeLessThanOrEqual(1);
+    expect(movement.pendingAtHourBoundary).toBeGreaterThan(0);
     expect(trainedAfter.speed).toBeGreaterThan(trainedBefore.speed ?? 0);
     expect(trainedAfter.perception).toBeGreaterThan(trainedBefore.perception ?? 0);
     expect(trainedAfter.endurance).toBeGreaterThan(trainedBefore.endurance ?? 0);
@@ -205,6 +197,7 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
       arcBefore, arcAfter, echoSeen, actionTrust: action.trust,
       moodOnDirt, moodOnClean,
       hungryGain, fedGain, routineSamples, scheduledDeviations, causalChain: chainEvidence,
+      movement,
     });
     if (EVIDENCE_OUT) {
       const target = resolve(process.cwd(), EVIDENCE_OUT);
