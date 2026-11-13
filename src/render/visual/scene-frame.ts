@@ -17,6 +17,10 @@ import type { GameView } from '../../store/types';
 import { floorArtFor } from '../floor-material';
 import { resolveFurnitureRole, type FurnitureRole } from '../decor-roles';
 import { cityRenderPlan } from '../city-exterior-layer';
+import { cityDisplayScale } from '../city/city-assets';
+import { wallBandRect } from '../wall-art';
+import type { LayoutEdge } from '../../core/sim/layout-types';
+import { SceneCommands } from '../../store/scene-commands';
 
 type VisualSceneId = 'casino-overview' | 'casino-detail' | 'city' | 'apartment';
 
@@ -37,9 +41,17 @@ interface VisualScene {
 
 const VISUAL_SIZE = Object.freeze({ width: 640, height: 360 });
 
+/**
+ * Dieselben Uebergaenge wie im Spiel: Stadt und Wohnung entstehen ueber
+ * `SceneCommands`, damit Spawn, aufgeraeumter Weg und Bevoelkerung exakt dem
+ * Produktionspfad entsprechen (#515). Ein direkt gesetztes `scene.kind` liess
+ * die Figur am Casino-Start stehen.
+ */
 function viewFor(kind: SceneKind): GameView {
   const world = createWorld('MEDIUM');
-  world.scene = { kind };
+  const scene = new SceneCommands({ world: () => world, emit: () => undefined, notice: () => undefined });
+  if (kind === 'CITY') scene.enterCity();
+  if (kind === 'APARTMENT') scene.enterApartment();
   return buildView(world, new Ledger(), '');
 }
 
@@ -71,6 +83,25 @@ const ROLE_TINT: Readonly<Record<FurnitureRole, number>> = {
 interface SvgRect { readonly x: number; readonly y: number; readonly w: number; readonly h: number; readonly fill: string; }
 
 const cityArtUrl = (asset: string): string => `/assets/casino/${asset}`;
+
+/**
+ * Eine Tuer als SVG-Flaeche: dasselbe Wandband, dieselbe Anzeigeskalierung und
+ * dieselbe 90-Grad-Drehung fuer V-Kanten wie `#addDoor` im Pixi-Layer (#515).
+ */
+function cityDoorSurface(door: { readonly id: string; readonly axis: 'H' | 'V'; readonly x: number; readonly y: number; readonly asset: string; readonly role: string }, size: number): string {
+  const band = wallBandRect(
+    { axis: door.axis, x: door.x, y: door.y, kind: 'DOOR', id: door.id, zoneId: null } as LayoutEdge,
+    size,
+    TILE,
+  );
+  const scale = cityDisplayScale(door.asset);
+  const width = Math.max(band.w, band.h) * scale;
+  const height = Math.min(band.w, band.h) * scale;
+  const cx = band.x + band.w / 2;
+  const cy = band.y + band.h / 2;
+  const rotate = door.axis === 'V' ? ` transform="rotate(90 ${cx} ${cy})"` : '';
+  return `<image x="${cx - width / 2}" y="${cy - height / 2}" width="${width}" height="${height}" href="${cityArtUrl(door.asset)}" data-role="${door.role}" data-door="${door.id}"${rotate}/>`;
+}
 
 function visibleWorld(view: GameView, camera: VisualCamera): { x: number; y: number; w: number; h: number; scale: number } {
   const worldW = view.size * TILE;
@@ -113,6 +144,7 @@ export function renderSceneSvg(scene: VisualScene): string {
   const citySurfaces = city
     ? city.buildings.map((building) => `<image x="${building.footprint.x * TILE}" y="${building.footprint.y * TILE}" width="${building.footprint.w * TILE}" height="${building.footprint.h * TILE}" href="${cityArtUrl(building.asset)}" data-role="${building.role}"/>`).join('')
       + city.props.map((prop) => `<image x="${prop.x * TILE}" y="${prop.y * TILE}" width="${TILE}" height="${TILE}" href="${cityArtUrl(prop.asset)}" data-role="${prop.role}"/>`).join('')
+      + city.doors.map((door) => cityDoorSurface(door, city.bounds.width)).join('')
     : '';
   const guests = view.guests.map((guest) =>
     `<circle cx="${(guest.position.x + 0.5) * TILE}" cy="${(guest.position.y + 0.8) * TILE}" r="${3 + guest.addiction / 50}" fill="#ff2e88" data-guest="${guest.id}"/>`,

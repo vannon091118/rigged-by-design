@@ -1,0 +1,24 @@
+{
+  "id": "lane/render/issue-515-scene-frame",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/render/issue-515-scene-frame",
+  "baseSha": "e3996c38cb0b3132deefebd2237591861ee5a149",
+  "task": "R1-City-Frame ueber Produktionswechsel und mit SVG-Tueren",
+  "goal": "#515",
+  "pathAllowlist": [
+    "src/render/",
+    "content/",
+    "src/core/sim/narrative/",
+    ".lane-claims/",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-render-issue-515-scene-frame.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e3996c38cb0b3132deefebd2237591861ee5a149"
+}

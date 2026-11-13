@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-issue-515-scene-frame",
+  "claimId": "lane/render/issue-515-scene-frame",
+  "branch": "lane/render/issue-515-scene-frame",
+  "baseSha": "e3996c38cb0b3132deefebd2237591861ee5a149",
+  "phase": "CI_PENDING",
+  "title": "R1-City-Frame ueber Produktionswechsel und mit SVG-Tueren",
+  "goal": "#515",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
