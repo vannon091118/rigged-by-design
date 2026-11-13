@@ -18,6 +18,7 @@ import type { ActionQueueState } from './action-queue';
 import type { CitySceneState } from './city-scene';
 import type { CityLifeState } from './city-life-types';
 import type { CityGrowthState } from './city-growth';
+import type { FightBetState } from './fight-bet-register';
 
 export type * from './types-model';
 export type { Mop } from './mop';
@@ -89,6 +90,8 @@ export interface WorldState {
   journal: JournalEvent[];
   /** Dauerhaftes, filterbares Archiv jenseits des 240er-Puffers. */
   archive: JournalEvent[];
+  /** Abgegebene Scheine und der Vorkampf des Abends; ueberlebt die Journal-Retention. */
+  fightBets: FightBetState;
   nextJournalId: number;
   /** Naechste Ledger-Seq, die bereits als MONEY-Event kopiert wurde. */
   journaledSeq: number;

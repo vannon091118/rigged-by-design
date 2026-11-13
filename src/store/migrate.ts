@@ -25,6 +25,8 @@ import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
 import type { CityLifeState } from '../core/sim/city-life-types';
 import type { CityGrowthState } from '../core/sim/city-growth';
+import type { FightBetState } from '../core/sim/fight-bet-register';
+import { normalizeFightBets } from '../core/sim/fight-bet-register';
 import { normalizeCityLife } from '../core/sim/city-life';
 import { normalizeCityState } from '../core/sim/city-persist';
 import { normalizeActionQueue, type ActionQueueState } from '../core/sim/action-queue';
@@ -75,6 +77,8 @@ export interface SavedGame {
   readonly cityLife?: CityLifeState;
   /** Ab dieser Lane: Bautraeger und Wachstum; alte Saves haben ihn nicht. */
   readonly cityGrowth?: CityGrowthState;
+  /** Ab dieser Lane: offene Wettscheine und Vorkampf ausserhalb des Journals. */
+  readonly fightBets?: FightBetState;
 }
 
 function footprintOf(item: Furniture): { w: number; h: number; seats: number } | null {
@@ -159,6 +163,9 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.nextJournalId = saved.nextJournalId ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
   world.journaledSeq = saved.journaledSeq ?? saved.entries.length;
   world.archive = (saved.archive ?? world.journal).map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
+  // Scheine und Vorkampf gehoeren nicht in die Journal-Retention; alte Saves
+  // adoptieren sie beim Laden einmalig aus dem Archiv, damit kein Einsatz faellt.
+  world.fightBets = normalizeFightBets(saved.fightBets, world.archive);
   recordNarrativeMigration(world, migration);
   world.fightFx = saved.fightFx ?? null; world.look = normalizeLook(saved.look);
   try { world.plinko = normalizePlinkoConfig(saved.plinko); } catch { world.plinko = defaultPlinkoConfig(); }

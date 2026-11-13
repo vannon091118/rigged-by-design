@@ -1,13 +1,13 @@
 /** @test-target: src/core/sim/fight-bets.ts | @error-code: ERR-2001 */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
-import { fromVC } from '../../economy/vacoin';
+import { fromVC, mulVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { fightBetView } from '../fight-bets';
 import { placeFightBet } from '../fight-bet-cashier';
 import { runUndercard, settleFightBets } from '../fight-bet-settle';
-import type { FightBetPick } from '../fight-bet-slips';
+import { openSlips, type FightBetPick } from '../fight-bet-slips';
 import { enterFightEvent } from '../fight-event';
 import { EXTERNAL, PORTEMONNAIE } from '../money';
 import { createWorld } from '../templates';
@@ -91,14 +91,14 @@ describe('Wettmarkt auf den Vorkampf', () => {
     const { world, ledger, prng } = setup();
     openEvent(world);
     placeFightBet(world, ledger, 'A', fromVC(1));
-    const slip = world.archive.find((entry) => entry.subject === 'WETTSCHEIN')!;
-    const quote = Number(/quote:([\d.]+)/.exec(slip.cause)![1]);
+    // Die Quote steht als Basispunkt-Ganzzahl am Schein, nicht mehr im Journal-Text.
+    const slip = openSlips(world)[0]!;
     const result = runUndercard(world, prng)!;
     enterFightEvent(world, ledger, prng);
     const wins = ledger.entries.filter((entry) => entry.reason === TX_REASON.FIGHT_BET_PAYOUT);
     if (result.winner === 'A') {
       expect(wins).toHaveLength(1);
-      expect(wins[0]!.amount).toBe(Math.round(fromVC(1) * quote));
+      expect(wins[0]!.amount).toBe(mulVC(fromVC(1), slip.oddsBp));
     } else {
       expect(wins).toHaveLength(0);
     }

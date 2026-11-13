@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7b023301575f87617b289bcc4be0aaa7e9814764dc0008cbf05094b7c759be9a",
+  "contentHash": "sha256:54ac5e5926bed810b005032d34e864161e186b8cf6901050ff31d7796e6b2c4c",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -2806,6 +2806,28 @@
       "text": "Turnierabend: Die Tische füllen sich.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-b4-turnier-titel.json"
+    },
+    {
+      "contributionId": "bet-slip-register-01",
+      "turnId": "2026-11-13T23:18Z-bet-slip-register",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-bet-slip-register.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",

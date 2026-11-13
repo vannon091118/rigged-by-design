@@ -14,6 +14,7 @@ import { createActionQueue } from './action-queue';
 import { createCityScene } from './city-scene';
 import { createCityLifeState } from './city-life';
 import { createPlayerNeeds } from './player-needs';
+import { emptyFightBets } from './fight-bet-register';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
@@ -101,6 +102,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     rivals: createRivalMinds(),
     journal: [],
     archive: [],
+    fightBets: emptyFightBets(),
     fightFx: null,
     nextJournalId: 1,
     journaledSeq: 0,

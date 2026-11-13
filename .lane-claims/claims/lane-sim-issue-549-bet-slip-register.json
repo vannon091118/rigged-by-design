@@ -1,0 +1,24 @@
+{
+  "id": "lane/sim/issue-549-bet-slip-register",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/sim/issue-549-bet-slip-register",
+  "baseSha": "6566c1f51cc000698fee51ae311d58907b739e8f",
+  "task": "Offene Wettscheine als eigener, eviction-fester Register-Zustand mit Integer-Auszahlung",
+  "goal": "#549",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "src/store/",
+    "content/",
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-issue-549-bet-slip-register.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6566c1f51cc000698fee51ae311d58907b739e8f"
+}

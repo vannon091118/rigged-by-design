@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:18Z-bet-slip-register",
+  "contributionId": "bet-slip-register-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
+  "directives": []
+}
