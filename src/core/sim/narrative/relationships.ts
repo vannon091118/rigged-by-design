@@ -2,6 +2,7 @@
 import type { RivalId, WorldState } from '../types';
 import { isTerminalEventStatus } from './event-lifecycle';
 import { NARRATIVE_LIMITS, type ActorRef, type RelationshipEdge } from './types';
+import { clamp } from '../num';
 
 const DIMENSION_MIN = -10;
 const DIMENSION_MAX = 10;
@@ -35,8 +36,8 @@ export function relationshipBetween(world: WorldState, from: ActorRef, to: Actor
   return world.narrative.relationships.find((edge) => edge.from === from && edge.to === to) ?? null;
 }
 
-const clamp = (value: number): number => Math.max(DIMENSION_MIN, Math.min(DIMENSION_MAX, value));
-const clampConflict = (value: number): number => Math.max(CONFLICT_MIN, Math.min(DIMENSION_MAX, value));
+const clampDimension = (value: number): number => clamp(value, DIMENSION_MIN, DIMENSION_MAX);
+const clampConflict = (value: number): number => clamp(value, CONFLICT_MIN, DIMENSION_MAX);
 const finite = (value: unknown): number => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
 /** Der Writer prueft dieselbe Endlichkeit wie die Normalisierung: kein NaN im Zustand. */
 const delta = (value: unknown): number => finite(value);
@@ -64,20 +65,20 @@ export function shift(world: WorldState, from: ActorRef, to: ActorRef, changes: 
   if (index < 0) {
     list.push({
       from, to,
-      trust: clamp(delta(changes.trust)),
-      sympathy: clamp(delta(changes.sympathy)),
+      trust: clampDimension(delta(changes.trust)),
+      sympathy: clampDimension(delta(changes.sympathy)),
       conflict: clampConflict(delta(changes.conflict)),
-      influence: clamp(delta(changes.influence)),
+      influence: clampDimension(delta(changes.influence)),
       updatedTick: safeTick(tick),
     });
   } else {
     const edge = list[index]!;
     list[index] = {
       ...edge,
-      trust: clamp(edge.trust + delta(changes.trust)),
-      sympathy: clamp(edge.sympathy + delta(changes.sympathy)),
+      trust: clampDimension(edge.trust + delta(changes.trust)),
+      sympathy: clampDimension(edge.sympathy + delta(changes.sympathy)),
       conflict: clampConflict(edge.conflict + delta(changes.conflict)),
-      influence: clamp(edge.influence + delta(changes.influence)),
+      influence: clampDimension(edge.influence + delta(changes.influence)),
       updatedTick: safeTick(tick),
     };
   }
@@ -128,7 +129,7 @@ export function relationshipStanding(world: WorldState): number {
     sum += edge.trust * 0.6 + edge.sympathy * 0.4 - edge.conflict * 0.8;
   }
   const scaled = sum / 6;
-  return Math.max(-RELATIONSHIP_REPUTATION_LIMIT, Math.min(RELATIONSHIP_REPUTATION_LIMIT, scaled));
+  return clamp(scaled, -RELATIONSHIP_REPUTATION_LIMIT, RELATIONSHIP_REPUTATION_LIMIT);
 }
 
 /** Verwirft kaputte Kanten, begrenzt Dimensionen und haelt die Anzahl im Budget. */
@@ -140,10 +141,10 @@ export function normalizeRelationships(raw: unknown): RelationshipEdge[] {
     const edge: RelationshipEdge = {
       from: entry.from,
       to: entry.to,
-      trust: clamp(finite(entry.trust)),
-      sympathy: clamp(finite(entry.sympathy)),
+      trust: clampDimension(finite(entry.trust)),
+      sympathy: clampDimension(finite(entry.sympathy)),
       conflict: clampConflict(finite(entry.conflict)),
-      influence: clamp(finite(entry.influence)),
+      influence: clampDimension(finite(entry.influence)),
       updatedTick: safeTick(entry.updatedTick),
     };
     const key = relationshipKey(edge.from, edge.to);

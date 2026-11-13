@@ -4,7 +4,7 @@ import {
   AMBIENT_TRANSITION_TICKS, ambientPlanAt, ambientPlanFor, lampPulse, streetBand,
 } from '../ambient-plan';
 import { PHASE_BOUNDARIES, PHASE_TICKS } from '../../core/sim/day-phase';
-import { TICKS_PER_DAY } from '../../core/sim/demand';
+import { TICKS_PER_DAY } from '../../core/sim/clock';
 
 describe('Ambient-Vertrag', () => {
   it('liefert je Umgebung und Phase genau einen eingefrorenen Plan', () => {

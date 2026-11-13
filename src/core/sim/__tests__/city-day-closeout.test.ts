@@ -14,7 +14,7 @@ import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { CITY_ENERGY_PER_DAY, cityOf, restInCity, travel } from '../city';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../city-encounter';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { HAUSKONTO, PORTEMONNAIE, UTILITIES } from '../money';
 import { relationshipBetween } from '../narrative/relationships';
 import { processNarrativeRuntime } from '../narrative/runtime';

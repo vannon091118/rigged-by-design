@@ -7,7 +7,7 @@
 import type { ArcSnapshot, CausalChainEvidence, ResidentSnapshot, RoutineSample } from './living-world-longturn-snapshots';
 import type { MovementEvidence } from './living-world-movement-evidence';
 
-export type LongTurnEvidenceInput = {
+type LongTurnEvidenceInput = {
   readonly seed: number;
   readonly days: number;
   readonly ticks: number;

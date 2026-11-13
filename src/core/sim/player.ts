@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { deployCrate, depositCrate, takeCrate } from './deliveries';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { chooseActivity } from './guest-choice';
 import { INFLUENCE_CONFIG, type InfluenceConfig } from './influence';
 import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
@@ -57,11 +58,11 @@ export function serveDrink(
     ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, guestReason('DRINK', guest.id), world.tick);
   }
   const treat = applyTreatInfluence(world, guest, config);
-  guest.mood = Math.min(100, guest.mood + 13 + Math.round(treat * 30));
-  guest.patience = Math.min(100, guest.patience + 12);
+  guest.mood = driftNeed(guest.mood, 13, Math.round(treat * 30));
+  guest.patience = driftNeed(guest.patience, 12);
   guest.thirst = 0;
   // Nur wer schon gespielt hat, koppelt den Drink an den Kick; sonst wird niemand vom Zuschauen süchtig.
-  if (guest.spins > 0) guest.addiction = Math.min(100, guest.addiction + 2);
+  if (guest.spins > 0) guest.addiction = driftNeed(guest.addiction, 2);
   world.player.carrying = '';
   grantGlobalXp(world.player.rpg, 'SERVE_DRINK', XP_SERVE_GUEST);
   world.lastEvent = `${guest.name} hat einen Drink bekommen.`;
@@ -140,7 +141,7 @@ export function serveDesk(world: WorldState, ledger: Ledger, prng: Prng): boolea
   try {
     exchangeFiat(ledger, guest.id, world.tick);
   } catch {
-    guest.patience = Math.max(0, guest.patience - 2);
+    guest.patience = satisfyNeed(guest.patience, 2);
     return false;
   }
   chooseActivity(world, guest, ledger, prng);

@@ -1,12 +1,12 @@
 /** Anlegen, Normalisieren und Nachschlagen der Rivalen-Zustaende; ohne Spielwirkung. */
 import { RIVAL_IDS, type RivalId } from '../types-model';
+import { clamp } from '../num';
 import {
   RIVAL_ACTION_IDS, RIVAL_AI_LIMITS, RIVAL_STANCES,
   type RivalActionId, type RivalActionRecord, type RivalEvidence, type RivalMindState, type RivalStance,
 } from './types';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 function integer(value: unknown, fallback: number): number {
   return typeof value === 'number' && Number.isFinite(value) ? Math.round(value) : fallback;

@@ -5,9 +5,9 @@
  * Ableitung (wer hoert wen, was geht verloren) bleibt in `knowledge.ts`.
  */
 import type { KnowledgeSourceKind, RelationshipEdge } from './types';
+import { clamp } from '../num';
 
 const SOURCE_KINDS: readonly KnowledgeSourceKind[] = ['ERLEBT', 'GESEHEN', 'GEHOERT', 'GELESEN'];
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 export interface KnowledgeConfig {
   readonly version: 1;

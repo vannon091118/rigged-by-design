@@ -38,7 +38,7 @@ export type CausalChainEvidence = {
   readonly use: { readonly tick: number; readonly npcId: string; readonly intent: string; readonly memoryId: number | null };
 };
 
-export const residentSnapshot = (resident: CityResidentState): ResidentSnapshot => ({
+const residentSnapshot = (resident: CityResidentState): ResidentSnapshot => ({
   npcId: resident.npcId,
   needs: { ...resident.needs },
   attributes: { ...resident.attributes },

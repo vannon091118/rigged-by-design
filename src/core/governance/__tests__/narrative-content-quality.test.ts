@@ -11,7 +11,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { poolReport } from '../../../../scripts/lib/narrative-blocks.mjs';
+import { poolReport, QUOTA_EXEMPT_SLOTS } from '../../../../scripts/lib/narrative-blocks.mjs';
 import { EVENT_TEMPLATES } from '../../sim/narrative/events/definitions';
 
 const ROOT = resolve(process.cwd());
@@ -111,7 +111,8 @@ describe('Narrative Content Quality', () => {
     expect(Object.keys(CONSUMERS).sort()).toEqual(Object.keys(classification.slots).sort());
     const unwired = Object.entries(CONSUMERS).filter(([, file]) => file === null)
       .map(([slot]) => slot).sort();
-    expect(unwired).toEqual(['documentation', 'memory', 'rumor']);
+    // Genau die freigestellten Slots: Sie zaehlen nicht gegen die Quote.
+    expect(unwired).toEqual([...QUOTA_EXEMPT_SLOTS].sort());
     for (const file of Object.values(CONSUMERS)) {
       if (file !== null) expect(existsSync(join(ROOT, file)), file).toBe(true);
     }

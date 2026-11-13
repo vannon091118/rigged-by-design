@@ -11,7 +11,7 @@ import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { HAUSKONTO } from '../money';
 import { hireAgent, tickAgents } from '../staff';
 import {

@@ -58,11 +58,13 @@ describe('Pipeline-Modi', () => {
   it('trennt den schnellen lokalen Lauf vom Integrationsnachweis', () => {
     expect(PROFILE_GATES.fast).toEqual([
       ...PROFILE_GATES.light,
+      'dead-code',
       'test-quality',
       'affected',
       'build',
     ]);
     expect(PROFILE_GATES.integration).toEqual(PROFILE_GATES.fast);
+    expect(PROFILE_GATES.integration).toContain('dead-code');
     expect(PROFILE_GATES.integration).not.toContain('tests');
     expect(planGates('fast')).toEqual(PROFILE_GATES.fast);
     expect(planGates('integration')).toEqual(PROFILE_GATES.integration);
@@ -104,6 +106,7 @@ describe('Pipeline-Modi', () => {
 describe('CI-Gate-Wahrheit', () => {
   it('baut das Required-Set aus QUICK plus build', () => {
     expect(REQUIRED_CI_GATES).toEqual([...QUICK_GATES, 'build']);
+    expect(REQUIRED_CI_GATES).toContain('dead-code');
     // Jedes Required-Gate ist ein echtes Gate mit eigenem Namen, kein Tippfehler.
     expect(REQUIRED_CI_GATES.map((key: string) => GATES[key]?.name)).toEqual([...REQUIRED_CI_GATES]);
     expect(PROFILE_GATES.full).toEqual(expect.arrayContaining([...REQUIRED_CI_GATES, 'audit']));

@@ -10,7 +10,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
-import { POOL_MINIMUM, POOL_TARGET, poolIssues, poolReport, poolSlots } from './lib/narrative-blocks.mjs';
+import { POOL_MINIMUM, POOL_TARGET, poolIssues, poolReport, poolSlots, quotaTotal } from './lib/narrative-blocks.mjs';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MANIFEST = join(ROOT, 'src/render/assets/manifest.json');
@@ -146,7 +146,9 @@ if (!narrative.ok) {
   const pools = poolReport(narrative.compiled.fragments);
   const poolProblems = poolIssues({ ...pools, slots: poolSlots(narrative.vocabulary) });
   for (const problem of poolProblems) fail(`[ERR-4022] ${problem}`);
-  if (poolProblems.length === 0) console.log(`[assets] ${pools.total}/${POOL_TARGET} Textbausteine, alle Pools ab ${POOL_MINIMUM}`);
+  if (poolProblems.length === 0) {
+    console.log(`[assets] ${quotaTotal(pools.counts, pools.total)}/${POOL_TARGET} gewertete Textbausteine (${pools.total} gesamt), alle gewerteten Pools ab ${POOL_MINIMUM}`);
+  }
 }
 
 if (process.exitCode) process.exit(process.exitCode);

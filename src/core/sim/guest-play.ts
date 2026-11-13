@@ -5,7 +5,8 @@ import { playAction } from '../games/contracts';
 import { playPlinkoRound } from '../games/plinko-sandbox';
 import { playSlotSession } from '../games/slot-session';
 import type { Prng } from '../rng/prng';
-import { clamp, releaseAndChoose } from './guest-core';
+import { driftNeed } from './needs-core';
+import { releaseAndChoose } from './guest-core';
 import { chooseActivity } from './guest-choice';
 import { deliverDrink, useToilet } from './deliveries';
 import { refreshNeeds } from './needs';
@@ -25,8 +26,8 @@ function serveFreeDrink(world: WorldState, guest: Guest): boolean {
   if (!bar) return false;
   bar.stock -= 1;
   guest.thirst = 0;
-  guest.mood = clamp(guest.mood + 6);
-  guest.patience = clamp(guest.patience + 2);
+  guest.mood = driftNeed(guest.mood, 6);
+  guest.patience = driftNeed(guest.patience, 2);
   world.lastEvent = `${guest.name} bekommt den Freidrink an der Bar.`;
   return true;
 }
@@ -110,12 +111,12 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   const jackpot = payout > ZERO_VC && isJackpotLabel(result.multiplierBps);
   guest.lastResult = jackpot ? 'JACKPOT!' : payout > ZERO_VC || !item.mods.includes('NEAR_MISS') ? result.label : 'FAST!';
   // Ein Verlust aergert, aber er darf keinen Gast in dreissig Runden zum Raubtier machen.
-  guest.mood = clamp(guest.mood + (netWin ? 8 : push ? 0 : -0.5) + (effects.patience > 0 ? 1 : 0));
-  guest.patience = clamp(guest.patience - 0.35 + effects.patience);
+  guest.mood = driftNeed(guest.mood, netWin ? 8 : push ? 0 : -0.5, effects.patience > 0 ? 1 : 0);
+  guest.patience = driftNeed(guest.patience, -0.35, effects.patience);
   // Sucht entsteht nur am Spiel. Wer nie spielen kann, bleibt bei seinen Startpunkten stehen.
   const persona = getPersona(guest.persona);
   const flow = guest.mood >= 65 && guest.patience >= 50 ? 1.5 : 1;
-  guest.addiction = clamp(guest.addiction + (netWin ? 4 : 1) * persona.addictionRate * flow + effects.addiction * 0.5);
+  guest.addiction = driftNeed(guest.addiction, (netWin ? 4 : 1) * persona.addictionRate * flow, effects.addiction * 0.5);
   guest.spins += 1;
   guest.stateTicks += 1;
   item.condition = Math.max(0, item.condition - 0.08);
@@ -136,7 +137,7 @@ export function actAtTarget(world: WorldState, ledger: Ledger, prng: Prng, guest
   if (guest.state === 'DRINK') {
     if (guest.stateTicks === 0) {
       if (deliverDrink(world, ledger, guest, item)) {
-        if (guest.spins > 0) guest.addiction = clamp(guest.addiction + 1.2 * getPersona(guest.persona).addictionRate);
+        if (guest.spins > 0) guest.addiction = driftNeed(guest.addiction, 1.2 * getPersona(guest.persona).addictionRate);
         guest.dirtTimer += 1;
         if (guest.dirtTimer > 8) { world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y)); guest.dirtTimer = 0; }
         const served = world.agents.some((agent) => agent.role === 'bartender'

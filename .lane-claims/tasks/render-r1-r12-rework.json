@@ -4,12 +4,12 @@
   "claimId": "lane/render/r1-r12-rework",
   "branch": "lane/render/r1-r12-rework",
   "baseSha": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Render- und Living-World-Rework R1-R12 sequenziell umsetzen, mit lokaler Abnahmehaertung und PixiJS-v8-Review",
   "goal": "Die sichtbaren Render- und Living-World-Slices aus dem Plan als echte, deterministische und lokal abgenommene Implementierung liefern.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": null,
   "findings": [
     {
@@ -43,6 +43,6 @@
       "summary": "Die Stadtwaende nutzen bewusst die gemeinsame Occlusion-Rolle der Innenraeume; kein zweiter Wandpfad und keine zweite Kollision. Eine eigene Assetrolle bleibt R8 und ist keine Voraussetzung fuer diesen Slice."
     }
   ],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "nextAction": "Abgeschlossen; Merge aus PR #480 belegt. Neue Arbeit als neue Lane starten.",
   "revision": 19
 }

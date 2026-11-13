@@ -18,6 +18,7 @@ import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_ENERGY_PER_DAY, cityOf, restInCity, travel } from '../city';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../city-encounter';
 import { informantFor } from '../city-npcs';
+import { ensureCityPopulation } from '../city-life-state';
 import { PORTEMONNAIE } from '../money';
 import { relationshipBetween } from '../narrative/relationships';
 import { processNarrativeRuntime } from '../narrative/runtime';
@@ -129,6 +130,17 @@ describe('Begegnungs-Loop (Stadt)', () => {
       .toBe(echo.id);
     expect(after.world.city?.encounters).toHaveLength(1);
     expect(relationshipBetween(after.world, npcRef, 'player')?.trust).toBe(2);
+  });
+
+  it('spricht auch Figuren jenseits der kuratierten drei an', () => {
+    const { world } = start();
+    ensureCityPopulation(world, 12);
+    const met = meetNpc(world, 'npc_4');
+    expect(met.npc.id).toBe('npc_4');
+    expect(met.npc.name.length).toBeGreaterThan(0);
+    expect(met.npc.role.length).toBeGreaterThan(0);
+    expect(met.visitor.residentNpcId).toBe('npc_4');
+    expect(met.visitor.name).toBe(met.npc.name);
   });
 
   it('fuehrt eine Ablehnung in einen anderen sichtbaren Pfad', () => {

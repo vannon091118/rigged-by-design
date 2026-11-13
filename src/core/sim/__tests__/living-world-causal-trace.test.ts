@@ -18,7 +18,7 @@ import { decideCityLife } from '../city-life-decision';
 import type { CityDecisionInput } from '../city-life-score';
 import type { CityResidentState } from '../city-life-types';
 import type { CityDecisionFamily, CityLifeDecision } from '../city-life-types';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 
 const SEED = 424242;
 const DAYS = 5;

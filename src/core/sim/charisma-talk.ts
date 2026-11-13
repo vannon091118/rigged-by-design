@@ -1,6 +1,7 @@
 /** Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. */
 import type { Prng } from '../rng/prng';
 import { buildDistribution, rollNumber } from '../rng/weighted';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { grantGlobalXp } from './player-rpg';
 import { maybeStartBrawl } from './disputes';
 import { becomeAngry } from './guest-service';
@@ -40,14 +41,14 @@ export function talkToGuest(world: WorldState, prng: Prng, guestId: number): Tal
   const success = roll.value <= chance;
   guest.talkReadyTick = world.tick + TALK_COOLDOWN;
   if (success) {
-    guest.mood = Math.min(100, guest.mood + 25);
-    guest.patience = Math.min(100, guest.patience + 20);
-    guest.addiction = Math.min(100, guest.addiction + 10);
+    guest.mood = driftNeed(guest.mood, 25);
+    guest.patience = driftNeed(guest.patience, 20);
+    guest.addiction = driftNeed(guest.addiction, 10);
     grantGlobalXp(world.player.rpg, 'TALK_SUCCESS', XP_TALK_SUCCESS);
     world.lastEvent = `${guest.name} lässt sich vom Charme beeindrucken.`;
   } else {
-    guest.mood = Math.max(0, guest.mood - 25);
-    guest.patience = Math.max(0, guest.patience - 20);
+    guest.mood = satisfyNeed(guest.mood, 25);
+    guest.patience = satisfyNeed(guest.patience, 20);
     world.lastEvent = `${guest.name} findet den Spruch daneben.`;
     if (guest.mood < BACKFIRE_THRESHOLD) {
       becomeAngry(world, guest);

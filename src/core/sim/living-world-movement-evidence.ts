@@ -4,7 +4,8 @@
  * Das Messgerät liest nur, was `tickWorld` geschrieben hat: Kachel je Bewohner,
  * laufender Weg und Stundengrenze. Kein zweiter Simulator, keine Schätzung.
  */
-import { ensureCityLife, TICKS_PER_HOUR } from './city-life-state';
+import { ensureCityLife } from './city-life-state';
+import { TICKS_PER_HOUR, tickInDay } from './clock';
 import type { WorldState } from './types';
 
 export type MovementEvidence = {
@@ -35,7 +36,7 @@ export function createMovementTracker() {
       if (!inTravel.has(person.npcId)) stats.trips += 1;
       inTravel.add(person.npcId);
       stats.travelTicks += 1;
-      if (world.tick % TICKS_PER_HOUR === 0) stats.pendingAtHourBoundary += 1;
+      if (tickInDay(world.tick) % TICKS_PER_HOUR === 0) stats.pendingAtHourBoundary += 1;
     }
   };
   return { sample, read: (): MovementEvidence => ({ ...stats }) };

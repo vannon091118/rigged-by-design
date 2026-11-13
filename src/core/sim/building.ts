@@ -5,6 +5,7 @@
  * Grundfläche, Öffnungszeiten und nahtlosem Innenraum-Bezug.
  */
 import type { BuildingState, CreateBuildingParams } from './building-types';
+import { hourOfDay } from './clock';
 
 /**
  * Erzeugt eine valide, unveränderliche BuildingState-Instanz.
@@ -46,7 +47,7 @@ export function isBuildingOpen(building: BuildingState, hour: number): boolean {
   }
 
   const { openHour, closeHour } = building.operatingHours;
-  const normalizedHour = ((hour % 24) + 24) % 24;
+  const normalizedHour = hourOfDay(hour);
 
   if (openHour <= closeHour) {
     // Normaler Tagesbetrieb, z.B. 08:00 bis 20:00

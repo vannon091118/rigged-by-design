@@ -12,7 +12,7 @@ import type { Point } from './types-model';
 export type PropKind = 'STREET_LIGHT' | 'BENCH' | 'TRASH_BIN' | 'BUS_STOP' | 'TREE';
 
 /** Belegte Flaeche in Kacheln, vom Anker `position` nach rechts/unten. */
-export interface PropFootprint {
+interface PropFootprint {
   readonly w: number;
   readonly h: number;
 }

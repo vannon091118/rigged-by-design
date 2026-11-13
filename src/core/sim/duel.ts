@@ -12,6 +12,7 @@ import { applyMoodShock, applyUnsafeReputation } from './penalty-pool';
 import { grantGlobalXp, isInjured } from './player-rpg';
 import type { Dispute, WorldState } from './types';
 import { guestById } from './world';
+import { driftNeed } from './needs-core';
 
 export interface DuelPreview {
   readonly opponent: DuelOpponent;
@@ -89,7 +90,7 @@ export function resolveDuel(world: WorldState, ledger: Ledger, prng: Prng, dispu
   if (fight.playerWon) {
     for (const guest of world.guests) {
       if (dispute.guestIds.includes(guest.id)) continue;
-      guest.mood = Math.min(100, guest.mood + MOOD_BONUS);
+      guest.mood = driftNeed(guest.mood, MOOD_BONUS);
     }
     grantGlobalXp(world.player.rpg, 'WIN_BRAWL', XP_DUEL_WIN + opponent.strength * 2);
     world.fightFx = { x: dispute.x, y: dispute.y, untilTick: world.tick + FIGHT_FX_TICKS, won: true, rounds: fight.rounds };

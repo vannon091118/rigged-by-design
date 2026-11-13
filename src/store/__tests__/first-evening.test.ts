@@ -7,7 +7,8 @@
  * Der Test ist deterministisch: eigener Seed, keine Uhr, keine Wandzeit.
  */
 import { describe, expect, it } from 'vitest';
-import { FIRST_ARRIVAL_TICK, TICKS_PER_DAY } from '../../core/sim/demand';
+import { FIRST_ARRIVAL_TICK } from '../../core/sim/demand';
+import { TICKS_PER_DAY } from '../../core/sim/clock';
 import { deployHeldCrate, pickupCrate } from '../../core/sim/player';
 import { tickWorld } from '../../core/sim/tick';
 import type { WorldState } from '../../core/sim/types';

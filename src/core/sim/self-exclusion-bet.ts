@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import { addVC, mulVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { EXTERNAL, EXTERNAL_WORK, PLAYER_CASH, PORTEMONNAIE } from './money';
+import { clamp } from './num';
 import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 
@@ -20,10 +21,6 @@ interface ExclusionResult { readonly ok: boolean; readonly reward: VaCoinMicro; 
 
 const EXCLUSION_PAUSE_TICKS = 8;
 export { EXCLUSION_PAUSE_TICKS };
-
-function clampScore(value: number): number {
-  return Math.min(100, Math.max(0, value));
-}
 
 export function startExclusionPact(
   world: WorldState,
@@ -52,13 +49,13 @@ export function recordExclusionPlay(
   payout: VaCoinMicro,
   tick: number,
 ): void {
-  world.playerAddictionScore = clampScore(world.playerAddictionScore + 0.75);
+  world.playerAddictionScore = clamp(world.playerAddictionScore + 0.75);
   const pact = world.exclusionPact;
   if (!pact || pact.status === 'HELD' || pact.status === 'BROKEN') return;
   if (pact.status === 'LIMIT_REACHED') {
     pact.status = 'BROKEN';
     world.brokenExclusionPacts += 1;
-    world.playerAddictionScore = clampScore(world.playerAddictionScore + 12);
+    world.playerAddictionScore = clamp(world.playerAddictionScore + 12);
     return;
   }
   pact.bets = addVC(pact.bets, bet);
@@ -94,7 +91,7 @@ export function honorExclusionPact(world: WorldState, ledger: Ledger, tick: numb
   ledger.transfer(EXTERNAL_WORK, PLAYER_CASH, pact.reward, TX_REASON.PACT_BONUS, tick);
   pact.status = 'HELD';
   world.clarityBadge = true;
-  world.playerAddictionScore = clampScore(world.playerAddictionScore - 20);
+  world.playerAddictionScore = clamp(world.playerAddictionScore - 20);
   return {
     ok: true,
     reward: pact.reward,

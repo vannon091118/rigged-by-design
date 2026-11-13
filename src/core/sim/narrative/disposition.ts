@@ -19,6 +19,7 @@ import { getPersona } from '../personas';
 import { rumorAbout } from './knowledge';
 import type { Guest, PersonaId, Visitor, WorldState } from '../types';
 import { NARRATIVE_LIMITS, type RelationshipEdge, type VisitorMemory } from './types';
+import { clamp, round2 } from '../num';
 
 export interface VisitorDisposition {
   readonly gameBias: number;
@@ -87,7 +88,6 @@ const PERSONA_BASE: Readonly<Record<PersonaId, PersonaBase>> = {
   STAMMGAST: { game: 0.05, service: 3, social: 3 },
 };
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 /** Summierte Haltung der Kante Besucher <-> Haus; positiv heisst zugewandt. */
 function edgeTilt(visitor: Visitor, relationships: readonly RelationshipEdge[]): number {
@@ -110,7 +110,7 @@ export function visitorDisposition(
   const tilt = edgeTilt(visitor, relationships);
   const mood = memory.moodPoints;
   return {
-    gameBias: Math.round(clamp(base.game + mood / 100 + tilt / 100, -GAME_CAP, GAME_CAP) * 100) / 100,
+    gameBias: round2(clamp(base.game + mood / 100 + tilt / 100, -GAME_CAP, GAME_CAP)),
     serviceBias: Math.round(clamp(base.service + mood / 2 + tilt / 2, -THRESHOLD_CAP, THRESHOLD_CAP)),
     socialBias: Math.round(clamp(base.social + mood / 4 + tilt / 2, -THRESHOLD_CAP, THRESHOLD_CAP)),
     returnBias: Math.round(clamp(tilt, -RETURN_BIAS_CAP, RETURN_BIAS_CAP)),

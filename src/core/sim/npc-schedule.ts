@@ -4,6 +4,8 @@
 
 import type { DayPlan, NpcIntent, NpcNeeds, NpcScheduleEntry } from './npc-types';
 import { needsOverrideIntent } from './npc-needs';
+import { hourOfDay } from './clock';
+import { clamp } from './num';
 
 export const STANDARD_WORKDAY_ENTRIES: readonly NpcScheduleEntry[] = [
   { startHour: 0, intent: 'SLEEP', targetBuildingId: 'apt_player' },
@@ -28,8 +30,8 @@ export const STANDARD_WORKDAY_ENTRIES: readonly NpcScheduleEntry[] = [
 function shiftEntries(
   homeBuildingId: string, workBuildingId: string, shift: { readonly from: number; readonly to: number },
 ): NpcScheduleEntry[] {
-  const from = ((Math.floor(shift.from) % 24) + 24) % 24;
-  const to = Math.min(24, Math.max(from, Math.floor(shift.to)));
+  const from = hourOfDay(Math.floor(shift.from));
+  const to = clamp(Math.floor(shift.to), from, 24);
   const wake = (from - 2 + 24) % 24;
   const entries: NpcScheduleEntry[] = [
     { startHour: 0, intent: 'SLEEP', targetBuildingId: homeBuildingId },
@@ -52,7 +54,7 @@ function shiftEntries(
     if (shop < 22) entries.push({ startHour: shop, intent: 'SHOP', targetBuildingId: 'bld_supermarket_01' });
     const pub = to + 2;
     if (pub < 23) entries.push({ startHour: pub, intent: 'PUB', targetBuildingId: 'bld_pub_01' });
-    const bed = Math.min(23, Math.max(21, to + 3));
+    const bed = clamp(to + 3, 21, 23);
     if (bed < 24) entries.push({ startHour: bed, intent: 'SLEEP', targetBuildingId: homeBuildingId });
   }
   return entries.sort((first, second) => first.startHour - second.startHour);
@@ -82,7 +84,7 @@ export function createDayPlan(
 }
 
 export function nextIntentForHour(plan: DayPlan, hour: number): NpcScheduleEntry | undefined {
-  const normalizedHour = ((hour % 24) + 24) % 24;
+  const normalizedHour = hourOfDay(hour);
   let activeEntry: NpcScheduleEntry | undefined = undefined;
 
   for (const entry of plan.entries) {

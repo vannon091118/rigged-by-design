@@ -9,21 +9,13 @@
  * bei Bedarf an, `ensureCityPopulation` erweitert sie, und `bindCityIdentities`
  * gibt jedem Mitglied ein Profil — auch dem zwanzigsten.
  */
-import { TICKS_PER_DAY } from './demand';
 import type { CityLifeState } from './city-life-types';
 import { createCityLifeState, growCityPopulation } from './city-life-create';
 import { normalizeCityLife } from './city-life-restore';
 import { bindCityIdentities } from './city-identity';
 import type { WorldState } from './types';
 
-export const TICKS_PER_HOUR = TICKS_PER_DAY / 24;
-
 export { createCityLifeState, normalizeCityLife, growCityPopulation };
-
-export function hourOf(tick: number): number {
-  const dayTick = ((tick % TICKS_PER_DAY) + TICKS_PER_DAY) % TICKS_PER_DAY;
-  return Math.floor(dayTick / TICKS_PER_HOUR);
-}
 
 function hasResidents(raw: unknown): raw is CityLifeState {
   return typeof raw === 'object' && raw !== null && Array.isArray((raw as CityLifeState).residents);

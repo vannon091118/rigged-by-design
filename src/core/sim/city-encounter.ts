@@ -13,6 +13,8 @@
  */
 import { cityOf } from './city-model';
 import { ensureCityVisitor, locationName, primaryNpcAt, type CityNpcDef } from './city-npcs';
+import { ensureCityLife } from './city-life-state';
+import { rosterDefById } from './city-npc-roster';
 import { ACTION_LABEL, lastEncounter, visitorRef } from './city-encounter-dialog';
 import type { CityLocationId } from './city-types';
 import type { NarrativeEventInstance } from './narrative/event-types';
@@ -26,19 +28,35 @@ export type { EncounterResult } from './city-encounter-action';
 export { encounterDialog } from './city-encounter-dialog';
 export type { EncounterDialog } from './city-encounter-dialog';
 
+const isCityLocation = (value: string | undefined): value is CityLocationId =>
+  value === 'KIEZ' || value === 'MARKT' || value === 'CASINO';
+
 /**
- * Eine Stadtaktion oeffnet die Begegnung. Eine bereits offene Szene wird
+ * Eine Stadtaktion oeffnet die Begegnung. Ziel ist entweder ein Ort (dann
+ * spricht die dort anwesende Figur) oder eine Kennung aus der Besetzung
+ * (`npc_4` … `npc_12`). Die Kennung ist die einzige Identitaet; Name, Rolle und
+ * Profil kommen aus `rosterDefById`. Eine bereits offene Szene wird
  * zurueckgegeben, statt eine zweite zu stapeln.
  */
 export function meetNpc(
   world: WorldState,
-  location: CityLocationId = cityOf(world).location,
+  target?: CityLocationId | string,
 ): { readonly npc: CityNpcDef; readonly visitor: Visitor; readonly event: NarrativeEventInstance } {
   const state = cityOf(world);
+  const location = isCityLocation(target) ? target : state.location;
   if (state.location !== location) {
     throw new Error(`Diese Begegnung gehoert zu ${locationName(location)}, du bist in ${locationName(state.location)}.`);
   }
-  const npc = primaryNpcAt(location);
+  const life = ensureCityLife(world);
+  let npc: CityNpcDef | null;
+  if (target && !isCityLocation(target)) {
+    npc = rosterDefById(target, life.seed ?? 0);
+    if (!npc) throw new Error(`Diese Figur steht nicht in der Besetzung: ${target}.`);
+  } else {
+    const resident = life.residents.find((entry) => entry.location === location);
+    const primary = primaryNpcAt(location);
+    npc = rosterDefById(resident?.npcId ?? primary?.id ?? '', life.seed ?? 0);
+  }
   if (!npc) throw new Error(`In ${locationName(location)} wartet heute niemand auf ein Gespraech.`);
   const visitor = ensureCityVisitor(world, npc);
   const ref = visitorRef(visitor.id);

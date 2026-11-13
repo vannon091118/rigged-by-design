@@ -7,13 +7,13 @@
 import type { WorldState } from '../types';
 import type { ActorRef, Observation, ObservationChannel } from './knowledge-types';
 import { visitorIdOf } from './relationships';
+import { clamp } from '../num';
 
 const OBSERVATION_CHANNELS: readonly ObservationChannel[] = [
   'SELBST', 'SICHT', 'GERAEUSCH', 'GESPRAECH', 'NACHRICHT', 'DOKUMENT',
 ];
 
 const DIRECT_CHANNELS: readonly ObservationChannel[] = ['SICHT', 'GERAEUSCH'];
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 /** Ein Gast ist nur anwesend, solange er den Raum nicht verlassen hat. */
 function isPresent(world: WorldState, actor: ActorRef): boolean {

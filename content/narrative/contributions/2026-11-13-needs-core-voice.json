@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T05:55Z-needs-core-voice",
+  "contributionId": "needs-core-voice-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-low",
+  "function": "warn",
+  "contexts": [
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Zahlen im Nacken werden nicht leiser, nur weil jemand sie ordentlich addiert.",
+  "directives": []
+}

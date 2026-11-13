@@ -1,13 +1,15 @@
 /** Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. */
 import type { Ledger } from '../economy/ledger';
 import { cityOf } from './city-model';
-import { locationName, npcByName } from './city-npcs';
+import { locationName, type CityNpcDef } from './city-npcs';
+import { ensureCityLife } from './city-life-state';
+import { rosterDefById } from './city-npc-roster';
 import type { NarrativeEventInstance } from './narrative/event-types';
 import type { NarrativeEventView } from './narrative/view-types';
 import { buildNarrativeView } from './narrative/view';
 import { relationshipBetween } from './narrative/relationships';
 import type { CityEncounterRecord, EncounterAction } from './city-types';
-import type { WorldState } from './types';
+import type { Visitor, WorldState } from './types';
 
 export const ACTION_LABEL: Readonly<Record<EncounterAction, string>> = {
   GEBEN: 'eine Runde ausgegeben',
@@ -17,11 +19,33 @@ export const ACTION_LABEL: Readonly<Record<EncounterAction, string>> = {
 
 export const visitorRef = (id: number): `visitor:${number}` => `visitor:${id}`;
 
-export const visitorIdOfEvent = (event: NarrativeEventInstance): number | null => {
+const visitorIdOfEvent = (event: NarrativeEventInstance): number | null => {
   const ref = event.participants[0];
   const match = ref ? /^visitor:(\d+)$/.exec(ref) : null;
   return match ? Number(match[1]) : null;
 };
+
+/**
+ * Der eine Identitaetsweg fuer Dialog und Handlung: Event -> Visitor ->
+ * `residentNpcId` -> `rosterDefById`. Ein fehlender oder unbekannter Traeger
+ * wirft sichtbar; Name, Listenindex und Default-Definition sind keine Ersatz-
+ * Schluessel.
+ */
+export function encounterNpc(
+  world: WorldState, event: NarrativeEventInstance,
+): { readonly visitorId: number; readonly visitor: Visitor; readonly npc: CityNpcDef } {
+  const visitorId = visitorIdOfEvent(event);
+  if (visitorId === null) throw new Error('Die Begegnung hat keinen Visitor-Verweis.');
+  const visitor = world.visitors.find((entry) => entry.id === visitorId);
+  if (!visitor) throw new Error(`Zur Begegnung fehlt der Visitor ${visitorId}.`);
+  const residentNpcId = visitor.residentNpcId;
+  if (!residentNpcId) {
+    throw new Error(`Die Begegnung mit ${visitor.name} hat keine Bewohnerkennung.`);
+  }
+  const npc = rosterDefById(residentNpcId, ensureCityLife(world).seed ?? 0);
+  if (!npc) throw new Error(`Die Bewohnerkennung ${residentNpcId} steht nicht in der Besetzung.`);
+  return { visitorId, visitor, npc };
+}
 
 /** Die letzte Begegnung mit genau diesem NPC; die Quelle der Erinnerung. */
 export function lastEncounter(world: WorldState, npcId: number): CityEncounterRecord | null {
@@ -51,17 +75,15 @@ export interface EncounterDialog {
 export function encounterDialog(world: WorldState, ledger: Ledger, eventId: number): EncounterDialog {
   const event = world.narrative.events.find((entry) => entry.id === eventId);
   if (!event) throw new Error(`Unbekannte Begegnung: ${String(eventId)}`);
-  const npcId = visitorIdOfEvent(event);
-  const visitor = npcId === null ? null : world.visitors.find((entry) => entry.id === npcId) ?? null;
-  const def = visitor ? npcByName(visitor.name) : null;
+  const { visitorId, npc } = encounterNpc(world, event);
   const view = buildNarrativeView(world, ledger).events.find((entry) => entry.id === eventId) ?? null;
   const title = view?.title ?? '';
   const body = view?.body ?? '';
-  const name = visitor?.name ?? def?.name ?? 'Unbekannt';
-  const role = def?.role ?? 'Bekanntschaft';
-  const place = locationName(def?.location ?? cityOf(world).location);
-  const seen = npcId === null ? null : lastEncounter(world, npcId);
-  const edge = npcId === null ? null : relationshipBetween(world, visitorRef(npcId), 'player');
+  const name = npc.name;
+  const role = npc.role;
+  const place = locationName(npc.location);
+  const seen = lastEncounter(world, visitorId);
+  const edge = relationshipBetween(world, visitorRef(visitorId), 'player');
   const memory = seen
     ? `${name} erinnert sich an Tag ${seen.day}: ${ACTION_LABEL[seen.action]}; Vertrauen ${edge?.trust ?? 0}.`
     : `${name} hat dich hier noch nicht gesehen.`;

@@ -8,14 +8,14 @@
 import { ensureCityLife } from './city-life-state';
 import { createMovementTracker, type MovementEvidence } from './living-world-movement-evidence';
 import { routineSample, type RoutineSample } from './living-world-longturn-snapshots';
-import { TICKS_PER_DAY } from './demand';
+import { TICKS_PER_DAY } from './clock';
 import { tickWorld } from './tick';
 import type { CityLifeDecision } from './city-life-types';
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import type { WorldState } from './types';
 
-export interface LongRunResult {
+interface LongRunResult {
   readonly routineSamples: readonly RoutineSample[];
   readonly allDecisions: readonly CityLifeDecision[];
   readonly scheduledDeviations: number;

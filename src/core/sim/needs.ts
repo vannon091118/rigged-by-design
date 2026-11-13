@@ -1,7 +1,7 @@
 /** Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. */
 import type { Prng } from '../rng/prng';
 import { getPersona } from './personas';
-import { clamp } from './guest-core';
+import { driftNeed, needAtLeast, satisfyNeed } from './needs-core';
 import type { Guest, WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
 
@@ -29,22 +29,22 @@ export function rollProfile(prng: Prng, addictionRate: number, patienceWeight = 
 
 /** Körper schlägt Modus: volle Blase und Durst setzen das Bedürfnis, sonst zurück zum Spiel. */
 export function refreshNeeds(guest: Guest): void {
-  if (guest.bladder >= 70) guest.need = 'toilet';
-  else if (guest.thirst >= 65) guest.need = 'drink';
-  else if (guest.need === 'drink' && guest.thirst < 30) guest.need = 'play';
-  else if (guest.need === 'toilet' && guest.bladder < 30) guest.need = 'play';
+  if (needAtLeast(guest.bladder, 70)) guest.need = 'toilet';
+  else if (needAtLeast(guest.thirst, 65)) guest.need = 'drink';
+  else if (guest.need === 'drink' && !needAtLeast(guest.thirst, 30)) guest.need = 'play';
+  else if (guest.need === 'toilet' && !needAtLeast(guest.bladder, 30)) guest.need = 'play';
 }
 
 /** Durst und Blase steigen mit der Persona; eine volle Blase endet im Unfall statt im Nichts. */
 export function tickNeeds(world: WorldState, guest: Guest): void {
   const drinkRate = getPersona(guest.persona).drinkRate;
   // Durst steigt langsam: ein Drink ist eine Pause am Spiel, kein Dauerzustand.
-  guest.thirst = clamp(guest.thirst + 0.3 + drinkRate * 0.5);
-  guest.bladder = clamp(guest.bladder + 0.5);
-  if (guest.thirst >= 100) guest.mood = Math.max(0, guest.mood - 0.3);
-  if (guest.bladder >= 100) {
+  guest.thirst = driftNeed(guest.thirst, 0.3, drinkRate * 0.5);
+  guest.bladder = driftNeed(guest.bladder, 0.5);
+  if (needAtLeast(guest.thirst, 100)) guest.mood = satisfyNeed(guest.mood, 0.3);
+  if (needAtLeast(guest.bladder, 100)) {
     guest.bladder = 35;
-    guest.mood = Math.max(0, guest.mood - 8);
+    guest.mood = satisfyNeed(guest.mood, 8);
     world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y));
     world.lastEvent = `${guest.name} hatte einen Unfall.`;
   }

@@ -5,6 +5,7 @@
 import { NARRATIVE_REGISTRY } from './narrative/composer/registry.generated';
 import type { WorldState } from './types';
 import type { ActionDef, CityBranchId, CityLocationId, CityState } from './city-types';
+import { clamp } from './num';
 
 /** Der Pool, aus dem jede Stadt-Handlung ihren Text zieht. */
 export const CITY_SLOT = 'city-scene';
@@ -48,7 +49,7 @@ export const TIERS: Readonly<Record<CityBranchId, readonly { readonly name: stri
 export const MARKET_UNLOCK_AT = 9;
 export const ORDER: readonly CityLocationId[] = ['CASINO', 'KIEZ', 'MARKT'];
 
-export const clampEnergy = (value: number): number => Math.min(CITY_ENERGY_PER_DAY, Math.max(0, Math.floor(value)));
+export const clampEnergy = (value: number): number => clamp(Math.floor(value), 0, CITY_ENERGY_PER_DAY);
 
 /** FNV-1a: derselbe Ort, dieselbe Handlung, derselbe Text - ohne RNG. */
 function fnv(text: string): number {

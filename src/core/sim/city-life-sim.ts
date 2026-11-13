@@ -7,14 +7,14 @@
  */
 import { Ledger } from '../economy/ledger';
 import { Prng } from '../rng/prng';
-import { TICKS_PER_DAY } from './demand';
+import { TICKS_PER_DAY } from './clock';
 import { createCityLifeState } from './city-life';
 import type { CityDecisionFamily, CityLifeDecision } from './city-life-types';
 import { createWorld, ensureStarter } from './templates';
 import { tickWorld } from './tick';
 import type { WorldState } from './types';
 
-export interface CityLifeRun {
+interface CityLifeRun {
   readonly world: WorldState;
   readonly decisions: readonly CityLifeDecision[];
   readonly ledger: Ledger;

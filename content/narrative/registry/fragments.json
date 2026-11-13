@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9b7f55e309445af28fef2d0c23eca2a729983d9ee4811bd6ae8a344a912d478b",
+  "contentHash": "sha256:64d791e1bb1afe2c80ca20e5f180c81b3cd5ce1046f20a0a57c60d5d2f92e778",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -10178,6 +10178,28 @@
       "text": "Ohne Worte das übliche Glas hinstellen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-nar-var-ret-welcome-03.json"
+    },
+    {
+      "contributionId": "needs-core-voice-01",
+      "turnId": "2026-11-13T05:55Z-needs-core-voice",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Zahlen im Nacken werden nicht leiser, nur weil jemand sie ordentlich addiert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-needs-core-voice.json"
     },
     {
       "contributionId": "neon-abend-01",

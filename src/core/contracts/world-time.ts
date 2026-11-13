@@ -21,9 +21,9 @@ export function dayFromTick(tick: number): number {
   return Math.floor(tick / TICKS_PER_DAY);
 }
 
-/** Berechnet den Tick im aktuellen Tag (0-basiert). */
+/** Berechnet den Tick im aktuellen Tag (0-basiert); negative Ticks bleiben im Tagesring. */
 export function tickInDay(tick: number): number {
-  return tick % TICKS_PER_DAY;
+  return ((tick % TICKS_PER_DAY) + TICKS_PER_DAY) % TICKS_PER_DAY;
 }
 
 /** Prüft, ob ein Tick den Beginn eines neuen Tages markiert. */

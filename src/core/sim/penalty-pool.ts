@@ -1,5 +1,6 @@
 /** Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. */
 import type { WorldState } from './types';
+import { satisfyNeed } from './needs-core';
 
 export const ROBBERY_ACCOUNT = 'EXTERNAL_ROBBERY';
 export const UNSAFE_REPUTATION_SPAWN_FACTOR = 0.55;
@@ -25,8 +26,8 @@ export function applyUnsafeReputation(world: WorldState, daysLeft: number): void
 /** Die Menge sieht die Niederlage: Laune und Geduld aller Gäste kippen. */
 export function applyMoodShock(world: WorldState): void {
   for (const guest of world.guests) {
-    guest.mood = Math.max(0, guest.mood - MOOD_DROP);
-    guest.patience = Math.max(0, guest.patience - PATIENCE_DROP);
+    guest.mood = satisfyNeed(guest.mood, MOOD_DROP);
+    guest.patience = satisfyNeed(guest.patience, PATIENCE_DROP);
   }
   pushPenalty(world, 'MOOD_SHOCK', MOOD_SHOCK_DAYS);
   world.lastEvent = 'Schockwelle im Casino: Alle Gäste sind verstört.';

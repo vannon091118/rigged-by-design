@@ -81,7 +81,7 @@ export interface CityDecisionCounterfactual {
   readonly detail: string;
 }
 
-export interface CityDecisionEnvironment {
+interface CityDecisionEnvironment {
   readonly day: number;
   readonly hour: number;
   readonly location: CityLifePlace;
@@ -90,7 +90,7 @@ export interface CityDecisionEnvironment {
   readonly mood: number;
 }
 
-export interface CityDecisionOutcome {
+interface CityDecisionOutcome {
   readonly moneyDelta: number;
   readonly hungerDelta: number;
   readonly thirstDelta: number;

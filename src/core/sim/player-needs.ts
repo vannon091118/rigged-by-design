@@ -8,20 +8,22 @@
 import type { PlayerNeeds, WorldState } from './types';
 import { playerApartmentFurniture } from './player-apartment';
 import { grantGlobalXp } from './player-rpg';
+import { numberOr, round1, round2 } from './num';
+import { clampNeedValue, driftNeed, needAtLeast, needAtMost, satisfyNeed } from './needs-core';
 
-export const PLAYER_HUNGER_PER_TICK = 0.03;
-export const PLAYER_THIRST_PER_TICK = 0.04;
+const PLAYER_HUNGER_PER_TICK = 0.03;
+const PLAYER_THIRST_PER_TICK = 0.04;
 export const PLAYER_HUNGER_URGENT = 80;
 export const PLAYER_THIRST_URGENT = 80;
-export const PLAYER_NEED_STRAINED = 60;
-export const PLAYER_MEAL_HUNGER = 45;
-export const PLAYER_MEAL_THIRST = 10;
-export const PLAYER_DRINK_THIRST = 55;
-export const PLAYER_DRINK_HUNGER = 5;
+const PLAYER_NEED_STRAINED = 60;
+const PLAYER_MEAL_HUNGER = 45;
+const PLAYER_MEAL_THIRST = 10;
+const PLAYER_DRINK_THIRST = 55;
+const PLAYER_DRINK_HUNGER = 5;
 export const PLAYER_MEAL_XP = 4;
 export const PLAYER_DRINK_XP = 3;
 
-export interface PlayerCondition {
+interface PlayerCondition {
   readonly hungry: boolean;
   readonly thirsty: boolean;
   readonly strained: boolean;
@@ -45,18 +47,10 @@ export interface PlayerNeedsView {
   readonly effect: string;
 }
 
-const clamp = (value: number, min = 0, max = 100): number => Math.min(max, Math.max(min, value));
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-const round2 = (value: number): number => Math.round(value * 100) / 100;
-
-function numberOr(value: unknown, fallback: number): number {
-  return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
-}
-
 export function createPlayerNeeds(custom: Partial<PlayerNeeds> = {}): PlayerNeeds {
   return {
-    hunger: round2(clamp(numberOr(custom.hunger, 18))),
-    thirst: round2(clamp(numberOr(custom.thirst, 22))),
+    hunger: round2(clampNeedValue(numberOr(custom.hunger, 18))),
+    thirst: round2(clampNeedValue(numberOr(custom.thirst, 22))),
   };
 }
 
@@ -75,15 +69,16 @@ export function tickPlayerNeeds(needs: PlayerNeeds, ticks = 1): PlayerNeeds {
   // Nicht auf ganze Zehntel runden: 0.03 pro Tick wuerde sonst jeden Tick
   // auf den Ausgangswert zurueckfallen und nie kumulieren.
   return {
-    hunger: round2(clamp(needs.hunger + PLAYER_HUNGER_PER_TICK * elapsed)),
-    thirst: round2(clamp(needs.thirst + PLAYER_THIRST_PER_TICK * elapsed)),
+    hunger: round2(driftNeed(needs.hunger, PLAYER_HUNGER_PER_TICK * elapsed)),
+    thirst: round2(driftNeed(needs.thirst, PLAYER_THIRST_PER_TICK * elapsed)),
   };
 }
 
 export function playerCondition(needs: PlayerNeeds): PlayerCondition {
-  const hungry = needs.hunger >= PLAYER_HUNGER_URGENT;
-  const thirsty = needs.thirst >= PLAYER_THIRST_URGENT;
-  const strained = hungry || thirsty || needs.hunger >= PLAYER_NEED_STRAINED || needs.thirst >= PLAYER_NEED_STRAINED;
+  const hungry = needAtLeast(needs.hunger, PLAYER_HUNGER_URGENT);
+  const thirsty = needAtLeast(needs.thirst, PLAYER_THIRST_URGENT);
+  const strained = hungry || thirsty || needAtLeast(needs.hunger, PLAYER_NEED_STRAINED)
+    || needAtLeast(needs.thirst, PLAYER_NEED_STRAINED);
   const label = hungry && thirsty
     ? 'Hunger und Durst drücken'
     : hungry
@@ -117,9 +112,9 @@ export function playerNeedsView(needs: PlayerNeeds): PlayerNeedsView {
 /** Eine Mahlzeit oder ein Getraenk senkt nur die passenden Werte, nie unter null. */
 export function applyPlayerFood(needs: PlayerNeeds, kind: 'MEAL' | 'DRINK'): PlayerNeeds {
   if (kind === 'MEAL') {
-    return { hunger: round1(clamp(needs.hunger - PLAYER_MEAL_HUNGER)), thirst: round1(clamp(needs.thirst - PLAYER_MEAL_THIRST)) };
+    return { hunger: round1(satisfyNeed(needs.hunger, PLAYER_MEAL_HUNGER)), thirst: round1(satisfyNeed(needs.thirst, PLAYER_MEAL_THIRST)) };
   }
-  return { hunger: round1(clamp(needs.hunger - PLAYER_DRINK_HUNGER)), thirst: round1(clamp(needs.thirst - PLAYER_DRINK_THIRST)) };
+  return { hunger: round1(satisfyNeed(needs.hunger, PLAYER_DRINK_HUNGER)), thirst: round1(satisfyNeed(needs.thirst, PLAYER_DRINK_THIRST)) };
 }
 
 /** Rufgewinn einer Stadt-Handlung; der Zustand des Spielers ist der Faktor. */
@@ -141,7 +136,7 @@ function near(world: WorldState, item: { readonly x: number; readonly y: number 
 
 /** Essen an der Kochnische: Hunger sinkt, Durst sinkt mit, Erfahrung wird gutgeschrieben. */
 export function eatAtHome(world: WorldState): void {
-  if (world.player.needs.hunger <= 5) throw new Error('Du bist satt.');
+  if (needAtMost(world.player.needs.hunger, 5)) throw new Error('Du bist satt.');
   homeItem(world, 'Kochnische');
   world.player.needs = applyPlayerFood(world.player.needs, 'MEAL');
   grantGlobalXp(world.player.rpg, 'HOME_MEAL', PLAYER_MEAL_XP);
@@ -150,7 +145,7 @@ export function eatAtHome(world: WorldState): void {
 
 /** Trinken am Kuehlschrank: Durst sinkt deutlich, der Hunger nur leicht. */
 export function drinkAtHome(world: WorldState): void {
-  if (world.player.needs.thirst <= 5) throw new Error('Du hast keinen Durst.');
+  if (needAtMost(world.player.needs.thirst, 5)) throw new Error('Du hast keinen Durst.');
   homeItem(world, 'Kühlschrank');
   world.player.needs = applyPlayerFood(world.player.needs, 'DRINK');
   grantGlobalXp(world.player.rpg, 'HOME_DRINK', PLAYER_DRINK_XP);

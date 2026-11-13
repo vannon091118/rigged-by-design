@@ -4,7 +4,7 @@ import type { VaCoinMicro } from '../economy/vacoin';
 import { nearestWalkable } from './pathfinding';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
-import { clamp } from './guest-core';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { clubNight } from './club-night';
 import { dispositionOfGuest, type VisitorDisposition } from './narrative/disposition';
 import { voiceLine } from './narrative/guest-voice';
@@ -31,8 +31,8 @@ export function startActivity(world: WorldState, guest: Guest, item: Furniture):
         : `Spielt ${item.label}: Angebot passt zu Persona und Budget.`);
   guest.stateTicks = 0;
   if (item.gameId) {
-    guest.mood = clamp(guest.mood + 2);
-    guest.patience = clamp(guest.patience + 2);
+    guest.mood = driftNeed(guest.mood, 2);
+    guest.patience = driftNeed(guest.patience, 2);
   }
   // Zielvalidierung: ein reservierter Platz ohne Weg (z. B. hinter einer Wand)
   // wird sofort freigegeben, statt den Gast in einen leeren Pfad laufen zu lassen.
@@ -51,11 +51,11 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   guest.intent = voiceLine(world, guest, 'Kein freier Platz: wartet und verliert Geduld.');
   // Agent 19: wer in der Lounge wartet, bekommt den Clubabend mit.
   const club = clubNight(world);
-  if (club.open) guest.mood = clamp(guest.mood + club.moodGain);
+  if (club.open) guest.mood = driftNeed(guest.mood, club.moodGain);
   guest.targetFurniture = 0;
   // Warten ist eine Entscheidung: es kostet Geduld, aber es soll sich lohnen koennen.
-  guest.patience = Math.max(0, guest.patience - 1.5);
-  guest.mood = Math.max(0, guest.mood - 0.5);
+  guest.patience = satisfyNeed(guest.patience, 1.5);
+  guest.mood = satisfyNeed(guest.mood, 0.5);
   const zone = lounge ? zoneById(world, lounge.id) : null;
   if (zone) {
     guest.targetZone = zone.id;

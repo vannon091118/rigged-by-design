@@ -87,7 +87,7 @@ function traitsAt(index: number, seed: number): readonly TraitId[] {
 }
 
 /** Kennung einer Figur: die kuratierten behalten ihren Namen als Kennung. */
-export function npcIdAt(index: number): string {
+function npcIdAt(index: number): string {
   return CITY_NPCS[index]?.id ?? `npc_${index + 1}`;
 }
 

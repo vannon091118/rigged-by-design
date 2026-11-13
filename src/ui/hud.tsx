@@ -1,12 +1,12 @@
 /** HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. */
 import { barCapacityForLevel } from '../core/sim/deliveries';
-import { HAUSKONTO } from '../core/sim/money';
 import type { RpgAttribute } from '../core/sim/player-rpg';
 import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
 import { vc } from './format';
-import { ACCOUNT_LABEL, HELP } from './glossary';
+import { HELP } from './glossary';
 import { startGoal } from './goal';
+import { HudMoney } from './hud-money';
 import { MOOD_LABEL, PENALTY_LABEL, reputationOf, SKILLS } from './hud-labels';
 import { UI_ICON } from './icons';
 import { PerspectiveSwitch } from './perspective-switch';
@@ -45,43 +45,31 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
   const goal = startGoal(view);
+  const amount = vc(guest ? view.wallet : view.house, guest || view.house < 1000 * 10_000 ? 2 : 0);
   return (
 <header className={`hud ${perspective}`}>
       <div className="hud-brand" onClick={(event) => onBrandTap?.(event.timeStamp)}>
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>
-          <small title={guest ? undefined : `Stufe: ${view.company.note}`}>{guest ? 'GASTANSICHT' : view.company.name} · TAG {view.day}</small>
+          <small title={guest ? undefined : `Stufe: ${view.company.note}`}>
+            {guest ? 'GASTANSICHT' : view.company.name}
+            <span className="hud-brand-sep" aria-hidden="true">·</span>
+            <span className="hud-day">TAG {view.day}</span>
+          </small>
         </div>
       </div>
 
       <PerspectiveSwitch perspective={perspective} onChange={onPerspective} />
 
-      <div className={`hud-money ${perspective}`} title={guest ? HELP.portemonnaie : HELP.hauskonto}>
-        <span><img className="ui-icon" src={UI_ICON.coin} alt="" />{guest ? 'PORTEMONNAIE' : ACCOUNT_LABEL[HAUSKONTO]}</span>
-        <strong>{vc(guest ? view.wallet : view.house, guest || view.house < 1000 * 10_000 ? 2 : 0)}</strong>
-        <small>
-          {guest ? (
-            <>
-              <span className="term" title={HELP.offen}>Offen {vc(view.pending, 2)}</span>
-              <span> · {pact}</span>
-            </>
-          ) : (
-            <>
-              <span className="term" title={HELP.kasse}>Kasse {vc(view.desk, 2)}</span>
-              <span className="term" title={HELP.offen}> · Offen {vc(view.pending, 2)}</span>
-            </>
-          )}
-        </small>
-        {!guest && (
-          <div className="hud-goal-row" title={`${goal.text} · ${goal.percent} %`}>
-            <span className="hud-goal-label">{goal.label}</span>
-            <span className="hud-goal" aria-hidden="true">
-              <i style={{ width: `${goal.percent}%` }} />
-            </span>
-          </div>
-        )}
-      </div>
+      <HudMoney
+        guest={guest}
+        amount={amount}
+        desk={vc(view.desk, 2)}
+        pending={vc(view.pending, 2)}
+        pact={pact}
+        goal={goal}
+      />
 
       <div className="hud-vitals">
         <button

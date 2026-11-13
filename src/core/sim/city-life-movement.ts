@@ -19,6 +19,7 @@ import type { CityLifePlace } from './city-life-types';
 import type { Point } from './types-model';
 import { findPath, isWalkable, nearestWalkable } from './pathfinding';
 import { ensureCityLife } from './city-life-state';
+import { driftNeed } from './needs-core';
 import { createCityScene } from './city-scene';
 import type { WorldState } from './types';
 
@@ -30,8 +31,8 @@ export const TILES_PER_TICK = 1;
  * Gerechnet wird in ganzen Punkten, weil Beduerfnisse ganzzahlig gespeichert
  * werden und ein Rundungsrest sonst beim Laden verschwaende.
  */
-export const TILES_PER_FATIGUE = 8;
-export const travelFatigue = (pathLength: number): number =>
+const TILES_PER_FATIGUE = 8;
+const travelFatigue = (pathLength: number): number =>
   Math.max(1, Math.round((pathLength - 1) / TILES_PER_FATIGUE));
 /** Obergrenze je Aufruf, damit ein langer Tick nicht durch die Stadt springt. */
 const MAX_STEPS = 8;
@@ -114,11 +115,6 @@ export function advanceTravel(
   return { travel: { ...travel, index }, position, arrived: false };
 }
 
-/** Anzeige-Zwischenstand: „unterwegs nach X" statt eines fertigen Ortes. */
-export function travelLabel(travel: CityTravel | null): string | null {
-  return travel ? travel.to : null;
-}
-
 /** Restweg in Kacheln; 0 heisst angekommen. */
 export function remainingTiles(travel: CityTravel | null): number {
   if (!travel) return 0;
@@ -138,7 +134,7 @@ export function tickCityMovement(world: WorldState): void {
     if (!step.arrived) {
       return { ...resident, position: step.position, travel: step.travel };
     }
-    const fatigue = Math.min(100, resident.needs.fatigue + travelFatigue(resident.travel.path.length));
+    const fatigue = driftNeed(resident.needs.fatigue, travelFatigue(resident.travel.path.length));
     return {
       ...resident, needs: { ...resident.needs, fatigue },
       position: step.position, travel: null, location: resident.travel.to,

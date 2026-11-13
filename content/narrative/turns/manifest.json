@@ -4072,6 +4072,10 @@
     {
       "turnId": "2026-11-13T04:05Z-npc-population",
       "contributionId": "city-population-01"
+    },
+    {
+      "turnId": "2026-11-13T05:55Z-needs-core-voice",
+      "contributionId": "needs-core-voice-01"
     }
   ]
 }

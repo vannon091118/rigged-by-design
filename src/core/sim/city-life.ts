@@ -16,7 +16,9 @@ import { buildingOfPlace, slotOf } from './city-npc-shift';
 import type {
   CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
-import { ensureCityLife, hourOf } from './city-life-state';
+import { ensureCityLife } from './city-life-state';
+import { hourOfTick } from './clock';
+import { clamp } from './num';
 import { createDayPlan, nextIntentForHour } from './npc-schedule';
 import { cityMap, startTravel } from './city-life-movement';
 import { applyCityDecision } from './city-life-apply';
@@ -29,9 +31,7 @@ export {
   ensureCityLife,
   ensureCityPopulation,
   growCityPopulation,
-  hourOf,
   normalizeCityLife,
-  TICKS_PER_HOUR,
 } from './city-life-state';
 export { CITY_POPULATION_DEFAULT, rosterDefAt, rosterDefs } from './city-npc-roster';
 
@@ -57,7 +57,7 @@ function applyRelationshipDelta(
   const index = residents.findIndex((resident) => resident.npcId === targetId);
   if (index < 0) return;
   const target = residents[index]!;
-  const value = Math.max(-100, Math.min(100, (target.relationships[actorId] ?? 0) + delta));
+  const value = clamp((target.relationships[actorId] ?? 0) + delta, -100, 100);
   residents[index] = { ...target, relationships: { ...target.relationships, [actorId]: value } };
 }
 
@@ -75,7 +75,7 @@ interface TickResult {
  */
 export function tickCityLife(world: WorldState): void {
   const life = ensureCityLife(world);
-  const hour = hourOf(world.tick);
+  const hour = hourOfTick(world.tick);
   const seed = life.seed ?? 0;
   let decisionSeq = life.decisionSeq ?? 0;
   let memorySeq = life.memorySeq ?? 1;

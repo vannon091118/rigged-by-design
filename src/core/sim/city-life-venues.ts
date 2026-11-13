@@ -22,7 +22,7 @@ export function buildingById(id: string): BuildingState | null {
   return CITY_PRESET_BUILDINGS.find((building) => building.id === id) ?? null;
 }
 
-export function venueAt(place: CityLifePlace): BuildingState | null {
+function venueAt(place: CityLifePlace): BuildingState | null {
   return buildingById(buildingOfPlace(place));
 }
 

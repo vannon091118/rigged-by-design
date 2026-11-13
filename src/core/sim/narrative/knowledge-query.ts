@@ -2,8 +2,8 @@
 import type { WorldState } from '../types';
 import { KNOWLEDGE_CONFIG, type KnowledgeConfig } from './knowledge-config';
 import type { ActorRef, KnowledgeEntry } from './knowledge-types';
+import { clamp } from '../num';
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 /** Untergrenze fuer eigene Erfahrung: sie verblasst, verschwindet aber nie. */
 const EXPERIENCED_FLOOR = 0.5;
 

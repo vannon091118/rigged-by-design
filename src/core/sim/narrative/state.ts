@@ -10,6 +10,7 @@ import { normalizeObservations } from './knowledge-observation';
 import { normalizeEventState } from './event-schema';
 import { createChainState, normalizeChainState } from './chains/chain-persist';
 import { createNarrativeRng } from './narrative-rng';
+import { clamp, numberOr } from '../num';
 import {
   HOUSE_BANDS, NARRATIVE_LIMITS, VISITOR_VALENCES,
   type HouseBand, type NarrativeState, type VisitorMemory, type VisitorValence,
@@ -59,15 +60,15 @@ export function seedStartPool(world: WorldState, capital: VaCoinMicro): void {
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
-const number = (value: unknown, fallback = 0): number => (Number.isFinite(value) ? Number(value) : fallback);
+
 
 function sanitizeMemory(raw: unknown): VisitorMemory | null {
   if (!isRecord(raw)) return null;
   const valence = raw.valence as VisitorValence;
   if (!VISITOR_VALENCES.includes(valence)) return null;
-  const factId = number(raw.factId, -1);
+  const factId = numberOr(raw.factId, -1);
   if (!Number.isInteger(factId) || factId <= 0) return null;
-  return { factId, tick: Math.max(0, Math.floor(number(raw.tick))), score: Math.min(100, Math.max(0, number(raw.score))), valence };
+  return { factId, tick: Math.max(0, Math.floor(numberOr(raw.tick, 0))), score: clamp(numberOr(raw.score, 0), 0, 100), valence };
 }
 
 /** Ergaenzt sichere Defaults, verwirft kaputte Eintraege und haelt alle Grenzen ein. */
@@ -83,7 +84,7 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.processedId = processedId;
   state.pending = pending.filter((fact) => fact.id > processedId).slice(-NARRATIVE_LIMITS.pending);
   state.recent = recent.filter((fact) => fact.id <= processedId).slice(-NARRATIVE_LIMITS.recent);
-  state.dropped = Math.max(0, Math.floor(number(raw.dropped)));
+  state.dropped = Math.max(0, Math.floor(numberOr(raw.dropped, 0)));
   state.ledgerSeq = safeInteger(raw.ledgerSeq, -1) ? raw.ledgerSeq : null;
   state.houseBand = HOUSE_BANDS.includes(raw.houseBand as HouseBand) ? raw.houseBand as HouseBand : 'OK';
   state.relationships = normalizeRelationships(raw.relationships);

@@ -3,6 +3,7 @@
  */
 
 import type { ActorContinuityRecord } from './actor-continuity';
+import { driftNeed, satisfyNeed } from './needs-core';
 
 export const SOCIAL_INTERACTION_RADIUS = 2.5;
 
@@ -46,8 +47,8 @@ export function executeSocialConversation(
     ...initiator,
     needs: {
       ...initiator.needs,
-      social: Math.max(0, initiator.needs.social - 20),
-      mood: Math.min(100, initiator.needs.mood + 10),
+      social: satisfyNeed(initiator.needs.social, 20),
+      mood: driftNeed(initiator.needs.mood, 10),
     },
     relationships: {
       ...initiator.relationships,
@@ -59,8 +60,8 @@ export function executeSocialConversation(
     ...respondent,
     needs: {
       ...respondent.needs,
-      social: Math.max(0, respondent.needs.social - 25),
-      mood: Math.min(100, respondent.needs.mood + 10),
+      social: satisfyNeed(respondent.needs.social, 25),
+      mood: driftNeed(respondent.needs.mood, 10),
     },
     relationships: {
       ...respondent.relationships,
@@ -92,8 +93,8 @@ export function executeServiceTransaction(
     needs: {
       ...customer.needs,
       money: newBalance,
-      hunger: Math.max(0, customer.needs.hunger - 30),
-      mood: Math.min(100, customer.needs.mood + 8),
+      hunger: satisfyNeed(customer.needs.hunger, 30),
+      mood: driftNeed(customer.needs.mood, 8),
     },
   };
 

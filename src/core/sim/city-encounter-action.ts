@@ -3,8 +3,8 @@ import type { Ledger } from '../economy/ledger';
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { EXTERNAL, PORTEMONNAIE } from './money';
 import { clampEnergy, cityOf } from './city-model';
-import { ensureCityVisitor, informantFor, npcByName, witnessFor, type CityNpcDef } from './city-npcs';
-import { ACTION_LABEL, visitorIdOfEvent, visitorRef } from './city-encounter-dialog';
+import { ensureCityVisitor, informantFor, witnessFor, type CityNpcDef } from './city-npcs';
+import { ACTION_LABEL, encounterNpc, visitorRef } from './city-encounter-dialog';
 import type { CityEncounterRecord, EncounterAction } from './city-types';
 import { developOnPlayerAction, developOnShare } from './city-traits';
 import { executeChoice } from './narrative/commands/execute';
@@ -77,10 +77,7 @@ export function takeEncounterAction(
 ): EncounterResult {
   const event = world.narrative.events.find((entry) => entry.id === eventId);
   if (!event) throw new Error(`Unbekannte Begegnung: ${String(eventId)}`);
-  const npcId = visitorIdOfEvent(event);
-  const visitor = npcId === null ? null : world.visitors.find((entry) => entry.id === npcId) ?? null;
-  const npc = visitor ? npcByName(visitor.name) : null;
-  if (npcId === null || !visitor || !npc) throw new Error('Die Begegnung hat keinen benannten NPC.');
+  const { visitorId, visitor, npc } = encounterNpc(world, event);
   const amount = (action === 'GEBEN' ? ENCOUNTER_GIFT : ENCOUNTER_SMALL) as VaCoinMicro;
   const walletBefore = ledger.getBalance(PORTEMONNAIE);
   if (walletBefore < amount) throw new Error(`Nicht genug Bargeld (${walletBefore}). Hebe am Hauskonto ab.`);
@@ -102,7 +99,7 @@ export function takeEncounterAction(
     .find((fact) => fact.kind === 'EVENT_RESOLVED' && fact.eventId === eventId);
   const own = resolved
     ? recordFirstHand(world, {
-      actor: visitorRef(npcId), factId: resolved.id, sentiment: SENTIMENT_OF[action], tick: world.tick,
+      actor: visitorRef(visitorId), factId: resolved.id, sentiment: SENTIMENT_OF[action], tick: world.tick,
     })
     : null;
   if (resolved && own) {
@@ -116,18 +113,18 @@ export function takeEncounterAction(
       visitor.memories = [...memories, memory].slice(-NARRATIVE_LIMITS.memories);
     }
   }
-  const shared = own ? shareWithInformant(world, npcId, npc, world.tick, eventId) : null;
+  const shared = own ? shareWithInformant(world, visitorId, npc, world.tick, eventId) : null;
   const informant = informantFor(npc);
   const informantVisitor = informant
-    ? world.visitors.find((entry) => entry.name === informant.name) ?? null
+    ? world.visitors.find((entry) => entry.residentNpcId === informant.id) ?? null
     : null;
   const relay = shared && informantVisitor
     ? relayToWitness(world, informantVisitor.id, npc, world.tick, eventId)
     : null;
 
-  const trust = relationshipBetween(world, visitorRef(npcId), 'player')?.trust ?? 0;
+  const trust = relationshipBetween(world, visitorRef(visitorId), 'player')?.trust ?? 0;
   const record: CityEncounterRecord = {
-    npcId, name: npc.name, location: state.location, day: world.day, tick: world.tick, action, amount, trust,
+    npcId: visitorId, name: npc.name, location: state.location, day: world.day, tick: world.tick, action, amount, trust,
   };
   const encounters = [...(state.encounters ?? []), record].slice(-MAX_ENCOUNTERS);
   const relayVerdict = informantVisitor

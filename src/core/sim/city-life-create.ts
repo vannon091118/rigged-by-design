@@ -12,6 +12,7 @@ import { CITY_NPCS } from './city-npcs';
 import type { CityLifeState, CityResidentState } from './city-life-types';
 import { rosterDefAt, CITY_POPULATION_DEFAULT } from './city-npc-roster';
 import { createDefaultNeeds } from './npc-needs';
+import { clampNeedValue } from './needs-core';
 import { defaultSkills, seedOffset } from './city-life-normalize';
 import type { NpcNeeds } from './npc-types';
 
@@ -25,7 +26,7 @@ const INITIAL_NEEDS: Readonly<Record<string, Partial<NpcNeeds>>> = {
 const START_MONEY = 2600;
 
 /** Bewohner an einer Stelle der Besetzung. */
-export function residentAt(index: number, seed: number): CityResidentState {
+function residentAt(index: number, seed: number): CityResidentState {
   const def = rosterDefAt(index, seed);
   const base = createDefaultNeeds({ money: START_MONEY, ...INITIAL_NEEDS[def.id] });
   return {
@@ -39,10 +40,10 @@ export function residentAt(index: number, seed: number): CityResidentState {
     intent: 'SLEEP',
     needs: {
       ...base,
-      hunger: Math.max(0, Math.min(100, base.hunger + seedOffset(seed, def.id, 'hunger'))),
-      thirst: Math.max(0, Math.min(100, base.thirst + seedOffset(seed, def.id, 'thirst'))),
-      fatigue: Math.max(0, Math.min(100, base.fatigue + seedOffset(seed, def.id, 'fatigue'))),
-      social: Math.max(0, Math.min(100, base.social + seedOffset(seed, def.id, 'social'))),
+      hunger: clampNeedValue(base.hunger + seedOffset(seed, def.id, 'hunger')),
+      thirst: clampNeedValue(base.thirst + seedOffset(seed, def.id, 'thirst')),
+      fatigue: clampNeedValue(base.fatigue + seedOffset(seed, def.id, 'fatigue')),
+      social: clampNeedValue(base.social + seedOffset(seed, def.id, 'social')),
     },
     attributes: { charisma: def.charisma, intellect: def.intellect },
     skills: defaultSkills(),

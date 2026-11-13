@@ -13,6 +13,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { quotaTotal } from '../../../../scripts/lib/narrative-blocks.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../..');
 const STATUS = ['erledigt', 'verifiziert', 'offen', 'blockiert', 'zurueckgestellt'];
@@ -146,9 +147,12 @@ describe('Roadmap: Phasen, Aufgaben und Trennung', () => {
     expect(row?.status).toBe('offen');
     const compiled = JSON.parse(
       readFileSync(join(ROOT, 'content', 'narrative', 'registry', 'fragments.json'), 'utf8'),
-    ) as { fragments: unknown[] };
-    const measured = /(\d+)\s*\/\s*1500\s+Textbausteine/.exec(row?.task ?? '')?.[1];
-    expect(Number(measured)).toBe(compiled.fragments.length);
+    ) as { fragments: { readonly slot: string }[] };
+    const counts: Record<string, number> = {};
+    for (const fragment of compiled.fragments) counts[fragment.slot] = (counts[fragment.slot] ?? 0) + 1;
+    const measured = /(\d+)\s*\/\s*1500\s+gewertete Textbausteine/.exec(row?.task ?? '')?.[1];
+    // Seit der Quota-Freistellung zaehlt die Roadmap gewertete, nicht rohe Bytes.
+    expect(Number(measured)).toBe(quotaTotal(counts, compiled.fragments.length));
   });
 
   it('haelt Spiel- und Praesentationsaufgaben frei von Governance-Pfaden', () => {

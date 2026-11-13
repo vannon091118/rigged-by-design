@@ -6,7 +6,7 @@ import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { repair } from '../actions';
 import { buyCrate, depositCrate, deployCrate, orderDrinks, orderParts, takeCrate } from '../deliveries';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { economyOf, type EconomySummary } from '../economics';
 import { HAUSKONTO, openHouse } from '../money';
 import { BUILD_DEFS, type BuildId } from '../offers';

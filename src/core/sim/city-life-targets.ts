@@ -7,12 +7,12 @@
 import type { CityLifePlace, CityResidentState, NpcMemory } from './city-life-types';
 import type { NpcIntentKind } from './npc-types';
 
-export interface CityTargetInput {
+interface CityTargetInput {
   readonly resident: CityResidentState;
   readonly peers: readonly CityResidentState[];
 }
 
-export interface CityFriend {
+interface CityFriend {
   readonly peer: CityResidentState;
   readonly relation: number;
   readonly memory: NpcMemory | null;

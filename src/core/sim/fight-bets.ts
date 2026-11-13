@@ -11,6 +11,7 @@ import { openSlips, type FightBetPick, type PendingBet } from './fight-bet-slips
 import { fightNextRung, fightOpponentOf, fightRoster, type BackyardRung } from './fight-career';
 import { backyardHistoryOf } from './fight-history';
 import { newPlayerRpg, playerMaxHp, type PlayerRpgState } from './player-rpg';
+import { clamp, round2 } from './num';
 import type { WorldState } from './types';
 import { venueView } from './venue-event';
 
@@ -39,10 +40,8 @@ const ODDS_CAP = 6;
 /** Buchmacher-Marge: kein Markt wird zur Arbitrage. */
 const BOOK_MARGIN = 0.92;
 
-const clamp = (value: number, low: number, high: number): number =>
-  Math.max(low, Math.min(high, value));
 const roundOdds = (probability: number): number =>
-  Math.round(clamp(BOOK_MARGIN / Math.max(0.05, probability), ODDS_FLOOR, ODDS_CAP) * 100) / 100;
+  round2(clamp(BOOK_MARGIN / Math.max(0.05, probability), ODDS_FLOOR, ODDS_CAP));
 
 /** Dieselbe Koerper-Abbildung wie im Hinterhof: Kraft wird zur Brawl-Stufe. */
 export function rpgOf(rung: BackyardRung): PlayerRpgState {

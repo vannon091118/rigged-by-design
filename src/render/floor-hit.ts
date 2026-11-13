@@ -51,7 +51,7 @@ export interface DoorEdge {
   readonly y: number;
 }
 
-export interface DoorHit {
+interface DoorHit {
   readonly kind: 'door';
   readonly id: string;
   readonly depth: number;

@@ -17,7 +17,7 @@ import { floorArtFor, materialAt } from './floor-material';
 
 export const WALL = 6;
 /** Sichtbare Vorderseite; dieselbe Hoehe nutzt die Occlusion-Schicht. */
-export const WALL_FACE = 3;
+const WALL_FACE = 3;
 
 interface Rect { x: number; y: number; w: number; h: number }
 export interface WallView { readonly size: number; readonly layout: LayoutState }

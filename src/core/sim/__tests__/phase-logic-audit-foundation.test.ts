@@ -10,7 +10,7 @@ import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { HAUSKONTO } from '../money';
 import { tickWorld } from '../tick';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { createWorld } from '../templates';
 import { recordVisitor } from '../visitors';
 import { emitFact } from '../narrative/facts';

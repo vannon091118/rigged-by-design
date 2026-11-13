@@ -1,7 +1,7 @@
 /** Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. */
 import type { Ledger } from '../economy/ledger';
 import { ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
-import { TICKS_PER_DAY } from './demand';
+import { tickInDay } from './clock';
 import { dirtyNear } from './emotion';
 import { becomeAngry } from './guests';
 import { HAUSKONTO, payOrBorrow, repayDebt, STAFF, UTILITIES } from './money';
@@ -11,9 +11,10 @@ import { hasStaff } from './staff-queries';
 import type { Prng } from '../rng/prng';
 import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
+import { driftNeed, satisfyNeed } from './needs-core';
 
 export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
-  if (world.tick % TICKS_PER_DAY !== 0) return;
+  if (tickInDay(world.tick) !== 0) return;
   world.day += 1;
   tickPenaltyDays(world);
   const wages = ((hasStaff(world, 'guard') ? world.prices.guardWage : 0)
@@ -52,13 +53,13 @@ export function decay(world: WorldState): void {
     if (guest.state === 'ANGRY') continue;
     const spotted = dirtyNear(dirty, world.size, guest.position.x, guest.position.y, 2);
     if (spotted) {
-      guest.mood = Math.max(0, guest.mood - 0.03);
-      guest.patience = Math.max(0, guest.patience - 0.02);
+      guest.mood = satisfyNeed(guest.mood, 0.03);
+      guest.patience = satisfyNeed(guest.patience, 0.02);
     } else {
-      guest.mood = Math.min(100, guest.mood + 0.03);
-      guest.patience = Math.min(100, guest.patience + 0.02);
+      guest.mood = driftNeed(guest.mood, 0.03);
+      guest.patience = driftNeed(guest.patience, 0.02);
     }
-    if (guest.state === 'CHOOSE' || guest.state === 'WAIT') guest.mood = Math.max(0, guest.mood - 0.04);
+    if (guest.state === 'CHOOSE' || guest.state === 'WAIT') guest.mood = satisfyNeed(guest.mood, 0.04);
     // Wer schon geht oder ausgezahlt wird, randaliert nicht mehr; sonst dreht der Gast endlos zwischen ANGRY und CASHOUT.
     // Die Geduld treibt die Wut: der Text sagt "Geduld aufgebraucht", also entscheidet auch die Geduld.
     if (patienceSpent && guest.state !== 'LEAVE' && guest.state !== 'CASHOUT') {

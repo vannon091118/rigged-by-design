@@ -18,6 +18,7 @@ import { talkChance } from '../charisma-talk';
 import { CITY_NPCS, ensureCityVisitor } from '../city-npcs';
 import { cityOf, runCityAction, travel } from '../city';
 import { cityLifeView, ensureCityLife } from '../city-life';
+import { createCityLifeState } from '../city-life-create';
 import { meetNpc, takeEncounterAction } from '../city-encounter';
 import { cleaningReach, maintenanceGain } from '../floor-work';
 import { PORTEMONNAIE } from '../money';
@@ -41,6 +42,8 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
   it('verbindet Stadtleben, Begegnung, Umgebung, Erfahrung und Spielerstufen', () => {
     const world = createWorld('SMALL');
     ensureStarter(world);
+    // Der echte Spielstart setzt den Stadt-Seed; der Longturn bildet ihn nach.
+    world.cityLife = createCityLifeState(SEED);
     world.tick = 0;
     const ledger = new Ledger({ [PORTEMONNAIE]: fromVC(20) });
     const prng = new Prng(SEED);
