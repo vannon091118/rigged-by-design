@@ -4,14 +4,20 @@
   "claimId": "lane/governance/city-population-load",
   "branch": "lane/governance/city-population-load",
   "baseSha": "2fc6a5d3f01f744982007983dd27996d0c0eaf02",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Regression 3: geladener CITY-Save muss die Strasse auf 12 Bewohner heben; Integration muss dead-code kalt pruefen",
   "goal": "Laden -> Sicht -> Begegnung als Kette absichern und tote Exporte sowie die Pipeline-Luecke schliessen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 500,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/500",
+    "state": "merged",
+    "headSha": "c6bd5d4df4d9b92023fd00fa7689ab9a4fd95e63",
+    "mergedSha": "fcc5606ffa9ec10cda52445fb36a4b597ff15201"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 3
+  "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout fcc5606).",
+  "revision": 4
 }
