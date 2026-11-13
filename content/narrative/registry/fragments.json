@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6b5456b2763b21cb84cb4128b16de90c383d9abad663a2a10132c2c819632173",
+  "contentHash": "sha256:2f0f1b4d110e960f99e51ebcefa8615e058f930303ab5c56ea7dcaf804edb6f0",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6284,6 +6284,28 @@
       "text": "Man merkt es den Gaesten an, wo sie stehen: Wer gute Abende mit dem Haus verbindet, bestellt eher einen Drink, setzt sich eher dazu und waehlt mutiger. Wer einen schlechten Abend mit sich traegt, haelt Abstand und spielt verhaltener. Niemand wird bevorzugt oder bestraft - Geld, Platz und kaputte Geraete gelten fuer alle gleich; nur die Neigung verschiebt sich, messbar und begrenzt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-e2-visitor-disposition.json"
+    },
+    {
+      "contributionId": "employment-01",
+      "turnId": "2026-11-14T09:20Z-employment",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt zählt keine Stellen mehr, sie vergibt sie: Wer keine hat, bleibt zu Hause, statt zur Schicht zu gehen und Lohn zu kassieren, den niemand eingestellt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-employment.json"
     },
     {
       "contributionId": "event-scheduler-01",

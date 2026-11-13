@@ -1,0 +1,23 @@
+{
+  "id": "lane/sim/issue-519-employment",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-519-employment",
+  "baseSha": "82b633d0b9a70617c451fa3a558582f0f20541bd",
+  "task": "Beschaeftigung als Zuordnung: nur zugeteilte NPCs arbeiten, Neubau vergibt Stellen",
+  "goal": "#519",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "content/",
+    ".lane-claims/",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-issue-519-employment.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "82b633d0b9a70617c451fa3a558582f0f20541bd"
+}

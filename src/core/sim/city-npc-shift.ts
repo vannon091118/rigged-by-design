@@ -66,15 +66,17 @@ const SLOT_LABEL: Readonly<Record<string, string>> = {
   bld_casino_grand: 'Kraft im Casino',
 };
 
-/** Die Schicht dieser Figur; kuratierte Figuren behalten ihre. */
-export function slotOf(npcId: string): CitySlot | null {
-  const curated = CURATED_SLOTS.find((slot) => slot.holderId === npcId);
+/**
+ * Schicht in einem konkreten Betrieb. Nur Gebaeude mit Schichtfenster haben
+ * eine; ein versiegelter Neubau vergibt zwar eine Stelle, aber noch keine
+ * Schicht (#519).
+ */
+export function slotForBuilding(npcId: string, buildingId: string): CitySlot | null {
+  const curated = CURATED_SLOTS.find((slot) => slot.holderId === npcId && slot.buildingId === buildingId);
   if (curated) return curated;
-  const index = npcIndexById(npcId);
-  if (index === null) return null;
-  // Der Ort steht in der Besetzung; die Schicht ist ein Fenster dieses Ortes.
-  const buildingId = PLACE_BUILDING[rosterDefAt(index).location];
-  const windows = SHIFT_WINDOWS[buildingId] ?? SHIFT_WINDOWS.bld_corner_shop!;
+  const windows = SHIFT_WINDOWS[buildingId];
+  if (!windows) return null;
+  const index = npcIndexById(npcId) ?? 0;
   const [from, to] = windows[index % windows.length]!;
   return {
     id: `slot_${buildingId.replace(/^bld_/, '')}_${index + 1}`,
@@ -84,6 +86,15 @@ export function slotOf(npcId: string): CitySlot | null {
     to,
     holderId: npcId,
   };
+}
+
+/** Die Schicht dieser Figur aus ihrer Besetzung; kuratierte Figuren behalten ihre. */
+export function slotOf(npcId: string): CitySlot | null {
+  const curated = CURATED_SLOTS.find((slot) => slot.holderId === npcId);
+  if (curated) return curated;
+  const index = npcIndexById(npcId);
+  if (index === null) return null;
+  return slotForBuilding(npcId, PLACE_BUILDING[rosterDefAt(index).location]);
 }
 
 export function inShift(slot: CitySlot, hour: number): boolean {
