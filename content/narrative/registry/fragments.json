@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3160b3deaa4cb9e9e7b0444ef2c305e644c5f1ee2c38572a1ba59a0f379cb783",
+  "contentHash": "sha256:0db6fb68811d5d41300f28e0355af3fcc062fa750b4cfef788f75cc05992620e",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6239,6 +6239,28 @@
       "text": "Rita lehnt sich über den Tresen, und das Gespräch beginnt nicht mit einer Frage, sondern mit einem Blick, der sagt: Setz dich, das dauert einen Moment. Wer jetzt zuhört, erfährt mehr, als jede Gästeliste je verraten würde.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-dialog-open-01.json"
+    },
+    {
+      "contributionId": "door-walk-01",
+      "turnId": "2026-11-14T05:10Z-door-walk",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tür öffnet sich nicht mehr auf einen Klick aus der Ferne: Der Weg zur Schwelle ist der Auftrag, und erst wer dort steht, tritt ein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-door-walk.json"
     },
     {
       "contributionId": "e2-visitor-disposition-01",
