@@ -1,0 +1,32 @@
+{
+  "id": "lane/governance/verify-all-green",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/verify-all-green",
+  "baseSha": "b1ee312f1547edffa7db285f70698a522624a065",
+  "task": "Drei rote Gates auf main beheben: Seeds, tote Exporte, Governance-Sprache im Welttext",
+  "goal": "verify:all auf main gruen",
+  "pathAllowlist": [
+    "src/core/sim/city-growth.ts",
+    "src/core/sim/city-plots.ts",
+    "src/core/sim/__tests__/city-growth.test.ts",
+    "src/core/sim/__tests__/city-plots.test.ts",
+    "src/core/sim/__tests__/city-encounter-all-residents.test.ts",
+    "content/narrative/contributions/2026-11-13-claim-closeout.json",
+    "content/narrative/contributions/2026-11-13-verify-gates.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-verify-all-green.json",
+    ".lane-claims/claims/lane-governance-issues-sweep.json",
+    ".lane-claims/claims/lane-sim-issues-504-508.json",
+    ".lane-claims/tasks/governance-verify-all-green.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b1ee312f1547edffa7db285f70698a522624a065"
+}

@@ -23,7 +23,7 @@ export const BUILDER_START_CAPITAL = fromVC(6000);
 /** Was ein Neubau kostet; der Betrag geht als Bauarbeit nach aussen. */
 export const BUILD_COST = fromVC(1800);
 /** Arbeitsplätze je Gebäudeart; Wohnungen geben keine Arbeit. */
-export const JOB_CAPACITY: Readonly<Record<BuildingKind, number>> = Object.freeze({
+const JOB_CAPACITY: Readonly<Record<BuildingKind, number>> = Object.freeze({
   APARTMENT: 0, RESIDENCE: 0, PUB: 6, SHOP: 5, CASINO: 8, OFFICE: 4, WORKSHOP: 3,
 });
 
@@ -32,7 +32,7 @@ export interface CityGrowthState {
   readonly built: readonly string[];
 }
 
-export interface JobMarket {
+interface JobMarket {
   readonly residents: number;
   readonly jobs: number;
   /** Stellen, die noch frei sind: hier steigt ein Neuling ein. */
@@ -41,13 +41,13 @@ export interface JobMarket {
   readonly jobless: number;
 }
 
-export interface CityGrowthView extends JobMarket {
+interface CityGrowthView extends JobMarket {
   readonly capital: VaCoinMicro;
   readonly freePlots: number;
   readonly canBuild: boolean;
 }
 
-export interface BuildReport {
+interface BuildReport {
   readonly building: BuildingState;
   readonly cost: VaCoinMicro;
   readonly plotId: string;
@@ -59,7 +59,7 @@ export function cityBuildings(world: WorldState): readonly BuildingState[] {
   return world.cityScene?.exterior.buildings ?? CITY_PRESET_BUILDINGS;
 }
 
-export function ensureCityGrowth(world: WorldState): CityGrowthState {
+function ensureCityGrowth(world: WorldState): CityGrowthState {
   if (!world.cityGrowth) world.cityGrowth = { lastBuildDay: 0, built: [] };
   return world.cityGrowth;
 }
