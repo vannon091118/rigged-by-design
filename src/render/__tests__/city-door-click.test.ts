@@ -108,7 +108,7 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
     expect(scene.enterStreetDoor('door_street_to_unknown')).toBeNull();
   });
 
-  it('verweigert den Uebergang ausserhalb der Reichweite', () => {
+  it('schickt bei einem Klick ausserhalb der Reichweite erst den Weg zur Schwelle', () => {
     const { world, scene } = city();
     world.player.position = { x: 1, y: 1 };
     const notices: string[] = [];
@@ -117,7 +117,8 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
     });
     expect(guarded.enterStreetDoor('door_street_to_player_apt')).toBeNull();
     expect(world.scene.kind).toBe('CITY');
-    expect(notices.join(' ')).toMatch(/Reichweite/);
+    expect(notices.join(' ')).toMatch(/gehst zur Tür/);
+    expect(world.player.path.length).toBeGreaterThan(0);
     void scene;
   });
 });

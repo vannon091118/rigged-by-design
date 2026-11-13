@@ -6,6 +6,7 @@ import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { clearActionQueue } from '../core/sim/action-queue';
 import { ensureCityPopulationForScene } from '../core/sim/city-life-state';
+import { CityDoorWalk } from './city-door-walk';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -22,13 +23,19 @@ const CASINO_STREET_SPAWN = Object.freeze({ x: 22, y: 23 });
 
 export class SceneCommands {
   readonly #deps: Deps;
+  readonly #doors: CityDoorWalk;
 
   constructor(deps: Deps) {
     this.#deps = deps;
+    this.#doors = new CityDoorWalk({
+      world: deps.world, notice: deps.notice, emit: deps.emit,
+      enter: (doorId) => { this.enterStreetDoor(doorId); },
+    });
   }
 
   /** Die Haustuer: aus der Wohnung auf die Strasse (und aus dem Casino in die Stadt). */
   enterCity(): void {
+    this.#doors.clear();
     const world = this.#deps.world();
     if (world.scene.kind === 'CITY') {
       // Ein geladener CITY-Save kann noch die kuratierte Dreierbesetzung
@@ -57,6 +64,7 @@ export class SceneCommands {
 
   /** Zurueck durch die Haustuer: die Wohnung bleibt derselbe Spielzustand. */
   enterApartment(): void {
+    this.#doors.clear();
     const world = this.#deps.world();
     if (world.scene.kind === 'APARTMENT') return;
     clearActionQueue(world);
@@ -92,20 +100,21 @@ export class SceneCommands {
    */
   enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | null {
     const effect = cityDoorEffect(doorId);
+    const ownDoor = effect === null && this.#isOwnDoor(doorId);
+    if (!effect && !ownDoor) return null;
+    // Eine Tuer ist ein Ort, kein Menuepunkt: Ohne Nahe zur Schwelle schickt der
+    // Klick den Spieler erst hin; der Uebergang laeuft bei Ankunft (#506).
+    if (!this.#doors.atDoor(doorId)) {
+      this.#doors.request(doorId);
+      return null;
+    }
     if (!effect) {
       // Das eigene Casino traegt seine Tuer aus dem Layout (`door-<zone>`), nicht
       // aus der Strassentabelle. Ohne diesen Zweig ginge es nach dem Onboarding
       // nur ueber einen Reload wieder auf die Strasse.
-      if (this.#isOwnDoor(doorId)) {
-        if (!this.#atDoor(doorId)) return null;
-        this.enterCity();
-        return 'CITY';
-      }
-      return null;
+      this.enterCity();
+      return 'CITY';
     }
-    // Eine Tuer ist ein Ort, kein Menuepunkt: Ohne Nahe zur Schwelle bleibt sie
-    // zu. Sonst wechselt ein Klick quer ueber die Stadt die Szene (#506).
-    if (!this.#atDoor(doorId)) return null;
     if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
     if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
     const world = this.#deps.world();
@@ -129,26 +138,9 @@ export class SceneCommands {
     return world.layout.edges.some((edge) => edge.kind === 'DOOR' && edge.id === doorId);
   }
 
-  /**
-   * Steht der Spieler an der Schwelle? Eine Kachel Abstand in jede Richtung
-   * reicht; alles weitere ist ein Weg, den erst die Bewegung zuruecklegen muss.
-   * Unbekannte Tueren gelten nicht als nah (kein stiller Durchlass).
-   */
-  #atDoor(doorId: string): boolean {
-    const world = this.#deps.world();
-    const edges = world.scene.kind === 'CITY'
-      ? world.cityScene?.layout.edges ?? []
-      : world.layout.edges;
-    const door = edges.find((edge) => edge.kind === 'DOOR' && edge.id === doorId);
-    const pos = world.player.position;
-    const near = door
-      ? Math.max(Math.abs(pos.x - door.x), Math.abs(pos.y - door.y)) <= 1
-      : false;
-    if (!near) {
-      this.#deps.notice('Die Tür ist außer Reichweite. Geh erst hin.');
-      this.#deps.emit();
-    }
-    return near;
+  /** Ankunft am gemerkten Tuerziel: erst hier oeffnet sich die Tuer (#506). */
+  arriveAtStreetDoor(): boolean {
+    return this.#doors.arrive();
   }
 
   /** Die Eroeffnung schliessen: der einzige Weg von OPENING in die Wohnung. */
@@ -160,6 +152,7 @@ export class SceneCommands {
   }
 
   enterCasino(): void {
+    this.#doors.clear();
     const world = this.#deps.world();
     if (world.scene.kind === 'OWN') return;
     clearActionQueue(world);

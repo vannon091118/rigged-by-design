@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "store-issue-506-door-walk",
+  "claimId": "lane/store/issue-506-door-walk",
+  "branch": "lane/store/issue-506-door-walk",
+  "baseSha": "19fd034351d5f184340246f2b1dc066b32a43e0e",
+  "phase": "CI_PENDING",
+  "title": "Ferner Tuerklick fuehrt erst zur Schwelle, Uebergang bei Ankunft",
+  "goal": "#506",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

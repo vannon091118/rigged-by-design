@@ -1,0 +1,24 @@
+{
+  "id": "lane/store/issue-506-door-walk",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/store/issue-506-door-walk",
+  "baseSha": "19fd034351d5f184340246f2b1dc066b32a43e0e",
+  "task": "Ferner Tuerklick fuehrt erst zur Schwelle, Uebergang bei Ankunft",
+  "goal": "#506",
+  "pathAllowlist": [
+    "src/store/",
+    "src/render/",
+    "src/core/sim/narrative/",
+    "content/",
+    ".lane-claims/",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "19fd034351d5f184340246f2b1dc066b32a43e0e"
+}

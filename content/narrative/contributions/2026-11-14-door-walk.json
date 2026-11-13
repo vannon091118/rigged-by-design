@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T05:10Z-door-walk",
+  "contributionId": "door-walk-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Tür öffnet sich nicht mehr auf einen Klick aus der Ferne: Der Weg zur Schwelle ist der Auftrag, und erst wer dort steht, tritt ein.",
+  "directives": []
+}
