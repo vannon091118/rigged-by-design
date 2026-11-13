@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 352 Dateien — contract 195 · integration 91 · governance 53 · statistics 6 · performance 7.
+Summe: 353 Dateien — contract 195 · integration 92 · governance 53 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -401,6 +401,7 @@ Summe: 352 Dateien — contract 195 · integration 91 · governance 53 · statis
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
 | `src/render/__tests__/view-layers.test.ts` | render | integration | ja | `src/render/view-layers.ts` |
 | `src/render/assets/__tests__/asset-semantics.test.ts` | render | integration | ja | `src/render/assets/asset-semantics.json` |
+| `src/render/assets/__tests__/textures-preload.test.ts` | render | integration | ja | `src/render/assets/textures.ts` |
 | `src/render/city/__tests__/city-assets.test.ts` | render | integration | ja | `src/render/city/city-assets.ts` |
 | `src/render/depth-perf.bench.ts` | render | performance | nein, Mechanik | `src/render/depth.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, Mechanik | `src/render/floor-math.ts` |
@@ -658,10 +659,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2830 |
-| Gelistete Dateien | 2830 |
+| Getrackte Dateien | 2831 |
+| Gelistete Dateien | 2831 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (25), artifacts (1), content (1028), docs (103), packages (27), public (571), scripts (116), src (938) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (25), artifacts (1), content (1028), docs (103), packages (27), public (571), scripts (116), src (939) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -768,7 +769,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/` — 61 Datei(en)
 - `src/render/__tests__/` — 30 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
-- `src/render/assets/__tests__/` — 1 Datei(en)
+- `src/render/assets/__tests__/` — 2 Datei(en)
 - `src/render/city/` — 1 Datei(en)
 - `src/render/city/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
@@ -1867,7 +1868,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INDEX.md` — Doku-Index — gelesen: 65 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1489 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1508 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen
@@ -3311,6 +3312,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 190 Zeilen
+- `src/render/assets/__tests__/textures-preload.test.ts` — R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 59 Zeilen
 - `src/render/assets/asset-semantics.json` — { — gelesen: 1319 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 56 Zeilen

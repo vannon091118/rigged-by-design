@@ -238,7 +238,7 @@ stehen.
 | R5 | PASS (Teil) | `18-r4-materialien.png` | Weiche Lichtfläche über dem Automaten und sichtbare Leuchten, keine Ellipsenschleife im Bild; die 16 Quellen sind nur im Test belegt |
 | R6 | PASS (Teil) | `20-r6-kamera.png` | Weltkante und Parallaxe sichtbar; FIT ist die kleinste Stufe, ein LOD-Wechsel an der Schwelle wurde nicht erzwungen |
 | R7 | PASS (Teil) | `21-r7-stadt.png` | Straßenraum, vier Fassaden und Türen sichtbar; Eintritt über die Wohnungstür, kein Teleport. Der Klick auf die Casino-Tür wurde im Browser nicht durchgeführt (nur Testbeleg) |
-| R8 | TEIL | `asset-semantics.json` (539 Einträge), `src/render/city/city-assets.ts`, `city-assets.test.ts` (inkl. Frame-Block) | Alle 539 Einträge tragen jetzt `role`, `world`, `displayScale` und `license`; die 10 realen Stadttexturen sind in `city-assets.ts` typisiert und gegen Manifest/Datei/Laufzeitliste geprüft. Der echte `CityRenderPlan` trägt Welt und Rolle als Pixi-Knotenlabel; ein Test mit Skala 2 belegt, dass `displayScale` Fassade und Gebäudeschatten gemeinsam skaliert. Offen: nur 10 statt der im Audit genannten rund 30 Stadtassets; Boot-Request-Messung im Cloud-Browser nicht möglich (0 Stadt-Requests, Seite hängt vor dem Canvas); keine Pixi-Sichtabnahme |
+| R8 | TEIL | `asset-semantics.json` (539 Einträge), `src/render/city/city-assets.ts`, `city-assets.test.ts` (inkl. Frame-Block), `src/render/assets/__tests__/textures-preload.test.ts` | Alle 539 Einträge tragen jetzt `role`, `world`, `displayScale` und `license`; die 10 realen Stadttexturen sind in `city-assets.ts` typisiert und gegen Manifest/Datei/Laufzeitliste geprüft. Der echte `CityRenderPlan` trägt Welt und Rolle als Pixi-Knotenlabel; ein Test mit Skala 2 belegt, dass `displayScale` Fassade und Gebäudeschatten gemeinsam skaliert. Der echte `preloadRuntimeArt` hat im Browser alle **10/10** Stadt-SVGs als Fetch-Requests mit HTTP 200 angefordert; der Repo-Test hält dieselben 10 `Assets.load`-Aufrufe. Offen: voller App-Boot und Screenshot/Pixelabnahme; die Cloud-Session hängt in Pixi/WebGL `Application.init` (pure WebGL und Canvas-Renderer laufen), nicht im Stadt-Preload. Nur 10 statt der im Audit genannten rund 30 Stadtassets |
 | R9 | teilweise | `30-r9-stadtbewohner.png` | Rita, Boris und Mira leben im echten Tick, haben jetzt Kachel, A*-Weg, Ankunftszeit und Zwischenstand (`city-life-movement.ts`); `city-actors.ts` fehlt noch, also zeichnet sie niemand auf der Straße |
 | R10 | PASS (Teil) | `24-r10-wohnung.png` | Vier Bereiche (Schlafen, Kochen, Bad, Wohnen) mit warmer Palette, ohne Neon und Automat; S2-09–S2-11 bleiben als Roadmap-Zeilen offen |
 | R11 | PASS (Teil) | `18-r4-materialien.png` | Figuren bewegen sich sichtbar (Sprechblasen und Positionen ändern sich); ein Richtungswechsel ist im Standbild nicht belegbar, der Frame kommt aus Tick und Phase |
@@ -407,8 +407,30 @@ Baum) mit Rolle, Welt `city`, ganzzahliger Anzeigeskala und
 Rechteangabe `operator-confirmed`. Der Test weist falsche Skalen, fremde Welten,
 fehlende Rollen und doppelte IDs/Pfade ab. **Weiter offen:** Straße, Gehweg und
 Kante sind Geometrie und keine Bildassets; die im Audit genannte Zahl von rund
-30 Stadtassets ist am Baum nicht vorhanden. Ein Browser-Screenshot und die
-Boot-Request-Messung fehlen, deshalb bleibt R8 **TEIL**, nicht PASS.
+30 Stadtassets ist am Baum nicht vorhanden.
+
+**Boot-Request-Beleg (2026-11-13):** Die echte Produktionsfunktion
+`preloadRuntimeArt()` wurde in einer temporären, nicht committeten
+Canvas-Preload-Probe ausgeführt. Die zehn Stadt-SVGs erschienen als
+tatsächliche `Fetch`-Requests mit HTTP 200; die Probe meldete `done:10/10`.
+Der neue Repo-Test `src/render/assets/__tests__/textures-preload.test.ts`
+treibt dieselbe Funktion an und beobachtet die `Assets.load`-Grenze: genau
+zehn Stadt-URLs, jede einmal. `textures.ts` enthält keinen
+`Texture.from(url)`-Aufruf; der beobachtete Ladepfad läuft ausschließlich über
+`Assets.load`.
+
+Der vollständige App-Boot bleibt in dieser Cloud-Session nicht belegbar. Der
+isolierte WebGL-Probe liefert `WebGL 2.0 (OpenGL ES 3.0 Chromium)`; der
+Pixi-Modulimport liefert 752 Exporte; `Application.init({preference:'webgl'})`
+blockiert dagegen ohne Rückgabe. `preview_evaluate` bricht dort nach 10 s ab
+(`Evaluation exceeded 10s`), `preview_screenshot` nach 15 s
+(`Page.captureScreenshot timed out after 15s`). Mit `preference:'canvas'`
+liefert `Application.init` dagegen `type=4`. Das ist eine Umgebungsgrenze der
+Cloud-GPU bzw. des Pixi-WebGL-Renderers, kein Fehler im Stadt-Preload.
+
+Damit ist Punkt 1 an der Preload-/`Assets.load`-Grenze belegt; ein
+vollständiger App-Boot, ein Screenshot und eine Pixeldarstellung fehlen
+weiterhin. R8 bleibt deshalb **TEIL**, nicht PASS.
 
 **R9: Fundament jetzt belegt, Darstellung offen.** `CityResidentState` trägt
 seit dem Bewegungs-Schnitt eine Kachel (`position`), einen laufenden Weg
@@ -1089,19 +1111,15 @@ mit Welt-, Skalierungs- und Rechteangaben.
 - [x] Kein Stadtasset ohne Rolle und Welt. Die zehn vorhandenen Texturen
       sind vollständig in `city-assets.ts` erfasst und geprüft.
 - [ ] Die Boot-Requests steigen nicht unkontrolliert; die Zahl steht im
-      lokalen Messbericht. Der Test hält den Stadtanteil bei zehn und prüft
-      jeden Pfad gegen `RUNTIME_ART`; eine echte Request-/First-Frame-Messung
-      im Browser steht noch aus. **Messversuch 2026-11-13:**
-      `pnpm run build` (exit 0, 10 Stadt-SVGs in `dist`), danach
-      `python3 -m http.server 3000 --bind 0.0.0.0 --directory dist`.
-      Cloud-Browser: `preview_open` auf die Produktionsseite; die 20
-      Produktions-Chunks kamen mit 200 an, aber **0** Requests unter
-      `/assets/casino/environment/floor/city/`. `preview_wait` auf `canvas`
-      ergab nach 30 s `met: false`; `preview_evaluate` brach nach 10 s und
-      `preview_screenshot` nach 15 s mit Timeout ab. Eine Kontrollseite
-      (`example.com`) antwortete in derselben Sitzung. Damit ist der Sichtpfad
-      als Umgebungsgrenze belegt, die reale Boot-Request-Zahl für die Stadt
-      aber weiterhin offen.
+      lokalen Messbericht. **Preload-Beleg 2026-11-13:** Der echte
+      `preloadRuntimeArt` forderte im Cloud-Browser alle **10/10**
+      Stadt-SVGs als `Fetch`-Requests mit HTTP 200 an; die Probe meldete
+      `done:10/10`. `textures-preload.test.ts` hält dieselben zehn
+      `Assets.load`-Aufrufe, jeden Pfad genau einmal. **Offen:** der
+      vollständige App-Boot; `preview_evaluate`/`preview_screenshot` brechen
+      im Pixi-WebGL-`Application.init` nach 10 s/15 s ab, während reines
+      WebGL und der Canvas-Renderer laufen. Die Zahl steht damit für den
+      Preload-Pfad, nicht für den kompletten First-Frame.
 - [x] Der echte `CityRenderPlan` trägt Welt und Rolle bis in den Pixi-Baum;
       `displayScale` skaliert Fassade **und** Gebäudeschatten.
       *(belegt: Frame-Block in `city-assets.test.ts`; Knotenlabel
@@ -1115,7 +1133,8 @@ mit Welt-, Skalierungs- und Rechteangaben.
       in dieser Umgebung kein lokaler Browserbeleg; `displayScale` ist 1 und
       ändert das bestehende Bild nicht. Der Cloud-Browser bleibt vor dem
       ersten Canvas hängen; der deterministische Frame-Test belegt den
-      Pixi-Baum, ersetzt aber keinen Screenshot.
+      Pixi-Baum, der Preload-Beleg die zehn Requests — beide ersetzen keinen
+      Screenshot.
 
 **PixiJS-Falle:** Assets über `Assets.load`/Manifest laden, nicht über
 `Texture.from(url)`. `Assets`-Cache bewusst halten; kein `Assets.reset()` pro
