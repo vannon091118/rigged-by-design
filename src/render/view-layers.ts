@@ -15,6 +15,7 @@ import type { AmbientLayer } from './ambient-layer';
 import { ambientPlanForView } from './ambient-plan';
 import { cityRenderPlan, type CityExteriorLayer } from './city-exterior-layer';
 import type { EntitySync } from './entity-sync';
+import type { CityActorSync } from './city-actor-sync';
 import type { FloorCameraRig } from './floor-camera-rig';
 import type { FloorCues } from './floor-cues';
 import type { LightPool } from './light-pool';
@@ -30,6 +31,7 @@ export interface ViewLayers {
   readonly walls: WallOcclusion;
   readonly cues: FloorCues;
   readonly entities: EntitySync;
+  readonly cityActors: CityActorSync;
   readonly rig: FloorCameraRig;
   readonly renderer: Renderer;
 }
@@ -58,6 +60,8 @@ export function syncViewLayers(
   }
   layers.scene.redrawDirt(view);
   layers.entities.sync(view, now);
+  // Bewohner sind Strassenfiguren; der Layer liest dieselbe Simulation.
+  layers.cityActors.sync(view, now, layers.rig.lod);
   layers.walls.sync(layers.renderer, { size: view.size, layout: view.layout }, TILE, layers.scene.depth);
   layers.scene.depth.flush();
   layers.cues.setPath(view.player.path, view.player.pathIndex);

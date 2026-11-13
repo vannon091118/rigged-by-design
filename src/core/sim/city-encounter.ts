@@ -28,6 +28,10 @@ export type { EncounterResult } from './city-encounter-action';
 export { encounterDialog } from './city-encounter-dialog';
 export type { EncounterDialog } from './city-encounter-dialog';
 
+/** Ortsname fuer Meldungen; HOME hat keinen eigenen Stadtort. */
+const placeLabel = (place: 'HOME' | 'KIEZ' | 'MARKT' | 'CASINO'): string =>
+  place === 'HOME' ? 'zu Hause' : locationName(place);
+
 const isCityLocation = (value: string | undefined): value is CityLocationId =>
   value === 'KIEZ' || value === 'MARKT' || value === 'CASINO';
 
@@ -51,8 +55,16 @@ export function meetNpc(
   const life = ensureCityLife(world);
   let npc: CityNpcDef | null;
   if (target && !isCityLocation(target)) {
-    npc = rosterDefById(target, life.seed ?? 0);
-    if (!npc) throw new Error(`Diese Figur steht nicht in der Besetzung: ${target}.`);
+    const found = rosterDefById(target, life.seed ?? 0);
+    if (!found) throw new Error(`Diese Figur steht nicht in der Besetzung: ${target}.`);
+    npc = found;
+    // Ein Gespraech braucht Anwesenheit: Der Ort kommt aus dem residenten
+    // Zustand, nicht aus dem Roster-Profil. Sonst waere die Stadt ein Menue
+    // ueber alle Bewohner hinweg (#507).
+    const resident = life.residents.find((entry) => entry.npcId === found.id);
+    if (resident && resident.location !== state.location) {
+      throw new Error(`${found.name} ist gerade ${placeLabel(resident.location)}, nicht hier.`);
+    }
   } else {
     const resident = life.residents.find((entry) => entry.location === location);
     const roster = rosterDefs(life.residents.length, life.seed ?? 0);

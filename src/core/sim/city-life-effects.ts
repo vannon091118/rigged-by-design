@@ -22,6 +22,23 @@ interface CityEffects {
   readonly socialSkill: number;
 }
 
+/**
+ * Nur das Verstreichen der Zeit: Beduerfnisse driften mit dem Intent, aber
+ * Geld, Faehigkeiten und soziale Wirkung bleiben aus. Das ist der Anteil, der
+ * auch waehrend einer Reise gilt — ortsgebundene Wirkung entsteht erst am Ziel.
+ */
+export function applyDrift(
+  before: NpcNeeds, intent: NpcIntentKind, elapsedHours: number,
+): CityEffects {
+  const after = tickNeeds(before, intent, elapsedHours);
+  return {
+    money: before.money,
+    hunger: after.hunger, thirst: after.thirst, fatigue: after.fatigue,
+    social: after.social, mood: after.mood,
+    cooking: 0, work: 0, socialSkill: 0,
+  };
+}
+
 export function applyIntentEffects(
   before: NpcNeeds, intent: NpcIntentKind, elapsedHours: number,
   skills: CityResidentState['skills'],

@@ -105,12 +105,16 @@ export function tickCityLife(world: WorldState): void {
       seed,
     };
     const decisionPlan = decideCityLife(input);
+    // Wirkung erst am Ort: Was eine Reise braucht, bucht nur die Zeitdauer;
+    // Geld, Faehigkeit und Kontakt folgen in `tickCityMovement` bei Ankunft.
+    const needsTravel = decisionPlan.choice.location !== record.location;
     const applied = applyCityDecision({
       input,
       plan: decisionPlan,
       decisionId: decisionSeq + 1,
       elapsedHours: elapsedHours(record, world.day, hour),
       nextMemoryId: memorySeq,
+      settled: !needsTravel,
     });
     decisionSeq += 1;
     memorySeq = applied.nextMemoryId;

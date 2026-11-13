@@ -6,7 +6,7 @@
  * Entscheidung, damit die naechste Entscheidung dieselben Werte liest.
  */
 import { decisionSummary, type CityDecisionPlan } from './city-life-decision';
-import { applyIntentEffects } from './city-life-effects';
+import { applyDrift, applyIntentEffects } from './city-life-effects';
 import { addMemory, rumorMemory, socialMemory } from './city-life-memory';
 import type {
   CityLifeDecision, CityResidentState, NpcMemory,
@@ -23,6 +23,12 @@ interface CityApplyInput {
   readonly decisionId: number;
   readonly elapsedHours: number;
   readonly nextMemoryId: number;
+  /**
+   * Ist der Bewohner schon am Ort der Handlung? Nur dann bucht die Entscheidung
+   * Geld, Faehigkeit und soziale Wirkung. Sonst laeuft die Reise, und die
+   * Ankunft bucht die Wirkung nach (#504).
+   */
+  readonly settled?: boolean;
 }
 
 interface CityApplyResult {
@@ -34,11 +40,15 @@ interface CityApplyResult {
 }
 
 /** Fuehrt Intent, Oekonomie und soziale Folgen in einem Schritt zusammen. */
-export function applyCityDecision({ input, plan, decisionId, elapsedHours, nextMemoryId }: CityApplyInput): CityApplyResult {
+export function applyCityDecision({
+  input, plan, decisionId, elapsedHours, nextMemoryId, settled = true,
+}: CityApplyInput): CityApplyResult {
   const { resident, tick, scheduled } = input;
   const { choice, socialTarget } = plan;
   const before = resident.needs;
-  const effects = applyIntentEffects(before, choice.intent, elapsedHours, resident.skills);
+  const effects = settled
+    ? applyIntentEffects(before, choice.intent, elapsedHours, resident.skills)
+    : applyDrift(before, choice.intent, elapsedHours);
   let mood = effects.mood;
   const social = effects.social;
   const hunger = effects.hunger;
@@ -56,7 +66,7 @@ export function applyCityDecision({ input, plan, decisionId, elapsedHours, nextM
   const target = socialTarget
     ? input.peers.find((peer) => peer.npcId === socialTarget) ?? null
     : null;
-  if (target && (choice.intent === 'PUB' || choice.intent === 'VISIT_FRIEND')) {
+  if (settled && target && (choice.intent === 'PUB' || choice.intent === 'VISIT_FRIEND')) {
     relationshipTarget = target.npcId;
     relationshipDelta = choice.intent === 'VISIT_FRIEND' ? 6 : 4;
     const current = resident.relationships[target.npcId] ?? 0;
@@ -85,7 +95,8 @@ export function applyCityDecision({ input, plan, decisionId, elapsedHours, nextM
       hunger: clampNeed(hunger), thirst: clampNeed(thirst), fatigue: clampNeed(fatigue),
       social: clampNeed(social), mood: clampNeed(mood), money: Math.max(0, Math.round(effects.money)),
     },
-    skills: { cooking, work, social: socialSkill },
+    // Ohne Ankunft bleibt der Skillstand unveraendert; die Ankunft bucht nach.
+    skills: settled ? { cooking, work, social: socialSkill } : resident.skills,
     relationships: relationshipTarget
       ? {
         ...resident.relationships,

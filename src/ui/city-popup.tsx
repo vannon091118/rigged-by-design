@@ -39,14 +39,20 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
               {' '}· Sozial {resident.social} · Laune {resident.mood}
             </small>
             {resident.traits.length > 0 && <small style={{ display: 'block', marginTop: 3, opacity: .72, fontSize: 11 }}>{resident.traits.join(' · ')}</small>}
+            {/* Nur wer hier ist, ist ansprechbar: Der Ort kommt aus dem
+                Bewohnerzustand, nicht aus dem Roster-Profil (#507). */}
             <button
               type="button"
               className="btn small"
               style={{ marginTop: 6 }}
               aria-label={`${resident.name} ansprechen`}
+              disabled={resident.location !== city.location}
+              title={resident.location === city.location
+                ? undefined
+                : `${resident.name} ist gerade in ${resident.locationLabel}.`}
               onClick={() => worldStore.city({ kind: 'meet', npcId: resident.npcId })}
             >
-              Ansprechen
+              {resident.location === city.location ? 'Ansprechen' : 'nicht hier'}
             </button>
           </div>
         ))}

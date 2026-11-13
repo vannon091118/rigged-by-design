@@ -32,6 +32,15 @@ function city() {
 const pixel = (door: DoorEdge) => ({ x: (door.x + 0.5) * TILE, y: (door.y + 0.5) * TILE });
 const cues = () => ({ ping: () => undefined });
 
+/** An die Schwelle stellen: Ein Tuerklick wirkt nur in Reichweite (#506). */
+function at(world: ReturnType<typeof createWorld>, id: string) {
+  const edges = world.scene.kind === 'CITY' ? world.cityScene!.layout.edges : world.layout.edges;
+  const edge = edges.find((entry) => entry.kind === 'DOOR' && entry.id === id);
+  if (!edge) return;
+  world.player.position = { x: edge.x, y: edge.y };
+  world.player.path = [];
+}
+
 describe('Stadt: Tuerkanten als Klickziel', () => {
   it('ordnet alle vier Stadtkanten ihren bestehenden Uebergaengen zu', () => {
     const { doors } = city();
@@ -77,19 +86,38 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
 
   it('fuehrt die Schwelle in die bestehende Szene oder den Stadtort', () => {
     const { world, scene } = city();
+    at(world, 'door_street_to_player_apt');
     expect(scene.enterStreetDoor('door_street_to_player_apt')).toBe('APARTMENT');
     expect(world.scene.kind).toBe('APARTMENT');
     scene.enterCity();
+    at(world, 'door_street_to_casino_grand');
     expect(scene.enterStreetDoor('door_street_to_casino_grand')).toBe('CASINO');
     expect(world.scene.kind).toBe('OWN');
     scene.enterCity();
+    at(world, 'door_street_to_kiez_pub');
     expect(scene.enterStreetDoor('door_street_to_kiez_pub')).toBe('CITY');
     expect(world.city?.location).toBe('KIEZ');
+    at(world, 'door_street_to_corner_shop');
     expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBeNull();
     expect(world.city?.location).toBe('KIEZ');
     world.city = { ...cityOf(world), KIEZ: 9 };
+    at(world, 'door_street_to_corner_shop');
     expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBe('CITY');
     expect(world.city?.location).toBe('MARKT');
+    // Unbekannte Tuer bleibt wirkungslos; sie hat keine Kachel zum Hingehen.
     expect(scene.enterStreetDoor('door_street_to_unknown')).toBeNull();
+  });
+
+  it('verweigert den Uebergang ausserhalb der Reichweite', () => {
+    const { world, scene } = city();
+    world.player.position = { x: 1, y: 1 };
+    const notices: string[] = [];
+    const guarded = new SceneCommands({
+      world: () => world, emit: () => undefined, notice: (text) => notices.push(text),
+    });
+    expect(guarded.enterStreetDoor('door_street_to_player_apt')).toBeNull();
+    expect(world.scene.kind).toBe('CITY');
+    expect(notices.join(' ')).toMatch(/Reichweite/);
+    void scene;
   });
 });

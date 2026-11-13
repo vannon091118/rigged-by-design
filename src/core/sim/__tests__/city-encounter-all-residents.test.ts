@@ -17,6 +17,15 @@ import { informantFor, locationName, witnessFor } from '../city-npcs';
 import { PORTEMONNAIE } from '../money';
 import { createWorld, ensureStarter } from '../templates';
 
+/** Alle Bewohner an den Ort des Spielers stellen: Anwesenheit ist die Bedingung. */
+function placeAll(world: ReturnType<typeof createWorld>, place: 'HOME' | 'KIEZ' | 'MARKT' | 'CASINO') {
+  const life = ensureCityLife(world);
+  world.cityLife = {
+    ...life,
+    residents: life.residents.map((resident) => ({ ...resident, location: place })),
+  };
+}
+
 function start() {
   const world = createWorld('SMALL');
   ensureStarter(world);
@@ -43,6 +52,7 @@ describe('Begegnung mit allen Bewohnern', () => {
       const expected = rosterDefById(id, life.seed ?? 0);
       expect(expected, `Keine Roster-Definition fuer ${id}`).not.toBeNull();
       const { world: run, ledger } = start();
+      placeAll(run, 'KIEZ');
       const met = meetNpc(run, id);
       expect(met.npc, id).toEqual(expected);
       expect(met.visitor.residentNpcId, id).toBe(id);
@@ -75,6 +85,7 @@ describe('Begegnung mit allen Bewohnern', () => {
     const life = ensureCityLife(world);
     const expected = rosterDefById('npc_20', life.seed ?? 0);
     expect(expected).not.toBeNull();
+    placeAll(world, 'KIEZ');
 
     const met = meetNpc(world, 'npc_20');
     expect(met.npc).toEqual(expected);
@@ -85,6 +96,14 @@ describe('Begegnung mit allen Bewohnern', () => {
     expect(informant?.id).not.toBe('npc_20');
     expect(witness?.id).not.toBe('npc_20');
     expect(witness?.id).not.toBe(informant?.id);
+  });
+
+  it('verweigert ein Gespraech mit einem Bewohner, der woanders steht', () => {
+    const { world } = start();
+    const life = ensureCityLife(world);
+    const away = life.residents.find((resident) => resident.location !== 'KIEZ')!;
+    expect(away).toBeDefined();
+    expect(() => meetNpc(world, away.npcId)).toThrow(/nicht hier/);
   });
 
   it('macht eine unbekannte Kennung sichtbar statt sie auf einen Default zu biegen', () => {

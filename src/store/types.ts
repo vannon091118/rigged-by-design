@@ -46,6 +46,16 @@ interface ForeignFloorView {
   readonly day: number;
 }
 
+export interface CityActorView {
+  readonly npcId: string;
+  readonly name: string;
+  readonly role: string;
+  readonly x: number;
+  readonly y: number;
+  /** Laueft gerade: die Figur zeigt den Weg, nicht den Stand. */
+  readonly traveling: boolean;
+}
+
 export interface GameView {
   readonly template: TemplateId;
   /** Kanonische raeumliche Wahrheit fuer Simulation, Renderer und Editor. */
@@ -133,6 +143,8 @@ export interface GameView {
   readonly city: CityView;
   /** Nur in der Stadt: die eine begehbare Aussenwelt fuer den Renderer. */
   readonly cityExterior: CityExteriorModel | null;
+  /** Nur in der Stadt: Bewohner als Strassenfiguren, stabile Kennung je NPC. */
+  readonly cityActors: readonly CityActorView[];
   readonly notice: string;
   /** Aktive Szene und ihre serialisierte Auftragskette. */
   readonly scene: SceneView;

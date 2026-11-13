@@ -96,9 +96,16 @@ export class SceneCommands {
       // Das eigene Casino traegt seine Tuer aus dem Layout (`door-<zone>`), nicht
       // aus der Strassentabelle. Ohne diesen Zweig ginge es nach dem Onboarding
       // nur ueber einen Reload wieder auf die Strasse.
-      if (this.#isOwnDoor(doorId)) { this.enterCity(); return 'CITY'; }
+      if (this.#isOwnDoor(doorId)) {
+        if (!this.#atDoor(doorId)) return null;
+        this.enterCity();
+        return 'CITY';
+      }
       return null;
     }
+    // Eine Tuer ist ein Ort, kein Menuepunkt: Ohne Nahe zur Schwelle bleibt sie
+    // zu. Sonst wechselt ein Klick quer ueber die Stadt die Szene (#506).
+    if (!this.#atDoor(doorId)) return null;
     if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
     if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
     const world = this.#deps.world();
@@ -120,6 +127,28 @@ export class SceneCommands {
     const world = this.#deps.world();
     if (world.scene.kind !== 'OWN') return false;
     return world.layout.edges.some((edge) => edge.kind === 'DOOR' && edge.id === doorId);
+  }
+
+  /**
+   * Steht der Spieler an der Schwelle? Eine Kachel Abstand in jede Richtung
+   * reicht; alles weitere ist ein Weg, den erst die Bewegung zuruecklegen muss.
+   * Unbekannte Tueren gelten nicht als nah (kein stiller Durchlass).
+   */
+  #atDoor(doorId: string): boolean {
+    const world = this.#deps.world();
+    const edges = world.scene.kind === 'CITY'
+      ? world.cityScene?.layout.edges ?? []
+      : world.layout.edges;
+    const door = edges.find((edge) => edge.kind === 'DOOR' && edge.id === doorId);
+    const pos = world.player.position;
+    const near = door
+      ? Math.max(Math.abs(pos.x - door.x), Math.abs(pos.y - door.y)) <= 1
+      : false;
+    if (!near) {
+      this.#deps.notice('Die Tür ist außer Reichweite. Geh erst hin.');
+      this.#deps.emit();
+    }
+    return near;
   }
 
   /** Die Eroeffnung schliessen: der einzige Weg von OPENING in die Wohnung. */
