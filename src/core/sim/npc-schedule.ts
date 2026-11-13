@@ -83,6 +83,26 @@ export function createDayPlan(
   };
 }
 
+/**
+ * Tagesplan ohne Arbeit: Wer keine Stelle hat, geht nicht zur Arbeit und
+ * verdient kein Geld (#519). Der Tag bleibt trotzdem ein Tag.
+ */
+export function createIdleDayPlan(npcId: string, homeBuildingId: string): DayPlan {
+  return {
+    npcId,
+    entries: [
+      { startHour: 0, intent: 'SLEEP', targetBuildingId: homeBuildingId },
+      { startHour: 7, intent: 'WAKE_UP', targetBuildingId: homeBuildingId },
+      { startHour: 8, intent: 'EAT_HOME', targetBuildingId: homeBuildingId },
+      { startHour: 11, intent: 'SHOP', targetBuildingId: 'bld_corner_shop' },
+      { startHour: 13, intent: 'EAT_OUT', targetBuildingId: 'bld_kiez_pub' },
+      { startHour: 19, intent: 'PUB', targetBuildingId: 'bld_kiez_pub' },
+      { startHour: 22, intent: 'COMMUTE', targetBuildingId: homeBuildingId },
+      { startHour: 23, intent: 'SLEEP', targetBuildingId: homeBuildingId },
+    ],
+  };
+}
+
 export function nextIntentForHour(plan: DayPlan, hour: number): NpcScheduleEntry | undefined {
   const normalizedHour = hourOfDay(hour);
   let activeEntry: NpcScheduleEntry | undefined = undefined;

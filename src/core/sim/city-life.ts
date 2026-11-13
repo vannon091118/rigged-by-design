@@ -12,14 +12,16 @@
  */
 import { ensureCityVisitor, type CityNpcDef } from './city-npcs';
 import { rosterDefById } from './city-npc-roster';
-import { buildingOfPlace, placeOfBuilding, slotOf } from './city-npc-shift';
+import { buildingOfPlace, placeOfBuilding, slotForBuilding } from './city-npc-shift';
+import { assignEmployment } from './city-employment';
+import { CITY_PRESET_BUILDINGS } from './building';
 import type {
   CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
 import { ensureCityLife } from './city-life-state';
 import { hourOfTick } from './clock';
 import { clamp } from './num';
-import { createDayPlan, nextIntentForHour } from './npc-schedule';
+import { createDayPlan, createIdleDayPlan, nextIntentForHour } from './npc-schedule';
 import { cityMap, startTravel } from './city-life-movement';
 import { applyCityDecision } from './city-life-apply';
 import { decideCityLife } from './city-life-decision';
@@ -79,14 +81,28 @@ export function tickCityLife(world: WorldState): void {
   const seed = life.seed ?? 0;
   let decisionSeq = life.decisionSeq ?? 0;
   let memorySeq = life.memorySeq ?? 1;
+  // Eine Stelle gehoert einer Figur, nicht einer Differenz: Dieselbe Zuordnung
+  // traegt Arbeitsmarkt und Tagesplan (#519).
+  const buildings = world.cityScene?.exterior.buildings ?? CITY_PRESET_BUILDINGS;
+  const employment = assignEmployment(
+    life.residents.map((record) => ({
+      npcId: record.npcId,
+      preferredBuildingId: buildingOfPlace(defFor(record.npcId, seed)?.location ?? 'MARKT'),
+    })),
+    buildings,
+  );
   const changed = life.residents.map((record): TickResult => {
     if (record.lastDay === world.day && record.lastHour === hour) {
       return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     }
     const def = defFor(record.npcId, seed);
-    const slot = slotOf(record.npcId);
-    const workplace = def ? buildingOfPlace(def.location) : HOME_BUILDING;
-    const plan = createDayPlan(record.npcId, HOME_BUILDING, slot?.buildingId ?? workplace, slot ?? undefined);
+    const workplaceId = employment.get(record.npcId) ?? null;
+    const slot = workplaceId ? slotForBuilding(record.npcId, workplaceId) : null;
+    // Ohne Stelle oder in einem noch versiegelten Neubau gibt es keine Schicht:
+    // Der Tag laeuft ohne WORK und ohne Lohn.
+    const plan = slot && workplaceId
+      ? createDayPlan(record.npcId, HOME_BUILDING, workplaceId, slot)
+      : createIdleDayPlan(record.npcId, HOME_BUILDING);
     const scheduled = nextIntentForHour(plan, hour);
     if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     // Das konkrete Ziel des Plans gehoert in die Entscheidung: sonst routet

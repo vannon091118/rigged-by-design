@@ -10,7 +10,8 @@
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { CITY_PRESET_BUILDINGS, createBuilding } from './building';
-import type { BuildingKind, BuildingState } from './building-types';
+import type { BuildingState } from './building-types';
+import { cityJobMarket, type CityJobMarket, type EmploymentCandidate } from './city-employment';
 import { cityBuildingWalls } from './city-exterior';
 import { CITY_PLOTS, plotAtRect, type CityPlot } from './city-plots';
 import { EXTERNAL, EXTERNAL_WORK } from './money';
@@ -22,26 +23,12 @@ export const BUILDER_ACCOUNT = 'BAUTRAGER';
 export const BUILDER_START_CAPITAL = fromVC(6000);
 /** Was ein Neubau kostet; der Betrag geht als Bauarbeit nach aussen. */
 export const BUILD_COST = fromVC(1800);
-/** Arbeitsplätze je Gebäudeart; Wohnungen geben keine Arbeit. */
-const JOB_CAPACITY: Readonly<Record<BuildingKind, number>> = Object.freeze({
-  APARTMENT: 0, RESIDENCE: 0, PUB: 6, SHOP: 5, CASINO: 8, OFFICE: 4, WORKSHOP: 3,
-});
-
 export interface CityGrowthState {
   readonly lastBuildDay: number;
   readonly built: readonly string[];
 }
 
-interface JobMarket {
-  readonly residents: number;
-  readonly jobs: number;
-  /** Stellen, die noch frei sind: hier steigt ein Neuling ein. */
-  readonly openSlots: number;
-  /** Bewohner ohne Stelle: das Signal, dass die Stadt bauen darf. */
-  readonly jobless: number;
-}
-
-interface CityGrowthView extends JobMarket {
+interface CityGrowthView extends CityJobMarket {
   readonly capital: VaCoinMicro;
   readonly freePlots: number;
   readonly canBuild: boolean;
@@ -64,16 +51,12 @@ function ensureCityGrowth(world: WorldState): CityGrowthState {
   return world.cityGrowth;
 }
 
-/** Arbeitsmarkt: Stellen aus Gebäuden, Bedarf aus Bewohnern. */
-export function jobMarket(buildings: readonly BuildingState[], residents: number): JobMarket {
-  const jobs = buildings.reduce((sum, building) => sum + (JOB_CAPACITY[building.kind] ?? 0), 0);
-  const people = Math.max(0, Math.floor(residents));
-  return {
-    residents: people,
-    jobs,
-    openSlots: Math.max(0, jobs - people),
-    jobless: Math.max(0, people - jobs),
-  };
+/** Arbeitsmarkt: belegte und freie Stellen aus der Beschäftigungszuordnung. */
+export function jobMarket(
+  buildings: readonly BuildingState[],
+  residents: readonly EmploymentCandidate[],
+): CityJobMarket {
+  return cityJobMarket(buildings, residents);
 }
 
 /** Der nächste freie Platz: erst Gewerbe, denn Arbeit ist das Signal. */
@@ -85,7 +68,7 @@ function freePlot(buildings: readonly BuildingState[]): CityPlot | null {
 
 export function cityGrowthView(world: WorldState, ledger: Ledger): CityGrowthView {
   const buildings = cityBuildings(world);
-  const market = jobMarket(buildings, world.cityLife?.residents.length ?? 0);
+  const market = jobMarket(buildings, world.cityLife?.residents ?? []);
   const capital = ledger.getBalance(BUILDER_ACCOUNT);
   const freePlots = CITY_PLOTS.filter((plot) => !buildings.some((b) => plotAtRect(b.footprint)?.id === plot.id)).length;
   return {
@@ -131,7 +114,7 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
   const growth = ensureCityGrowth(world);
   if (!world.cityScene || world.day <= growth.lastBuildDay) return null;
   const buildings = cityBuildings(world);
-  const market = jobMarket(buildings, world.cityLife?.residents.length ?? 0);
+  const market = jobMarket(buildings, world.cityLife?.residents ?? []);
   if (market.jobless <= 0) return null;
   const plot = freePlot(buildings);
   if (!plot) return null;

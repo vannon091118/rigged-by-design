@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T09:20Z-employment",
+  "contributionId": "employment-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Stadt zählt keine Stellen mehr, sie vergibt sie: Wer keine hat, bleibt zu Hause, statt zur Schicht zu gehen und Lohn zu kassieren, den niemand eingestellt hat.",
+  "directives": []
+}

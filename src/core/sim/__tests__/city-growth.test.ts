@@ -33,7 +33,7 @@ const start = (residents = 12) => {
 describe('Bauträger und Wachstum', () => {
   it('zählt Stellen und Joblose aus Gebäuden und Bewohnern', () => {
     const { world } = start(12);
-    const market = jobMarket(cityBuildings(world), world.cityLife.residents.length);
+    const market = jobMarket(cityBuildings(world), world.cityLife.residents);
     expect(market.jobs).toBeGreaterThan(12);
     expect(market.openSlots).toBeGreaterThan(0);
     expect(market.jobless).toBe(0);
@@ -59,7 +59,7 @@ describe('Bauträger und Wachstum', () => {
     expect(ledger.entries.some((entry) => entry.from === BUILDER_ACCOUNT && entry.to === EXTERNAL_WORK)).toBe(true);
     expect(world.cityGrowth?.built).toEqual([report!.building.id]);
     // Der Neubau gibt Arbeit: die Zahl der Joblosen sinkt um seine Stellen.
-    expect(jobMarket(cityBuildings(world), world.cityLife.residents.length).jobless)
+    expect(jobMarket(cityBuildings(world), world.cityLife.residents).jobless)
       .toBe(report!.joblessBefore - 5);
     // Er steht als Wand in der Szene, nicht nur im Register.
     const walls = world.cityScene!.layout.edges.filter((edge) => edge.kind === 'WALL').length;
