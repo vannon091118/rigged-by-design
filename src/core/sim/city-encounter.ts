@@ -12,9 +12,9 @@
  * `executeChoice`, `recordVisitor`, `recordFirstHand`/`reportKnowledge`).
  */
 import { cityOf } from './city-model';
-import { ensureCityVisitor, locationName, primaryNpcAt, type CityNpcDef } from './city-npcs';
+import { ensureCityVisitor, locationName, type CityNpcDef } from './city-npcs';
 import { ensureCityLife } from './city-life-state';
-import { rosterDefById } from './city-npc-roster';
+import { rosterDefById, rosterDefs } from './city-npc-roster';
 import { ACTION_LABEL, lastEncounter, visitorRef } from './city-encounter-dialog';
 import type { CityLocationId } from './city-types';
 import type { NarrativeEventInstance } from './narrative/event-types';
@@ -33,10 +33,11 @@ const isCityLocation = (value: string | undefined): value is CityLocationId =>
 
 /**
  * Eine Stadtaktion oeffnet die Begegnung. Ziel ist entweder ein Ort (dann
- * spricht die dort anwesende Figur) oder eine Kennung aus der Besetzung
- * (`npc_4` … `npc_12`). Die Kennung ist die einzige Identitaet; Name, Rolle und
- * Profil kommen aus `rosterDefById`. Eine bereits offene Szene wird
- * zurueckgegeben, statt eine zweite zu stapeln.
+ * spricht die dort anwesende Figur; ohne Bewegung die Figur, deren NPC-Profil
+ * diesen Ort traegt) oder eine Kennung aus der Besetzung (`npc_4` … `npc_12`).
+ * Die Ortsliste `CITY_NPCS` ist keine Auswahlquelle: Jede Figur kommt aus dem
+ * Roster und damit aus dem NPC-Modell, das mit jeder neuen Besetzung waechst.
+ * Eine bereits offene Szene wird zurueckgegeben, statt eine zweite zu stapeln.
  */
 export function meetNpc(
   world: WorldState,
@@ -54,8 +55,10 @@ export function meetNpc(
     if (!npc) throw new Error(`Diese Figur steht nicht in der Besetzung: ${target}.`);
   } else {
     const resident = life.residents.find((entry) => entry.location === location);
-    const primary = primaryNpcAt(location);
-    npc = rosterDefById(resident?.npcId ?? primary?.id ?? '', life.seed ?? 0);
+    const roster = rosterDefs(life.residents.length, life.seed ?? 0);
+    npc = resident
+      ? rosterDefById(resident.npcId, life.seed ?? 0)
+      : roster.find((entry) => entry.location === location) ?? null;
   }
   if (!npc) throw new Error(`In ${locationName(location)} wartet heute niemand auf ein Gespraech.`);
   const visitor = ensureCityVisitor(world, npc);

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:64d791e1bb1afe2c80ca20e5f180c81b3cd5ce1046f20a0a57c60d5d2f92e778",
+  "contentHash": "sha256:19d3a7f07149dd45249486842ad27d98a2a72af1b3ce759ac73cc74148f1a41a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3293,6 +3293,28 @@
       "text": "Am Ende des Tresens wird ein Platz frei, als haette jemand darauf gewartet, dass du dich setzt. Zwischen zwei Gespraechen bleibt genug Zeit fuer eine Frage, die laenger haelt als der Abend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-city-encounter-opening.json"
+    },
+    {
+      "contributionId": "city-encounter-roster-01",
+      "turnId": "2026-11-13T06:20Z-city-encounter-roster",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwölf Namen, zwölf Wege: Wer im Kiez steht, ist kein Hintergrund. Jede Figur trägt ihren eigenen Tag, ihre eigene Tür und ihre eigene Geschichte — angesprochen wird sie über ihren Namen, nicht über die Ecke, an der sie zufällig wartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-encounter-roster.json"
     },
     {
       "contributionId": "city-night-01",

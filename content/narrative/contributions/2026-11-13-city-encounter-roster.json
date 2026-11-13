@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T06:20Z-city-encounter-roster",
+  "contributionId": "city-encounter-roster-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwölf Namen, zwölf Wege: Wer im Kiez steht, ist kein Hintergrund. Jede Figur trägt ihren eigenen Tag, ihre eigene Tür und ihre eigene Geschichte — angesprochen wird sie über ihren Namen, nicht über die Ecke, an der sie zufällig wartet.",
+  "directives": []
+}

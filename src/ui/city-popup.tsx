@@ -35,6 +35,15 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
               {' '}· Sozial {resident.social} · Laune {resident.mood}
             </small>
             {resident.traits.length > 0 && <small style={{ display: 'block', marginTop: 3, opacity: .72, fontSize: 11 }}>{resident.traits.join(' · ')}</small>}
+            <button
+              type="button"
+              className="btn small"
+              style={{ marginTop: 6 }}
+              aria-label={`${resident.name} ansprechen`}
+              onClick={() => worldStore.city({ kind: 'meet', npcId: resident.npcId })}
+            >
+              Ansprechen
+            </button>
           </div>
         ))}
       </div>

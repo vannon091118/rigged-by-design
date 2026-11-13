@@ -43,33 +43,32 @@ export function npcByName(name: string): CityNpcDef | null {
   return CITY_NPCS.find((entry) => entry.name === name) ?? null;
 }
 
-/** Die erste Figur eines Ortes ist der feste Ansprechpartner der Stadtaktion. */
-export function primaryNpcAt(location: CityLocationId): CityNpcDef | null {
-  return CITY_NPCS.find((entry) => entry.location === location) ?? null;
-}
-
 /**
  * Zweiter NPC: Mira traegt, was sie hoert, zwischen Kiez und Markt; nur wenn
- * Mira selbst spricht, faellt die Rolle an eine andere Figur. Distanz 0 -> 1
- * bleibt damit echt und die zweite Stufe geht an Boris.
+ * Mira selbst spricht, faellt die Rolle an eine andere Figur. Die Besetzung
+ * kommt vom Aufrufer, damit auch Figuren jenseits der kuratierten drei einen
+ * Informanten haben; ohne Angabe bleibt die kuratierte Ausgangslage.
  */
-export function informantFor(npc: CityNpcDef): CityNpcDef | null {
+export function informantFor(
+  npc: CityNpcDef, peers: readonly CityNpcDef[] = CITY_NPCS,
+): CityNpcDef | null {
+  const pool = peers.filter((entry) => entry.id !== npc.id);
   if (npc.id !== 'mira') {
-    const carrier = CITY_NPCS.find((entry) => entry.id === 'mira');
+    const carrier = pool.find((entry) => entry.id === 'mira');
     if (carrier) return carrier;
   }
-  return CITY_NPCS.find((entry) => entry.id !== npc.id && entry.location !== npc.location)
-    ?? CITY_NPCS.find((entry) => entry.id !== npc.id)
-    ?? null;
+  return pool.find((entry) => entry.location !== npc.location) ?? pool[0] ?? null;
 }
 
 /**
  * Der Zeuge der zweiten Stufe: nicht der Sprecher und nicht der Empfaenger der
- * ersten Weitergabe. Damit entsteht eine echte Kette Rita -> Mira -> Boris.
+ * ersten Weitergabe. Die Kette kommt aus derselben Besetzung wie der Informant.
  */
-export function witnessFor(npc: CityNpcDef): CityNpcDef | null {
-  const informant = informantFor(npc);
-  return CITY_NPCS.find((entry) => entry.id !== npc.id && entry.id !== informant?.id) ?? null;
+export function witnessFor(
+  npc: CityNpcDef, peers: readonly CityNpcDef[] = CITY_NPCS,
+): CityNpcDef | null {
+  const informant = informantFor(npc, peers);
+  return peers.find((entry) => entry.id !== npc.id && entry.id !== informant?.id) ?? null;
 }
 
 /**

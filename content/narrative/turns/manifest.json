@@ -4076,6 +4076,10 @@
     {
       "turnId": "2026-11-13T05:55Z-needs-core-voice",
       "contributionId": "needs-core-voice-01"
+    },
+    {
+      "turnId": "2026-11-13T06:20Z-city-encounter-roster",
+      "contributionId": "city-encounter-roster-01"
     }
   ]
 }
