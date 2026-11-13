@@ -35,11 +35,18 @@ export function memoryAbout(resident: CityResidentState, npcId: string): NpcMemo
   return [...resident.memories].reverse().find((entry) => entry.aboutNpcId === npcId) ?? null;
 }
 
+/**
+ * Ziel eines Intents. `COMMUTE` ist ein Weg, kein Ort: Das konkrete Ziel
+ * kommt aus dem Tagesplan (`scheduledPlace`), damit ein Heimweg nach
+ * Schichtende nicht pauschal zum Arbeitsplatz fuehrt.
+ */
 export function locationForIntent(
   intent: NpcIntentKind, workplace: CityLifePlace, target: CityResidentState | null,
+  scheduledPlace: CityLifePlace | null = null,
 ): CityLifePlace {
   if (intent === 'VISIT_FRIEND' && target) return target.location;
-  if (intent === 'WORK' || intent === 'COMMUTE' || intent === 'EAT_OUT' || intent === 'SHOP') return workplace;
+  if (intent === 'COMMUTE') return scheduledPlace ?? workplace;
+  if (intent === 'WORK' || intent === 'EAT_OUT' || intent === 'SHOP') return workplace;
   if (intent === 'PUB' || intent === 'LEISURE' || intent === 'VISIT_FRIEND') return 'KIEZ';
   return 'HOME';
 }

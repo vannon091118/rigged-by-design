@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 356 Dateien — contract 197 · integration 92 · governance 54 · statistics 6 · performance 7.
+Summe: 359 Dateien — contract 199 · integration 93 · governance 54 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -239,11 +239,13 @@ Summe: 356 Dateien — contract 197 · integration 92 · governance 54 · statis
 | `src/core/sim/__tests__/city-identity.test.ts` | sim | contract | ja | `src/core/sim/city-identity.ts` |
 | `src/core/sim/__tests__/city-life-movement.test.ts` | sim | contract | ja | `src/core/sim/city-life-movement.ts` |
 | `src/core/sim/__tests__/city-life-override.test.ts` | sim | contract | ja | `src/core/sim/city-life-override.ts` |
+| `src/core/sim/__tests__/city-life-schedule-target.test.ts` | sim | contract | ja | `src/core/sim/city-life-targets.ts` |
 | `src/core/sim/__tests__/city-life.test.ts` | sim | contract | ja | `src/core/sim/city-life.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
 | `src/core/sim/__tests__/city-plots.test.ts` | sim | contract | ja | `src/core/sim/city-plots.ts` |
 | `src/core/sim/__tests__/city-population.test.ts` | sim | contract | ja | `src/core/sim/city-npc-roster.ts` |
 | `src/core/sim/__tests__/city-props-solid.test.ts` | sim | contract | ja | `src/core/sim/city-exterior.ts` |
+| `src/core/sim/__tests__/city-scene-zones.test.ts` | sim | contract | ja | `src/core/sim/city-scene.ts` |
 | `src/core/sim/__tests__/club-night.test.ts` | sim | contract | ja | `src/core/sim/club-night.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
@@ -400,6 +402,7 @@ Summe: 356 Dateien — contract 197 · integration 92 · governance 54 · statis
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/room-chunk-clip.test.ts` | render | integration | ja | `src/render/room-art.ts` |
+| `src/render/__tests__/routes-key.test.ts` | render | integration | ja | `src/render/floor-route.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
 | `src/render/__tests__/view-layers.test.ts` | render | integration | ja | `src/render/view-layers.ts` |
@@ -662,10 +665,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2843 |
-| Gelistete Dateien | 2843 |
+| Getrackte Dateien | 2842 |
+| Gelistete Dateien | 2842 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (29), artifacts (1), content (1030), docs (103), packages (27), public (571), scripts (116), src (945) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (24), artifacts (1), content (1031), docs (103), packages (27), public (571), scripts (116), src (948) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -677,10 +680,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 14 Datei(en)
-- `.lane-claims/tasks/` — 14 Datei(en)
+- `.lane-claims/claims/` — 12 Datei(en)
+- `.lane-claims/tasks/` — 11 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1026 Datei(en)
+- `content/narrative/contributions/` — 1027 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -755,7 +758,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 168 Datei(en)
-- `src/core/sim/__tests__/` — 151 Datei(en)
+- `src/core/sim/__tests__/` — 153 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -770,7 +773,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
 - `src/render/` — 61 Datei(en)
-- `src/render/__tests__/` — 30 Datei(en)
+- `src/render/__tests__/` — 31 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 2 Datei(en)
 - `src/render/city/` — 1 Datei(en)
@@ -805,32 +808,27 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-city-encounter-roster.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-city-population-load.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-close-r1-r12.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-close-r1-r12.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-issues-sweep.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-500.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-snapshot-purity.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-city-plots-growth.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 56 Zeilen
+- `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-sim-city-plots-growth.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-city-encounter-roster.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-city-population-load.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-close-r1-r12.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issues-sweep.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-post-merge-500.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-snapshot-purity.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/sim-city-plots-growth.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ui-polish-chrome.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1860,11 +1858,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-city-plots-growth.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-population-load.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-closeout.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-issues-sweep.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-needs-core-voice.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-npc-population.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-snapshot-purity.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22994 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4109 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23016 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4113 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -2884,13 +2883,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/city-exterior-walls.test.ts` — Die Fassaden sind sichtbar, also muessen sie auch begangen werden koennen wie — gelesen: 86 Zeilen
 - `src/core/sim/__tests__/city-growth.test.ts` — Die Stadt baut auf ein Signal, nicht auf einen Timer: Ohne Joblose passiert — gelesen: 108 Zeilen
 - `src/core/sim/__tests__/city-identity.test.ts` — Identität ist eine Kennung, kein Name: Jeder Bewohner bekommt eine eigene ID, — gelesen: 119 Zeilen
-- `src/core/sim/__tests__/city-life-movement.test.ts` — Bewegung ist ein Weg, kein Etikett: Der Bewohner startet an seiner Tür, läuft — gelesen: 148 Zeilen
+- `src/core/sim/__tests__/city-life-movement.test.ts` — Bewegung ist ein Weg, kein Etikett: Der Bewohner startet an seiner Tür, läuft — gelesen: 155 Zeilen
 - `src/core/sim/__tests__/city-life-override.test.ts` — Die zwei Grenzen des Stadtleben-Scores: Eine Handlung ist nur möglich, wenn — gelesen: 87 Zeilen
+- `src/core/sim/__tests__/city-life-schedule-target.test.ts` — Der Tagesplan nennt ein Gebaeude, nicht nur eine Absicht. `COMMUTE` ist ein — gelesen: 32 Zeilen
 - `src/core/sim/__tests__/city-life.test.ts` — Die benannten Stadt-NPCs muessen im echten `tickWorld` leben: Standort und — gelesen: 149 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
 - `src/core/sim/__tests__/city-plots.test.ts` — Ein Grundstück ist ein fester Platz im Kartenlayout. Jedes Gebäude steht auf — gelesen: 81 Zeilen
 - `src/core/sim/__tests__/city-population.test.ts` — Die Stadt ist keine Dreiergruppe: Jeder Index der Besetzung ergibt eine — gelesen: 118 Zeilen
 - `src/core/sim/__tests__/city-props-solid.test.ts` — Die Stadt ist nur dann dieselbe Umgebung fuer Bild und Navigation, wenn die — gelesen: 76 Zeilen
+- `src/core/sim/__tests__/city-scene-zones.test.ts` — Das Layout ist die einzige raeumliche Wahrheit. Ein Save mit abweichender — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/club-night.test.ts` — Der Clubabend ist keine zweite Lounge: Oeffnungszeit, Belegung und — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
@@ -2929,7 +2930,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 145 Zeilen
 - `src/core/sim/__tests__/living-world-continuity.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/living-world-longturn.test.ts` — Ereignisketten-Evidenz: Ein langer Turn verbindet Umgebung, Erfahrung und — gelesen: 213 Zeilen
-- `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 23 Zeilen
+- `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 26 Zeilen
 - `src/core/sim/__tests__/living-world-social-economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 113 Zeilen
 - `src/core/sim/__tests__/living-world-vertical-slice.test.ts` — Bundle 6: End-to-End Vertical Slice der Living World Engine. — gelesen: 171 Zeilen
 - `src/core/sim/__tests__/logistics.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
@@ -3046,22 +3047,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-life-normalize.ts` — Alte Saves kennen weder Attribute, Faehigkeiten, Beziehungen noch — gelesen: 125 Zeilen
 - `src/core/sim/city-life-override.ts` — Zwei Regeln, die den Score begrenzen statt ihn zu ersetzen: Ein Gewerbe hat — gelesen: 74 Zeilen
 - `src/core/sim/city-life-restore.ts` — Ein Save nennt Kennungen, keine Figuren: Alles Weitere laesst sich aus der — gelesen: 132 Zeilen
-- `src/core/sim/city-life-score.ts` — Jede Alternative wird aus denselben Faktoren bewertet: Tagesplan, — gelesen: 164 Zeilen
+- `src/core/sim/city-life-score.ts` — Jede Alternative wird aus denselben Faktoren bewertet: Tagesplan, — gelesen: 166 Zeilen
 - `src/core/sim/city-life-sim.ts` — Der Lauf benutzt exakt `tickWorld`, `createCityLifeState` und die — gelesen: 92 Zeilen
 - `src/core/sim/city-life-state.ts` — Dieser Teil kennt nur den persistierbaren Zustand. Die stundenweise — gelesen: 56 Zeilen
-- `src/core/sim/city-life-targets.ts` — Die Zielwahl ist raeumlich: eine Alternative findet nur statt, wenn Ort und — gelesen: 52 Zeilen
+- `src/core/sim/city-life-targets.ts` — Die Zielwahl ist raeumlich: eine Alternative findet nur statt, wenn Ort und — gelesen: 59 Zeilen
 - `src/core/sim/city-life-tiebreak.ts` — Der Score ist deterministisch; nur nahe Gleichstände bekommen eine kleine, — gelesen: 33 Zeilen
 - `src/core/sim/city-life-types.ts` — Die Stadt ist kein Standbild: Rita, Boris und Mira folgen ihrer Tagesroutine, — gelesen: 158 Zeilen
 - `src/core/sim/city-life-venues.ts` — Die Stadt ist die einzige Wahrheit über Zeiten: Ein Gebäude trägt seine — gelesen: 45 Zeilen
 - `src/core/sim/city-life-view.ts` — Die Sicht rechnet nichts nach und schreibt nichts: Ort, Intent, Bedürfnisse — gelesen: 65 Zeilen
-- `src/core/sim/city-life.ts` — Jeder Bewohner der Liste ist keine Kulisse: Jede Stunde entscheidet seine — gelesen: 154 Zeilen
+- `src/core/sim/city-life.ts` — Jeder Bewohner der Liste ist keine Kulisse: Jede Stunde entscheidet seine — gelesen: 165 Zeilen
 - `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 140 Zeilen
 - `src/core/sim/city-npc-roster.ts` — Die drei kuratierten Figuren sind der Anfang der Liste, nicht ihr Umfang: — gelesen: 135 Zeilen
-- `src/core/sim/city-npc-shift.ts` — Eine Schicht braucht keinen Save: Sie liegt in einer Tabelle je Gebaeude und — gelesen: 83 Zeilen
+- `src/core/sim/city-npc-shift.ts` — Eine Schicht braucht keinen Save: Sie liegt in einer Tabelle je Gebaeude und — gelesen: 94 Zeilen
 - `src/core/sim/city-npcs.ts` — Benannte Figuren der Stadt. Die Identitaet ist keine Anzeige: Name, Rolle, — gelesen: 103 Zeilen
 - `src/core/sim/city-persist.ts` — Save-Heilung des Stadtzustands: Ort, Energie und Begegnungen aus rohen Daten. — gelesen: 58 Zeilen
 - `src/core/sim/city-plots.ts` — Ein Grundstück ist ein fester Platz im Kartenlayout: Rechteck, Widmung und — — gelesen: 143 Zeilen
-- `src/core/sim/city-scene.ts` — Stadt als begehbarer Floor. Die Stadtkarte bleibt eine Uebersicht; dieser — gelesen: 89 Zeilen
+- `src/core/sim/city-scene.ts` — Stadt als begehbarer Floor. Die Stadtkarte bleibt eine Uebersicht; dieser — gelesen: 103 Zeilen
 - `src/core/sim/city-tick.ts` — Die Stadt lebt auch, während der Spieler im eigenen Casino steht: erst die — gelesen: 22 Zeilen
 - `src/core/sim/city-traits.ts` — Eigenschaften der Stadt-NPCs: 30 Traits, Vergabe nach Stats und PRNG, — gelesen: 179 Zeilen
 - `src/core/sim/city-types.ts` — Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik - — gelesen: 120 Zeilen
@@ -3123,7 +3124,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/living-world-longturn-evidence.ts` — Evidenz-Bausteine fuer den langen Living-World-Lauf. — gelesen: 137 Zeilen
 - `src/core/sim/living-world-longturn-snapshots.ts` — Snapshots und kompakte Ketten-Sichten fuer den long-turn Evidenz-Lauf. — gelesen: 86 Zeilen
 - `src/core/sim/living-world-movement-evidence.ts` — Das Messgerät liest nur, was `tickWorld` geschrieben hat: Kachel je Bewohner, — gelesen: 43 Zeilen
-- `src/core/sim/living-world-multiseed.ts` — Mehrseed-Lauf fuer die Longturn-Evidenz: ein Seed, ein voller Stadtlauf. — gelesen: 43 Zeilen
+- `src/core/sim/living-world-multiseed.ts` — Mehrseed-Lauf fuer die Longturn-Evidenz: ein Seed, ein voller Stadtlauf. — gelesen: 47 Zeilen
 - `src/core/sim/machine-hall.ts` — Spielhalle der eigenen Immobilie: Automaten, ihr Zustand und die Wartung. — gelesen: 179 Zeilen
 - `src/core/sim/mod-effects.ts` — Mod-Katalog und der eine Resolver fuer Mod-Wirkungen. — gelesen: 119 Zeilen
 - `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 145 Zeilen
@@ -3318,6 +3319,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/rig-combat.test.ts` — Kampf und Verletzung muessen sichtbar sein: eigene Posen, eigene Uebergaenge, — gelesen: 35 Zeilen
 - `src/render/__tests__/rig.test.ts` — Das Rig ist reine Mathematik: gleiche Zeit, gleiche Pose, klarer Zustand. — gelesen: 37 Zeilen
 - `src/render/__tests__/room-chunk-clip.test.ts` — Ein Chunk wird als Textur gebacken. Zeichnet eine Zone oder die Weltkante — gelesen: 87 Zeilen
+- `src/render/__tests__/routes-key.test.ts` — Der Laufweg-Cache haengt an der Zonengeometrie. Ein Layout-Import mit — gelesen: 35 Zeilen
 - `src/render/__tests__/slot-layout.test.ts` — Die Walzenanzeige rechnet nur ueber diese Geometrie. Werte, die hier stimmen, — gelesen: 50 Zeilen
 - `src/render/__tests__/sound-fx.test.ts` — Lautstaerke und Kanaele sind Geraeteeinstellungen: sie muessen klemmbar, getrennt — gelesen: 33 Zeilen
 - `src/render/__tests__/view-layers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
@@ -3358,7 +3360,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 156 Zeilen
 - `src/render/floor-perf.bench.ts` — Worst-Case: 90×90-Floor, 9 Regionen, 500 Dreck-Tiles, 200 Entities. — gelesen: 55 Zeilen
 - `src/render/floor-props.ts` — Requisiten: Personal, Lieferkisten, Streitmarker und Platzierungs-Geist. Liest nur Snapshots. — gelesen: 233 Zeilen
-- `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 84 Zeilen
+- `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 96 Zeilen
 - `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 132 Zeilen
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 127 Zeilen
 - `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 181 Zeilen
@@ -3411,7 +3413,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/rng.ts` — Der eine Darstellungs-Strom: Partikel und Sound, nie der Spielzustand. — gelesen: 4 Zeilen
 - `src/render/room-art.ts` — Raum: Bodenmaterial je Tile aus dem Layout, Waende und Tueren aus den — gelesen: 108 Zeilen
 - `src/render/room-dressing.ts` — Raumausstattung ueber dem Bodenbelag: das, was einen Raum wiedererkennbar macht, — gelesen: 122 Zeilen
-- `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 191 Zeilen
+- `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 193 Zeilen
 - `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 216 Zeilen
 - `src/render/stage-backdrop.ts` — Bühnenhintergrund: ferne Fliesen plus eine naehere, gegenlaeufige Parallax-Ebene. — gelesen: 51 Zeilen
 - `src/render/view-layers.ts` — Snapshot in die vorhandenen Darstellungs-Layer schieben. — gelesen: 66 Zeilen
@@ -3479,7 +3481,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 159 Zeilen
 - `src/store/scene-commands.ts` — Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. — gelesen: 157 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
-- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 182 Zeilen
+- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 183 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 149 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
@@ -3543,7 +3545,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 160 Zeilen
 - `src/ui/career-section.tsx` — Karriere-Sektion des Charakterfensters: eine Sicht, eigene Ownership. — gelesen: 79 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
-- `src/ui/city-popup.tsx` — Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. — gelesen: 130 Zeilen
+- `src/ui/city-popup.tsx` — Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. — gelesen: 134 Zeilen
 - `src/ui/connected-hud.tsx` — HUD-Verdrahtung: Perspektivwechsel, Skills und Welt-Einstieg an einer Stelle. — gelesen: 27 Zeilen
 - `src/ui/diagnostics-popup.tsx` — Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. — gelesen: 121 Zeilen
 - `src/ui/dialog-request.ts` — Dialog-Anforderung aus einem Choice-Ergebnis. — gelesen: 15 Zeilen

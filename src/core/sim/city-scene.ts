@@ -62,8 +62,22 @@ export function normalizeCityScene(raw?: CitySceneState | null): CitySceneState 
   const props = source.map((prop) =>
     prop.footprint ? prop : { ...prop, footprint: STREET_PROP_FOOTPRINTS[prop.kind] },
   );
-  if (props.every((prop, index) => prop === source[index])) return raw;
-  return { ...raw, exterior: { ...raw.exterior, props } };
+  // Die Zonenkopie ist nur eine Ableitung. Weicht sie vom Layout ab, gewinnt
+  // das Layout — sonst zeigten Boden und Rollen zwei verschiedene Staedte.
+  const zones = sameZones(raw.zones, raw.layout.zones) ? raw.zones : [...raw.layout.zones];
+  const propsChanged = props.some((prop, index) => prop !== source[index]);
+  if (!propsChanged && zones === raw.zones) return raw;
+  return { ...raw, zones, exterior: { ...raw.exterior, props } };
+}
+
+/** Zonen sind gleich, wenn jede Geometrie und Art uebereinstimmt. */
+function sameZones(left: readonly Zone[], right: readonly Zone[]): boolean {
+  if (left.length !== right.length) return false;
+  return left.every((zone, index) => {
+    const other = right[index]!;
+    return zone.kind === other.kind && zone.x === other.x && zone.y === other.y
+      && zone.w === other.w && zone.h === other.h;
+  });
 }
 
 const NAV_CACHE = new WeakMap<CitySceneState, NavGrid>();

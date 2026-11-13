@@ -6,7 +6,7 @@ import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
 import { DepthStage } from './depth';
 import { changedRegions, regionHash } from './floor-math';
-import { drawRoutes } from './floor-route';
+import { drawRoutes, routesKey as routeKeyFor } from './floor-route';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
 const LABEL_COUNT = 10;
@@ -73,7 +73,9 @@ export function createSceneCache(): SceneCache {
     phase = view.dayPhase;
     const sceneChanged = scene !== view.scene.kind;
     scene = view.scene.kind;
-    const key = `${view.template}|${view.carpet}|${view.zones.length}|${view.scene.kind}`;
+    // Der Schluessel enthaelt die Zonengeometrie: ein Layout-Import mit
+    // gleicher Zonenzahl aber anderer Lage muss die Laufwege neu zeichnen.
+    const key = routeKeyFor(view);
     if (key !== routesKey) {
       routesKey = key;
       routes.clear();

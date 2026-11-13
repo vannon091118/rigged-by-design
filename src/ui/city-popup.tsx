@@ -28,7 +28,11 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
           <div key={resident.npcId} style={{ padding: '7px 9px', border: '1px solid rgba(255,255,255,.12)', borderRadius: 8, background: 'rgba(0,0,0,.16)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'baseline' }}>
               <b>{resident.name}</b>
-              <span style={{ opacity: .8, fontSize: 12, textAlign: 'right' }}>{resident.locationLabel} · {resident.intentLabel}</span>
+              {/* Während der Reise bleibt `location` der alte Ort; der Status
+                  nennt deshalb das Ziel, statt den NPC dort stehen zu lassen. */}
+              <span style={{ opacity: .8, fontSize: 12, textAlign: 'right' }}>
+                {resident.travelTo ? `unterwegs nach ${resident.travelTo}` : resident.locationLabel} · {resident.intentLabel}
+              </span>
             </div>
             <small style={{ display: 'block', marginTop: 3, opacity: .72, fontSize: 11 }}>
               Hunger {resident.hunger} · Durst {resident.thirst} · Müdigkeit {resident.fatigue}

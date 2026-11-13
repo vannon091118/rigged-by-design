@@ -68,6 +68,18 @@ function pools(g: Graphics, from: Spot, to: Spot, tile: number): void {
   }
 }
 
+/**
+ * Invalidierungsschluessel der Laufweg-Ebene. Er enthaelt jedes Zonenfeld,
+ * aus dem `drawRoutes` Geometrie ableitet: Ein Layout-Import mit gleicher
+ * Zonenzahl, aber verschobener Zone ist damit ein neuer Schluessel.
+ */
+export function routesKey(view: GameView): string {
+  const zones = view.zones
+    .map((zone) => `${zone.kind}:${zone.x},${zone.y},${zone.w},${zone.h}`)
+    .join(';');
+  return `${view.template}|${view.carpet}|${view.scene.kind}|${zones}`;
+}
+
 export function drawRoutes(g: Graphics, view: GameView, tile: number): void {
   const zones = ORDER.flatMap((kind) => {
     const zone = view.zones.find((entry) => entry.kind === kind);
