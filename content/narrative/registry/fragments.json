@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cb41dad82aa240f23c7ea0bef23c6718c1d1e86508d642df3c74a0fdfa4dedae",
+  "contentHash": "sha256:3160b3deaa4cb9e9e7b0444ef2c305e644c5f1ee2c38572a1ba59a0f379cb783",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22335,6 +22335,28 @@
       "text": "Die Wand ist kein Bild mehr, sondern eine Kante mit genau einem Zustand: Wand, Tuer oder Durchgang. Der Plan liegt als eine Wahrheit im Haus, und der Ausbau behaelt seine Tueroeffnung, statt sie hinter einer neuen Aussenwand zu vergessen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-06-layout-vertrag.json"
+    },
+    {
+      "contributionId": "staff-actor-state-01",
+      "turnId": "2026-11-14T03:20Z-staff-actor-state",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Portier trägt die Kiste nicht mehr unsichtbar durch den Flur: Sie hängt an seinen Händen, wiegt bei jedem Schritt mit, und er dreht den Oberkörper dorthin, wo er hingeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-staff-actor-state.json"
     },
     {
       "contributionId": "stale-claims-01",

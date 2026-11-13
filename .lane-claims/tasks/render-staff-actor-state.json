@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-staff-actor-state",
+  "claimId": "lane/render/staff-actor-state",
+  "branch": "lane/render/staff-actor-state",
+  "baseSha": "b1ee312f1547edffa7db285f70698a522624a065",
+  "phase": "CI_PENDING",
+  "title": "Personal im Floor rendert mit Rig-Zustand, Facing und sichtbarer Tragepose",
+  "goal": "#514",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 6
+}
