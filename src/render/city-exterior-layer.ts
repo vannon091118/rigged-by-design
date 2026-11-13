@@ -13,6 +13,7 @@ import type { CityRenderPlan } from './city-plan';
 import type { DepthStage } from './depth';
 import { ASSET } from './assets/keys';
 import { textureFor } from './assets/textures';
+import { cityDisplayScale, cityRenderLabel } from './city/city-assets';
 import { wallBandRect } from './wall-art';
 
 export { cityRenderPlan } from './city-plan';
@@ -155,14 +156,16 @@ export class CityExteriorLayer {
         continue;
       }
       const node = new Container();
+      node.label = cityRenderLabel(building.asset);
       const sprite = new Sprite(texture);
       const width = building.footprint.w * TILE;
       const height = building.footprint.h * TILE;
+      const scale = cityDisplayScale(building.asset);
       sprite.anchor.set(0.5, 1);
-      sprite.width = width * 0.98;
-      sprite.height = height * WORLD_FLATTEN;
+      sprite.width = width * 0.98 * scale;
+      sprite.height = height * WORLD_FLATTEN * scale;
       sprite.position.set((building.footprint.x + building.footprint.w / 2) * TILE, (building.footprint.y + building.footprint.h) * TILE);
-      const shadow = this.#shadowFor(width * 0.92, height * 0.22);
+      const shadow = this.#shadowFor(width * 0.92 * scale, height * 0.22 * scale);
       if (shadow) node.addChild(shadow);
       node.addChild(sprite);
       const sign = new Text({ text: building.name.toUpperCase(), style: floorText.name() });
@@ -180,9 +183,11 @@ export class CityExteriorLayer {
         continue;
       }
       const node = new Container();
+      node.label = cityRenderLabel(prop.asset);
       const sprite = new Sprite(texture);
-      const width = prop.role === 'STREET_LIGHT' ? TILE * 0.9 : Math.max(TILE * 1.2, prop.w * TILE * 0.9);
-      const height = prop.role === 'STREET_LIGHT' ? TILE * 2.1 : TILE * 1.25;
+      const scale = cityDisplayScale(prop.asset);
+      const width = (prop.role === 'STREET_LIGHT' ? TILE * 0.9 : Math.max(TILE * 1.2, prop.w * TILE * 0.9)) * scale;
+      const height = (prop.role === 'STREET_LIGHT' ? TILE * 2.1 : TILE * 1.25) * scale;
       sprite.anchor.set(0.5, 1);
       sprite.width = width;
       sprite.height = height;
@@ -213,12 +218,14 @@ export class CityExteriorLayer {
       TILE,
     );
     const node = new Container();
+    node.label = cityRenderLabel(door.asset);
     const sprite = new Sprite(texture);
+    const scale = cityDisplayScale(door.asset);
     // Die Textur ist eine liegende Schwelle; V-Kanten drehen dieselbe Rolle
     // um 90 Grad, statt eine zweite Asset-Variante zu erfinden.
     sprite.anchor.set(0.5);
-    sprite.width = Math.max(band.w, band.h);
-    sprite.height = Math.min(band.w, band.h);
+    sprite.width = Math.max(band.w, band.h) * scale;
+    sprite.height = Math.min(band.w, band.h) * scale;
     if (door.axis === 'V') sprite.rotation = Math.PI / 2;
     sprite.position.set(band.x + band.w / 2, band.y + band.h / 2);
     node.addChild(sprite);

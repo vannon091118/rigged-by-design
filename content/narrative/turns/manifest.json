@@ -4094,6 +4094,10 @@
       "contributionId": "render-acceptance-hardening"
     },
     {
+      "turnId": "2026-11-13T19:20Z-city-assets",
+      "contributionId": "city-asset-ledger-01"
+    },
+    {
       "turnId": "2026-11-13T21:40Z-claim-closeout",
       "contributionId": "governance-claim-closeout-01"
     }

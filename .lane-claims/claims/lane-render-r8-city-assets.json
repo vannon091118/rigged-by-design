@@ -1,0 +1,27 @@
+{
+  "id": "lane/render/r8-city-assets",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/r8-city-assets",
+  "baseSha": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69",
+  "task": "R8: Stadt-Assetpaket und Weltmetadaten als geprüften Vertrag anbinden",
+  "goal": "Stadtassets erhalten Rolle, Welt, ganzzahlige displayScale und Rechteangabe; city-assets.ts wird der eine Metadatenleser mit Test.",
+  "pathAllowlist": [
+    "src/render/assets/**",
+    "src/render/city/**",
+    "src/render/__tests__/city-assets.test.ts",
+    "src/render/city-exterior-layer.ts",
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-13-city-assets.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-render-r8-city-assets.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69"
+}

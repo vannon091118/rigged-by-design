@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f3789ed606b5c7efcec1e4587e91960b536dad6b06e3f776958e3a190d2686a8",
+  "contentHash": "sha256:f079edc6689ffad6c8bcaa96570b8b5bc6a1f88b66e741bd4de906c6b0fc9ba5",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3037,6 +3037,28 @@
       "text": "Im Lager stapeln sich Kisten mit Etiketten, die niemand mehr liest. Die oberste ist leer und wiegt trotzdem.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
+    },
+    {
+      "contributionId": "city-asset-ledger-01",
+      "turnId": "2026-11-13T19:20Z-city-assets",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Straße führt jetzt Buch über ihr Bild: Jede Fassade, Tür und Laterne trägt eine Rolle, eine Welt und eine Anzeigeskala. Was nur Geometrie ist, bleibt Geometrie und wird nicht als fehlende Textur erfunden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-assets.json"
     },
     {
       "contributionId": "city-day-closeout-01",
