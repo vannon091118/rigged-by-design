@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Lokaler Commit steht; Push ist wegen fehlender GitHub-Credentials blockiert. PR/Remote-Beleg vor Merge nachholen.",
+  "nextAction": "Lokaler Commit steht; Push und PR/Remote-Beleg vor Merge nachholen.",
   "revision": 3
 }

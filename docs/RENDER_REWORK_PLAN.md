@@ -5,14 +5,15 @@ Living-World-Roadmap. Er beschreibt Reihenfolge, Abhängigkeiten, Dateien, Tests
 und Abnahmekriterien. Die Produktplanung bleibt in [`ROADMAP.md`](ROADMAP.md);
 die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
-**Stand:** 2026-11-12 · Baum `0.3.242` · Audit-Basis `0.3.231`
+**Stand:** 2026-11-13 · Baum `0.3.250` · Audit-Basis `0.3.231`
 
-**Status:** Umsetzung begonnen (Lane `lane/render/r1-r12-rework`). Die Kästchen
-werden nur mit Beleg abgehakt; ein grüner Teilcheck ist kein grüner
-Phasenabschluss. Die Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme
-(Abschnitt 8) sind verbindlich.
+**Status:** R8 ist weitgehend umgesetzt und als **TEIL** belegt (Preload 10/10,
+Rollen, Welt und Skalierung; vollständiger App-Boot und Screenshot offen); R9
+hat das Fundament, aber noch keinen Renderer. Die Kästchen werden nur mit Beleg
+abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss. Die Meilensteine M0–M4
+(Abschnitt 6) und die Sichtabnahme (Abschnitt 8) sind verbindlich.
 
-### Umsetzungsstand 2026-11-12
+### Umsetzungsstand 2026-11-13
 
 Belegt sind die deterministischen Verträge und die lokalen Gates; **nicht**
 belegt ist die Pixi-Sichtabnahme. Der Cloud-Browser hängt in dieser VM auch
@@ -45,11 +46,10 @@ RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json
 | R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 teilweise belegt** (alle 539 Semantik-Assets und die 10 realen Stadttexturen tragen Rolle, Welt, ganzzahlige `displayScale` und `license`; Sichtabnahme offen), **R9 teilweise** (Bewohner haben jetzt Kachel, Weg und Ankunft; der Renderer `city-actors.ts` fehlt noch); keine zweite Stadt erfunden |
 | R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene, mit 24-Tick-Übergang an den Drittelgrenzen; Wetter fehlt | Teilbeleg; Tageszeit-Ambient, Straßenband, reduced-motion und Übergang im Browser gemessen; Wetter offen |
 
-Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
-`verify:assets` PASS, `verify:tree` PASS, `verify:dead-code` PASS,
-`verify:test-quality` PASS, `verify:test-placement` PASS. Die Checkboxen in
-R1–R12 bleiben unverändert offen, bis Screenshot, Konsole und Probe nach
-Abschnitt 8 vorliegen.
+Lokale Gates auf diesem Stand: `pnpm run verify:all` **PASS** (15 Gates grün,
+`audit` mangels Dependency-Änderung übersprungen); die Checkboxen in R1–R12
+bleiben unverändert offen, bis Screenshot, Konsole und Probe nach Abschnitt 8
+vorliegen.
 
 ### Stadtleben-Slice 2026-11-12 (R9-Teilbeleg)
 
@@ -383,8 +383,8 @@ Strahlen noch sichtbar), `35-r12-uebergang-mitte.png` (Mitte des
 Nacht→Morgen-Übergangs: halber Schleier, erste Strahlen, kleiner Radius),
 `36-r12-uebergang-ende.png` (Morgenplateau ohne Schleier und Radius).
 
-**Weiter offen:** Wetter, Stadt-NPCs als laufende Figuren (R9),
-Weltasset-Metadaten (R8).
+**Weiter offen:** Wetter, Stadt-NPCs als laufende Figuren (R9); die
+R8-Metadaten sind belegt, die R8-Sichtabnahme steht noch aus.
 
 ### Prüfung der offenen Punkte 2026-11-12
 
@@ -741,7 +741,7 @@ ohne es zu messen.
 
 **Aufgaben**
 
-- [ ] Render-Inventar am Baum `0.3.242` neu zählen: Dateien, Assets, benutzte
+- [ ] Render-Inventar am Baum `0.3.250` neu zählen: Dateien, Assets, benutzte
       Assets, Atlasrahmen, Materialien, Figuren, Lichtflächen, Boot-Requests.
 - [ ] Rolleninventar anlegen: Terrain, Wand, Boden, Möbel, Gerät, Deko, Akteur,
       Licht, Partikel, UI. Jede Rolle nennt ihren Renderer und ihre Quelle.
