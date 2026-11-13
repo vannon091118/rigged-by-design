@@ -4148,6 +4148,10 @@
     {
       "turnId": "2026-11-13T23:05Z-claim-register-archive",
       "contributionId": "claim-register-archive-01"
+    },
+    {
+      "turnId": "2026-11-13T22:58Z-city-road-guard",
+      "contributionId": "city-road-guard-01"
     }
   ]
 }

@@ -6,6 +6,7 @@
  */
 import { CITY_PRESET_BUILDINGS } from './building';
 import type { BuildingState } from './building-types';
+import { CITY_GRID_SIZE, CITY_ROAD_RECTS } from './city-roads';
 import type { EdgeAxis, FloorMaterialId, LayoutEdge, LayoutState, LayoutZone } from './layout-types';
 import type { Point } from './types-model';
 
@@ -75,16 +76,17 @@ export function cityBuildingWalls(buildings: readonly BuildingState[]): LayoutEd
 
 /** Erzeugt das kanonische Straßen-Layout des Stadtviertels (60x60 Raster). */
 export function createCityStreetLayout(): LayoutState {
-  const size = 60;
+  const size = CITY_GRID_SIZE;
   const totalTiles = size * size;
   const floor: FloorMaterialId[] = new Array<FloorMaterialId>(totalTiles).fill('STONE');
 
-  // Fahrbahnen: Ost-West (y=14..18) und Querstraße (x=28..32, y=14..49)
-  for (let y = 14; y <= 18; y += 1) {
-    for (let x = 0; x < size; x += 1) floor[y * size + x] = 'CONCRETE';
-  }
-  for (let y = 14; y < 50; y += 1) {
-    for (let x = 28; x <= 32; x += 1) floor[y * size + x] = 'CONCRETE';
+  // Fahrbahnen kommen aus der Maske; der Boden malt sie nur. Damit prueft das
+  // Grundstuecksregister dieselbe Geometrie, die der Spieler sieht, auch nach
+  // der Gebaeudebemalung weiter unten.
+  for (const road of CITY_ROAD_RECTS) {
+    for (let y = road.y; y < road.y + road.h; y += 1) {
+      for (let x = road.x; x < road.x + road.w; x += 1) floor[y * size + x] = 'CONCRETE';
+    }
   }
 
   // Gebäudegrundflächen und Eingänge
@@ -119,7 +121,7 @@ export function createCityStreetLayout(): LayoutState {
 
 const STREET_PROPS_RAW: readonly [string, PropKind, number, number, string][] = [
   ['prop_lamp_apt', 'STREET_LIGHT', 7, 13, 'Straßenlaterne vor dem Wohnhaus'],
-  ['prop_bench_pub', 'BENCH', 20, 13, 'Kneipenbank draußen'],
+  ['prop_bench_pub', 'BENCH', 16, 13, 'Kneipenbank draußen'],
   ['prop_trash_shop', 'TRASH_BIN', 38, 13, 'Mülleimer am Späti'],
   ['prop_bus_stop', 'BUS_STOP', 26, 19, 'Bushaltestelle Kiez-Mitte'],
   ['prop_tree_plaza', 'TREE', 14, 20, 'Alte Platane am Casino-Vorplatz'],

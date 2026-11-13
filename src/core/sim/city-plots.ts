@@ -9,7 +9,7 @@
  */
 import { CITY_PRESET_BUILDINGS } from './building';
 import type { BuildingFootprint, BuildingState } from './building-types';
-import { createCityStreetLayout } from './city-exterior';
+import { CITY_GRID_SIZE, roadTilesIn } from './city-roads';
 
 /** Widmung eines Grundstücks; sie entscheidet, was darauf gebaut werden darf. */
 type CityZoning = 'HOME' | 'BUSINESS' | 'PUBLIC';
@@ -29,7 +29,7 @@ const PLOT_SITES: readonly CityPlot[] = Object.freeze([
   { id: 'plot_player_home', label: 'Wohnhaus am Nordgehweg', rect: { x: 4, y: 4, w: 10, h: 8 }, zoning: 'HOME' },
   { id: 'plot_kiez_pub', label: 'Eckgrundstück Kiez-Kneipe', rect: { x: 18, y: 4, w: 12, h: 10 }, zoning: 'BUSINESS' },
   { id: 'plot_corner_shop', label: 'Ladengrundstück am Späti', rect: { x: 34, y: 4, w: 10, h: 8 }, zoning: 'BUSINESS' },
-  { id: 'plot_casino_grand', label: 'Casino am Vorplatz', rect: { x: 12, y: 22, w: 20, h: 14 }, zoning: 'BUSINESS' },
+  { id: 'plot_casino_grand', label: 'Casino am Vorplatz', rect: { x: 12, y: 22, w: 16, h: 14 }, zoning: 'BUSINESS' },
   { id: 'plot_reserve_north_west', label: 'Baulücke westlich des Wohnhauses', rect: { x: 0, y: 4, w: 4, h: 6 }, zoning: 'HOME' },
   { id: 'plot_reserve_north_gap', label: 'Baulücke zwischen Wohnhaus und Kneipe', rect: { x: 14, y: 4, w: 4, h: 6 }, zoning: 'HOME' },
   { id: 'plot_reserve_north_east', label: 'Freie Fläche östlich des Spätis', rect: { x: 44, y: 4, w: 14, h: 6 }, zoning: 'BUSINESS' },
@@ -103,20 +103,19 @@ const tilesOf = (rect: BuildingFootprint): { x: number; y: number }[] => {
 export function plotRegisterIssues(
   buildings: readonly BuildingState[] = CITY_PRESET_BUILDINGS,
 ): readonly PlotIssue[] {
-  const layout = createCityStreetLayout();
   const issues: PlotIssue[] = [];
   const occupied = new Map<string, string>();
   for (const plot of CITY_PLOTS) {
     const { x, y, w, h } = plot.rect;
-    if (x < 0 || y < 0 || x + w > layout.size || y + h > layout.size || w <= 0 || h <= 0) {
+    if (x < 0 || y < 0 || x + w > CITY_GRID_SIZE || y + h > CITY_GRID_SIZE || w <= 0 || h <= 0) {
       issues.push({ code: 'PLOT_OUT_OF_GRID', plotId: plot.id, detail: `${w}x${h} bei ${x},${y}` });
       continue;
     }
-    for (const tile of tilesOf(plot.rect)) {
-      if (layout.floor[tile.y * layout.size + tile.x] === 'CONCRETE') {
-        issues.push({ code: 'PLOT_ON_ROAD', plotId: plot.id, detail: `Fahrbahn bei ${tile.x},${tile.y}` });
-        break;
-      }
+    // Die Fahrbahnmaske statt des gemalten Bodens: Ein Gebaeude faerbt seine
+    // Kacheln selbst zu WOOD, deshalb war die Pruefung gegen `floor` blind.
+    const road = roadTilesIn(plot.rect)[0];
+    if (road) {
+      issues.push({ code: 'PLOT_ON_ROAD', plotId: plot.id, detail: `Fahrbahn bei ${road.x},${road.y}` });
     }
     for (const tile of tilesOf(plot.rect)) {
       const key = `${tile.x},${tile.y}`;
