@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b16fa04a54f19c176b6c5a64dcf64250782ac2cffc94e8542d6231c841c670b9",
+  "contentHash": "sha256:0bcfd43b075cfbbea9ba4f5eaac03c1bb32852835169d5d4fcf2499a95c98096",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3447,6 +3447,28 @@
       "text": "Der Heimweg führte zum Arbeitsplatz, die laufende Route überlebte jeden neuen Entschluss, und zwei Zonenkopien beschrieben dieselbe Straße. Jetzt folgt der Weg dem Plan, ein widersprechender Intent bricht ihn ab, und die Laufwege zeichnen neu, wenn sich die Zonen verschieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-issues-sweep.json"
+    },
+    {
+      "contributionId": "city-network-01",
+      "turnId": "2026-11-13T23:50Z-city-network",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vier Türen, ein Netz: Jeder Weg in der Stadt führt über dieselbe Kante.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-network.json"
     },
     {
       "contributionId": "city-night-01",
