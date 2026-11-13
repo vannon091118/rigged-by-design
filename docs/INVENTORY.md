@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 351 Dateien — contract 195 · integration 90 · governance 53 · statistics 6 · performance 7.
+Summe: 353 Dateien — contract 195 · integration 92 · governance 53 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -401,6 +401,8 @@ Summe: 351 Dateien — contract 195 · integration 90 · governance 53 · statis
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
 | `src/render/__tests__/view-layers.test.ts` | render | integration | ja | `src/render/view-layers.ts` |
 | `src/render/assets/__tests__/asset-semantics.test.ts` | render | integration | ja | `src/render/assets/asset-semantics.json` |
+| `src/render/assets/__tests__/textures-preload.test.ts` | render | integration | ja | `src/render/assets/textures.ts` |
+| `src/render/city/__tests__/city-assets.test.ts` | render | integration | ja | `src/render/city/city-assets.ts` |
 | `src/render/depth-perf.bench.ts` | render | performance | nein, Mechanik | `src/render/depth.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, Mechanik | `src/render/floor-math.ts` |
 | `src/render/rig.bench.ts` | render | performance | nein, Mechanik | `src/render/rig-pose.ts` |
@@ -657,10 +659,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2825 |
-| Gelistete Dateien | 2825 |
-| Getrackte Ordner | 113 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), artifacts (1), content (1027), docs (103), packages (27), public (571), scripts (116), src (936) |
+| Getrackte Dateien | 2831 |
+| Gelistete Dateien | 2831 |
+| Getrackte Ordner | 115 |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (25), artifacts (1), content (1028), docs (103), packages (27), public (571), scripts (116), src (939) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -672,10 +674,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 11 Datei(en)
-- `.lane-claims/tasks/` — 11 Datei(en)
+- `.lane-claims/claims/` — 12 Datei(en)
+- `.lane-claims/tasks/` — 12 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1023 Datei(en)
+- `content/narrative/contributions/` — 1024 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -767,7 +769,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/` — 61 Datei(en)
 - `src/render/__tests__/` — 30 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
-- `src/render/assets/__tests__/` — 1 Datei(en)
+- `src/render/assets/__tests__/` — 2 Datei(en)
+- `src/render/city/` — 1 Datei(en)
+- `src/render/city/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
@@ -806,6 +810,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-snapshot-purity.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
+- `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 56 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
@@ -817,6 +822,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-snapshot-purity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
+- `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-polish-chrome.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1842,13 +1848,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-12-render-threshold-voice-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-test-quality-voice-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-ambient-transition.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-city-assets.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-encounter-roster.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-population-load.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-needs-core-voice.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-npc-population.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-snapshot-purity.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22928 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4097 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22950 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4101 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -1861,7 +1868,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INDEX.md` — Doku-Index — gelesen: 65 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1458 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1508 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen
@@ -3304,15 +3311,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/ambient-layer.ts` — Ambient-Schicht: statischer Schleier, statische Sonnenstrahlen und ein — gelesen: 109 Zeilen
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
-- `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 182 Zeilen
-- `src/render/assets/asset-semantics.json` — { — gelesen: 1307 Zeilen
+- `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 190 Zeilen
+- `src/render/assets/__tests__/textures-preload.test.ts` — R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 64 Zeilen
+- `src/render/assets/asset-semantics.json` — { — gelesen: 1319 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 56 Zeilen
 - `src/render/assets/manifest.json` — { — generiert, 2000 Zeilen
 - `src/render/assets/textures.ts` — Texturen aus dem Pixel-Paket: erst der Laufzeit-Atlas, dann die Einzeldatei. — gelesen: 109 Zeilen
-- `src/render/city-exterior-layer.ts` — Sichtbare Stadt: Fassaden, Strassenrequisiten und Tuerkanten aus dem einen — gelesen: 236 Zeilen
+- `src/render/city-exterior-layer.ts` — Sichtbare Stadt: Fassaden, Strassenrequisiten und Tuerkanten aus dem einen — gelesen: 243 Zeilen
 - `src/render/city-plan.ts` — Reiner Renderplan der Stadt: Rollen, Assets und echte Layoutkanten. — gelesen: 97 Zeilen
 - `src/render/city-roles.ts` — Stabile Rollen fuer die Stadtflaechen. Kein Label-Regex, kein Farbwert als — gelesen: 66 Zeilen
+- `src/render/city/__tests__/city-assets.test.ts` — R8: Jede Stadttextur hat Rolle, Welt, ganzzahlige displayScale und — gelesen: 199 Zeilen
+- `src/render/city/city-assets.ts` — Stadt-Assetpaket: die eine Metadatenquelle fuer sichtbare Stadttexturen. — gelesen: 162 Zeilen
 - `src/render/comic-bubbles.ts` — Kleine Comic-Sprechblase: eine Grafik statt eines Satzes, pro Figur gepoolt. — gelesen: 152 Zeilen
 - `src/render/decor-roles.ts` — Stabile Renderrollen für Möbel und Deko. — gelesen: 87 Zeilen
 - `src/render/depth-perf.bench.ts` — Tiefensortierung derselben Szene auf SMALL, MEDIUM und LARGE: 200 Figuren, — gelesen: 48 Zeilen
