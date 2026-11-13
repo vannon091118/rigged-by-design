@@ -15,11 +15,14 @@
 import type { CitySceneState } from './city-scene';
 import { cityNav } from './city-scene';
 import { buildingById } from './city-life-venues';
-import type { CityLifePlace } from './city-life-types';
+import type { CityLifePlace, CityResidentState } from './city-life-types';
 import type { Point } from './types-model';
 import { findPath, isWalkable, nearestWalkable } from './pathfinding';
 import { ensureCityLife } from './city-life-state';
-import { driftNeed } from './needs-core';
+import { clampNeed, driftNeed } from './needs-core';
+import { applyIntentEffects } from './city-life-effects';
+import { addMemory, socialMemory } from './city-life-memory';
+import { clampInt } from './num';
 import { createCityScene } from './city-scene';
 import type { WorldState } from './types';
 
@@ -125,9 +128,51 @@ export function remainingTiles(travel: CityTravel | null): number {
  * Ein Tick für alle Bewohner. Der Ort wechselt erst bei Ankunft; bis dahin
  * bleibt der alte Ort stehen und die Sicht meldet „unterwegs nach X".
  */
+/**
+ * Ankunft bucht die ortsgebundene Wirkung: Geld, Faehigkeit, Beduerfnisse und
+ * — bei Kneipe oder Besuch — der Kontakt mit einer anwesenden Person. Vorher
+ * lief nur die Zeitdauer; der Lohn kam nicht schon am Wohnungstisch (#504).
+ */
+function settleArrival(
+  resident: CityResidentState, peers: readonly CityResidentState[],
+  tick: number, nextMemoryId: number,
+): { readonly resident: CityResidentState; readonly nextMemoryId: number } {
+  const place = resident.location;
+  const effects = applyIntentEffects(resident.needs, resident.intent, 1, resident.skills);
+  let memories = resident.memories;
+  let relationships = resident.relationships;
+  let memoryId = nextMemoryId;
+  if (resident.intent === 'PUB' || resident.intent === 'VISIT_FRIEND') {
+    const target = peers.find((peer) => peer.npcId !== resident.npcId && peer.location === place);
+    if (target) {
+      const delta = resident.intent === 'VISIT_FRIEND' ? 6 : 4;
+      const relation = clampInt((relationships[target.npcId] ?? 0) + delta, -100, 100);
+      relationships = { ...relationships, [target.npcId]: relation };
+      memories = addMemory(memories, socialMemory(target.npcId, tick, memoryId, relationships));
+      memoryId += 1;
+    }
+  }
+  return {
+    resident: {
+      ...resident,
+      travel: null,
+      needs: {
+        hunger: clampNeed(effects.hunger), thirst: clampNeed(effects.thirst),
+        fatigue: clampNeed(effects.fatigue), social: clampNeed(effects.social),
+        mood: clampNeed(effects.mood), money: Math.max(0, Math.round(effects.money)),
+      },
+      skills: { cooking: effects.cooking, work: effects.work, social: effects.socialSkill },
+      relationships,
+      memories,
+    },
+    nextMemoryId: memoryId,
+  };
+}
+
 export function tickCityMovement(world: WorldState): void {
   const life = ensureCityLife(world);
   if (!life.residents.some((resident) => resident.travel !== null)) return;
+  let memorySeq = life.memorySeq ?? 1;
   const residents = life.residents.map((resident) => {
     if (!resident.travel) return resident;
     const step = advanceTravel(resident.travel);
@@ -135,10 +180,15 @@ export function tickCityMovement(world: WorldState): void {
       return { ...resident, position: step.position, travel: step.travel };
     }
     const fatigue = driftNeed(resident.needs.fatigue, travelFatigue(resident.travel.path.length));
+    const arrived = settleArrival(
+      { ...resident, position: step.position, travel: null, location: resident.travel.to },
+      life.residents, world.tick, memorySeq,
+    );
+    memorySeq = arrived.nextMemoryId;
     return {
-      ...resident, needs: { ...resident.needs, fatigue },
-      position: step.position, travel: null, location: resident.travel.to,
+      ...arrived.resident,
+      needs: { ...arrived.resident.needs, fatigue },
     };
   });
-  world.cityLife = { ...life, residents };
+  world.cityLife = { ...life, residents, memorySeq };
 }

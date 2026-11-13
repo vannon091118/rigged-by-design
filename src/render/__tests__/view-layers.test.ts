@@ -28,6 +28,7 @@ function harness(dirty: boolean) {
       sync: () => calls.push('entities.sync'),
       cull: () => calls.push('entities.cull'),
     },
+    cityActors: { sync: () => calls.push('cityActors.sync'), clear: () => calls.push('cityActors.clear') },
     rig: {
       get lod() { return 1; },
       get dirty() { return dirty; },
@@ -52,7 +53,7 @@ describe('Snapshot-Reihenfolge der Layer', () => {
     syncViewLayers(layers, view, view, false, 1000);
     expect(calls).toEqual([
       'scene.redrawRoom', 'city.update', 'city.setAmbient', 'ambient.update', 'lights.update',
-      'scene.setLabels', 'scene.redrawDirt', 'entities.sync', 'walls.sync', 'scene.flush',
+      'scene.setLabels', 'scene.redrawDirt', 'entities.sync', 'cityActors.sync', 'walls.sync', 'scene.flush',
       'cues.setPath', 'rig.updateLod', 'entities.cull',
     ]);
     expect(calls.filter((entry) => entry === 'entities.sync')).toHaveLength(1);

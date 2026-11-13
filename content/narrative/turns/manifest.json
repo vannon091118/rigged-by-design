@@ -4112,6 +4112,10 @@
     {
       "turnId": "2026-11-14T00:05Z-residence-role",
       "contributionId": "city-residence-role-01"
+    },
+    {
+      "turnId": "2026-11-14T02:10Z-city-proximity",
+      "contributionId": "city-proximity-01"
     }
   ]
 }

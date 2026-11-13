@@ -26,6 +26,9 @@ describe('Eigene Haustuer', () => {
   it('fuehrt aus dem Casino auf die Strasse, eine Kachel vor der Grand-Schwelle', () => {
     const { world, scene, ownDoor } = setup();
     expect(ownDoor).toMatch(/^door-/);
+    // Erst an die Schwelle: Ein Tuerklick wirkt nur in Reichweite (#506).
+    const edge = world.layout.edges.find((entry) => entry.kind === 'DOOR' && entry.id === ownDoor)!;
+    world.player.position = { x: edge.x, y: edge.y };
     expect(scene.enterStreetDoor(ownDoor)).toBe('CITY');
     expect(world.scene.kind).toBe('CITY');
     expect(world.player.position).toEqual({ x: 22, y: 23 });

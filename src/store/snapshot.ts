@@ -13,6 +13,7 @@ import { renovationView } from '../core/sim/renovation';
 import { machineHallView } from '../core/sim/machine-hall';
 import { floorWorkView } from '../core/sim/floor-work';
 import { cityView } from '../core/sim/city';
+import { cityActorViews } from './city-actors-view';
 import { venueView } from '../core/sim/venue-event';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
@@ -52,6 +53,9 @@ function worldSnapshot(world: WorldState) {
     size: apartment?.layout.size ?? city?.layout.size ?? foreign?.layout?.size ?? foreign?.size ?? world.size,
     // Eine räumliche Wahrheit: die Stadt liefert ihre Zonen aus dem Layout.
     zones: apartment?.layout.zones ?? city?.layout.zones ?? foreign?.zones ?? world.zones,
+    // Die Stadtbewohner sind Figuren, keine Popup-Zeilen: Der Renderer bekommt
+    // dieselbe Simulation, die auch der Stadt-View liest.
+    cityActors: cityActorViews(city, world),
     cityExterior,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),

@@ -10,6 +10,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { meetNpc } from '../../core/sim/city-encounter';
+import { cityOf } from '../../core/sim/city-model';
 import { CITY_POPULATION_DEFAULT, CITY_POPULATION_STREET } from '../../core/sim/city-npc-roster';
 import { createWorld } from '../../core/sim/templates';
 import type { WorldState } from '../../core/sim/types';
@@ -57,6 +58,15 @@ describe('Geladener CITY-Save', () => {
     const target = view.city.residents[view.city.residents.length - 1]!;
     expect(target.traits.length).toBeGreaterThan(0);
 
+    // Anwesenheit ist die Bedingung des Gespraechs: Der Bewohner steht dort,
+    // wo der Spieler ist.
+    const place = cityOf(loaded!.world).location as 'KIEZ' | 'MARKT' | 'CASINO';
+    loaded!.world.cityLife = {
+      ...loaded!.world.cityLife,
+      residents: loaded!.world.cityLife.residents.map((resident) => resident.npcId === target.npcId
+        ? { ...resident, location: place }
+        : resident),
+    };
     const met = meetNpc(loaded!.world, target.npcId);
     expect(met.npc.id).toBe(target.npcId);
     expect(met.visitor.residentNpcId).toBe(target.npcId);

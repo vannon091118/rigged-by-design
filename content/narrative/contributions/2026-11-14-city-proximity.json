@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T02:10Z-city-proximity",
+  "contributionId": "city-proximity-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Lohn kam, bevor jemand die Werkstatt betrat; Türen sprangen aus der Ferne auf, und Gespräche liefen quer über die ganze Stadt. Jetzt bucht erst die Ankunft, was der Ort gibt — und wer nicht da ist, ist nicht ansprechbar.",
+  "directives": []
+}

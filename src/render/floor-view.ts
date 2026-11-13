@@ -4,6 +4,7 @@ import { Application, Graphics } from 'pixi.js';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
 import { EntitySync } from './entity-sync';
+import { CityActorSync } from './city-actor-sync';
 import { FloorCameraRig } from './floor-camera-rig';
 import { FloorCues } from './floor-cues';
 import { createGuestArt, type GuestArt } from './guest-art';
@@ -113,8 +114,9 @@ export class FloorView {
     });
     this.#layers = {
       scene: this.#scene, city: this.#city, ambient: this.#ambient, lights: this.#lights,
-      walls: this.#walls, cues: this.#cues, entities: this.#entities, rig: this.#rig,
-      renderer: app.renderer,
+      walls: this.#walls, cues: this.#cues, entities: this.#entities,
+      cityActors: new CityActorSync({ renderer: app.renderer, world: this.#scene.world, depth: this.#scene.depth, stepMs: TICK_MS }),
+      rig: this.#rig, renderer: app.renderer,
     };
     app.ticker.add(this.#animate);
     this.update(view, true);
@@ -175,6 +177,7 @@ export class FloorView {
     this.#editor.destroy();
     this.#actors.clear();
     this.#entities.clear();
+    this.#layers.cityActors.clear();
     this.#ambient.destroy();
     this.#city.destroy();
     this.#scene.destroy();
