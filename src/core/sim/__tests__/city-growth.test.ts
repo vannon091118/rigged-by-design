@@ -9,6 +9,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { createWorld, ensureStarter } from '../templates';
 import { createCityScene } from '../city-scene';
 import { ensureCityLife, ensureCityPopulation } from '../city-life-state';
@@ -26,7 +27,7 @@ const start = (residents = 12) => {
   world.cityScene = createCityScene();
   ensureCityLife(world);
   ensureCityPopulation(world, residents);
-  return { world, ledger: new Ledger({}), prng: new Prng(4242) };
+  return { world, ledger: new Ledger({}), prng: new Prng(randomSeed()) };
 };
 
 describe('Bauträger und Wachstum', () => {

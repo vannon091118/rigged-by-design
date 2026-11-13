@@ -102,7 +102,7 @@ describe('Begegnung mit allen Bewohnern', () => {
     const { world } = start();
     const life = ensureCityLife(world);
     const away = life.residents.find((resident) => resident.location !== 'KIEZ')!;
-    expect(away).toBeDefined();
+    expect(away.location).not.toBe('KIEZ');
     expect(() => meetNpc(world, away.npcId)).toThrow(/nicht hier/);
   });
 

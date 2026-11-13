@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-verify-all-green",
+  "claimId": "lane/governance/verify-all-green",
+  "branch": "lane/governance/verify-all-green",
+  "baseSha": "b1ee312f1547edffa7db285f70698a522624a065",
+  "phase": "IMPLEMENTING",
+  "title": "Drei rote Gates beheben: Seeds, tote Exporte, Welttext-Sprache",
+  "goal": "verify:all auf origin/main gruen bekommen, ohne Verhalten zu aendern: feste Test-Seeds ersetzen, acht tote Exporte einziehen, Governance-Vokabular aus dem Welttext nehmen und die zwei roten Gates aus #547 (Existenz-Assertion, Roadmap-Zaehlung) nachziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokaler Nachweis ist gruen (verify:all); Commit abschliessen, dann PR gegen main.",
+  "revision": 1
+}

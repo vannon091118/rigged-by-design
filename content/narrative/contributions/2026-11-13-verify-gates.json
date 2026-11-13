@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T22:30Z-verify-gates",
+  "contributionId": "verify-gates-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Drei Türen, die lange klemmten, schließen jetzt leise: Das Geld stimmt, die Namen stimmen, und niemand muss mehr erklären, warum. Wer nachsieht, findet die Stadt genau so vor, wie sie beschrieben wurde.",
+  "directives": []
+}
