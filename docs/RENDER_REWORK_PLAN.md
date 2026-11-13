@@ -634,8 +634,8 @@ CityGrowth    openSlots, joblessResidents, builderCapitalVC, demand
 | Slice | Inhalt | Akzeptanz |
 | --- | --- | --- |
 | S1 | Slots und Schichten aus Gebäuden (erledigt) | Arbeit nur in der Schicht; Kneipe erst ab 16; 0 Verstöße im 5-Tage-Lauf |
-| S2 | Grundstücksregister mit festen Plätzen im Kartenlayout | Jedes Gebäude steht auf genau einem Grundstück; keine zwei Gebäude auf einem Platz; alte Saves bleiben lesbar |
-| S3 | Bauträger und Wachstum | Ohne offene Slots und ohne Joblose baut niemand; mit Kapital entsteht ein Gebäude samt neuem Slot |
+| S2 | Grundstücksregister mit festen Plätzen im Kartenlayout (umgesetzt) | Jedes Gebäude steht auf genau einem Grundstück; keine zwei Gebäude auf einem Platz; alte Saves bleiben lesbar |
+| S3 | Bauträger und Wachstum (umgesetzt) | Ohne offene Slots und ohne Joblose baut niemand; mit Kapital entsteht ein Gebäude samt neuem Slot |
 | S4 | Gebotsverfahren und Bodenwert | Der Spieler fragt an, ein NPC überbietet deterministisch (Seed), der Preis folgt Lage und Nachfrage; Verkauf landet im Journal |
 | S5 | Spieler nimmt einen offenen Slot an und übernimmt ein Geschäft | Derselbe Slot, dieselbe Schicht, dieselbe Buchführung wie beim NPC |
 
@@ -643,6 +643,26 @@ S2 braucht das Kartenlayout als Datenquelle (Grundstücksraster statt freier
 Koordinaten), S3 die Verbindung von Bewohnerzahl, offenen Slots und
 Bauträgerkonto. Beides ist Headless prüfbar; der Renderer liest danach nur noch
 `buildings`/`plots`.
+
+**Nachgerechnet (S3):** `src/core/sim/city-growth.ts` liest den Arbeitsmarkt aus
+Gebäuden und Bewohnern (`JOB_CAPACITY`: Kneipe 6, Späti 5, Casino 8, Wohnung 0)
+und baut nur bei `jobless > 0`, freiem Platz und Kapital des Kontos `BAUTRAGER`
+(6000 VC Startkapital, 1800 VC pro Bau, Buchung an `EXTERNAL_WORK`). Ein Bau pro
+Tag, Kennung `bld_grown_<n>`, neue Wände in der Szene (ohne Tür, kein Innenraum),
+Zustand `cityGrowth` im Save. `city-growth.test.ts` belegt: 12 Bewohner bei 19
+Stellen bauen nicht, 60 Bewohner bauen bei Kapital, der zweite Bau am selben Tag
+unterbleibt, ohne Kapital und ohne Platz wird nicht gebaut, und Save/Load behält
+Gebäude und Wachstumsstand. Der Stadt-Tick liegt jetzt gebündelt in
+`city-tick.ts` (Leben → Wege → Wachstum), damit `tick.ts` unter der Hot Zone
+bleibt.
+
+**Nachgerechnet (S2):** `src/core/sim/city-plots.ts` trägt neun feste Plätze —
+vier bebaute (Grundfläche des jeweiligen Gebäudes) und fünf Reserveplätze, die
+weder auf einer Fahrbahn noch auf einem Gebäude liegen. `plotRegisterIssues()`
+prüft Raster, Überlappung, Fahrbahn, Doppelbelegung und Gebäude ohne Platz;
+`city-plots.test.ts` hält den leeren Befund fest und zeigt, dass ein Save kein
+Grundstücksfeld braucht (der Register folgt aus der Karte). Die Reserveflächen
+sind der Anker für S3: gebaut wird nur auf einem eingetragenen Platz.
 
 ## 1. Ausgangslage
 

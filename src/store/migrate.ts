@@ -24,6 +24,7 @@ import { hydrateLayout } from './migrate-layout';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
 import type { CityLifeState } from '../core/sim/city-life-types';
+import type { CityGrowthState } from '../core/sim/city-growth';
 import { normalizeCityLife } from '../core/sim/city-life';
 import { normalizeCityState } from '../core/sim/city-persist';
 import { normalizeActionQueue, type ActionQueueState } from '../core/sim/action-queue';
@@ -72,6 +73,8 @@ export interface SavedGame {
   readonly city?: CityState;
   /** Ab dieser Lane: Hunger, Durst und Tagesroutine der Stadt-NPCs. */
   readonly cityLife?: CityLifeState;
+  /** Ab dieser Lane: Bautraeger und Wachstum; alte Saves haben ihn nicht. */
+  readonly cityGrowth?: CityGrowthState;
 }
 
 function footprintOf(item: Furniture): { w: number; h: number; seats: number } | null {
@@ -81,6 +84,18 @@ function footprintOf(item: Furniture): { w: number; h: number; seats: number } |
 }
 
 /** Füllt alle Felder mit Defaults, heilt verwaiste Referenzen, sammelt altes Fiat. */
+function normalizeGrowth(raw: unknown): CityGrowthState | undefined {
+  if (typeof raw !== 'object' || raw === null) return undefined;
+  const record = raw as Record<string, unknown>;
+  const built = Array.isArray(record.built)
+    ? record.built.filter((id): id is string => typeof id === 'string')
+    : [];
+  const day = typeof record.lastBuildDay === 'number' && Number.isFinite(record.lastBuildDay) && record.lastBuildDay >= 0
+    ? Math.floor(record.lastBuildDay)
+    : 0;
+  return { lastBuildDay: day, built };
+}
+
 export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: number; amount: VaCoinMicro }> {
   // Raum zuerst: Zonen, Groesse und Kanten stehen, bevor Objekte und Gaeste kommen.
   hydrateLayout(world, saved);
@@ -111,6 +126,8 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   // Alte Saves haben die 30x30-Portalstadt; sie wird auf das kanonische
   // 60x60-Exterieur gehoben, statt sie als zweite Stadt weiterzufuehren.
   world.cityScene = normalizeCityScene(saved.cityScene);
+  // Wachstum fehlt in alten Saves; nur bekannte Kennungen und Tage zaehlen.
+  world.cityGrowth = normalizeGrowth(saved.cityGrowth);
   world.sceneReturnPosition = saved.sceneReturnPosition ?? undefined;
   // Alte Saves kennen kein Onboarding; sie starten nicht noch einmal in der Stadt.
   world.onboarding = saved.onboarding ?? { step: 'DONE' };

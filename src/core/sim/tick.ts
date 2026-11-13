@@ -8,8 +8,7 @@ import { TICKS_PER_DAY, tickInDay } from './clock';
 import { satisfyNeed } from './needs-core';
 import { processNarrativeRuntime } from './narrative/runtime';
 import { tickVenueEvents } from './venue-event';
-import { tickCityLife } from './city-life';
-import { tickCityMovement } from './city-life-movement';
+import { tickCity } from './city-tick';
 import { maybeStartBrawl, tickDisputes } from './disputes';
 import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose } from './guests';
 import { guestAccount, pendingAccount } from './money';
@@ -142,10 +141,7 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   }
   // Nach dem Tageswechsel: Veranstaltungen duerfen die Tagesmeldung ueberschreiben.
   tickDemand(world, ledger, prng);
-  // Die Stadt lebt auch waehrend der Spieler im eigenen Casino steht.
-  tickCityLife(world);
-  // Wege laufen in Kacheln, nicht in Stunden: erst der Tick macht Bewegung sichtbar.
-  tickCityMovement(world);
+  tickCity(world, ledger);
   // Die zentrale Event-Infrastruktur fuehrt Phasen und loest am Fristtick auf,
   // bevor die Narrative-Runtime ihre eigene Fristpruefung sieht.
   tickVenueEvents(world);

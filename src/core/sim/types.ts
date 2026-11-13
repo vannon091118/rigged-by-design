@@ -17,6 +17,7 @@ import type { CityState } from './city';
 import type { ActionQueueState } from './action-queue';
 import type { CitySceneState } from './city-scene';
 import type { CityLifeState } from './city-life-types';
+import type { CityGrowthState } from './city-growth';
 
 export type * from './types-model';
 export type { Mop } from './mop';
@@ -125,6 +126,8 @@ export interface WorldState {
   city?: CityState;
   /** Persistente Lebenssimulation der benannten Stadt-NPCs. */
   cityLife: CityLifeState;
+  /** Bauträger und Wachstum; fehlt in alten Saves und entsteht beim ersten Zugriff. */
+  cityGrowth?: CityGrowthState;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

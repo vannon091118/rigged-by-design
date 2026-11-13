@@ -4100,6 +4100,10 @@
     {
       "turnId": "2026-11-13T21:40Z-claim-closeout",
       "contributionId": "governance-claim-closeout-01"
+    },
+    {
+      "turnId": "2026-11-13T21:20Z-city-plots-growth",
+      "contributionId": "city-plots-growth-01"
     }
   ]
 }
