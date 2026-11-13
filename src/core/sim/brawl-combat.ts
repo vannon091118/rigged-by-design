@@ -3,6 +3,7 @@ import type { Prng } from '../rng/prng';
 import { buildDistribution, rollNumber } from '../rng/weighted';
 import type { DuelOpponent } from './duel-opponent';
 import { INJURY_TICKS, playerHp, playerMaxHp, type PlayerRpgState } from './player-rpg';
+import { clamp } from './num';
 
 interface Fighter {
   readonly name: string;
@@ -31,7 +32,6 @@ const LOG_LIMIT = 6;
 /** Nur ein Notfallnetz: statistisch faellt hier niemand mehr um. */
 const MAX_ROUNDS = 200;
 
-const clamp = (value: number): number => Math.max(MIN_HIT, Math.min(MAX_HIT, Math.round(value)));
 
 /** Einmal gebaut, immer wieder gewuerfelt: dieselbe 1..100-Verteilung, die die Anzeige als Chance angibt. */
 const HIT_DISTRIBUTION = buildDistribution(1, 100);
@@ -65,14 +65,14 @@ export function fighters(rpg: PlayerRpgState, opponent: DuelOpponent, crowd: num
     hp: playerHp(rpg),
     maxHp: playerMaxHp(rpg),
     attack: 6 + rpg.brawlLevel * 2,
-    hit: clamp(55 + rpg.brawlLevel * 3 + crowd - opponent.strength),
+    hit: clamp(Math.round(55 + rpg.brawlLevel * 3 + crowd - opponent.strength), MIN_HIT, MAX_HIT),
   };
   const rival: Fighter = {
     name: opponent.name,
     hp: BASE_OPPONENT_HP + opponent.toughness * HP_PER_TOUGHNESS,
     maxHp: BASE_OPPONENT_HP + opponent.toughness * HP_PER_TOUGHNESS,
     attack: 5 + opponent.strength * 2,
-    hit: clamp(52 + opponent.strength * 2 - rpg.brawlLevel * 2 - Math.round(crowd / 2)),
+    hit: clamp(Math.round(52 + opponent.strength * 2 - rpg.brawlLevel * 2 - Math.round(crowd / 2)), MIN_HIT, MAX_HIT),
   };
   return [player, rival];
 }

@@ -106,7 +106,7 @@ export const GATES = Object.freeze({
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
 // Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
 // betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
-const FAST = [...LIGHT, 'test-quality', 'affected', 'build'];
+const FAST = [...LIGHT, 'dead-code', 'test-quality', 'affected', 'build'];
 const DEV = [...LIGHT, 'affected'];
 // Quick ist die gemeinsame Basis fuer das Required-Set; Build kommt fuer CI
 // hinzu, Audit bleibt impact-/release-abhaengig.

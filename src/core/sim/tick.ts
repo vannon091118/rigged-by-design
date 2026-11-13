@@ -3,7 +3,9 @@ import type { Ledger } from '../economy/ledger';
 import { ZERO_VC } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { assertGameplayRng } from '../rng/streams';
-import { TICKS_PER_DAY, tickDemand } from './demand';
+import { tickDemand } from './demand';
+import { TICKS_PER_DAY, tickInDay } from './clock';
+import { satisfyNeed } from './needs-core';
 import { processNarrativeRuntime } from './narrative/runtime';
 import { tickVenueEvents } from './venue-event';
 import { tickCityLife } from './city-life';
@@ -63,8 +65,8 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
   if (guest.state === 'EXCHANGE') {
     if (guest.queueIndex > 0) {
       guest.stateTicks = 0;
-      guest.patience = Math.max(0, guest.patience - 0.35);
-      guest.mood = Math.max(0, guest.mood - 0.05);
+      guest.patience = satisfyNeed(guest.patience, 0.35);
+      guest.mood = satisfyNeed(guest.mood, 0.05);
       if (guest.patience <= 0) { payAndLeave(world, ledger, guest); return; }
     }
     guest.stateTicks += 1;
@@ -95,8 +97,8 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
     // Auszahlung erst am Kopf der Schlange: wer hinter einem anderen steht,
     // wartet sichtbar und wird nicht am Rücken vorbei bedient.
     if (guest.queueIndex > 0) {
-      guest.patience = Math.max(0, guest.patience - 0.5);
-      guest.mood = Math.max(0, guest.mood - 0.05);
+      guest.patience = satisfyNeed(guest.patience, 0.5);
+      guest.mood = satisfyNeed(guest.mood, 0.05);
       if (guest.patience <= 0) payAndLeave(world, ledger, guest);
       return;
     }
@@ -106,7 +108,7 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
     }
     if (ledger.getBalance(pendingAccount(guest.id)) > ZERO_VC && guest.stateTicks < CASHIER_WAIT) {
       guest.stateTicks += 1;
-      guest.patience = Math.max(0, guest.patience - 1);
+      guest.patience = satisfyNeed(guest.patience, 1);
       return;
     }
     payAndLeave(world, ledger, guest);
@@ -169,7 +171,7 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
  * Kalender und holt keine 600 Einzeltick-Simulation nach.
  */
 export function advanceToNextDay(world: WorldState, ledger: Ledger, prng: Prng): number {
-  const ticks = TICKS_PER_DAY - (world.tick % TICKS_PER_DAY);
+  const ticks = TICKS_PER_DAY - tickInDay(world.tick);
   world.tick += ticks - 1;
   tickWorld(world, ledger, prng);
   return ticks;

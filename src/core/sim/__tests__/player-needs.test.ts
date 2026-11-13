@@ -13,7 +13,7 @@ import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_ENERGY_PER_DAY, cityOf, cityView, runCityAction, travel } from '../city';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { acceptJob, completeJobTask, requestJobTask } from '../player-jobs';
 import { drinkAtHome, eatAtHome, playerCondition } from '../player-needs';
 import { playerCareer } from '../player-career';

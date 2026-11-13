@@ -3,6 +3,7 @@
  */
 
 import type { NpcIntentKind, NpcNeeds, NpcLODLevel } from './npc-types';
+import { clampNeed, driftNeed, needAtLeast, satisfyNeed } from './needs-core';
 
 export const HUNGER_THRESHOLD_URGENT = 85;
 export const THIRST_THRESHOLD_URGENT = 85;
@@ -35,61 +36,61 @@ export function tickNeeds(
 
   switch (currentIntent) {
     case 'SLEEP':
-      fatigue = Math.max(0, fatigue - hours * 15);
-      hunger = Math.min(100, hunger + hours * 3);
-      thirst = Math.min(100, thirst + hours * 2);
-      mood = Math.min(100, mood + hours * 2);
+      fatigue = satisfyNeed(fatigue, hours * 15);
+      hunger = driftNeed(hunger, hours * 3);
+      thirst = driftNeed(thirst, hours * 2);
+      mood = driftNeed(mood, hours * 2);
       break;
     case 'EAT_HOME':
     case 'EAT_OUT':
-      hunger = Math.max(0, hunger - hours * 40);
-      thirst = Math.max(0, thirst - hours * 45);
-      mood = Math.min(100, mood + hours * 5);
+      hunger = satisfyNeed(hunger, hours * 40);
+      thirst = satisfyNeed(thirst, hours * 45);
+      mood = driftNeed(mood, hours * 5);
       break;
     case 'WORK':
-      fatigue = Math.min(100, fatigue + hours * 8);
-      hunger = Math.min(100, hunger + hours * 6);
-      thirst = Math.min(100, thirst + hours * 4);
-      social = Math.max(0, social - hours * 3);
+      fatigue = driftNeed(fatigue, hours * 8);
+      hunger = driftNeed(hunger, hours * 6);
+      thirst = driftNeed(thirst, hours * 4);
+      social = satisfyNeed(social, hours * 3);
       break;
     case 'PUB':
     case 'LEISURE':
     case 'VISIT_FRIEND':
-      social = Math.max(0, social - hours * 20);
-      mood = Math.min(100, mood + hours * 10);
-      fatigue = Math.min(100, fatigue + hours * 4);
-      hunger = Math.min(100, hunger + hours * 5);
-      thirst = Math.max(0, thirst - hours * 20);
+      social = satisfyNeed(social, hours * 20);
+      mood = driftNeed(mood, hours * 10);
+      fatigue = driftNeed(fatigue, hours * 4);
+      hunger = driftNeed(hunger, hours * 5);
+      thirst = satisfyNeed(thirst, hours * 20);
       break;
     default:
-      hunger = Math.min(100, hunger + hours * 4);
-      thirst = Math.min(100, thirst + hours * 3);
-      fatigue = Math.min(100, fatigue + hours * 3);
-      social = Math.min(100, social + hours * 2);
+      hunger = driftNeed(hunger, hours * 4);
+      thirst = driftNeed(thirst, hours * 3);
+      fatigue = driftNeed(fatigue, hours * 3);
+      social = driftNeed(social, hours * 2);
       break;
   }
 
   return {
-    hunger: Math.round(hunger),
-    thirst: Math.round(thirst),
-    fatigue: Math.round(fatigue),
-    social: Math.round(social),
+    hunger: clampNeed(hunger),
+    thirst: clampNeed(thirst),
+    fatigue: clampNeed(fatigue),
+    social: clampNeed(social),
     money,
-    mood: Math.max(0, Math.min(100, Math.round(mood))),
+    mood: clampNeed(mood),
   };
 }
 
 export function needsOverrideIntent(needs: NpcNeeds): NpcIntentKind | null {
-  if (needs.fatigue >= FATIGUE_THRESHOLD_URGENT) {
+  if (needAtLeast(needs.fatigue, FATIGUE_THRESHOLD_URGENT)) {
     return 'SLEEP';
   }
-  if (needs.hunger >= HUNGER_THRESHOLD_URGENT) {
+  if (needAtLeast(needs.hunger, HUNGER_THRESHOLD_URGENT)) {
     return needs.money >= 500 ? 'EAT_OUT' : 'EAT_HOME';
   }
-  if (needs.thirst >= THIRST_THRESHOLD_URGENT) {
+  if (needAtLeast(needs.thirst, THIRST_THRESHOLD_URGENT)) {
     return needs.money >= 500 ? 'PUB' : 'EAT_HOME';
   }
-  if (needs.social >= SOCIAL_THRESHOLD_URGENT) {
+  if (needAtLeast(needs.social, SOCIAL_THRESHOLD_URGENT)) {
     return 'PUB';
   }
   return null;

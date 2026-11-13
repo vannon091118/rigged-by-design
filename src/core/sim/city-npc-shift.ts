@@ -9,6 +9,7 @@
  */
 import type { CityLifePlace } from './city-life-types';
 import { npcIndexById, rosterDefAt } from './city-npc-roster';
+import { hourOfDay } from './clock';
 
 export interface CitySlot {
   readonly id: string;
@@ -36,13 +37,6 @@ const PLACE_BUILDING: Readonly<Record<CityLifePlace, string>> = {
   MARKT: 'bld_corner_shop',
   CASINO: 'bld_casino_grand',
 };
-
-/** Umgekehrter Weg: In welchem Ort steht dieses Gebaeude? */
-export function placeOfBuilding(buildingId: string): CityLifePlace | null {
-  const entry = (Object.entries(PLACE_BUILDING) as [CityLifePlace, string][])
-    .find(([, id]) => id === buildingId);
-  return entry ? entry[0] : null;
-}
 
 export function buildingOfPlace(place: CityLifePlace): string {
   return PLACE_BUILDING[place];
@@ -82,7 +76,7 @@ export function slotOf(npcId: string): CitySlot | null {
 }
 
 export function inShift(slot: CitySlot, hour: number): boolean {
-  const normalized = ((hour % 24) + 24) % 24;
+  const normalized = hourOfDay(hour);
   return slot.from <= slot.to
     ? normalized >= slot.from && normalized < slot.to
     : normalized >= slot.from || normalized < slot.to;

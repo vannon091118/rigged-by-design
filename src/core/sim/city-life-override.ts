@@ -14,6 +14,7 @@ import {
   needsOverrideIntent,
 } from './npc-needs';
 import type { NpcIntentKind, NpcNeeds } from './npc-types';
+import { needAtLeast } from './needs-core';
 
 /**
  * Was ein dringendes Bedürfnis verbietet: Arbeit, Einkauf, Freizeit und
@@ -27,7 +28,7 @@ export const URGENT_NEED_VETO = 400;
 /** Eine geschlossene Tür ist keine Alternative, sondern ein Ausschluss. */
 export const CLOSED_PENALTY = 1000;
 
-export interface NeedVeto {
+interface NeedVeto {
   readonly intent: NpcIntentKind;
   readonly family: CityDecisionFamily;
 }
@@ -40,11 +41,11 @@ export interface NeedVeto {
  * denn Einsamkeit verbietet weder den Weg zur Arbeit noch das Essen.
  */
 export function urgentNeedVeto(needs: NpcNeeds): NeedVeto | null {
-  if (needs.fatigue >= FATIGUE_THRESHOLD_URGENT) return { intent: 'SLEEP', family: 'fatigue' };
+  if (needAtLeast(needs.fatigue, FATIGUE_THRESHOLD_URGENT)) return { intent: 'SLEEP', family: 'fatigue' };
   const intent = needsOverrideIntent(needs);
   if (!intent) return null;
-  if (needs.hunger >= HUNGER_THRESHOLD_URGENT) return { intent, family: 'hunger' };
-  if (needs.thirst >= THIRST_THRESHOLD_URGENT) return { intent, family: 'thirst' };
+  if (needAtLeast(needs.hunger, HUNGER_THRESHOLD_URGENT)) return { intent, family: 'hunger' };
+  if (needAtLeast(needs.thirst, THIRST_THRESHOLD_URGENT)) return { intent, family: 'thirst' };
   return null;
 }
 

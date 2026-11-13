@@ -31,10 +31,10 @@ Der Required-Plan besteht aus fünfzehn Gates:
 Lokal gilt:
 
 - `verify:light` = neun Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `test-placement`, `tree`, `impact-graph`, `redundancy`.
-- `verify:fast` = Light plus `test-quality`, `affected` und `build`; der Standard vor dem Push.
+- `verify:fast` = Light plus `dead-code`, `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
 - `verify:quick` = vierzehn Gates: Required ohne `build`.
-- `verify:integration` = zwölf lokale Gates: Light plus `test-quality`, `affected` und `build`.
+- `verify:integration` = dreizehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
 - `verify:all` = fünfzehn Required plus Audit (sechzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
 - `test:mechanics` = ausschließlich Statistik, Soak, Langlauf und Benchmarks; nie Teil eines Regelprofils.

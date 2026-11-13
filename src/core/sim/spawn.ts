@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { admitFiat } from './money';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
 import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
@@ -75,11 +76,11 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
     ? { ...made, name: returning.name, visitorId: returning.id, mood: Math.max(0, Math.min(100, made.mood + memoryEffect(returning).moodBonus)) }
     : made;
   if (world.activePenalties.some((penalty) => penalty.kind === 'MOOD_SHOCK')) {
-    guest.mood = Math.max(0, guest.mood - MOOD_SHOCK_NEWCOMER_MALUS);
+    guest.mood = satisfyNeed(guest.mood, MOOD_SHOCK_NEWCOMER_MALUS);
   }
   // Der Zustand der Immobilie kommt beim Gast an: ein kleiner Bonus je Renovierungsstufe.
   const renovation = renovationMoodBonus(world);
-  if (renovation > 0) guest.mood = Math.min(100, guest.mood + renovation);
+  if (renovation > 0) guest.mood = driftNeed(guest.mood, renovation);
   // Agent 20: Veranstaltungsgaeste kommen mit Durst; alle anderen bleiben unveraendert.
   applyArrivalFlow(world, guest);
   if (returning) {

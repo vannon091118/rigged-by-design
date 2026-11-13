@@ -4,6 +4,7 @@ import { HAUSKONTO, SHOP } from './money';
 import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
+import { clamp } from './num';
 
 export interface Stain {
   readonly id: number;
@@ -17,7 +18,7 @@ export interface Stain {
 }
 
 export function spawnStain(world: WorldState, x: number, y: number, dirtValue: number): void {
-  const clamped = Math.min(100, Math.max(1, dirtValue));
+  const clamped = clamp(dirtValue, 1, 100);
   const stain: Stain = {
     id: world.nextStainId++,
     x, y,

@@ -4,19 +4,19 @@
   "claimId": "lane/render/session-living-world-ambient",
   "branch": "lane/render/session-living-world-ambient",
   "baseSha": "8d6ba004200a61fe8c3abd2c9517ad1d130094ae",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Session-Baum: Stadtbewegung, Identitaet ueber Kennungen, Ambient-Uebergang und Render-Fixes",
   "goal": "Der komplette lokale Session-Baum geht als ein PR auf main: Bewegung mit Weg, Kennung statt Name, stetiger Tagesdrittel-Uebergang, Belege im Browser.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": {
     "number": 495,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/495",
-    "state": "open",
+    "state": "merged",
     "headSha": "06861216521bc4ce69d03ba40a2d483f96b1dfd4"
   },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 8
+  "nextAction": "Abgeschlossen: Merge #495 (035d10f) ist Vorfahre von HEAD.",
+  "revision": 9
 }

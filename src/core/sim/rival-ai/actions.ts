@@ -9,6 +9,7 @@ import { emitFact } from '../narrative/facts';
 import { dirtyTileIndex } from '../emotion';
 import { hasActiveGuard } from '../staff-queries';
 import type { WorldState } from '../types';
+import { clamp } from '../num';
 import type { RivalActionPlan } from './policy';
 import {
   RIVAL_AI_LIMITS, type RivalActionRecord, type RivalEvidence, type RivalMindState,
@@ -17,7 +18,6 @@ import {
 /** Fester Sabotageschaden: kein Wuerfelwurf, damit Indiz und Wirkung zusammenpassen. */
 const SABOTAGE_DAMAGE = 12;
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 function recordEvidence(mind: RivalMindState, _world: WorldState, entry: RivalEvidence): void {
   mind.evidence.push(entry);

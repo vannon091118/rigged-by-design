@@ -2,7 +2,8 @@
  * Kennzahlen des Betriebs-Messlaufs: Was Gaeste erleben, je Spieltag gezaehlt.
  * Reine Auswertung des Weltzustands und der Ledger-Deltas.
  */
-import { demandBreakdown, TICKS_PER_DAY } from '../demand';
+import { demandBreakdown } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import type { Ledger } from '../../economy/ledger';
 import { HAUSKONTO } from '../money';
 import type { EconomySummary } from '../economics';

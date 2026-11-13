@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { chooseActivity, payAndLeave } from './guests';
+import { satisfyNeed } from './needs-core';
 import { exchangeFiat } from './money';
 import { emitFact } from './narrative/facts';
 import { actorRefOfStaff, actorRefOfVisitor } from './narrative/relationships';
@@ -37,7 +38,7 @@ export function arriveAtDesk(world: WorldState, ledger: Ledger, prng: Prng, gues
   try {
     exchangeFiat(ledger, guest.id, world.tick);
   } catch {
-    guest.patience = Math.max(0, guest.patience - 2);
+    guest.patience = satisfyNeed(guest.patience, 2);
     world.lastEvent = `${guest.name} wartet an der Kasse.`;
     if (guest.patience === 0) payAndLeave(world, ledger, guest);
     return false;

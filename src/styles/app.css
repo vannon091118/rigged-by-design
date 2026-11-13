@@ -61,10 +61,23 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   width: 38px; height: 38px; display: grid; place-items: center;
   border: 1px solid rgba(255, 209, 102, 0.6); border-radius: 11px;
   background: radial-gradient(circle at 30% 20%, rgba(255, 209, 102, 0.28), #120a22);
-  color: var(--gold); font-weight: 900;
+  color: var(--gold); font-weight: 900; font-size: 16px; line-height: 1;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 90ms ease;
 }
+.hud-brand:hover .hud-mark { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.22), 0 8px 20px rgba(0, 0, 0, 0.42); }
+.hud-brand:active .hud-mark { transform: translateY(1px) scale(0.985); }
 .hud-brand strong { display: block; font-size: 12px; letter-spacing: 0.16em; color: #f8e9b8; }
-.hud-brand small { display: block; margin-top: 2px; font-size: 8px; letter-spacing: 0.14em; color: var(--muted); }
+.hud-brand small {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px;
+  margin-top: 3px; font-size: 9px; line-height: 1.2; letter-spacing: 0.1em;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.hud-brand-sep { color: var(--line-strong); }
+.hud-day {
+  padding: 1px 5px; border: 1px solid rgba(255, 209, 102, 0.28); border-radius: 999px;
+  color: var(--gold); font-size: 8px; letter-spacing: 0.12em;
+  background: rgba(255, 209, 102, 0.07);
+}
 
 /* Perspektive: eine Farbe je Blick, dieselbe Bedeutung wie auf dem Floor. */
 .app[data-perspective="guest"] { --perspective-accent: var(--role-guest); }
@@ -76,7 +89,8 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   min-height: 28px; padding: 4px 9px; border: 1px solid transparent; border-radius: 7px;
   background: transparent; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
 }
-.perspective-switch button:hover { color: var(--text); }
+.perspective-switch button { transition: color 120ms ease, background 120ms ease, border-color 120ms ease; }
+.perspective-switch button:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
 .perspective-switch button[aria-pressed="true"] { border-color: var(--perspective-accent); color: #fff; }
 .app[data-perspective="guest"] .perspective-switch button[aria-pressed="true"] { background: rgba(255, 46, 136, 0.12); }
 .app[data-perspective="operator"] .perspective-switch button[aria-pressed="true"] { background: rgba(0, 255, 204, 0.08); }
@@ -84,11 +98,28 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .app[data-perspective="operator"] .hud { border-color: rgba(0, 255, 204, 0.22); }
 .hud-money.guest > span { color: var(--role-guest); }
 
-.hud-money { display: grid; gap: 1px; padding-right: 14px; border-right: 1px solid var(--line); }
-.hud-money span { font-size: 8px; letter-spacing: 0.18em; color: var(--muted); }
-.hud-money strong { font-family: var(--mono); font-size: var(--fs-hero); line-height: 1; color: var(--role-value); text-shadow: 0 0 18px rgba(255, 209, 102, 0.22); }
-.hud-money small { font-size: 9px; color: var(--muted); }
-.term { border-bottom: 1px dotted var(--line-strong); cursor: help; }
+.hud-money { display: grid; gap: 2px; align-content: center; padding-right: 16px; border-right: 1px solid var(--line); }
+.hud-money > span {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; line-height: 1.15; letter-spacing: 0.14em; color: var(--muted);
+}
+.hud-money > span .ui-icon { width: 13px; height: 13px; margin: 0; vertical-align: 0; }
+.hud-money strong {
+  font-family: var(--mono); font-size: var(--fs-hero); line-height: 1;
+  letter-spacing: 0.01em; font-variant-numeric: tabular-nums;
+  color: var(--role-value); text-shadow: 0 0 18px rgba(255, 209, 102, 0.22);
+  overflow-wrap: anywhere;
+}
+.hud-money strong.long { font-size: 26px; }
+.hud-money strong.xlong { font-size: 22px; }
+.hud-money small {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
+  min-width: 0; font-size: 9px; line-height: 1.25; font-variant-numeric: tabular-nums; color: var(--muted);
+}
+.hud-money-sep { color: var(--line-strong); }
+.hud-money-pact { color: var(--muted); }
+.term { border-bottom: 1px dotted var(--line-strong); cursor: help; transition: color 120ms ease, border-color 120ms ease; }
+.term:hover { color: var(--text); border-bottom-color: var(--gold); }
 .help-btn { min-width: 30px; padding: 8px 9px; font-weight: 700; color: var(--gold); border-color: rgba(255, 209, 102, 0.55); }
 
 .hud-vitals {
@@ -97,16 +128,22 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 }
 .vital {
   flex: 1 1 112px; min-width: 104px; scroll-snap-align: start;
-  padding: 7px 10px; display: grid; gap: 1px;
+  padding: 8px 10px; display: grid; gap: 2px;
   border: 1px solid var(--line); border-radius: 11px; background: rgba(8, 5, 15, 0.75);
   box-shadow: var(--inset-line); font: inherit; color: inherit; text-align: left;
+  transition: border-color 120ms ease, background 120ms ease, transform 90ms ease;
 }
 button.vital { cursor: pointer; }
-button.vital:hover { border-color: var(--line-strong); }
-.vital span { font-size: var(--fs-micro); letter-spacing: 0.16em; color: var(--muted); }
-.vital strong { font-family: var(--mono); font-size: 17px; line-height: var(--lh-tight); }
+button.vital:hover { border-color: var(--line-strong); background: rgba(21, 14, 34, 0.92); }
+button.vital:active { transform: translateY(1px); }
+.vital > span {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; letter-spacing: 0.14em; color: var(--muted);
+}
+.vital > span .ui-icon { margin-right: 0; vertical-align: 0; }
+.vital strong { font-family: var(--mono); font-size: 17px; line-height: var(--lh-tight); font-variant-numeric: tabular-nums; }
 .vital strong em { font-size: var(--fs-meta); color: var(--muted); font-style: normal; }
-.vital small { font-size: var(--fs-micro); color: var(--muted); }
+.vital small { font-size: 9px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .vital.guests strong { color: var(--role-guest); }
 .vital.games strong { color: var(--role-guest); }
 .vital.devices strong { color: var(--role-service); }
@@ -197,15 +234,19 @@ button.vital:hover { border-color: var(--line-strong); }
   color: #ddcff2; font-size: 10px; letter-spacing: 0.14em;
   transition: transform 70ms ease, border-color 120ms ease, background 120ms ease;
 }
-.dock-tab:hover { border-color: var(--neon); color: #e6fffa; }
+.dock-tab:hover { border-color: var(--neon); background: #1d1433; color: #e6fffa; }
 .dock-tab:active { transform: translateY(1px) scale(0.995); }
+.dock-tab:focus-visible { outline-offset: 1px; }
 .dock-utility {
   justify-self: start; display: inline-flex; align-items: center; gap: 7px;
   margin: 0 2px; padding: 5px 11px; min-height: 34px;
   border: 1px solid rgba(255, 209, 102, 0.45); border-radius: 999px;
   background: rgba(255, 209, 102, 0.08); color: #ffe9b0;
   font-size: 9px; letter-spacing: 0.14em;
+  transition: border-color 120ms ease, background 120ms ease;
 }
+.dock-utility:hover:not(:disabled) { border-color: var(--gold); background: rgba(255, 209, 102, 0.14); }
+.dock-utility:disabled { cursor: not-allowed; }
 .dock-utility b { font-family: var(--mono); font-size: 11px; color: var(--gold); }
 .dock-utility small { font-size: 9px; letter-spacing: 0.02em; color: var(--muted); }
 .dock-utility.is-poor { opacity: 0.5; }
@@ -247,6 +288,9 @@ button.vital:hover { border-color: var(--line-strong); }
   position: relative;
   flex: 1;
   min-height: 0;
+  /* Fixierte Leisten reservieren ihr Band; Floor-Overlays bleiben darueber. */
+  --stage-bottom-clear: 0px;
+  --stage-toast-clear: 0px;
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
@@ -300,7 +344,7 @@ button.vital:hover { border-color: var(--line-strong); }
 
 /* Kamera-Knoepfe: eine Reihe, eine Aufgabe je Taste, kein Panel. */
 .stage-zoom {
-  position: absolute; right: 12px; bottom: 12px; z-index: 13;
+  position: absolute; right: 12px; bottom: calc(12px + var(--stage-bottom-clear, 0px)); z-index: 13;
   display: flex; align-items: stretch; overflow: hidden;
   border: 1px solid var(--line-strong); border-radius: 10px;
   background: rgba(8, 5, 15, 0.86); box-shadow: var(--elev-1);
@@ -324,13 +368,13 @@ button.vital:hover { border-color: var(--line-strong); }
 .place-hint span { color: #9fe8dc; }
 
 .event-line {
-  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 12;
+  position: absolute; bottom: calc(10px + var(--stage-bottom-clear, 0px)); left: 50%; transform: translateX(-50%); z-index: 12;
   max-width: 60%; padding: 5px 12px; border-radius: 999px;
   background: rgba(6, 4, 12, 0.7); border: 1px solid var(--line);
   font-size: 10px; color: var(--muted); text-align: center; pointer-events: none;
 }
 .toast {
-  position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 15;
+  position: absolute; bottom: calc(44px + var(--stage-toast-clear, 0px)); left: 50%; transform: translateX(-50%); z-index: 15;
   max-width: min(760px, 92%); padding: 9px 16px;
   border: 1px solid var(--line-strong); border-radius: 999px;
   background: rgba(19, 12, 32, 0.96); color: #ece2fb; font-size: 12px; text-align: center;
@@ -472,13 +516,15 @@ button.vital:hover { border-color: var(--line-strong); }
   .perspective-switch { grid-column: 2; grid-row: 1; align-self: start; }
   .hud-money { grid-column: 1; grid-row: 1; border-right: 0; padding-right: 0; }
   .hud-money strong { font-size: 24px; }
+  .hud-money strong.long { font-size: 21px; }
+  .hud-money strong.xlong { font-size: 18px; }
   .hud-vitals { grid-column: 1 / -1; grid-row: 2; overflow-x: auto; padding-bottom: 2px; }
+  .vital { flex: 1 1 0; min-width: 0; }
   .hud-brand > div { display: none; }
-  .vital { min-width: 104px; }
   .hud-rpg { grid-column: 1 / -1; grid-row: 3; }
   .stage-legend span:nth-child(n + 4) { display: none; }
-  .event-line { bottom: 6px; max-width: 92%; }
-  .toast { bottom: 38px; max-width: 94%; }
+  .event-line { bottom: calc(6px + var(--stage-bottom-clear, 0px)); max-width: 92%; }
+  .toast { bottom: calc(38px + var(--stage-toast-clear, 0px)); max-width: 94%; }
   .build-panel { top: 6px; right: 6px; bottom: 6px; }
   .vital span, .hud-money span, .cashier-strip span { font-size: 9px; }
   .vital small { font-size: 9px; }
@@ -486,7 +532,10 @@ button.vital:hover { border-color: var(--line-strong); }
 @media (max-width: 620px) {
   .perspective-switch > span { display: none; }
   .perspective-switch button { min-height: 26px; padding: 3px 7px; font-size: 8px; }
-  .vital { min-width: 96px; padding: 6px 8px; }
+  .vital { min-width: 0; padding: 6px 8px; }
+  .vital strong { font-size: 15px; }
+  .vital.rep strong { font-size: 14px; }
+  .vital > span { gap: 4px; }
   .floor-role-bar { top: 6px; max-width: calc(100% - 16px); gap: 5px; padding: 4px 8px; }
   .floor-role-bar span { display: none; }
   .ops-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -502,12 +551,12 @@ button.vital:hover { border-color: var(--line-strong); }
 }
 
 /* Paket-Icons: pixelgenau, klein und ohne Rahmen, damit die Zahlen fuehren. */
-.ui-icon { width: 15px; height: 15px; object-fit: contain; image-rendering: pixelated; vertical-align: -3px; margin-right: 5px; }
-.help-btn .ui-icon { display: block; width: 14px; height: 14px; margin: 0; }
-.vital small .ui-icon { width: 12px; height: 12px; vertical-align: -2px; margin-right: 3px; }
+.ui-icon { width: 15px; height: 15px; object-fit: contain; image-rendering: pixelated; vertical-align: -0.16em; margin-right: 5px; }
+.help-btn .ui-icon { display: block; width: 14px; height: 14px; margin: 0; vertical-align: 0; }
+.vital small .ui-icon { width: 12px; height: 12px; vertical-align: -0.12em; margin-right: 3px; }
 
 /* NAR-14: Einstieg in die Szenen direkt auf dem Floor */
-.narrative-chip { position: absolute; z-index: 16; bottom: 12px; left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
+.narrative-chip { position: absolute; z-index: 16; bottom: calc(12px + var(--stage-bottom-clear, 0px)); left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
 .narrative-chip:hover { background: #1b0f3a; }
 
 /* Eröffnung: die erste Szene liegt über dem Floor, bis der Spieler sie schließt. */
@@ -523,7 +572,11 @@ button.vital:hover { border-color: var(--line-strong); }
 .opening-card .btn { justify-self: start; }
 @keyframes opening-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @media (prefers-reduced-motion: reduce) { .opening-card { animation: none; } }
-@media (max-width: 620px) { .opening-card { bottom: 54px; padding: 12px 13px; } .opening-card h2 { font-size: 16px; } }
+@media (max-width: 620px) {
+  /* Die Szenenleiste liegt ueber dem Kartenfuss; die Karte muss darueber enden. */
+  .opening-card { bottom: 112px; padding: 12px 13px; max-height: calc(100% - 128px); overflow-y: auto; }
+  .opening-card h2 { font-size: 16px; }
+}
 
 
 /* Aktionskarte: Daumenzone, eine Empfehlung plus zwei Alternativen. */
@@ -598,7 +651,7 @@ button.vital:hover { border-color: var(--line-strong); }
 @media (max-width: 400px) {
   .hud { padding: 6px; gap: 4px 6px; }
   .hud-money strong { font-size: 21px; }
-  .hud-vitals { gap: 5px; }
+  .hud-vitals { gap: 5px; flex-wrap: wrap; overflow-x: visible; }
   .vital { flex: 0 0 calc(50% - 3px); min-width: 0; padding: 5px 7px; }
   .vital strong { font-size: 15px; }
   .vital small { font-size: 8px; letter-spacing: 0.12em; }
@@ -682,6 +735,8 @@ button.vital:hover { border-color: var(--line-strong); }
 .onboarding-panel p { margin: 0 0 14px; line-height: 1.5; color: var(--ink-dim, #cbb9e8); }
 .onboarding-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 @media (max-width: 520px) {
+  /* Die Szenenleiste ragt 81px in den Floor; 84px halten alle Overlays frei. */
+  .stage-wrap { --stage-bottom-clear: 84px; --stage-toast-clear: 126px; }
   .city-scene-bar { bottom: calc(var(--safe-bottom, 0px) + 108px); }
   .onboarding-panel { top: 44%; }
 }

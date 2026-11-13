@@ -2,9 +2,9 @@
 import { KNOWLEDGE_CONFIG, SOURCE_KINDS, type KnowledgeConfig } from './knowledge-config';
 import type { ExchangeReason, KnowledgeEntry, KnowledgeExchange, KnowledgeSourceKind } from './knowledge-types';
 import { isActorRef } from './relationships';
+import { clamp } from '../num';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 /** Sichert gespeichertes Wissen: unbekannte Quellenarten und kaputte Zahlen fallen raus. */
 export function normalizeKnowledge(raw: unknown, config: KnowledgeConfig = KNOWLEDGE_CONFIG): KnowledgeEntry[] {

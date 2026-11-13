@@ -1,6 +1,7 @@
 /** Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. */
 import type { Prng } from '../rng/prng';
 import { staffAgents } from './staff-queries';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { grantGlobalXp } from './player-rpg';
 import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
@@ -34,8 +35,8 @@ function resolveDispute(world: WorldState, id: number, calmed: boolean): void {
       guest.state = 'CHOOSE';
       guest.stateTicks = 0;
       if (calmed) {
-        guest.mood = Math.min(100, guest.mood + 5);
-        guest.patience = Math.min(100, guest.patience + 5);
+        guest.mood = driftNeed(guest.mood, 5);
+        guest.patience = driftNeed(guest.patience, 5);
       }
     }
   }
@@ -135,7 +136,7 @@ export function tickDisputes(world: WorldState): void {
     });
     for (const id of dispute.guestIds) {
       const guest = guestById(world, id);
-      if (guest) guest.mood = Math.max(0, guest.mood - 1);
+      if (guest) guest.mood = satisfyNeed(guest.mood, 1);
     }
     if (dispute.guestIds.length < 2) { resolveDispute(world, dispute.id, false); continue; }
     if (dispute.level === 2 && dispute.ticks % 3 === 0) {

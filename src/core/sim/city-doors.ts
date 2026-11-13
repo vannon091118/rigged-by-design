@@ -15,7 +15,7 @@ export const CITY_STREET_DOOR_IDS = [
 
 export type CityStreetDoorId = (typeof CITY_STREET_DOOR_IDS)[number];
 
-export type CityDoorEffect =
+type CityDoorEffect =
   | { readonly kind: 'APARTMENT' }
   | { readonly kind: 'CASINO' }
   | { readonly kind: 'CITY_LOCATION'; readonly location: 'KIEZ' | 'MARKT' };

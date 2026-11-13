@@ -5,7 +5,7 @@
  */
 import type { Ledger } from '../economy/ledger';
 import { drinkMenu, pickDrink } from './drink-menu';
-import { clamp } from './guest-core';
+import { driftNeed, satisfyNeed } from './needs-core';
 import { HAUSKONTO } from './money';
 import { TX_REASON } from './tx-reasons';
 import type { Furniture, Guest, WorldState } from './types';
@@ -20,7 +20,7 @@ const near = (ax: number, ay: number, bx: number, by: number, range: number): bo
 export function deliverDrink(world: WorldState, ledger: Ledger, guest: Guest, bar: Furniture): boolean {
   if (bar.stock <= 0) {
     // Eine leere Bar ist Pech, kein Dauerzustand: kleiner Aerger, kein Nachfassen.
-    guest.mood = Math.max(0, guest.mood - 2);
+    guest.mood = satisfyNeed(guest.mood, 2);
     world.lastEvent = 'Die Bar ist leer.';
     return false;
   }
@@ -30,25 +30,25 @@ export function deliverDrink(world: WorldState, ledger: Ledger, guest: Guest, ba
   } catch { return false; }
   bar.stock -= 1;
   guest.thirst = 0;
-  guest.mood = clamp(guest.mood + drink.moodGain + 2 * (world.barLevel - 1));
-  guest.patience = clamp(guest.patience + 9);
+  guest.mood = driftNeed(guest.mood, drink.moodGain, 2 * (world.barLevel - 1));
+  guest.patience = driftNeed(guest.patience, 9);
   const barkeeper = world.agents.some((agent) =>
     agent.role === 'bartender' && near(agent.x, agent.y, bar.x, bar.y, 4));
-  if (barkeeper) guest.patience = clamp(guest.patience + 4);
+  if (barkeeper) guest.patience = driftNeed(guest.patience, 4);
   return true;
 }
 
 /** Ein Toilettengang: Blase leer, Laune rauf, Abfluss voller. Volle Kabinen verstopfen. */
 export function useToilet(world: WorldState, guest: Guest, wc: Furniture): boolean {
   if (wc.clogged) {
-    guest.mood = Math.max(0, guest.mood - 6);
+    guest.mood = satisfyNeed(guest.mood, 6);
     guest.need = 'toilet';
     world.lastEvent = 'Das WC ist verstopft.';
     return false;
   }
   guest.bladder = 0;
-  guest.mood = clamp(guest.mood + 7);
-  guest.patience = clamp(guest.patience + 14);
+  guest.mood = driftNeed(guest.mood, 7);
+  guest.patience = driftNeed(guest.patience, 14);
   wc.clog += 1;
   if (wc.clog >= 3 + 2 * world.wcLevel) {
     wc.clogged = true;

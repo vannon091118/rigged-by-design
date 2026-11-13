@@ -8,18 +8,18 @@ import {
   type InfluenceConfig, type InfluenceFactorId, type InfluenceValues,
 } from './influence-config';
 import { createFactor, type Factor, type FactorChild } from '../contracts/factor';
+import { clamp } from './num';
 
 export { INFLUENCE_CONFIG } from './influence-config';
 export type { InfluenceConfig, InfluenceFactorId, InfluenceValues } from './influence-config';
 
-const clamp01 = (value: number): number => Math.min(1, Math.max(0, value));
 
 /** Normiert einen Rohwert auf 0..1; unbekannte Faktoren sind ein Programmierfehler. */
 function normalize(config: InfluenceConfig, id: InfluenceFactorId, raw: number): number {
   const range = config.factors[id].range;
   const span = range.max - range.min;
   if (!(span > 0)) throw new Error(`Einfluss-Faktor ${id} hat keinen gueltigen Wertebereich.`);
-  return clamp01((raw - range.min) / span);
+  return clamp((raw - range.min) / span, 0, 1);
 }
 
 function factorChildren(config: InfluenceConfig): readonly FactorChild[] {
@@ -65,7 +65,7 @@ export function evaluateInfluence(
     for (const child of config.factors[id].children) {
       value += child.baseWeight * child.weight * raw.get(child.source)!;
     }
-    effective.set(id, clamp01(value));
+    effective.set(id, clamp(value, 0, 1));
   }
   // Cross-Kanten erst sammeln, dann einmal klemmen: Ein clamp01 je Kante
   // machte das Ergebnis von der Reihenfolge der Kanten abhaengig.
@@ -77,7 +77,7 @@ export function evaluateInfluence(
     crossContribution.set(edge.to, total);
   }
   for (const [id, contribution] of crossContribution) {
-    effective.set(id, clamp01(effective.get(id)! + contribution));
+    effective.set(id, clamp(effective.get(id)! + contribution, 0, 1));
   }
 
   let total = 0;
@@ -92,7 +92,7 @@ export function evaluateInfluence(
     if (weight > 0) contributions.push(`${id}=${value.toFixed(2)}x${weight.toFixed(2)}`);
   }
   if (!(weightSum > 0)) throw new Error(`Einfluss-Matrix: Kontext ${contextName} hat kein wirksames Gewicht.`);
-  const score = clamp01(total / weightSum);
+  const score = clamp(total / weightSum, 0, 1);
   const trace = createFactor(`influence_${contextName}`, {
     context: contextName,
     threshold: String(context.threshold),

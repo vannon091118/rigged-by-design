@@ -13,30 +13,13 @@ import type { InfluenceValues } from '../influence';
 import type { ActorRef, KnowledgeEntry } from './knowledge-types';
 import { noteObservation } from './knowledge-observation';
 import { willingToShare } from './knowledge-share';
+import { appendKnowledge, knowledgeEntryOf, knowsKnowledge } from './knowledge-store';
+import { clamp } from '../num';
 
 export type SpeakerValues = Pick<InfluenceValues, 'mood' | 'sociability' | 'thirst' | 'rumor'>;
 
 const KNOWLEDGE_TOPIC = 'haus';
 const KNOWLEDGE_SUBJECT: ActorRef = 'player';
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
-
-function entryOf(world: WorldState, actor: ActorRef, topic: string, entryId?: number): KnowledgeEntry | null {
-  const candidates = world.narrative.knowledge.filter((entry) => entry.actor === actor && entry.topic === topic);
-  return entryId !== undefined ? candidates.find((entry) => entry.id === entryId) ?? null : candidates[candidates.length - 1] ?? null;
-}
-
-function knows(world: WorldState, actor: ActorRef, topic: string = KNOWLEDGE_TOPIC): boolean {
-  return world.narrative.knowledge.some((entry) => entry.actor === actor && entry.topic === topic);
-}
-
-function append(world: WorldState, entry: Omit<KnowledgeEntry, 'id'>, config: KnowledgeConfig): KnowledgeEntry {
-  const made: KnowledgeEntry = { ...entry, id: world.narrative.knowledgeSeq };
-  world.narrative.knowledgeSeq += 1;
-  world.narrative.knowledge.push(made);
-  const overflow = world.narrative.knowledge.length - config.limits.maxEntries;
-  if (overflow > 0) world.narrative.knowledge.splice(0, overflow);
-  return made;
-}
 
 /** Erste Hand: eigene Erfahrung, Distanz 0, volle Konfidenz. */
 export function recordFirstHand(
@@ -50,7 +33,7 @@ export function recordFirstHand(
   if (world.narrative.knowledge.some((entry) => entry.factId === input.factId && entry.actor === input.actor)) return null;
   noteObservation(world, { actor: input.actor, factId: input.factId, channel: 'SELBST', tick: input.tick, quality: 1 },
     config.limits.maxObservations);
-  return append(world, {
+  return appendKnowledge(world, {
     actor: input.actor, topic: KNOWLEDGE_TOPIC, subject: KNOWLEDGE_SUBJECT,
     sentiment, confidence: 1, sourceKind: 'ERLEBT', sourceActor: input.actor,
     originActor: input.actor, distance: 0, observedTick: input.tick, decayedTick: input.tick,
@@ -77,7 +60,7 @@ export function recordSighting(
     actor: input.actor, factId: input.factId, channel: input.channel, tick: input.tick, quality: input.quality,
   }, config.limits.maxObservations);
   if (!observation) return null;
-  return append(world, {
+  return appendKnowledge(world, {
     actor: input.actor, topic: KNOWLEDGE_TOPIC, subject: KNOWLEDGE_SUBJECT,
     sentiment, confidence: observation.quality,
     sourceKind: input.channel === 'SICHT' ? 'GESEHEN' : 'GEHOERT',
@@ -110,10 +93,10 @@ export function reportKnowledge(
   validateKnowledgeConfig(config);
   if (input.from === input.to) throw new Error('Wissenskette: niemand berichtet sich selbst.');
   const topic = input.topic ?? KNOWLEDGE_TOPIC;
-  if (!knows(world, input.from, topic)) {
+  if (!knowsKnowledge(world, input.from, topic)) {
     throw new Error(`Wissenskette: ${input.from} hat kein Wissen zu ${topic}; Bericht abgelehnt.`);
   }
-  const entry = entryOf(world, input.from, topic, input.entryId);
+  const entry = knowledgeEntryOf(world, input.from, topic, input.entryId);
   if (!entry) throw new Error(`Wissenskette: ${input.from} hat kein Wissen zu ${topic}; Bericht abgelehnt.`);
   if (entry.actor !== input.from) throw new Error('Wissenskette: Quelle und Wissensbesitzer stimmen nicht ueberein.');
   if (input.speaker && !willingToShare(speakerInfluence(world, input.from, input.to, input.speaker))) return null;
@@ -169,7 +152,7 @@ function transmit(
   const confidence = projectedConfidence(config, entry, edge, distance);
   if (confidence < config.limits.minConfidence) return null;
   const distorted = prng.nextFloat() < risk.distortion;
-  const made = append(world, {
+  const made = appendKnowledge(world, {
     actor: to, topic: entry.topic, subject: entry.subject,
     sentiment: distorted ? clamp(-entry.sentiment * 0.8, -1, 1) : entry.sentiment,
     confidence, sourceKind: entry.sourceKind === 'ERLEBT' ? 'GEHOERT' : entry.sourceKind,

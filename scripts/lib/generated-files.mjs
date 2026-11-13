@@ -14,13 +14,14 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { quotaTotal } from './narrative-blocks.mjs';
 import { ROOT } from './report.mjs';
 
 export const INVENTORY_START = '<!-- inventory:start -->';
 export const INVENTORY_END = '<!-- inventory:end -->';
 
 /** Fortschrittszeile der Roadmap: reiner Wert, abgeleitet aus der Registry. */
-export const ROADMAP_PROGRESS = /^(\|\s*P-13\s*\|\s*)(\d+)(\s*\/\s*1500\s+Textbausteine)/m;
+export const ROADMAP_PROGRESS = /^(\|\s*P-13\s*\|\s*)(\d+)(\s*\/\s*1500\s+(?:gewertete\s+)?Textbausteine)/m;
 
 /** Doku-Marker, mit und ohne fuehrendes Diff-Zeichen. */
 const MARKER = /^(\s*<!--\s*rbd-doc:.*-->\s*)$/;
@@ -90,6 +91,21 @@ export function registryFragmentCount(root = ROOT) {
     const file = join(root, 'content', 'narrative', 'registry', 'fragments.json');
     const document = JSON.parse(readFileSync(file, 'utf8'));
     return Array.isArray(document?.fragments) ? document.fragments.length : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Der gewertete Fortschritt aus der Registry; `null` ohne lesbare Datei. */
+export function registryQuotaCount(root = ROOT) {
+  try {
+    const file = join(root, 'content', 'narrative', 'registry', 'fragments.json');
+    const document = JSON.parse(readFileSync(file, 'utf8'));
+    const fragments = Array.isArray(document?.fragments) ? document.fragments : [];
+    if (fragments.length === 0 && !Array.isArray(document?.fragments)) return null;
+    const counts = {};
+    for (const fragment of fragments) counts[fragment.slot] = (counts[fragment.slot] ?? 0) + 1;
+    return quotaTotal(counts, fragments.length);
   } catch {
     return null;
   }

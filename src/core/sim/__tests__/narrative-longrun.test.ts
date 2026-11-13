@@ -12,7 +12,7 @@ import { Ledger } from '../../economy/ledger';
 import { fromVC, type VaCoinMicro } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { replaySave, toSavedGame } from '../../../store/save';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { HAUSKONTO } from '../money';
 import { templateFor } from '../narrative/events/definitions';
 import { isLiveEventStatus } from '../narrative/event-lifecycle';

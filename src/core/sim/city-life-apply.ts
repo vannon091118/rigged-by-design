@@ -12,11 +12,12 @@ import type {
   CityLifeDecision, CityResidentState, NpcMemory,
 } from './city-life-types';
 import type { CityDecisionInput } from './city-life-score';
+import { clampNeed, satisfyNeed } from './needs-core';
+import { clampInt } from './num';
 
-const clampNeed = (value: number): number => Math.max(0, Math.min(100, Math.round(value)));
-const clampRelation = (value: number): number => Math.max(-100, Math.min(100, Math.round(value)));
+const clampRelation = (value: number): number => clampInt(value, -100, 100);
 
-export interface CityApplyInput {
+interface CityApplyInput {
   readonly input: CityDecisionInput;
   readonly plan: CityDecisionPlan;
   readonly decisionId: number;
@@ -24,7 +25,7 @@ export interface CityApplyInput {
   readonly nextMemoryId: number;
 }
 
-export interface CityApplyResult {
+interface CityApplyResult {
   readonly resident: CityResidentState;
   readonly decision: CityLifeDecision;
   readonly relationshipTarget: string | null;
@@ -72,7 +73,10 @@ export function applyCityDecision({ input, plan, decisionId, elapsedHours, nextM
       memoryId += 1;
     }
   }
-  mood = clampNeed(mood - Math.max(0, hunger - 70) * 0.15 - Math.max(0, thirst - 70) * 0.15 - Math.max(0, fatigue - 70) * 0.1);
+  mood = clampNeed(satisfyNeed(mood,
+    Math.max(0, hunger - 70) * 0.15,
+    Math.max(0, thirst - 70) * 0.15,
+    Math.max(0, fatigue - 70) * 0.1));
   const nextResident: CityResidentState = {
     ...resident,
     location: choice.location,

@@ -14,6 +14,18 @@
 export const POOL_MINIMUM = 50;
 /** Gesamtziel der Textbausteine. */
 export const POOL_TARGET = 1500;
+/**
+ * Slots ohne Spieltext: `documentation` beschreibt Repo-Mechanik,
+ * `memory`/`rumor` haben noch keinen Leser. Sie bleiben als Content erhalten,
+ * zaehlen aber weder gegen Pool-Minimum noch gegen das Gesamtziel; sonst
+ * polish-fernter Text die Quote und verdeckt offene Spieltext-Luecken.
+ */
+export const QUOTA_EXEMPT_SLOTS = Object.freeze(['documentation', 'memory', 'rumor']);
+
+/** Gewertete Bausteine: Gesamtzahl ohne die ausdruecklich freigestellten Slots. */
+export function quotaTotal(counts, total = 0) {
+  return total - QUOTA_EXEMPT_SLOTS.reduce((sum, slot) => sum + (counts?.[slot] ?? 0), 0);
+}
 /** Ein Text gilt erst als gelesen, wenn er nicht nur Leerzeichen variiert. */
 export const normalizeText = (text) => String(text ?? '')
   .toLocaleLowerCase('de')
@@ -83,13 +95,15 @@ function poolSlotsFrom(fragments) {
 export function poolIssues({ counts, slots, total, duplicates }, minimum = POOL_MINIMUM) {
   const issues = [];
   for (const slot of slots) {
+    if (QUOTA_EXEMPT_SLOTS.includes(slot)) continue;
     const count = counts[slot] ?? 0;
     if (count < minimum) issues.push(`Pool ${slot}: ${count}/${minimum} Bausteine`);
   }
   for (const duplicate of duplicates.slice(0, 8)) {
     issues.push(`Text doppelt: ${duplicate.first} und ${duplicate.second}`);
   }
-  if (total > POOL_TARGET) issues.push(`Gesamtziel ${POOL_TARGET} ueberschritten: ${total}`);
+  const counted = quotaTotal(counts, total);
+  if (counted > POOL_TARGET) issues.push(`Gesamtziel ${POOL_TARGET} ueberschritten: ${counted}`);
   return issues;
 }
 
@@ -104,7 +118,9 @@ export function gapIssues({ before, added, minimum = POOL_MINIMUM }) {
     issues.push('Kein neuer Textbaustein im Commit; jeder Commit braucht mindestens einen verdrahteten Baustein');
     return issues;
   }
-  const gaps = Object.entries(before).filter(([, count]) => count < minimum).map(([slot]) => slot);
+  const gaps = Object.entries(before)
+    .filter(([slot, count]) => count < minimum && !QUOTA_EXEMPT_SLOTS.includes(slot))
+    .map(([slot]) => slot);
   for (const entry of added) {
     if (gaps.length > 0 && !gaps.includes(entry.slot)) {
       issues.push(`Beitrag ${entry.contributionId} geht in ${entry.slot}; offen sind ${gaps.join(', ')}`);

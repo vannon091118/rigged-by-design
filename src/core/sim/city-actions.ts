@@ -17,6 +17,7 @@ import {
 } from './city-model';
 import { advanceToNextDay } from './tick';
 import { applyPlayerFood, cityReputationGain, createPlayerNeeds, normalizePlayerNeeds, playerNeedsView, PLAYER_DRINK_XP, PLAYER_MEAL_XP } from './player-needs';
+import { needAtMost } from './needs-core';
 import { grantGlobalXp } from './player-rpg';
 
 /**
@@ -39,11 +40,11 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
       throw new Error(`Zu wenig Energie (${state.energy}/${action.energy}). Der naechste Tag fuellt sie auf.`);
     }
     if (action.id === 'KIEZ_ESSEN') {
-      if (needs.hunger <= 5) throw new Error('Du bist satt.');
+      if (needAtMost(needs.hunger, 5)) throw new Error('Du bist satt.');
       world.player.needs = applyPlayerFood(needs, 'MEAL');
       grantGlobalXp(world.player.rpg, 'KIEZ_MEAL', PLAYER_MEAL_XP);
     } else {
-      if (needs.thirst <= 5) throw new Error('Du hast keinen Durst.');
+      if (needAtMost(needs.thirst, 5)) throw new Error('Du hast keinen Durst.');
       world.player.needs = applyPlayerFood(needs, 'DRINK');
       grantGlobalXp(world.player.rpg, 'KIEZ_DRINK', PLAYER_DRINK_XP);
     }
@@ -108,8 +109,8 @@ export function restInCity(world: WorldState, ledger: Ledger, prng: Prng): CityS
 
 /** Warum eine Handlung gerade nicht geht - Zweigsperre zuerst, dann Ort, dann Energie. */
 export function actionViews(state: CityState, needs = createPlayerNeeds()): CityActionView[] {
-  const sated = needs.hunger <= 5;
-  const quenched = needs.thirst <= 5;
+  const sated = needAtMost(needs.hunger, 5);
+  const quenched = needAtMost(needs.thirst, 5);
   return ACTIONS.map((action) => {
     const blocked = action.branch === 'MARKT' && !marketUnlocked(state)
       ? `Markt erst ab Kiez-Rang Stammgast (${state.KIEZ}/${MARKET_UNLOCK_AT}).`

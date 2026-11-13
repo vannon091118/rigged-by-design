@@ -36,6 +36,7 @@ import {
   poolIssues,
   poolReport,
   poolSlots,
+  quotaTotal,
   shrinkIssues,
 } from './lib/narrative-blocks.mjs';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
@@ -121,7 +122,8 @@ if (commitMode) {
 }
 
 const smallest = slots.map((slot) => `${slot} ${report.counts[slot] ?? 0}`).join(', ');
-console.log(`[narrative-blocks] ${report.total}/${POOL_TARGET} Bausteine; Minimum ${POOL_MINIMUM}; ${smallest}`);
+const counted = quotaTotal(report.counts, report.total);
+console.log(`[narrative-blocks] ${counted}/${POOL_TARGET} gewertete Bausteine (${report.total} gesamt); Minimum ${POOL_MINIMUM}; ${smallest}`);
 if (issues.length > 0) {
   for (const problem of issues) console.error(`[narrative-blocks] ${problem}`);
   console.error(`[narrative-blocks] ${issues.length} Verstoss/Verstoesse`);

@@ -11,7 +11,7 @@ import type { CityLifePlace, CityResidentView } from './city-life-types';
 import type { NpcIntentKind } from './npc-types';
 import type { WorldState } from './types';
 
-export const INTENT_LABELS: Readonly<Record<NpcIntentKind, string>> = {
+const INTENT_LABELS: Readonly<Record<NpcIntentKind, string>> = {
   SLEEP: 'schläft',
   WAKE_UP: 'wacht auf',
   EAT_HOME: 'isst zu Hause',
@@ -25,7 +25,7 @@ export const INTENT_LABELS: Readonly<Record<NpcIntentKind, string>> = {
   IDLE: 'untätig',
 };
 
-export const PLACE_LABELS: Readonly<Record<CityLifePlace, string>> = {
+const PLACE_LABELS: Readonly<Record<CityLifePlace, string>> = {
   HOME: 'Wohnung',
   KIEZ: 'Kiez',
   MARKT: 'Markt',

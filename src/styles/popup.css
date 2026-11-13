@@ -693,7 +693,7 @@
 .profile-relations b { font-size: 11px; }
 .profile-relations span { color: var(--muted); font-size: 9px; }
 
-.dialogue-chip { bottom: 46px; }
+.dialogue-chip { bottom: calc(46px + var(--stage-bottom-clear, 0px)); }
 .dialogue-popup .popup-body { display: grid; gap: 12px; }
 .comic-panel { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; }
 .dialogue-avatar { display: grid; place-items: center; width: 64px; height: 64px; border: 2px solid var(--role-identity); border-radius: 50%; background: #140e24; color: #e9d8ff; font-family: var(--mono); font-size: 16px; letter-spacing: .12em; }

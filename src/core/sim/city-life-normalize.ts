@@ -10,6 +10,7 @@ import type {
 } from './city-life-types';
 import type { CityTravel } from './city-life-movement';
 import type { Point } from './types-model';
+import { clamp, numberOr } from './num';
 
 /** Weltkante der Stadt; Punkte ausserhalb sind kaputte Daten, kein Weg. */
 const WORLD_LIMIT = 60;
@@ -17,10 +18,6 @@ const WORLD_LIMIT = 60;
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
 
-const number = (value: unknown, fallback: number): number =>
-  typeof value === 'number' && Number.isFinite(value) ? value : fallback;
-
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 const MEMORY_KINDS = new Set(['MEAL', 'SOCIAL', 'RUMOR', 'WORK']);
 
@@ -44,17 +41,17 @@ export const defaultSkills = (): NpcSkills => ({ cooking: 20, work: 10, social: 
 export function normalizeAttributes(raw: unknown, fallback: NpcAttributes): NpcAttributes {
   if (!isRecord(raw)) return fallback;
   return {
-    charisma: clamp(Math.round(number(raw.charisma, fallback.charisma)), 0, 10),
-    intellect: clamp(Math.round(number(raw.intellect, fallback.intellect)), 0, 10),
+    charisma: clamp(Math.round(numberOr(raw.charisma, fallback.charisma)), 0, 10),
+    intellect: clamp(Math.round(numberOr(raw.intellect, fallback.intellect)), 0, 10),
   };
 }
 
 export function normalizeSkills(raw: unknown, fallback: NpcSkills): NpcSkills {
   if (!isRecord(raw)) return fallback;
   return {
-    cooking: clamp(Math.round(number(raw.cooking, fallback.cooking)), 0, 100),
-    work: clamp(Math.round(number(raw.work, fallback.work)), 0, 100),
-    social: clamp(Math.round(number(raw.social, fallback.social)), 0, 100),
+    cooking: clamp(Math.round(numberOr(raw.cooking, fallback.cooking)), 0, 100),
+    work: clamp(Math.round(numberOr(raw.work, fallback.work)), 0, 100),
+    social: clamp(Math.round(numberOr(raw.social, fallback.social)), 0, 100),
   };
 }
 
@@ -63,7 +60,7 @@ export function normalizeRelationships(raw: unknown, npcId: string, ids: readonl
   const relationships: Record<string, number> = {};
   for (const id of ids) {
     if (id === npcId || !(id in raw)) continue;
-    const value = number(raw[id], 0);
+    const value = numberOr(raw[id], 0);
     relationships[id] = clamp(Math.round(value), -100, 100);
   }
   return relationships;
@@ -74,14 +71,14 @@ export function normalizeMemories(raw: unknown): NpcMemory[] {
   const memories: NpcMemory[] = [];
   for (const item of raw.slice(-8)) {
     if (!isRecord(item) || typeof item.kind !== 'string' || !MEMORY_KINDS.has(item.kind)) continue;
-    const id = Math.round(number(item.id, 0));
-    const tick = Math.round(number(item.tick, 0));
+    const id = Math.round(numberOr(item.id, 0));
+    const tick = Math.round(numberOr(item.tick, 0));
     if (id <= 0 || tick < 0) continue;
     const about = typeof item.aboutNpcId === 'string' && item.aboutNpcId.length > 0 ? item.aboutNpcId : null;
     memories.push({
       id, tick, kind: item.kind as NpcMemory['kind'], aboutNpcId: about,
-      sentiment: clamp(number(item.sentiment, 0), -1, 1),
-      confidence: clamp(number(item.confidence, 0), 0, 1),
+      sentiment: clamp(numberOr(item.sentiment, 0), -1, 1),
+      confidence: clamp(numberOr(item.confidence, 0), 0, 1),
     });
   }
   return memories;
@@ -97,8 +94,8 @@ export function normalizeVisitorId(raw: unknown): number | null {
 /** Kachel im Stadtmass; fehlende oder kaputte Positionen fallen auf den Start. */
 export function normalizePosition(raw: unknown, fallback: Point): Point {
   if (!isRecord(raw)) return fallback;
-  const x = Math.round(number(raw.x, -1));
-  const y = Math.round(number(raw.y, -1));
+  const x = Math.round(numberOr(raw.x, -1));
+  const y = Math.round(numberOr(raw.y, -1));
   if (x < 0 || y < 0 || x >= WORLD_LIMIT || y >= WORLD_LIMIT) return fallback;
   return { x, y };
 }
@@ -112,12 +109,12 @@ export function normalizeTravel(raw: unknown): CityTravel | null {
   const path: Point[] = [];
   for (const entry of raw.path) {
     if (!isRecord(entry)) return null;
-    const x = Math.round(number(entry.x, -1));
-    const y = Math.round(number(entry.y, -1));
+    const x = Math.round(numberOr(entry.x, -1));
+    const y = Math.round(numberOr(entry.y, -1));
     if (x < 0 || y < 0 || x >= WORLD_LIMIT || y >= WORLD_LIMIT) return null;
     path.push({ x, y });
   }
-  const index = Math.round(number(raw.index, 0));
+  const index = Math.round(numberOr(raw.index, 0));
   if (index < 0 || index >= path.length) return null;
   return { to, path, index };
 }

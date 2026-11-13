@@ -33,8 +33,8 @@ function cityRestCmd(world: WorldState, ledger: Ledger, prng: Prng): string {
 }
 
 /** Eine Begegnung oeffnen und ihren Spieltext zurueckgeben. */
-function meetCmd(world: WorldState, ledger: Ledger, location?: CityLocationId): string {
-  const { event } = meetNpc(world, location ?? undefined);
+function meetCmd(world: WorldState, ledger: Ledger, location?: CityLocationId, npcId?: string): string {
+  const { event } = meetNpc(world, npcId ?? location);
   return encounterDialog(world, ledger, event.id).text;
 }
 
@@ -77,7 +77,7 @@ export type CityCommand =
   | { readonly kind: 'travel'; readonly location: CityLocationId }
   | { readonly kind: 'act'; readonly actionId: string }
   | { readonly kind: 'rest' }
-  | { readonly kind: 'meet'; readonly location?: CityLocationId }
+  | { readonly kind: 'meet'; readonly location?: CityLocationId; readonly npcId?: string }
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
   | { readonly kind: 'fightEvent' }
@@ -92,7 +92,7 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   settleFightBets(world, ledger);
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);
   if (cmd.kind === 'act') return cityActionCmd(world, cmd.actionId);
-  if (cmd.kind === 'meet') return meetCmd(world, ledger, cmd.location);
+  if (cmd.kind === 'meet') return meetCmd(world, ledger, cmd.location, cmd.npcId);
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
   if (cmd.kind === 'fightEvent') return enterFightEvent(world, ledger, prng).notice;

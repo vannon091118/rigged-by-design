@@ -1,7 +1,7 @@
 /** Eine Regel fuer alle Floor-Eingaenge: Maus, Touch und Tastatur lesen dieselbe Szene. */
 import type { GameView } from '../store/types';
 
-export type FloorTargetKind = 'floor' | 'door' | 'guest' | 'furniture' | 'crate' | 'stain' | 'mop';
+type FloorTargetKind = 'floor' | 'door' | 'guest' | 'furniture' | 'crate' | 'stain' | 'mop';
 
 /**
  * Begehbar ist jeder Floor, auf dem die Figur steht. Eigentumsrechte regeln

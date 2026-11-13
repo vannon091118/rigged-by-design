@@ -7,6 +7,7 @@
  * Gleichstaende. Die Gegenfakt-Proben liegen in `city-life-decision.ts`.
  */
 import { traitEffect } from './city-traits';
+import { round2 } from './num';
 import { bestFriend, locationForIntent, memoryAbout, presentAt } from './city-life-targets';
 import {
   CLOSED_PENALTY, URGENT_NEED_VETO, isClosedAt, urgentNeedVeto, vetoesIntent,
@@ -45,10 +46,9 @@ const ORDER: readonly NpcIntentKind[] = [
   'LEISURE', 'SHOP', 'COMMUTE', 'WAKE_UP', 'IDLE',
 ];
 
-const round2 = (value: number): number => Math.round(value * 100) / 100;
 
 /** Bewertet genau eine Alternative; jede Wirkung landet im Trace. */
-export function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoice {
+function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoice {
   const { resident, scheduled, hour, seed, tick } = input;
   const { needs, attributes, skills } = resident;
   const share = traitEffect(input.traits, 'share');

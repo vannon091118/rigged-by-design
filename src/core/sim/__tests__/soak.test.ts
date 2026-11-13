@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { TICKS_PER_DAY } from '../demand';
+import { TICKS_PER_DAY } from '../clock';
 import { economyOf } from '../economics';
 import { HAUSKONTO } from '../money';
 import { hireAgent } from '../staff';

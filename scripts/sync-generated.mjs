@@ -22,7 +22,7 @@ import {
   GENERATED_PATHS,
   NARRATIVE_SOURCE_PREFIX,
   applyRoadmapProgress,
-  registryFragmentCount,
+  registryQuotaCount,
   roadmapProgress,
 } from './lib/generated-files.mjs';
 
@@ -79,7 +79,7 @@ if (narrativeTouched) {
 
 // 5. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
 const roadmapFile = join(ROOT, 'docs', 'ROADMAP.md');
-const count = registryFragmentCount(ROOT);
+const count = registryQuotaCount(ROOT);
 if (existsSync(roadmapFile) && count !== null) {
   const current = readFileSync(roadmapFile, 'utf8');
   if (roadmapProgress(current) !== null && roadmapProgress(current) !== count) {

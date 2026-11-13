@@ -6,6 +6,7 @@ import { openHouse } from '../core/sim/money';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { seedStartPool } from '../core/sim/narrative/state';
 import { createWorld } from '../core/sim/templates';
+import { createCityLifeState } from '../core/sim/city-life-state';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import { flushNarrativeCmd } from './narrative-commands';
 
@@ -17,7 +18,11 @@ interface NewGameState {
 }
 
 export function createNewGame(template: TemplateId): NewGameState {
+  // Ein Seed fuer Welt und Stadt: dieselbe Partie bleibt reproduzierbar,
+  // verschiedene Partien treffen andere Near-Ties statt identisch zu laufen.
+  const seed = entropySeed();
   const world = createWorld(template);
+  world.cityLife = createCityLifeState(seed);
   // Die Kasse ist der erste Kontakt: ohne sie gibt es keinen Gast und keinen Weg.
   world.furniture = world.furniture.filter((item) => item.kind === 'EXCHANGE');
   world.stains = [];
@@ -39,5 +44,5 @@ export function createNewGame(template: TemplateId): NewGameState {
   const ledger = new Ledger();
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);
-  return { world, ledger, prng: new Prng(entropySeed()), notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
+  return { world, ledger, prng: new Prng(seed), notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
 }

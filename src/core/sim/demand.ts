@@ -15,7 +15,7 @@ import { reputation, spawnGuest } from './spawn';
 import { exchangePoint } from './world';
 import type { DemandEventKind, DemandSnapshot, DemandSource, DemandTier, WorldState } from './types';
 
-export const TICKS_PER_DAY = 600;
+import { TICKS_PER_DAY, tickInDay } from './clock';
 /** Der erste Gast steht nach sechs Sekunden vor der Tuer, egal wie der Wuerfel faellt. */
 export const FIRST_ARRIVAL_TICK = 12;
 const MIN_GAP = 4;
@@ -41,7 +41,7 @@ const TIER_PER_DAY: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 8, 
 const EVENT_CHANCE: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 0.18, SAAL: 0.28, KONZERN: 0.36 };
 
 function isPeak(world: WorldState): boolean {
-  const phase = world.tick % TICKS_PER_DAY;
+  const phase = tickInDay(world.tick);
   return phase >= PEAK_FROM && phase < PEAK_TO;
 }
 
@@ -155,7 +155,7 @@ function advanceDemandTier(world: WorldState, ledger: Ledger): void {
 }
 
 function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
-  if (world.tick % TICKS_PER_DAY !== 0) return;
+  if (tickInDay(world.tick) !== 0) return;
   advanceDemandTier(world, ledger);
   // Der Scheduler und die Runtime beenden faellige Instanzen; hier wird nur gestartet.
   if (activeDemand(world) || world.demandTier === 'BUDE') return;
