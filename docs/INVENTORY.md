@@ -657,10 +657,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2822 |
-| Gelistete Dateien | 2822 |
+| Getrackte Dateien | 2825 |
+| Gelistete Dateien | 2825 |
 | Getrackte Ordner | 113 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (21), artifacts (1), content (1026), docs (103), packages (27), public (571), scripts (116), src (936) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), artifacts (1), content (1027), docs (103), packages (27), public (571), scripts (116), src (936) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -672,10 +672,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 10 Datei(en)
-- `.lane-claims/tasks/` — 10 Datei(en)
+- `.lane-claims/claims/` — 11 Datei(en)
+- `.lane-claims/tasks/` — 11 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1022 Datei(en)
+- `content/narrative/contributions/` — 1023 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -805,6 +805,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-snapshot-purity.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 56 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
@@ -815,6 +816,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-snapshot-purity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/tasks/ui-polish-chrome.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1833,6 +1835,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-12-foreign-walkable.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-longturn-evidence.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-player-needs.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-12-render-acceptance-hardening.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-r7-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-rework-plan.json` — { — gelesen: 21 Zeilen
@@ -1844,8 +1847,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-needs-core-voice.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-npc-population.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-snapshot-purity.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22906 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4093 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22928 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4097 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -2904,9 +2907,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/layout-contract.test.ts` — Layout-Vertrag: eine Wahrheit fuer Dimension, Boden, Zonen und Wandkanten. — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/layout-history.test.ts` — Verlauf: 30 Schritte, ein Pinselstrich ist ein Schritt, Redo endet bei neuer Arbeit. — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/layout-json.test.ts` — Layout-Export/-Import: runde Reise, feste Bytes, fail-closed bei fremden Daten. — gelesen: 51 Zeilen
-- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 142 Zeilen
+- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 145 Zeilen
 - `src/core/sim/__tests__/living-world-continuity.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 148 Zeilen
-- `src/core/sim/__tests__/living-world-longturn.test.ts` — Ereignisketten-Evidenz: Ein langer Turn verbindet Umgebung, Erfahrung und — gelesen: 211 Zeilen
+- `src/core/sim/__tests__/living-world-longturn.test.ts` — Ereignisketten-Evidenz: Ein langer Turn verbindet Umgebung, Erfahrung und — gelesen: 213 Zeilen
 - `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 23 Zeilen
 - `src/core/sim/__tests__/living-world-social-economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 113 Zeilen
 - `src/core/sim/__tests__/living-world-vertical-slice.test.ts` — Bundle 6: End-to-End Vertical Slice der Living World Engine. — gelesen: 171 Zeilen

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7383c62a0a50421813cb26f50f98c839d328c632b9b50eb97066fe77d905b854",
+  "contentHash": "sha256:4e318048e1e214330226592e623b76fcf38266c507924df026481151bb2902a7",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21838,6 +21838,28 @@
       "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
+    },
+    {
+      "contributionId": "render-acceptance-hardening",
+      "turnId": "2026-11-12T17:40Z-render-acceptance-hardening",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Abnahme bleibt bei der Sache: Ein toter Export verschwindet aus der oeffentlichen Flaeche, statt unter einem neuen Namen weiterzuleben; ein langer Stadtlauf bekommt ein Budget, das zu seiner gemessenen Rechenzeit passt. So bleibt die Darstellung ehrlich, ohne dass ein Gate aus Zufall gruen wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-acceptance-hardening.json"
     },
     {
       "contributionId": "render-ambient",

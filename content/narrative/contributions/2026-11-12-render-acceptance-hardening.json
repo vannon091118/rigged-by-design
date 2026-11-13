@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T17:40Z-render-acceptance-hardening",
+  "contributionId": "render-acceptance-hardening",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Abnahme bleibt bei der Sache: Ein toter Export verschwindet aus der oeffentlichen Flaeche, statt unter einem neuen Namen weiterzuleben; ein langer Stadtlauf bekommt ein Budget, das zu seiner gemessenen Rechenzeit passt. So bleibt die Darstellung ehrlich, ohne dass ein Gate aus Zufall gruen wird.",
+  "directives": []
+}

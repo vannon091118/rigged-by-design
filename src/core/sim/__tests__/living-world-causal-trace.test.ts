@@ -33,7 +33,10 @@ function sequence(decisions: readonly CityLifeDecision[]): string {
 }
 
 describe('Living-World-Langlauf: kausaler Decision Trace', () => {
-  it('belegt Stat-Einfluss und eine durchgehende Ereigniskette', { timeout: 30_000 }, () => {
+  // Fuenf Sim-Tage sind CPU-gebunden (isoliert gemessen: ~19 s). Im parallelen
+  // Vollprofil teilt sich der Lauf die CPU mit sieben weiteren Gates; 30 s war
+  // kein Hang, sondern ein zu knappes Budget. 60 s deckt den gemessenen Lastfall.
+  it('belegt Stat-Einfluss und eine durchgehende Ereigniskette', { timeout: 60_000 }, () => {
     const result = runCityLifeSimulation(SEED, DAYS);
     const counts = changedFamilies(result.decisions);
     for (const family of FAMILIES) expect(counts.get(family) ?? 0, `Familie ${family} kippt keine Entscheidung`).toBeGreaterThan(0);
