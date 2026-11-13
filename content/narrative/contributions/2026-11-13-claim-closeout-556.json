@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:52Z-claim-closeout-556",
+  "contributionId": "claim-closeout-556-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das Netz der Stadt ist gezeichnet; die Karte wird wieder freigegeben, der nächste Weg beginnt.",
+  "directives": []
+}
