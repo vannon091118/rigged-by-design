@@ -50,6 +50,7 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       reputation: world.reputation,
       city: world.city,
       cityLife: world.cityLife,
+      cityGrowth: world.cityGrowth,
       wallColor: world.wallColor,
       neonColor: world.neonColor,
       barLevel: world.barLevel,

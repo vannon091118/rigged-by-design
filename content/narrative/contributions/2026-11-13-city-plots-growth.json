@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T21:20Z-city-plots-growth",
+  "contributionId": "city-plots-growth-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Straße hat jetzt ein Gedächtnis: Jede Fläche zwischen Wohnhaus, Kneipe und Späti ist ein eingetragenes Grundstück, keine Lücke. Wer keine Arbeit findet, wird zum Antrag — und wenn der Bauträger zahlt, wächst am Rand des Kiezes ein Rohbau, dessen Wände schon stehen, bevor jemand die Tür öffnet.",
+  "directives": []
+}
