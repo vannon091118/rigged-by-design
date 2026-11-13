@@ -41,7 +41,9 @@ export interface Furniture {
   readonly id: number;
   readonly kind: 'SLOT' | 'TABLE' | 'BAR' | 'TOILET' | 'EXCHANGE' | 'DECOR' | 'STORAGE' | 'JOB_STATION';
   readonly gameId?: GameId; readonly x: number; readonly y: number; readonly w: number; readonly h: number;
-  readonly seats: number; readonly label: string; readonly price: VaCoinMicro; readonly quality: number;
+  readonly seats: number; readonly label: string; readonly price: VaCoinMicro; readonly quality: number;
+  /** Stabile Kunst-ID fuer Sondermoebel (z. B. Wohnung); Renderrollen lesen sie zuerst. */
+  readonly artId?: string;
   condition: number; damaged: boolean; dirt: number; stock: number; clog: number; clogged: boolean;
   readonly zoneId: string; occupants: number[]; mods: ModId[]; reels: number; baseBet: VaCoinMicro;
   slotMemory?: SlotMemory; slotOdds?: SlotProfile;

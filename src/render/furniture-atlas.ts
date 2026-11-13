@@ -12,6 +12,7 @@ import type { Furniture } from '../core/sim/types';
 import { INK, LIGHT, ROLE, STROKE, furnitureTone } from './art-tokens';
 import { textureFor } from './assets/textures';
 import { resolveFurnitureRole, type FurnitureRole } from './decor-roles';
+import { drawApartmentFurniture, isApartmentFurniture } from './apartment-furniture-art';
 
 /** Gebackene Korpustexturen, Schluessel ist Bauart plus Groesse. */
 const atlas = new Map<string, Texture>();
@@ -188,6 +189,7 @@ function drawBody(target: Container, item: Furniture, w: number, h: number): voi
   else if (item.kind === 'TOILET') drawToilet(g, w, h, item.seats);
   else if (item.kind === 'EXCHANGE') drawExchange(g, w, h);
   else if (item.kind === 'STORAGE') drawStorage(g, w, h);
+  else if (isApartmentFurniture(item)) drawApartmentFurniture(g, w, h, role.role);
   else if (item.kind === 'DECOR') drawRoleShape(g, w, h, role.role);
   target.addChild(pool, shadow, g);
   const texture = role?.asset ? textureFor(role.asset) : null;

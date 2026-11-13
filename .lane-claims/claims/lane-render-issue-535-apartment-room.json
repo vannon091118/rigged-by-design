@@ -1,0 +1,23 @@
+{
+  "id": "lane/render/issue-535-apartment-room",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/render/issue-535-apartment-room",
+  "baseSha": "98897f2fa05a28e417606dde6e21b7a47f36a1f3",
+  "task": "Wohnung als begehbaren Raum mit Waenden, Tuerrahmen und eigener Bildsprache fertigstellen",
+  "goal": "#535",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-render-issue-535-apartment-room.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "98897f2fa05a28e417606dde6e21b7a47f36a1f3"
+}
