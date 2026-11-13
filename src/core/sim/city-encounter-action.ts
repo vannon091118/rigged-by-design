@@ -4,6 +4,8 @@ import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { EXTERNAL, PORTEMONNAIE } from './money';
 import { clampEnergy, cityOf } from './city-model';
 import { ensureCityVisitor, informantFor, witnessFor, type CityNpcDef } from './city-npcs';
+import { ensureCityLife } from './city-life-state';
+import { rosterDefs } from './city-npc-roster';
 import { ACTION_LABEL, encounterNpc, visitorRef } from './city-encounter-dialog';
 import type { CityEncounterRecord, EncounterAction } from './city-types';
 import { developOnPlayerAction, developOnShare } from './city-traits';
@@ -42,8 +44,9 @@ export interface EncounterResult {
 /** Der Informant versucht es mehrfach mit ableitbaren Seeds, bis eine Fassung ankommt. */
 function shareWithInformant(
   world: WorldState, fromId: number, npc: CityNpcDef, tick: number, eventId: number,
+  peers: readonly CityNpcDef[],
 ): KnowledgeEntry | null {
-  const informant = informantFor(npc);
+  const informant = informantFor(npc, peers);
   if (!informant) return null;
   const target = ensureCityVisitor(world, informant);
   for (let attempt = 0; attempt < 8; attempt += 1) {
@@ -62,8 +65,9 @@ function shareWithInformant(
 /** Der Zeuge hoert die Kunde vom Informanten; hier faellt das Glaubensurteil. */
 function relayToWitness(
   world: WorldState, informantId: number, npc: CityNpcDef, tick: number, eventId: number,
+  peers: readonly CityNpcDef[],
 ): KnowledgeEntry | null {
-  const witness = witnessFor(npc);
+  const witness = witnessFor(npc, peers);
   if (!witness) return null;
   const target = ensureCityVisitor(world, witness);
   return reportKnowledge(world, {
@@ -78,6 +82,8 @@ export function takeEncounterAction(
   const event = world.narrative.events.find((entry) => entry.id === eventId);
   if (!event) throw new Error(`Unbekannte Begegnung: ${String(eventId)}`);
   const { visitorId, visitor, npc } = encounterNpc(world, event);
+  const life = ensureCityLife(world);
+  const peers = rosterDefs(life.residents.length, life.seed ?? 0);
   const amount = (action === 'GEBEN' ? ENCOUNTER_GIFT : ENCOUNTER_SMALL) as VaCoinMicro;
   const walletBefore = ledger.getBalance(PORTEMONNAIE);
   if (walletBefore < amount) throw new Error(`Nicht genug Bargeld (${walletBefore}). Hebe am Hauskonto ab.`);
@@ -113,13 +119,13 @@ export function takeEncounterAction(
       visitor.memories = [...memories, memory].slice(-NARRATIVE_LIMITS.memories);
     }
   }
-  const shared = own ? shareWithInformant(world, visitorId, npc, world.tick, eventId) : null;
-  const informant = informantFor(npc);
+  const shared = own ? shareWithInformant(world, visitorId, npc, world.tick, eventId, peers) : null;
+  const informant = informantFor(npc, peers);
   const informantVisitor = informant
     ? world.visitors.find((entry) => entry.residentNpcId === informant.id) ?? null
     : null;
   const relay = shared && informantVisitor
-    ? relayToWitness(world, informantVisitor.id, npc, world.tick, eventId)
+    ? relayToWitness(world, informantVisitor.id, npc, world.tick, eventId, peers)
     : null;
 
   const trust = relationshipBetween(world, visitorRef(visitorId), 'player')?.trust ?? 0;

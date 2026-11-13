@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/city-encounter-roster",
+  "owner": "Governance-Owner",
+  "branch": "lane/sim/city-encounter-roster",
+  "baseSha": "635c96ca0b97a756079928aee7740da82ce25514",
+  "task": "Stadtbegegnung: jeder NPC aus dem Roster ist ansprechbar, ohne kuratierte Ortsautorität",
+  "goal": "Die Stadtbegegnung wählt Gegenüber aus dem NPC-Modell und der Bewohnerliste, nicht aus CITY_NPCS pro Ort; das Stadtfenster öffnet die Begegnung je Bewohnerkennung.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/ui/city-popup.tsx",
+    "src/ui/__tests__/city-popup.test.tsx",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-city-encounter-roster.json",
+    ".lane-claims/tasks/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "635c96ca0b97a756079928aee7740da82ce25514"
+}

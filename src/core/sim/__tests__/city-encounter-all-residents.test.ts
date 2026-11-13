@@ -12,8 +12,8 @@ import { fromVC } from '../../economy/vacoin';
 import { cityOf, travel } from '../city';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../city-encounter';
 import { ensureCityLife, ensureCityPopulation } from '../city-life-state';
-import { rosterDefById } from '../city-npc-roster';
-import { locationName } from '../city-npcs';
+import { rosterDefById, rosterDefs } from '../city-npc-roster';
+import { informantFor, locationName, witnessFor } from '../city-npcs';
 import { PORTEMONNAIE } from '../money';
 import { createWorld, ensureStarter } from '../templates';
 
@@ -57,6 +57,34 @@ describe('Begegnung mit allen Bewohnern', () => {
       expect(result.text, id).toContain(expected!.name);
       expect(cityOf(run).encounters?.at(-1)?.name, id).toBe(expected!.name);
     }
+  });
+
+  it('findet einen generierten Bewohner an seinem Ort ohne kuratierte Ortsliste', () => {
+    const { world } = start();
+    ensureCityPopulation(world, 12);
+    travel(world, 'CASINO');
+
+    const met = meetNpc(world, 'CASINO');
+    expect(met.npc.id).toBe('npc_4');
+    expect(met.npc.location).toBe('CASINO');
+  });
+
+  it('bleibt fuer neue Besetzungsindizes ansprechbar und findet Peers', () => {
+    const { world } = start();
+    ensureCityPopulation(world, 20);
+    const life = ensureCityLife(world);
+    const expected = rosterDefById('npc_20', life.seed ?? 0);
+    expect(expected).not.toBeNull();
+
+    const met = meetNpc(world, 'npc_20');
+    expect(met.npc).toEqual(expected);
+
+    const peers = rosterDefs(life.residents.length, life.seed ?? 0);
+    const informant = informantFor(met.npc, peers);
+    const witness = witnessFor(met.npc, peers);
+    expect(informant?.id).not.toBe('npc_20');
+    expect(witness?.id).not.toBe('npc_20');
+    expect(witness?.id).not.toBe(informant?.id);
   });
 
   it('macht eine unbekannte Kennung sichtbar statt sie auf einen Default zu biegen', () => {
