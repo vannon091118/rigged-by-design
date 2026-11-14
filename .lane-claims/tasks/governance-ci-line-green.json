@@ -4,7 +4,7 @@
   "claimId": "lane/governance/ci-line-green",
   "branch": "lane/governance/ci-line-green",
   "baseSha": "9c7add6bbf31571fa66131bf969e6beeb4f27bca",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "ci:local auf main wieder gruen belegen",
   "goal": "dead-code (ConstructionState) und test-quality (worker-claim-gate) reparieren, ohne Spielverhalten zu aendern; ci:local muss auf dem PR-Kopf exit 0 liefern.",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "Nachzuegler: Claim auf merged und Phase DONE ziehen; keine offenen Befunde.",
-  "revision": 6
+  "nextAction": "Abgeschlossen: PR #613 gemergt (02320857), Claim geschlossen.",
+  "revision": 7
 }
