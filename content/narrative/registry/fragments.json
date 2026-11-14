@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ed3ec24179f4c415500613b499c2f859cea91871d73b295b52e838f020f6e187",
+  "contentHash": "sha256:480376a54d4cf01bead533ab1e90fdedd5d5387006148bd25292c3e2c11ddb67",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24325,6 +24325,30 @@
       "text": "Am Tresen hing eine neue Liste, auf der jede Entscheidung einen Namen tragen musste. Wer unterschrieb, haftete fuer den Eintrag; wer nur zusah, stand weiter ohne Zeile da. Bis zum Morgen war die Liste laenger als das Gaestebuch, und niemand hatte zweimal unterschrieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-17.json"
+    },
+    {
+      "contributionId": "rumor-24",
+      "turnId": "2026-11-14T22:05Z-rumor-24",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Zettel haengen am schwarzen Brett, beide nennen die Zahl der Kontrollen. Der eine sagt fuenfzehn, der andere sechzehn. Der Mann mit dem Besen meint, wer zwei Zahlen aufhaengt, hat noch keine gezaehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-24.json"
     },
     {
       "contributionId": "run-budget-01",

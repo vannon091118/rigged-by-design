@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:05Z-rumor-24",
+  "contributionId": "rumor-24",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Zwei Zettel haengen am schwarzen Brett, beide nennen die Zahl der Kontrollen. Der eine sagt fuenfzehn, der andere sechzehn. Der Mann mit dem Besen meint, wer zwei Zahlen aufhaengt, hat noch keine gezaehlt.",
+  "directives": []
+}

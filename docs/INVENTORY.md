@@ -712,10 +712,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3168 |
-| Gelistete Dateien | 3168 |
+| Getrackte Dateien | 3172 |
+| Gelistete Dateien | 3172 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (140), artifacts (1), content (1137), docs (108), packages (27), public (571), scripts (127), src (1032) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (142), artifacts (1), content (1138), docs (108), packages (27), public (571), scripts (128), src (1032) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -728,10 +728,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 71 Datei(en)
-- `.lane-claims/tasks/` — 66 Datei(en)
+- `.lane-claims/claims/` — 72 Datei(en)
+- `.lane-claims/tasks/` — 67 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1133 Datei(en)
+- `content/narrative/contributions/` — 1134 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -786,7 +786,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 66 Datei(en)
-- `scripts/lib/` — 61 Datei(en)
+- `scripts/lib/` — 62 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
 - `src/Config/__tests__/` — 1 Datei(en)
@@ -889,6 +889,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-627-run-budget.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-629-generated-serialization.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-issue-630-doc-parity.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
@@ -956,6 +957,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-627-run-budget.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-629-generated-serialization.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-issue-630-doc-parity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
 - `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 83 Zeilen
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
@@ -2127,6 +2129,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-rumor-15.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-16.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-17.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-rumor-24.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
@@ -2138,8 +2141,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25434 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4537 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25458 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4541 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2896,6 +2899,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/compact.mjs` — Kompakte Werkzeugausgabe: eine Bildschirmseite statt eines Logs. — gelesen: 81 Zeilen
 - `scripts/lib/dependency-change.mjs` — Eine Wahrheit fuer eine kleine, aber teure Frage: haben sich Abhaengigkeiten — gelesen: 68 Zeilen
 - `scripts/lib/dependency-fingerprint.mjs` — Dependency-Fingerprint: Installation nur, wenn sich wirklich etwas aendert. — gelesen: 82 Zeilen
+- `scripts/lib/doc-parity.mjs` — Doku-Paritaet: `AGENTS.md`, `docs/CI.md` und `docs/GOVERNANCE.md` gegen den — gelesen: 111 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 161 Zeilen
 - `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
 - `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 79 Zeilen
@@ -2964,7 +2968,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
-- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
+- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 17 Zeilen
 - `scripts/verify-impact-graph.mjs` — Impact-Graph-Gate: Der Impact-Pfad darf keinen TypeScript-Compiler laden. — gelesen: 26 Zeilen
 - `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 433 Zeilen
 - `scripts/verify-narrative-blocks.mjs` — Gate: Textbaustein-Pools und die Pflicht pro Commit. — gelesen: 132 Zeilen
@@ -3079,7 +3083,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/body-sync.test.ts` — Body-Synchronisation darf vorhandene Inhalte nie ersetzen. Genau diese — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/branch-lifecycle.test.ts` — Jede Branch ausser `main` ist temporaer. Geloescht wird nur mit Merge-Beleg; — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/branch-prune.test.ts` — Nach dem Merge mit gruenen Gates ist ein Wegwerf-Branch nur noch Arbeit, die — gelesen: 39 Zeilen
-- `src/core/governance/__tests__/ci-docs-parity.test.ts` — Die Doku nennt dieselbe Gate-Wahrheit wie der Plan. Der Test liest die — gelesen: 36 Zeilen
+- `src/core/governance/__tests__/ci-docs-parity.test.ts` — Die Doku nennt dieselbe Gate-Wahrheit wie der Plan. Der Test liest die — gelesen: 63 Zeilen
 - `src/core/governance/__tests__/ci-gates.test.ts` — Local-only: Kein GitHub-Workflow fuehrt Tests, Gates, Builds oder APKs aus. — gelesen: 45 Zeilen
 - `src/core/governance/__tests__/ci-plan.test.ts` — Der Zustand ist die eine Wahrheit: aus ihm folgen Required-Set, Gates und — gelesen: 118 Zeilen
 - `src/core/governance/__tests__/ci-state.test.ts` — Der CI-State ist genau ein Kommentar, ohne Zeitstempel, mit vollstaendiger — gelesen: 67 Zeilen
