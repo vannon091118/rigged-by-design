@@ -66,6 +66,43 @@ describe('Stadtfenster', () => {
     expect(button).toHaveProperty('disabled', true);
   });
 
+  it('nutzt den gemeinsamen Modal-Vertrag fuer Fokus und Escape (#769)', () => {
+    const world = createWorld('SMALL');
+    ensureStarter(world);
+    ensureCityLife(world);
+    const outside = document.createElement('button');
+    outside.textContent = 'ausserhalb';
+    document.body.append(outside);
+    outside.focus();
+    const onClose = vi.fn();
+
+    const { unmount } = render(
+      <CityPopup city={cityView(world)} growth={cityGrowthView(world, new Ledger())} onClose={onClose} />,
+    );
+    const dialog = screen.getByRole('dialog');
+    expect(dialog.getAttribute('aria-modal')).toBe('true');
+    expect(dialog.contains(document.activeElement)).toBe(true);
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    unmount();
+    expect(document.activeElement).toBe(outside);
+  });
+
+  it('schliesst ueber den gemeinsamen Backdrop (#769)', () => {
+    const world = createWorld('SMALL');
+    ensureStarter(world);
+    ensureCityLife(world);
+    const onClose = vi.fn();
+    render(<CityPopup city={cityView(world)} growth={cityGrowthView(world, new Ledger())} onClose={onClose} />);
+
+    const backdrop = screen.getByRole('dialog').parentElement!;
+    fireEvent.pointerDown(backdrop);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('zeigt Arbeitsmarkt, Bautraeger-Kapital und den letzten Bau (#526)', () => {
     const world = createWorld('SMALL');
     ensureStarter(world);

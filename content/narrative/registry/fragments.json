@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bd787d82c726f57fdd225ceae7c910923496be324ca2f6c0aea1b435c7066313",
+  "contentHash": "sha256:752874ccc841a44007b2396cdcde224ab1ac2815df60ceb59df60b813c2b26b2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -6016,6 +6016,28 @@
       "text": "Der Kiez ist kein leerer Saal, der nur auf deinen ersten Schritt wartet. Auch wenn du mitten in der Stadt aufwachst, stehen die Türen offen und die Schichten laufen weiter — die Straße füllt sich, bevor du sie betrittst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-population-load.json"
+    },
+    {
+      "contributionId": "city-popup-shell-01",
+      "turnId": "2026-11-14T22:05Z-city-popup-shell",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Stadtfenster schliesst jetzt wie jedes andere Fenster: Escape, der Klick auf den Hintergrund und die Rueckgabe des Fokus folgen demselben Vertrag. Die Stadt bleibt eine Uebersicht, kein Sonderfall der Bedienung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-popup-shell.json"
     },
     {
       "contributionId": "city-proximity-01",
