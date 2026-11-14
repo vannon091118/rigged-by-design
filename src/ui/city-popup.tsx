@@ -3,6 +3,7 @@ import type { CityView } from '../core/sim/city';
 import type { CityGrowthBlock, CityGrowthView } from '../core/sim/city-growth-view';
 import { worldStore } from '../store/use-world-store';
 import { vc } from './format';
+import { PopupShell } from './popup-shell';
 
 interface CityPopupProps {
   readonly city: CityView;
@@ -23,14 +24,14 @@ const GROWTH_BLOCK_LABEL: Record<CityGrowthBlock, string> = {
  * danach als Text und Rang im selben Fenster.
  */
 export function CityPopup({ city, growth, onClose }: CityPopupProps) {
-  const done = city.completed.length > 0;
   return (
-    <div className="popup city-popup" role="dialog" aria-label="Stadt">
-      <header className="popup-head">
-        <h2>{city.locationName}</h2>
-        <button type="button" className="btn close" onClick={onClose}>Schließen</button>
-      </header>
-
+    <PopupShell
+      eyebrow="STADT"
+      title={city.locationName}
+      onClose={onClose}
+      surface="overview"
+      className="city-popup"
+    >
       <p className="city-note">{city.note}</p>
 
       {/* Dieselbe cityGrowthView wie im Snapshot: kein nachgerechneter Zustand. */}
@@ -161,8 +162,8 @@ export function CityPopup({ city, growth, onClose }: CityPopupProps) {
       <div className="city-result" role="status" aria-live="polite">
         <p>{city.lastText}</p>
         <b>{city.lastResult}</b>
-        {done && <em>Die Stadt kennt dich jetzt: {city.completed.join(' und ')} abgeschlossen.</em>}
+        {city.completed.length > 0 && <em>Die Stadt kennt dich jetzt: {city.completed.join(' und ')} abgeschlossen.</em>}
       </div>
-    </div>
+    </PopupShell>
   );
 }

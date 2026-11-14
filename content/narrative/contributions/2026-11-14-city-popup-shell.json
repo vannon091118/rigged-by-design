@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:05Z-city-popup-shell",
+  "contributionId": "city-popup-shell-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das Stadtfenster schliesst jetzt wie jedes andere Fenster: Escape, der Klick auf den Hintergrund und die Rueckgabe des Fokus folgen demselben Vertrag. Die Stadt bleibt eine Uebersicht, kein Sonderfall der Bedienung.",
+  "directives": []
+}

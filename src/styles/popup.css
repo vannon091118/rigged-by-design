@@ -706,7 +706,8 @@
 .dialogue-links .btn { border-radius: 999px; }
 
 /* Stadt-Fenster: Kiez und Markt teilen sich eine Sicht, keine zweite Wahrheit. */
-.city-popup { display: flex; flex-direction: column; gap: 10px; min-width: min(520px, 92vw); }
+.city-popup { min-width: min(520px, 92vw); }
+.city-popup .popup-body { display: flex; flex-direction: column; gap: 10px; }
 .city-note { margin: 0; opacity: .85; }
 .city-energy { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
 .city-branches { display: grid; gap: 8px; }
