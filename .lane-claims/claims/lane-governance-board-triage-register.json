@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/board-triage-register",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-triage-register",
+  "baseSha": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "issue": 684,
+  "task": "Register der Board-Triage schliessen: Closeout-Claim auf merged, Board-head auf 8e8aae48",
+  "goal": "0 offene Claims, parity ok, Board-head == main",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-governance-board-issue-triage-closeout.json",
+    ".lane-claims/claims/lane-governance-board-triage-register.json",
+    ".lane-claims/tasks/governance-board-triage-register.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "mergedPr": 735,
+  "mergedSha": "8e8aae4884b3d72956277c8a880a0bb550cd3f53",
+  "mergedAt": "2026-11-14T17:55Z"
+}

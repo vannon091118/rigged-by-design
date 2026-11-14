@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:54Z",
+  "generatedAt": "2026-11-14T17:56Z",
   "generatedBy": "maintainer",
-  "head": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "head": "8e8aae4884b3d72956277c8a880a0bb550cd3f53",
   "headMessage": "Board-Triage gemergt (#734): 10 Issues geschlossen, #733 konsolidiert, Blocker praezisiert",
-  "base": "origin/main @ 6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "base": "origin/main @ 8e8aae4884b3d72956277c8a880a0bb550cd3f53",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
