@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T17:40Z-rumor-14",
+  "contributionId": "rumor-14",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Auf der Tafel an der Kuchentuer stand eine Zahl, die niemand mehr nachrechnen konnte, weil der Schreiber sie zweimal korrigiert hatte. Seitdem geht jeder, der den Lohn abholt, einmal mit dem Finger die Striche entlang - nicht aus Misstrauen, sondern weil eine Zahl ohne ihre Herkunft nur eine Behauptung ist.",
+  "directives": []
+}
