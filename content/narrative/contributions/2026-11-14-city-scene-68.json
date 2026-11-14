@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T13:17Z-city-scene-68",
+  "contributionId": "city-scene-68",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Spiegel stand im Lager, bevor ich das Licht ausmachte. Am Morgen stand er noch da, an derselben Stelle, und zeigte denselben Raum.",
+  "directives": []
+}
