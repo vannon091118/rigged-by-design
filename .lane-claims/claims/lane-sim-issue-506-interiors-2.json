@@ -12,6 +12,7 @@
     "docs/DEPENDENCY-MATRIX.md",
     "package.json",
     "pnpm-lock.yaml",
+    ".lane-claims/",
     ".lane-claims/claims/lane-sim-issue-506-interiors-2.json"
   ],
   "contracts": [],
