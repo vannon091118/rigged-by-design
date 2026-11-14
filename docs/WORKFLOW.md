@@ -6,20 +6,23 @@
 
 ## Einstieg
 
-Der erste Befehl vor jedem Edit ist:
+Die Rollen sind getrennt: **Agenten** (`agent-<n>-local`/`-cloud`) claimen, arbeiten, pushen ihren Branch und öffnen den PR; der **Maintainer** reviewt, merged, schließt Issues und setzt Tags ([`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes)).
+
+Das **Issue-Board ist der primäre Workflow**: Arbeitsreihenfolge und Besitz stehen in den Issues (Prioritätslabels, Zustand, Kommentare), nicht in lokalen Dateien. Zu Beginn wird das Board nach Priorität gelesen (`P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste). Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; `.lane-claims/` ist danach nur die lokale Kollisionssperre für Pfade und Staging. Erster Befehl vor jedem Edit:
 
 ```bash
-pnpm run agent:pretask --json
+RBD_AGENT=agent-1-local pnpm run agent:pretask --json
 ```
 
 Der Lauf prüft in dieser Reihenfolge:
 
-1. offene `gate-failure`-Issues und den Issue-Status (ohne `gh` bleibt er als `unknown` sichtbar),
-2. den Arbeitsbaum und laufende Merges/Rebases,
-3. den Impact-Plan aus `agent:context`,
-4. den Lane-Claim mit Owner, Basis-SHA und Pfad-Allowlist,
-5. den Task-Vertrag unter `.lane-claims/tasks/<taskId>.json` und den PR-Zustand,
-6. die Worktree-Isolation.
+1. den **Issue-Claim** der Lane (Board-Wahrheit: fremder Claim blockiert, fehlender Claim verlangt den Kommentar, ohne Issue-Nummer nur Warnung) und danach die lokale Kollisionssperre (nur Pfade, nie Besitz),
+2. offene `gate-failure`-Issues und den Issue-Status (ohne `gh` bleibt er als `unknown` sichtbar),
+3. den Arbeitsbaum und laufende Merges/Rebases,
+4. den Impact-Plan aus `agent:context`,
+5. den Lane-Claim mit Owner, Basis-SHA und Pfad-Allowlist,
+6. den Task-Vertrag unter `.lane-claims/tasks/<taskId>.json` und den PR-Zustand,
+7. die Worktree-Isolation.
 
 Vor dem ersten Diff aktualisiert `pretask` `origin/main`: ein Fetch pro Minute, in CI aus, nie blockierend. Schlägt der Fetch fehl, bleibt der vorhandene Ref stehen und die Warnung nennt den Grund; der Lauf blockiert nicht. `claim:register`, `agent:new` und die Testauswahl (`changedFiles()`) nutzen denselben Helfer, damit keine Stelle gegen einen veralteten Ref rechnet.
 
@@ -27,7 +30,7 @@ Ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan, korrupte WIP oder e
 
 ### Claim und Worktree
 
-Jede Lane außer `main` braucht einen Claim. Die Wahrheit ist der `CLAIM`-Kommentar am GitHub-Issue nach [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md); der Eintrag in `.lane-claims/` ist die mechanische Spiegelung davon und entscheidet nie gegen den Issue-Verlauf. Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der gespiegelte Claim nennt:
+Besitz steht im `CLAIM`-Kommentar am GitHub-Issue nach [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Der Eintrag in `.lane-claims/` ist die **lokale Kollisionssperre**: Pfad-Allowlist für Staging, `verify:scope`, `pretask` und die Hooks, damit zwei parallele Agenten nicht dieselben Dateien im selben Task oder Turn bearbeiten. Er entscheidet nie über Besitz, Priorität oder Reihenfolge. Ein zweiter Agent am selben Issue ist eine Kollision: `pretask` blockiert sie über den Issue-Verlauf, der Maintainer entscheidet über Vorrang oder `HANDOFF`. Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der gespiegelte Claim nennt:
 
 - `id` und `branch` nach `lane/<domäne>/<task>` (Legacy: `gov/`, `hygiene/`, `fix/`),
 - Owner aus dem festen Roster,
@@ -66,6 +69,8 @@ Verboten sind die Abkürzungen, die fremde Arbeit oder den eigenen Verlauf zerst
 
 Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben liegen; der nächste Pretask entscheidet über Resume oder einen neuen Task.
 
+Diese Verbote gelten für Agenten. Der Maintainer nutzt sie ausschließlich in seinem eigenen Review-Checkout; der geteilte Arbeitsbaum wird nie zurückgesetzt — neue Arbeit startet in einem frischen Worktree von `origin/main` (siehe `AGENT-ONBOARDING.md`, Schritt 2).
+
 `agent:new` installiert in einem frischen Worktree fehlende Pakete einmal mit `pnpm install --frozen-lockfile`, bevor es `pretask` startet. Bei einem Installationsfehler bleiben Claim und Vertrag erhalten; die Ausgabe nennt den Installationsschritt zum Wiederaufnehmen. Der Bootstrap muss nicht erneut angelegt werden.
 
 ## Arbeitsablauf
@@ -96,6 +101,8 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
 7. den Vertrag im PR-Kommentar spiegeln und mit `pretask` fortsetzen.
 
+Danach endet die Agentenrolle: der **Maintainer** prüft den PR gegen den Code, gibt `ACCEPT`/`PARTIAL`/`REJECT`, merged und setzt bei belegten Features einen Release-Tag. Agenten mergen nicht und schließen das Issue nicht.
+
 Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder Push nicht abgeschlossen, setzt ein sauberer erneuter `turn:finish` bei Integration und Push fort. Er bumped weder die Version noch erzeugt er eine neue Task-Vertragsrevision oder einen leeren Notes-Commit. Sobald Änderungen im Arbeitsbaum vorliegen, läuft der normale Claim-, Test-, Versions- und Commit-Pfad wieder.
 
 Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor der lokale Preflight läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
@@ -120,7 +127,7 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 2. Lokal `pnpm run verify:integration` ausführen; bei Bedarf zusätzlich `pnpm run verify:long`.
 3. Den lokalen Vor-PR-Nachweis `pnpm run ci:local` auf dem exakten Kopf ausführen; es gibt keinen Cloud-Testlauf, auf den gewartet werden müsste.
 4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.
-5. Merge im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
+5. Der Maintainer merged im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
 6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen.
 
 Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
@@ -141,7 +148,8 @@ Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- 
 
 ## Referenzen
 
-- [`AGENTS.md`](../AGENTS.md) — Kurzvertrag und zehn Regeln.
+- [`AGENTS.md`](../AGENTS.md) — Kurzvertrag, Rollen und zehn Regeln.
+- [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) — Issue-Schleife, Claims und Übergabe an den Maintainer.
 - [`CI.md`](CI.md) — Required-Gates, Zustände und Workflow-Wahrheit.
 - [`GOVERNANCE.md`](GOVERNANCE.md) — Claims, Rollen, Register-Audit und Eskalation.
 - [`TESTING.md`](TESTING.md) — die eine Testlinie und die 17 Fälle.

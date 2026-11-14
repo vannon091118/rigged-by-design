@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-agent-board-workflow",
+  "claimId": "lane/governance/agent-board-workflow",
+  "branch": "lane/governance/agent-board-workflow",
+  "baseSha": "590f97adc3f1e04a5f47d58514c9200a6a306421",
+  "phase": "IMPLEMENTING",
+  "title": "Agent-Board: Rollen trennen, Claim vor Read, Gate in pretask",
+  "goal": "Maintainer (Review, Merge, Close, Tags, Priorisierung) und Agenten (agent-<n>-local/-cloud) sind getrennt; der CLAIM-Kommentar am Issue ist die Wahrheit und pretask prueft ihn als Startgate.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokalen Vor-PR-Nachweis `pnpm run ci:local` auf dem exakten Kopf fahren, dann PR gegen `main` fuer den Maintainer-Review.",
+  "revision": 1
+}

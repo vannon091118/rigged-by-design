@@ -108,6 +108,7 @@ export default defineConfig(
       'scripts/lib/gate-runner.mjs',
       'scripts/lib/gate-cache.mjs',
       'scripts/lib/process-sweep.mjs',
+      'scripts/lib/issue-claim.mjs',
     ],
     rules: {
       'no-restricted-properties': ['error', direct[0], direct[2]],

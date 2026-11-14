@@ -193,6 +193,7 @@ function printClaim(claim) {
   console.log(`  Owner: ${claim.owner}`);
   console.log(`  Branch: ${claim.branch}`);
   console.log(`  Basis: ${claim.baseSha}`);
+  console.log(`  Issue: ${claim.issue ? `#${claim.issue}` : '(keine Nummer)'}`);
   console.log(`  Status: ${claim.status}`);
   console.log(`  Pfade: ${claim.pathAllowlist.length}`);
   console.log('  Naechster Schritt: pnpm run agent:pretask --json');
@@ -209,6 +210,8 @@ function addClaim() {
   }
   const task = options.task;
   if (!task) fail('--task fehlt: Task-Ziel ist Teil des Arbeitsvertrags');
+  const issue = options.issue === undefined ? null : Number(options.issue);
+  if (options.issue !== undefined && (!Number.isInteger(issue) || issue <= 0)) fail(`--issue '${options.issue}' ist keine Issue-Nummer`);
   if (options.allow.length === 0) fail('mindestens ein --allow-Pfad ist erforderlich');
 
   const existing = loadForCommand();
@@ -225,6 +228,7 @@ function addClaim() {
     baseSha: baseSha(),
     task,
     goal: options.goal ?? '',
+    issue,
     pathAllowlist: allowlist,
     gateProfile: options['gate-profile'] ?? 'light',
     status: 'open',
@@ -245,6 +249,7 @@ function updateClaim() {
   if (options.branch !== undefined) next.branch = options.branch;
   if (options.task !== undefined) next.task = options.task;
   if (options.goal !== undefined) next.goal = options.goal;
+  if (options.issue !== undefined) next.issue = Number(options.issue);
   if (options.base !== undefined) next.baseSha = options.base;
   if (options['gate-profile'] !== undefined) next.gateProfile = options['gate-profile'];
   if (options.status !== undefined) next.status = options.status;
@@ -380,7 +385,7 @@ function prune() {
 }
 
 if (options.help) {
-  console.log('claim:register [add|update|list|doctor|prune] --id <lane/id> --owner <owner> --task <text> [--goal <text>] [--allow <pfad>]... [--keep 10] [--apply] [--json]');
+  console.log('claim:register [add|update|list|doctor|prune] --id <lane/id> --owner <owner> --task <text> [--goal <text>] [--issue <nr>] [--allow <pfad>]... [--keep 10] [--apply] [--json]');
   process.exit(0);
 }
 if (command === 'add') addClaim();

@@ -6,9 +6,11 @@
 
 Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issues — du kommentierst, und der Maintainer prüft.
 
-**Dein Name:** `local.agent(cloud).1` (`.2`, `.3` … je Instanz und System). Jeder Kommentar beginnt mit deinem Namen, sonst ist er nicht zuordenbar. Der Prefix `local.agent` ist der Marker, der Systemname in der Klammer unterscheidet die Maschinen; ältere Kommentare unter `local.agent.1` gehören derselben Identität.
+**Deine Rolle.** Claimen, lesen, arbeiten, eigenen Branch pushen, PR öffnen, im Issue belegen. **Merge, Close/Reopen, Push auf `main` und Release-Tags** macht ausschließlich der Maintainer; er reviewt deine Meldung gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`) und entscheidet Konflikte zwischen `local` und `cloud`. Deshalb gibt es keine Merge-Anweisung in dieser Schleife — nur die Übergabe.
 
-**Grundsatz, der alles andere schlägt:** GitHub ist die Wahrheit. Dein lokaler State ist nur ein Cache und darf **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
+**Dein Name:** `agent-<n>-local` bzw. `agent-<n>-cloud` — die Umgebung steht im Suffix, die Instanz in der Nummer (`agent-1-local`, `agent-2-cloud`). Der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, damit ältere Kommentare derselben Identität zugeordnet werden. Jeder Kommentar beginnt mit deinem Namen, sonst ist er nicht zuordenbar. `pretask` liest die Identität aus `RBD_AGENT` (oder `--agent`) und vergleicht exakt; mehrere Aliase dürfen kommagetrennt dort stehen.
+
+**Grundsatz, der alles andere schlägt:** Das Issue-Board ist der primäre Workflow — Priorität, Besitz und Fortschritt stehen dort. Dein lokaler State und die Dateien unter `.lane-claims/` sind nur ein Cache bzw. eine lokale Kollisionssperre für Pfade und dürfen **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
 
 ---
 
@@ -37,14 +39,14 @@ Verschaffe dir den Bestand, bevor du irgendetwas anfasst.
 
 ## 2 · Main-Fetch
 
-Vor jeder Arbeit den aktuellen Stand holen — nie auf einem veralteten `main` urteilen.
+Vor jeder Arbeit den aktuellen Stand holen — nie auf einem veralteten `main` urteilen. Der geteilte Arbeitsbaum wird **nicht** zurückgesetzt: `reset --hard`, `clean -xdf` und `stash` sind für Agenten verboten (`AGENTS.md` Regel 2) und würden fremdes WIP vernichten.
 
 ```bash
 git fetch --prune origin
-git checkout main
-git reset --hard origin/main
-git clean -xdfq
+git worktree add ../rbd-<issue> -b lane/<domäne>/<task> origin/main
 ```
+
+Im **eigenen** Worktree ist der Stand exakt `origin/main`; dort wird gearbeitet. Nur der Maintainer darf in seinem eigenen Review-Checkout `reset --hard`/`clean -xdf` nutzen, nie im geteilten Baum.
 
 SHA notieren (`git rev-parse --short HEAD`). Alles, was du im Issue behauptest, bezieht sich auf **diesen** SHA. Schlägt der Fetch fehl: Lauf beenden, nicht auf altem Stand weiterarbeiten.
 
@@ -122,6 +124,8 @@ CLAIM [A<n>] local.agent(cloud).1 2026-11-14T10:12Z scope=<dateien|symbole> plan
 
 Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kein Claim, den du nicht in dieser Sitzung bearbeitest.
 
+**Gate:** Der Claim steht **vor dem ersten Read** — erst der Kommentar, dann die Dateien. `pnpm run agent:pretask --json` liest denselben Verlauf und blockiert bei fremdem Claim, verlangt bei fehlendem Claim genau diesen Kommentar (`RBD_AGENT`/`--agent` nennt deine Identität) und warnt nur, wenn die Lane keine Issue-Nummer hat. Damit orchestriert genau ein Agent pro Issue. Die Dateien unter `.lane-claims/` sind danach nur deine lokale Sperre: sie halten die Pfad-Allowlist für Staging und Gates und verhindern Doppelarbeit an denselben Dateien — Besitz oder Priorität erzeugen sie nicht.
+
 ---
 
 ## 6 · Issue lösen und via PR auf main bringen
@@ -133,10 +137,10 @@ Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kei
 5. PR öffnen gegen `main`:
    - Titel: `fix(#42): <Kurztitel>`
    - Body: Issue-Verweis, Ansatz, geänderte Dateien, Checks mit Exit-Code, Restrisiko.
-6. **Merge nur**, wenn: Checks grün, nur deine eigenen Commits im Branch, kein fremder Claim auf dem Issue.
-7. Kein Force-Push auf `main`, kein Rebase fremder Branches, keine fremden PRs mergen.
+6. **Übergabe statt Merge:** PR offen lassen, `RELEASE` und den Umsetzungs-Kommentar schreiben. Mergen, schließen und taggen tut der Maintainer nach Review auf exaktem Kopf.
+7. Kein Force-Push, kein Rebase fremder Branches, keine fremden PRs anfassen.
 
-**Verboten:** Issues schließen oder wiedereröffnen (nur der Maintainer), fremde Claims überschreiben, Direkt-Push auf `main`, mehrere Issues gleichzeitig.
+**Verboten:** Issues schließen oder wiedereröffnen, mergen, auf `main` pushen, Release-Tags setzen (alles Maintainer), fremde Claims überschreiben, mehrere Issues gleichzeitig.
 
 ---
 
@@ -165,7 +169,7 @@ Regeln:
 - **Exit-Codes echt.** Erfundene Ergebnisse sind das Ende der Zusammenarbeit.
 - **`Nicht gemacht` und `Restrisiko` sind Qualitätsmerkmale**, keine Schwäche — sie verhindern, dass das Ticket für vollständig gehalten wird.
 - **`Review-Fokus`** sagt dem Maintainer, wo er zuerst hinschauen soll. Das beschleunigt die Prüfung und verhindert, dass ein bekanntes Loch als Überraschung auftaucht.
-- Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen.
+- Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen. Der Maintainer reviewt den Kommentar gegen den Code und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
 
 ---
 
@@ -195,11 +199,12 @@ Dieses Dokument entscheidet über **Koordination** (Claim, Priorität, Freigabe,
 
 | Thema | Verbindlich | Anmerkung |
 | --- | --- | --- |
-| Claim | `CLAIM`/`RELEASE`-Kommentar am Issue | Wahrheit. Der Eintrag unter `.lane-claims/claims/` ist nur die **mechanische Spiegelung** für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook; er entscheidet nie gegen den Issue-Verlauf. |
+| Claim | `CLAIM`/`RELEASE`-Kommentar am Issue | Autoritativ für Besitz und Reihenfolge. Der Eintrag unter `.lane-claims/claims/` ist die **lokale Kollisionssperre** (Pfad-Allowlist für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook), damit keine zwei Agenten dieselben Dateien im selben Task oder Turn bearbeiten; er entscheidet nie gegen den Issue-Verlauf. |
 | Lane/Branch | `lane/<domäne>/<task>` (mechanisch), `fix/<nr>-<slug>` (lesbar, Legacy-Präfix) | Beide Formen sind zulässig; das Register braucht einen Branch nach Schema. |
 | Name | `local.agent(cloud).1` | Prefix `local.agent` ist der Marker; `.1`, `.2` … je Instanz. |
 | Checks | `verify:light`, `verify:fast`, `pnpm run ci:local` | „Checks grün" meint diese Linie ([`CI.md`](CI.md), [`TESTING.md`](TESTING.md)), nicht Browser-Klicktests. |
-| Abschluss | Commit + Push + PR + Squash-Merge nach grünem Nachweis | `turn:finish` bleibt der lokale Abschlussweg; ein pauschaler Cloud-Testlauf existiert nicht. |
+| Abschluss | Commit + Push + PR nach grünem Nachweis; Merge durch den Maintainer | `turn:finish` bleibt der lokale Abschlussweg; ein pauschaler Cloud-Testlauf existiert nicht. |
+| Rollen | Maintainer merged/schließt/taggt; Agenten pushen nur ihren Branch | Rechte stehen in [`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes). |
 | Textbaustein | Jeder Commit braucht einen registrierten Baustein (`AGENTS.md` Regel 6) | Bleibt bestehen; die Registry wird nicht handgeschrieben. |
 | Lokaler State | Datei außerhalb des Repos | Nie committen, nie als Beweis nutzen. |
 | Issues | werden kommentiert, nie geschlossen | Schließen und Wiederöffnen ist Maintainer-Sache. |
