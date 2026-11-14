@@ -638,6 +638,7 @@ button.vital:active { transform: translateY(1px); }
 }
 .action-alt { grid-column: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .action-alt button { min-height: 38px; font-size: 12px; }
+.action-alt .action-more { grid-column: 1 / -1; min-height: 32px; font-size: 11px; color: var(--ink-dim, #b9aed0); }
 .action-close {
   grid-column: 2;
   grid-row: 1 / span 2;

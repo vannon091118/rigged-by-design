@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-767-action-card-actions",
+  "claimId": "lane/ui/issue-767-action-card-actions",
+  "branch": "lane/ui/issue-767-action-card-actions",
+  "baseSha": "2d6cb9af6a445820d9b63c688d213822a31de173",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #767: ActionCard darf verfuegbare Gastaktionen nicht still abschneiden",
+  "goal": "Alle vom Builder gelieferten Aktionen bleiben ueber die kompakte Aktionskarte erreichbar; ein Regressionstest belegt die fuenf Gastaktionen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Fix und Regressionstest sind lokal gruen; Commit, Push und PR anlegen.",
+  "revision": 1
+}

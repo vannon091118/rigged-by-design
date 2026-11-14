@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 409 Dateien — contract 218 · integration 113 · governance 65 · statistics 6 · performance 7.
+Summe: 410 Dateien — contract 218 · integration 114 · governance 65 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -487,6 +487,7 @@ Summe: 409 Dateien — contract 218 · integration 113 · governance 65 · stati
 | `src/store/memory.bench.ts` | store | performance | nein, Mechanik | `src/store/save.ts` |
 | `src/store/narrative.bench.ts` | sim | performance | nein, Mechanik | `src/core/sim/narrative/runtime.ts` |
 | `src/store/perf-hot-paths.bench.ts` | store | performance | nein, Mechanik | `src/store/snapshot.ts` |
+| `src/ui/__tests__/action-card.test.tsx` | ui | integration | ja | `src/ui/action-card.tsx` |
 | `src/ui/__tests__/action-queue-panel.test.tsx` | ui | integration | ja | `src/ui/action-queue-panel.tsx` |
 | `src/ui/__tests__/anchor-layout.test.ts` | ui | integration | ja | `src/ui/anchor-layout.ts` |
 | `src/ui/__tests__/card-tables.test.tsx` | ui | integration | ja | `src/ui/games/blackjack-popup.tsx` |
@@ -715,10 +716,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3212 |
-| Gelistete Dateien | 3212 |
+| Getrackte Dateien | 3216 |
+| Gelistete Dateien | 3216 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (166), artifacts (1), content (1150), docs (108), packages (27), public (571), scripts (129), src (1035) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (168), artifacts (1), content (1151), docs (108), packages (27), public (571), scripts (129), src (1036) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -731,10 +732,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 84 Datei(en)
-- `.lane-claims/tasks/` — 79 Datei(en)
+- `.lane-claims/claims/` — 85 Datei(en)
+- `.lane-claims/tasks/` — 80 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1146 Datei(en)
+- `content/narrative/contributions/` — 1147 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -840,7 +841,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 103 Datei(en)
-- `src/ui/__tests__/` — 38 Datei(en)
+- `src/ui/__tests__/` — 39 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -948,6 +949,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-646-smartphone-states.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/board-pr-triage.json` — { — gelesen: 55 Zeilen
@@ -1028,6 +1030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -2103,6 +2106,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-npc-population.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-snapshot-purity.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-verify-gates.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-action-card-overflow.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-board.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-onboarding.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-balance-lane-on-demand.json` — { — gelesen: 22 Zeilen
@@ -2180,8 +2184,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25742 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4589 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25767 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4593 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3898,13 +3902,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 167 Zeilen
 - `src/store/world-tick.ts` — Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn — gelesen: 67 Zeilen
-- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 742 Zeilen
+- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 743 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
 - `src/styles/popup.css` — .popup-backdrop { — gelesen: 724 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
+- `src/ui/__tests__/action-card.test.tsx` — Regression #767: Der Gast-Builder liefert fünf Aktionen. Die kompakte Karte — gelesen: 47 Zeilen
 - `src/ui/__tests__/action-queue-panel.test.tsx` — Die Queue ist die sichtbare Auftragskette: auch der fuenfte Auftrag muss — gelesen: 45 Zeilen
 - `src/ui/__tests__/anchor-layout.test.ts` — Reine Klemm-Geometrie: Der Viewport ist eine Zahl, der Kamerawechsel ein — gelesen: 106 Zeilen
 - `src/ui/__tests__/card-tables.test.tsx` — Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden, — gelesen: 134 Zeilen
@@ -3943,7 +3948,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/workshop-entries.test.tsx` — Beide Werkstatt-Einstiege oeffnen dieselbe Oberflaeche ueber der laufenden — gelesen: 111 Zeilen
 - `src/ui/__tests__/workshop-tiles.test.tsx` — Sechs Kacheln, sechs vorhandene Panels: jede Kachel oeffnet genau ihren — gelesen: 97 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
-- `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 65 Zeilen
+- `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei direkte Alternativen, ein Schliessen. — gelesen: 86 Zeilen
 - `src/ui/action-queue-panel.tsx` — Queue-Anzeige: der aktive Auftrag und seine naechsten Schritte, direkt am Floor. — gelesen: 40 Zeilen
 - `src/ui/anchor-layout.ts` — Klemm-Geometrie fuer Weltanker. Reine Funktion: Projektion und Viewport sind — gelesen: 109 Zeilen
 - `src/ui/app-effects.ts` — App-Effekte: Ton, Musik, Fokus und Haptik als eigene Zustaendigkeit. — gelesen: 92 Zeilen
