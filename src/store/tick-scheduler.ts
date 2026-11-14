@@ -7,7 +7,7 @@
  * (neues Spiel, Import) gibt den Takt wieder frei.
  */
 
-export interface TickSchedulerOptions {
+interface TickSchedulerOptions {
   readonly tickMs: number;
   readonly tick: () => void;
   /** Wird genau einmal aufgerufen; danach laeuft kein Tick mehr. */

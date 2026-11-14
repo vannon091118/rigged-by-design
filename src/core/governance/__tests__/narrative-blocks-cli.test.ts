@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { parseCliArgs } from '../../../../scripts/verify-narrative-blocks.mjs';
 
 const ROOT = process.cwd();
 const SCRIPT = resolve(ROOT, 'scripts', 'verify-narrative-blocks.mjs');
@@ -42,5 +43,12 @@ describe('verify-narrative-blocks CLI', () => {
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('gewertete Bausteine');
     expect(result.stdout).toContain('[narrative-blocks] PASS');
+  });
+
+  it('parst --help und unbekannte Optionen ohne den Prueflauf zu starten', () => {
+    expect(parseCliArgs(['--help'])).toEqual({ help: true, unknown: [], commit: false, pr: false });
+    const unknown = parseCliArgs(['--helpp']);
+    expect(unknown.help).toBe(false);
+    expect(unknown.unknown).toEqual(['--helpp']);
   });
 });
