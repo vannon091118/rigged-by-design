@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 398 Dateien — contract 218 · integration 105 · governance 62 · statistics 6 · performance 7.
+Summe: 399 Dateien — contract 218 · integration 106 · governance 62 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -505,6 +505,7 @@ Summe: 398 Dateien — contract 218 · integration 105 · governance 62 · stati
 | `src/ui/__tests__/placement-fit.test.ts` | ui | integration | ja | `src/ui/app-model.ts` |
 | `src/ui/__tests__/player-dashboard.test.tsx` | ui | integration | ja | `src/ui/look-popup.tsx` |
 | `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
+| `src/ui/__tests__/skill-path.test.tsx` | ui | integration | ja | `src/ui/hud.tsx` |
 | `src/ui/__tests__/small-screen-acceptance.test.tsx` | other | contract | ja | `src/App.tsx` |
 | `src/ui/__tests__/small-screen-dock.test.tsx` | ui | integration | ja | `src/ui/dock.tsx` |
 | `src/ui/__tests__/small-screen-layout.test.ts` | other | contract | ja | `src/styles/app.css` |
@@ -704,10 +705,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3113 |
-| Gelistete Dateien | 3113 |
+| Getrackte Dateien | 3117 |
+| Gelistete Dateien | 3117 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (109), artifacts (1), content (1123), docs (108), packages (27), public (571), scripts (126), src (1023) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (111), artifacts (1), content (1124), docs (108), packages (27), public (571), scripts (126), src (1024) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -720,10 +721,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 56 Datei(en)
-- `.lane-claims/tasks/` — 51 Datei(en)
+- `.lane-claims/claims/` — 57 Datei(en)
+- `.lane-claims/tasks/` — 52 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1119 Datei(en)
+- `content/narrative/contributions/` — 1120 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -829,7 +830,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 102 Datei(en)
-- `src/ui/__tests__/` — 33 Datei(en)
+- `src/ui/__tests__/` — 34 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -908,6 +909,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-ui-issue-646-smartphone-states.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
@@ -960,6 +962,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -2052,6 +2055,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-city-scene-60.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-city-scene-61.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-city-scene-62.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-64.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-city-scene-70.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-claim-register.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-close-rights.json` — { — gelesen: 17 Zeilen
@@ -2085,8 +2089,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25114 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4481 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25136 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4485 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3825,6 +3829,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/placement-fit.test.ts` — Das Ablegen per Enter stellt am eigenen Feld ab; die eigene Kachel darf — gelesen: 41 Zeilen
 - `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 177 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
+- `src/ui/__tests__/skill-path.test.tsx` — Der Skillpunkt-Klick laeuft ueber den echten Command-Pfad bis in die — gelesen: 99 Zeilen
 - `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen
 - `src/ui/__tests__/small-screen-dock.test.tsx` — Abnahme Phase 2: alle Dock-Einstiege und die Gaesteuebersicht bleiben bei — gelesen: 80 Zeilen
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
