@@ -117,6 +117,20 @@ export function decideRunBudget(input, budget) {
 }
 
 /**
+ * Zahl der in einem Lauf geoeffneten Governance-Findings: nur ein belegter
+ * Aufrufwert ist eine Zahl. Fehlt er, ist der Wert `null` (unknown) und das
+ * Startgate blockiert - ein angenommenes 0 hat Verstoesse unsichtbar gemacht.
+ */
+export function parseGovernanceFindingCount(value) {
+  if (value === undefined || value === null || value === '' || value === 'unknown') return null;
+  const number = typeof value === 'number' ? value : Number(String(value).trim());
+  if (!Number.isInteger(number) || number < 0) {
+    throw new TypeError(`new-governance-issues muss eine nichtnegative Ganzzahl oder 'unknown' sein, erhielt '${String(value)}'`);
+  }
+  return number;
+}
+
+/**
  * Finding-Gate: Ein neues Finding ohne Beleg, aktuellen Main-SHA,
  * Duplikatpruefung, Severity und Zuordnung wird nicht als Issue akzeptiert.
  */

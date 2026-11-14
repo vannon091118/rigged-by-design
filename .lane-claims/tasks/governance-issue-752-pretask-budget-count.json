@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-752-pretask-budget-count",
+  "claimId": "lane/governance/issue-752-pretask-budget-count",
+  "branch": "lane/governance/issue-752-pretask-budget-count",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "phase": "CI_PENDING",
+  "title": "Issue #752: Pretask-Zaehler fuer neue Befunde",
+  "goal": "Pretask darf newGovernanceIssues nicht mehr hart als 0 uebergeben: belegte Zahl aus Aufruf/Umgebung, sonst fail-closed unknown als Blocker.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Ohne explizite Zahl blockiert pretask nun jeden Lauf; das ist gewollt fail-closed, verlangt aber eine belegte Zaehlung im Aufruf."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "revision": 1
+}

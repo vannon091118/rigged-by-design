@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d15f4039e6941f8b98afec1b888c825f66aaae73e0e02d2d9eedfedea559abe7",
+  "contentHash": "sha256:ae2daa18aa3e92990c35c3a1af82067ccf88af29a91542061a69b76f9735bb6c",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24301,6 +24301,30 @@
       "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-16.json"
+    },
+    {
+      "contributionId": "rumor-22",
+      "turnId": "2026-11-14T21:10Z-rumor-22",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Mann an der Theke zaehlt am Morgen die Stuehle, nicht die Gaeste. Wer die Stuehle nicht zaehlt, merkt erst am Abend, dass einer fehlt. Er sagt, eine Null sei eine Zahl und keine Entschuldigung; wer nichts gezaehlt hat, soll sagen, dass er nichts gezaehlt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-22.json"
     },
     {
       "contributionId": "run-budget-01",

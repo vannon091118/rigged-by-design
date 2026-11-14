@@ -47,7 +47,7 @@ import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mj
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 import { describeIssueClaim, issueNumberFor, readBoard, readIssueClaim } from './lib/issue-claim.mjs';
-import { decideRunBudget, readRunBudget } from './lib/run-budget.mjs';
+import { decideRunBudget, parseGovernanceFindingCount, readRunBudget } from './lib/run-budget.mjs';
 
 const argv = process.argv.slice(2);
 // `--brief` ist die token-sparsame Form fuer Agenten: Status, Claim, Blocker
@@ -56,6 +56,7 @@ const argv = process.argv.slice(2);
 const brief = argv.includes('--brief');
 const asJson = argv.includes('--json') || brief;
 const wantNew = argv.includes('--new');
+const findingFlag = argv.indexOf('--new-governance-issues');
 const wantResume = argv.includes('--resume');
 const requireWorktree = argv.includes('--require-worktree') || process.env.RBD_REQUIRE_WORKTREE === '1';
 // Identitaet der Lane: `agent-<n>-local` bzw. `agent-<n>-cloud`. Alte Namen
@@ -559,6 +560,7 @@ if (!worker.identityValid && branch !== 'main' && claim) {
 // Externes Laufbudget: der Stop-Vertrag greift vor dem ersten Edit, nicht erst
 // beim Turn-Ende. Fehlt die Konfiguration, bleibt Legacy-Arbeit startbar.
 const budgetFile = join(ROOT, 'docs/run-budget.json');
+let runBudgetState = null;
 if (branch !== 'main' && claim && existsSync(budgetFile)) {
   try {
     const budget = readRunBudget(budgetFile);
@@ -579,13 +581,33 @@ if (branch !== 'main' && claim && existsSync(budgetFile)) {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).trim());
-    const decision = decideRunBudget({ commits, iterations: 1, issues: 1, newGovernanceIssues: 0 }, budget);
-    if (decision.state !== 'CONTINUE') {
+    // Die Zahl neuer Governance-Findings ist aus Git nicht ableitbar. Sie muss
+    // belegt uebergeben werden; ein fehlender Wert ist fail-closed. Die alte
+    // Verdrahtung mit einer festen 0 hat jeden Verstoss unsichtbar gemacht.
+    const newGovernanceIssues = parseGovernanceFindingCount(
+      process.env.RBD_NEW_GOVERNANCE_ISSUES ?? (findingFlag >= 0 ? argv[findingFlag + 1] : undefined),
+    );
+    if (newGovernanceIssues === null) {
+      runBudgetState = { newGovernanceIssues: null, state: 'UNKNOWN', reasons: ['new-governance-issues=unknown'] };
       blockers.push(
-        `[ERR-4019] Laufbudget ${decision.state}: ${decision.reasons.join(', ')}; ` +
-        `Main-SHA ${head}, Produktziele ${budget.productProgress.mergedProductPrs}/${budget.productProgress.acceptedFindings}, ` +
-        'Stop durch externes Budget - kein neuer Edit in diesem Lauf',
+        '[ERR-4019] Laufbudget: new-governance-issues=unknown; die Zahl der in diesem Lauf geoeffneten Governance-Issues ist nicht belegt. ' +
+        'Belegte Zahl mit `--new-governance-issues <n>` oder `RBD_NEW_GOVERNANCE_ISSUES=<n>` uebergeben; 0 wird nicht mehr angenommen.',
       );
+    } else {
+      const decision = decideRunBudget({ commits, iterations: 1, issues: 1, newGovernanceIssues }, budget);
+      runBudgetState = {
+        newGovernanceIssues,
+        state: decision.state,
+        reasons: decision.reasons,
+        findingDuty: decision.findingDuty,
+      };
+      if (decision.state !== 'CONTINUE') {
+        blockers.push(
+          `[ERR-4019] Laufbudget ${decision.state}: ${decision.reasons.join(', ')}; ` +
+          `Main-SHA ${head}, Produktziele ${budget.productProgress.mergedProductPrs}/${budget.productProgress.acceptedFindings}, ` +
+          'Stop durch externes Budget - kein neuer Edit in diesem Lauf',
+        );
+      }
     }
   } catch (error) {
     blockers.push(`[ERR-4019] Laufbudget nicht pruefbar: ${String(error?.message ?? error).slice(0, 160)}`);
@@ -636,6 +658,7 @@ const contract = {
     long: longTests,
   },
   gates: contextData?.gates ?? [],
+  runBudget: runBudgetState,
   longTests,
   takeover,
   cleanup,

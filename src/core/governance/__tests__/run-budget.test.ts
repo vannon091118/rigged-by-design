@@ -7,9 +7,11 @@
  * Git/Aufruf. Kill-Switch und jeder Grenzverstoss beenden den Lauf; das
  * Finding-Gate akzeptiert nur belegte, aktuelle und zugeordnete Befunde.
  */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  decideRunBudget, validateFinding, validateRunBudget,
+  decideRunBudget, parseGovernanceFindingCount, validateFinding, validateRunBudget,
 } from '../../../../scripts/lib/run-budget.mjs';
 
 const budget = {
@@ -60,6 +62,21 @@ describe('Laufbudget und Stop-Vertrag', () => {
     expect(validateRunBudget({ ...budget, maxIssues: -1 }).ok).toBe(false);
     expect(validateRunBudget({ ...budget, productProgress: null }).ok).toBe(false);
     expect(validateRunBudget({ ...budget, version: 2 }).ok).toBe(false);
+  });
+
+  it('liest die Befundzahl aus dem Aufruf und sonst unknown', () => {
+    expect(parseGovernanceFindingCount(undefined)).toBeNull();
+    expect(parseGovernanceFindingCount('unknown')).toBeNull();
+    expect(parseGovernanceFindingCount('4')).toBe(4);
+    expect(parseGovernanceFindingCount(0)).toBe(0);
+    expect(() => parseGovernanceFindingCount('-1')).toThrow(/nichtnegative/);
+  });
+
+  it('erkennt die alte feste 0 im Pretask als Fehlverdrahtung', () => {
+    const source = readFileSync(resolve(process.cwd(), 'scripts', 'pretask.mjs'), 'utf8');
+    expect(source).not.toContain('newGovernanceIssues: 0');
+    expect(source).toContain('new-governance-issues=unknown');
+    expect(source).toContain('parseGovernanceFindingCount');
   });
 });
 

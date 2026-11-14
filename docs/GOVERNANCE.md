@@ -65,6 +65,7 @@ KILL_SWITCH        Maintainer-Stop; hat Vorrang vor jeder anderen Entscheidung
 
 - `maxIterations`, `maxIssues`, `maxCommits` und `maxNewGovernanceIssues` sind nichtnegative Ganzzahlen; `maxCommits` ist mindestens 1. Eine ungueltige oder fehlende Konfiguration blockiert fail-closed.
 - Der Kill-Switch ist nur eine Stop-Quelle. Ein Agent kann ihn setzen oder ausloesen, aber nicht gegen ein erschoepftes Budget weiterlaufen lassen; jede Grenzaenderung braucht einen sichtbaren Governance-Commit.
+- `pretask` uebergibt die Zahl der in diesem Lauf geoeffneten Governance-Issues nicht mehr als feste 0: sie kommt aus `--new-governance-issues <n>` oder `RBD_NEW_GOVERNANCE_ISSUES=<n>`. Fehlt sie, blockiert der Start mit `new-governance-issues=unknown`; ein angenommenes 0 gilt nicht mehr.
 - Neue Findings laufen vor dem Issue durch `pnpm run run:budget --finding <datei.json>`: Beleg (`datei:zeile` oder Befehl), vollstaendiger Main-SHA, Duplikatpruefung, Severity `P0`–`P3` und Zuordnung `product`/`infrastructure` sind Pflicht. Produkt-Findings brauchen zusaetzlich ein `productGoal`.
 - Reine Meta-/Governance-Findings erzeugen keine automatische Folge-Lane; sie werden im Review-Log notiert und nur mit Maintainer-Auftrag zu einem Issue.
 - Jeder Laufbericht trennt `productProgress` (gemergte Produkt-PRs, akzeptierte Findings) von `governanceChurn` (neue Governance-Findings) und nennt Main-SHA, erledigte Produktziele, offene Blocker und die Stop-/Continue-Entscheidung.
