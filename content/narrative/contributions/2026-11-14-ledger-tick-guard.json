@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
+  "contributionId": "ledger-tick-guard-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
+  "directives": []
+}

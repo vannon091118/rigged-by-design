@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2c80e1df54751c3c9dea09eab52a67fbd32adc120e772083f803450401d4d96a",
+  "contentHash": "sha256:888a6d2a914256fae0ad42f48291e0fab89abb8f53e556364c05a511d62531fb",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -8041,6 +8041,28 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "ledger-tick-guard-01",
+      "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
     },
     {
       "contributionId": "living-world-foundation-1",
