@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/board-issue-triage-closeout",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-issue-triage-closeout",
+  "baseSha": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "issue": 684,
+  "task": "Post-Merge-Closeout der Board-Triage: Claim merged, Task DONE, Board-head auf Merge-SHA",
+  "goal": "Register und Board stimmen mit main ueberein",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-governance-board-issue-triage.json",
+    ".lane-claims/claims/lane-governance-board-issue-triage-closeout.json",
+    ".lane-claims/tasks/governance-board-issue-triage.json",
+    ".lane-claims/tasks/governance-board-issue-triage-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6d511b8341c29ec6bffe721a814bc510362b1e76"
+}

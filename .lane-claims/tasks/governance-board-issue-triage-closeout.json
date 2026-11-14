@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "taskId": "governance-board-issue-triage-closeout",
+  "claimId": "lane/governance/board-issue-triage-closeout",
+  "branch": "lane/governance/board-issue-triage-closeout",
+  "baseSha": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout der Board-Triage (#734)",
+  "goal": "Claim auf merged, Task auf DONE mit Aftercare und Board-head auf den echten Merge-SHA ziehen.",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "closeout": "post-merge",
+  "pr": {
+    "number": 734,
+    "state": "merged",
+    "mergedSha": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/734"
+  },
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "6d511b8341c29ec6bffe721a814bc510362b1e76"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  },
+  "nextAction": "Nach diesem Closeout ist das Register leer; naechste Arbeit ist #733 (Narrative) und die Pixi-Abnahme zu #640.",
+  "revision": 1,
+  "findings": []
+}
