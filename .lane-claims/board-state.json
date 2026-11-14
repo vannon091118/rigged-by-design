@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:05Z",
+  "generatedAt": "2026-11-14T18:02Z",
   "generatedBy": "maintainer",
-  "head": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
-  "headMessage": "Board-Finalitaet: #696-Blocker und #731 naechster Schritt belegt, #631 existiert nicht",
-  "base": "origin/main @ 07a1262f2c45145a1f1ed5f252a0b8b545850abf",
+  "head": "2ec888d3f860b84ca7ea88baacacfd5d2abe6abb",
+  "headMessage": "Board-Finalitaet gemergt (#737), Register geschlossen",
+  "base": "origin/main @ 2ec888d3f860b84ca7ea88baacacfd5d2abe6abb",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
@@ -16,7 +16,8 @@
     "Korrektur: #634 nach dem Close am Code geprueft und wieder geoeffnet (promote.yml nur workflow_dispatch, keine Rulesets)",
     "Rest-Blocker praezisiert auf #684, #685, #693, #694, #630 (jeweils mit Datei-/Zeilennachweis)",
     "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen",
-    "Closeout #735: Claim lane/governance/board-issue-triage auf merged (PR #734, 6d511b83), Task DONE mit Aftercare, Board auf neuen main-Tip"
+    "Closeout #735: Claim lane/governance/board-issue-triage auf merged (PR #734, 6d511b83), Task DONE mit Aftercare, Board auf neuen main-Tip",
+    "Closeout #738: Claim merged (PR #737, 2ec888d3), Task DONE, board.head auf 2ec888d3"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
