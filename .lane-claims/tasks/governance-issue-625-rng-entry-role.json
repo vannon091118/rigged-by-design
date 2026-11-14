@@ -10,7 +10,12 @@
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 688,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/688",
+    "state": "open",
+    "head": "4cf9ebe4"
+  },
   "findings": [
     {
       "id": "advance-to-next-day-guard-order",
@@ -27,6 +32,6 @@
       "kind": "scope"
     }
   ],
-  "nextAction": "Nach dem Commit: verify:light, verify:docs, narrative:check, narrative:blocks; dann Push, PR, review-waiting und RELEASE",
+  "nextAction": "Maintainer-Review von PR #688; danach Merge und Closeout von #625",
   "revision": 1
 }
