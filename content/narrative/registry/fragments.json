@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e8e6ceee8380e862040ee52fed6114d44bfa5e5cd6a3fb7c035aa25bf2ef869f",
+  "contentHash": "sha256:be78dc90c898651402cdf1ce5fde674dce0fe178d0013d52eac21b08f5b629e2",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7531,6 +7531,28 @@
       "text": "Der Spiegel stand im Lager, bevor ich das Licht ausmachte. Am Morgen stand er noch da, an derselben Stelle, und zeigte denselben Raum.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-68.json"
+    },
+    {
+      "contributionId": "city-scene-69",
+      "turnId": "2026-11-14T13:22Z-city-scene-69",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Zahl an der Wand zaehlte die Bilder, nicht die Sekunden. Als ich kurz wegsah, sprang sie nicht, sie begann einfach neu zu zaehlen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-69.json"
     },
     {
       "contributionId": "city-scene-70",

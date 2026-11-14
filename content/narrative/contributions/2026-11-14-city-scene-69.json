@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T13:22Z-city-scene-69",
+  "contributionId": "city-scene-69",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Zahl an der Wand zaehlte die Bilder, nicht die Sekunden. Als ich kurz wegsah, sprang sie nicht, sie begann einfach neu zu zaehlen.",
+  "directives": []
+}
