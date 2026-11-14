@@ -942,7 +942,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
 - `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 83 Zeilen
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 44 Zeilen
 - `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
