@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/board-final-consistency",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-final-consistency",
+  "baseSha": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
+  "issue": 696,
+  "task": "Board und Register final auf main 07a1262f ziehen: #696-Blocker, #731 naechster Schritt, #631 als nicht existent belegen",
+  "goal": "Kein offenes Issue ohne wahren, am Repo belegten Status; board.head == main^",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-governance-board-final-consistency.json",
+    ".lane-claims/tasks/governance-board-final-consistency.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "07a1262f2c45145a1f1ed5f252a0b8b545850abf"
+}

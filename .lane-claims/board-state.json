@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:56Z",
+  "generatedAt": "2026-11-14T18:05Z",
   "generatedBy": "maintainer",
-  "head": "8e8aae4884b3d72956277c8a880a0bb550cd3f53",
-  "headMessage": "Board-Triage gemergt (#734): 10 Issues geschlossen, #733 konsolidiert, Blocker praezisiert",
-  "base": "origin/main @ 8e8aae4884b3d72956277c8a880a0bb550cd3f53",
+  "head": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
+  "headMessage": "Board-Finalitaet: #696-Blocker und #731 naechster Schritt belegt, #631 existiert nicht",
+  "base": "origin/main @ 07a1262f2c45145a1f1ed5f252a0b8b545850abf",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
@@ -45,11 +45,12 @@
     }
   ],
   "nextRunChecklist": [
-    "Offene Issues sind jetzt 28; Reihenfolge ausschliesslich ueber GOVERNANCE.md \"Maintainer-Prioritaeten (kanonisch)\"",
+    "Reihenfolge ausschliesslich ueber GOVERNANCE.md Abschnitt Maintainer-Prioritaeten (kanonisch)",
     "#640: Pixi-Abnahme (drei Bewohner, mehrere Ticks) nachholen, dann review-waiting entfernen",
-    "#733 als ein Lauf: Ersatz-Bausteine je Pool, danach verify-narrative-blocks --pr = 0",
-    "#700/#701 bleiben unberuehrt und ungemergt; keine RELEASE-Aufforderung mehr an die Worker",
-    "Vollsuite: 5 pretask*-Dateien rot; vorbestehend belegt nur pretask.test.ts (21b3e924)"
+    "#731: erster Test fuer sync()/animate() mit gestubbten world/depth/createGuestArt",
+    "#733 als ein Lauf: Ersatz-Bausteine je Pool, verify-narrative-blocks --pr = 0",
+    "#696/#693/#634 haengen an der Schreibpfad-Entscheidung in #694",
+    "#700/#701 bleiben unberuehrt und ungemergt"
   ],
   "blockers": [],
   "warnings": [
@@ -523,7 +524,7 @@
     }
   ],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Marke sitzt nur an #640: Code ist gemergt (#730), die visuelle Pixi-Abnahme fehlt",
+  "reviewWaitingNote": "Marke sitzt nur an #640 (wieder geoeffnet, Automatik-Closeout war falsch): Code gemergt (#730), Pixi-Abnahme fehlt",
   "health": {
     "verifyLight": {
       "status": "PASS",
@@ -602,15 +603,21 @@
     },
     "blockers": {
       "630": "keine kanonische Quelle fuer Gate-Zahlen/Owner; sync-generated prueft sie nicht",
+      "631": "Existiert nicht: GitHub GraphQL liefert NOT_FOUND (Could not resolve to an Issue with the number of 631). Kein Ticket, keine Arbeit.",
       "640": "Code gemergt (#730), visuelle Pixi-Abnahme fehlt -> review-waiting bleibt",
       "652": "docs/RENDER_REWORK_PLAN.md:46/242/522 behauptet weiter \"city-actors.ts fehlt\"; Datei existiert als city-actor-sync.ts",
       "684": "pretask ohne gh -> UNKNOWN/Exit 1; kein Schreibpfad zu GitHub; ensure-pr liest keinen Vertrag",
       "685": "Token im Cron-Prompt liegt ausserhalb des Repos (Betreiber); Label-Abgleich beim Merge fehlt",
       "693": "kein Autorisierungspfad fuer schreibende Kommentare; Entscheidung liegt bei #694",
       "694": "autoritative Klammer des Governance-Clusters; Entscheidung Schreibkanal offen",
-      "731": "neu, frei: sync/animate von CityActorSync ungetestet"
+      "696": "P0-Kommunikationsvertrag. Erfuellt: Task 1 (Statusrekonstruktion), Task 2 (review-waiting kanonisch am Issue; AGENTS.md:27/33/55/112, GOVERNANCE.md:28), Task 3 (scripts/lib/board-cursors.mjs plus 46 Issue- und 3 PR-Cursor im State). Offen: Task 4/5/6 - die Nachrichtentypen USER_REQUEST, MAINTAINER_DIRECTIVE, AGENT_PROGRESS und ACKNOWLEDGED kommen im Repo null Mal vor (git grep auf 07a1262f); die Autorisierung haengt an #693, das auf die Schreibpfad-Entscheidung in #694 wartet. Also blockiert, nicht frei.",
+      "731": "Frei und sofort bearbeitbar: city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle); sync() ab src/render/city-actor-sync.ts:54 und animate() ab :110 sind ungetestet. Erster Test: neue Figur setzt root, from und target auf die Snapshot-Position und moveStart auf now - stepMs."
     },
-    "governanceBudget": "0 neue Governance-Issues; #733 ist Content (area-narrative)"
+    "governanceBudget": "0 neue Governance-Issues; #733 ist Content (area-narrative)",
+    "verifiedOn": "07a1262f",
+    "noSuchIssues": [
+      631
+    ]
   },
   "newIssuesThisRun": [
     733
@@ -624,5 +631,6 @@
       666,
       667
     ]
-  }
+  },
+  "headNote": "head ist der main-Tip, gegen den dieser Snapshot geprueft wurde. Ein Commit kann seinen eigenen SHA nicht enthalten; nach dem Merge dieses Snapshots gilt head == main^ (siehe headRelation)."
 }
