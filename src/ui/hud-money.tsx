@@ -8,6 +8,8 @@ interface HudMoneyProps {
   readonly amount: string;
   readonly desk: string;
   readonly pending: string;
+  /** Formatiert nur bei offener Schuld; `null` blendet die Zeile aus. */
+  readonly debt?: string | null;
   readonly pact: string;
   readonly goal: { readonly label: string; readonly percent: number; readonly text: string };
 }
@@ -15,7 +17,7 @@ interface HudMoneyProps {
 /** Lange Betraege bekommen eine kleinere Stufe, statt die HUD-Zeile zu sprengen. */
 const toneFor = (amount: string): string | undefined => (amount.length > 17 ? 'xlong' : amount.length > 13 ? 'long' : undefined);
 
-export function HudMoney({ guest, amount, desk, pending, pact, goal }: HudMoneyProps) {
+export function HudMoney({ guest, amount, desk, pending, debt = null, pact, goal }: HudMoneyProps) {
   return (
     <div className={`hud-money ${guest ? 'guest' : 'operator'}`} title={guest ? HELP.portemonnaie : HELP.hauskonto}>
       <span><img className="ui-icon" src={UI_ICON.coin} alt="" />{guest ? 'PORTEMONNAIE' : ACCOUNT_LABEL[HAUSKONTO]}</span>
@@ -32,6 +34,12 @@ export function HudMoney({ guest, amount, desk, pending, pact, goal }: HudMoneyP
             <span className="term" title={HELP.kasse}>Kasse {desk}</span>
             <span className="hud-money-sep" aria-hidden="true">·</span>
             <span className="term" title={HELP.offen}>Offen {pending}</span>
+            {debt && (
+              <>
+                <span className="hud-money-sep" aria-hidden="true">·</span>
+                <span className="term hud-money-debt" title={HELP.schuld}>Schuld {debt}</span>
+              </>
+            )}
           </>
         )}
       </small>

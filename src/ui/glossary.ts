@@ -15,6 +15,7 @@ export const HELP = {
   portemonnaie: 'Dein privates Bargeld. Damit spielst du in fremden Häusern und hebst Gewinne vom Hauskonto ab.',
   kasse: 'Wechselkasse der Gäste: Bargeld wird zu Chips und wieder zurück. Kein Gewinn, nur Durchlauf.',
   offen: 'Gewinne, die Gäste erspielt haben, aber noch nicht abgeholt. Erst „Auszahlen“ macht daraus Chips.',
+  schuld: 'Offene Rechnungen und Gewinne, die das Hauskonto nicht gedeckt hat. Der Betrag kommt direkt aus dem Ledger und aendert sich mit jeder Buchung und jeder Tilgung.',
   ruf: 'Eine von mehreren Nachfragequellen. Steigt mit Sauberkeit und gutem Angebot, sinkt mit Dreck, Streit und kaputten Geräten.',
   bar: 'Getränkebestand. Eine leere Bar kostet Laune, und Gäste gehen früher.',
   teile: 'Ersatzteile. Jede Reparatur kostet genau 1 Teil, egal wie kaputt das Gerät ist.',

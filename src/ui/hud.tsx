@@ -74,6 +74,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
         amount={amount}
         desk={vc(view.desk, 2)}
         pending={vc(view.pending, 2)}
+        debt={view.debt > 0 ? vc(view.debt, 2) : null}
         pact={pact}
         goal={goal}
       />
