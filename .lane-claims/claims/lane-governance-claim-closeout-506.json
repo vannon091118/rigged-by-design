@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/claim-closeout-506",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-closeout-506",
+  "baseSha": "3884c90ee133bb7fbd641f9787e2024a1fc784fd",
+  "task": "Gemergte Innenraum-Lane aus dem aktiven Claim-Bestand nehmen",
+  "goal": "#506",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-claim-closeout-506.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3884c90ee133bb7fbd641f9787e2024a1fc784fd"
+}
