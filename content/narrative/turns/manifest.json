@@ -246,10 +246,6 @@
       "contributionId": "warm-return-outcome-01"
     },
     {
-      "turnId": "2026-11-05T05:45Z-huelle-atlas-budgets-apk",
-      "contributionId": "phase4-huelle-atlas-01"
-    },
-    {
       "turnId": "2026-11-06T02:46Z-spatial-layout-contract",
       "contributionId": "spatial-layout-contract-01"
     },
@@ -3198,10 +3194,6 @@
       "contributionId": "world-first-ui-02"
     },
     {
-      "turnId": "2026-11-10T00:00Z-render-sprite-pipeline",
-      "contributionId": "render-sprite-01"
-    },
-    {
       "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
       "contributionId": "governance-eine-stimme-01"
     },
@@ -3382,10 +3374,6 @@
       "contributionId": "mod-engine-01"
     },
     {
-      "turnId": "2026-11-10T23:45Z-ui-queue-panel",
-      "contributionId": "ui-queue-panel-01"
-    },
-    {
       "turnId": "2026-11-10T23:55Z-closeout-buchhaltung-1",
       "contributionId": "closeout-buchhaltung-1"
     },
@@ -3474,10 +3462,6 @@
       "contributionId": "agent14-claim-evidence-3"
     },
     {
-      "turnId": "2026-11-11T01:20Z-agent17-business-areas-2",
-      "contributionId": "agent17-business-areas-2"
-    },
-    {
       "turnId": "2026-11-11T01:25Z-agent16-staff-2",
       "contributionId": "agent16-staff-2"
     },
@@ -3500,10 +3484,6 @@
     {
       "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
       "contributionId": "agent17-business-areas-4"
-    },
-    {
-      "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
-      "contributionId": "agent17-business-areas-5"
     },
     {
       "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
@@ -3544,10 +3524,6 @@
     {
       "turnId": "2026-11-11T02:30Z-agent18-drink-menu-3",
       "contributionId": "agent18-drink-menu-3"
-    },
-    {
-      "turnId": "2026-11-11T02:35Z-agent18-drink-menu-4",
-      "contributionId": "agent18-drink-menu-4"
     },
     {
       "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
@@ -3654,14 +3630,6 @@
       "contributionId": "readme-visual-polish-1"
     },
     {
-      "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
-      "contributionId": "agent21-room-plan-1"
-    },
-    {
-      "turnId": "2026-11-11T05:10Z-agent21-room-plan-2",
-      "contributionId": "agent21-room-plan-2"
-    },
-    {
       "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
       "contributionId": "living-world-vertical-slice-1"
     },
@@ -3732,10 +3700,6 @@
     {
       "turnId": "2026-11-11T06:20Z-agent25-task",
       "contributionId": "agent25-task"
-    },
-    {
-      "turnId": "2026-11-11T06:25Z-agent22-venue-event",
-      "contributionId": "agent22-venue-event"
     },
     {
       "turnId": "2026-11-11T06:30Z-agent25-arena",
@@ -3844,10 +3808,6 @@
     {
       "turnId": "2026-11-11T09:36Z-first-run-slot-truth-payout",
       "contributionId": "first-run-slot-truth-payout"
-    },
-    {
-      "turnId": "2026-11-11T09:40Z-agent23-fight-event",
-      "contributionId": "agent23-fight-event"
     },
     {
       "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
@@ -4380,10 +4340,6 @@
     {
       "turnId": "2026-11-14T06:20Z-esport-evening",
       "contributionId": "esport-evening-01"
-    },
-    {
-      "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
-      "contributionId": "ledger-tick-guard-01"
     },
     {
       "turnId": "2026-11-14T06:35Z-determinism-computed-01",

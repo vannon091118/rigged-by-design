@@ -4,18 +4,14 @@
   "contributionId": "render-ambient",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": [
-    "documentation"
-  ],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
+  "flags": ["narrativ"],
   "text": "Die Stadt bekommt eine eigene Helligkeit: Am Morgen liegt wenig Schleier auf dem Boden, am Abend werfen Laternen und Fassaden weiche Schatten, in der Nacht bleibt nur ein Radius um die Figur hell. Drinnen bleibt das Licht ruhig und der Radius aus, weil die Raeume schon beleuchtet sind.",
   "directives": []
 }

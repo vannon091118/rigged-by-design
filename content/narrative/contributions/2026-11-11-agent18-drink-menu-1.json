@@ -4,18 +4,14 @@
   "contributionId": "agent18-drink-menu-1",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": [
-    "start"
-  ],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
+  "flags": ["narrativ"],
   "text": "Die Bar fuehrt eine Karte, nicht ein Preisschild. Was darauf steht, sagt der Grundpreis und die Stufe - kein zweites Buch.",
   "directives": []
 }

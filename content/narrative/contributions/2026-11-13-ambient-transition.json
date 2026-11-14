@@ -4,18 +4,14 @@
   "contributionId": "render-ambient-transition-01",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "city-scene",
+  "slot": "description",
   "function": "describe",
-  "contexts": [
-    "start"
-  ],
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
-  "text": "Der Abend kippt nicht mehr in einem Sprung: Über eine Stunde dunkeln die Fassaden nach, die Sonnenstrahlen ziehen sich zurück, und erst wenn der letzte Rest Tageslicht weg ist, übernimmt der Lichtkreis um die Figur. Wer stehen bleibt, sieht den Übergang, statt ihn zu verpassen.",
+  "flags": ["narrativ"],
+  "text": "Der Abend kippt nicht mehr in einem Sprung: Über eine Stunde dunklen die Fassaden nach, die Sonnenstrahlen ziehen sich zurück, und erst wenn der letzte Rest Tageslicht weg ist, übernimmt der Lichtkreis um die Figur. Wer stehen bleibt, sieht den Übergang, statt ihn zu verpassen.",
   "directives": []
 }

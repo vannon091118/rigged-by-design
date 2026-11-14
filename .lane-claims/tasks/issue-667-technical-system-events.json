@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "issue-667-technical-system-events",
+  "claimId": "issue-667-technical-system-events",
+  "branch": "lane/narrative/issue-667-technical-system-events",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "phase": "CI_PENDING",
+  "title": "Technische Spielsystem-Erklärungen als Ambient-Texte klassifizieren, Meta-Bausteine entfernen",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

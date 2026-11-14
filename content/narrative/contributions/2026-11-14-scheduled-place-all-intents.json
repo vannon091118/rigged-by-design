@@ -4,18 +4,14 @@
   "contributionId": "scheduled-place-all-intents-01",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": [
-    "documentation"
-  ],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
+  "flags": ["narrativ"],
   "text": "Der Tagesplan nennt jetzt für jede Absicht ein Ziel, nicht nur für den Weg: Wer zum Einkaufen geht, landet am Markt, wer zur Arbeit geht, an seinem Betrieb. Nur die geplante Absicht erbt dieses Ziel; ein dringendes Bedürfnis wählt weiter seinen eigenen Ort.",
   "directives": []
 }
