@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "taskId": "board-pr-triage",
+  "claimId": "lane/governance/board-pr-triage",
+  "branch": "lane/governance/board-pr-triage",
+  "baseSha": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
+  "phase": "CI_PENDING",
+  "title": "PR-Triage: #700/#701 geschlossen, #739 gemergt, Board-PR-Liste geleert",
+  "goal": "Jede der drei offenen PRs hat ein am Repo belegtes Ergebnis; board.openPullRequests stimmt mit der API.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "#700 geschlossen: Branch traegt #665/#666/#667, alle drei Issues CLOSED (konsolidiert in #733), Testmerge 4 Konflikte + ERR-4022."
+    },
+    {
+      "id": "F-2",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "#701 geschlossen: #664 CLOSED (konsolidiert in #733), Testmerge 4 Konflikte + ERR-4022."
+    },
+    {
+      "id": "F-3",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "#739 gemergt (a9bd146a): create-github-app-token v2.2.2 -> v3.3.0, Bot-Allowlist deckt .github/workflows/, app-id bleibt gueltige Eingabe."
+    }
+  ],
+  "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
+  "revision": 2
+}

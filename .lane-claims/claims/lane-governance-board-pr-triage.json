@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/board-pr-triage",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-pr-triage",
+  "baseSha": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
+  "issue": 696,
+  "task": "Board nach PR-Triage: #739 gemergt, #700/#701 superseded geschlossen, 0 offene PRs",
+  "goal": "board.openPullRequests == API 0, offene PR-Entscheidungen belegt, head == main^",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/tasks/board-pr-triage.json",
+    ".lane-claims/claims/lane-governance-board-pr-triage.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb"
+}
