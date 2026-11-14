@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cf9910a788d7d363ddc09bc73fd39d606c228236ebdc939319a7ba3bc763472b",
+  "contentHash": "sha256:fdc2a7f19a86a5196a2b69e626089dd0ca73226f5f758623d6aa041ca94d78c0",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7289,6 +7289,28 @@
       "text": "Der Weg zum Hinterhof ist gesperrt, also geht die Schlange aussen herum. Niemand beschwert sich, der Umweg ist kuerzer als das Warten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-56.json"
+    },
+    {
+      "contributionId": "city-scene-57",
+      "turnId": "2026-11-14T12:22Z-city-scene-57",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Eingang steht ein Schild, das den Weg zur Bar erklaert, obwohl jeder Gast ihn kennt. Die Wirtin laesst es haengen; es hat noch niemandem geschadet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-57.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

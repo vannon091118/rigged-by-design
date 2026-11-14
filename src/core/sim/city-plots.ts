@@ -27,7 +27,7 @@ export interface CityPlot {
  */
 const PLOT_SITES: readonly CityPlot[] = Object.freeze([
   { id: 'plot_player_home', label: 'Wohnhaus am Nordgehweg', rect: { x: 4, y: 4, w: 10, h: 8 }, zoning: 'HOME' },
-  { id: 'plot_kiez_pub', label: 'Eckgrundstück Kiez-Kneipe', rect: { x: 18, y: 4, w: 12, h: 10 }, zoning: 'BUSINESS' },
+  { id: 'plot_kiez_pub', label: 'Eckgrundstück Kiez-Kneipe', rect: { x: 18, y: 4, w: 12, h: 8 }, zoning: 'BUSINESS' },
   { id: 'plot_corner_shop', label: 'Ladengrundstück am Späti', rect: { x: 34, y: 4, w: 10, h: 8 }, zoning: 'BUSINESS' },
   { id: 'plot_casino_grand', label: 'Casino am Vorplatz', rect: { x: 12, y: 22, w: 16, h: 14 }, zoning: 'BUSINESS' },
   { id: 'plot_reserve_north_west', label: 'Baulücke westlich des Wohnhauses', rect: { x: 0, y: 4, w: 4, h: 6 }, zoning: 'HOME' },
