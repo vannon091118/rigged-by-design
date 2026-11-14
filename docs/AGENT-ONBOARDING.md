@@ -8,6 +8,8 @@ Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issu
 
 **Deine Rolle.** Claimen, lesen, arbeiten, eigenen Branch pushen, PR öffnen, im Issue belegen. **Merge, Close/Reopen, Push auf `main` und Release-Tags** macht ausschließlich der Maintainer; er reviewt deine Meldung gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`) und entscheidet Konflikte zwischen `local` und `cloud`. Deshalb gibt es keine Merge-Anweisung in dieser Schleife — nur die Übergabe.
 
+**Du schließt nie.** Issues und Pull Requests werden von dir nur **erstellt und kommentiert**; Schließen, Wiedereröffnen und Mergen liegen ausschließlich bei Maintainer oder User. Auch ein erledigtes Ticket bleibt offen, bis der Maintainer es schließt.
+
 **Dein Name:** `agent-<n>-local` bzw. `agent-<n>-cloud` — die Umgebung steht im Suffix, die Instanz in der Nummer (`agent-1-local`, `agent-2-cloud`). Der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, damit ältere Kommentare derselben Identität zugeordnet werden. Jeder Kommentar beginnt mit deinem Namen, sonst ist er nicht zuordenbar. `pretask` liest die Identität aus `RBD_AGENT` (oder `--agent`) und vergleicht exakt; mehrere Aliase dürfen kommagetrennt dort stehen.
 
 **Grundsatz, der alles andere schlägt:** Das Issue-Board ist der primäre Workflow — Priorität, Besitz und Fortschritt stehen dort. Dein lokaler State und die Dateien unter `.lane-claims/` sind nur ein Cache bzw. eine lokale Kollisionssperre für Pfade und dürfen **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
@@ -140,7 +142,7 @@ Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kei
 6. **Übergabe statt Merge:** PR offen lassen, `RELEASE` und den Umsetzungs-Kommentar schreiben. Mergen, schließen und taggen tut der Maintainer nach Review auf exaktem Kopf.
 7. Kein Force-Push, kein Rebase fremder Branches, keine fremden PRs anfassen.
 
-**Verboten:** Issues schließen oder wiedereröffnen, mergen, auf `main` pushen, Release-Tags setzen (alles Maintainer), fremde Claims überschreiben, mehrere Issues gleichzeitig.
+**Verboten:** Issues oder Pull Requests schließen oder wiedereröffnen (nur Maintainer oder User), mergen, auf `main` pushen, Release-Tags setzen, fremde Claims überschreiben, mehrere Issues gleichzeitig.
 
 ---
 
@@ -169,7 +171,7 @@ Regeln:
 - **Exit-Codes echt.** Erfundene Ergebnisse sind das Ende der Zusammenarbeit.
 - **`Nicht gemacht` und `Restrisiko` sind Qualitätsmerkmale**, keine Schwäche — sie verhindern, dass das Ticket für vollständig gehalten wird.
 - **`Review-Fokus`** sagt dem Maintainer, wo er zuerst hinschauen soll. Das beschleunigt die Prüfung und verhindert, dass ein bekanntes Loch als Überraschung auftaucht.
-- Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen. Der Maintainer reviewt den Kommentar gegen den Code und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
+- Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen (und keinen PR schließen). Der Maintainer reviewt den Kommentar gegen den Code und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
 
 ---
 

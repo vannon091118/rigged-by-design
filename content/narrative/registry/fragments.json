@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1a2b5809728d528e4efae0768f89ff12b354864f83e226bc007e980f60d852fe",
+  "contentHash": "sha256:92ecda132710cb8c31dddbd684ba055390907e92779fce92eac20bad7d32d626",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6071,6 +6071,31 @@
       "text": "Auf dem Sims liegt nur noch, was heute gilt; was gestern war, steht im alten Buch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-claim-shelf-cleanup.json"
+    },
+    {
+      "contributionId": "close-rights-01",
+      "turnId": "2026-11-14T02:55Z-close-rights",
+      "agentId": "agent-1-local",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita haengte neben die Reihenfolge einen zweiten Zettel: aufschreiben und kommentieren darf jeder, zumachen nur sie. Der Stift blieb am Nagel, das Schloss blieb zu.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-close-rights.json"
     },
     {
       "contributionId": "closeout-buchhaltung-1",

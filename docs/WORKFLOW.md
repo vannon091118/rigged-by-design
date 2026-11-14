@@ -88,6 +88,7 @@ Diese Verbote gelten für Agenten. Der Maintainer nutzt sie ausschließlich in s
 - Kein wiederholter Lauf desselben Nachweises, nur weil das Ergebnis unbequem ist.
 - Keine Reparatur über ein Verify-Gate: Reparaturen laufen über `pnpm run fix`; Verify bleibt lesend.
 - Keine fremden Branch- oder Issue-Operationen; der Monitor beobachtet nur.
+- Kein Schließen oder Wiedereröffnen von Issues und Pull Requests; Agenten erstellen und kommentieren nur.
 
 ## Abschluss
 
@@ -101,7 +102,7 @@ Diese Verbote gelten für Agenten. Der Maintainer nutzt sie ausschließlich in s
 6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
 7. den Vertrag im PR-Kommentar spiegeln und mit `pretask` fortsetzen.
 
-Danach endet die Agentenrolle: der **Maintainer** prüft den PR gegen den Code, gibt `ACCEPT`/`PARTIAL`/`REJECT`, merged und setzt bei belegten Features einen Release-Tag. Agenten mergen nicht und schließen das Issue nicht.
+Danach endet die Agentenrolle: der **Maintainer** prüft den PR gegen den Code, gibt `ACCEPT`/`PARTIAL`/`REJECT`, merged und setzt bei belegten Features einen Release-Tag. Agenten mergen nicht und schließen weder Issue noch Pull Request; Schließen bleibt Maintainer oder User.
 
 Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder Push nicht abgeschlossen, setzt ein sauberer erneuter `turn:finish` bei Integration und Push fort. Er bumped weder die Version noch erzeugt er eine neue Task-Vertragsrevision oder einen leeren Notes-Commit. Sobald Änderungen im Arbeitsbaum vorliegen, läuft der normale Claim-, Test-, Versions- und Commit-Pfad wieder.
 

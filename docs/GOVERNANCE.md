@@ -12,7 +12,7 @@ Zwei Rollen, ein Board. Das Issue ist die Wahrheit; dieses Dokument beschreibt, 
 
 Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 
-- Issues anlegen, kommentieren, **schließen und wiedereröffnen**; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
+- Issues und Pull Requests anlegen, kommentieren, **schließen und wiedereröffnen** — Schließen ausschließlich Maintainer oder User; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
 - **Merge nach `main`, Push auf `main`, Release-Tags** für belegte Features; `main` bleibt sonst tabu.
 - **Priorisierung:** `P0` → Regression → Unblocker → `P1` → `P2/P3` → Housekeeping; die Reihenfolge wird am Ende jedes Laufs neu geschrieben, auch bei `IDLE`.
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
@@ -24,7 +24,7 @@ Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n
 
 - lesen das Issue inklusive aller Kommentare, **claimen vor dem ersten Read** und arbeiten genau ein Issue pro Turn ab;
 - ändern nur Pfade ihrer Claim-Allowlist, committen und pushen **ihren** Branch, öffnen den PR und beantworten Review-Fragen im Issue;
-- mergen nicht, pushen nicht `main`, schließen/wiedereröffnen keine Issues und setzen keine Tags;
+- mergen nicht, pushen nicht `main`, schließen/wiedereröffnen weder Issues noch Pull Requests und setzen keine Tags;
 - melden Nebenbefunde als Kommentar (`Nebenbefund: … datei:zeile`), statt den Scope zu dehnen.
 
 ### Lanes
