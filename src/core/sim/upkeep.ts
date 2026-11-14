@@ -7,7 +7,8 @@ import { becomeAngry } from './guests';
 import { HAUSKONTO, payOrBorrow, repayDebt, STAFF, UTILITIES } from './money';
 import { tickNeeds } from './needs';
 import { tickPenaltyDays } from './penalty-pool';
-import { hasStaff } from './staff-queries';
+import { staffRoleWage } from './staff';
+import { staffWage } from './staff-qualification';
 import type { Prng } from '../rng/prng';
 import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
@@ -18,11 +19,10 @@ export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (tickInDay(world.tick) !== 0) return;
   world.day += 1;
   tickPenaltyDays(world);
-  const wages = ((hasStaff(world, 'guard') ? world.prices.guardWage : 0)
-    + (world.staff.cleaner ? world.prices.staffWage : 0)
-    + (world.staff.bartender ? world.prices.staffWage : 0)
-    + (world.staff.cashier ? world.prices.cashierWage : 0)
-    + (world.staff.porter ? world.prices.porterWage : 0)) as VaCoinMicro;
+  // Der Tageslohn kommt aus den Agenten: Rolle gibt den Satz, Stufe den Faktor.
+  const wages = world.agents.reduce(
+    (sum, agent) => sum + staffWage(staffRoleWage(world, agent.role), agent.qualification), 0,
+  ) as VaCoinMicro;
   const rent = dailyHousingCost(world.prices);
   if (wages > 0) payOrBorrow(ledger, STAFF, wages, 'personal', world.tick);
   payOrBorrow(ledger, UTILITIES, rent, 'miete und strom', world.tick);

@@ -6,6 +6,8 @@ import { buildArena } from '../core/sim/arena';
 import { restInCity, runCityAction, travel, type CityLocationId } from '../core/sim/city';
 import { backyardFight } from '../core/sim/fight-career';
 import { enterFightEvent } from '../core/sim/fight-event';
+import { announceEsportEvening, playEsportMatch } from '../core/sim/esport-event';
+import type { EsportPick } from '../core/sim/esport-odds';
 import { placeFightBet } from '../core/sim/fight-bet-cashier';
 import { settleFightBets } from '../core/sim/fight-bet-settle';
 import type { FightBetPick } from '../core/sim/fight-bet-slips';
@@ -81,6 +83,8 @@ export type CityCommand =
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
   | { readonly kind: 'fightEvent' }
+  | { readonly kind: 'esportAnnounce' }
+  | { readonly kind: 'esportMatch'; readonly pick: EsportPick }
   | { readonly kind: 'arenaBuild' }
   | { readonly kind: 'fightBet'; readonly pick: FightBetPick; readonly stakeVC: number }
   | { readonly kind: 'buyProperty'; readonly propertyId: string }
@@ -96,6 +100,8 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
   if (cmd.kind === 'fightEvent') return enterFightEvent(world, ledger, prng).notice;
+  if (cmd.kind === 'esportAnnounce') return announceEsportEvening(world);
+  if (cmd.kind === 'esportMatch') return playEsportMatch(world, ledger, prng, cmd.pick).notice;
   if (cmd.kind === 'arenaBuild') return arenaCmd(world, ledger);
   if (cmd.kind === 'fightBet') return fightBetCmd(world, ledger, cmd.pick, cmd.stakeVC);
   if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);

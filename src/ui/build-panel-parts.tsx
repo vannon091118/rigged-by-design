@@ -6,6 +6,7 @@ import type { GameView } from '../store/types';
 import { vc } from './format';
 import { PERFORMANCE_LABEL, ROLE_LABEL, TASK_LABEL } from './staff-labels';
 import { staffPerformance } from '../core/sim/staff-queries';
+import { qualificationLabel } from '../core/sim/staff-qualification';
 
 interface StaffOffer {
   readonly label: string;
@@ -105,6 +106,7 @@ export function StaffStatus(props: { view: GameView }) {
           <strong>{ROLE_LABEL[agent.role]}</strong>
           <span>{TASK_LABEL[agent.task] ?? agent.task}</span>
           {agent.blockedReason && <small className="warn-text">{agent.blockedReason}</small>}
+          <small className="staff-qualification">Qualifikation: {qualificationLabel(agent.qualification)}</small>
           <small className="staff-review">Leistung: {PERFORMANCE_LABEL[staffPerformance([agent])]}</small>
         </div>
       ))}

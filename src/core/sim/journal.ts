@@ -12,6 +12,8 @@ interface JournalRefs {
   readonly rivalId?: string;
   /** Neubau, auf den sich ein Stadtwachstums-Ereignis bezieht. */
   readonly buildingId?: string;
+  /** Veranstaltung, zu der ein Abend-Ereignis gehört (z. B. E-Sport-Abend). */
+  readonly eventId?: number;
 }
 
 export interface JournalEvent {

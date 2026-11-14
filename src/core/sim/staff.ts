@@ -10,10 +10,12 @@ import { interactionPoint, pathTo, spawnPoint } from './world';
 import { cashierTick } from './staff-cashier';
 import { porterTick } from './staff-porter';
 import { dist, setTask, stepToward } from './staff-step';
+import { qualificationForAgent, qualificationLabel, qualificationRank, staffWage } from './staff-qualification';
 
 export { CASHIER_WAIT } from './staff-cashier';
 
-function wageFor(world: WorldState, role: StaffRole): VaCoinMicro {
+/** Der Rollensatz vor der Qualifikation; Einstellung und Tageslohn lesen ihn. */
+export function staffRoleWage(world: WorldState, role: StaffRole): VaCoinMicro {
   if (role === 'guard') return world.prices.guardWage;
   if (role === 'cashier') return world.prices.cashierWage;
   if (role === 'porter') return world.prices.porterWage;
@@ -24,7 +26,8 @@ function wageFor(world: WorldState, role: StaffRole): VaCoinMicro {
 export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): StaffAgent {
   const existing = world.agents.find((agent) => agent.role === role);
   if (existing) return existing;
-  ledger.transfer(HAUSKONTO, STAFF, wageFor(world, role), 'einstellung', world.tick);
+  const qualification = qualificationForAgent(world.nextAgentId);
+  ledger.transfer(HAUSKONTO, STAFF, staffWage(staffRoleWage(world, role), qualification), 'einstellung', world.tick);
   // Der Guard besitzt kein zweites Ja/Nein mehr: sein Agent ist die Anstellung.
   if (role === 'guard') world.guardsHired += 1;
   else world.staff[role] = true;
@@ -32,10 +35,12 @@ export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): S
   const agent: StaffAgent = {
     id: world.nextAgentId++, role, x: spawn.x, y: spawn.y, path: [], pathIndex: 0,
     carryingCrate: null, workTicks: 0, task: 'idle', blockedReason: '', targetDisputeId: null,
+    qualification,
   };
   world.agents.push(agent);
   world.lastEvent = `${role === 'guard' ? 'Guard' : role === 'cleaner' ? 'Reinigungskraft'
-    : role === 'bartender' ? 'Barkeeper' : role === 'cashier' ? 'Kassierer' : 'Lagerträger'} eingestellt.`;
+    : role === 'bartender' ? 'Barkeeper' : role === 'cashier' ? 'Kassierer' : 'Lagerträger'}
+    als ${qualificationLabel(qualification)} eingestellt.`;
   recordJournal(world, {
     kind: 'STAFF', subject: role, cause: 'Einstellung', effect: world.lastEvent, refs: { agentId: agent.id },
   });
@@ -127,7 +132,13 @@ function bartenderTick(world: WorldState, agent: StaffAgent): void {
 
 /** Jede Rolle arbeitet sichtbar auf dem Floor statt als unsichtbarer Bonus. */
 export function tickAgents(world: WorldState, ledger: Ledger, prng: Prng): void {
-  for (const agent of world.agents) {
+  // Auftragsvergabe: die hoechste Stufe zuerst, wer steckt zuletzt – die Rolle
+  // allein entscheidet nicht mehr, wer die naechste Aufgabe bekommt.
+  const order = [...world.agents].sort((a, b) => {
+    const blocked = Number(a.blockedReason !== '') - Number(b.blockedReason !== '');
+    return blocked !== 0 ? blocked : qualificationRank(b.qualification) - qualificationRank(a.qualification);
+  });
+  for (const agent of order) {
     if (agent.role === 'porter') porterTick(world, ledger, agent);
     else if (agent.role === 'cashier') cashierTick(world, ledger, agent, prng);
     else if (agent.role === 'guard') guardTick(world, agent, prng);

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9d682393ff2b3ff9bbe764ac94366407e4c7184661d89cd21644db2264395406",
+  "contentHash": "sha256:89a7c6658a8eec0a30933e5628e1673afac98c514dd9a2934d3f634251277321",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7863,6 +7863,30 @@
       "text": "Die Stadt zählt keine Stellen mehr, sie vergibt sie: Wer keine hat, bleibt zu Hause, statt zur Schicht zu gehen und Lohn zu kassieren, den niemand eingestellt hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-employment.json"
+    },
+    {
+      "contributionId": "esport-evening-01",
+      "turnId": "2026-11-14T06:20Z-esport-evening",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Leinwand über dem Einlass standen zwei Namen und eine Zahl, die niemand erklären musste. Rita notierte sie trotzdem: die Quote war der Preis für eine Meinung, nicht das Ergebnis. Als der letzte Schuss fiel, lag der Zettel schon im Archiv.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-esport-evening.json"
     },
     {
       "contributionId": "event-scheduler-01",
@@ -24293,6 +24317,29 @@
       "text": "Der Portier trägt die Kiste nicht mehr unsichtbar durch den Flur: Sie hängt an seinen Händen, wiegt bei jedem Schritt mit, und er dreht den Oberkörper dorthin, wo er hingeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-staff-actor-state.json"
+    },
+    {
+      "contributionId": "staff-qualification-01",
+      "turnId": "2026-11-14T06:50Z-staff-qualification",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Personalbuch steht neben jedem Namen eine Stufe, und daneben der Satz, der an ihr haengt. Zwei Reinigungskraefte, zwei Zeilen, zwei Betraege: Wer den Meister einstellt, zahlt mehr und bekommt mehr, und das steht vorher da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-staff-qualification.json"
     },
     {
       "contributionId": "stale-claims-01",

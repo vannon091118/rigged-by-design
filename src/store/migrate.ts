@@ -22,6 +22,7 @@ import { interiorDef } from '../core/sim/interior-layouts';
 import { repairDeviceIdentity } from '../core/sim/device';
 import { hydrateStainsAndMops } from './migrate-stains';
 import { hydrateLayout } from './migrate-layout';
+import { qualificationForAgent } from '../core/sim/staff-qualification';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
 import type { CityLifeState } from '../core/sim/city-life-types';
@@ -142,7 +143,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   // Alte Saves kennen kein Onboarding; sie starten nicht noch einmal in der Stadt.
   world.onboarding = saved.onboarding ?? { step: 'DONE' };
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));
-  world.agents = (saved.agents ?? []).map((agent) => ({ ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null, task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '', targetDisputeId: agent.targetDisputeId ?? null }));
+  world.agents = (saved.agents ?? []).map((agent) => ({ ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null, task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '', targetDisputeId: agent.targetDisputeId ?? null, qualification: agent.qualification ?? qualificationForAgent(agent.id) }));
   world.disputes = (saved.disputes ?? []).map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] }));
   world.parts = saved.parts ?? 2; world.guestsServed = saved.guestsServed ?? 0;
   world.reputation = saved.reputation ?? reputation(world);
