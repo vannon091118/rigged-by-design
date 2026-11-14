@@ -6,7 +6,7 @@
 Jede Zeile nennt den Code, den Test oder das Bild, an dem die Arbeit weitergeht.
 Abgeschlossenes bleibt als Beleg stehen, bis es ins Changelog wandert.
 
-**Stand:** 2026-11-12 · Version `0.3.242`
+**Stand:** 2026-11-14 · Version `0.3.267`
 
 ## Lesart
 
@@ -52,8 +52,8 @@ Ziel: Wer die README öffnet, sieht den heutigen Stand und nicht den von `0.3.11
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| PR-01 | README-Aussagen gegen den laufenden Build prüfen | offen | `README.md`, `src/ui/__tests__/first-evening.test.ts` | Jede Aussage hat einen Beleg im Spiel; gestrichen wird, was nicht läuft |
-| PR-02 | Screenshot-Satz auf `0.3.231` erneuern | offen | `docs/screenshots/current`, `docs/screenshots/v0.3.132`, `README.md` | Ein Satz zeigt Eröffnung, Ziel, Gast, Automat, Charakter und Smartphone |
+| PR-01 | README-Aussagen gegen den laufenden Build prüfen | erledigt | `README.md`, `src/ui/use-floor-interaction.ts`, `src/core/sim/stain.ts`, `src/core/sim/charisma-talk.ts` | Jede Aussage nennt ihren Produktionspfad; Maja, Waschsalon, Dönerbude und Schuhverschleiß sind sichtbar als Fiktion markiert |
+| PR-02 | Screenshot-Satz auf `0.3.231` erneuern | offen | `docs/screenshots/current`, `README.md` | README bindet nur noch `current/`; im Satz fehlen weiterhin eigene Smartphone- und Charakter-Aufnahmen |
 | PR-03 | Veraltete Bildsätze entfernen | offen | `docs/screenshots/v0.3.78`, `docs/screenshots/v0.3.114`, `docs/screenshots/comparison` | Nur der aktuelle Satz und ein bewusster Vorher/Nachher-Beleg bleiben |
 | PR-04 | Alt-Texte und Banner prüfen | offen | `README.md`, `docs/banner.svg`, `docs/banners` | Jedes Bild beschreibt seinen Zustand, nicht seine Datei |
 | PR-05 | Kleinste Viewports bleiben bedienbar | verifiziert | `src/ui/__tests__/small-screen-acceptance.test.tsx`, `src/ui/__tests__/small-screen-layout.test.ts` | 360×640 und 320 px sind belegt |

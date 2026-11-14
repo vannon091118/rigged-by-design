@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/issue-531-readme-belege",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-531-readme-belege",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "issue": 531,
+  "task": "README und Roadmap auf den belegten Build-Stand ziehen",
+  "goal": "Jede als heute spielbar praesentierte README-Aussage nennt ihren Produktionspfad; nicht Belegtes ist sichtbar als Fiktion markiert; README-Bilder kommen aus docs/screenshots/current; der Roadmap-Kopf nennt den tatsaechlichen Versionsstand.",
+  "pathAllowlist": [
+    "README.md",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-issue-531-readme-belege.json",
+    ".lane-claims/tasks/governance-issue-531-readme-belege.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a725f8eae0424e7d33375f83fee1ad02acbe3596"
+}

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-531-readme-belege",
+  "claimId": "lane/governance/issue-531-readme-belege",
+  "branch": "lane/governance/issue-531-readme-belege",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "phase": "CI_PENDING",
+  "title": "README und Roadmap auf den belegten Build-Stand ziehen",
+  "goal": "Jede als heute spielbar praesentierte README-Aussage nennt ihren Produktionspfad, nicht Belegtes ist sichtbar als Fiktion markiert, README-Bilder stammen aus docs/screenshots/current, und der Roadmap-Kopf nennt den tatsaechlichen Versionsstand.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "PR #620 offen (Head 4390e3e3, Basis a725f8ea); alle vier Nachweise gruen. Review beim Maintainer.",
+  "revision": 3,
+  "pr": {
+    "number": 620,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/620",
+    "state": "open"
+  }
+}

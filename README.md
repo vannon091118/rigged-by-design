@@ -19,7 +19,7 @@
 ---
 
 <p align="center">
-  <img src="./docs/screenshots/v0.3.114/02-floor-detail.png" alt="Die Spielhalle im Neonlicht – Staub, Neon und der ewige Geruch von Bohnerwachs" width="90%">
+  <img src="./docs/screenshots/current/02-floor-detail-frisch.png" alt="Die Spielhalle im Neonlicht – Staub, Neon und der ewige Geruch von Bohnerwachs" width="90%">
 </p>
 
 <p align="center"><em>Du wachst in deiner Wohnung auf, nimmst dein Smartphone, gehst durch die Haustür und stehst mitten im Leben. Die Stadt wartet nicht auf dich – die Stadt war schon vorher da.</em></p>
@@ -30,6 +30,8 @@
 
 ## Das Leben vor deiner Haustür: Eine Stadt, die dich ignoriert
 
+> **Fiktion, keine Produktzusage.** Die Szenen dieses Abschnitts sind Erzählung: Maja mit ihrer 7:14-Schicht, Waschsalon, Dönerbude und Schuhverschleiß gehören zur Vision, nicht zum heutigen Funktionsumfang. Was der aktuelle Build tatsächlich tut, steht in [Was heute im Laden läuft](#was-heute-im-laden-läuft-keine-versprechen-sondern-fakten).
+
 Willkommen in deiner Wohnung.
 
 Sie ist nicht groß. Das Wasser aus dem Hahn braucht drei Minuten, bis es lauwarm wird, die Heizung gluckert nachts wie ein ertrinkender Matrose, und der Nachbar über dir übt seit Monaten Schlagzeug – ohne jedes Rhythmusgefühl, aber mit bewundernswerter Ausdauer. Auf dem Tisch liegt dein Smartphone mit fünf ungelesenen Nachrichten, die du lieber nicht öffnest, und die Kaffeemaschine verteilt mehr Kaffeesatz als Heißgetränk. Aber sie ist dein Zuhause. Das, was übrig bleibt, wenn man keine Ausreden mehr hat.
@@ -37,7 +39,7 @@ Sie ist nicht groß. Das Wasser aus dem Hahn braucht drei Minuten, bis es lauwar
 Wenn du die Wohnungstür öffnest, klickst du dich nicht durch ein Menü. Du trittst direkt auf den nassen Gehweg einer echten, atmenden Stadt.
 
 <p align="center">
-  <img src="./docs/screenshots/comparison/02-floor-v2-nachher.png" alt="Lebendiges Kiezleben – Nachbarn, Straßenverkehr und der Weg zum nächsten Ladenlokal" width="90%">
+  <img src="./docs/screenshots/current/21-r7-stadt.png" alt="Der Kiez im aktuellen Build – Gehwege, Gebäude und Türen als zusammenhängendes Stadtnetz" width="90%">
 </p>
 
 <p align="center"><em>Der Kiez schläft nie ganz. Er döst höchstens kurz ein, bis die Straßenbahn quietscht.</em></p>
@@ -56,7 +58,8 @@ Das Casino ist nur ein Gebäude unter vielen. Eine Tür mit grellen Leuchtröhre
   <img src="./docs/screenshots/current/09-slot-buehne.png" alt="Der einarmige Bandit – Er lächelt bunt und nimmt dein letztes Kleingeld" width="90%">
 </p>
 
-<p align="center"><em>Der Automat lächelt immer. Egal, wie die Walzen stehen.</em></p>
+<p align="center"><em>Der Automat lächelt immer. Egal, wie die Walzen stehen. Alle Bilder der README stammen aus dem kanonischen Satz <code>docs/screenshots/current/</code> des aktuellen Builds.</em></p>
+
 
 Das hier ist kein Spiel über Reichtum. Wer reich werden will, sollte eine Bank erben oder Steuern sparen. Das hier ist ein Spiel über die **Physik des Scheiterns und die Kunst, trotzdem drüber zu lachen**:
 - **Der Boden wischt sich nicht von selbst:** Wenn ein Gast sein klebriges Bier verschüttet, kannst du zuschauen, wie die Kundschaft angewidert abdreht – oder du nimmst den Schrubber selbst in die Hand.
@@ -72,36 +75,38 @@ Das hier ist kein Spiel über Reichtum. Wer reich werden will, sollte eine Bank 
 
 Hier wird nichts geschönt und nichts herbeifabuliert. Was du siehst, läuft in der Simulation – unbarmherzig, deterministisch und mit vollem Kausalzusammenhang.
 
+Jede Zeile dieses Abschnitts nennt den Produktionspfad, in dem sie steckt. Die Abschnitte darüber sind Erzählung; hier steht nur, was der aktuelle Build belegt.
+
 ### 1. Physische Handarbeit statt Tabellenklickerei
 Du steuerst deine Figur direkt durch die Straßen und Räume. Hier gibt es keine göttliche Maushand, die Probleme wegzaubert:
-- **Kisten schleppen:** Neue Geräte oder Dekorationen kommen als schwere Holzkisten auf der Straße an. Du nimmst sie eigenhändig Huckepack, wankst durch die Tür und schraubst sie dort zusammen, wo Platz ist.
-- **Der Wischmopp als Lebensretter:** Schmutzige Kacheln senken das Ansehen, klebrige Theken vertreiben die zahlende Kundschaft. Wer nicht putzt, geht unter.
-- **Nahkampf im Vorraum:** Wenn ein Gast durchdreht, weil der Automat „gezinkt“ war (was er natürlich nicht ist, die Mathematik ist nur ehrlich), hilft keine Hotline. Entweder du redest dich raus, kassierst ein blaues Auge oder verteilst selbst eins – mit echten Verletzungen, die dich tagelang humpeln lassen.
+- **Kisten schleppen:** Neue Geräte oder Dekorationen kommen als schwere Holzkisten auf der Straße an. Du nimmst sie eigenhändig Huckepack, wankst durch die Tür und schraubst sie dort zusammen, wo Platz ist. (`src/ui/use-floor-interaction.ts`)
+- **Der Wischmopp als Lebensretter:** Schmutzige Kacheln senken das Ansehen, klebrige Theken vertreiben die zahlende Kundschaft. Wer nicht putzt, geht unter. (`src/core/sim/stain.ts`)
+- **Nahkampf im Vorraum:** Wenn ein Gast durchdreht, weil der Automat „gezinkt“ war (was er natürlich nicht ist, die Mathematik ist nur ehrlich), hilft keine Hotline. Entweder du redest dich raus, kassierst ein blaues Auge oder verteilst selbst eins – mit echten Verletzungen, die dich tagelang humpeln lassen. (`src/core/sim/charisma-talk.ts`)
 
 ### 2. Das Smartphone: Dein ständiger digitaler Vorwurf
 Dein Mobiltelefon auf dem Küchentisch ist kein Zierrat. Es ist der Kanal, über den die Realität anklopft:
 
 <p align="center">
-  <img src="./docs/screenshots/v0.3.114/06-smartphone.png" alt="Das Smartphone – Anrufe, Benachrichtigungen und die ständige Erinnerung an offene Rechnungen" width="90%">
+  <img src="./docs/screenshots/current/24-r10-wohnung.png" alt="Die Wohnung im aktuellen Build – hier liegt das Smartphone, hier beginnt der Weg auf die Straße" width="90%">
 </p>
 
 <p align="center"><em>Wenn das Display leuchtet, ist es selten eine Liebeserklärung. Meistens will jemand Geld.</em></p>
 
-- **Anrufe & Nachrichten:** Lieferanten fordern Vorschüsse, Nachbarn beschweren sich über Ruhestörung, und Gestalten aus deiner Vergangenheit bieten zweifelhafte Gefallen an.
-- **Kontostand in Echtzeit:** Jeder VaCoin ist eine gebuchte Einheit. Es gibt kein magisches Guthaben; wenn das Konto leer ist, kannst du deinen eigenen Automaten nicht mehr auszahlen.
+- **Anrufe & Nachrichten:** Lieferanten fordern Vorschüsse, Nachbarn beschweren sich über Ruhestörung, und Gestalten aus deiner Vergangenheit bieten zweifelhafte Gefallen an. (`src/ui/smartphone.tsx`)
+- **Kontostand in Echtzeit:** Jeder VaCoin ist eine gebuchte Einheit. Es gibt kein magisches Guthaben; wenn das Konto leer ist, kannst du deinen eigenen Automaten nicht mehr auszahlen. (`src/store/snapshot.ts`)
 
 ### 3. Autonome Stadtbewohner mit eigenem Kopf
 Die Menschen um dich herum sind keine Pappaufsteller:
 
 <p align="center">
-  <img src="./docs/screenshots/v0.3.114/07-dialog.png" alt="Nachbarschaftsgespräche – Zwischen Smalltalk und existenzieller Drohung" width="90%">
+  <img src="./docs/screenshots/current/30-r9-stadtbewohner.png" alt="Stadtbewohner im aktuellen Build – Figuren mit Tagesablauf auf dem Gehweg" width="90%">
 </p>
 
 <p align="center"><em>Gespräche entstehen, wenn man sich begegnet. Ob man will oder nicht.</em></p>
 
-- **Echte Tagesabläufe:** Sie schlafen in ihren Wohnungen, pendeln zur Arbeit, trinken nach Feierabend ein Bier und kehren nach Hause zurück.
-- **Räumliche Kontinuität:** Wer einem Nachbarn auf der Straße folgt, sieht ihn die Tür aufstoßen und drinnen an der Bar stehen. Niemand wird beim Raumwechsel gelöscht oder neu gewürfelt.
-- **Bedürfnisse:** Hunger, Durst, Müdigkeit und Frust steuern ihr Verhalten. Ein zufriedener Gast empfiehlt den Laden weiter; ein hungriger, betrogener Gast wirft Aschenbecher.
+- **Echte Tagesabläufe:** Sie schlafen in ihren Wohnungen, pendeln zur Arbeit, trinken nach Feierabend ein Bier und kehren nach Hause zurück. (`src/core/sim/city-life-movement.ts`)
+- **Räumliche Kontinuität:** Wer einem Nachbarn auf der Straße folgt, sieht ihn die Tür aufstoßen und drinnen an der Bar stehen. Niemand wird beim Raumwechsel gelöscht oder neu gewürfelt. (`src/store/scene-commands.ts`)
+- **Bedürfnisse:** Hunger, Durst, Müdigkeit und Frust steuern ihr Verhalten. Ein zufriedener Gast empfiehlt den Laden weiter; ein hungriger, betrogener Gast wirft Aschenbecher. (`src/core/sim/city-life-types.ts`)
 
 ---
 
