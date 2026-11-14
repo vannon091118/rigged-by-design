@@ -1,0 +1,22 @@
+{
+  "id": "lane/ui/issue-654-skill-path-test",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/ui/issue-654-skill-path-test",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 654,
+  "task": "Issue #654: Skillpunkt-Klickpfad dauerhaft testen",
+  "goal": "Die sieben HUD-Skill-Buttons ueber spendSkillCmd klicken, Level und Punkte pruefen und die echten Wirkungen auf Reinigungsradius, Wartungsgewinn und Unfallrisiko belegen.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+}

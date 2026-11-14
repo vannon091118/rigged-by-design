@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bee4f48e4dca555acf3be0b9ff12abd7d5d36808d96854b6891dc05f3cae46d3",
+  "contentHash": "sha256:0e54f9fafc680d6d1fdebf91bebb4cb82e8dc9d0511b29fcb7ca51f93045dfdc",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7399,6 +7399,28 @@
       "text": "Zwei Namensschilder hingen noch am Haken, obwohl ihre Traeger schon durch die Hintertuer hinaus waren. Jetzt haengen sie im Ablagefach, wo sie hingehoeren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
+    },
+    {
+      "contributionId": "city-scene-64",
+      "turnId": "2026-11-14T13:24Z-city-scene-64",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sieben Schalter standen an der Wand, jeder mit einem Etikett. Ich habe alle sieben gedrueckt und danach geprueft, ob das Licht wirklich angeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-64.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
