@@ -124,7 +124,7 @@ export function parseClaimEvents(comments = []) {
  * unlesbar. `CLAIM` oeffnet, `RELEASE` derselben Claim-ID schliesst, `HANDOFF`
  * derselben Claim-ID wechselt den Halter.
  */
-export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now(), staleHours = 72, actors = {} } = {}) {
+export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now(), staleHours = 2, actors = {} } = {}) {
   const agents = agentsOf(agent);
   const events = parseClaimEvents(comments);
   let active = null;
@@ -254,7 +254,7 @@ function ghIssue(number, { cwd } = {}) {
  * Liest den Issue-Verlauf und bewertet ihn. Ein nicht abfragbares Issue ist
  * `unknown`, nicht `free`: ohne Beleg wird kein Claim erfunden.
  */
-export function readIssueClaim({ number, agent, cwd, now = Date.now(), staleHours = 72, actors = {} } = {}) {
+export function readIssueClaim({ number, agent, cwd, now = Date.now(), staleHours = 2, actors = {} } = {}) {
   if (!number) return { checked: false, status: 'not-linked', number: null };
   const result = ghIssue(number, { cwd });
   if (!result.ok) return { checked: false, status: 'unknown', number, error: result.error };

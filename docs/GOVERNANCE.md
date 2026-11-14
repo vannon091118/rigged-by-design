@@ -94,7 +94,7 @@ RELEASE [A<n>] done <sha|—> ein Satz
 
 - Genau ein aktiver Claim pro Issue; ein zweiter Claim ist ein Konflikt, den der Maintainer entscheidet.
 - `CLAIM` ohne `RELEASE` heißt besetzt — auch ohne neuen Kommentar (WIP parallel).
-- Claim älter als 72 Stunden ohne Commit, PR- oder Kommentaraktivität ist `stale`: im lokalen State als `deferred` notieren, nicht übernehmen.
+- Claim älter als 2 Stunden ohne Commit, PR- oder Kommentaraktivität ist `stale`: im lokalen State als `deferred` notieren, nicht übernehmen.
 - `RELEASE done` verlangt SHA und PR; ohne Beleg gilt die Arbeit als nicht gemacht.
 - `pretask` prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`): fremder Claim blockiert, fehlender Claim nennt den nötigen Kommentar, eine Lane ohne Issue-Nummer wird gewarnt statt blockiert. Die lokale Sperre prüft es danach getrennt; sie kann einen gültigen Issue-Claim nie überstimmen.
 
