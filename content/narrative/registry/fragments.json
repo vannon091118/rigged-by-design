@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bc283b802e71d05ab3c4af41cdb95c1ac520791d83ae5df2dcfaa264af16deb2",
+  "contentHash": "sha256:91469c3d303b95309b7925534c235a27efbd26196132fdfc670936dd1b54af74",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24229,6 +24229,30 @@
       "text": "Zwei Boten kamen am selben Abend mit derselben Meldung, und der zweite sprach von einem Auftrag, den der erste schon erledigt hatte. Wer nur auf den letzten Boten hoert, traegt eine Nummer ein, die es nicht mehr gibt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-13.json"
+    },
+    {
+      "contributionId": "rumor-14",
+      "turnId": "2026-11-14T17:40Z-rumor-14",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Tafel an der Kuchentuer stand eine Zahl, die niemand mehr nachrechnen konnte, weil der Schreiber sie zweimal korrigiert hatte. Seitdem geht jeder, der den Lohn abholt, einmal mit dem Finger die Striche entlang - nicht aus Misstrauen, sondern weil eine Zahl ohne ihre Herkunft nur eine Behauptung ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-14.json"
     },
     {
       "contributionId": "run-budget-01",
