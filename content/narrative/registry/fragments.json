@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d2de029daa45f415985726c1238de9ea3f558dbe3fc4e07b16dc91813199953d",
+  "contentHash": "sha256:299528dbf771c8a482fff70a8f25e9cf9850bad1fdf53609abe7e675a55f0762",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7355,6 +7355,28 @@
       "text": "Die Tafel im Vorraum fuehrt noch drei Namen, die laengst drinnen sitzen. Jemand streicht sie durch, ohne dass sich am Betrieb etwas aendert.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-60.json"
+    },
+    {
+      "contributionId": "city-scene-61",
+      "turnId": "2026-11-14T12:50Z-city-scene-61",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Namensschilder hingen noch am Haken, obwohl ihre Traeger schon durch die Hintertuer hinaus waren. Jetzt haengen sie im Ablagefach, wo sie hingehoeren.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
