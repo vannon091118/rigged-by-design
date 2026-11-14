@@ -12,6 +12,13 @@ export const RUN_BUDGET_VERSION = 1;
 export const RUN_STATES = Object.freeze(['CONTINUE', 'KILL_SWITCH', 'BUDGET_EXHAUSTED']);
 export const FINDING_AREAS = Object.freeze(['product', 'infrastructure']);
 export const FINDING_SEVERITIES = Object.freeze(['P0', 'P1', 'P2', 'P3']);
+/**
+ * Ein Lauf muss jeden neuen Befund als Issue oeffnen koennen. Ein Budget von 0
+ * hat das in der Praxis verhindert, weil schon der erste Befund als
+ * BUDGET_EXHAUSTED galt und damit kein Ticket mehr entstand.
+ */
+export const MIN_NEW_GOVERNANCE_ISSUES = 1;
+export const FINDING_DUTY = 'TICKET_THEN_STOP';
 
 const LIMIT_KEYS = Object.freeze(['maxIterations', 'maxIssues', 'maxCommits', 'maxNewGovernanceIssues']);
 const PROGRESS_KEYS = Object.freeze(['mergedProductPrs', 'acceptedFindings']);
@@ -37,6 +44,9 @@ export function validateRunBudget(raw) {
     if (!Number.isInteger(raw[key]) || raw[key] < 0) errors.push(`${key} muss eine nichtnegative Ganzzahl sein`);
   }
   if (Number.isInteger(raw.maxCommits) && raw.maxCommits < 1) errors.push('maxCommits muss mindestens 1 sein');
+  if (Number.isInteger(raw.maxNewGovernanceIssues) && raw.maxNewGovernanceIssues < MIN_NEW_GOVERNANCE_ISSUES) {
+    errors.push(`maxNewGovernanceIssues muss mindestens ${MIN_NEW_GOVERNANCE_ISSUES} sein: jeder neue Befund wird als Issue mit ZU PRUEFEN geoeffnet, das Budget zaehlt ihn nur`);
+  }
   if (!isObject(raw.productProgress)) {
     errors.push('productProgress muss ein Objekt sein');
   } else {
@@ -101,9 +111,12 @@ export function decideRunBudget(input, budget) {
     reasons.push(`new-governance-issues>${limits.maxNewGovernanceIssues}`);
   }
   const state = reasons.includes('kill-switch') ? 'KILL_SWITCH' : reasons.length > 0 ? 'BUDGET_EXHAUSTED' : 'CONTINUE';
+  const findingDuty = counts.newGovernanceIssues > limits.maxNewGovernanceIssues ? FINDING_DUTY : null;
   return {
     state,
     reasons,
+    findingDuty,
+    notes: findingDuty ? ['Jeder neue Befund wird zuerst als Issue mit ZU PRUEFEN geoeffnet; erst danach endet der Lauf.'] : [],
     counts,
     limits: {
       maxIterations: limits.maxIterations,
