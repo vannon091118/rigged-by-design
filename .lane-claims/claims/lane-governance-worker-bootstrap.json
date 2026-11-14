@@ -23,7 +23,7 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "aa91ec7646cf706789cd1db32522b0aec6d205c3",
   "mergedEvidence": "merge PR #606",
-  "mergedSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae"
+  "mergedSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
+  "createdAt": "aa91ec7646cf706789cd1db32522b0aec6d205c3"
 }

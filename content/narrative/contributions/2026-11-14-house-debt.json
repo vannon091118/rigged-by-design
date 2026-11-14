@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T05:05Z-house-debt-01",
+  "contributionId": "house-debt-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Geldblock steht jetzt auch, was offen ist. Die Zahl wächst nur, wenn eine Rechnung ungedeckt bleibt, und schrumpft mit jeder Tilgung; niemand führt sie neben dem Buch.",
+  "directives": []
+}
