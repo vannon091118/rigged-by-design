@@ -9,7 +9,7 @@
  * * Randfaelle: leere Bilder, identische Pixel, nur Alpha-nderungen
  */
 import { describe, expect, it } from 'vitest';
-import { imageDiffGate, imagesAreEqual, DEFAULT_TOLERANCE, STRICT_TOLERANCE, ImageDiffTolerance } from '../narrative/composer/image-diff-gate';
+import { imageDiffGate, imagesAreEqual, DEFAULT_TOLERANCE, STRICT_TOLERANCE, type ImageDiffTolerance } from '../narrative/composer/image-diff-gate';
 
 function makeRGBA(width: number, height: number, r: number, g: number, b: number, a = 255): Uint8Array {
   const buf = new Uint8Array(width * height * 4);

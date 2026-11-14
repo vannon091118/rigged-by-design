@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9efa879482a8cd2c7259697ddfa689beba51f1616a5fa0b4e3c0e52a170436fe",
+  "contentHash": "sha256:b14473759196c5914b1758ef3e71432189e54959680c55d2e3c6a131e7a64771",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7223,6 +7223,28 @@
       "text": "Jeder Schritt durch den Kiez hinterlaesst eine andere Spur; wer zweimal denselben Satz hoert, ist stehen geblieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
+    },
+    {
+      "contributionId": "city-scene-54",
+      "turnId": "2026-11-14T11:24Z-city-scene-54",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Leute kommen sich auf dem schmalen Gehweg entgegen. Der eine tritt in den Rinnstein, der andere nickt knapp, und fuer einen Moment ist der Weg wieder frei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-54.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

@@ -1,0 +1,32 @@
+{
+  "id": "lane/governance/main-gates-repair",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/main-gates-repair",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "issue": 702,
+  "task": "Unblocker #702: pathfinding.ts regelkonform aufteilen und Bild-Diff-Gate-Typfehler an der Ursache beheben",
+  "goal": "check:loc und typecheck auf dem Branch ohne Schwellenaenderung oder Bypass auf Exit 0 bringen; den verwaisten Claim zu #648 nur im Status nachziehen.",
+  "pathAllowlist": [
+    "src/core/sim/pathfinding.ts",
+    "src/core/sim/pathfinding-heap.ts",
+    "src/core/sim/pathfinding-detour.ts",
+    "src/core/sim/narrative/composer/image-diff-gate.ts",
+    "src/core/sim/__tests__/image-diff-gate.test.ts",
+    ".githooks/commit-msg",
+    "content/narrative/contributions/2026-11-14-city-scene-54.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/issue-648-diff-gate.json",
+    ".lane-claims/claims/lane-governance-main-gates-repair.json",
+    ".lane-claims/tasks/governance-main-gates-repair.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b969a923de1ab950aed90c50761eb002b1b1b667"
+}
