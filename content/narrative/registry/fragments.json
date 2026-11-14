@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7a194f832d0f8688274458ec3536fbf8edf38993b1421cd774e861ecdac181e4",
+  "contentHash": "sha256:cf9910a788d7d363ddc09bc73fd39d606c228236ebdc939319a7ba3bc763472b",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7267,6 +7267,28 @@
       "text": "Am Tresen laeuft die Abrechnung, waehrend draussen der Regen gegen die Scheibe schlaegt. Niemand eilt, die Zahlen stimmen, und fuer heute genuegt das.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-55.json"
+    },
+    {
+      "contributionId": "city-scene-56",
+      "turnId": "2026-11-14T12:15Z-city-scene-56",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Weg zum Hinterhof ist gesperrt, also geht die Schlange aussen herum. Niemand beschwert sich, der Umweg ist kuerzer als das Warten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-56.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

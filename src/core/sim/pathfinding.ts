@@ -4,15 +4,6 @@ import { TileHeap } from './pathfinding-heap';
 import type { Furniture, Point } from './types';
 
 export { blockedTiles } from './nav-grid';
-export {
-  findBlockerOnPath,
-  findPathWithDetour,
-  findPathWithWaypoints,
-  findPathWithWaypointsAndDetours,
-  flattenPathSegments,
-  type PathSegment,
-  type Waypoint,
-} from './pathfinding-detour';
 
 /** Ein Tile ist betretbar, wenn es im Raster liegt und kein Moebel traegt. */
 export function isWalkable(nav: NavGrid, x: number, y: number): boolean {
