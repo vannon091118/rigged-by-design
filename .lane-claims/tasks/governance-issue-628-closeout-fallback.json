@@ -4,13 +4,18 @@
   "claimId": "lane/governance/issue-628-closeout-fallback",
   "branch": "lane/governance/issue-628-closeout-fallback",
   "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Post-Merge-Closeout-Fallback gegen Actions-Ausfall (#628)",
   "goal": "Merge-Beleg beim Start idempotent nachziehen, Actions-Ausfall sichtbar machen, Claim/Vertrag/Branch getrennt belegen",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": null,
+  "status": "DONE",
+  "pr": {
+    "number": 670,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/670",
+    "state": "merged",
+    "mergeSha": "6f20cf87ec755d6cbed29e5a4230b209e8323c91"
+  },
   "findings": [],
   "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
   "revision": 4

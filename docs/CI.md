@@ -31,6 +31,8 @@ Der Required-Plan besteht aus sechzehn Gates:
 
 **Eigentümer der generierten Artefakte** (`content/narrative/registry/fragments.json`, `content/narrative/turns/manifest.json`, `src/core/sim/narrative/composer/registry.generated.ts`, `docs/INVENTORY.md`, `docs/ROADMAP.md`, `docs/DEPENDENCY-MATRIX.md`) ist ausschließlich `scripts/sync-generated.mjs` mit seinen Generatoren. Keine Lane schreibt sie von Hand: Konflikte werden regeneriert, nie aufgelöst. Das Gate `generated` prüft den Stand rein lesend (`--check`) und blockiert damit den lokalen Vor-PR-Nachweis, bevor ein Merge überhaupt ansteht.
 
+**Serialisierter Integrationslauf.** Zwei parallele Lanes mit getrennten Narrative-Beiträgen konkurrieren nie um die generierten Dateien: `scripts/lib/claim-collisions.mjs` nimmt die geteilten Pfade bewusst aus der Schreibsperre, und `scripts/integrate.mjs --apply` rebased, nimmt bei generierten Konflikten die Basis-Seite und lässt ausschließlich `sync-generated.mjs --all` neu schreiben. Der Nachweis, dass beide Beiträge danach erhalten bleiben, Manifest und Inbox paritätisch bleiben und eine nicht regenerierte Registry als veraltet erkannt wird, liegt reproduzierbar in `src/core/governance/__tests__/narrative-lane-integration.test.ts`.
+
 Lokal gilt:
 
 - `verify:light` = zehn Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`.

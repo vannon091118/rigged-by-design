@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-629-generated-serialization",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-629-generated-serialization",
+  "baseSha": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "issue": 629,
+  "task": "Generierte Artefakt-Lanes vor parallelen Merge-Konflikten serialisieren",
+  "goal": "Reproduzierbarer Integrationslauf belegt Beitragserhalt ueber zwei Narrative-Lanes",
+  "pathAllowlist": [
+    "content/narrative/",
+    "src/core/governance/__tests__/",
+    "docs/CI.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91"
+}

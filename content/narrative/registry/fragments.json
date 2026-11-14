@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e4117119ae27d4ebcd22f5c8833e2aac63b834f3311485eaec9187f33ba7dbf6",
+  "contentHash": "sha256:4c09f85f086c8e513bd44a3b45dec0c61989cc1b5876f14fb5c2c0bbccc88a09",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -8402,6 +8402,29 @@
       "text": "Der Automat lächelt in Neon, auch wenn niemand davorsteht. Das Lächeln ist billiger als eine Glühbirne und hält länger.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "generated-artifact-serialization-01",
+      "turnId": "2026-11-14T08:20Z-generated-artifact-serialization",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Lieferungen fahren gleichzeitig vor, und beide Fahrer legen ihre Papiere auf dieselbe Kante der Theke. Der zweite wartet, bis der erste seine Liste gelesen hat, sonst zählt niemand mehr, welche Kiste wohin gehoert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-generated-artifact-serialization.json"
     },
     {
       "contributionId": "generated-gate-01",
