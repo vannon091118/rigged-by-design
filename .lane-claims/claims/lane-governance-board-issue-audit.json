@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/board-issue-audit",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-issue-audit",
+  "baseSha": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
+  "issue": 696,
+  "task": "Board-Audit der 28 offenen Issues auf main 9b1a92ea: je Issue eine belegte Entscheidung, #675 nach #656 konsolidiert",
+  "goal": "board.openIssuesCount == API 27, jede Entscheidung mit Datei/Zeile/Befehl belegt, 0 offene PRs, head == main^",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/tasks/board-issue-audit.json",
+    ".lane-claims/claims/lane-governance-board-issue-audit.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9b1a92ea4e794edacac237df4c70bd4566ec434e"
+}
