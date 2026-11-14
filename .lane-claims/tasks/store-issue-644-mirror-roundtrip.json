@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "store-issue-644-mirror-roundtrip",
+  "claimId": "lane/store/issue-644-mirror-roundtrip",
+  "branch": "lane/store/issue-644-mirror-roundtrip",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #644: Spiegel im Lager ueber Save/Load erhalten",
+  "goal": "Spiegel ueber den Produktionspfad platzieren, speichern, laden und Dekor, Position und Interaktion unveraendert belegen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
+  "revision": 1
+}

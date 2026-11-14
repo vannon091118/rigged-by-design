@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5d215c4c306cb4c6423f65cb0d22597f77f5bbf01c915c84fd73888640603c02",
+  "contentHash": "sha256:e8e6ceee8380e862040ee52fed6114d44bfa5e5cd6a3fb7c035aa25bf2ef869f",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7509,6 +7509,28 @@
       "text": "Sechs Tueren im Raster, zwei daneben. Ich habe jede einmal geoeffnet und bin jedes Mal denselben Weg zurueckgegangen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-67.json"
+    },
+    {
+      "contributionId": "city-scene-68",
+      "turnId": "2026-11-14T13:17Z-city-scene-68",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Spiegel stand im Lager, bevor ich das Licht ausmachte. Am Morgen stand er noch da, an derselben Stelle, und zeigte denselben Raum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-68.json"
     },
     {
       "contributionId": "city-scene-70",
