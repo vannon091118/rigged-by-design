@@ -1,0 +1,19 @@
+{
+  "id": "lane/sim/issue-528-goal-cost-truth",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-528-goal-cost-truth",
+  "baseSha": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee",
+  "task": "Startziel an echte Tagesmiete binden und nach Deckung zur Firmenstufe wechseln",
+  "goal": "#528",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/INVENTORY.md",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee"
+}

@@ -4196,6 +4196,10 @@
     {
       "turnId": "2026-11-14T00:18Z-home-households",
       "contributionId": "home-households-01"
+    },
+    {
+      "turnId": "2026-11-14T00:32Z-goal-cost-truth",
+      "contributionId": "goal-cost-truth-01"
     }
   ]
 }

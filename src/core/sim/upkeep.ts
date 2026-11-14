@@ -12,6 +12,7 @@ import type { Prng } from '../rng/prng';
 import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
 import { driftNeed, satisfyNeed } from './needs-core';
+import { dailyHousingCost } from './upkeep-costs';
 
 export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (tickInDay(world.tick) !== 0) return;
@@ -22,7 +23,7 @@ export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
     + (world.staff.bartender ? world.prices.staffWage : 0)
     + (world.staff.cashier ? world.prices.cashierWage : 0)
     + (world.staff.porter ? world.prices.porterWage : 0)) as VaCoinMicro;
-  const rent = (world.prices.cleaningCost * 2) as VaCoinMicro;
+  const rent = dailyHousingCost(world.prices);
   if (wages > 0) payOrBorrow(ledger, STAFF, wages, 'personal', world.tick);
   payOrBorrow(ledger, UTILITIES, rent, 'miete und strom', world.tick);
   const repaid = repayDebt(ledger, world.tick);

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fff84e228ee6dadd7cc3c95e83b0b70f08a7cf862b9079cc918e3ee72494ac99",
+  "contentHash": "sha256:245ed4b96ca7d576d0d08e36d730051653dd6d6ca5e69ee94615d90f20f5f06b",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7019,6 +7019,28 @@
       "text": "Der Automat lächelt in Neon, auch wenn niemand davorsteht. Das Lächeln ist billiger als eine Glühbirne und hält länger.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "goal-cost-truth-01",
+      "turnId": "2026-11-14T00:32Z-goal-cost-truth",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die erste Miete ist keine runde Zahl mehr im Kopf: Sie steht als Tagesbetrag im Hauskonto, und wer sie gedeckt hat, sieht statt eines vollen Balkens die nächste offene Bedingung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-goal-cost-truth.json"
     },
     {
       "contributionId": "governance-ci-gates",
