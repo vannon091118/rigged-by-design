@@ -13,6 +13,7 @@ import type { CityLifeState } from './city-life-types';
 import { createCityLifeState, growCityPopulation } from './city-life-create';
 import { normalizeCityLife } from './city-life-restore';
 import { bindCityIdentities } from './city-identity';
+import { ensureHouseholds } from './city-households';
 import { CITY_POPULATION_STREET } from './city-npc-roster';
 import type { WorldState } from './types';
 
@@ -29,6 +30,8 @@ export function ensureCityLife(world: WorldState): CityLifeState {
   }
   // Der Name ist Anzeige; die Kennung verbindet Bewohner und Profil.
   bindCityIdentities(world);
+  // Wohnadresse und Haushalt gegen die echten Wohngebäude auflösen.
+  ensureHouseholds(world);
   return world.cityLife;
 }
 
@@ -43,6 +46,7 @@ export function ensureCityPopulation(world: WorldState, target: number): number 
   const added = next.residents.length - life.residents.length;
   world.cityLife = next;
   bindCityIdentities(world);
+  ensureHouseholds(world);
   return added;
 }
 

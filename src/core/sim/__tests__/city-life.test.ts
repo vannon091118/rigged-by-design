@@ -125,6 +125,7 @@ describe('Stadtleben (Ereignisketten)', () => {
     const decide = (hour: number, scheduled: NpcIntentKind, needs: Partial<NpcNeeds>, work = 100): NpcIntentKind => {
       const resident: CityResidentState = {
         npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: scheduled,
+        homeBuildingId: 'bld_player_home', householdId: 'household_shared_player_home',
         position: { x: 8, y: 12 }, travel: null,
         needs: {
           hunger: 10, thirst: 10, fatigue: 10, social: 10, money: 9000, mood: 80, ...needs,

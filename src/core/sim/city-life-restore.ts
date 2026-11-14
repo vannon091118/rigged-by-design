@@ -12,6 +12,7 @@ import type { CityLifePlace, CityLifeState, CityResidentState } from './city-lif
 import { CITY_POPULATION_DEFAULT, rosterDefById } from './city-npc-roster';
 import { createCityLifeState } from './city-life-create';
 import { createDefaultNeeds } from './npc-needs';
+import { PLAYER_HOME_BUILDING, SHARED_HOUSEHOLD_ID } from './city-households';
 import {
   defaultSkills, normalizeAttributes, normalizeLastDecisions, normalizeMemories,
   normalizePosition, normalizeRelationships, normalizeSkills, normalizeTravel,
@@ -51,6 +52,8 @@ function restoreResident(
     name: def.name,
     role: def.role,
     location: 'HOME',
+    homeBuildingId: PLAYER_HOME_BUILDING,
+    householdId: SHARED_HOUSEHOLD_ID,
     position: { x: 8, y: 12 },
     travel: null,
     intent: 'SLEEP',
@@ -85,6 +88,12 @@ function restoreResident(
     name: text(record.name, def.name),
     role: text(record.role, def.role),
     location,
+    // Alte Saves kennen keine Wohnadresse; sie wird beim ersten Tick gegen die
+    // vorhandenen Wohngebaeude aufgeloest. Gueltige Kennungen bleiben erhalten.
+    homeBuildingId: typeof record.homeBuildingId === 'string' && record.homeBuildingId.length > 0
+      ? record.homeBuildingId : fresh.homeBuildingId,
+    householdId: typeof record.householdId === 'string' && record.householdId.length > 0
+      ? record.householdId : fresh.householdId,
     intent,
     needs,
     position: normalizePosition(record.position, fresh.position),
