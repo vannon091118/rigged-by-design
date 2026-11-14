@@ -34,6 +34,10 @@ describe('Stadtfiguren im Snapshot', () => {
         y: resident.position.y,
         traveling: resident.travel !== null,
       });
+      const visitor = world.visitors.find((entry) => entry.id === resident.visitorId);
+      const identity = actor as typeof actor & { persona?: string; mood?: number };
+      expect(identity.persona, `${resident.npcId}: Persona`).toBe(visitor?.persona);
+      expect(identity.mood, `${resident.npcId}: Mood`).toBe(resident.needs.mood);
     }
   });
 

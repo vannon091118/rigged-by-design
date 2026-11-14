@@ -15,6 +15,8 @@ export function cityActorViews(
     npcId: resident.npcId,
     name: resident.name,
     role: resident.role,
+    persona: resident.persona,
+    mood: resident.mood,
     x: resident.position.x,
     y: resident.position.y,
     traveling: resident.travelTo !== null,

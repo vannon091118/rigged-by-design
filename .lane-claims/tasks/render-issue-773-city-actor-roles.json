@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-issue-773-city-actor-roles",
+  "claimId": "lane/render/issue-773-city-actor-roles",
+  "branch": "lane/render/issue-773-city-actor-roles",
+  "baseSha": "3566beb01110d7a016aa8c5eacdd171d4045013a",
+  "phase": "CI_PENDING",
+  "title": "Issue #773: Stadtbewohner mit Persona und Mood rendern",
+  "goal": "Persona und Snapshot-Mood aus der bestehenden Stadt-View in CityActorSync durchreichen; Rollenidentitaet nicht mehr auf CITY/62/false reduzieren.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

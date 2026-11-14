@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T23:15Z-city-actor-persona-mood",
+  "contributionId": "city-actor-persona-mood-773",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["start"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita kam nicht als graue Huelle aus dem Speicher: Ihre Jacke trug die Farbe ihres Profils, und ihr Gesicht wechselte mit der Laune, die im selben Augenblick im Stadtzustand stand. Der Renderer hatte nichts hinzuerfunden; er hatte nur endlich hingesehen.",
+  "directives": []
+}
