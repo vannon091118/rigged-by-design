@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:22b7ef20c0b849f1627a732ebccee74759d166c8f29dfa252670c6ade1489152",
+  "contentHash": "sha256:2c80e1df54751c3c9dea09eab52a67fbd32adc120e772083f803450401d4d96a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3541,6 +3541,28 @@
       "text": "Vier Türen, ein Netz: Jeder Weg in der Stadt führt über dieselbe Kante.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-network.json"
+    },
+    {
+      "contributionId": "city-network-acceptance-01",
+      "turnId": "2026-11-14T06:10Z-city-network-acceptance-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt ist jetzt auch im Browser ein Netz: Vier Türen führen von der Straße in Wohnung, Casino, Kiez und Markt, und jeder Weg wird gelaufen, bevor die Szene wechselt. Der Markt bleibt gesperrt, bis der Ruf ihn öffnet; kein Sprung ersetzt die Kacheln dazwischen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-network-acceptance.json"
     },
     {
       "contributionId": "city-night-01",

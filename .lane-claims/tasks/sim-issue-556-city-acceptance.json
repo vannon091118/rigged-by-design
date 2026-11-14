@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-556-city-acceptance",
+  "claimId": "lane/sim/issue-556-city-acceptance",
+  "branch": "lane/sim/issue-556-city-acceptance",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "phase": "CI_PENDING",
+  "title": "Stadtnetz und Stadt-Abnahme (#556)",
+  "goal": "Browserbeleg S2-08/R-2/R-3/S5-09, Probe/Screenshot/Console, Defekte fixen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}
