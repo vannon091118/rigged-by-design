@@ -1,0 +1,25 @@
+{
+  "id": "lane/docs/issue-652-r9-status",
+  "owner": "Integrator",
+  "branch": "lane/docs/issue-652-r9-status",
+  "baseSha": "b0dfe061ef3daee22a01dd50535d98633efcce4d",
+  "issue": 652,
+  "task": "Issue #652: R9-Status im Render-Rework-Plan",
+  "pathAllowlist": [
+    "docs/RENDER_REWORK_PLAN.md",
+    "content/narrative/contributions/2026-11-14-rumor-23.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims.json",
+    ".lane-claims/claims/lane-docs-issue-652-r9-status.json",
+    ".lane-claims/tasks/docs-issue-652-r9-status.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b0dfe061ef3daee22a01dd50535d98633efcce4d"
+}

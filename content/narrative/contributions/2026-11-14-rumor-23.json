@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T21:30Z-rumor-23",
+  "contributionId": "rumor-23",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Auf dem Plan an der Wand steht seit Wochen, dass die Kellner noch nicht laufen. Sie laufen aber laengst, nur niemand hat es aufgeschrieben. Der Mann an der Theke sagt, ein Plan, der den eigenen Stand nicht kennt, schickt Leute los, die schon da sind.",
+  "directives": []
+}
