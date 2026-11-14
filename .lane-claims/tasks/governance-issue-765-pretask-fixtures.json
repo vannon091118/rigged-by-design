@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-765-pretask-fixtures",
+  "claimId": "lane/governance/issue-765-pretask-fixtures",
+  "branch": "lane/governance/issue-765-pretask-fixtures",
+  "baseSha": "d29e75406136b0846f8e02a7b18394c0c1dc094f",
+  "phase": "CI_PENDING",
+  "title": "Issue #765: pretask-Fixtures an Issue-Nummer und Laufbudget ausrichten",
+  "goal": "Die drei auf main roten pretask-Fixtures mit den seit #635 und #752 gueltigen Pflichtfeldern gruen ziehen, ohne Fail-closed-Regeln abzuschalten.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "warning",
+      "summary": "Die Fixtures setzen weder die seit #635 verlangte positive Issue-Nummer noch den seit #752 belegten Laufbudget-Wert; dadurch scheitern drei Tests mit Status 1 statt 0."
+    }
+  ],
+  "nextAction": "Auf main@d29e7540 rebasen, precommit und verify:light erneut belegen, committen, pushen und PR oeffnen.",
+  "revision": 1
+}

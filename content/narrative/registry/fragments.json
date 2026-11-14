@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6c65f0176d074d1fd80637d9068432db62f32b3f4199568e65cb594c9413d01f",
+  "contentHash": "sha256:a9526a165cad13d8ffee17524ff08db64ee0b6486a21de79607c19c145ab4283",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -23794,6 +23794,30 @@
       "text": "Man sagt, der alte Aufseher kenne die Kreide noch. Wenn das stimmt, wird heute anders gespielt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-rumor-52.json"
+    },
+    {
+      "contributionId": "pretask-fixture-01",
+      "turnId": "2026-11-14T23:05Z-pretask-fixture-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Pruefer legte zwei Zettel auf die Theke: Auf dem einen fehlte die Nummer des Auftrags, auf dem anderen die Zahl der neuen Befunde. Rita nahm keinen davon als Freigabe; sie trug beide nach und liess die Tuer erst aufgehen, als die Pruefung wirklich lesen konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-pretask-fixture.json"
     },
     {
       "contributionId": "promote-automerge-01",

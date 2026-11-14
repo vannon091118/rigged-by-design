@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-765-pretask-fixtures",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-765-pretask-fixtures",
+  "baseSha": "d29e75406136b0846f8e02a7b18394c0c1dc094f",
+  "issue": 765,
+  "task": "Issue #765: pretask-Fixtures an Issue-Nummer und Laufbudget ausrichten",
+  "goal": "Die drei auf main roten pretask-Fixtures mit den seit #635 und #752 gueltigen Pflichtfeldern gruen ziehen, ohne Fail-closed-Regeln abzuschalten.",
+  "pathAllowlist": [
+    "src/core/governance/__tests__/pretask.test.ts",
+    "src/core/governance/__tests__/test-worker-home.ts",
+    ".lane-claims/**",
+    "content/narrative/contributions/2026-11-14-pretask-fixture.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d29e75406136b0846f8e02a7b18394c0c1dc094f"
+}

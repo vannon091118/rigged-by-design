@@ -17,6 +17,6 @@
     "headSha": "e22dfa52bfb25b7ffe352219a7c4ec2c6a9e86a1"
   },
   "findings": [],
-  "nextAction": "PR #813 ist offen und mit review-waiting uebergeben; Maintainer-Verdikt abwarten.",
-  "revision": 3
+  "nextAction": "Merge von origin/main (2d041a58) integriert; PR #813 bleibt review-waiting.",
+  "revision": 4
 }
