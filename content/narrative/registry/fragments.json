@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ac11c3a56ff9660dab0bcfb3719221494152a422c1358d8107b4c331893c262b",
+  "contentHash": "sha256:0030a5f8f71ee9910513e19d8a63f30f602fd20e8d100a70ef29e1f3bed0fb94",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6718,6 +6718,29 @@
       "text": "Rita zog den Vorhang vor der Buehne zurueck: ein Fenster, ein Ziel, ein Gast, der paenktlich an der zwoelften Marke erschien. Die Kamera fuellte den Raum bis an den Rand, und was schwer zu pruefen war, wanderte an den Ort, an dem es niemanden im Spiel aufhielt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-first-evening-ci.json"
+    },
+    {
+      "contributionId": "first-evening-crate-01",
+      "turnId": "2026-11-14T00:55Z-first-evening-crate",
+      "agentId": "local-agent-1",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "start",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kiste steht am Eingang, ein Kantholz mit Reißverschluss aus Pappe. Solange sie zu ist, ist der Raum nur ein Raum: eine Kasse, frisches Linoleum und die Aussicht, dass hier gleich etwas surrt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-first-evening-crate.json"
     },
     {
       "contributionId": "first-property-01",

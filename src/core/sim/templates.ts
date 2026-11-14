@@ -130,6 +130,9 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
 /** Nach dem Laden: ein Casino ohne Spielgeraet bekommt seinen Gratis-Startautomaten zurueck. */
 export function ensureStarter(world: WorldState): void {
   if (world.furniture.some((item) => item.gameId)) return;
+  // Die wartende Starter-Kiste ist selbst der Weg zum ersten Automaten. Ein
+  // geschenktes Geraet wuerde diesen Weg ueberspringen (#534/S1-06).
+  if (world.crates.some((crate) => crate.payload.kind === 'FURNITURE' && crate.payload.buildId === 'SLOT')) return;
   const def = getBuildDef('SLOT');
   world.furniture.push({
     id: world.nextFurnitureId++, kind: 'SLOT', gameId: 'SLOT', x: 16, y: 6, w: def.w, h: def.h, seats: def.seats,

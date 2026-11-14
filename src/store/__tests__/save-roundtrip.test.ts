@@ -15,6 +15,7 @@ import { tickWorld } from '../../core/sim/tick';
 import { Prng } from '../../core/rng/prng';
 import { buildView } from '../snapshot';
 import { replaySave, toSavedGame } from '../save';
+import { createNewGame } from '../new-game';
 import { randomSeed } from '../../test/random-seed';
 import { defaultPlinkoConfig, normalizePlinkoConfig } from '../../core/games/plinko-config';
 import { economyOf } from '../../core/sim/economics';
@@ -45,6 +46,17 @@ function fixture() {
 }
 
 describe('Save-/Load-Roundtrip v8', () => {
+  it('schenkt dem frischen Start nach dem Laden kein Gerät und behält die Starter-Kiste', () => {
+    const { world, ledger } = createNewGame('SMALL');
+    expect(world.furniture.some((item) => item.gameId)).toBe(false);
+    const raw = JSON.parse(JSON.stringify(toSavedGame(world, ledger, randomSeed())));
+    const loaded = replaySave(raw);
+    expect(loaded).not.toBeNull();
+    // Der Weg bleibt Kiste → Automat: kein Gratisgerät als versteckte Abkürzung (#534/S1-06).
+    expect(loaded!.world.furniture.some((item) => item.gameId)).toBe(false);
+    expect(loaded!.world.crates.some((crate) => crate.payload.kind === 'FURNITURE')).toBe(true);
+  });
+
   it('behält Journal, Look, Personalstatus und Ledger über JSON', () => {
     const { world, ledger } = fixture();
     const state = randomSeed();
