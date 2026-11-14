@@ -46,6 +46,11 @@ describe('Contract: relationship v1.0', () => {
     expect(() => createRelationshipEdge('guest_42', 'player_1', '')).toThrow();
   });
 
+  it('lehnt Actor-IDs ohne bekanntes Präfix in der Factory ab', () => {
+    expect(() => createRelationshipEdge('not-an-actor', 'player_1', 'VISITED')).toThrow();
+    expect(() => createRelationshipEdge('guest_42', 'not-an-actor', 'VISITED')).toThrow();
+  });
+
   it('lehnt stance außerhalb von -100 bis 100 ab', () => {
     const edge: RelationshipEdge = createRelationshipEdge('guest_42', 'player_1', 'VISITED');
     expect(validateRelationshipEdge({ ...edge, stance: 101 })).toBe(false);
@@ -56,6 +61,32 @@ describe('Contract: relationship v1.0', () => {
     const edge: RelationshipEdge = createRelationshipEdge('guest_42', 'player_1', 'VISITED');
     expect(validateRelationshipEdge({ ...edge, goodwill: 101 })).toBe(false);
     expect(validateRelationshipEdge({ ...edge, goodwill: -1 })).toBe(false);
+  });
+
+  it('lehnt nicht-endliche Zahlenwerte ab', () => {
+    const edge: RelationshipEdge = createRelationshipEdge('guest_42', 'player_1', 'VISITED');
+    for (const value of [NaN, Infinity, -Infinity]) {
+      expect(validateRelationshipEdge({ ...edge, stance: value })).toBe(false);
+      expect(validateRelationshipEdge({ ...edge, goodwill: value })).toBe(false);
+    }
+  });
+
+  it('lehnt ungültige Actor-Referenzen, Selbstbeziehungen und abweichende edgeIds ab', () => {
+    const edge: RelationshipEdge = createRelationshipEdge('guest_42', 'player_1', 'VISITED');
+    expect(validateRelationshipEdge({ ...edge, sourceActorId: 'not-an-actor' })).toBe(false);
+    expect(validateRelationshipEdge({ ...edge, targetActorId: 'not-an-actor' })).toBe(false);
+    expect(validateRelationshipEdge({ ...edge, targetActorId: 'guest_42' })).toBe(false);
+    expect(validateRelationshipEdge({ ...edge, edgeId: 'guest_42->player_1:OTHER' })).toBe(false);
+  });
+
+  it('lehnt nicht-textuelle History- und Clue-Einträge ab', () => {
+    const edge: RelationshipEdge = createRelationshipEdge('guest_42', 'player_1', 'VISITED');
+    expect(
+      validateRelationshipEdge({ ...edge, history: ['ok', 7] as unknown as readonly string[] }),
+    ).toBe(false);
+    expect(
+      validateRelationshipEdge({ ...edge, clues: ['ok', null] as unknown as readonly string[] }),
+    ).toBe(false);
   });
 
   it('lehnt mehr als 6 History-Einträge ab', () => {

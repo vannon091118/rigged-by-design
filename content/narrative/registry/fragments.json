@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fa0123198a820e171420c9307b0efa3228095858e28ecd246eaa3f4f293d4d4f",
+  "contentHash": "sha256:d36c6c4de0601e423a76cc0dda90d2330eb7142f0799d52f5ded1f31e70b36aa",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24587,6 +24587,30 @@
       "text": "Auf der Liste im Vorraum stehen zwei Namen doppelt, und mitten in der Abschrift liegen noch die Striche vom Zusammenlegen. Der Mann mit dem Besen sagt, wer die Striche stehen laesst, sperrt den naechsten Gast aus, ohne es zu merken.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-26.json"
+    },
+    {
+      "contributionId": "rumor-27",
+      "turnId": "2026-11-14T23:10Z-rumor-27",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwischen zwei Leuten steht nie nur eine Zahl. Wer Vertrauen als Konto fuehrt und Kraenkung als Rabatt, merkt irgendwann, dass die Rechnung nicht aufgeht: Der andere erinnert sich an den Ton, nicht an die Summe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-27.json"
     },
     {
       "contributionId": "run-budget-01",
