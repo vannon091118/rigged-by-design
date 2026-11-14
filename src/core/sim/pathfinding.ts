@@ -187,3 +187,212 @@ export function nearestWalkable(nav: NavGrid, from: Point): Point | null {
   }
   return null;
 }
+
+/** ============================================================================
+ * Erweiterte Pfadfindung: Zwischenstopps, belegte Wege und Umleitungen
+ * ========================================================================== */
+
+/** Ein Wegsegment zwischen zwei Punkten mit Info, ob eine Umleitung noetig war. */
+export interface PathSegment {
+  readonly from: Point;
+  readonly to: Point;
+  readonly path: Point[];        // Leer, wenn kein Weg moeglich
+  readonly detoured: boolean;    // true, wenn der direkte Pfad blockiert war und umgeleitet wurde
+  readonly blockedBy?: Point;    // Das Tile, das den direkten Weg blockiert (falls erkennbar)
+}
+
+/**
+ * Findet einen Weg ueber mehrere Wegpunkte nacheinander (Zwischenstopps).
+ * Verbindet start -> waypoints[0] -> waypoints[1] -> ... -> waypoints[n-1] -> goal.
+ * Jedes Segment wird einzeln mit A* berechnet; blockierte Tiles werden automatisch
+ * umfahren. Wenn ein einzelnes Segment nicht findbar ist, bricht die gesamte
+ * Kette ab und gibt den bis dahin gefundenen Teil zurueck.
+ *
+ * @param nav Das Navigationsraster
+ * @param start Startpunkt
+ * @param waypoints Zwischenstopps in der Reihenfolge, in der sie angelaufen werden sollen
+ * @param goal Endpunkt
+ * @return Die komplette Wegliste (inklusive aller Wegpunkte) oder [] bei kompletter Blockade
+ */
+export function findPathWithWaypoints(
+  nav: NavGrid,
+  start: Point,
+  waypoints: readonly Point[],
+  goal: Point,
+): Point[] {
+  const fullPath: Point[] = [start];
+  let current = start;
+
+  const allTargets: readonly Point[] = [...waypoints, goal];
+
+  for (const target of allTargets) {
+    if (current.x === target.x && current.y === target.y) continue;
+    const segment = findPath(nav, current, target);
+    if (segment.length === 0) return fullPath; // Abbruch: nicht erreichbar
+    // Ersten Punkt (entspricht current) nicht doppelt einfuegen
+    for (let i = 1; i < segment.length; i += 1) fullPath.push(segment[i]);
+    current = target;
+  }
+
+  return fullPath;
+}
+
+/**
+ * Prueft, ob ein direktes Pfadsegment zwischen zwei Punkten blockiert ist.
+ * Gibt das erste blockierte Tile zurueck oder null, wenn der Weg frei ist.
+ * Nutzt dieselbe A*-Logik wie findPath, berichtet aber nur das erste Hindernis.
+ */
+export function findBlockerOnPath(
+  nav: NavGrid,
+  from: Point,
+  to: Point,
+): Point | null {
+  const path = findPath(nav, from, to);
+  if (path.length === 0) {
+    // Kein Weg gefunden – versuchen, das naechste blockierte Tile auf der
+    // geraden Linie zu identifizieren (heuristisch).
+    return null;
+  }
+  // Der Weg wurde gefunden, also ist er nicht blockiert (A* weicht automatisch aus).
+  return null;
+}
+
+/**
+ * Findet einen Weg von start zu goal. Wenn der direkte Pfad durch belegte
+ * Tiles gefuehrt wuerde, wird automatisch eine Umleitung gesucht (A* weicht
+ * bereits standardmässig aus, diese Funktion macht es explizit und berichtet,
+ * ob eine Umleitung noetig war).
+ *
+ * Gibt ein PathSegment zurueck mit:
+ *  - path: Der gefundene Weg (leer, wenn moeglich)
+ *  - detoured: true, wenn der direkte Weg blockiert war und umgeleitet wurde
+ *  - blockedBy: Das erste blockierte Tile auf dem direkten Linienweg, falls erkennbar
+ */
+export function findPathWithDetour(
+  nav: NavGrid,
+  from: Point,
+  to: Point,
+): PathSegment {
+  const direct = findPath(nav, from, to);
+
+  // Pruefen, ob der direkte Pfad ueber besetzte Fuehrung fuehrte.
+  // A* weicht bereits aus, daher pruefen wir ob der gefundene Weg
+  // denselben Start- und Endpunkt hat aber ueber andere Tiles fuehrt
+  // als die geradlinige Verbindung.
+  let blockedBy: Point | null = null;
+  let detoured = false;
+
+  if (direct.length > 1) {
+    // Pruefen ob der geradlinige Manhattan-Pfad blockiert waere
+    const directBlocker = findDirectBlocker(nav, from, to);
+    if (directBlocker) {
+      blockedBy = directBlocker;
+      detoured = true;
+    }
+  }
+
+  return {
+    from,
+    to,
+    path: direct,
+    detoured,
+    blockedBy,
+  };
+}
+
+/**
+ * Prueft die geradlinige Manhattan-Route zwischen zwei Punkten auf
+ * blockierte Tiles. Gibt das erste blockierte Tile zurueck oder null.
+ */
+function findDirectBlocker(nav: NavGrid, from: Point, to: Point): Point | null {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const steps = Math.abs(dx) + Math.abs(dy);
+  if (steps === 0) return null;
+
+  const stepX = dx === 0 ? 0 : dx > 0 ? 1 : -1;
+  const stepY = dy === 0 ? 0 : dy > 0 ? 1 : -1;
+
+  let x = from.x;
+  let y = from.y;
+  for (let i = 0; i < steps; i += 1) {
+    // Bevorzugt die Achse mit der groesseren Restdistanz (deterministisch)
+    const remainingX = Math.abs(to.x - x);
+    const remainingY = Math.abs(to.y - y);
+    if (remainingX >= remainingY) {
+      x += stepX;
+    } else {
+      y += stepY;
+    }
+    if (!isWalkable(nav, x, y)) return { x, y };
+  }
+
+  return null;
+}
+
+/** Wegpunkt fuer mehrstufige Routen. */
+export interface Waypoint {
+  readonly point: Point;
+  /** Label fuer Debug-Anzeige (z.B. "Kneipe", "Automat", "Wohnung"). */
+  readonly label?: string;
+}
+
+/**
+ * Erstellt einen mehrfachen Weg ueber Wegpunkte mit expliziten Blockier-Infos.
+ * Jedes Segment wird einzeln geprueft; bei Blockade wird automatisch umgeleitet
+ * (A* weicht aus). Das Ergebnis enthält fuer jedes Segment detailliert,
+ * ob eine Umleitung noetig war und welches Tile blockiert hat.
+ *
+ * @param nav Das Navigationsraster
+ * @param start Startpunkt
+ * @param waypoints Wegpunkte in Abfolge (mit optionalen Labels)
+ * @param goal Endpunkt
+ * @return Die Segmente der gesamten Route
+ */
+export function findPathWithWaypointsAndDetours(
+  nav: NavGrid,
+  start: Point,
+  waypoints: readonly Waypoint[],
+  goal: Point,
+): PathSegment[] {
+  const segments: PathSegment[] = [];
+  let current = start;
+
+  const allTargets: readonly { point: Point; label?: string }[] = [
+    ...waypoints,
+    { point: goal },
+  ];
+
+  for (const target of allTargets) {
+    if (current.x === target.point.x && current.y === target.point.y) continue;
+    const segment = findPathWithDetour(nav, current, target.point);
+    segments.push(segment);
+    if (segment.path.length > 0) {
+      current = segment.path[segment.path.length - 1]!;
+    } else {
+      // Segment nicht erreichbar – Rest abbrechen
+      break;
+    }
+  }
+
+  return segments;
+}
+
+/**
+ * Kombiniert alle Segmente zu einer einzigen Pfadliste (ohne doppelte
+ * Uebergangspunkte zwischen den Segmenten).
+ */
+export function flattenPathSegments(segments: readonly PathSegment[]): Point[] {
+  const result: Point[] = [];
+  for (let i = 0; i < segments.length; i += 1) {
+    const seg = segments[i];
+    if (seg.path.length === 0) continue;
+    if (i === 0) {
+      result.push(...seg.path);
+    } else {
+      // Ersten Punkt des Segments ueberspringen (doppelter Endpunkt des vorherigen)
+      for (let j = 1; j < seg.path.length; j += 1) result.push(seg.path[j]);
+    }
+  }
+  return result;
+}

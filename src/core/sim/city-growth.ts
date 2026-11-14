@@ -29,6 +29,9 @@ import { recordJournal } from './journal';
 import { BUILDER_ESCROW, EXTERNAL } from './money';
 import type { WorldState } from './types';
 
+/** Sentinel für nicht begehbare Rohbau-Wände: Keine gültige Tür, nur Mauern. */
+const SEALED_ENTRANCE = { x: -1, y: -1 };
+
 /** Konto des Bauträgers; er ist ein Stadtakteur, kein Spielerteil. */
 export const BUILDER_ACCOUNT = 'BAUTRAGER';
 /** Startkapital, damit die Stadt überhaupt wachsen kann. */
@@ -93,7 +96,7 @@ function buildingFor(plot: CityPlot, count: number, day: number): BuildingState 
 function placeBuilding(world: WorldState, building: BuildingState): void {
   const scene = world.cityScene;
   if (!scene) return;
-  const sealed = { ...building, entrance: { x: -1, y: -1 } };
+  const sealed = { ...building, entrance: SEALED_ENTRANCE };
   const layout = scene.layout;
   world.cityScene = {
     ...scene,

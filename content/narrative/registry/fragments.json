@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:86676925444ce698bca2faf95b6ee51eb97617bcb30b00a79a0396c46d42a478",
+  "contentHash": "sha256:9efa879482a8cd2c7259697ddfa689beba51f1616a5fa0b4e3c0e52a170436fe",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -9043,6 +9043,28 @@
       "source": "content/narrative/contributions/2026-11-14-house-debt.json"
     },
     {
+      "contributionId": "image-diff-gate-test-repair-01",
+      "turnId": "2026-11-14T11:25Z-narrative-image-diff-gate-fix",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das lokale Bild-Diff-Gate erhielt reparierte Tests: Der kaputte it()-Oeffner wurde geschlossen, readonly-Typen entfernt, Toleranz-Grenzwerte konsistent mit der Implementierung. Vierzehn Pruefungen laufen gruen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-image-diff-gate-test-repair.json"
+    },
+    {
       "contributionId": "influence-matrix-01",
       "turnId": "2026-11-08T04:30Z-influence-matrix",
       "agentId": "buffy",
@@ -9183,29 +9205,6 @@
       "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
-    },
-    {
-      "contributionId": "kiez-fassadenzeile-01",
-      "turnId": "2026-11-14T09:16Z-kiez-fassadenzeile",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "service",
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die drei Häuser an der Nordseite enden auf derselben Linie, und ihre Türen stehen alle auf dem Gehweg, keine auf der Fahrbahn. Nur die Kneipe hatte sich zwei Reihen nach vorn gebaut; wer dort eintrat, stand zuerst im Verkehr.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-kiez-fassadenzeile.json"
     },
     {
       "contributionId": "knowledge-belief-01",
@@ -24203,6 +24202,28 @@
       "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-trigger-bedingungen.json"
+    },
+    {
+      "contributionId": "rng-entry-role-01",
+      "turnId": "2026-11-14T09:45Z-rng-entry-role",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Würfelströme liegen im Haus: einer entscheidet, einer schmückt. Wer den Schmuckstrom an die Kasse trägt, bekommt keine Zahl, sondern eine Abweisung — und der Abend bleibt, wie er war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rng-entry-role.json"
     },
     {
       "contributionId": "roadmap-register-01",

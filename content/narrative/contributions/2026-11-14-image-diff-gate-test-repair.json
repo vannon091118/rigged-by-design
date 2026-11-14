@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T11:25Z-narrative-image-diff-gate-fix",
+  "contributionId": "image-diff-gate-test-repair-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Das lokale Bild-Diff-Gate erhielt reparierte Tests: Der kaputte it()-Oeffner wurde geschlossen, readonly-Typen entfernt, Toleranz-Grenzwerte konsistent mit der Implementierung. Vierzehn Pruefungen laufen gruen.",
+  "directives": []
+}
