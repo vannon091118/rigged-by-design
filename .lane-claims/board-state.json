@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:12:22Z",
+  "generatedAt": "2026-11-14T17:13:46Z",
   "generatedBy": "maintainer",
-  "head": "75571c15a81c02cad762008b248d2fbbd36a6255",
-  "headMessage": "Maintainer-Lauf: Board- und Claim-Register gegen den echten main-Tip abgeglichen (#727)",
-  "base": "origin/main @ 75571c15a81c02cad762008b248d2fbbd36a6255 (Parent dieses Closeouts)",
+  "head": "03a221e49ab574bec5310a79faabdfaf029d42ba",
+  "headMessage": "Maintainer-Lauf: Board- und Claim-Register gegen den echten main-Tip abgeglichen (#728)",
+  "base": "origin/main @ 03a221e49ab574bec5310a79faabdfaf029d42ba (Parent dieses Closeouts)",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Register stimmt mit der Remote-Wahrheit ueberein: main 75571c15, 3 offene PRs (#700 und #701 abgelehnt, #723 review-waiting), 0 offene Claims, 0 gemergte Claims mit offenem Vertrag. Neun Issues geschlossen (646,642,643,644,645,653,654,671,707). verify:light gruen; Vollsuite 385 passed / 5 pretask*-Dateien rot, davon nur pretask.test.ts als vorbestehend belegt.",
+  "summary": "Register stimmt mit der Remote-Wahrheit ueberein: main 03a221e4, 3 offene PRs (#700, #701, #726) ohne review-waiting, 0 offene Claims, 0 gemergte Claims mit offenem Vertrag. Neun Issues geschlossen (646,642,643,644,645,653,654,671,707). verify:light gruen; Vollsuite 385 passed / 5 pretask*-Dateien rot, davon nur pretask.test.ts als vorbestehend belegt.",
   "lastActions": [
     "board-cursors.mjs --export/--write: 49 Cursor (46 Issues, 3 PRs) gesetzt, Kopf 5ed5d960, 0 UNKNOWN",
     "Baseline-Seeding: Cursor auf den jeweils letzten GitHub-Kommentar gesetzt; altere Kommentare gelten als gelesen und stehen als warning im State",
@@ -19,7 +19,7 @@
   "mergedClaimsThisRun": [],
   "closedIssuesThisRun": [],
   "openPullRequests": 3,
-  "reviewWaitingPrs": 1,
+  "reviewWaitingPrs": 0,
   "blockedIssues": [
     {
       "issue": 684,
@@ -35,7 +35,7 @@
     }
   ],
   "nextRunChecklist": [
-    "Offene PRs: #723 (#640) wartet auf Peer-Review; #700 (#667) und #701 (#664) sind abgelehnt und warten auf Nachbesserung",
+    "Offene PRs: #726 (#640) wartet auf Peer-Review gegen den neuen main-Tip; #700 (#667) und #701 (#664) sind abgelehnt und warten auf Nachbesserung",
     "Review-waiting-Marke nur der Maintainer mit Verdikt entfernen; #700/#701 nicht wieder markieren",
     "Vollsuite: 5 pretask*-Testdateien rot; vorbestehend belegt ist nur pretask.test.ts (21b3e924)",
     "Neue Kommentare nur ueber die Cursor lesen: unvollstaendige Seite oder API-Ausfall ergibt UNKNOWN, nie Freigabe"
@@ -43,7 +43,8 @@
   "blockers": [],
   "warnings": [
     "Vollsuite rot: src/core/governance/__tests__/pretask*.test.ts (5 Dateien, 13 Faelle); vorbestehend belegt nur fuer pretask.test.ts",
-    "head nennt den main-Tip vor diesem Closeout; nach dem Merge gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann"
+    "head nennt den main-Tip vor diesem Closeout; nach dem Merge gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
+    "Das Repo wird parallel bearbeitet: PR-Set und main-Tip zum Zeitpunkt dieses Snapshots, nicht eingefroren"
   ],
   "issues": {
     "527": {
@@ -483,6 +484,24 @@
       "state": "CLOSED",
       "merged": false,
       "note": "#552 kam ueber PR #661 nach main; #660 ist kein Merge-Beleg"
+    }
+  ],
+  "openPrs": [
+    {
+      "number": 700,
+      "state": "abgelehnt",
+      "issue": 667
+    },
+    {
+      "number": 701,
+      "state": "abgelehnt",
+      "issue": 664
+    },
+    {
+      "number": 726,
+      "state": "offen",
+      "issue": 640,
+      "note": "ersetzt #723"
     }
   ]
 }

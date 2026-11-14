@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1c805827f3b42797a52e47e4bb9490eb1ee5f4665a0c8c9a6a3bc0bcd09bfacf",
+  "contentHash": "sha256:bc283b802e71d05ab3c4af41cdb95c1ac520791d83ae5df2dcfaa264af16deb2",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24205,6 +24205,30 @@
       "text": "Im Hof hiess es, die Kreidetafel neben der Kuchentuer sei ueber Nacht zweimal abgewischt worden. Wer die Striche nicht nachzaehlen kann, glaubt am Ende auch dem Lohn nicht - und hier arbeitet keiner fuer eine Zahl, die niemand belegen kann.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-12.json"
+    },
+    {
+      "contributionId": "rumor-13",
+      "turnId": "2026-11-14T17:25Z-rumor-13",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Boten kamen am selben Abend mit derselben Meldung, und der zweite sprach von einem Auftrag, den der erste schon erledigt hatte. Wer nur auf den letzten Boten hoert, traegt eine Nummer ein, die es nicht mehr gibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-13.json"
     },
     {
       "contributionId": "run-budget-01",
