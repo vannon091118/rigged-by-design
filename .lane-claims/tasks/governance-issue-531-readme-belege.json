@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-531-readme-belege",
+  "claimId": "lane/governance/issue-531-readme-belege",
+  "branch": "lane/governance/issue-531-readme-belege",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "phase": "CI_PENDING",
+  "title": "README und Roadmap auf den belegten Build-Stand ziehen",
+  "goal": "Jede als heute spielbar praesentierte README-Aussage nennt ihren Produktionspfad, nicht Belegtes ist sichtbar als Fiktion markiert, README-Bilder stammen aus docs/screenshots/current, und der Roadmap-Kopf nennt den tatsaechlichen Versionsstand.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Auf dem committeten Head: sync-generated --all --check, verify:light, integrate --check, ci:local; danach Push und PR.",
+  "revision": 2,
+  "pr": null
+}
