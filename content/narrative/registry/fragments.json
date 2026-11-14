@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9efa879482a8cd2c7259697ddfa689beba51f1616a5fa0b4e3c0e52a170436fe",
+  "contentHash": "sha256:39cc13bb47d7877952f9e39faa71f9985f9c6d7b3a537c24986bcdd5432142df",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -84,10 +84,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -3140,10 +3140,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -3206,10 +3206,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8592,10 +8592,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8614,10 +8614,10 @@
       "agentId": "codex",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8763,10 +8763,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8788,10 +8788,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8838,10 +8838,10 @@
       "agentId": "codex",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8911,10 +8911,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8923,7 +8923,8 @@
         "rita-kern"
       ],
       "flags": [
-        "narrativ"
+        "narrativ",
+        "rita-kern"
       ],
       "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
       "directives": [],
@@ -14802,10 +14803,10 @@
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "trocken",
       "mood": "entschlossen",
@@ -14912,10 +14913,10 @@
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neugierig",
@@ -15022,10 +15023,10 @@
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "commands"
+        "ambient-dokumentation"
       ],
       "tone": "trocken",
       "mood": "argwoehnisch",
@@ -15132,10 +15133,10 @@
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",

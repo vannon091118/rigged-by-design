@@ -1763,9 +1763,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-world-first-ui-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-world-first-ui-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-agent-bootstrap.json` — { — gelesen: 17 Zeilen
-- `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-main-sync.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-2b.json` — { — gelesen: 21 Zeilen
@@ -1781,7 +1781,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-fight-career.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-first-property.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-floor-work.json` — { — gelesen: 24 Zeilen
-- `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-eine-stimme.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json` — { — gelesen: 17 Zeilen
@@ -2071,9 +2071,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25355 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25356 Zeilen
 - `content/narrative/turns/manifest.json` — { — gelesen: 4525 Zeilen
-- `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1745 Zeilen
