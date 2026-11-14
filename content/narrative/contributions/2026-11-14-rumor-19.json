@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T20:05Z-rumor-19",
+  "contributionId": "rumor-19",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Der Mann an der Theke sagt, ein Fehler ohne Nummer sei kein Fehler, sondern eine Ausrede. Wer eine Meldung liest, die nur sagt, dass etwas nicht stimmt, muss raten, wen er ruft. Deshalb traegt hier jede Störung ihre Nummer, und die Nummer steht im Buch.",
+  "directives": []
+}

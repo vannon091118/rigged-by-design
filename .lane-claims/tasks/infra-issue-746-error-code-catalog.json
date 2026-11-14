@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "infra-issue-746-error-code-catalog",
+  "claimId": "lane/governance/issue-746-error-code-catalog",
+  "branch": "lane/governance/issue-746-error-code-catalog",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "phase": "CI_PENDING",
+  "title": "Issue #746: ERR-4028 im Fehlerregister",
+  "goal": "ERR-4028 fuer das generated-Gate im Register und im Katalog registrieren, damit kein ERR-0000 mehr entsteht; ein Test vergleicht Gate-Codes mit dem Register.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Der Katalogtest deckt nur das Register gegen docs/ARCHITECTURE.md; weitere Gate-Codes ausserhalb von GATES bleiben ungeprueft."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "revision": 1
+}
