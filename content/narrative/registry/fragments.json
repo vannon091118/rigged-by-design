@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:299fa128df949c9df3602e56eddf05a852f97cfae634be1e1025649d5bf325b7",
+  "contentHash": "sha256:eb52526a38359f9057f52b6fe4a8f7185ce459aacd1de0fddef24a742f306049",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7421,6 +7421,28 @@
       "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
+    },
+    {
+      "contributionId": "city-scene-70",
+      "turnId": "2026-11-14T13:28Z-city-scene-70",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Acht Kacheln, ein Geraet. Ich ging hinein, kam zurueck, ging hinein und schloss es. Zwischendurch war nie mehr als eine Flaeche da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-70.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
