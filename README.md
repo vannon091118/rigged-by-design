@@ -19,14 +19,14 @@
 ---
 
 <p align="center">
-  <img src="./docs/screenshots/current/02-floor-detail-frisch.png" alt="Die Spielhalle im Neonlicht – Staub, Neon und der ewige Geruch von Bohnerwachs" width="90%">
+  <img src="./docs/screenshots/current/02-floor-detail-frisch.png" alt="Floor-Übersicht des Casinos: Bar, Lounge, Klo und Lager, Gäste an Automaten und HUD mit Hauskonto und Ruf" width="90%">
 </p>
 
 <p align="center"><em>Du wachst in deiner Wohnung auf, nimmst dein Smartphone, gehst durch die Haustür und stehst mitten im Leben. Die Stadt wartet nicht auf dich – die Stadt war schon vorher da.</em></p>
 
 ---
 
-![Die Spielwelt](docs/banners/spielwelt.svg)
+![Banner: DIE SPIELWELT](docs/banners/spielwelt.svg)
 
 ## Das Leben vor deiner Haustür: Eine Stadt, die dich ignoriert
 
@@ -39,7 +39,7 @@ Sie ist nicht groß. Das Wasser aus dem Hahn braucht drei Minuten, bis es lauwar
 Wenn du die Wohnungstür öffnest, klickst du dich nicht durch ein Menü. Du trittst direkt auf den nassen Gehweg einer echten, atmenden Stadt.
 
 <p align="center">
-  <img src="./docs/screenshots/current/21-r7-stadt.png" alt="Der Kiez im aktuellen Build – Gehwege, Gebäude und Türen als zusammenhängendes Stadtnetz" width="90%">
+  <img src="./docs/screenshots/current/21-r7-stadt.png" alt="Stadtansicht: vier Gebäude am Straßenraster, Gehwege und Tabs für Stadt, Casino, Wohnung, Fremde Casinos und Karte" width="90%">
 </p>
 
 <p align="center"><em>Der Kiez schläft nie ganz. Er döst höchstens kurz ein, bis die Straßenbahn quietscht.</em></p>
@@ -55,7 +55,7 @@ Die Nachbarin im zweiten Stock, Maja, eilt jeden Morgen um 7:14 Uhr zur Frühsch
 Das Casino ist nur ein Gebäude unter vielen. Eine Tür mit grellen Leuchtröhren, hinter der es nach kaltem Rauch, billigem Desinfektionsmittel und dem süßlichen Duft von Fehlentscheidungen riecht. Die Leute da drin glauben alle, sie hätten ein System. Manche haben Tabellen, manche haben Glücksbringer, manche haben nur noch die Münzen für den Rückweg in der Hosentasche.
 
 <p align="center">
-  <img src="./docs/screenshots/current/09-slot-buehne.png" alt="Der einarmige Bandit – Er lächelt bunt und nimmt dein letztes Kleingeld" width="90%">
+  <img src="./docs/screenshots/current/09-slot-buehne.png" alt="Fremdes Casino Hafenklause: Klappriger Automat mit Walzensymbolen, Einsatzstufen und Pakt-Panel" width="90%">
 </p>
 
 <p align="center"><em>Der Automat lächelt immer. Egal, wie die Walzen stehen. Alle Bilder der README stammen aus dem kanonischen Satz <code>docs/screenshots/current/</code> des aktuellen Builds.</em></p>
@@ -69,7 +69,7 @@ Das hier ist kein Spiel über Reichtum. Wer reich werden will, sollte eine Bank 
 
 ---
 
-![Feature Showcase](docs/banners/features.svg)
+![Banner: WAS HEUTE LÄUFT](docs/banners/features.svg)
 
 ## Was heute im Laden läuft: Keine Versprechen, sondern Fakten
 
@@ -87,7 +87,7 @@ Du steuerst deine Figur direkt durch die Straßen und Räume. Hier gibt es keine
 Dein Mobiltelefon auf dem Küchentisch ist kein Zierrat. Es ist der Kanal, über den die Realität anklopft:
 
 <p align="center">
-  <img src="./docs/screenshots/current/24-r10-wohnung.png" alt="Die Wohnung im aktuellen Build – hier liegt das Smartphone, hier beginnt der Weg auf die Straße" width="90%">
+  <img src="./docs/screenshots/current/24-r10-wohnung.png" alt="Wohnung: möbliertes Apartment mit Bett, Küche und Bad, markierter Haustür zur Straße und HUD" width="90%">
 </p>
 
 <p align="center"><em>Wenn das Display leuchtet, ist es selten eine Liebeserklärung. Meistens will jemand Geld.</em></p>
@@ -99,7 +99,7 @@ Dein Mobiltelefon auf dem Küchentisch ist kein Zierrat. Es ist der Kanal, über
 Die Menschen um dich herum sind keine Pappaufsteller:
 
 <p align="center">
-  <img src="./docs/screenshots/current/30-r9-stadtbewohner.png" alt="Stadtbewohner im aktuellen Build – Figuren mit Tagesablauf auf dem Gehweg" width="90%">
+  <img src="./docs/screenshots/current/30-r9-stadtbewohner.png" alt="Panel „Dein Casino“: Bewohnerliste mit Rita Kern, Boris Falk und Mira Sol samt Hunger, Laune und Arbeitsort" width="90%">
 </p>
 
 <p align="center"><em>Gespräche entstehen, wenn man sich begegnet. Ob man will oder nicht.</em></p>
@@ -110,7 +110,7 @@ Die Menschen um dich herum sind keine Pappaufsteller:
 
 ---
 
-![FAQ](docs/banners/faq.svg)
+![Banner: FAQ – häufige Fragen](docs/banners/faq.svg)
 
 ## Häufig gestellte Fragen (für Leute mit Rest-Optimismus)
 
@@ -152,7 +152,7 @@ Alles. Du bist kein unsichtbarer Vorstandschef, der auf Excel-Tabellen starrt. D
 
 ---
 
-![Die Werkstatt](docs/banners/werkstatt.svg)
+![Banner: DIE WERKSTATT](docs/banners/werkstatt.svg)
 
 ## Für Maschinisten & Code-Schrauber
 

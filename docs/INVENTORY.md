@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 408 Dateien — contract 218 · integration 113 · governance 64 · statistics 6 · performance 7.
+Summe: 409 Dateien — contract 218 · integration 113 · governance 65 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -204,6 +204,7 @@ Summe: 408 Dateien — contract 218 · integration 113 · governance 64 · stati
 | `src/core/governance/__tests__/promote-guard.test.ts` | pipeline | governance | ja | `scripts/lib/promote-guard.mjs` |
 | `src/core/governance/__tests__/promotion-state.test.ts` | pipeline | governance | ja | `scripts/lib/promotion-state.mjs` |
 | `src/core/governance/__tests__/promotion-workflows.test.ts` | ci | governance | ja | `.github/workflows/promote.yml` |
+| `src/core/governance/__tests__/readme-media.test.ts` | pipeline | governance | ja | `scripts/lib/readme-media.mjs` |
 | `src/core/governance/__tests__/red-team-gate-lane.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
 | `src/core/governance/__tests__/roadmap-register.test.ts` | docs | contract | ja | `docs/ROADMAP.md` |

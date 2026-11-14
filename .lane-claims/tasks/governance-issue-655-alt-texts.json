@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-655-alt-texts",
+  "claimId": "lane/governance/issue-655-alt-texts",
+  "branch": "lane/governance/issue-655-alt-texts",
+  "baseSha": "ffd371dff2d241fa5642479972516605cd0e3e39",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #655: Alt-Texte und Banner gegen den sichtbaren Bildzustand pruefen",
+  "goal": "Jedes README-Bild ansehen, den Alt-Text auf den sichtbaren Zustand korrigieren und einen Doku-Check ergaenzen, der leeren, generischen oder toten Bildverweisen den Gruen-Status verweigert.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokale Gates gruen halten, committen, PR oeffnen und Handover am Issue schreiben.",
+  "revision": 1
+}

@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/issue-655-alt-texts",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-655-alt-texts",
+  "baseSha": "ffd371dff2d241fa5642479972516605cd0e3e39",
+  "issue": 655,
+  "task": "Issue #655: Alt-Texte und Banner gegen den sichtbaren Bildzustand pruefen",
+  "pathAllowlist": [
+    "README.md",
+    "scripts/lib/readme-media.mjs",
+    "scripts/lib/doc-sync.mjs",
+    "src/core/governance/__tests__/readme-media.test.ts",
+    "content/narrative/contributions/2026-11-14-rumor-25.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims",
+    ".lane-claims/claims/lane-governance-issue-655-alt-texts.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "ffd371dff2d241fa5642479972516605cd0e3e39"
+}
