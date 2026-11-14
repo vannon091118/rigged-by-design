@@ -1,0 +1,31 @@
+{
+  "id": "lane/sim/issue-539-esport-evening",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-539-esport-evening",
+  "baseSha": "d1499e2118d93f521fee51c73bce1c5bafe30b8e",
+  "issue": 539,
+  "task": "E-Sport-Abend im vorhandenen Turnierabend (S3-09)",
+  "goal": "Ankuendigung, Match-Ergebnis aus Rollen/Taktik/PRNG, Ledger-Abrechnung und Archiv-Eintrag ohne zweite Event-Liste oder Save-Feld",
+  "pathAllowlist": [
+    "src/core/sim/esport-event.ts",
+    "src/core/sim/esport-odds.ts",
+    "src/core/sim/__tests__/esport-event.test.ts",
+    "src/core/sim/journal.ts",
+    "src/store/city-commands.ts",
+    "src/store/world-store.ts",
+    "src/ui/career-esport.tsx",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-14-esport-evening.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-sim-issue-539-esport-evening.json",
+    ".lane-claims/tasks/sim-issue-539-esport-evening.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d1499e2118d93f521fee51c73bce1c5bafe30b8e"
+}

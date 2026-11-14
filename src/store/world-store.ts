@@ -20,6 +20,8 @@ import { exportGameData, planImportData, type TransferReport } from './transfer'
 import { createWorld } from '../core/sim/templates';
 import { advanceWorld } from './narrative-clock';
 import { settleMoneyJournal } from '../core/sim/journal';
+import { esportEveningView, type EsportEveningView } from '../core/sim/esport-event';
+import { PORTEMONNAIE } from '../core/sim/money';
 import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
 import { flushNarrativeCmd } from './narrative-commands';
 import { chooseNarrativeAction, dismissNarrativeAction } from './narrative-store-actions';
@@ -131,6 +133,8 @@ class WorldStore {
   pay(guestId: number): void { this.#guard(() => { this.#notice = payCmd(this.#world, this.#ledger, guestId); }); } takeHome(amountVC = 5): void { this.#guard(() => { this.#notice = takeHomeCmd(this.#world, this.#ledger, amountVC); }); }
   riskCard(rivalId: RivalId, color: RiskColor, stakeVC: number): RiskOutcome | null { return riskCardCmd(this.#world, this.#ledger, rivalId, color, stakeVC, this.#prng); } dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number): CardDeal | null { return dealCardCmd(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC); } settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null { return settleCardCmd(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, netBps, label); }
   additionalBet(amountVC: number): boolean { let booked = false; this.#guard(() => { additionalBetCmd(this.#world, this.#ledger, amountVC); this.#notice = 'Zusatz-Einsatz gebucht.'; booked = true; }); return booked; }
+  /** Der E-Sport-Abend liest denselben Zustand; kein zweiter Speicher und kein Save-Feld. */
+  esportEvening(): EsportEveningView { return esportEveningView(this.#world, this.#ledger.getBalance(PORTEMONNAIE)); }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); } playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) { flushNarrativeCmd(this.#world, this.#ledger); this.#emit(false); } return result; }
   city(cmd: CityCommand): void { this.#guard(() => { this.#notice = cityCmd(this.#world, this.#ledger, this.#prng, cmd); }); } auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); } exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); } planImport(raw: string): TransferReport { return planImportData(raw).report; }
   importGame(raw: string): TransferReport {

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-539-esport-evening",
+  "claimId": "lane/sim/issue-539-esport-evening",
+  "branch": "lane/sim/issue-539-esport-evening",
+  "baseSha": "d1499e2118d93f521fee51c73bce1c5bafe30b8e",
+  "phase": "READY",
+  "title": "E-Sport-Abend im vorhandenen Turnierabend (S3-09)",
+  "goal": "Ankuendigung, Match-Ergebnis aus Rollen/Taktik/PRNG, Ledger-Abrechnung und Archiv-Eintrag ohne zweite Event-Liste oder Save-Feld",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Event-Anbindung, Abrechnung und Tests fertigstellen; Abschluss ueber turn:finish.",
+  "revision": 1
+}
