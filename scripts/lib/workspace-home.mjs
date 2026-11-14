@@ -9,7 +9,7 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join, relative, resolve, sep } from 'node:path';
+import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { WORKER_IDENTITIES } from './worker-identity.mjs';
 
 export const IDENTITY_SCHEMA = 1;
@@ -40,6 +40,10 @@ export function workspacePaths(home = workspaceHome()) {
 /** Ein Pfad im Repo ist kein gueltiges Home: sonst stirbt die Identitaet mit dem Baum. */
 export function isInsideRepository(path, repoRoot) {
   const target = relative(resolve(repoRoot), resolve(path));
+  // Ueber Laufwerksgrenzen (Windows `C:` -> `D:`) liefert `relative()` einen
+  // absoluten Pfad. Der beginnt nie mit `..` und gaelte sonst als Unterpfad;
+  // ein absolutes Ergebnis heisst immer: ausserhalb des Repositories.
+  if (isAbsolute(target)) return false;
   return target === '' || (!target.startsWith('..') && !target.includes(`..${sep}`));
 }
 

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-workspace-home-drive",
+  "claimId": "lane/governance/workspace-home-drive",
+  "branch": "lane/governance/workspace-home-drive",
+  "baseSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
+  "phase": "CI_PENDING",
+  "title": "Windows: Workspace-Home auf fremdem Laufwerk korrekt als ausserhalb erkennen",
+  "goal": "worker:init -- claim muss auf Windows mit Home auf C: und Repo auf D: funktionieren; isInsideRepository prueft den absoluten relative()-Fall.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 5
+}

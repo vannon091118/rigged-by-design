@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e84cfd238b775f65d0d9c69c2abd6237879e01a62a833bcbb7386613cd63b5aa",
+  "contentHash": "sha256:a8e66180ded2590a9d5c948042ada1d32a0e700f232d6d08fbc38f25a63b13c9",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -23512,6 +23512,28 @@
       "text": "Der Schlüssel geht nur heraus, wenn der Name im Buch steht. Steht neben der Schicht schon „zur Prüfung“, bleibt die Tür zu, bis jemand sie wieder aufschließt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-worker-gate.json"
+    },
+    {
+      "contributionId": "workspace-home-drive-01",
+      "turnId": "2026-11-14T04:30Z-workspace-home-drive-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Räume, zwei Schlüsselbretter: Wer den Schlüssel am falschen Brett sucht, hält das Haus für verschlossen. Erst der Blick auf beide Bretter zeigt, dass die Tür die ganze Zeit offen stand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-workspace-home-drive.json"
     },
     {
       "contributionId": "world-continuity-interaction-1",
