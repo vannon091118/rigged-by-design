@@ -4500,6 +4500,14 @@
     {
       "turnId": "2026-11-14T08:20Z-generated-artifact-serialization",
       "contributionId": "generated-artifact-serialization-01"
+    },
+    {
+      "turnId": "2026-11-14T08:40Z-balance-lane-on-demand",
+      "contributionId": "balance-lane-on-demand-01"
+    },
+    {
+      "turnId": "2026-11-14T08:52Z-starter-crate-guidance",
+      "contributionId": "starter-crate-guidance-01"
     }
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-674-starter-guidance",
+  "claimId": "lane/sim/issue-674-starter-guidance",
+  "branch": "lane/sim/issue-674-starter-guidance",
+  "baseSha": "b84623e970e0b4357fbc50316aa977bd26f3da14",
+  "phase": "CI_PENDING",
+  "title": "Starter-Kiste fuehrt sichtbar zum ersten Automaten (S1-06)",
+  "goal": "Ein sichtbarer Fuehrungsschritt von der Kiste zum ersten Geraet; GERÄTE 0/0 ist kein Endzustand mehr",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 681,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/681",
+    "state": "open",
+    "headSha": "191c3ff41a15441e772c131359d65aa2d4640fec"
+  },
+  "findings": [],
+  "nextAction": "PR #681 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "revision": 2
+}

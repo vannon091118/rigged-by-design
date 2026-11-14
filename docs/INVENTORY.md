@@ -698,10 +698,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3072 |
-| Gelistete Dateien | 3072 |
+| Getrackte Dateien | 3078 |
+| Gelistete Dateien | 3078 |
 | Getrackte Ordner | 117 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (79), artifacts (1), content (1129), docs (108), packages (27), public (571), scripts (126), src (1010) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (83), artifacts (1), content (1131), docs (108), packages (27), public (571), scripts (126), src (1010) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -713,10 +713,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 40 Datei(en)
-- `.lane-claims/tasks/` — 37 Datei(en)
+- `.lane-claims/claims/` — 42 Datei(en)
+- `.lane-claims/tasks/` — 39 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1125 Datei(en)
+- `content/narrative/contributions/` — 1127 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -851,6 +851,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-board-status-tracking.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-issue-555-balance-run.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-617-generated-gate.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-issue-624-determinism-computed.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-627-run-budget.json` — { — gelesen: 27 Zeilen
@@ -880,6 +881,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-556-city-acceptance.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
@@ -891,6 +893,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-board-status-tracking.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-register-reconcile-616.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/governance-issue-555-balance-run.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-617-generated-gate.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-627-run-budget.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
@@ -918,6 +921,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-556-city-acceptance.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -2018,6 +2022,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-verify-gates.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-board.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-onboarding.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-balance-lane-on-demand.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-14-board-status-dokumentation.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-ci-line-green.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-network-acceptance.json` — { — gelesen: 21 Zeilen
@@ -2046,12 +2051,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-smartphone-feed.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-qualification.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-14-starter-crate-guidance.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25242 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4505 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25288 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4513 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2068,7 +2074,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1559 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
-- `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen
+- `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 93 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 160 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
@@ -2770,7 +2776,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/agent-verify.mjs` — Ein Ablauf statt drei: Impact bestimmen, Gates daraus planen, Cache nutzen, — gelesen: 145 Zeilen
 - `scripts/auto-resolve.mjs` — Auto-Resolve: ein roter CI-Lauf wird eingeordnet, bevor ein Issue entsteht. — gelesen: 323 Zeilen
 - `scripts/autofix-0911.mjs` — Sicherer Autofix (ERR-0911): Lint-Fix, Dependency-Matrix, Commit-Sanitizing. — gelesen: 101 Zeilen
-- `scripts/balance-run.mjs` — Balance-Spur: startet den 40-Tage-Messlauf als eigenen Prueflauf und legt den Bericht ab. — gelesen: 50 Zeilen
+- `scripts/balance-run.mjs` — Balance-Spur: startet den 40-Tage-Messlauf als eigenen Prueflauf und legt den Bericht ab. — gelesen: 81 Zeilen
 - `scripts/bench-lowend.mjs` — Low-End-Profil: derselbe Benchmark, auf einen Kern gepinnt. — gelesen: 27 Zeilen
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge melden. — gelesen: 54 Zeilen
 - `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 151 Zeilen
@@ -3084,8 +3090,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/arena.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 84 Zeilen
 - `src/core/sim/__tests__/balance-harness.ts` — Betriebs-Messlauf: ein skriptierter Betreiber (bauen, einstellen, reparieren, ausbauen) — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/balance-metrics.ts` — Kennzahlen des Betriebs-Messlaufs: Was Gaeste erleben, je Spieltag gezaehlt. — gelesen: 175 Zeilen
-- `src/core/sim/__tests__/balance-operating.test.ts` — Betriebs-Messlauf (nur mit RBD_BALANCE=1): Ankuenfte, Warteschlangen, Wartezeiten, — gelesen: 66 Zeilen
-- `src/core/sim/__tests__/balance-report.ts` — Balance-Spur: macht den 40-Tage-Messlauf nachvollziehbar und pruefbar. — gelesen: 94 Zeilen
+- `src/core/sim/__tests__/balance-operating.test.ts` — Betriebs-Messlauf (nur mit RBD_BALANCE=1): Ankuenfte, Warteschlangen, Wartezeiten, — gelesen: 100 Zeilen
+- `src/core/sim/__tests__/balance-report.ts` — Balance-Spur: macht den 40-Tage-Messlauf nachvollziehbar und pruefbar. — gelesen: 106 Zeilen
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
@@ -3765,7 +3771,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/floor-keyboard.test.ts` — E waehlt die Hauptaktion des offenen Fokus, aber nie aus einem Eingabefeld — gelesen: 78 Zeilen
 - `src/ui/__tests__/floor-scenes.test.ts` — Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder — gelesen: 44 Zeilen
-- `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 79 Zeilen
+- `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 144 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/hud-labels.test.ts` — HUD-Texte: Schwellen bleiben stabil, damit Ruf und Laune nicht springen. — gelesen: 37 Zeilen
 - `src/ui/__tests__/hud-money.test.tsx` — import { describe, expect, it } from 'vitest'; — gelesen: 51 Zeilen
@@ -3783,7 +3789,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 138 Zeilen
 - `src/ui/__tests__/smartphone-apps.test.tsx` — Die drei neuen Apps sind nur über das Gerät erreichbar: das Tile muss den — gelesen: 65 Zeilen
-- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 179 Zeilen
+- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 187 Zeilen
 - `src/ui/__tests__/venue-history.test.tsx` — Die Historie der Veranstaltung ist ein Leser der vorhandenen Event-Instanz: — gelesen: 43 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 65 Zeilen
@@ -3837,14 +3843,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/games/slot-popup.tsx` — Ein Slot-Fenster: Walzen, Wettkonsole und die Risiko-Karte nach jedem Gewinn. — gelesen: 140 Zeilen
 - `src/ui/games/video-poker-popup.tsx` — Video Poker: fuenf Karten, Halten per Klick, Nachziehen, Auszahlung nach 9/6-Tabelle. — gelesen: 159 Zeilen
 - `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 45 Zeilen
-- `src/ui/goal.ts` — Das eine sichtbare Ziel des ersten Abends: eine Zahl, ein Balken, kein zweiter Zustand. — gelesen: 84 Zeilen
+- `src/ui/goal.ts` — Das eine sichtbare Ziel des ersten Abends: eine Zahl, ein Balken, kein zweiter Zustand. — gelesen: 125 Zeilen
 - `src/ui/guest-context-panel.tsx` — Objektpanel Gast: Eigenschaften und Handlungen am NPC, ohne die Welt zu verlassen. — gelesen: 119 Zeilen
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 152 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 104 Zeilen
 - `src/ui/hud-icons.ts` — HUD-Icons als Data-URI: die zwei 32x32-PNGs sind zusammen rund 4 KB und — gelesen: 10 Zeilen
 - `src/ui/hud-labels.ts` — HUD-Texte: Labels, Ruf-Toene und Skill-Tipps als eigene Zustaendigkeit. — gelesen: 23 Zeilen
 - `src/ui/hud-money.tsx` — Geldblock des HUD: Betrag, Kasse/Offen und Tagesziel in einer Achse. — gelesen: 56 Zeilen
-- `src/ui/hud.tsx` — HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. — gelesen: 155 Zeilen
+- `src/ui/hud.tsx` — HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. — gelesen: 159 Zeilen
 - `src/ui/icons.ts` — Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. — gelesen: 28 Zeilen
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 125 Zeilen

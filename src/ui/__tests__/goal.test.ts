@@ -4,8 +4,12 @@ import { fromVC } from '../../core/economy/vacoin';
 import { BAR_PURCHASE_COST_VC } from '../../core/sim/player-jobs';
 import type { CompanyStatus } from '../../core/sim/progression';
 import { createWorld } from '../../core/sim/templates';
+import type { Furniture, WorldState } from '../../core/sim/types';
+import { deployHeldCrate, pickupCrate } from '../../core/sim/player';
 import { dailyHousingCost } from '../../core/sim/upkeep-costs';
-import { startGoal } from '../goal';
+import { createNewGame } from '../../store/new-game';
+import type { GameView } from '../../store/types';
+import { deviceGoal, startGoal } from '../goal';
 
 const COMPANY: CompanyStatus = {
   tier: 'BUDE',
@@ -22,14 +26,39 @@ const COMPANY: CompanyStatus = {
 };
 
 const PRICES = createWorld('SMALL').prices;
+const DEFAULT_WORLD = createWorld('SMALL');
+// Nur das Feld, das die Ableitung liest: ein stehender Automat beendet den Kistenweg.
+const MACHINE: Furniture = { ...DEFAULT_WORLD.furniture[0]!, gameId: 'SLOT' };
 
-const base = {
+const base: Pick<GameView, 'scene' | 'furniture' | 'crates' | 'player' | 'barPurchased' | 'wallet' | 'house' | 'prices' | 'company'> = {
+  scene: { key: 'own', kind: 'OWN', label: 'Casino' },
+  furniture: [MACHINE],
+  crates: [],
+  player: DEFAULT_WORLD.player,
   barPurchased: false,
   wallet: fromVC(0),
   house: fromVC(0),
   prices: PRICES,
   company: COMPANY,
 };
+
+/** Stellt die Starter-Kiste auf; das erste freie Feld in der Nähe gewinnt. */
+function deployStarter(world: WorldState): void {
+  const crate = world.crates[0]!;
+  world.player.position = { x: crate.x, y: crate.y };
+  pickupCrate(world, crate.id);
+  for (let dy = -1; dy <= 4; dy += 1) {
+    for (let dx = -1; dx <= 4; dx += 1) {
+      try {
+        deployHeldCrate(world, crate.x + dx, crate.y + dy);
+        return;
+      } catch {
+        // Feld belegt oder ausserhalb: naechstes probieren.
+      }
+    }
+  }
+  throw new Error('Die Starter-Kiste liess sich nicht aufstellen.');
+}
 
 describe('Startziel im HUD', () => {
   it('zeigt zuerst den Barkauf aus derselben Preiskonstante wie der Kauf', () => {
@@ -75,5 +104,41 @@ describe('Startziel im HUD', () => {
   it('begrenzt den Fortschritt auf 0 bis 100 Prozent', () => {
     expect(startGoal({ ...base, barPurchased: true, house: fromVC(0) }).percent).toBe(0);
     expect(startGoal({ ...base, wallet: fromVC(0) }).percent).toBe(0);
+  });
+});
+
+describe('Weg von der Starter-Kiste zum ersten Automaten', () => {
+  it('nennt die Kiste als ersten Schritt, solange kein Geraet steht', () => {
+    const world = createNewGame('SMALL').world;
+    const goal = startGoal({ ...base, furniture: world.furniture, crates: world.crates, player: world.player });
+    expect(goal.id).toBe('DEVICE');
+    expect(goal.label).toBe('GERÄT');
+    expect(goal.percent).toBe(0);
+    expect(goal.text).toContain('Starter-Kiste');
+  });
+
+  it('steigert den Schritt, sobald die Kiste getragen wird', () => {
+    const world = createNewGame('SMALL').world;
+    const crate = world.crates[0]!;
+    world.player.position = { x: crate.x, y: crate.y };
+    pickupCrate(world, crate.id);
+    expect(deviceGoal(world)?.percent).toBe(50);
+    expect(deviceGoal(world)?.text).toContain('freie Fläche');
+  });
+
+  it('fuehrt in derselben Ableitung bis zum stehenden Automaten und dann zum Barkauf', () => {
+    const world = createNewGame('SMALL').world;
+    expect(deviceGoal(world)?.percent).toBe(0);
+    deployStarter(world);
+    expect(world.furniture.some((item) => item.gameId)).toBe(true);
+    expect(deviceGoal(world)).toBeNull();
+    expect(startGoal({ ...base, furniture: world.furniture, crates: world.crates, player: world.player }).id).toBe('BAR');
+  });
+
+  it('zeigt ausserhalb des eigenen Raums keinen Kistenweg', () => {
+    const world = createNewGame('SMALL').world;
+    const scene = { key: 'city', kind: 'CITY' as const, label: 'Stadt' };
+    const city = startGoal({ ...base, scene, furniture: [], crates: world.crates, player: world.player });
+    expect(city.id).toBe('BAR');
   });
 });

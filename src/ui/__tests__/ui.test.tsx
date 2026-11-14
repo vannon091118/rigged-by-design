@@ -96,6 +96,14 @@ describe('UI-Integration', () => {
     expect(screen.getByRole('alert').textContent).toContain('Buchungen blockiert');
   });
 
+  it('zeigt ohne Gerät keinen 0/0-Zähler, sondern den offenen Weg dorthin', () => {
+    const world = createWorld('SMALL');
+    world.furniture = world.furniture.filter((item) => !item.gameId);
+    render(<Hud view={buildView(world, new Ledger(), 'Hinweis')} perspective="operator" onPerspective={noop} onSkill={noop} onGuests={noop} />);
+    expect(screen.getByText('GERÄTE').parentElement?.textContent).toContain('noch kein Gerät');
+    expect(screen.getByText('GERÄT')).not.toBeNull();
+  });
+
   it('zeigt im Gastmodus das Portemonnaie und keine Betriebswerte', () => {
     render(<Hud view={view()} perspective="guest" onPerspective={noop} onSkill={noop} onGuests={noop} />);
     expect(screen.getByText('PORTEMONNAIE')).not.toBeNull();

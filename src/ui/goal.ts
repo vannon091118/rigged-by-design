@@ -7,7 +7,7 @@ import type { GameView } from '../store/types';
 import { vc } from './format';
 
 interface StartGoal {
-  readonly id: 'BAR' | 'RENT' | 'COMPANY' | 'DONE';
+  readonly id: 'DEVICE' | 'BAR' | 'RENT' | 'COMPANY' | 'DONE';
   /** Kurzlabel am Balken; nie mehr als ein Wort. */
   readonly label: string;
   /** Der ganze Satz fuer Tooltip und Vorleser. */
@@ -54,11 +54,52 @@ function companyGoal(company: CompanyStatus): StartGoal {
 }
 
 /**
- * Ein Ziel zur Zeit: erst der Barkauf, danach die erste echte Tagesmiete.
- * Ist sie gedeckt, folgt die naechste Firmenstufe statt eines stehenden
- * 100-%-Balkens. Die UI rechnet nichts nach, was der Zustand nicht sagt.
+ * Der Handgriff vor dem ersten Geld (#555/S1-06): ohne Geraet kommt kein Gast,
+ * ohne Gast kein Bargeld fuer die Bar. Der Schritt liest den echten Zustand —
+ * Kiste auf dem Boden, Kiste in der Hand, Geraet steht — nicht ein Tutorial-Flag.
+ * `null` heisst: der Weg ist abgeschlossen und das naechste Ziel uebernimmt.
  */
-export function startGoal(view: Pick<GameView, 'barPurchased' | 'wallet' | 'house' | 'prices' | 'company'>): StartGoal {
+export function deviceGoal(view: Pick<GameView, 'furniture' | 'crates' | 'player'>): StartGoal | null {
+  if (view.furniture.some((item) => item.gameId)) return null;
+  const carried = /^KRATE:(\d+)$/.exec(view.player.carrying);
+  if (carried && view.crates.some((crate) => crate.id === Number(carried[1]))) {
+    return {
+      id: 'DEVICE',
+      label: 'GERÄT',
+      text: 'Ziel: Kiste auf eine freie Fläche stellen — erst der Automat bringt Gäste',
+      percent: 50,
+    };
+  }
+  if (view.crates.some((crate) => crate.payload.kind === 'FURNITURE')) {
+    return {
+      id: 'DEVICE',
+      label: 'GERÄT',
+      text: 'Ziel: Starter-Kiste anklicken, dann eine freie Fläche — ohne Gerät kommt kein Gast',
+      percent: 0,
+    };
+  }
+  return {
+    id: 'DEVICE',
+    label: 'GERÄT',
+    text: 'Ziel: Erstes Gerät aufstellen — ohne Automaten kommt kein Gast',
+    percent: 0,
+  };
+}
+
+/**
+ * Ein Ziel zur Zeit: im eigenen Raum erst der Weg zum Geraet, danach der
+ * Barkauf und die erste echte Tagesmiete. Ist sie gedeckt, folgt die naechste
+ * Firmenstufe statt eines stehenden 100-%-Balkens. Die UI rechnet nichts nach,
+ * was der Zustand nicht sagt.
+ */
+export function startGoal(
+  view: Pick<GameView, 'scene' | 'furniture' | 'crates' | 'player' | 'barPurchased' | 'wallet' | 'house' | 'prices' | 'company'>,
+): StartGoal {
+  // Nur im eigenen Raum liegt die Kiste; in Wohnung und Stadt bleibt das Geldziel.
+  if (view.scene.kind === 'OWN') {
+    const device = deviceGoal(view);
+    if (device) return device;
+  }
   if (!view.barPurchased) {
     return {
       id: 'BAR',
