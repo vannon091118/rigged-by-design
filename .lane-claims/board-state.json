@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:04:46Z",
+  "generatedAt": "2026-11-14T17:12:22Z",
   "generatedBy": "maintainer",
   "head": "75571c15a81c02cad762008b248d2fbbd36a6255",
-  "headMessage": "Maintainer-Lauf: Board- und Claim-Register gegen den echten main-Tip abgeglichen (#726)",
+  "headMessage": "Maintainer-Lauf: Board- und Claim-Register gegen den echten main-Tip abgeglichen (#727)",
   "base": "origin/main @ 75571c15a81c02cad762008b248d2fbbd36a6255 (Parent dieses Closeouts)",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
