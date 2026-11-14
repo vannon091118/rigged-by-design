@@ -88,7 +88,7 @@ describe('Kommentar-Autorisierung', () => {
     expect(authorized.status).toBe('claimed-self');
   });
 
-  it('gibt einen fremden Issue-Claim erst ab 72 Stunden als stale frei', () => {
+  it('gibt einen fremden Issue-Claim erst ab 2 Stunden als stale frei', () => {
     const base = Date.parse('2026-11-11T00:00:00Z');
     const foreign = {
       id: '2', author: { login: 'worker' }, createdAt: '2026-11-11T00:00:00Z',
@@ -97,9 +97,9 @@ describe('Kommentar-Autorisierung', () => {
     const at = (hours: number) => evaluateIssueClaim({
       comments: [foreign], agent: 'LIILITH', actors: ACTORS, now: base + hours * 3_600_000,
     });
-    expect(at(71)).toMatchObject({ status: 'claimed-other', holder: 'Shinon', ageHours: 71 });
-    expect(at(72)).toMatchObject({ status: 'stale', holder: 'Shinon', ageHours: 72 });
-    expect(at(73)).toMatchObject({ status: 'stale', ageHours: 73 });
+    expect(at(1)).toMatchObject({ status: 'claimed-other', holder: 'Shinon', ageHours: 1 });
+    expect(at(2)).toMatchObject({ status: 'stale', holder: 'Shinon', ageHours: 2 });
+    expect(at(3)).toMatchObject({ status: 'stale', ageHours: 3 });
   });
 
   it('meldet den eigenen alten Issue-Claim nicht als stale', () => {
