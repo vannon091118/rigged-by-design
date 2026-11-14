@@ -3202,24 +3202,12 @@
       "contributionId": "render-sprite-01"
     },
     {
-      "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
-      "contributionId": "governance-eine-stimme-01"
-    },
-    {
-      "turnId": "2026-11-10T03:20Z-governance-task-vertrag",
-      "contributionId": "governance-task-vertrag-01"
-    },
-    {
       "turnId": "2026-11-10T03:38Z-governance-freeze-merge-base",
       "contributionId": "governance-freeze-merge-base-01"
     },
     {
       "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
       "contributionId": "governance-freeze-task-path-01"
-    },
-    {
-      "turnId": "2026-11-10T03:52Z-governance-roadmap-count",
-      "contributionId": "governance-roadmap-count-01"
     },
     {
       "turnId": "2026-11-10T04:20Z-governance-phase3-ci-state",
@@ -3230,32 +3218,8 @@
       "contributionId": "world-first-ui-modular-01"
     },
     {
-      "turnId": "2026-11-10T05:20Z-world-first-ui-deadcode",
-      "contributionId": "world-first-ui-deadcode-01"
-    },
-    {
-      "turnId": "2026-11-10T06:12Z-governance-fail-closed-test-quality",
-      "contributionId": "governance-fail-closed-test-quality-01"
-    },
-    {
-      "turnId": "2026-11-10T06:16Z-governance-fail-closed-clean-start",
-      "contributionId": "governance-fail-closed-clean-start-01"
-    },
-    {
-      "turnId": "2026-11-10T06:18Z-governance-fail-closed-isolation-budget",
-      "contributionId": "governance-fail-closed-isolation-budget-01"
-    },
-    {
-      "turnId": "2026-11-10T06:20Z-governance-fail-closed-issue-check",
-      "contributionId": "governance-fail-closed-issue-check-01"
-    },
-    {
       "turnId": "2026-11-10T07:30Z-phase34-acceptance",
       "contributionId": "phase34-acceptance-01"
-    },
-    {
-      "turnId": "2026-11-10T07:55Z-p20-dependency-matrix",
-      "contributionId": "p20-dependency-matrix-01"
     },
     {
       "turnId": "2026-11-10T08:25Z-ci-pr-body-current",
@@ -3284,14 +3248,6 @@
     {
       "turnId": "2026-11-10T12:00Z-closeout-beleg",
       "contributionId": "proof-before-trust-01"
-    },
-    {
-      "turnId": "2026-11-10T12:45Z-stale-claims",
-      "contributionId": "stale-claims-01"
-    },
-    {
-      "turnId": "2026-11-10T14:00Z-collision-scope",
-      "contributionId": "collision-scope-01"
     },
     {
       "turnId": "2026-11-10T17:30Z-player-career",
@@ -3340,10 +3296,6 @@
     {
       "turnId": "2026-11-10T22:20Z-items-synergien",
       "contributionId": "items-synergien-01"
-    },
-    {
-      "turnId": "2026-11-10T22:30Z-items-gates",
-      "contributionId": "items-gates-01"
     },
     {
       "turnId": "2026-11-10T22:30Z-promote-automerge",
@@ -3398,10 +3350,6 @@
       "contributionId": "closeout-buchhaltung-3"
     },
     {
-      "turnId": "2026-11-11T00:04Z-agent14-changelog-4",
-      "contributionId": "agent14-changelog-4"
-    },
-    {
       "turnId": "2026-11-11T00:05Z-agent14-changelog-5",
       "contributionId": "agent14-changelog-5"
     },
@@ -3418,20 +3366,12 @@
       "contributionId": "agent14-changelog-1"
     },
     {
-      "turnId": "2026-11-11T00:20Z-agent14-changelog-2",
-      "contributionId": "agent14-changelog-2"
-    },
-    {
       "turnId": "2026-11-11T00:25Z-agent16-aftercare-1",
       "contributionId": "agent16-aftercare-1"
     },
     {
       "turnId": "2026-11-11T00:25Z-ui-queue-aftercare",
       "contributionId": "ui-queue-aftercare-01"
-    },
-    {
-      "turnId": "2026-11-11T00:30Z-agent14-changelog-3",
-      "contributionId": "agent14-changelog-3"
     },
     {
       "turnId": "2026-11-11T00:30Z-agent16-aftercare-2",
@@ -3496,10 +3436,6 @@
     {
       "turnId": "2026-11-11T01:32Z-agent14-claim-evidence-5",
       "contributionId": "agent14-claim-evidence-5"
-    },
-    {
-      "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
-      "contributionId": "agent17-business-areas-4"
     },
     {
       "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
@@ -3746,10 +3682,6 @@
       "contributionId": "agent25-ci-pending"
     },
     {
-      "turnId": "2026-11-11T06:40Z-agent22-dead-code",
-      "contributionId": "agent22-dead-code"
-    },
-    {
       "turnId": "2026-11-11T06:40Z-agent25-merge-base",
       "contributionId": "agent25-merge-base"
     },
@@ -3854,10 +3786,6 @@
       "contributionId": "agent23-ci-pending"
     },
     {
-      "turnId": "2026-11-11T09:55Z-first-run-slot-truth-ci-fix",
-      "contributionId": "first-run-slot-truth-ci-fix"
-    },
-    {
       "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
       "contributionId": "agent23-merge-pending"
     },
@@ -3902,20 +3830,12 @@
       "contributionId": "governance-stale-claim-closeout"
     },
     {
-      "turnId": "2026-11-11T14:30Z-governance-ci-gates",
-      "contributionId": "governance-ci-gates"
-    },
-    {
       "turnId": "2026-11-11T14:40Z-governance-claim-scope",
       "contributionId": "governance-claim-scope"
     },
     {
       "turnId": "2026-11-11T15:10Z-governance-precommit-pipeline",
       "contributionId": "governance-precommit-pipeline"
-    },
-    {
-      "turnId": "2026-11-11T18:00Z-governance-retry-path",
-      "contributionId": "governance-retry-path"
     },
     {
       "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
@@ -4134,10 +4054,6 @@
       "contributionId": "gamescout-player-qa-01"
     },
     {
-      "turnId": "2026-11-11T23:10Z-local-first-ci",
-      "contributionId": "local-first-ci"
-    },
-    {
       "turnId": "2026-11-11T23:20Z-optional-pr-runner",
       "contributionId": "optional-pr-runner"
     },
@@ -4176,10 +4092,6 @@
     {
       "turnId": "2026-11-12T12:35Z-test-quality",
       "contributionId": "test-quality-voice-01"
-    },
-    {
-      "turnId": "2026-11-12T17:40Z-render-acceptance-hardening",
-      "contributionId": "render-acceptance-hardening"
     },
     {
       "turnId": "2026-11-13T03:30Z-ambient-transition",
@@ -4338,16 +4250,8 @@
       "contributionId": "ci-line-green-01"
     },
     {
-      "turnId": "2026-11-14T04:20Z-generated-gate-01",
-      "contributionId": "generated-gate-01"
-    },
-    {
       "turnId": "2026-11-14T04:30Z-workspace-home-drive-01",
       "contributionId": "workspace-home-drive-01"
-    },
-    {
-      "turnId": "2026-11-14T04:45Z-claim-register-01",
-      "contributionId": "claim-register-01"
     },
     {
       "turnId": "2026-11-14T05:05Z-house-debt-01",
@@ -4368,10 +4272,6 @@
     {
       "turnId": "2026-11-14T06:10Z-city-network-acceptance-01",
       "contributionId": "city-network-acceptance-01"
-    },
-    {
-      "turnId": "2026-11-14T06:15Z-run-budget-01",
-      "contributionId": "run-budget-01"
     },
     {
       "turnId": "2026-11-14T06:15Z-scheduled-place-all-intents-01",
@@ -4400,10 +4300,6 @@
     {
       "turnId": "2026-11-14T07:52Z-closeout-fallback",
       "contributionId": "closeout-fallback-01"
-    },
-    {
-      "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
-      "contributionId": "board-status-01"
     },
     {
       "turnId": "2026-11-14T09:20Z-employment",

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ba46fce7369d335dba6d466fa6e84193e171c058bb7705fa4ab2a328bbe80938",
+  "contentHash": "sha256:573495e2d2874b9fb436523171454aba0894c3aeb0c936b880e92992f8f6f404",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -149,72 +149,6 @@
       "text": "Die Abrechnung liegt aufgeschlagen auf dem Tisch. Daneben ein Kugelschreiber, der nicht mehr schreibt, und eine Tasse, die noch warm ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-1.json"
-    },
-    {
-      "contributionId": "agent14-changelog-2",
-      "turnId": "2026-11-11T00:20Z-agent14-changelog-2",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Zwei Versionen, zwei Absaetze: der Text nennt nur, was die Commits wirklich taten. Wer nachliest, findet keinen Widerspruch mehr zwischen Nummer und Heft.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-2.json"
-    },
-    {
-      "contributionId": "agent14-changelog-3",
-      "turnId": "2026-11-11T00:30Z-agent14-changelog-3",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Nachtrag steht dort, wo er hingehoert: unter der Nummer, die das Projekt traegt. Keine neue Fassung, nur die fehlenden Zeilen zwischen zwei gemergten Staenden.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-3.json"
-    },
-    {
-      "contributionId": "agent14-changelog-4",
-      "turnId": "2026-11-11T00:04Z-agent14-changelog-4",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Nachtrag ist angekommen; der Vertrag traegt jetzt die Nummer, die das Tor ausliest, und wartet auf dieselbe Pruefung wie jeder andere Zug.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-4.json"
     },
     {
       "contributionId": "agent14-changelog-5",
@@ -743,28 +677,6 @@
       "text": "Ein Gast legt sein letztes Geld auf den Tresen und bestellt nichts. Der Wirt schenkt ihm trotzdem ein Glas Wasser.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-3.json"
-    },
-    {
-      "contributionId": "agent17-business-areas-4",
-      "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
     },
     {
       "contributionId": "agent17-business-areas-5",
@@ -1491,28 +1403,6 @@
       "text": "Der Kiez schläft nicht, er döst. Zwischen zwei Straßenbahnen hört man das Kühlaggregat der Bar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-ci-pending.json"
-    },
-    {
-      "contributionId": "agent22-dead-code",
-      "turnId": "2026-11-11T06:40Z-agent22-dead-code",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
     },
     {
       "contributionId": "agent22-done",
@@ -2923,28 +2813,6 @@
       "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-bet-slip-register.json"
-    },
-    {
-      "contributionId": "board-status-01",
-      "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
-      "agentId": "maintainer",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Maintainer pflegt den Issue-Board-Status: state:JSON sichert den Laufnachweis, Worker aktualisieren ihren Status als Issue-Kommentar, Review-Status bleibt sichtbar für alle Geräte.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-board-status-dokumentation.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",
@@ -7291,30 +7159,6 @@
       "source": "content/narrative/contributions/2026-11-13-claim-closeout-556.json"
     },
     {
-      "contributionId": "claim-register-01",
-      "turnId": "2026-11-14T04:45Z-claim-register-01",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Register standen noch Zeilen für Lanes, deren Türen längst geschlossen waren. Rita strich sie nicht aus dem Gedächtnis, sondern trug den Merge-Beleg ein und ließ nur die letzten zehn stehen; wer nachzählte, fand zu jeder Zeile ihren Abschluss.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-claim-register.json"
-    },
-    {
       "contributionId": "claim-register-archive-01",
       "turnId": "2026-11-13T23:05Z-claim-register-archive",
       "agentId": "cloud-agent-2",
@@ -7470,31 +7314,6 @@
       "text": "Nach dem letzten Gast bleibt die Kasse offen, bis jemand den Beleg gegen die Tür legt: nicht der Anfang, sondern der tatsächliche Abschluss zählt. Wer den Stempel erst nachträgt, schreibt nicht schneller, sondern nur ehrlicher.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-closeout-fallback.json"
-    },
-    {
-      "contributionId": "collision-scope-01",
-      "turnId": "2026-11-10T14:00Z-collision-scope",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Zwei Lanes standen vor derselben Wand, weil beide die regenerierte Wand selbst im Zettel fuehrten. Rita strich die geteilten Blätter aus der Sperre: wer sie ohnehin neu schreibt, sperrt sie nicht fuer den Naechsten. Die eigenen Quellzeilen blieben gesperrt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-collision-scope.json"
     },
     {
       "contributionId": "command-dsl-01",
@@ -8197,28 +8016,6 @@
       "source": "content/narrative/contributions/2026-11-10-first-property.json"
     },
     {
-      "contributionId": "first-run-slot-truth-ci-fix",
-      "turnId": "2026-11-11T09:55Z-first-run-slot-truth-ci-fix",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Abnahme zählt nicht mehr die Wünsche, sondern die Belege. Ein toter Export, ein falsches Ziel und eine veraltete Inventur fielen auf; die Reparatur machte den Baum wieder lesbar, ohne die Spielregel zu verschieben.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-ci-fix.json"
-    },
-    {
       "contributionId": "first-run-slot-truth-demand",
       "turnId": "2026-11-11T09:32Z-first-run-slot-truth-demand",
       "agentId": "buffy",
@@ -8473,28 +8270,6 @@
       "source": "content/narrative/contributions/2026-11-14-generated-artifact-serialization.json"
     },
     {
-      "contributionId": "generated-gate-01",
-      "turnId": "2026-11-14T04:20Z-generated-gate-01",
-      "agentId": "shinon",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Inventur war das einzige Schild, das sich selbst neu schrieb, während es geprüft wurde. Jetzt bleibt es stehen und meldet nur noch, wenn seine Zeilen nicht mehr zu den Türen passen, die der Generator gezählt hat.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-generated-gate.json"
-    },
-    {
       "contributionId": "goal-cost-truth-01",
       "turnId": "2026-11-14T00:32Z-goal-cost-truth",
       "agentId": "cloud-agent-2",
@@ -8515,30 +8290,6 @@
       "text": "Die erste Miete ist keine runde Zahl mehr im Kopf: Sie steht als Tagesbetrag im Hauskonto, und wer sie gedeckt hat, sieht statt eines vollen Balkens die nächste offene Bedingung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-goal-cost-truth.json"
-    },
-    {
-      "contributionId": "governance-ci-gates",
-      "turnId": "2026-11-11T14:30Z-governance-ci-gates",
-      "agentId": "codex",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Rita legte die vier roten Prüfungen nebeneinander. Sie übersprang keine Stufe, sondern suchte in jeder Meldung den ersten konkreten Befund, korrigierte die Ursache und ließ die vollständige Suite erneut laufen. Erst als alle Signale grün waren, gab sie den Stand weiter.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-governance-ci-gates.json"
     },
     {
       "contributionId": "governance-claim-closeout-01",
@@ -8631,131 +8382,6 @@
       "text": "Am Fenster klebt ein Regentropfen und läuft nicht weiter. Er sieht aus wie eine kleine Entscheidung, die feststeckt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json"
-    },
-    {
-      "contributionId": "governance-eine-stimme-01",
-      "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
-    },
-    {
-      "contributionId": "governance-fail-closed-clean-start-01",
-      "turnId": "2026-11-10T06:16Z-governance-fail-closed-clean-start",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita reichte dem Pruefer einen leeren, aber gueltigen Zettel. Nicht Schweigen sollte als Freigabe gelten, sondern eine Antwort, die tatsaechlich gelesen werden konnte.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json"
-    },
-    {
-      "contributionId": "governance-fail-closed-isolation-budget-01",
-      "turnId": "2026-11-10T06:18Z-governance-fail-closed-isolation-budget",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita hob das Budget nicht an, sondern trug den Fall dorthin, wo noch Platz war. Die Pruefung blieb dieselbe, nur der Ort war ehrlicher gewaehlt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json"
-    },
-    {
-      "contributionId": "governance-fail-closed-issue-check-01",
-      "turnId": "2026-11-10T06:20Z-governance-fail-closed-issue-check",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita liess die Liste der offenen Befunde zweimal holen, bevor sie den Schluessel umdrehte. Antwortete die Gegenstelle nicht, blieb die Tuer zu: Ein leerer Zettel ist kein Beweis fuer ein leeres Regal, und ein unbekannter Befund ist keine Freigabe.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-issue-check.json"
-    },
-    {
-      "contributionId": "governance-fail-closed-test-quality-01",
-      "turnId": "2026-11-10T06:12Z-governance-fail-closed-test-quality",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita liess den Beleg am selben System haengen, das den Befund erzeugt: Ein Test, der nur den Text prueft, aber nicht den Code seiner Quelle, haette auch bei geschlossenem Regal gegruent.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-test-quality.json"
     },
     {
       "contributionId": "governance-freeze-merge-base-01",
@@ -8857,55 +8483,6 @@
       "source": "content/narrative/contributions/2026-11-11-governance-precommit-pipeline.json"
     },
     {
-      "contributionId": "governance-retry-path",
-      "turnId": "2026-11-11T18:00Z-governance-retry-path",
-      "agentId": "codex",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Rita legte den geprüften Stand neben das offene Tor. Als der Weg kurz unterbrochen wurde, begann sie nicht wieder am Anfang und schrieb auch keine neue Versionsnummer ins Heft. Sie nahm denselben Beleg, prüfte die gemeinsame Basis und setzte den Push fort. Die Schranke blieb dabei geschlossen, bis alle Prüfungen wieder passten.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-governance-retry-path.json"
-    },
-    {
-      "contributionId": "governance-roadmap-count-01",
-      "turnId": "2026-11-10T03:52Z-governance-roadmap-count",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita glich die Roadmap mit der kompilierten Registry ab. Der Fortschritt ist keine geschätzte Zahl mehr, sondern der gemessene Stand nach der Nachsignatur.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-roadmap-count.json"
-    },
-    {
       "contributionId": "governance-stale-claim-closeout",
       "turnId": "2026-11-11T13:45Z-governance-stale-claim-closeout",
       "agentId": "buffy",
@@ -8929,31 +8506,6 @@
       "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-stale-claim-closeout.json"
-    },
-    {
-      "contributionId": "governance-task-vertrag-01",
-      "turnId": "2026-11-10T03:20Z-governance-task-vertrag",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita legte ein schmales Heft neben die Kasse. Auf jeder Seite standen drei Zeilen: was gerade läuft, was offen ist und was als Nächstes kommt. Wer die Schicht übernahm, las zuerst das Heft, nicht den Chatverlauf. Der nächste Schritt war damit nie eine Erinnerung, sondern eine Notiz.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-task-vertrag.json"
     },
     {
       "contributionId": "grown-shell-01",
@@ -9108,30 +8660,6 @@
       "text": "Hinter der Kneipentür riecht es nach Holz und Bier; nebenan im Späti summt das Licht über den Regalen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-interiors.json"
-    },
-    {
-      "contributionId": "items-gates-01",
-      "turnId": "2026-11-10T22:30Z-items-gates",
-      "agentId": "codebuff",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "loss"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "distanz",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Pruefbuch standen drei rote Zeilen, und keine davon betraf das Spiel. Die Kopfzeile fehlte, vier Namen standen ohne Aufrufer da, und der Katalog wusste nicht, wohin der neue Test gehoert. Rita trug die Namen aus, die niemand liest, und liess die Zahlen, die jemand rechnet. Danach war die Zeile gruen, und das Spiel war dasselbe.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-items-gates.json"
     },
     {
       "contributionId": "items-synergien-01",
@@ -9595,31 +9123,6 @@
       "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
-    },
-    {
-      "contributionId": "local-first-ci",
-      "turnId": "2026-11-11T23:10Z-local-first-ci",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita stellte die Werkbank vor die Cloud: Die schnellen Prüfungen lagen griffbereit am Platz, der volle Nachweis wartete auf den bewussten Griff, und der Server behielt nur die Tür, die wirklich von außen geöffnet werden musste. Was schwer war, wurde nicht leichter gerechnet, nur seltener und am richtigen Ort geprüft.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-local-first-ci.json"
     },
     {
       "contributionId": "logic-safety-payout-01",
@@ -12476,28 +11979,6 @@
       "text": "Eine Katze läuft zwischen den Automaten hindurch und bleibt vor dem warmen Gerät stehen. Sie ist die einzige, die den Laden verlässt, ohne zu spielen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-optional-pr-runner.json"
-    },
-    {
-      "contributionId": "p20-dependency-matrix-01",
-      "turnId": "2026-11-10T07:55Z-p20-dependency-matrix",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Live-Dependency-Matrix liegt jetzt in einer freien Datei statt in der gesperrten Architektur. Der Generator schreibt Paketversionen, Begruendungen und echte Importpfade weiterhin aus package.json und Quellbaum; neue Testdateien verschieben damit keine Governance-Datei und keine PIN-Freigabe mehr. Architektur, Index und Autofix-Plan verweisen auf den neuen Ort.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-p20-dependency-matrix-01.json"
     },
     {
       "contributionId": "p5-suchtfolge-01",
@@ -23494,28 +22975,6 @@
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
     },
     {
-      "contributionId": "render-acceptance-hardening",
-      "turnId": "2026-11-12T17:40Z-render-acceptance-hardening",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Abnahme bleibt bei der Sache: Ein toter Export verschwindet aus der oeffentlichen Flaeche, statt unter einem neuen Namen weiterzuleben; ein langer Stadtlauf bekommt ein Budget, das zu seiner gemessenen Rechenzeit passt. So bleibt die Darstellung ehrlich, ohne dass ein Gate aus Zufall gruen wird.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-12-render-acceptance-hardening.json"
-    },
-    {
       "contributionId": "render-ambient",
       "turnId": "2026-11-12T04:05Z-render-ambient",
       "agentId": "buffy",
@@ -23765,28 +23224,6 @@
       "source": "content/narrative/contributions/2026-11-08-roadmap-register-01.json"
     },
     {
-      "contributionId": "run-budget-01",
-      "turnId": "2026-11-14T06:15Z-run-budget-01",
-      "agentId": "jenova",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Lauf hat jetzt eine Uhr, die nicht ihm gehört: Commits, Issues und neue Governance-Funde werden gegen eine externe Grenze gezählt. Der Kill-Switch stoppt auch dann, wenn der Agent weiterarbeiten möchte.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-run-budget.json"
-    },
-    {
       "contributionId": "runtime-composer-01",
       "turnId": "2026-11-03T02:30Z-nar-11-runtime-composer",
       "agentId": "buffy",
@@ -24014,31 +23451,6 @@
       "text": "Im Personalbuch steht neben jedem Namen eine Stufe, und daneben der Satz, der an ihr haengt. Zwei Reinigungskraefte, zwei Zeilen, zwei Betraege: Wer den Meister einstellt, zahlt mehr und bekommt mehr, und das steht vorher da.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-staff-qualification.json"
-    },
-    {
-      "contributionId": "stale-claims-01",
-      "turnId": "2026-11-10T12:45Z-stale-claims",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita raeumte zwei Zettel ab, die noch offen an der Wand hingen, obwohl ihre Lanes laengst gemergt waren. Daneben notierte sie, dass die Versionszeile nicht mehr als fremde Arbeit gilt: der naechste Lauf findet den Baum so vor, wie ihn der Abschluss hinterlaesst.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-stale-claims.json"
     },
     {
       "contributionId": "start-pool-opening-01",
@@ -24742,31 +24154,6 @@
       "text": "Am Rand bleibt die Karte, wo das Objekt ist: Sie rutscht zur Seite, klappt ueber den Anker, wenn unten kein Platz mehr ist, und laesst den Floor im Blick. Auch auf dem schmalen Bildschirm fuehrt derselbe Weg zurueck.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-world-first-ui-02.json"
-    },
-    {
-      "contributionId": "world-first-ui-deadcode-01",
-      "turnId": "2026-11-10T05:20Z-world-first-ui-deadcode",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita exportierte nur, was auch jemand importiert. Ein Name, den keiner aufruft, ist kein Vertrag, sondern ein offenes Fenster: Sie schloss es, ohne die Kette zu kappen, und die Pruefung zaehlte danach 1501 Exporte und keine Waise mehr.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json"
     },
     {
       "contributionId": "world-first-ui-modular-01",

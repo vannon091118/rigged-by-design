@@ -1,0 +1,22 @@
+{
+  "id": "issue-664-dev-process-remove",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/narrative/issue-664-dev-process-remove",
+  "baseSha": "f9d5cae79d379c6e89a2a38ce1cfc83d0d09b682",
+  "issue": 664,
+  "task": "Governance-, CI- und Repository-Prozessblöcke aus dem Event-Feed entfernen (26 Beiträge)",
+  "pathAllowlist": [
+    "content/narrative/",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/issue-664-dev-process-remove.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f9d5cae79d379c6e89a2a38ce1cfc83d0d09b682"
+}
