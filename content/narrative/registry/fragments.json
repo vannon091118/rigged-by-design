@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0e54f9fafc680d6d1fdebf91bebb4cb82e8dc9d0511b29fcb7ca51f93045dfdc",
+  "contentHash": "sha256:9880e7438fa7ae2445539889269f1621cda23525a8db0e882a85719663e53e0d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7401,6 +7401,28 @@
       "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
     },
     {
+      "contributionId": "city-scene-62",
+      "turnId": "2026-11-14T12:56Z-city-scene-62",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
+    },
+    {
       "contributionId": "city-scene-64",
       "turnId": "2026-11-14T13:24Z-city-scene-64",
       "agentId": "liilith",
@@ -7421,6 +7443,28 @@
       "text": "Sieben Schalter standen an der Wand, jeder mit einem Etikett. Ich habe alle sieben gedrueckt und danach geprueft, ob das Licht wirklich angeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-64.json"
+    },
+    {
+      "contributionId": "city-scene-70",
+      "turnId": "2026-11-14T13:28Z-city-scene-70",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Acht Kacheln, ein Geraet. Ich ging hinein, kam zurueck, ging hinein und schloss es. Zwischendurch war nie mehr als eine Flaeche da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-70.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

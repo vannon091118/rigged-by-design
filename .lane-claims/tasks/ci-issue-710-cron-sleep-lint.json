@@ -4,14 +4,18 @@
   "claimId": "lane/ci/issue-710-cron-sleep-lint",
   "branch": "lane/ci/issue-710-cron-sleep-lint",
   "baseSha": "95ad4214861ed859eadb6472ce622bb884c38c0d",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #710: ungenutzte sleep-Helper in .cron entfernen",
   "goal": "Die definierten, aber nie aufgerufenen sleep-Helper entfernen, ohne Lock-, Retry- oder Exit-Verhalten zu aendern.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 711,
+    "headSha": "ca4afb54",
+    "mergedSha": "88b7fc8addee076ded553c710f83e1a450e853f2"
+  },
   "findings": [],
-  "nextAction": "Gates auf dem Kopf ausfuehren, dann PR gegen main.",
+  "nextAction": "Gemergt; Closeout verbucht.",
   "revision": 1
 }
