@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-533-scheduled-place",
+  "claimId": "lane/sim/issue-533-scheduled-place",
+  "branch": "lane/sim/issue-533-scheduled-place",
+  "baseSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858",
+  "phase": "CI_PENDING",
+  "title": "Planziele fuer alle Intents (#533)",
+  "goal": "scheduledPlace fuer WORK/EAT_OUT/SHOP/PUB/LEISURE nutzen; PLACE_BUILDING fail-closed",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

@@ -36,16 +36,19 @@ export function memoryAbout(resident: CityResidentState, npcId: string): NpcMemo
 }
 
 /**
- * Ziel eines Intents. `COMMUTE` ist ein Weg, kein Ort: Das konkrete Ziel
- * kommt aus dem Tagesplan (`scheduledPlace`), damit ein Heimweg nach
- * Schichtende nicht pauschal zum Arbeitsplatz fuehrt.
+ * Ziel eines Intents. Das konkrete Ziel kommt aus dem Tagesplan
+ * (`scheduledPlace`), damit ein Heimweg nach Schichtende nicht pauschal zum
+ * Arbeitsplatz fuehrt und ein Einkauf nicht im Casino landet. Der Aufrufer
+ * reicht `scheduledPlace` nur fuer die geplante Absicht herein; eine
+ * Beduerfnis-Alternative erbt das Ziel der geplanten Absicht nicht.
  */
 export function locationForIntent(
   intent: NpcIntentKind, workplace: CityLifePlace, target: CityResidentState | null,
   scheduledPlace: CityLifePlace | null = null,
 ): CityLifePlace {
   if (intent === 'VISIT_FRIEND' && target) return target.location;
-  if (intent === 'COMMUTE') return scheduledPlace ?? workplace;
+  if (scheduledPlace) return scheduledPlace;
+  if (intent === 'COMMUTE') return workplace;
   if (intent === 'WORK' || intent === 'EAT_OUT' || intent === 'SHOP') return workplace;
   if (intent === 'PUB' || intent === 'LEISURE' || intent === 'VISIT_FRIEND') return 'KIEZ';
   return 'HOME';

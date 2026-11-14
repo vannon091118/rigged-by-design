@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:601e81c9c1ee55a4b3997649305e36682f894db126c9de9278fd14f3a8a5bf3d",
+  "contentHash": "sha256:380f2f06fa6f938952cb1a8a4567c336adcf3d013c10840b90d780d2853e3b84",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22894,6 +22894,28 @@
       "text": "Auch der Bildvertrag geht jetzt den Weg des Spiels: Die Stadt entsteht über den echten Szenenwechsel, und ihre Türen stehen als Flächen im Frame statt nur im Pixi-Bild.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-scene-frame-doors.json"
+    },
+    {
+      "contributionId": "scheduled-place-all-intents-01",
+      "turnId": "2026-11-14T06:15Z-scheduled-place-all-intents-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tagesplan nennt jetzt für jede Absicht ein Ziel, nicht nur für den Weg: Wer zum Einkaufen geht, landet am Markt, wer zur Arbeit geht, an seinem Betrieb. Nur die geplante Absicht erbt dieses Ziel; ein dringendes Bedürfnis wählt weiter seinen eigenen Ort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json"
     },
     {
       "contributionId": "shift-pay-01",
