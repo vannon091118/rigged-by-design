@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/board-issue-triage",
+  "owner": "Integrator",
+  "branch": "lane/governance/board-issue-triage",
+  "baseSha": "67a8288c4cea5a412bdfddfe36a9798265598999",
+  "issue": 684,
+  "task": "Issue-Board gegen main 67a8288c triagieren: erledigte Issues mit Codebeleg schliessen, Narrative-Cluster in #733 konsolidieren, Blocker praezisieren, Board-Snapshot nachziehen",
+  "goal": "Jedes offene Issue ist geprueft; erledigte sind zu, gleiche Scopes konsolidiert, jeder Blocker ist wahr",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-governance-board-issue-triage.json",
+    ".lane-claims/tasks/governance-board-issue-triage.json",
+    "content/narrative/contributions/2026-11-14-rumor-16.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/INVENTORY.md",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "67a8288c4cea5a412bdfddfe36a9798265598999"
+}

@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T17:55Z-rumor-16",
+  "contributionId": "rumor-16",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
+  "directives": []
+}

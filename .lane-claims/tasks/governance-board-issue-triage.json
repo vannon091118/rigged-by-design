@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-board-issue-triage",
+  "claimId": "lane/governance/board-issue-triage",
+  "branch": "lane/governance/board-issue-triage",
+  "baseSha": "67a8288c4cea5a412bdfddfe36a9798265598999",
+  "phase": "READY",
+  "title": "Issue-Board gegen main 67a8288c triagieren",
+  "goal": "Jedes offene Issue gegen den Code pruefen: erledigte mit Beleg schliessen, gleiche Scopes konsolidieren, jeden Blocker wahr belegen, Board-Snapshot nachziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "#634 wurde im ersten Anlauf falsch geschlossen und nach Nachpruefung wieder geoeffnet; die Workflow-Erzwingung fehlt weiterhin."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, reviewen, mergen; danach Claim auf merged und Task auf DONE ziehen.",
+  "revision": 1
+}
