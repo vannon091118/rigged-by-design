@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-629-generated-serialization",
+  "claimId": "lane/governance/issue-629-generated-serialization",
+  "branch": "lane/governance/issue-629-generated-serialization",
+  "baseSha": "a435fdf15a00832dbf6546e56b5583c133987614",
+  "phase": "IMPLEMENTING",
+  "title": "Generierte Artefakt-Lanes vor parallelen Merge-Konflikten serialisieren (#629)",
+  "goal": "Reproduzierbarer Integrationslauf belegt, dass zwei parallele Narrative-Lanes nacheinander ohne Beitragsverlust integriert werden",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "revision": 1
+}

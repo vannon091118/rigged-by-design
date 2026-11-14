@@ -1,0 +1,22 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T08:20Z-generated-artifact-serialization",
+  "contributionId": "generated-artifact-serialization-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation",
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Lieferungen fahren gleichzeitig vor, und beide Fahrer legen ihre Papiere auf dieselbe Kante der Theke. Der zweite wartet, bis der erste seine Liste gelesen hat, sonst zählt niemand mehr, welche Kiste wohin gehoert.",
+  "directives": []
+}
