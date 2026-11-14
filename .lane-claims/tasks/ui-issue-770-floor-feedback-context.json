@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-770-floor-feedback-context",
+  "claimId": "lane/ui/issue-770-floor-feedback-context",
+  "branch": "lane/ui/issue-770-floor-feedback-context",
+  "baseSha": "5572602fd4bb1599e32af10098bbf35fe418ccf3",
+  "phase": "CI_PENDING",
+  "title": "Issue #770: Floor-Einstiege folgen dem Szenenkontext",
+  "goal": "DIALOG verschwindet als globaler Chip; STADT erscheint nur im Stadt-Szenenkontext. Ein Regressionstest deckt OWN, APARTMENT, CITY und FOREIGN ab.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

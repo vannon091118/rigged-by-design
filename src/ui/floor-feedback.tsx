@@ -29,11 +29,12 @@ export function FloorFeedback({ view, onOpen }: Props) {
         </button>
       )}
 
-      <button type="button" className="narrative-chip dialogue-chip" title="Comic-Dialog oeffnen"
-        onClick={() => onOpen({ kind: 'dialogue' })}>DIALOG</button>
-
-      <button type="button" className="narrative-chip city-chip" title="Stadt: Kiez und Markt"
-        onClick={() => onOpen({ kind: 'city' })}>STADT</button>
+      {/* Kein globaler DIALOG-Chip: Dialoge oeffnen nur aus einem konkreten
+          Gast- oder Szenen-Kontext, nie als Standardroute ohne Anlass. */}
+      {view.scene.kind === 'CITY' && (
+        <button type="button" className="narrative-chip city-chip" title="Stadt: Kiez und Markt"
+          onClick={() => onOpen({ kind: 'city' })}>STADT</button>
+      )}
 
       {isCarryingCrate(view.player.carrying) && view.scene.kind === 'OWN' && (
         <button type="button" className="narrative-chip" title="Getragene Kiste am aktuellen Feld abstellen"
