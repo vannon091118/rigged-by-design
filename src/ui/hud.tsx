@@ -107,8 +107,12 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
           <>
             <div className={`vital devices${broken > 0 ? ' warn' : ''}`} title="Besetzte Plätze und Geräte, die Pflege brauchen.">
               <span>GERÄTE</span>
-              <strong>{occupied}<em>/{view.seats}</em></strong>
-              <small>{broken > 0 ? `${broken} brauchen Wartung` : `${machines.length} ${machines.length === 1 ? 'Spiel' : 'Spiele'} · alle heil`}</small>
+              <strong>{occupied}{view.seats > 0 && <em>/{view.seats}</em>}</strong>
+              <small>
+                {machines.length === 0
+                  ? 'noch kein Gerät'
+                  : broken > 0 ? `${broken} brauchen Wartung` : `${machines.length} ${machines.length === 1 ? 'Spiel' : 'Spiele'} · alle heil`}
+              </small>
             </div>
             <div className={`vital rep ${reputation.tone}`} title={`${HELP.ruf} · ${view.reputation} %`}>
               <span>RUF</span>

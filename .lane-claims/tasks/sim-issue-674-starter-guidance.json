@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-674-starter-guidance",
+  "claimId": "lane/sim/issue-674-starter-guidance",
+  "branch": "lane/sim/issue-674-starter-guidance",
+  "baseSha": "b84623e970e0b4357fbc50316aa977bd26f3da14",
+  "phase": "IMPLEMENTING",
+  "title": "Starter-Kiste fuehrt sichtbar zum ersten Automaten (S1-06)",
+  "goal": "Ein sichtbarer Fuehrungsschritt von der Kiste zum ersten Geraet; GERÄTE 0/0 ist kein Endzustand mehr",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "revision": 1
+}

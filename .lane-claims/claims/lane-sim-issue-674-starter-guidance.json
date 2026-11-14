@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/issue-674-starter-guidance",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-674-starter-guidance",
+  "baseSha": "b84623e970e0b4357fbc50316aa977bd26f3da14",
+  "issue": 674,
+  "task": "Starter-Kiste fuehrt sichtbar zum ersten Automaten (S1-06)",
+  "goal": "Ein sichtbarer Fuehrungsschritt von der Kiste zum ersten Geraet; GERÄTE 0/0 ist kein Endzustand mehr",
+  "pathAllowlist": [
+    "src/ui/",
+    "src/store/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-issue-674-starter-guidance.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b84623e970e0b4357fbc50316aa977bd26f3da14"
+}

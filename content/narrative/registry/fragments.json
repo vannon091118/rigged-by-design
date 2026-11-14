@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4c09f85f086c8e513bd44a3b45dec0c61989cc1b5876f14fb5c2c0bbccc88a09",
+  "contentHash": "sha256:8f4942632b1047e174a1d5f9f886626234526c39ff24015860089f2006e571a2",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -2878,6 +2878,29 @@
       "text": "Turnierabend: Die Tische füllen sich.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-b4-turnier-titel.json"
+    },
+    {
+      "contributionId": "balance-lane-on-demand-01",
+      "turnId": "2026-11-14T08:40Z-balance-lane-on-demand",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Messstand läuft am Rand der Schicht, nicht im Betrieb: Wer ihn an die Kasse hängt, misst jeden Handgriff mit und kommt nie zum Arbeiten. Deshalb steht auf dem Zettel neben dem Gerät eine Zahl, ein Tag und der Stand des Hauses — vergleichen lässt sich nur, was denselben Stand trägt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-balance-lane-on-demand.json"
     },
     {
       "contributionId": "bet-slip-register-01",
@@ -24459,6 +24482,29 @@
       "text": "Rita Kern steht schon vor der Tür, als das Licht angeht. Sie kennt den Geruch von kaltem Neon und weiß, dass der erste Automat heute ihr gehört.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-01-startpool-01.json"
+    },
+    {
+      "contributionId": "starter-crate-guidance-01",
+      "turnId": "2026-11-14T08:52Z-starter-crate-guidance",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "service",
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-starter-crate-guidance.json"
     },
     {
       "contributionId": "test-quality-voice-01",

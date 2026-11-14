@@ -1,0 +1,22 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T08:52Z-starter-crate-guidance",
+  "contributionId": "starter-crate-guidance-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "service",
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
+  "directives": []
+}
