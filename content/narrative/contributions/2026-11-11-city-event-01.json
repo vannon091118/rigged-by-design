@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:00Z-city-event-01",
+  "contributionId": "city-event-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Strassenbahn bremst mit einem Klirren, das die Scheiben in den Schaufenstern zum Zittern bringt. Fuer einen Moment steht die ganze Strasse still und tut so, als haette sie nichts gehoert.",
+  "directives": []
+}

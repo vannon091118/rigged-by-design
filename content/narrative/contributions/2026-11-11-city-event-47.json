@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:46Z-city-event-47",
+  "contributionId": "city-event-47",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Von der Feuertreppe tropft Wasser auf den Gehweg, obwohl es nicht regnet. Eine Frau schaut nach oben und sieht nur eine Waescheleine, die sich bewegt.",
+  "directives": []
+}

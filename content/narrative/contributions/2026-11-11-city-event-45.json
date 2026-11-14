@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:44Z-city-event-45",
+  "contributionId": "city-event-45",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Auto steht mit geoeffneter Motorhaube am Strassenrand, und der Besitzer starrt hinein. Ein Nachbar kommt dazu, nickt und sagt einen Satz, der nichts erklaert.",
+  "directives": []
+}

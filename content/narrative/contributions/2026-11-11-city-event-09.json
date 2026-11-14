@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:08Z-city-event-09",
+  "contributionId": "city-event-09",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "An der Doenerbude dreht sich das Fleisch, und der Mann dahinter schneidet im Rhythmus der wartenden Menge. Zwei Gaeste streiten leise darueber, wer zuerst bestellt hat.",
+  "directives": []
+}

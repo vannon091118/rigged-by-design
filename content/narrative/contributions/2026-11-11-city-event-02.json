@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:01Z-city-event-02",
+  "contributionId": "city-event-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem Kiosk wartet ein Mann mit heruntergelassenem Schirm auf Regen, der laengst aufgehoert hat. Der Verkaeufer mustert ihn durch die Scheibe, ohne die Tuer zu oeffnen.",
+  "directives": []
+}

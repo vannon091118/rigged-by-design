@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:09Z-city-event-10",
+  "contributionId": "city-event-10",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Aus einer Regenrinne tropft es auf ein Blechdach, Tick fuer Tick. Ein Nachbar lehnt am Fensterrahmen und zaehlt die Tropfen, als koennte er damit etwas aufhalten.",
+  "directives": []
+}

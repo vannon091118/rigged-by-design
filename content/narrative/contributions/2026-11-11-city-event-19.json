@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:18Z-city-event-19",
+  "contributionId": "city-event-19",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Spielplatz schaukelt ein Kind allein, waehrend zwei Erwachsene auf der Bank schweigen. Das Quietschen der Kette fuellt die Pause zwischen ihren Saetzen.",
+  "directives": []
+}

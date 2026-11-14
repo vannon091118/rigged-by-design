@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:40Z-city-event-41",
+  "contributionId": "city-event-41",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Nachtbus haelt an der Ecke, obwohl niemand einsteigt. Der Fahrer oeffnet die Tuer, wartet einen Atemzug und schliesst sie wieder.",
+  "directives": []
+}

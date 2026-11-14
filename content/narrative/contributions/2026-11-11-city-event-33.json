@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:32Z-city-event-33",
+  "contributionId": "city-event-33",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Gruppe Schulkinder schiebt sich an der Bushaltestelle vorbei, alle mit demselben Rucksack. Die Lehrerin zaehlt sie zweimal und kommt beide Male auf eine andere Zahl.",
+  "directives": []
+}

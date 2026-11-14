@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:20Z-city-event-21",
+  "contributionId": "city-event-21",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "In der Metzgerei riecht es nach Kraeutern und kaltem Metall. Die Frau hinter der Theke schneidet, ohne zu messen, und trifft trotzdem jedes Mal das gleiche Gewicht.",
+  "directives": []
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:25Z-city-event-26",
+  "contributionId": "city-event-26",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem Geldautomaten wartet jemand mit verschraenkten Armen, waehrend drinnen das Display blinkt. Der naechste in der Schlange seufzt hoerbar und tritt einen Schritt vor.",
+  "directives": []
+}

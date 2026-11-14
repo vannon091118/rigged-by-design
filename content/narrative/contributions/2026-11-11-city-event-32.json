@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:31Z-city-event-32",
+  "contributionId": "city-event-32",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Musiker packt seinen Koffer zusammen, waehrend die Strasse noch nach dem letzten Ton klingt. Ein Kind wirft eine Muenze hinterher, die auf dem Deckel landet.",
+  "directives": []
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:41Z-city-event-42",
+  "contributionId": "city-event-42",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Glocken der Kirche schlagen, und fuer einen Moment gehen alle Gespraeche eine halbe Stufe leiser. Danach redet die Strasse weiter, als waere nichts gewesen.",
+  "directives": []
+}

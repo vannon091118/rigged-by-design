@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:21Z-city-event-22",
+  "contributionId": "city-event-22",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Zeitungsstand haengt eine alte Ausgabe neben der neuen, und der Verkaeufer hat sie noch nicht ausgetauscht. Ein Stammkunde tippt auf die Schlagzeile und lacht kurz.",
+  "directives": []
+}

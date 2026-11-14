@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:06Z-city-event-07",
+  "contributionId": "city-event-07",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Waschsalon dreht sich eine Trommel leer, waehrend draussen jemand auf einem Stuhl wartet. Der Fernseher laeuft ohne Ton, und das Summen der Maschinen uebernimmt das Gespraech.",
+  "directives": []
+}

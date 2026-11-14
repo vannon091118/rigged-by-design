@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:48Z-city-event-49",
+  "contributionId": "city-event-49",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Eckladen hat heute frueher geschlossen, aber die Kuehlung summt weiter. Ein Kunde zieht an der Tuer und liest dann das Schild, das er offenbar uebersehen hat.",
+  "directives": []
+}
