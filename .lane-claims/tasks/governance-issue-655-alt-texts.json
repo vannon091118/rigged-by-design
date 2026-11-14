@@ -4,14 +4,19 @@
   "claimId": "lane/governance/issue-655-alt-texts",
   "branch": "lane/governance/issue-655-alt-texts",
   "baseSha": "ffd371dff2d241fa5642479972516605cd0e3e39",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Issue #655: Alt-Texte und Banner gegen den sichtbaren Bildzustand pruefen",
   "goal": "Jedes README-Bild ansehen, den Alt-Text auf den sichtbaren Zustand korrigieren und einen Doku-Check ergaenzen, der leeren, generischen oder toten Bildverweisen den Gruen-Status verweigert.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 758,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/758",
+    "state": "open",
+    "headSha": "e8cbecb2"
+  },
   "findings": [],
-  "nextAction": "Lokale Gates gruen halten, committen, PR oeffnen und Handover am Issue schreiben.",
-  "revision": 1
+  "nextAction": "Review durch den Maintainer; lokale Gates gruen, fernseitig keine Checks vorhanden.",
+  "revision": 2
 }
