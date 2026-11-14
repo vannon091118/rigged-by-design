@@ -8,6 +8,8 @@
  * @dead-code-exception: Contract-Stub, Exporte werden von späteren Lanes importiert.
  */
 
+import { isActorId } from './actor-id';
+
 export type RelationshipId = string;
 export type ActorId = string;
 export type RelationshipType = string;
@@ -24,20 +26,48 @@ export interface RelationshipEdge {
   readonly clues: readonly string[]; // max 4 Einträge
 }
 
+const STANCE_MIN = -100;
+const STANCE_MAX = 100;
+const GOODWILL_MIN = 0;
+const GOODWILL_MAX = 100;
+const HISTORY_MAX = 6;
+const CLUES_MAX = 4;
+
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === 'string' && value.length > 0;
+
+const isFiniteWithin = (value: unknown, min: number, max: number): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
+
+const isTextList = (value: unknown, maxLength: number): value is readonly string[] =>
+  Array.isArray(value) && value.length <= maxLength && value.every((entry: unknown) => typeof entry === 'string');
+
+const relationshipEdgeId = (
+  sourceActorId: ActorId,
+  targetActorId: ActorId,
+  relationshipType: RelationshipType,
+): RelationshipId => `${sourceActorId}->${targetActorId}:${relationshipType}`;
+
 /** Erstellt eine neue Relationship-Kante. Wirft bei ungültigen IDs. */
 export function createRelationshipEdge(
   sourceActorId: ActorId,
   targetActorId: ActorId,
   relationshipType: RelationshipType,
 ): RelationshipEdge {
-  if (!sourceActorId || !targetActorId || !relationshipType) {
-    throw new Error('relationship: sourceActorId, targetActorId und relationshipType dürfen nicht leer sein');
+  if (!isActorId(sourceActorId)) {
+    throw new Error('relationship: sourceActorId ist keine gültige Actor-ID');
+  }
+  if (!isActorId(targetActorId)) {
+    throw new Error('relationship: targetActorId ist keine gültige Actor-ID');
+  }
+  if (!isNonEmptyString(relationshipType)) {
+    throw new Error('relationship: relationshipType darf nicht leer sein');
   }
   if (sourceActorId === targetActorId) {
     throw new Error('relationship: Quelle und Ziel müssen verschieden sein');
   }
   return {
-    edgeId: `${sourceActorId}->${targetActorId}:${relationshipType}`,
+    edgeId: relationshipEdgeId(sourceActorId, targetActorId, relationshipType),
     sourceActorId,
     targetActorId,
     relationshipType,
@@ -50,13 +80,14 @@ export function createRelationshipEdge(
 
 /** Prüft, ob eine Relationship-Kante die Invarianten erfüllt. */
 export function validateRelationshipEdge(edge: RelationshipEdge): boolean {
-  if (!edge.edgeId || typeof edge.edgeId !== 'string') return false;
-  if (!edge.sourceActorId || typeof edge.sourceActorId !== 'string') return false;
-  if (!edge.targetActorId || typeof edge.targetActorId !== 'string') return false;
-  if (!edge.relationshipType || typeof edge.relationshipType !== 'string') return false;
-  if (typeof edge.stance !== 'number' || edge.stance < -100 || edge.stance > 100) return false;
-  if (typeof edge.goodwill !== 'number' || edge.goodwill < 0 || edge.goodwill > 100) return false;
-  if (!Array.isArray(edge.history) || edge.history.length > 6) return false;
-  if (!Array.isArray(edge.clues) || edge.clues.length > 4) return false;
-  return true;
+  if (typeof edge !== 'object' || edge === null) return false;
+  if (!isActorId(edge.sourceActorId) || !isActorId(edge.targetActorId)) return false;
+  if (edge.sourceActorId === edge.targetActorId) return false;
+  if (!isNonEmptyString(edge.relationshipType)) return false;
+  if (edge.edgeId !== relationshipEdgeId(edge.sourceActorId, edge.targetActorId, edge.relationshipType)) {
+    return false;
+  }
+  if (!isFiniteWithin(edge.stance, STANCE_MIN, STANCE_MAX)) return false;
+  if (!isFiniteWithin(edge.goodwill, GOODWILL_MIN, GOODWILL_MAX)) return false;
+  return isTextList(edge.history, HISTORY_MAX) && isTextList(edge.clues, CLUES_MAX);
 }

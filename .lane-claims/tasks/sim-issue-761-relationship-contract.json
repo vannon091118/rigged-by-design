@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-761-relationship-contract",
+  "claimId": "lane/sim/issue-761-relationship-contract",
+  "branch": "lane/sim/issue-761-relationship-contract",
+  "baseSha": "2d041a5851b30307ede0e5c401e9b52a0b9e16e3",
+  "phase": "CI_PENDING",
+  "title": "Issue #761: Relationship-Contract fail-closed",
+  "goal": "Factory und Validator pruefen Actor-IDs, endliche Werte, Kantenidentitaet und History/Clues identisch; Regressionstests decken die Vertragsgrenzen ab.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": {
+    "number": 814,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/814",
+    "state": "open"
+  },
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "warning",
+      "summary": "Der Validator nutzte den actor-id-Contract nicht, liess NaN/Infinity sowie nicht-textuelle History- und Clue-Eintraege durch und pruefte die edgeId nicht gegen Quelle, Ziel und Typ."
+    }
+  ],
+  "nextAction": "Maintainer reviewt PR #814 gegen den exakten PR-Kopf; danach Merge oder PARTIAL/REJECT.",
+  "revision": 2
+}
