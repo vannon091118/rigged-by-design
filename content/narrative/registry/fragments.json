@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8f4942632b1047e174a1d5f9f886626234526c39ff24015860089f2006e571a2",
+  "contentHash": "sha256:d6e671d3ed2e7e36d01655e4bd1220c3fe3cd6efa8dbeb528f860d8e2fd69273",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3018,6 +3018,29 @@
       "text": "Ein Blick von der Seite bleibt ein Blick: PROBE hinterlaesst ein Indiz, oeffnet aber keine Szene. Erst Handlungen mit Folgen - Informationshandel, Preiskampf, Gaesteabwerbung, Sabotage - werden zu einem RIVAL_MOVE, und die Aktionsliste ist Teil des Trigger-Vertrags statt einer stillen Annahme.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-c2-rival-action-trigger.json"
+    },
+    {
+      "contributionId": "canonical-priorities-01",
+      "turnId": "2026-11-14T09:05Z-canonical-priorities",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "service",
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Türrahmen hängt eine Tafel, mit Kreide geschrieben und oft nachgezogen: erst das, was heute nicht warten kann, dann das, was jemand vor die Tür gestellt hat, zuletzt die eigene Liste. Wer sie umstellt, muss sie neu schreiben; zwei Tafeln im Haus hat noch niemand gelesen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-canonical-priorities.json"
     },
     {
       "contributionId": "chain-echo-body-01",

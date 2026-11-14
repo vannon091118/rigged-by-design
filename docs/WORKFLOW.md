@@ -6,9 +6,9 @@
 
 ## Einstieg
 
-Die Rollen sind getrennt: **Agenten** (`agent-<n>-local`/`-cloud`) claimen, arbeiten, pushen ihren Branch und öffnen den PR; der **Maintainer** reviewt, merged, schließt Issues und setzt Tags ([`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes)).
+Die Rollen sind getrennt: **Agenten** (`LIILITH`, `Shinon`, `Jenova`) claimen, arbeiten, pushen ihren Branch und öffnen den PR; der **Maintainer** reviewt, merged, schließt Issues und setzt Tags ([`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes)).
 
-Das **Issue-Board ist der primäre Workflow**: Arbeitsreihenfolge und Besitz stehen in den Issues (Prioritätslabels, Zustand, Kommentare), nicht in lokalen Dateien. Zu Beginn wird das Board nach Priorität gelesen (`P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste). Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; `.lane-claims/` ist danach nur die lokale Kollisionssperre für Pfade und Staging. Erster Befehl vor jedem Edit:
+Das **Issue-Board ist der primäre Workflow**: Arbeitsreihenfolge und Besitz stehen in den Issues (Prioritätslabels, Zustand, Kommentare), nicht in lokalen Dateien. Die Reihenfolge ist die kanonische Priorität aus [`GOVERNANCE.md`](GOVERNANCE.md#maintainer-prioritäten-kanonisch); dieses Dokument wiederholt sie nicht. Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; `.lane-claims/` ist danach nur die lokale Kollisionssperre für Pfade und Staging. Erster Befehl vor jedem Edit:
 
 ```bash
 pnpm run worker:init -- status
@@ -113,7 +113,9 @@ Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits ge
 
 `--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf. `--profile=fast` und `--profile=integration` sind der lokale Vor-PR-Nachweis aus Light, betroffenen Tests und Build; `--profile=full` bleibt die lokale Ausnahme für Releases und die volle Suite. Cloud-Light ersetzt keinen dieser Nachweise.
 
-### Commit und PR
+### Review und Merge
+
+Der Review gehört dem Maintainer, nicht dem Worker: er liest den vollständigen Diff, prüft Intention gegen Umsetzung und die kausalen Folgen in anderen Modulen und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`. **Rebase-, Doku- und Generated-Drift behebt er selbst** (`node scripts/sync-generated.mjs --all` für generierte Dateien); nur echte Code-Findings gehen an den Worker zurück. Die Verantwortlichkeiten und Prioritäten stehen in [`GOVERNANCE.md`](GOVERNANCE.md#maintainer-protokoll).
 
 Der Commit-Body trägt exakt:
 

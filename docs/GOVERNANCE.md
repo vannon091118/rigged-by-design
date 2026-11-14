@@ -14,9 +14,25 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 
 - Issues und Pull Requests anlegen, kommentieren, **schließen und wiedereröffnen** — Schließen ausschließlich Maintainer oder User; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
 - **Merge nach `main`, Push auf `main`, Release-Tags** für belegte Features; `main` bleibt sonst tabu.
-- **Priorisierung:** `P0` → Regression → Unblocker → `P1` → `P2/P3` → Housekeeping; die Reihenfolge wird am Ende jedes Laufs neu geschrieben, auch bei `IDLE`.
+- **Priorisierung:** nach der kanonischen Tabelle [Maintainer-Prioritäten (kanonisch)](#maintainer-prioritäten-kanonisch); die Reihenfolge wird am Ende jedes Laufs neu geschrieben, auch bei `IDLE`.
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
 - Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
+
+### Maintainer-Prioritäten (kanonisch)
+
+Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFLOW.md`](WORKFLOW.md) und [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) verweisen hierher und wiederholen sie nicht.
+
+| Prio | Trigger | Aktion |
+|------|---------|--------|
+| **P0** | Jeder neue User- **oder Agenten-Kommentar** auf einem Issue oder PR | Eingangsticket: sofort triagieren; nichts geht vorher |
+| **P1** | Offene PRs mit `review-waiting` und andere ausdrücklich wartende Maintainer-Reviews | Diff lesen, Findings beheben lassen oder `ACCEPT`/`PARTIAL`/`REJECT` |
+| **P2** | Gameplay-Bugs und fehlende spielrelevante Inhalte | Issue erstellen, priorisieren, zuweisen; pre-existing Flakiness bis zur Root-Cause mit Causal-Chain erfassen |
+| **P3** | Board-/Governance-Struktur, die echte Rekursionen, Kommunikationsverlust oder laufende Spielarbeit blockiert | Minimal-Fix |
+| — | Governance-Verbesserungen ohne Blocking-Effekt | Kein Issue, kein PR; Kommentar im Review-Log |
+
+- **Inhaltlicher Schwerpunkt bleibt das Spiel.** Governance darf nicht zum Backlog-Multiplikator werden.
+- **Innerhalb einer Stufe gilt das älteste Issue zuerst.** Die Reihenfolge aus dieser Tabelle ist die des Boards; lokale Dateien und Register können sie nicht ändern.
+- **Kein neues Ticket ohne Board-Prüfung.** Erst der bestehende Zustand, dann ein neues Issue; ein Ticket, das nur wegen schlechter Beschreibung eines anderen entsteht, entfällt.
 
 ### Agenten (`LIILITH`, `Shinon`, `Jenova`)
 
@@ -63,7 +79,7 @@ Dependencies werden über einen Fingerprint aus Manifesten, Lockfile, Workspace-
 
 **Das Issue-Board ist der primäre Workflow und die einzige Wahrheit.** Es bestimmt, was als Nächstes passiert (Priorität), wem es gehört (Claim) und wann es fertig ist (Review, `RELEASE`). Ein Claim ist ein Kommentar am GitHub-Issue — `CLAIM [A<n>] agent-1-local <UTC-Zeit> scope=… plan=…` vor dem ersten Read, `RELEASE [A<n>] done <sha>` nach der Übergabe; das Ablaufmuster steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt.
 
-**Arbeitsreihenfolge** ist ausschließlich die Board-Reihenfolge: `P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste Issue. Lokale Dateien, Register und Task-Verträge können diese Reihenfolge nicht ändern; der Maintainer schreibt sie am Ende jedes Laufs neu.
+**Arbeitsreihenfolge** ist ausschließlich die Board-Reihenfolge aus [Maintainer-Prioritäten (kanonisch)](#maintainer-prioritäten-kanonisch), innerhalb einer Stufe das älteste Issue. Lokale Dateien, Register und Task-Verträge können diese Reihenfolge nicht ändern; der Maintainer schreibt sie am Ende jedes Laufs neu.
 
 **Die lokale Kollisionssperre.** Der Eintrag unter `.lane-claims/claims/` (Register `.lane-claims/claims.json`) und der Task-Vertrag sind **keine zweite Wahrheit**. Sie halten die Pfad-Allowlist, an der Staging, `verify:scope`, `pretask` und die Pre-Commit-Hooks hängen, und verhindern genau eine Sache: dass zwei parallel laufende Agenten dieselben Dateien im selben Task oder Turn bearbeiten. Sie entscheiden nie über Besitz, Priorität, Reihenfolge oder Merge. Weicht die Sperre vom Issue ab, gewinnt das Issue; die Sperre wird nachgezogen, statt die Arbeit zu blockieren. Fehlt sie ganz und ist das Issue sauber geclaimt, startet `pretask` mit Warnung und eingeschränkter Scope-Prüfung.
 
@@ -144,6 +160,34 @@ Issue-Scopes:
 - keine Rulesets
 
 Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch den **Maintainer** nach Review und auf dem exakten Kopf, Agenten pushen nur ihren Lane-Branch. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
+
+## Maintainer-Protokoll
+
+**Laufbeginn — Issue-Kommentar-Check:**
+1. Scanne alle offenen Issues auf Kommentare seit dem letzten State-Snapshot
+2. Neuer User- oder Agenten-Kommentar → `P0`, sofort
+3. Neuer Worker-Statuskommentar ohne Frage → State aktualisieren, kein neues Ticket
+4. State und Ruleset sind Hilfsmittel, nicht Wahrheit — bei Abweichung gewinnt die Realität
+
+**Review-Protokoll (kein Test-Run — Tests liefen vor dem Push beim Worker):**
+1. Lies den vollständigen Diff
+2. Prüfe: Ist das, was das Issue verlangt hat? (Intention vs. Umsetzung)
+3. Prüfe: Gibt es kausale Folgen in anderen Modulen? (Import-Ketten, State-Owner, Ledger-Invarianten)
+4. Prüfe: Wurden die Regeln aus `AGENTS.md` eingehalten? (Allowlist, Lane-Phasen, Doku pro Commit)
+5. Merge mit einem Satz was geprüft wurde — ODER — lehne ab mit einem Satz was fehlt
+6. **Rebase-, Doku- und Generated-Drift behebt der Maintainer selbst**, nie zurück zum Worker: generierte Dateien über `node scripts/sync-generated.mjs --all`, Handdateien im eigenen Review-Checkout. Nur echte Code-Findings gehen an den Worker zurück.
+
+**Neue Issues erstellen — Scope:**
+- JA: Gameplay-Bugs, fehlende Features, erkannte Code-Muster die zu Konflikten führen
+- NEIN: Issues über das Issue-Board selbst, Governance-Verbesserungen ohne Blocking-Effekt, Issues die nur existieren weil andere Issues schlecht beschrieben waren
+
+**Aktive Identitäten — Laufbeginn:**
+- Prüfe welche Worker aktive Claims haben (`pnpm run agent:pretask --json`)
+- Weise freie, ungeblockte Issues freien Workern zu
+- Bei Claim-Kollision: Maintainer entscheidet wer aufgibt — einmalig, klar, im Issue kommentiert
+
+**Rekursions-Erkennung:**
+Wenn ein Maintainer-Lauf hauptsächlich Governance-Issues über Governance produziert: STOP. Einen Kommentar ins aktuelle Control-Issue: "Governance-Drift erkannt." Nächster Lauf: ausschließlich `P0`/`P1`/Spiel-Bugs. Kein weiterer Governance-Ausbau in diesem Zyklus.
 
 ## Board-Status & Review-Status (Pflicht)
 

@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/issue-672-canonical-priorities",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-672-canonical-priorities",
+  "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "issue": 672,
+  "task": "Maintainer-Prioritaeten und Board-Regeln kanonisch vereinheitlichen",
+  "goal": "Eine kanonische P0-P3-Definition in docs/GOVERNANCE.md; AGENTS.md, WORKFLOW und AGENT-ONBOARDING ohne Regel-Duplikate",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/GOVERNANCE.md",
+    "docs/WORKFLOW.md",
+    "docs/AGENT-ONBOARDING.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e844caa75824d3f100ddac6351e81eb3f65f1978"
+}
