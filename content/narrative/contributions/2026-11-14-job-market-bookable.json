@@ -1,0 +1,21 @@
+{
+  "agentId": "local-agent-1",
+  "turnId": "2026-11-14T00:10Z-job-market-bookable",
+  "contributionId": "job-market-bookable-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Neubau an der Ecke hat Fenster, aber noch keinen Griff. Wer dort eine Schicht sucht, steht vor einer Wand und geht weiter — die Stellen entstehen erst mit der Tür.",
+  "directives": []
+}
