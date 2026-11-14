@@ -8,27 +8,16 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 
 ## Rollen
 
-Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md), die Rechte in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#rollen-und-lanes).
+Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md), die Rechte und Prioritäten in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#rollen-und-lanes).
 
 | Rolle | Identität | Darf | Darf nicht |
 | --- | --- | --- | --- |
 | **Maintainer** | der benannte Reviewer und Orchestrator | Issues und Pull Requests anlegen, kommentieren, schließen und wiedereröffnen (**Schließen nur Maintainer oder User**); Verdikt `ACCEPT`/`PARTIAL`/`REJECT`; Merge nach `main` und Push auf `main`; Release-Tags; Priorisierung; Konflikte zwischen Agenten entscheiden | eine Spiel-Lane ohne eigenen Claim führen; Governance-Issues erstellen deren Inhalt kein laufendes Game-Feature blockiert |
 | **Agent** | `LIILITH`, `Shinon` oder `Jenova` — global im Identity-Board reserviert (`pnpm run worker:init`); `agent-<n>-local/-cloud` sind Legacy-Namen, keine neuen Identitäten | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues oder Pull Requests schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
 
-**Scope-Hierarchie für den Maintainer:** Spiel-Inhalte (Sim, Store, Render, UI) haben Vorrang vor Governance. Governance-Issues werden nur erstellt wenn sie aktive Game-Arbeit blockieren. Governance-Verbesserungen die nichts blockieren werden als Kommentar im nächsten Review-Log festgehalten — kein Issue, kein PR.
+**Scope-Hierarchie:** Spiel-Inhalte (Sim, Store, Render, UI) haben Vorrang vor Governance; Governance-Issues entstehen nur, wenn sie aktive Spielarbeit blockieren. **Die verbindliche Priorität `P0`–`P3` steht an genau einer Stelle:** [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-prioritäten-kanonisch). Dieser Kurzvertrag wiederholt sie nicht.
 
 - **Ein Orchestrator.** Prioritäten, Backlog-Reihenfolge und Konflikte entscheidet der Maintainer; Agenten arbeiten die so sortierten Issues ab und melden im Issue zurück.
-
-**Maintainer-Prioritäten (hart, in dieser Reihenfolge):**
-
-| Prio | Trigger | Aktion |
-|------|---------|--------|
-| P0 | Neuer User-Kommentar auf offenem Issue | Sofortmaßnahme; nichts geht vorher |
-| P1 | PR mit Label `review-waiting` | Code-Diff lesen, prüfen, mergen oder ablehnen |
-| P2 | Spiel-Bug mit direkter Gameplay-Auswirkung | Issue erstellen, priorisieren, zuweisen |
-| P3 | Echte Governance-Rekursion (Governance bricht laufende Arbeit) | Minimal-Fix |
-| — | Governance-Verbesserungen ohne Blocking-Effekt | Nicht in diesem Lauf |
-
 - **Ein Agent pro Issue.** Besitz ist der `CLAIM`-Kommentar am Issue, nicht der lokale Zustand; `pretask` prüft ihn als Startgate.
 - **Claim vor Read.** Wer ein freies Issue übernehmen will, kommentiert zuerst `CLAIM`, dann liest er Code. Zwei aktive Claims sind ein Konflikt für den Maintainer, keine Doppelarbeit.
 - **Identität vor Arbeit.** Die Worker-Identität wird einmal global im Identity-Board reserviert (`IDENTITY_CLAIM`) und lokal in `.lanes/identity.json` gehalten; sie überlebt Worktree-Neuaufbauten. Identitäts-Claim und Arbeits-Claim am Issue sind getrennt. Ohne verifizierte Reservierung kein neuer Arbeits-Claim.
@@ -41,68 +30,17 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 
 **Direktverweis:** Der Arbeitsablauf für jeden Agenten steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) — Issue-Check, Main-Fetch, Review-Prüfung, Claim, Lösung mit PR, Umsetzungs-Kommentar und die Schleife zum nächsten Issue. Dieses Dokument ist verbindlich; es schlägt jede ältere Beschreibung von Claims und Lanes.
 
-**Das Issue-Board ist der primäre Workflow.** Arbeit kommt aus den GitHub-Issues, in deren Prioritätsreihenfolge (`P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping; innerhalb einer Stufe das älteste) und wird dort behauptet: `CLAIM [A<n>] <agent> <UTC-Zeit> scope=<dateien|symbole> plan=<ein Satz>` vor dem ersten Read, `RELEASE [A<n>] done <sha>` plus Label `review-waiting` nach der Übergabe an den Maintainer. Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt und tabu. Der Claim im Issue ist **autoritativ** für Besitz, Priorität und Reihenfolge.
+**Das Issue-Board ist der primäre Workflow.** Arbeit kommt aus den GitHub-Issues in der kanonischen Priorität und wird dort behauptet: `CLAIM [A<n>] <agent> <UTC-Zeit> scope=<dateien|symbole> plan=<ein Satz>` vor dem ersten Read, `RELEASE [A<n>] done <sha>` plus Label `review-waiting` nach der Übergabe an den Maintainer. Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt und tabu. Der Claim im Issue ist **autoritativ** für Besitz, Priorität und Reihenfolge.
 
 `.lane-claims/` und der Task-Vertrag sind **keine zweite Wahrheit**. Sie sind die lokale Kollisionssperre: sie halten die Pfad-Allowlist für Staging, `verify:scope`, `pretask` und die Hooks und verhindern, dass zwei parallele Agenten dieselben Dateien im selben Task oder Turn bearbeiten. Über Besitz, Priorität oder Merge entscheiden sie nie; bei Abweichung gewinnt immer das Issue, und die Sperre wird nachgezogen.
 
-## Maintainer-Protokoll
+## Maintainer
 
-**Laufbeginn — Issue-Kommentar-Check:**
-1. Scanne alle offenen Issues auf Kommentare seit dem letzten State-Snapshot
-2. Neuer User-Kommentar → P0-Aufgabe, sofort
-3. Neuer Worker-Statuskommentar → State aktualisieren, kein neues Ticket
-4. State und Ruleset sind Hilfsmittel, nicht Wahrheit — bei Abweichung gewinnt die Realität
+Laufbeginn, Review-Protokoll, Issue-Scope, Identitätsprüfung, Rekursions-Erkennung und die Pflichten am Board stehen in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-protokoll). Der Kurzvertrag wiederholt sie nicht; bei Widerspruch gewinnt dieses Dokument dort.
 
-**Review-Protokoll (kein Test-Run — Tests liefen vor dem Push beim Worker):**
-1. Lies den vollständigen Diff
-2. Prüfe: Ist das, was das Issue verlangt hat? (Intention vs. Umsetzung)
-3. Prüfe: Gibt es kausale Folgen in anderen Modulen? (Import-Ketten, State-Owner, Ledger-Invarianten)
-4. Prüfe: Wurden AGENTS.md-Regeln eingehalten? (Allowlist, Lane-Phasen, Docs pro Commit)
-5. Merge mit einem Satz was geprüft wurde — ODER — lehne ab mit einem Satz was fehlt
-6. Rebase-Konflikt / Doku-Drift / generierte Konflikte: Maintainer löst selbst, nie zurück zum Worker. Generierte Dateien: `node scripts/sync-generated.mjs --all`
+## Board-Status
 
-**Neue Issues erstellen — Scope:**
-- JA: Gameplay-Bugs, fehlende Features, erkannte Code-Muster die zu Konflikten führen
-- NEIN: Issues über das Issue-Board selbst, Governance-Verbesserungen ohne Blocking-Effekt, Issues die nur existieren weil andere Issues schlecht beschrieben waren
-
-**Aktive Identitäten — Laufbeginn:**
-- Prüfe welche Worker aktive Claims haben (`pnpm run agent:pretask --json`)
-- Weise freie, ungeblockte Issues freien Workern zu
-- Bei Claim-Kollision: Maintainer entscheidet wer aufgibt — einmalig, klar, im Issue kommentiert
-
-**Rekursions-Erkennung:**
-Wenn ein Maintainer-Lauf hauptsächlich Governance-Issues über Governance produziert: STOP. Einen Kommentar ins aktuelle Control-Issue: "Governance-Drift erkannt." Nächster Lauf: ausschließlich P0/P1/Spiel-Bugs. Kein weiterer Governance-Ausbau in diesem Zyklus.
-
-## Rollentrennung: Maintainer vs. Worker
-
-**Worker** bauen, bis kein Issue mehr offen ist. Jeder freie Worker übernimmt das älteste unclaimed Issue in Board-Reihenfolge (P0 → Regressionen → Unblocker → P1 → P2/P3 → Housekeeping), claimt es (`CLAIM`), implementiert auf seinem eigenen Branch, pusht, setzt `review-waiting` und meldet `RELEASE [A<n>] done <sha>`. Der Maintainer delegiert die gesamte Spiel-Arbeit (Sim, Store, Render, UI) an die Worker und arbeitet selbst keinen Spiel-Code.
-
-**Maintainer** koordiniert, öffnet neue Issues, integriert fremde Issues ins Board und merged PRs nach `main`. Der Maintainer scant zu Beginn jedes Laufs alle offenen Issues auf neue Kommentare (P0 sofort), erstellt neue Issues für Gameplay-Bugs, fehlende Features und konfliktträchtige Code-Muster (`[BEREICH][Priorität] Titel` mit Symptom → Ursache → Causal-Chain und vollständigen Labels), weist freie Issues freien Workern zu und merged PRs nach `main` auf exaktem Kopf nach lokalem Vor-PR-Nachweis und eigenem Diff-Review.
-
-**Rebase vor PR-Erstellung.** Jeder Lane-Branch muss vor dem Erstellen oder Aktualisieren eines PR gegen `origin/main` rebased sein (`scripts/integrate.mjs --check` muss `READY` liefern). Konflikte in generierten Artefakten löst der Maintainer selbst via `node scripts/sync-generated.mjs --all`; Konflikte in Handdateien nie zurück zum Worker. Erst nach erfolgreichem Rebase und lokalem Vor-PR-Nachweis (`ci:local`) wird der PR erstellt.
-
-## Board-Status & Review-Status (Pflicht)
-
-Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem Ort aus einsehbar sein (Desktop, Termux, Remote-Node). Ein State-Snapshot sichert den Fortschritt über Gerätegrenzen hinweg.
-
-**state:JSON — Laufnachweis**
-- Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
-- Sie zeigt: wo der letzte Lauf aufgehört hat, welche Issues aktualisiert wurden, welche Claims aktiv sind, welche PRs `review-waiting` sind.
-- Der nächste Lauf liest die `state:JSON` zu Beginn und sieht direkt, welche Issues upgedatet sind und was zu tun ist.
-
-**Worker-Statuspflicht (jedes Gerät)**
-- Jeder Worker aktualisiert seinen eigenen Status immer als Issue-Kommentar am zugehörigen Issue: `CLAIM`, `RELEASE [A<n>] done <sha>`, Blocker, Testergebnis, Frage.
-- Ein Issue-Kommentar ist ein Ticket-Update. Der Maintainer aktualisiert den Board-Zustand sofort bei neuem Kommentar (P0).
-- Worker dürfen den Status nicht nur lokal halten; er muss im Issue sichtbar sein.
-
-**Maintainer-Statuspflicht**
-- Der Maintainer hält den Board-Zustand aktuell: Issues schließen, Labels setzen/entfernen, Claims zuweisen, `state:JSON` pflegen.
-- Bei Claim-Kollision entscheidet der Maintainer einmalig und klar im Issue.
-- Review-Stats: offene Reviews, `review-waiting`-PRs, akzeptierte/abgelehnte PRs sind Teil des Board-Status und werden bei jedem Lauf geprüft.
-
-**Pflicht-Issues pinnen**
-- P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
-- Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
+Der Board-Zustand ist Pflicht und in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#board-status--review-status-pflicht) definiert: Worker melden ihren Status als Issue-Kommentar, der Maintainer hält Labels, Claims und den `state:JSON`-Laufnachweis aktuell.
 
 ## Zehn unverhandelbare Regeln
 
@@ -137,7 +75,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - **CI:** 15 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Alle Tests, Gates, Builds und APKs laufen lokal; die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
 - **Workflows:** drei Dateien, ausschließlich Repository-Verwaltung: `Ensure PR`, `PR Cleanup` und `Promote` (manueller Status-/Notausgang). Kein Workflow führt Tests, Gates, Builds oder APKs aus. Die Testlinie ist `pnpm run ci:local`.
-- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Es gibt keinen Cloud-Testlauf; der lokale Vor-PR-Nachweis `pnpm run ci:local` ist die Autorität. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
+- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Es gibt keinen Cloud-Testlauf; der lokale Vor-PR-Nachweis `pnpm run ci:local` ist die Autorität. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#branch-schutz).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
 ## Befehle
@@ -172,9 +110,9 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 - Arbeit auf der eigenen Lane; Commit und Push des eigenen Branches über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
 - Claim und Freigabe laufen als Issue-Kommentare (`CLAIM`/`RELEASE`) nach [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md); die Übergabe setzt zusätzlich `review-waiting`, und Issues werden kommentiert, nie geschlossen.
-- Merge, Close/Reopen und Release-Tags macht der Maintainer nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; Agenten pushen nie `main`. Es gibt keinen Cloud-Testlauf, keinen Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge, Close/Reopen und Release-Tags macht der Maintainer nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; Agenten pushen nie `main`. Es gibt keinen Cloud-Testlauf, keinen Force-Push, kein Auto-Merge. Ablauf in [`docs/WORKFLOW.md`](docs/WORKFLOW.md#review-und-merge).
 
-**Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
+**Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln gehören in die kanonische Quelle ([`docs/GOVERNANCE.md`](docs/GOVERNANCE.md)); dieser Kurzvertrag verlinkt sie nur.
 
 ## Pflichtdoku
 
@@ -190,7 +128,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | [`docs/INDEX.md`](docs/INDEX.md) | Einstieg, Doku-Landkarte und Vertragsindex. |
 | [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | Pretask, Resume, Arbeitsweise, Abschluss und manueller Merge. |
 | [`docs/CI.md`](docs/CI.md) | Required-Gates, Zustände, Workflows, Branch-Schutz und Nachweise. |
-| [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) | Rollen, Lanes, Claims, Register-Audit und Eskalation. |
+| [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) | **Kanonisch:** Rollen, Prioritäten, Claims, Review-Verantwortung, Board-Status und Eskalation. |
 | [`docs/TESTING.md`](docs/TESTING.md) | Die eine Testlinie, Testmatrix 1–17 und Zusatzregressionen. |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Zustandsbesitz, Pipeline, Verträge, Save und Narrative. |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Jetzt, als Nächstes, später; offene Punkte. |
