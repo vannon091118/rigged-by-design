@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:15Z-rumor-25",
+  "contributionId": "rumor-25",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Im Schaukasten haengen Bilder von der Spielhalle, aber auf jedem Bild klebt oben links ein fremder Stempel. Der Mann mit dem Besen sagt, wer sein Haus zeigt, sollte nicht das Schild des Nachbarn mitfotografieren.",
+  "directives": []
+}

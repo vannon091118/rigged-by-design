@@ -9,6 +9,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
+import { verifyReadmeMedia } from './readme-media.mjs';
 import { ROOT } from './report.mjs';
 
 const INVENTORY_START = '<!-- inventory:start -->';
@@ -157,5 +158,6 @@ export function verifyDocs() {
     if (entry.isFile() && seen.has(entry.name)) problems.push(`docs/${entry.name}: doppelt zur Wurzel.`);
   }
   problems.push(...inventoryProblems());
+  problems.push(...verifyReadmeMedia());
   return problems;
 }
