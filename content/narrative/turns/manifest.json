@@ -4212,6 +4212,10 @@
     {
       "turnId": "2026-11-14T02:10Z-agent-board",
       "contributionId": "agent-board-01"
+    },
+    {
+      "turnId": "2026-11-14T02:55Z-close-rights",
+      "contributionId": "close-rights-01"
     }
   ]
 }

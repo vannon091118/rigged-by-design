@@ -12,7 +12,7 @@ Zwei Rollen, ein Board. Das Issue ist die Wahrheit; dieses Dokument beschreibt, 
 
 Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 
-- Issues anlegen, kommentieren, **schließen und wiedereröffnen**; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
+- Issues und Pull Requests anlegen, kommentieren, **schließen und wiedereröffnen** — Schließen ausschließlich Maintainer oder User; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
 - **Merge nach `main`, Push auf `main`, Release-Tags** für belegte Features; `main` bleibt sonst tabu.
 - **Priorisierung:** `P0` → Regression → Unblocker → `P1` → `P2/P3` → Housekeeping; die Reihenfolge wird am Ende jedes Laufs neu geschrieben, auch bei `IDLE`.
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
@@ -24,7 +24,7 @@ Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n
 
 - lesen das Issue inklusive aller Kommentare, **claimen vor dem ersten Read** und arbeiten genau ein Issue pro Turn ab;
 - ändern nur Pfade ihrer Claim-Allowlist, committen und pushen **ihren** Branch, öffnen den PR und beantworten Review-Fragen im Issue;
-- mergen nicht, pushen nicht `main`, schließen/wiedereröffnen keine Issues und setzen keine Tags;
+- mergen nicht, pushen nicht `main`, schließen/wiedereröffnen weder Issues noch Pull Requests und setzen keine Tags;
 - melden Nebenbefunde als Kommentar (`Nebenbefund: … datei:zeile`), statt den Scope zu dehnen.
 
 ### Lanes
@@ -38,7 +38,11 @@ Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n
 
 ## Claims
 
-**Die Wahrheit ist der Issue-Verlauf.** Ein Claim ist ab sofort ein Kommentar am GitHub-Issue — `CLAIM [A<n>] agent-1-local <UTC-Zeit> scope=… plan=…` vor dem ersten Read, `RELEASE [A<n>] done <sha>` nach der Übergabe; das Ablaufmuster steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt. Der Lane-Eintrag unter `.lane-claims/claims/` (Register `.lane-claims/claims.json`) ist nur die **mechanische Spiegelung** für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook: er wird aus dem Issue-Claim abgeleitet und entscheidet nie gegen den Issue-Verlauf. Bei Widerspruch zwischen Register, Task-Vertrag und Issue gewinnt das Issue, und die Spiegelung wird nachgezogen.
+**Das Issue-Board ist der primäre Workflow und die einzige Wahrheit.** Es bestimmt, was als Nächstes passiert (Priorität), wem es gehört (Claim) und wann es fertig ist (Review, `RELEASE`). Ein Claim ist ein Kommentar am GitHub-Issue — `CLAIM [A<n>] agent-1-local <UTC-Zeit> scope=… plan=…` vor dem ersten Read, `RELEASE [A<n>] done <sha>` nach der Übergabe; das Ablaufmuster steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt.
+
+**Arbeitsreihenfolge** ist ausschließlich die Board-Reihenfolge: `P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste Issue. Lokale Dateien, Register und Task-Verträge können diese Reihenfolge nicht ändern; der Maintainer schreibt sie am Ende jedes Laufs neu.
+
+**Die lokale Kollisionssperre.** Der Eintrag unter `.lane-claims/claims/` (Register `.lane-claims/claims.json`) und der Task-Vertrag sind **keine zweite Wahrheit**. Sie halten die Pfad-Allowlist, an der Staging, `verify:scope`, `pretask` und die Pre-Commit-Hooks hängen, und verhindern genau eine Sache: dass zwei parallel laufende Agenten dieselben Dateien im selben Task oder Turn bearbeiten. Sie entscheiden nie über Besitz, Priorität, Reihenfolge oder Merge. Weicht die Sperre vom Issue ab, gewinnt das Issue; die Sperre wird nachgezogen, statt die Arbeit zu blockieren. Fehlt sie ganz und ist das Issue sauber geclaimt, startet `pretask` mit Warnung und eingeschränkter Scope-Prüfung.
 
 **Ablauf im Issue.** Vor dem ersten Read eines freien Issues steht der Claim, danach die Arbeit, am Ende die Freigabe:
 
@@ -52,7 +56,7 @@ RELEASE [A<n>] done <sha|—> ein Satz
 - `CLAIM` ohne `RELEASE` heißt besetzt — auch ohne neuen Kommentar (WIP parallel).
 - Claim älter als 72 Stunden ohne Commit, PR- oder Kommentaraktivität ist `stale`: im lokalen State als `deferred` notieren, nicht übernehmen.
 - `RELEASE done` verlangt SHA und PR; ohne Beleg gilt die Arbeit als nicht gemacht.
-- `pretask` prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`): fremder Claim blockiert, fehlender Claim nennt den nötigen Kommentar, eine Lane ohne Issue-Nummer wird gewarnt statt blockiert.
+- `pretask` prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`): fremder Claim blockiert, fehlender Claim nennt den nötigen Kommentar, eine Lane ohne Issue-Nummer wird gewarnt statt blockiert. Die lokale Sperre prüft es danach getrennt; sie kann einen gültigen Issue-Claim nie überstimmen.
 
 Der gespiegelte Eintrag ist der Vertrag einer Lane, kein Token pro Pull Request.
 
