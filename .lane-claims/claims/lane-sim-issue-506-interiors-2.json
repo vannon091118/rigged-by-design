@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/issue-506-interiors-2",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-506-interiors-2",
+  "baseSha": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5",
+  "task": "Kneipe und Laden als begehbare Innenraeume an die Stadttueren binden",
+  "goal": "#506",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-issue-506-interiors-2.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5"
+}
