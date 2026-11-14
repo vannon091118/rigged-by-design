@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-646-smartphone-states",
+  "claimId": "lane/ui/issue-646-smartphone-states",
+  "branch": "lane/ui/issue-646-smartphone-states",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "phase": "DONE",
+  "title": "Issue #646: Smartphone-Fensterzustaende auf einer Geraeteflaeche abnehmen",
+  "goal": "Home, App, Zurueck und Schliessen in einem Durchlauf; alle acht Apps kehren zur gleichen Home zurueck, Inhalte kommen aus dem echten GameView-Snapshot, auch bei 320 px ohne zweite Flaeche.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 721,
+    "headSha": "5356d5da9b8e680d62791a2330dc471755f8fa16",
+    "mergedSha": "29f5440c3e5ade043d1bbd38214081318cb52c4e"
+  },
+  "findings": [],
+  "nextAction": "Gemergt; Closeout verbucht.",
+  "revision": 1
+}

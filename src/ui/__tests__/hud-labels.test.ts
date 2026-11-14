@@ -25,13 +25,13 @@ describe('hud-labels', () => {
     expect(PENALTY_LABEL('ROBBED')).toBe('Ausgeraubt');
   });
 
-  it('fuehrt alle sieben Attribute mit Kuerzel und Tipp', () => {
+  it('fuehrt alle sieben Attribute mit Kuerzel ohne eigene Wirkversprechen', () => {
     expect(SKILLS.map(([attribute]) => attribute)).toEqual([
       'speed', 'charisma', 'brawl', 'perception', 'technique', 'endurance', 'luck',
     ]);
-    for (const [, label, hint] of SKILLS) {
-      expect(label).toHaveLength(3);
-      expect(hint.length).toBeGreaterThan(10);
+    for (const entry of SKILLS) {
+      expect(entry).toHaveLength(2);
+      expect(entry[1]).toHaveLength(3);
     }
   });
 });
