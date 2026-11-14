@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c5013fa5da1c70a45b2af18c71520ae0610d0fe7e64bb4c2f49e8c8db191267b",
+  "contentHash": "sha256:22b7ef20c0b849f1627a732ebccee74759d166c8f29dfa252670c6ade1489152",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6049,6 +6049,30 @@
       "text": "Das Netz der Stadt ist gezeichnet; die Karte wird wieder freigegeben, der nächste Weg beginnt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-claim-closeout-556.json"
+    },
+    {
+      "contributionId": "claim-register-01",
+      "turnId": "2026-11-14T04:45Z-claim-register-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Register standen noch Zeilen für Lanes, deren Türen längst geschlossen waren. Rita strich sie nicht aus dem Gedächtnis, sondern trug den Merge-Beleg ein und ließ nur die letzten zehn stehen; wer nachzählte, fand zu jeder Zeile ihren Abschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-claim-register.json"
     },
     {
       "contributionId": "claim-register-archive-01",

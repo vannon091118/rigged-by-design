@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/claim-register-reconcile-616",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-register-reconcile-616",
+  "baseSha": "02320857de30597662f4be6c5ba81a72bff0c1a9",
+  "issue": 616,
+  "task": "Claim-Register nach Fremd-Merges abgleichen (#616)",
+  "goal": "Belegbare Merges als merged buche, Tasks DONE, Retention anwenden, Light-Gate gruen",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/ROADMAP.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-claim-register-reconcile-616.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "02320857de30597662f4be6c5ba81a72bff0c1a9"
+}
