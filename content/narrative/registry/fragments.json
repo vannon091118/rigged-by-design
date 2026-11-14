@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f7b5e03de4b1d1bbc95d4a69a9b832a3b6701059de96773ee1fa017064c5e87e",
+  "contentHash": "sha256:f59db73cfa63db029deb60008122feffbaca48ef36456cc1534b2306e3c7b503",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7343,28 +7343,6 @@
       "source": "content/narrative/contributions/2026-11-10-collision-scope.json"
     },
     {
-      "contributionId": "command-dsl-01",
-      "turnId": "2026-11-03T01:20Z-nar-08-command-dsl",
-      "agentId": "codebuff",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "description",
-      "function": "describe",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Wörter standen vor der Tür, aber der Schlüssel lag nicht in ihnen. Wer einen Befehl aussprach, bekam nur dann eine Wirkung, wenn das Template ihn bereits genannt hatte; alles andere blieb ein Satz und wurde als abgelehnt vermerkt. Die Kasse hörte erst zu, nachdem die ganze Liste geprüft war.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-08-command-dsl.json"
-    },
-    {
       "contributionId": "company-progression-01",
       "turnId": "2026-11-10T23:20Z-company-progression",
       "agentId": "buffy",
@@ -7498,60 +7476,6 @@
       "text": "Rita schrieb die Stufen nicht als Leiter auf, sondern als Rechnung: Tage, Gewinn, Ruf, Geräte, Kapital - und ab dem Spielsaal Leute, die morgens wirklich kommen. Wer die Zeile las, sah zuerst die offene Zahl und nicht den Rang.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-company-progression-docs.json"
-    },
-    {
-      "contributionId": "content-compiler-01",
-      "turnId": "2026-11-03T02:20Z-nar-10-content-compiler",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita legte den ersten Befehl neben den Satz, nicht hinein. Der Compiler las ihn als eigene Karte, pruefte Nummer, Grenze und Ziel und liess den sichtbaren Text unberuehrt. Erst die Registry durfte den Befehl als Daten tragen; ausfuehren wuerde ihn spaeter nur ein Template, das ihn ausdruecklich erlaubt.",
-      "directives": [
-        {
-          "id": "FREEZE_TICK",
-          "ticks": 120
-        }
-      ],
-      "source": "content/narrative/contributions/2026-11-03-nar-10-content-compiler.json"
-    },
-    {
-      "contributionId": "content-registry-01",
-      "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Archiv lagen die Beiträge nicht als Haufen, sondern als Karten mit Herkunft, Rolle und erlaubtem Ort. Rita zog eine Karte heraus, auf der nur ein Satz stand; daneben lagen leere Felder für Ton, Stimmung und Beziehung. Erst als jedes Feld ausgefüllt war, durfte der Satz in den Saal. Was fehlte, blieb draußen, auch wenn es schön klang.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-09-content-registry.json"
     },
     {
       "contributionId": "d1-aftermath-body-01",
@@ -7823,56 +7747,6 @@
       "text": "Auf der Leinwand über dem Einlass standen zwei Namen und eine Zahl, die niemand erklären musste. Rita notierte sie trotzdem: die Quote war der Preis für eine Meinung, nicht das Ergebnis. Als der letzte Schuss fiel, lag der Zettel schon im Archiv.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-esport-evening.json"
-    },
-    {
-      "contributionId": "event-scheduler-01",
-      "turnId": "2026-11-03T00:25Z-nar-06-event-scheduler",
-      "agentId": "codebuff",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "description",
-      "function": "describe",
-      "contexts": [
-        "scheduler"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rueckkehrer"
-      ],
-      "text": "Der Streit war vorbei, aber das Haus trug ihn weiter: als Frist, als Cooldown und als eine Instanz, die nach dem Auflösen nicht einfach verschwand. Rita sah, dass zwei Geschichten gleichzeitig laufen konnten, ohne sich gegenseitig zu überschreiben. Am Ende entschied nicht der Zufall des Automaten, sondern ein eigener, kleiner Strom, den man speichern und beim nächsten Besuch wieder aufnehmen konnte.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-06-event-scheduler.json"
-    },
-    {
-      "contributionId": "event-templates-01",
-      "turnId": "2026-11-03T01:00Z-nar-07-event-templates",
-      "agentId": "codebuff",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "description",
-      "function": "describe",
-      "contexts": [
-        "templates"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rueckkehrer"
-      ],
-      "text": "Rita sah zwei Türen, die sich fast glichen. Auf der einen stand ein Willkommen, auf der anderen eine Frage; hinter beiden lag dieselbe Mechanik. Das Haus konnte den Text ändern, ohne die Entscheidung zu verändern. Nur wer den gespeicherten Schlüssel besaß und die Bedingungen noch erfüllte, durfte die Klinke drücken. Alles andere blieb eine Beschreibung, kein Versprechen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-07-event-templates.json"
     },
     {
       "contributionId": "f-warm-return-01",
@@ -9675,131 +9549,6 @@
       "text": "Zwei Gaeste stiessen an der Kasse zusammen, und fuer einen Moment stand nicht nur der Streit im Raum, sondern auch die Frage, wer wem danach noch in die Augen sehen wuerde. Der Kassierer schob die Muenzen ueber den Tresen, als haette er die Antwort schon gehoert.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-nar-04-beziehungsquellen.json"
-    },
-    {
-      "contributionId": "nar-12-orchestration-01",
-      "turnId": "2026-11-03T03:15Z-nar-12-orchestration",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita legte die Reihenfolge auf den Tresen, bevor der Abend begann: erst die Welt, dann die Spuren, dann die Fragen. Ein Gast, der zurückkam, hinterließ eine Zeile; aus der Zeile wurde eine Entscheidung; aus der Entscheidung wurde wieder eine Zeile. Sie strich den Satz durch, der behauptete, alles geschehe gleichzeitig, und schrieb darunter: eine Runde, ein Durchlauf, kein zweiter Blick zurück.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-12-orchestration.json"
-    },
-    {
-      "contributionId": "nar-13-demand-events-01",
-      "turnId": "2026-11-03T03:40Z-nar-13-demand-events",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita hängte die alte Liste neben die neue und strich keine Zeile. Neon-Nacht, Turnierabend: zwei Namen, eine Tür. Statt sie ein zweites Mal zu öffnen, schrieb sie beide in das Buch, das ohnehin jede Veranstaltung führt, und ließ den alten Schlüssel fallen. Wer noch mit einem alten Stand kam, bekam seinen Abend zurück, nicht seine Gewohnheit. Die Nachfrage blieb, wie sie war; nur der Ort, an dem sie gezählt wurde, war jetzt derselbe.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-13-demand-events.json"
-    },
-    {
-      "contributionId": "nar-14-narrative-ui-01",
-      "turnId": "2026-11-04T00:55Z-nar-14-narrative-ui",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita sah die Geschichten zum ersten Mal, statt sie nur zu verursachen. Die Szene stand als Karte im Licht: Titel, Text, Frist, und daneben die Wege, die wirklich offen waren. Ein Weg war grau und nannte seinen Grund, statt ihn zu verstecken; ein anderer liess sich schliessen, und die Geschichte verschwand mit ihrer Frist, nicht mit ihrem Gedaechtnis. Neben der Karte standen die Figuren: so oft da, so viel erinnert, so viel zwischen ihnen geschehen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-04-nar-14-narrative-ui.json"
-    },
-    {
-      "contributionId": "nar-15-autonome-rivalen-01",
-      "turnId": "2026-11-04T02:10Z-nar-15-autonome-rivalen",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Die Rivalen bekamen ein Gedaechtnis fuer ihre eigenen Zuege. Der Automat am Fenster nahm zwoelf Schaden, und die Zeile darueber nannte den Rivalen, das Geraet und den Tick, damit niemand raten musste, woher der Kratzer kam. Der Guard verhinderte den Schaden, nicht den Eintrag. Wer die Indizien liest, weiss, wer zweimal kam, und kann beim naechsten Mal vorher etwas tun.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-04-nar-15-autonome-rivalen.json"
-    },
-    {
-      "contributionId": "nar-16-langzeitintegration-01",
-      "turnId": "2026-11-04T03:20Z-nar-16-langzeitintegration",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Zwei Spieltage lang sah Rita zu, wie das Haus Geschichten sammelte, ohne zu wachsen. Die Erinnerungen blieben sechs je Gast, die Szenen acht gleichzeitig, die Beziehungen zweihundert, und der Rivalen-Verlauf sechs Zuege. Nach jedem Tag wurde gespeichert, neu geladen und weitergespielt: derselbe Verlauf, dieselben Zahlen. Was blieb, war kein Berg, sondern ein Regal mit festen Faechern.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-04-nar-16-langzeitintegration.json"
     },
     {
       "contributionId": "nar-aftermath-body-01",
@@ -23565,31 +23314,6 @@
       "text": "Der Lauf hat jetzt eine Uhr, die nicht ihm gehört: Commits, Issues und neue Governance-Funde werden gegen eine externe Grenze gezählt. Der Kill-Switch stoppt auch dann, wenn der Agent weiterarbeiten möchte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-run-budget.json"
-    },
-    {
-      "contributionId": "runtime-composer-01",
-      "turnId": "2026-11-03T02:30Z-nar-11-runtime-composer",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita liess den Satz im Regal und oeffnete nur die Karte daneben: Sprache, Kontext, Flag und Persona mussten zusammenpassen, bevor ein Fragment in die Szene durfte. Fuer den leeren Rest lagen kurze neutrale Zeilen bereit; keine davon nannte eine Choice, einen Preis oder eine Wirkung.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-03-nar-11-runtime-composer.json"
     },
     {
       "contributionId": "scene-frame-doors-01",
