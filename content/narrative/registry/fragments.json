@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:542a56b9287006e9867ad27129b19ec644ef8568fd5c79c6f7c1b80b225637d3",
+  "contentHash": "sha256:7a194f832d0f8688274458ec3536fbf8edf38993b1421cd774e861ecdac181e4",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7245,6 +7245,28 @@
       "text": "Zwei Leute kommen sich auf dem schmalen Gehweg entgegen. Der eine tritt in den Rinnstein, der andere nickt knapp, und fuer einen Moment ist der Weg wieder frei.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-54.json"
+    },
+    {
+      "contributionId": "city-scene-55",
+      "turnId": "2026-11-14T12:05Z-city-scene-55",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tresen laeuft die Abrechnung, waehrend draussen der Regen gegen die Scheibe schlaegt. Niemand eilt, die Zahlen stimmen, und fuer heute genuegt das.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-55.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

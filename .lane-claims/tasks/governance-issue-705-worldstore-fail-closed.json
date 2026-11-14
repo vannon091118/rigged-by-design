@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-705-worldstore-fail-closed",
+  "claimId": "lane/governance/issue-705-worldstore-fail-closed",
+  "branch": "lane/governance/issue-705-worldstore-fail-closed",
+  "baseSha": "680700c0f9f1a339cf716bbacbce70ab2101c9cf",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #705: WorldStore-Timer nach LedgerBalanceError fail-closed anhalten",
+  "goal": "Der Welt-Takt stoppt beim ersten Tickfehler dauerhaft, ohne Save oder Journal-Buchung aus dem Catch; die Ledger-Diagnose steht in view.notice. Neues Spiel und Import geben den Takt wieder frei.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates auf dem Branch-Kopf ausfuehren, dann turn:finish und PR gegen main.",
+  "revision": 1
+}
