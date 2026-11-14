@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-762-factor-contract",
+  "claimId": "lane/sim/issue-762-factor-contract",
+  "branch": "lane/sim/issue-762-factor-contract",
+  "baseSha": "edf39a7444ba0b99ee5936bf91214ebd26dee07e",
+  "phase": "CI_PENDING",
+  "title": "Issue #762: Factor-Contract-Referenz auf v1.1 angleichen",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 6
+}

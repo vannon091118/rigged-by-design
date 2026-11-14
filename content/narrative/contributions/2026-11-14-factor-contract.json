@@ -1,0 +1,17 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-14T21:45Z-factor-contract",
+  "contributionId": "factor-contract-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Faktor-Vertrag liegt jetzt in einer Fassung vor, die Code, Test und Referenz gemeinsam lesen: Kategorie, Grundgewicht und Untereinflüsse stehen an derselben Stelle, und die alte Aufrufsignatur behält ihre Defaults. Wer die Version ändert, muss die Referenz mitnehmen; der Test vergleicht beide, bevor die Tür aufgeht.",
+  "directives": []
+}
