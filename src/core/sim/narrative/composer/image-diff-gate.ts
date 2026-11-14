@@ -86,12 +86,11 @@ export function imageDiffGate(
   let channelDiffSum = 0;
 
   for (let i = 0; i < expectedLength; i += 4) {
-    const diffR = Math.abs(a[i] - b[i]);
-    const diffG = Math.abs(a[i + 1] - b[i + 1]);
-    const diffB = Math.abs(a[i + 2] - b[i + 2]);
-    const diffA = Math.abs(a[i + 3] - b[i + 3]);
+    const diffR = Math.abs((a[i] ?? 0) - (b[i] ?? 0));
+    const diffG = Math.abs((a[i + 1] ?? 0) - (b[i + 1] ?? 0));
+    const diffB = Math.abs((a[i + 2] ?? 0) - (b[i + 2] ?? 0));
+    const diffA = Math.abs((a[i + 3] ?? 0) - (b[i + 3] ?? 0));
 
-    const pixelDiff = Math.max(diffR, diffG, diffB, diffA);
     channelDiffSum += diffR + diffG + diffB + diffA;
 
     if (diffR > tolerance.maxChannelDiff ||
