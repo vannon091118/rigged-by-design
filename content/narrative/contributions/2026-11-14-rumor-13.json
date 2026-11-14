@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T17:25Z-rumor-13",
+  "contributionId": "rumor-13",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Zwei Boten kamen am selben Abend mit derselben Meldung, und der zweite sprach von einem Auftrag, den der erste schon erledigt hatte. Wer nur auf den letzten Boten hoert, traegt eine Nummer ein, die es nicht mehr gibt.",
+  "directives": []
+}
