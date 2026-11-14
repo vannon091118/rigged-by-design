@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d6e671d3ed2e7e36d01655e4bd1220c3fe3cd6efa8dbeb528f860d8e2fd69273",
+  "contentHash": "sha256:c2ce4ebbe8499ccc8b1b344b64f5b41523a6788f7214c567a4e482ddb1620bef",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24180,6 +24180,28 @@
       "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-trigger-bedingungen.json"
+    },
+    {
+      "contributionId": "rng-entry-role-01",
+      "turnId": "2026-11-14T09:45Z-rng-entry-role",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Würfelströme liegen im Haus: einer entscheidet, einer schmückt. Wer den Schmuckstrom an die Kasse trägt, bekommt keine Zahl, sondern eine Abweisung — und der Abend bleibt, wie er war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rng-entry-role.json"
     },
     {
       "contributionId": "roadmap-register-01",

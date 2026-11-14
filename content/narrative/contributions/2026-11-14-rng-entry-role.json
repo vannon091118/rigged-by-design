@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T09:45Z-rng-entry-role",
+  "contributionId": "rng-entry-role-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Würfelströme liegen im Haus: einer entscheidet, einer schmückt. Wer den Schmuckstrom an die Kasse trägt, bekommt keine Zahl, sondern eine Abweisung — und der Abend bleibt, wie er war.",
+  "directives": []
+}

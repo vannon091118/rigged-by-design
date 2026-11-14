@@ -167,6 +167,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
  * Kalender und holt keine 600 Einzeltick-Simulation nach.
  */
 export function advanceToNextDay(world: WorldState, ledger: Ledger, prng: Prng): number {
+  // Die Uhr ist Weltzustand: der Guard greift, bevor der Tickzaehler wandert.
+  assertGameplayRng(prng);
   const ticks = TICKS_PER_DAY - tickInDay(world.tick);
   world.tick += ticks - 1;
   tickWorld(world, ledger, prng);

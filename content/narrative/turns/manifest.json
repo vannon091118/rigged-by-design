@@ -4512,6 +4512,10 @@
     {
       "turnId": "2026-11-14T09:05Z-canonical-priorities",
       "contributionId": "canonical-priorities-01"
+    },
+    {
+      "turnId": "2026-11-14T09:45Z-rng-entry-role",
+      "contributionId": "rng-entry-role-01"
     }
   ]
 }

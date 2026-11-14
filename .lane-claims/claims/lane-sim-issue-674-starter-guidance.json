@@ -17,6 +17,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "b84623e970e0b4357fbc50316aa977bd26f3da14"
+  "status": "merged",
+  "createdAt": "b84623e970e0b4357fbc50316aa977bd26f3da14",
+  "mergedSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "mergedEvidence": "PR #681 als e844caa7 gemergt. Nur Status nachgezogen, Vertrag unveraendert."
 }
