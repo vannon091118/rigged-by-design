@@ -4,13 +4,18 @@
   "claimId": "lane/governance/board-pr-triage",
   "branch": "lane/governance/board-pr-triage",
   "baseSha": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "PR-Triage: #700/#701 geschlossen, #739 gemergt, Board-PR-Liste geleert",
   "goal": "Jede der drei offenen PRs hat ein am Repo belegtes Ergebnis; board.openPullRequests stimmt mit der API.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 740,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/740",
+    "state": "merged",
+    "mergedSha": "d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb"
+  },
   "findings": [
     {
       "id": "F-1",
@@ -32,5 +37,5 @@
     }
   ],
   "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 3
+  "revision": 4
 }
