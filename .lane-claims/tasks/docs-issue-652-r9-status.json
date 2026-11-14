@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "docs-issue-652-r9-status",
+  "claimId": "lane/docs/issue-652-r9-status",
+  "branch": "lane/docs/issue-652-r9-status",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "phase": "CI_PENDING",
+  "title": "Issue #652: R9-Status im Render-Rework-Plan",
+  "goal": "Veraltete R9-Aussagen (city-actors.ts fehlt, kein Renderer) an CityActorSync/floor-view/view-layers angleichen, Position/Animation auf #640 verweisen, nur Doku.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "R9 bleibt teilweise belegt; der visuelle Beleg fuer Position/Animation fehlt weiterhin und ist #640."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "revision": 1
+}

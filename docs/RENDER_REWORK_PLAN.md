@@ -9,7 +9,7 @@ die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 **Status:** R8 ist weitgehend umgesetzt und als **TEIL** belegt (Preload 10/10,
 Rollen, Welt und Skalierung; vollständiger App-Boot und Screenshot offen); R9
-hat das Fundament, aber noch keinen Renderer. Die Kästchen werden nur mit Beleg
+hat das Fundament und einen Renderer (`CityActorSync`); der Positions- und Animationsbeleg im Browser fehlt weiterhin (#640). Die Kästchen werden nur mit Beleg
 abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss. Die Meilensteine M0–M4
 (Abschnitt 6) und die Sichtabnahme (Abschnitt 8) sind verbindlich.
 
@@ -43,7 +43,7 @@ RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json
 | R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
 | R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest **und** Browserbild `24-r10-wohnung.png`; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
-| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 teilweise belegt** (alle 539 Semantik-Assets und die 10 realen Stadttexturen tragen Rolle, Welt, ganzzahlige `displayScale` und `license`; Sichtabnahme offen), **R9 teilweise** (Bewohner haben jetzt Kachel, Weg und Ankunft; der Renderer `city-actors.ts` fehlt noch); keine zweite Stadt erfunden |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 teilweise belegt** (alle 539 Semantik-Assets und die 10 realen Stadttexturen tragen Rolle, Welt, ganzzahlige `displayScale` und `license`; Sichtabnahme offen), **R9 teilweise** (Bewohner haben Kachel, Weg und Ankunft; der Renderer ist `CityActorSync` (`city-actor-sync.ts`), in `floor-view.ts` instanziiert und in `view-layers.ts` gesynct; Position/Animation offen (#640)); keine zweite Stadt erfunden |
 | R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene, mit 24-Tick-Übergang an den Drittelgrenzen; Wetter fehlt | Teilbeleg; Tageszeit-Ambient, Straßenband, reduced-motion und Übergang im Browser gemessen; Wetter offen |
 
 Lokale Gates auf diesem Stand: `pnpm run verify:all` **PASS** (15 Gates grün,
@@ -239,7 +239,7 @@ stehen.
 | R6 | PASS (Teil) | `20-r6-kamera.png` | Weltkante und Parallaxe sichtbar; FIT ist die kleinste Stufe, ein LOD-Wechsel an der Schwelle wurde nicht erzwungen |
 | R7 | PASS (Teil) | `21-r7-stadt.png` | Straßenraum, vier Fassaden und Türen sichtbar; Eintritt über die Wohnungstür, kein Teleport. Der Klick auf die Casino-Tür wurde im Browser nicht durchgeführt (nur Testbeleg) |
 | R8 | TEIL | `asset-semantics.json` (539 Einträge), `src/render/city/city-assets.ts`, `city-assets.test.ts` (inkl. Frame-Block), `src/render/assets/__tests__/textures-preload.test.ts` | Alle 539 Einträge tragen jetzt `role`, `world`, `displayScale` und `license`; die 10 realen Stadttexturen sind in `city-assets.ts` typisiert und gegen Manifest/Datei/Laufzeitliste geprüft. Der echte `CityRenderPlan` trägt Welt und Rolle als Pixi-Knotenlabel; ein Test mit Skala 2 belegt, dass `displayScale` Fassade und Gebäudeschatten gemeinsam skaliert. Der echte `preloadRuntimeArt` hat im Browser alle **10/10** Stadt-SVGs als Fetch-Requests mit HTTP 200 angefordert; der Repo-Test hält dieselben 10 `Assets.load`-Aufrufe. Offen: voller App-Boot und Screenshot/Pixelabnahme; die Cloud-Session hängt in Pixi/WebGL `Application.init` (pure WebGL und Canvas-Renderer laufen), nicht im Stadt-Preload. Nur 10 statt der im Audit genannten rund 30 Stadtassets |
-| R9 | teilweise | `30-r9-stadtbewohner.png` | Rita, Boris und Mira leben im echten Tick, haben jetzt Kachel, A*-Weg, Ankunftszeit und Zwischenstand (`city-life-movement.ts`); `city-actors.ts` fehlt noch, also zeichnet sie niemand auf der Straße |
+| R9 | teilweise | `30-r9-stadtbewohner.png` | Rita, Boris und Mira leben im echten Tick, haben jetzt Kachel, A*-Weg, Ankunftszeit und Zwischenstand (`city-life-movement.ts`); der Renderer `CityActorSync` zeichnet sie ueber `view-layers.ts`, der visuelle Positions-/Animationsbeleg fehlt (#640) |
 | R10 | PASS (Teil) | `24-r10-wohnung.png` | Vier Bereiche (Schlafen, Kochen, Bad, Wohnen) mit warmer Palette, ohne Neon und Automat; S2-09–S2-11 bleiben als Roadmap-Zeilen offen |
 | R11 | PASS (Teil) | `18-r4-materialien.png` | Figuren bewegen sich sichtbar (Sprechblasen und Positionen ändern sich); ein Richtungswechsel ist im Standbild nicht belegbar, der Frame kommt aus Tick und Phase |
 | R12 | PASS (Teil) | `21-r7-stadt.png` (Tag), `25-r12-strassenlicht.png` (Tag), `26-r12-nacht.png`, `31-r12-abend-stadt.png`, `32-r12-nacht-uebergang.png` | Tageszeit-Ambient wirkt; Strahlen nur über dem Straßenband (`getLocalBounds` 950×338). Der Wechsel Tag→Nacht→Tag ist im laufenden Spiel gemessen (409 Proben, Ticks 1528–1842): Schleier 0.20 → 0.42 → aus, Strahlen 0.10 → leer → 0.16, Radius aus → 390×332 `@0.22` → aus. Der Wechsel war damals ein Schnitt am Tagesdrittel und ist seit dem 13.11. ein 24-Tick-Übergang (`ambientPlanAt`, Browser-Messung im Abschnitt „Übergang statt Drittel-Sprung"). `prefers-reduced-motion` umgesetzt. Wetter fehlt |
@@ -383,7 +383,7 @@ Strahlen noch sichtbar), `35-r12-uebergang-mitte.png` (Mitte des
 Nacht→Morgen-Übergangs: halber Schleier, erste Strahlen, kleiner Radius),
 `36-r12-uebergang-ende.png` (Morgenplateau ohne Schleier und Radius).
 
-**Weiter offen:** Wetter, Stadt-NPCs als laufende Figuren (R9); die
+**Weiter offen:** Wetter, visueller Positions-/Animationsbeleg der Stadt-NPCs (R9; Renderer `CityActorSync` vorhanden, Beleg fehlt, #640); die
 R8-Metadaten sind belegt, die R8-Sichtabnahme steht noch aus.
 
 ### Browser-Sichtabnahme 2026-11-14 (#556)
@@ -468,9 +468,12 @@ seit dem Bewegungs-Schnitt eine Kachel (`position`), einen laufenden Weg
 (`travel: { to, path, index }`) und damit eine Ankunftszeit; der Ort wechselt
 erst am Ziel statt mit dem Entschluss. `city-life-movement.ts` baut den Weg mit
 dem vorhandenen A* auf `cityNav(city)` (60×60 Straßen samt Requisiten) und läuft
-eine Kachel je Tick. `src/render/city/city-actors.ts` und
-`city-actors.test.ts` aus dem Plan existieren weiterhin nicht: Ein Renderer
-kann die drei Bewohner jetzt zeichnen, tut es aber noch nicht. Das Stadtfenster
+eine Kachel je Tick. `src/render/city/city-actors.ts` und `city-actors.test.ts` aus dem Plan
+existieren weiterhin nicht; der Renderer ist stattdessen `CityActorSync`
+(`src/render/city-actor-sync.ts`), wird in `floor-view.ts` instanziiert und in
+`view-layers.ts` im Produktions-Snapshotpfad gesynct. Was fehlt, ist der
+belegte Positions-/Animationsnachweis im Browser (#640), nicht der Renderer.
+Das Stadtfenster
 (`30-r9-stadtbewohner.png`: Rita 32/18/83, Boris 6/4/52, Mira 34/4/100 mit
 Intent, Ort und Traits) zeigt deshalb weiter Zustand, keine Figuren auf der
 Straße.
@@ -519,7 +522,7 @@ Befehl oben) und ist nicht Teil des Commits, weil `artifacts/` ignoriert wird;
    Ort wechselt bei Ankunft, und die Ankunft kostet Müdigkeit (ein Punkt je acht
    Kacheln). Im 4-Tage-Lauf: 64 Wege, 1878 Kacheln, 1817 Tick-Zustände „unterwegs",
    nie mehr als eine Kachel je Tick, 107 Bewohner zur vollen Stunde noch auf dem
-   Weg. R9 bleibt nur noch die Darstellung offen (`city-actors.ts` fehlt).
+   Weg. R9 bleibt nur noch der visuelle Positions-/Animationsbeleg offen (#640); der Renderer ist `CityActorSync`.
 4. **Behoben: Identität hing am Namen.** Jeder Bewohner trägt jetzt eine
    individuelle Kennung (`CityResidentState.visitorId`), gebunden in
    `city-identity.ts#bindCityIdentities` und gespeichert wie die übrigen Stats.
@@ -625,7 +628,7 @@ CityResident  position: Point                     Kachel auf der Stadtkarte
 | Kacheln je Tick (Maximum) | 1 |
 | Bewohner zur vollen Stunde noch unterwegs | 107 |
 
-**Offen:** `src/render/city/city-actors.ts` (Figuren zeichnen), Zwischenstopps
+**Offen:** der belegte visuelle Nachweis, dass `CityActorSync` die Figuren im Browser zeichnet (#640), Zwischenstopps
 auf dem Weg (Essen, wenn der Hunger unterwegs kippt) und Stau/Umwege zwischen
 mehreren Bewohnern. Der Zustand dafür steht jetzt; es fehlen Leser.
 
@@ -1198,7 +1201,8 @@ ohne eine zweite Simulation zu bauen.
 
 **Dateien:** `src/core/sim/npc-schedule.ts`, `npc-needs.ts`,
 `social-encounter.ts`, `actor-continuity.ts`, neu
-`src/render/city/city-actors.ts`, `src/render/__tests__/city-actors.test.ts`.
+`src/render/city-actor-sync.ts`, `src/render/__tests__/city-actor-sync-lifecycle.test.ts`
+(im Plan frueher als `city-actors.ts` gefuehrt).
 
 **Aufgaben**
 
