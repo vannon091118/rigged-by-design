@@ -38,6 +38,23 @@ const PLACE_BUILDING: Readonly<Record<CityLifePlace, string>> = {
   CASINO: 'bld_casino_grand',
 };
 
+/**
+ * Gebaeude-ID -> Ort. Die generischen IDs aus `npc-schedule.ts` sind
+ * Altbestand und liegen semantisch in den vier Orten der Stadt; ohne diese
+ * Abbildung verwirft die Entscheidung ein konkretes Planziel still.
+ */
+const BUILDING_PLACE: Readonly<Record<string, CityLifePlace>> = Object.freeze({
+  bld_player_home: 'HOME',
+  apt_player: 'HOME',
+  bld_kiez_pub: 'KIEZ',
+  bld_pub_01: 'KIEZ',
+  bld_corner_shop: 'MARKT',
+  bld_supermarket_01: 'MARKT',
+  bld_office_01: 'MARKT',
+  bld_casino_grand: 'CASINO',
+  bld_restaurant_01: 'KIEZ',
+});
+
 export function buildingOfPlace(place: CityLifePlace): string {
   return PLACE_BUILDING[place];
 }
@@ -52,9 +69,7 @@ export function placeOfBuilding(
   if (!buildingId) return null;
   // Das eigene Wohnhaus ist HOME, auch wenn es nicht im Preset steht.
   if (homeBuildingId && buildingId === homeBuildingId) return 'HOME';
-  const entry = (Object.entries(PLACE_BUILDING) as [CityLifePlace, string][])
-    .find(([, id]) => id === buildingId);
-  return entry ? entry[0] : null;
+  return BUILDING_PLACE[buildingId] ?? null;
 }
 
 /** Schichtfenster je Gebaeude; alle liegen innerhalb der Oeffnungszeiten. */

@@ -22,7 +22,7 @@ import {
 import { JOB_CAPACITY } from '../city-employment';
 import type { JournalEvent } from '../journal';
 import { CITY_PLOTS } from '../city-plots';
-import { EXTERNAL, EXTERNAL_WORK } from '../money';
+import { BUILDER_ESCROW, EXTERNAL, PACT_RESERVE } from '../money';
 import { replaySave, toSavedGame } from '../../../store/save';
 
 const start = (residents = 12) => {
@@ -55,7 +55,9 @@ describe('Bauträger und Wachstum', () => {
     expect(report!.building.kind).toBe('SHOP');
     expect(report!.building.locked).toBe(true);
     expect(ledger.getBalance(BUILDER_ACCOUNT)).toBe(BUILDER_START_CAPITAL - BUILD_COST);
-    expect(ledger.entries.some((entry) => entry.from === BUILDER_ACCOUNT && entry.to === EXTERNAL_WORK)).toBe(true);
+    expect(ledger.entries.some((entry) => entry.from === BUILDER_ACCOUNT && entry.to === BUILDER_ESCROW)).toBe(true);
+    // Der Bau beruehrt die Pakt-Reserve nicht (#532).
+    expect(ledger.getBalance(PACT_RESERVE)).toBe(0);
     expect(world.cityGrowth?.built).toEqual([report!.building.id]);
     // Der Rohbau ist versiegelt: Er vergibt noch keine Stellen, die Joblosen bleiben (#566).
     expect(jobMarket(cityBuildings(world), world.cityLife.residents).jobless)

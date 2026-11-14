@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c65ab42f8aed40de7f8d7f92c791aed26f0d4f292590562fee834ae77c0e9603",
+  "contentHash": "sha256:7c650ed1ccf67cc6af6789021eb4ae106fc8b379746e327c64dd2274056499c0",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6602,6 +6602,28 @@
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
     },
     {
+      "contributionId": "determinism-computed-01",
+      "turnId": "2026-11-14T06:35Z-determinism-computed-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die alte Sperre las nur den Punkt hinter Math und Date. Jetzt sieht sie auch den Schlüssel in eckigen Klammern, das Destructuring und den Alias; nur die eine benannte Entropie-Quelle bleibt offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-determinism-computed.json"
+    },
+    {
       "contributionId": "dialog-open-01",
       "turnId": "2026-11-09T18:20Z-dialog-open-01",
       "agentId": "buffy",
@@ -7995,6 +8017,30 @@
       "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
     },
     {
+      "contributionId": "ledger-escrow-01",
+      "turnId": "2026-11-14T05:58Z-external-work-split",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Töpfe, zwei Deckel: Der Bauträger zahlt in seinen Escrow, der Pakt legt seine Reserve daneben. Rita hat die alte Zeile durchgestrichen, in der beides auf einem Konto stand, und daneben geschrieben, dass ein Bau dem Bonus nichts mehr wegnehmen kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-external-work-split.json"
+    },
+    {
       "contributionId": "ledger-game-type-01",
       "turnId": "2026-11-09T08:45Z-ledger-game-type",
       "agentId": "buffy",
@@ -8065,6 +8111,28 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "ledger-tick-guard-01",
+      "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
     },
     {
       "contributionId": "living-world-foundation-1",
@@ -22918,6 +22986,28 @@
       "text": "Auch der Bildvertrag geht jetzt den Weg des Spiels: Die Stadt entsteht über den echten Szenenwechsel, und ihre Türen stehen als Flächen im Frame statt nur im Pixi-Bild.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-scene-frame-doors.json"
+    },
+    {
+      "contributionId": "scheduled-place-all-intents-01",
+      "turnId": "2026-11-14T06:15Z-scheduled-place-all-intents-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tagesplan nennt jetzt für jede Absicht ein Ziel, nicht nur für den Weg: Wer zum Einkaufen geht, landet am Markt, wer zur Arbeit geht, an seinem Betrieb. Nur die geplante Absicht erbt dieses Ziel; ein dringendes Bedürfnis wählt weiter seinen eigenen Ort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json"
     },
     {
       "contributionId": "shift-pay-01",

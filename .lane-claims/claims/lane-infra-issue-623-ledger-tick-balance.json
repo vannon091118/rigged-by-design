@@ -1,0 +1,26 @@
+{
+  "id": "lane/infra/issue-623-ledger-tick-balance",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/infra/issue-623-ledger-tick-balance",
+  "baseSha": "af032bdecafd96b774408296d3a0ee23e452909f",
+  "issue": 623,
+  "task": "Ledger-Bilanz je Welt-Takt (#623)",
+  "goal": "verifyIncremental nach advanceWorld inkl. Queue; Diagnose und Regression",
+  "pathAllowlist": [
+    "src/core/economy/",
+    "src/core/sim/",
+    "src/store/",
+    "content/narrative/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-infra-issue-623-ledger-tick-balance.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "af032bdecafd96b774408296d3a0ee23e452909f"
+}

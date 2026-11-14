@@ -1,6 +1,7 @@
 /** Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. */
 import { Ledger } from '../core/economy/ledger';
-import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
+import { ZERO_VC } from '../core/economy/vacoin';
+import { admitFiat, BUILDER_ESCROW, DEBT_ACCOUNT, EXTERNAL_WORK } from '../core/sim/money';
 import { companyTier } from '../core/sim/progression';
 import { ensureCityLife, ensureCityPopulationForScene } from '../core/sim/city-life-state';
 import { createWorld, ensureStarter } from '../core/sim/templates';
@@ -124,6 +125,15 @@ export function replaySave(raw: unknown): LoadedSave | null {
       ledger.transfer(entry.from, entry.to, entry.amount, entry.reason, entry.tick, entry.game ?? null);
     }
     for (const claim of legacyFiat) admitFiat(ledger, claim.id, claim.amount, world.tick);
+    // v11 legte Bautraeger-Zahlungen und Pakt-Reserve auf ein Konto. Der alte
+    // Saldo wandert als eigene Zeile in den Bautraeger-Escrow; die Pakt-Reserve
+    // deckt sich beim naechsten Paktstart selbst (#532).
+    if (ledger.hasAccount(EXTERNAL_WORK)) {
+      const legacyWork = ledger.getBalance(EXTERNAL_WORK);
+      if (legacyWork > ZERO_VC) {
+        ledger.transfer(EXTERNAL_WORK, BUILDER_ESCROW, legacyWork, 'Migration: Bauträger-Escrow (v11)', 0);
+      }
+    }
     // Alte v8-Staende kennen die Nachfragestufe noch nicht: einmal aus dem Ledger nachziehen.
     if (!saved.demandTier) world.demandTier = companyTier(world, ledger);
     if (!ledger.verifyLedgerIntegrity()) return null;
