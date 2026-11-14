@@ -13,10 +13,9 @@
   "pr": {
     "number": 816,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/816",
-    "headSha": "2c6dfb4c94d076c181e70aa35a865c3f886c836e",
     "state": "open"
   },
   "findings": [],
   "nextAction": "PR #816 gegen den finalen Kopf pruefen, review-waiting setzen und DONE/RELEASE kommentieren.",
-  "revision": 3
+  "revision": 4
 }
