@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/issue-761-relationship-contract",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/sim/issue-761-relationship-contract",
+  "baseSha": "2d041a5851b30307ede0e5c401e9b52a0b9e16e3",
+  "issue": 761,
+  "task": "Issue #761: Relationship-Contract fail-closed",
+  "goal": "Factory und Validator pruefen Actor-IDs, endliche Werte, Kantenidentitaet und History/Clues identisch.",
+  "pathAllowlist": [
+    "src/core/contracts/relationship.ts",
+    "src/core/contracts/__tests__/relationship.test.ts",
+    "content/narrative/contributions/2026-11-14-rumor-27.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-sim-issue-761-relationship-contract.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2d041a5851b30307ede0e5c401e9b52a0b9e16e3"
+}

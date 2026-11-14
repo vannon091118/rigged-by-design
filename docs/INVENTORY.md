@@ -715,10 +715,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3209 |
-| Gelistete Dateien | 3209 |
+| Getrackte Dateien | 3218 |
+| Gelistete Dateien | 3218 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (164), artifacts (1), content (1149), docs (108), packages (27), public (571), scripts (129), src (1035) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (166), artifacts (1), content (1152), docs (110), packages (27), public (571), scripts (129), src (1037) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -731,14 +731,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 83 Datei(en)
-- `.lane-claims/tasks/` — 78 Datei(en)
+- `.lane-claims/claims/` — 84 Datei(en)
+- `.lane-claims/tasks/` — 79 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1145 Datei(en)
-- `content/narrative/registry/` — 1 Datei(en)
+- `content/narrative/contributions/` — 1146 Datei(en)
+- `content/narrative/registry/` — 3 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 20 Datei(en)
+- `docs/` — 22 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 2 Datei(en)
@@ -817,7 +817,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
-- `src/core/sim/narrative/composer/` — 7 Datei(en)
+- `src/core/sim/narrative/composer/` — 9 Datei(en)
 - `src/core/sim/narrative/composer/__tests__/` — 3 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
@@ -938,6 +938,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-sim-issue-761-relationship-contract.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
@@ -1017,6 +1018,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-761-relationship-contract.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
@@ -2165,6 +2167,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-rumor-24.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-25.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-26.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-rumor-27.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
@@ -2177,8 +2180,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25718 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4585 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25742 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25742 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25742 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4589 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2190,6 +2195,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 236 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
@@ -3033,14 +3040,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
 - `src/core/contracts/__tests__/domain-event.test.ts` — Contract domain-event v1.0: Event-Hülle mit Actor-/Zeit-Referenzen, Sequenz — gelesen: 115 Zeilen
 - `src/core/contracts/__tests__/factor.test.ts` — Contract factor v1.1: IDs, Kategorie, Grundgewicht, Untereinfluesse, — gelesen: 101 Zeilen
-- `src/core/contracts/__tests__/relationship.test.ts` — Contract relationship v1.0: Gerichtete Relationship-IDs und erlaubte Änderungsbefehle. — gelesen: 86 Zeilen
+- `src/core/contracts/__tests__/relationship.test.ts` — Contract relationship v1.0: Gerichtete Relationship-IDs und erlaubte Änderungsbefehle. — gelesen: 117 Zeilen
 - `src/core/contracts/__tests__/save.test.ts` — Contract save v1.0: Save-Envelope, Versionierung und Migration. — gelesen: 85 Zeilen
 - `src/core/contracts/__tests__/world-time.test.ts` — Contract world-time v1.0: WorldTime, Calendar-Bezug und TimeDomain-Schlüssel. — gelesen: 71 Zeilen
 - `src/core/contracts/actionset.ts` — Contract: actionset v1.0 — gelesen: 63 Zeilen
 - `src/core/contracts/actor-id.ts` — Contract: actor-id v1.0 — gelesen: 43 Zeilen
 - `src/core/contracts/domain-event.ts` — Contract: domain-event v1.0 — gelesen: 99 Zeilen
 - `src/core/contracts/factor.ts` — Contract: factor v1.1 — gelesen: 100 Zeilen
-- `src/core/contracts/relationship.ts` — Contract: relationship v1.0 — gelesen: 62 Zeilen
+- `src/core/contracts/relationship.ts` — Contract: relationship v1.0 — gelesen: 93 Zeilen
 - `src/core/contracts/save.ts` — Contract: save v1.0 — gelesen: 54 Zeilen
 - `src/core/contracts/world-time.ts` — Contract: world-time v1.0 — gelesen: 37 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
@@ -3545,6 +3552,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 141 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 292 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 292 Zeilen
 - `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 292 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
