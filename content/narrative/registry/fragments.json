@@ -1,8 +1,33 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ae55b1973e4db7cfdc883e283e266af71222062cce34aff7ba05b837fca2c926",
+  "contentHash": "sha256:5efaa7ff824f4cf45f8e45e44e7417a2dbfa980b23a0433c4033e9e9833f07e1",
   "fragments": [
+    {
+      "contributionId": "action-card-overflow-01",
+      "turnId": "2026-11-14T21:55Z-action-card-overflow",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte fünf Karten auf den Tresen, sichtbar blieben nur drei. Sie schob die fehlenden nicht beiseite, sondern öffnete einen eigenen Griff darunter: Wer wählt, soll alle Wege sehen, nicht nur die bequemen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-action-card-overflow.json"
+    },
     {
       "contributionId": "actions-storage-retention",
       "turnId": "2026-11-11T22:06Z-actions-storage-retention",
