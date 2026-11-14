@@ -4,7 +4,7 @@
   "claimId": "lane/governance/claim-register-reconcile-616",
   "branch": "lane/governance/claim-register-reconcile-616",
   "baseSha": "02320857de30597662f4be6c5ba81a72bff0c1a9",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Claim-Register nach Fremd-Merges abgleichen (#616)",
   "goal": "Belegbare Merges als merged buche, Tasks DONE, Retention anwenden, Light-Gate gruen",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 3
 }

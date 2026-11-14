@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T16:54:05Z",
-  "generatedBy": "worker",
-  "head": "4750661a25a5299f2302a0974cda50a410f05634",
-  "headMessage": "Maintainer-Lauf: 8 Merges (#713,#715,#716,#717,#718,#719,#720,#698) plus Closeout #724",
-  "base": "origin/main @ 4750661a25a5299f2302a0974cda50a410f05634",
-  "worktree": "cloud:/workspace/chats/6879216b8774d6c6af4b4bc4",
+  "generatedAt": "2026-11-14T17:12:22Z",
+  "generatedBy": "maintainer",
+  "head": "75571c15a81c02cad762008b248d2fbbd36a6255",
+  "headMessage": "Maintainer-Lauf: Board- und Claim-Register gegen den echten main-Tip abgeglichen (#727)",
+  "base": "origin/main @ 75571c15a81c02cad762008b248d2fbbd36a6255 (Parent dieses Closeouts)",
+  "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Acht review-waiting-PRs geprüft: sieben Feature-/Test-PRs und der Governance-PR #698 gemergt, #700 und #701 mit Begründung abgelehnt. Main durchgehend grün (verify:light, betroffene Tests). Board-State und Claims nachgezogen.",
+  "summary": "Register stimmt mit der Remote-Wahrheit ueberein: main 75571c15, 3 offene PRs (#700 und #701 abgelehnt, #723 review-waiting), 0 offene Claims, 0 gemergte Claims mit offenem Vertrag. Neun Issues geschlossen (646,642,643,644,645,653,654,671,707). verify:light gruen; Vollsuite 385 passed / 5 pretask*-Dateien rot, davon nur pretask.test.ts als vorbestehend belegt.",
   "lastActions": [
     "board-cursors.mjs --export/--write: 49 Cursor (46 Issues, 3 PRs) gesetzt, Kopf 5ed5d960, 0 UNKNOWN",
     "Baseline-Seeding: Cursor auf den jeweils letzten GitHub-Kommentar gesetzt; altere Kommentare gelten als gelesen und stehen als warning im State",
@@ -15,39 +15,11 @@
     "Korrektur: PRs #683 (#574), #691 (#648) und #692 (#635) sind offen und review-waiting; der alte Snapshot meldete 0 offene PRs",
     "Neu belegt: #625 uber PR #688 (7b657983), #626 uber PR #689 (10811b14), #596 als Direktpush 5ed5d960"
   ],
-  "activeClaims": [
-    {
-      "issue": 671,
-      "title": "[GOVERNANCE][P3] P0-Kommentar-Eingang mit Issue-Cursorn im Maintainer-State absichern",
-      "agent": "LILITH [A18]",
-      "claimedAt": "2026-11-14T10:13Z",
-      "status": "ACTIVE",
-      "scope": "scripts/lib/board-cursors.mjs, scripts/board-cursors.mjs, src/core/governance/__tests__/board-cursors.test.ts, .lane-claims/board-state.json",
-      "plan": "Kommentar-Cursor je Issue und PR als reine, getestete Logik; State gegen echten main-Stand neu aufbauen"
-    }
-  ],
-  "mergedClaimsThisRun": [
-    715,
-    716,
-    717,
-    718,
-    719,
-    720,
-    698
-  ],
-  "closedIssuesThisRun": [
-    646,
-    642,
-    643,
-    644,
-    645,
-    653,
-    654,
-    671,
-    707
-  ],
-  "openPullRequests": 2,
-  "reviewWaitingPrs": 0,
+  "activeClaims": [],
+  "mergedClaimsThisRun": [],
+  "closedIssuesThisRun": [],
+  "openPullRequests": 3,
+  "reviewWaitingPrs": 1,
   "blockedIssues": [
     {
       "issue": 684,
@@ -63,13 +35,16 @@
     }
   ],
   "nextRunChecklist": [
-    "Neue Kommentare nur uber die Cursor lesen: unvollstaendige Seite oder API-Ausfall ergibt UNKNOWN, nie Freigabe",
-    "Offene review-waiting-PRs zuerst: #683 (#574), #691 (#648), #692 (#635)",
-    "Aktive Claims prufen: LILITH #671; weitere Worker-Claims uber CLAIM-Kommentare, nicht uber diesen State",
-    "Cursor erst vorschieben, wenn die komplette Kommentar-Seite gelesen und die Eingange triagiert sind"
+    "Offene PRs: #723 (#640) wartet auf Peer-Review; #700 (#667) und #701 (#664) sind abgelehnt und warten auf Nachbesserung",
+    "Review-waiting-Marke nur der Maintainer mit Verdikt entfernen; #700/#701 nicht wieder markieren",
+    "Vollsuite: 5 pretask*-Testdateien rot; vorbestehend belegt ist nur pretask.test.ts (21b3e924)",
+    "Neue Kommentare nur ueber die Cursor lesen: unvollstaendige Seite oder API-Ausfall ergibt UNKNOWN, nie Freigabe"
   ],
   "blockers": [],
-  "warnings": [],
+  "warnings": [
+    "Vollsuite rot: src/core/governance/__tests__/pretask*.test.ts (5 Dateien, 13 Faelle); vorbestehend belegt nur fuer pretask.test.ts",
+    "head nennt den main-Tip vor diesem Closeout; nach dem Merge gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann"
+  ],
   "issues": {
     "527": {
       "kind": "issues",
@@ -507,7 +482,7 @@
       "pr": 660,
       "state": "CLOSED",
       "merged": false,
-      "note": "#552 kam uber PR #661 nach main; #660 ist kein Merge-Beleg"
+      "note": "#552 kam ueber PR #661 nach main; #660 ist kein Merge-Beleg"
     }
   ]
 }

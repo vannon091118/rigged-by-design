@@ -4,7 +4,7 @@
   "claimId": "lane/governance/roadmap-progress-mechanical",
   "branch": "lane/governance/roadmap-progress-mechanical",
   "baseSha": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Roadmap-Fortschritt als mechanische Datei behandeln",
   "goal": "Die generierte P-13-Zeile in docs/ROADMAP.md aus der Scope-Pruefung nehmen, ohne die Claim-Allowlist zu erweitern.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Governance-Fix pruefen, normal committen, PR gegen main oeffnen und nach gruener Pruefung mergen.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

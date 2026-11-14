@@ -4,7 +4,7 @@
   "claimId": "lane/sim/issue-674-starter-guidance",
   "branch": "lane/sim/issue-674-starter-guidance",
   "baseSha": "b84623e970e0b4357fbc50316aa977bd26f3da14",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Starter-Kiste fuehrt sichtbar zum ersten Automaten (S1-06)",
   "goal": "Ein sichtbarer Fuehrungsschritt von der Kiste zum ersten Geraet; GERÄTE 0/0 ist kein Endzustand mehr",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "headSha": "191c3ff41a15441e772c131359d65aa2d4640fec"
   },
   "findings": [],
-  "nextAction": "PR #681 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 2
 }

@@ -4,7 +4,7 @@
   "claimId": "lane/governance/agent-onboarding",
   "branch": "lane/governance/agent-onboarding",
   "baseSha": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Agent-Onboarding als verbindlichen Workflow verankern; Claims und Lanes ueber GitHub-Issues loesen",
   "goal": "AGENTS.md, GOVERNANCE.md, WORKFLOW.md und INDEX.md verweisen direkt auf docs/AGENT-ONBOARDING.md und loesen den Widerspruch Register vs. Issue-Verlauf zugunsten der Issues auf.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Branch pushen, PR oeffnen, Squash-Merge nach gruenem Nachweis.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

@@ -4,7 +4,7 @@
   "claimId": "lane/sim/issue-536-smartphone-inbox-vitter-immoluck",
   "branch": "lane/sim/issue-536-smartphone-inbox-vitter-immoluck",
   "baseSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Smartphone: Inbox, Vitter-Feed und ImmoLuck aus vorhandenen Wahrheiten ableiten",
   "goal": "#536: Die drei Apps lesen Journal/Archiv, NPC-Erinnerungen und den Immobilienkatalog; kein zweiter Speicher, keine zweite Geldquelle.",
   "taskType": "single",
@@ -18,7 +18,7 @@
       "summary": "Aufgeloest ohne Claim-Aenderung: verify-lane-claims erkennt lane/governance/claim-register-reconcile-616 ueber den gemergten PR #618 (Branch-Kopf f7ae2fb0 auf main) als gemergt ('Belege: 1 gemergt')."
     }
   ],
-  "nextAction": "PR #622 offen (Head 58531ad3, Basis d592a20); alle vier Vor-PR-Nachweise gruen. Review beim Maintainer.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 4,
   "pr": {
     "number": 622,

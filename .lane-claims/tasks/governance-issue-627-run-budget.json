@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-627-run-budget",
   "branch": "lane/governance/issue-627-run-budget",
   "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Externes Laufbudget und Stop-Kriterium (#627)",
   "goal": "Kill-Switch, Iterations-/Issue-/Commit-Budget, Churn-Trennung und maschinenpruefbarer Stop-Zustand",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "Review abwarten; nach Merge Claim auf merged und Vertrag auf DONE.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 2
 }

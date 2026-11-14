@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-629-generated-serialization",
   "branch": "lane/governance/issue-629-generated-serialization",
   "baseSha": "a435fdf15a00832dbf6546e56b5583c133987614",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Generierte Artefakt-Lanes vor parallelen Merge-Konflikten serialisieren (#629)",
   "goal": "Reproduzierbarer Integrationslauf belegt, dass zwei parallele Narrative-Lanes nacheinander ohne Beitragsverlust integriert werden",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "headSha": "03b7b5649b9c748f67b67d0a2c7870faa615aab7"
   },
   "findings": [],
-  "nextAction": "PR #673 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 2
 }

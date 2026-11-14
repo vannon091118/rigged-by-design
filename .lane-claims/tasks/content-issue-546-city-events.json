@@ -4,7 +4,7 @@
   "claimId": "lane/content/issue-546-city-events",
   "branch": "lane/content/issue-546-city-events",
   "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "50 Stadtbegegnungen aus PR #464 sichern (CITY_ENCOUNTER)",
   "goal": "Die 50 city-event-Beitraege samt Slot-Map-Kontext, Pool-Test und Consumer-Audit auf aktuelles main heben; Registry und Manifest aus den Beitraegen erzeugen",
   "taskType": "single",
@@ -27,6 +27,6 @@
       "summary": "verify-test-quality rot auf origin/main 9c82f7ac: Test importiert sein Ziel nicht. Blob 4d5b0989 auf Basis und Head identisch, 0 Diff in src/Config; Kontrollebene nur fuer Governance-/CI-Lanes."
     }
   ],
-  "nextAction": "PR #658 offen (Head 484fb04a, Basis 9c82f7ac). verify:light, sync-generated --check, integrate --check und verify:scope gruen; ci:local einzig an der aus main geerbten test-quality-Verletzung rot. Review beim Maintainer.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 2
 }
