@@ -58,7 +58,7 @@ describe('imageDiffGate', () => {
     expect(result.maxChannelDiff).toBe(3);
   });
 
-  * Weigert Bilder mit zu grosser Farbanderung ab, auch wenn nur ein Pixel betroffen ist', () => {
+  it('Weigert Bilder mit zu grosser Farbanderung ab, auch wenn nur ein Pixel betroffen ist', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 100, 150, 200);
     // Ein einzelnes Pixel stark veraendern
