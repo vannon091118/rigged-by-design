@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:01cb6573b47f73c501b5bd678c74a409520770e3ff9a4c9e972b7d91998736b8",
+  "contentHash": "sha256:24c2c90982d92efe928872cf01f484425cce85bf1ee351cc99f7a5bcad31e0bb",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -10245,6 +10245,28 @@
       "text": "Rita schraubte den Kirschen-Aufsatz an und drehte dreimal. Was sie sah, war kein neues Geraet, sondern dasselbe Geraet mit anderen Gewichten: das J kam oefter, das Buch blieb selten, und die Quote stand weiterhin in derselben Tabelle. Der Unterschied zwischen einem Aufkleber und einer Modifikation war genau eine Zahl, die die Engine selbst liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-mod-engine.json"
+    },
+    {
+      "contributionId": "money-counterfactual-01",
+      "turnId": "2026-11-14T21:40Z-money-counterfactual",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Bargeld ist keine Wetterlage: Wer knapp bei Kasse ist, traegt seinen Grund selbst. Der Entscheidungsbericht nennt ihn jetzt beim Namen und trennt ihn von dem Raum, in dem er wirkt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-money-counterfactual.json"
     },
     {
       "contributionId": "multi-beat-steps-01",

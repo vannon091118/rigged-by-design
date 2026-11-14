@@ -1,0 +1,21 @@
+{
+  "id": "lane/sim/issue-764-money-counterfactual",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-764-money-counterfactual",
+  "baseSha": "edf39a7444ba0b99ee5936bf91214ebd26dee07e",
+  "issue": 764,
+  "task": "Issue #764: Bargeld-Gegenprobe als eigene Oekonomie-Familie fuehren",
+  "goal": "Bargeld wird als eigene money-Familie im Decision Trace gefuehrt; environment bleibt fuer reine Umgebungsursachen, damit beide Proben getrennt zaehlen.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-sim-issue-764-money-counterfactual.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "edf39a7444ba0b99ee5936bf91214ebd26dee07e"
+}
