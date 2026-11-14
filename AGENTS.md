@@ -73,6 +73,37 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 **Rekursions-Erkennung:**
 Wenn ein Maintainer-Lauf hauptsächlich Governance-Issues über Governance produziert: STOP. Einen Kommentar ins aktuelle Control-Issue: "Governance-Drift erkannt." Nächster Lauf: ausschließlich P0/P1/Spiel-Bugs. Kein weiterer Governance-Ausbau in diesem Zyklus.
 
+## Rollentrennung: Maintainer vs. Worker
+
+**Worker** bauen, bis kein Issue mehr offen ist. Jeder freie Worker übernimmt das älteste unclaimed Issue in Board-Reihenfolge (P0 → Regressionen → Unblocker → P1 → P2/P3 → Housekeeping), claimt es (`CLAIM`), implementiert auf seinem eigenen Branch, pusht, setzt `review-waiting` und meldet `RELEASE [A<n>] done <sha>`. Der Maintainer delegiert die gesamte Spiel-Arbeit (Sim, Store, Render, UI) an die Worker und arbeitet selbst keinen Spiel-Code.
+
+**Maintainer** koordiniert, öffnet neue Issues, integriert fremde Issues ins Board und merged PRs nach `main`. Der Maintainer scant zu Beginn jedes Laufs alle offenen Issues auf neue Kommentare (P0 sofort), erstellt neue Issues für Gameplay-Bugs, fehlende Features und konfliktträchtige Code-Muster (`[BEREICH][Priorität] Titel` mit Symptom → Ursache → Causal-Chain und vollständigen Labels), weist freie Issues freien Workern zu und merged PRs nach `main` auf exaktem Kopf nach lokalem Vor-PR-Nachweis und eigenem Diff-Review.
+
+**Rebase vor PR-Erstellung.** Jeder Lane-Branch muss vor dem Erstellen oder Aktualisieren eines PR gegen `origin/main` rebased sein (`scripts/integrate.mjs --check` muss `READY` liefern). Konflikte in generierten Artefakten löst der Maintainer selbst via `node scripts/sync-generated.mjs --all`; Konflikte in Handdateien nie zurück zum Worker. Erst nach erfolgreichem Rebase und lokalem Vor-PR-Nachweis (`ci:local`) wird der PR erstellt.
+
+## Board-Status & Review-Status (Pflicht)
+
+Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem Ort aus einsehbar sein (Desktop, Termux, Remote-Node). Ein State-Snapshot sichert den Fortschritt über Gerätegrenzen hinweg.
+
+**state:JSON — Laufnachweis**
+- Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
+- Sie zeigt: wo der letzte Lauf aufgehört hat, welche Issues aktualisiert wurden, welche Claims aktiv sind, welche PRs `review-waiting` sind.
+- Der nächste Lauf liest die `state:JSON` zu Beginn und sieht direkt, welche Issues upgedatet sind und was zu tun ist.
+
+**Worker-Statuspflicht (jedes Gerät)**
+- Jeder Worker aktualisiert seinen eigenen Status immer als Issue-Kommentar am zugehörigen Issue: `CLAIM`, `RELEASE [A<n>] done <sha>`, Blocker, Testergebnis, Frage.
+- Ein Issue-Kommentar ist ein Ticket-Update. Der Maintainer aktualisiert den Board-Zustand sofort bei neuem Kommentar (P0).
+- Worker dürfen den Status nicht nur lokal halten; er muss im Issue sichtbar sein.
+
+**Maintainer-Statuspflicht**
+- Der Maintainer hält den Board-Zustand aktuell: Issues schließen, Labels setzen/entfernen, Claims zuweisen, `state:JSON` pflegen.
+- Bei Claim-Kollision entscheidet der Maintainer einmalig und klar im Issue.
+- Review-Stats: offene Reviews, `review-waiting`-PRs, akzeptierte/abgelehnte PRs sind Teil des Board-Status und werden bei jedem Lauf geprüft.
+
+**Pflicht-Issues pinnen**
+- P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
+- Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
+
 ## Zehn unverhandelbare Regeln
 
 1. **Claim vor Read, Pretask vor dem Edit.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`). Die Reihenfolge kommt aus dem Board (Prioritätslabels), nicht aus dem lokalen Register; erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Danach `pnpm run agent:pretask --json`: `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`: fremder Claim blockiert, fehlender Claim verlangt den Kommentar, Lane ohne Issue-Nummer wird gewarnt) und blockiert außerdem bei offenem `gate-failure`-Issue, fehlendem Impact-Plan oder Claim-Problem (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.

@@ -4,18 +4,19 @@
   "claimId": "lane/sim/issue-539-esport-evening",
   "branch": "lane/sim/issue-539-esport-evening",
   "baseSha": "d1499e2118d93f521fee51c73bce1c5bafe30b8e",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "E-Sport-Abend im vorhandenen Turnierabend (S3-09)",
   "goal": "Ankuendigung, Match-Ergebnis aus Rollen/Taktik/PRNG, Ledger-Abrechnung und Archiv-Eintrag ohne zweite Event-Liste oder Save-Feld",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": {
     "number": 641,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/641",
-    "state": "open"
+    "state": "merged",
+    "mergeSha": "9427e2cf784ab3bb8f659e5c90dba22d3da0383d"
   },
   "findings": [],
-  "nextAction": "PR #641 offen (Head 3afa70af, Basis d1499e21); verify:light, sync-generated --check, integrate --check, verify:scope und ci:local gruen. Review beim Maintainer.",
-  "revision": 2
+  "nextAction": "Issue #539 durch Maintainer geschlossen (ACCEPT via PR #661 in main@0bad32ea). Claim merged, Task DONE.",
+  "revision": 3
 }

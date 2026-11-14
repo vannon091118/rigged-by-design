@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-board-status-tracking",
+  "claimId": "lane/governance/board-status-tracking",
+  "branch": "lane/governance/board-status-tracking",
+  "baseSha": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5",
+  "phase": "CI_PENDING",
+  "title": "Board-Status und Review-Status in Workflow aufnehmen (state:JSON, Worker-Statuspflicht, Maintainer-Statuspflicht)",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 6
+}

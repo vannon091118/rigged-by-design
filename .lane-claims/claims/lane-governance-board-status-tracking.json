@@ -1,0 +1,30 @@
+{
+  "id": "lane/governance/board-status-tracking",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/board-status-tracking",
+  "baseSha": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5",
+  "task": "Board-Status und Review-Status in Workflow aufnehmen (state:JSON, Worker-Statuspflicht, Maintainer-Statuspflicht)",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/GOVERNANCE.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-sim-issue-539-esport-evening.json",
+    ".lane-claims/claims/lane-sim-issue-552-staff-qualification.json",
+    ".lane-claims/tasks/sim-issue-539-esport-evening.json",
+    ".lane-claims/tasks/sim-issue-552-staff-qualification.json",
+    ".lane-claims/claims/lane-governance-board-status-tracking.json",
+    "content/narrative/contributions/2026-11-14-board-status-dokumentation.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5"
+}
