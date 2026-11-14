@@ -1,0 +1,26 @@
+{
+  "id": "lane/store/issue-707-save-roundtrip-version",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/store/issue-707-save-roundtrip-version",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 707,
+  "task": "Issue #707: Save-Roundtrip-Suite nennt v8, prueft v11",
+  "goal": "Suite versionsneutral benennen und raw.version explizit gegen das exportierte SAVE_VERSION pruefen; keine Migrations- oder Laufzeitaenderung.",
+  "pathAllowlist": [
+    "src/store/__tests__/save-roundtrip.test.ts",
+    "src/store/save.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "mergedSha": "b3aa55ea2a977af234cd88df3e4005f2f38571e4",
+  "mergedPr": 713
+}
