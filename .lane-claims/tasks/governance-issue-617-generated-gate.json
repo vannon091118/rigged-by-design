@@ -11,11 +11,11 @@
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "findings": [],
-  "nextAction": "PR #618 offen; Review beim Maintainer.",
-  "revision": 2,
+  "nextAction": "PR #619 offen; Review beim Maintainer.",
+  "revision": 3,
   "pr": {
-    "number": 618,
-    "url": "https://github.com/vannon091118/rigged-by-design/pull/618",
+    "number": 619,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/619",
     "state": "open"
   }
 }
