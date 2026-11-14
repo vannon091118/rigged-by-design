@@ -22,7 +22,7 @@ import type { CityExteriorModel } from '../core/sim/city-exterior';
 
 interface SceneView {
   readonly key: string;
-  readonly kind: 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT';
+  readonly kind: 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT' | 'INTERIOR';
   readonly label: string;
 }
 

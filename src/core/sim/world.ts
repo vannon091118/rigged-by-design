@@ -2,6 +2,7 @@
 import { activeForeignFloor } from './active-player';
 import { cityNav } from './city-scene';
 import { playerApartmentFurniture, playerApartmentNav } from './player-apartment';
+import { interiorDef } from './interior-layouts';
 import { canPlaceAt } from './grid-zones';
 import { navGrid, tileIndex, type NavGrid } from './nav-grid';
 import { accessPoints, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
@@ -14,6 +15,9 @@ export function zoneById(world: WorldState, id: string): Zone | null {
 export function furnitureById(world: WorldState, id: number): Furniture | null {
   if (world.scene.kind === 'APARTMENT') {
     return playerApartmentFurniture().find((item) => item.id === id) ?? null;
+  }
+  if (world.scene.kind === 'INTERIOR') {
+    return interiorDef(world.scene.interior?.layoutId)?.furniture.find((item) => item.id === id) ?? null;
   }
   const foreign = activeForeignFloor(world);
   if (foreign) return foreign.furniture.find((item) => item.id === id) ?? null;
@@ -48,6 +52,10 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
  */
 export function worldNav(world: WorldState): NavGrid {
   if (world.scene.kind === 'APARTMENT') return playerApartmentNav();
+  if (world.scene.kind === 'INTERIOR') {
+    const room = interiorDef(world.scene.interior?.layoutId);
+    if (room) return navGrid(room.layout.size, room.furniture, room.layout);
+  }
   const city = world.scene.kind === 'CITY' ? world.cityScene : null;
   if (city) return cityNav(city);
   const foreign = activeForeignFloor(world);

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8f6d882303725a15c0eae92ad0456b34d43183edb6d142669b541f50c78eac60",
+  "contentHash": "sha256:ac11c3a56ff9660dab0bcfb3719221494152a422c1358d8107b4c331893c262b",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7478,6 +7478,28 @@
       "text": "An der Bar zaehlt, wer dir zuhoert; am Automaten zaehlt nur, was ueber ihn geredet wird. Wer beides gleich behandelt, wundert sich, warum ein freundliches Wort keinen Einsatz ersetzt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-influence-matrix-01.json"
+    },
+    {
+      "contributionId": "interiors-01",
+      "turnId": "2026-11-13T23:56Z-interiors",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter der Kneipentür riecht es nach Holz und Bier; nebenan im Späti summt das Licht über den Regalen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-interiors.json"
     },
     {
       "contributionId": "items-gates-01",

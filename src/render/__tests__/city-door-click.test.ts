@@ -95,14 +95,19 @@ describe('Stadt: Tuerkanten als Klickziel', () => {
     expect(world.scene.kind).toBe('OWN');
     scene.enterCity();
     at(world, 'door_street_to_kiez_pub');
-    expect(scene.enterStreetDoor('door_street_to_kiez_pub')).toBe('CITY');
+    expect(scene.enterStreetDoor('door_street_to_kiez_pub')).toBe('INTERIOR');
+    expect(world.scene.kind).toBe('INTERIOR');
     expect(world.city?.location).toBe('KIEZ');
+    // Zurück auf die Straße; der Markt öffnet erst mit dem Kiez-Rang.
+    scene.enterCity();
+    expect(world.scene.kind).toBe('CITY');
     at(world, 'door_street_to_corner_shop');
     expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBeNull();
     expect(world.city?.location).toBe('KIEZ');
     world.city = { ...cityOf(world), KIEZ: 9 };
     at(world, 'door_street_to_corner_shop');
-    expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBe('CITY');
+    expect(scene.enterStreetDoor('door_street_to_corner_shop')).toBe('INTERIOR');
+    expect(world.scene.kind).toBe('INTERIOR');
     expect(world.city?.location).toBe('MARKT');
     // Unbekannte Tuer bleibt wirkungslos; sie hat keine Kachel zum Hingehen.
     expect(scene.enterStreetDoor('door_street_to_unknown')).toBeNull();
