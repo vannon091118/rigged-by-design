@@ -1,0 +1,23 @@
+{
+  "id": "lane/sim/issue-775-city-tile-occupancy",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-775-city-tile-occupancy",
+  "baseSha": "a9b6418baf426306ecc5541b7344dcf150a3f995",
+  "issue": 775,
+  "task": "Issue #775: Stadtbewohner reservieren Kacheln und kollidieren nicht",
+  "goal": "Deterministische Kachelbelegung im bestehenden Stadt-Tick: zwei Bewohner mit gleichem Ziel belegen dieselbe Kachel nicht gleichzeitig; bei Konflikt wartet der stabile zweite Bewohner, ohne neuen Save-Zustand oder zweiten Navigationsgraphen.",
+  "pathAllowlist": [
+    "src/core/sim/city-life-movement.ts",
+    "src/core/sim/city-tile-occupancy.ts",
+    "src/core/sim/__tests__/city-life-movement.test.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "74e4b27911115a1dc103743b0b1d3b7fa99feac1"
+}

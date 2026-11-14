@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:dc853651919f4d464fdcdfbbfaddd3e6cab219e8d77f8128af98bd75eeda49c2",
+  "contentHash": "sha256:9eeb39bb2a302fc991f281b82337729edade1cea26b89c306080271ac0d7d8d2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -7691,6 +7691,28 @@
       "text": "Zum Schluss räumte ich die Theke ab. Sieben Krüge, sieben Kreidestriche, ein Tuch. Was gestern noch offen lag, stand jetzt an seinem Platz, und ich musste nichts zweimal nachsehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-77.json"
+    },
+    {
+      "contributionId": "city-tile-occupancy-01",
+      "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Wege können sich kreuzen, ohne dass zwei Menschen denselben Schritt machen. Wer zuerst geht, nimmt die Kachel; wer folgt, wartet einen Atemzug und geht dann. Am Ziel steht niemand im anderen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-tile-occupancy.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
+  "contributionId": "city-tile-occupancy-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Wege können sich kreuzen, ohne dass zwei Menschen denselben Schritt machen. Wer zuerst geht, nimmt die Kachel; wer folgt, wartet einen Atemzug und geht dann. Am Ziel steht niemand im anderen.",
+  "directives": []
+}
