@@ -6,6 +6,10 @@
  * jeder Ordner eine Kopfzeile mit Anzahl. Text wird gelesen (Zeilen, erster
  * Kommentar), Binaerdateien werden an Signatur und Groesse geprueft.
  * Der Block zwischen den Markern ist deterministisch; die Zeit steht im Marker.
+ *
+ * Aufruf:
+ *   node scripts/build-inventory.mjs           # docs/INVENTORY.md schreiben
+ *   node scripts/build-inventory.mjs --check   # nur pruefen, nichts schreiben
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -19,6 +23,7 @@ const TEXT = /\.(ts|tsx|mjs|js|css|md|json|yml|yaml|sh|html|svg)$/;
 const GENERATED = new Set(['package-lock.json', 'src/render/assets/manifest.json']);
 const RISKY = /^\s*(\/\/|\/\*|\*|#)\s*(TODO|FIXME|HACK|XXX|PLACEHOLDER)\b/m;
 
+const check = process.argv.includes('--check');
 const tracked = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
 const dirs = [...new Set(tracked.map((file) => dirname(file)))].sort();
 
@@ -124,5 +129,15 @@ const next = start >= 0 && end > start
   : anchor >= 0
     ? `${inventory.slice(0, anchor)}${section}${inventory.slice(anchor)}`
     : `${inventory.trimEnd()}\n\n${section}`;
+if (check) {
+  if (next !== inventory) {
+    console.error('inventory:check: docs/INVENTORY.md ist nicht aktuell (Eigentuemer: scripts/build-inventory.mjs)');
+    console.error('  Reparatur: node scripts/sync-generated.mjs');
+    process.exit(1);
+  }
+  console.log(`inventory:check: PASS (${rows.length}/${tracked.length} Dateien, ${dirs.length} Ordner)`);
+  process.exit(0);
+}
+
 writeFileSync(inventoryPath, next);
 console.log(`inventory:build: ${rows.length}/${tracked.length} Dateien, ${dirs.length} Ordner, ${risky.length} Auffaelligkeit(en)`);

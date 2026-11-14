@@ -6,7 +6,7 @@
 
 ## Required Gates
 
-Der Required-Plan besteht aus fünfzehn Gates:
+Der Required-Plan besteht aus sechzehn Gates:
 
 | # | Gate | Skript | Fehlercode |
 | --- | --- | --- | --- |
@@ -23,19 +23,22 @@ Der Required-Plan besteht aus fünfzehn Gates:
 | 11 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
 | 12 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
 | 13 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
-| 14 | `tests` | `pnpm run test:ci` | `ERR-4026` |
-| 15 | `build` | `pnpm run build` | `ERR-1005` |
+| 14 | `generated` | `node scripts/sync-generated.mjs --all --check` | `ERR-4028` |
+| 15 | `tests` | `pnpm run test:ci` | `ERR-4026` |
+| 16 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1` oder im Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1` oder im Profil `full`/`release`. Dann sind es siebzehn Läufe, aber weiterhin sechzehn Required-Gates.
+
+**Eigentümer der generierten Artefakte** (`content/narrative/registry/fragments.json`, `content/narrative/turns/manifest.json`, `src/core/sim/narrative/composer/registry.generated.ts`, `docs/INVENTORY.md`, `docs/ROADMAP.md`, `docs/DEPENDENCY-MATRIX.md`) ist ausschließlich `scripts/sync-generated.mjs` mit seinen Generatoren. Keine Lane schreibt sie von Hand: Konflikte werden regeneriert, nie aufgelöst. Das Gate `generated` prüft den Stand rein lesend (`--check`) und blockiert damit den lokalen Vor-PR-Nachweis, bevor ein Merge überhaupt ansteht.
 
 Lokal gilt:
 
-- `verify:light` = neun Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `test-placement`, `tree`, `impact-graph`, `redundancy`.
+- `verify:light` = zehn Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`.
 - `verify:fast` = Light plus `dead-code`, `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
-- `verify:quick` = vierzehn Gates: Required ohne `build`.
-- `verify:integration` = dreizehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
-- `verify:all` = fünfzehn Required plus Audit (sechzehn Läufe).
+- `verify:quick` = fünfzehn Gates: Required ohne `build`.
+- `verify:integration` = vierzehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
+- `verify:all` = sechzehn Required plus Audit (siebzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
 - `test:mechanics` = ausschließlich Statistik, Soak, Langlauf und Benchmarks; nie Teil eines Regelprofils.
 

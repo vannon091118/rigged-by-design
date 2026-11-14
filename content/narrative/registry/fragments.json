@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c43f204c74e065a6de5c654020a61bd1dd72caaa24d938eaecda48e31ac68417",
+  "contentHash": "sha256:22b7ef20c0b849f1627a732ebccee74759d166c8f29dfa252670c6ade1489152",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7140,6 +7140,28 @@
       "text": "Der Automat lächelt in Neon, auch wenn niemand davorsteht. Das Lächeln ist billiger als eine Glühbirne und hält länger.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "generated-gate-01",
+      "turnId": "2026-11-14T04:20Z-generated-gate-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Inventur war das einzige Schild, das sich selbst neu schrieb, während es geprüft wurde. Jetzt bleibt es stehen und meldet nur noch, wenn seine Zeilen nicht mehr zu den Türen passen, die der Generator gezählt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-generated-gate.json"
     },
     {
       "contributionId": "goal-cost-truth-01",

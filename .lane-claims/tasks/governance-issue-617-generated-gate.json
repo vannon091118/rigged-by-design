@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-617-generated-gate",
+  "claimId": "lane/governance/issue-617-generated-gate",
+  "branch": "lane/governance/issue-617-generated-gate",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "phase": "CI_PENDING",
+  "title": "Generated-Gate: sync-generated --check rein lesend und verpflichtend",
+  "goal": "Ein veraltetes generiertes Artefakt blockiert den lokalen Vor-PR-Nachweis, ohne dass die Pruefung selbst schreibt.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Basis a725f8ea gemergt (7f104c8f); verify:light PASS, sync-generated --check PASS, integrate --check READY. Review beim Maintainer.",
+  "revision": 4,
+  "pr": {
+    "number": 619,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/619",
+    "state": "open"
+  }
+}
