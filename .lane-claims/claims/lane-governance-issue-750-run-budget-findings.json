@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/issue-750-run-budget-findings",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-750-run-budget-findings",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "issue": 750,
+  "task": "Issue #750: Befundpflicht im Laufbudget",
+  "pathAllowlist": [
+    "scripts/lib/run-budget.mjs",
+    "src/core/governance/__tests__/run-budget.test.ts",
+    "docs/run-budget.json",
+    "docs/GOVERNANCE.md",
+    "content/narrative/contributions/2026-11-14-rumor-21.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims.json",
+    ".lane-claims/claims/lane-governance-issue-750-run-budget-findings.json",
+    ".lane-claims/tasks/governance-issue-750-run-budget-findings.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8f31a19ed22803e21fa674bd1c565dbf84a28da8"
+}
