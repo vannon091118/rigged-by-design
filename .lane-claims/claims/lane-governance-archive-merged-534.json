@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/archive-merged-534",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/archive-merged-534",
+  "baseSha": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5",
+  "task": "Veralteten Claim der gemergten #534-Lane archivieren und Innenraum-Lane registrieren",
+  "goal": "#534",
+  "pathAllowlist": [
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-archive-merged-534.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5"
+}
