@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f9abd60628f0aa0e44d49853939c7fe8a4636a4c52abc714c6bab38562061371",
+  "contentHash": "sha256:81deaedb2f59fda0d0e873b39d4d3b2cde5337551e34a35f6e2bd346eb0ce0c4",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7575,6 +7575,28 @@
       "text": "Acht Kacheln, ein Geraet. Ich ging hinein, kam zurueck, ging hinein und schloss es. Zwischendurch war nie mehr als eine Flaeche da.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-70.json"
+    },
+    {
+      "contributionId": "city-scene-77",
+      "turnId": "2026-11-14T16:55Z-city-scene-77",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zum Schluss räumte ich die Theke ab. Sieben Krüge, sieben Kreidestriche, ein Tuch. Was gestern noch offen lag, stand jetzt an seinem Platz, und ich musste nichts zweimal nachsehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-77.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

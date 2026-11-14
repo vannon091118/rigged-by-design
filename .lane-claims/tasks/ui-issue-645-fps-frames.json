@@ -4,14 +4,18 @@
   "claimId": "lane/ui/issue-645-fps-frames",
   "branch": "lane/ui/issue-645-fps-frames",
   "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #645: FPS-Panel aus echten Frame-Zeitpunkten speisen",
   "goal": "FPS aus tatsaechlichen requestAnimationFrame-Zeitpunkten, ohne Sollwert, Schaetzung oder Tickrate; Start/Pause/Tab-Wechsel ohne Sprung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 720,
+    "headSha": "4e95e8fc",
+    "mergedSha": "534a0a971152097172a4a31148b93fb739d25ee9"
+  },
   "findings": [],
-  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
+  "nextAction": "Gemergt; Closeout verbucht.",
   "revision": 1
 }

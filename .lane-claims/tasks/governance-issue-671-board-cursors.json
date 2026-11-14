@@ -4,13 +4,17 @@
   "claimId": "lane/governance/issue-671-board-cursors",
   "branch": "lane/governance/issue-671-board-cursors",
   "baseSha": "2eae4c31e76b2f143489df82a8eaaaebb95a2efb",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "P0-Kommentar-Eingang mit Issue-Cursorn absichern (#671)",
   "goal": "Kommentar-Cursor je Issue und PR als reine, getestete Logik: neue Eingaenge genau einmal, keine Duplikate, unvollstaendige Pagination und API-Ausfall als UNKNOWN ohne Cursor-Vorschub; State gegen den echten Board-Stand neu aufgebaut",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 698,
+    "headSha": "262be24a",
+    "mergedSha": "4750661a25a5299f2302a0974cda50a410f05634"
+  },
   "findings": [
     {
       "id": "cursor-fehlt",
@@ -69,7 +73,7 @@
       "kind": "environment"
     }
   ],
-  "nextAction": "Nach dem Commit: Gates fahren, pushen, PR oeffnen, review-waiting und RELEASE",
+  "nextAction": "Gemergt; Closeout verbucht.",
   "revision": 1,
   "stackedOn": {
     "pr": 692,

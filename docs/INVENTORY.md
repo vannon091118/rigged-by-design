@@ -710,10 +710,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3142 |
-| Gelistete Dateien | 3142 |
+| Getrackte Dateien | 3143 |
+| Gelistete Dateien | 3143 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (123), artifacts (1), content (1130), docs (108), packages (27), public (571), scripts (127), src (1030) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (123), artifacts (1), content (1131), docs (108), packages (27), public (571), scripts (127), src (1030) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -729,7 +729,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/` — 63 Datei(en)
 - `.lane-claims/tasks/` — 58 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1126 Datei(en)
+- `content/narrative/contributions/` — 1127 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -857,7 +857,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 603 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 513 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -881,7 +881,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-629-generated-serialization.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-claim-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 29 Zeilen
@@ -913,14 +913,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ui-issue-642-workshop-entries.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-ui-issue-643-workshop-tiles.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-ui-issue-645-fps-frames.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-ui-issue-642-workshop-entries.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-ui-issue-643-workshop-tiles.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-ui-issue-645-fps-frames.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-646-smartphone-states.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
@@ -940,7 +940,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-629-generated-serialization.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
-- `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 79 Zeilen
+- `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 83 Zeilen
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
@@ -972,14 +972,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/tasks/ui-issue-642-workshop-entries.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ui-issue-643-workshop-tiles.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ui-issue-645-fps-frames.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-642-workshop-entries.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-643-workshop-tiles.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-645-fps-frames.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 21 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -2079,6 +2079,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-city-scene-68.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-city-scene-69.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-city-scene-70.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-77.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-claim-register.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-close-rights.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-closeout-fallback.json` — { — gelesen: 21 Zeilen
@@ -2112,8 +2113,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25268 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4509 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25290 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4513 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
