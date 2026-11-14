@@ -11,6 +11,10 @@
  * gegen Parallelarbeit, damit nur ein Agent pro Issue liest und schreibt.
  */
 import { execFileSync } from 'node:child_process';
+import { roleForAuthor } from './work-claim.mjs';
+
+/** Rollen, die einen Arbeits-Claim setzen, freigeben oder uebergeben duerfen. */
+const CLAIM_ROLES = Object.freeze(['WORKER', 'MAINTAINER', 'USER']);
 
 /** Ein Claim-Kommentar; Scope und Plan bleiben als Rohtext erhalten. */
 const CLAIM_LINE = /^CLAIM\s+\[([^\]]+)\]\s+(\S+)\s*(.*)$/i;
@@ -120,11 +124,23 @@ export function parseClaimEvents(comments = []) {
  * unlesbar. `CLAIM` oeffnet, `RELEASE` derselben Claim-ID schliesst, `HANDOFF`
  * derselben Claim-ID wechselt den Halter.
  */
-export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now(), staleHours = 72 } = {}) {
+export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now(), staleHours = 72, actors = {} } = {}) {
   const agents = agentsOf(agent);
   const events = parseClaimEvents(comments);
   let active = null;
+  const rejected = [];
   for (const event of events) {
+    // #693: Der Kommentartext autorisiert nichts. Ohne verifizierten Autor aus
+    // der Actor-Policy bleibt das Ereignis wirkungslos und wird als Befund
+    // gemeldet; ein `CLAIM` einer unbekannten Person oeffnet kein Issue.
+    const role = roleForAuthor(event.author, actors);
+    if (!CLAIM_ROLES.includes(role)) {
+      rejected.push({
+        kind: event.kind, claimId: event.claimId, author: event.author || null, role,
+        reason: role === 'UNKNOWN' ? 'unknown-author' : 'unauthorized-author',
+      });
+      continue;
+    }
     if (event.kind === 'claim') {
       active = event;
     } else if (event.kind === 'release') {
@@ -134,7 +150,10 @@ export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now()
     }
   }
   if (!active) {
-    return { status: 'free', holder: null, claimId: null, since: null, ageHours: null, events: events.length, agents };
+    return {
+      status: 'free', holder: null, claimId: null, since: null, ageHours: null,
+      events: events.length, agents, rejected,
+    };
   }
   const since = active.at || null;
   const ageHours = since && Number.isFinite(Date.parse(since))
@@ -151,6 +170,7 @@ export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now()
     scope: active.scope,
     plan: active.plan,
     events: events.length,
+    rejected,
   };
 }
 
@@ -234,11 +254,11 @@ function ghIssue(number, { cwd } = {}) {
  * Liest den Issue-Verlauf und bewertet ihn. Ein nicht abfragbares Issue ist
  * `unknown`, nicht `free`: ohne Beleg wird kein Claim erfunden.
  */
-export function readIssueClaim({ number, agent, cwd, now = Date.now(), staleHours = 72 } = {}) {
+export function readIssueClaim({ number, agent, cwd, now = Date.now(), staleHours = 72, actors = {} } = {}) {
   if (!number) return { checked: false, status: 'not-linked', number: null };
   const result = ghIssue(number, { cwd });
   if (!result.ok) return { checked: false, status: 'unknown', number, error: result.error };
-  const evaluation = evaluateIssueClaim({ comments: result.issue?.comments ?? [], agent, now, staleHours });
+  const evaluation = evaluateIssueClaim({ comments: result.issue?.comments ?? [], agent, now, staleHours, actors });
   return {
     checked: true,
     number,

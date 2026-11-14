@@ -15,8 +15,10 @@ import {
   canClaimWork, canClose, legacyReleaseMeaning, workState,
 } from '../../../../scripts/lib/work-claim.mjs';
 
+/** Autor und Claim-ID sind Pflicht: der Text allein autorisiert nichts (#693). */
+const ACTORS = { maintainers: ['maintainer'], users: ['owner'], workers: ['worker'] };
 const commentsOf = (...bodies: readonly string[]) =>
-  bodies.map((body, index) => ({ id: String(index + 1), body }));
+  bodies.map((body, index) => ({ id: String(index + 1), author: { login: 'worker' }, body }));
 
 describe('Dependency-Fingerprint', () => {
   const base = {
@@ -56,7 +58,7 @@ describe('Arbeits-Claim', () => {
       'WORK_CLAIM claim_id=wc-1 identity=LIILITH',
       'DONE claim_id=wc-1',
       'REVIEW_PENDING claim_id=wc-1',
-    ));
+    ), { actors: ACTORS });
     expect(state).toBe('REVIEW_PENDING');
     expect(canClaimWork(state)).toBe(false);
     expect(canClaimWork(state, { sameIssue: true })).toBe(true);

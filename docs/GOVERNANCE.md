@@ -124,6 +124,21 @@ Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Bas
 
 `reconcile-claims --apply` schreibt nur Claims, deren Status oder Beleg sich geändert hat. Unbeteiligte Claim-Dateien und ein unverändertes Legacy-Register behalten ihren Dateistand. Der Lauf ist idempotent: ein bereits geschlossener Claim oder ein `DONE`-Task wird nicht erneut geschrieben. Auf `main` ruft `pretask` ihn bei sauberem Baum automatisch auf; die Registeränderung bleibt als lokaler Commit für den Maintainer sichtbar.
 
+### Kommentar-Autorisierung (#693)
+
+Ein Kommentar ändert Board-Zustand nur, wenn sein **verifizierter GitHub-Autor** in [`.lane-claims/actors.json`](../.lane-claims/actors.json) der passenden Rolle zugeordnet ist. Text im Body (`identity=…`, `ACCEPT`, `MERGED`, …) ist kein Nachweis und autorisiert nichts.
+
+| Ereignis | Erlaubte Rollen (`actors.json`) | Zusätzliche Bindung |
+| --- | --- | --- |
+| `ACCEPT`, `PARTIAL`, `REJECT`, `MERGED`, `CLOSED` | `maintainers`, `users` | Issue-Kontext |
+| `WORK_CLAIM`, `DONE`, `REVIEW_PENDING`, `REWORK`, `BLOCKED`, `UNRESOLVED`, `HANDOFF` | `workers`, `maintainers` | aktive `claim_id` |
+| `PROGRESS`, `QUESTION`, `ANSWER` | `workers`, `maintainers`, `users` | kein Zustandswechsel |
+| Issue-`CLAIM`, `RELEASE`, `HANDOFF` | `workers`, `maintainers`, `users` | Claim-ID |
+
+- `ALLOWED` wird bei jedem Zustandsübergang geprüft. Unerlaubte Reihenfolgen, fremde Claim-IDs, Replays und unbekannte Autoren ändern nichts; sie erscheinen als `rejected` im `workGate` von `pretask` und als Warnung mit Kommentar-ID.
+- Fehlt die Datei oder ist sie unlesbar, ist keine Rolle zuständig: fail-closed, kein Steuerbefehl wirkt.
+- Sind Worker und Maintainer derselbe GitHub-Principal, meldet `pretask` den Befund `shared-principal`. Die Rollentrennung ist eine Entscheidung aus #694 und wird nicht behauptet.
+
 ## Eskalation
 
 Eine Leiter, eine Klassifikation:

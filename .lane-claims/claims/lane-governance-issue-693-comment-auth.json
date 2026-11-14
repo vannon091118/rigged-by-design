@@ -1,0 +1,30 @@
+{
+  "id": "lane/governance/issue-693-comment-auth",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-693-comment-auth",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "issue": 693,
+  "task": "Issue #693: Kommentar-Autorisierung und ALLOWED-Erzwingung",
+  "pathAllowlist": [
+    "scripts/lib/work-claim.mjs",
+    "scripts/lib/issue-claim.mjs",
+    "scripts/pretask.mjs",
+    "src/core/governance/__tests__/work-claim-authorization.test.ts",
+    "src/core/governance/__tests__/worker-claim-gate.test.ts",
+    "src/core/governance/__tests__/worker-dependency-claims.test.ts",
+    "docs/GOVERNANCE.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/actors.json",
+    ".lane-claims/claims/lane-governance-issue-693-comment-auth.json",
+    ".lane-claims/tasks/governance-issue-693-comment-auth.json",
+    "content/narrative/contributions/2026-11-14-rumor-17.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8f31a19ed22803e21fa674bd1c565dbf84a28da8"
+}

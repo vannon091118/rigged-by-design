@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "maintainers": ["vannon091118"],
+  "users": ["vannon091118"],
+  "workers": ["vannon091118"],
+  "note": "Ein gemeinsamer GitHub-Principal fuer User, Maintainer und Worker. Die Rollentrennung ist eine Entscheidung aus #694; bis dahin meldet pretask den Befund shared-principal, statt die Trennung zu behaupten."
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d15f4039e6941f8b98afec1b888c825f66aaae73e0e02d2d9eedfedea559abe7",
+  "contentHash": "sha256:ed3ec24179f4c415500613b499c2f859cea91871d73b295b52e838f020f6e187",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24301,6 +24301,30 @@
       "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-16.json"
+    },
+    {
+      "contributionId": "rumor-17",
+      "turnId": "2026-11-14T19:30Z-rumor-17",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tresen hing eine neue Liste, auf der jede Entscheidung einen Namen tragen musste. Wer unterschrieb, haftete fuer den Eintrag; wer nur zusah, stand weiter ohne Zeile da. Bis zum Morgen war die Liste laenger als das Gaestebuch, und niemand hatte zweimal unterschrieben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-17.json"
     },
     {
       "contributionId": "run-budget-01",

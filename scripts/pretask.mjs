@@ -16,7 +16,7 @@
  * Arbeitsbaum ist der Normalfall; Isolation fordert nur `--require-worktree`.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { filterMergedCollisions, mergedPullRequestIndex, planReconcile } from './lib/claim-evidence.mjs';
@@ -37,7 +37,7 @@ import {
 } from './lib/worktree-isolation.mjs';
 import { impact as buildImpact } from './lib/impact.mjs';
 import { dispatchRole } from './lib/worker-identity.mjs';
-import { canClaimWork, workState } from './lib/work-claim.mjs';
+import { canClaimWork, describeActorPolicy, evaluateWorkState, normalizeActors } from './lib/work-claim.mjs';
 import { readIdentityFile, validateIdentityFile, workspaceHome, workspacePaths } from './lib/workspace-home.mjs';
 import { ROOT } from './lib/report.mjs';
 import { causeBlock, localCauses } from './agent-cause.mjs';
@@ -69,6 +69,22 @@ const CONTEXT_FILE = '.verify-cache/agent-context.json';
 const blockers = [];
 const warnings = [];
 const notes = [];
+
+// Actor-Policy (#693): Ein Kommentar autorisiert nur ueber seinen verifizierten
+// GitHub-Autor. Fehlt die Datei, ist keine Rolle zustaendig und jeder
+// Steuerbefehl bleibt fail-closed wirkungslos.
+const ACTORS_FILE = join(ROOT, '.lane-claims/actors.json');
+let actors = normalizeActors({});
+if (existsSync(ACTORS_FILE)) {
+  try {
+    actors = normalizeActors(JSON.parse(readFileSync(ACTORS_FILE, 'utf8')));
+  } catch (error) {
+    warnings.push(`Actor-Policy unlesbar (${String(error?.message ?? error).slice(0, 120)}); Kommentar-Ereignisse gelten fail-closed als unbekannt`);
+  }
+} else {
+  warnings.push('Actor-Policy fehlt (.lane-claims/actors.json); Kommentar-Ereignisse gelten fail-closed als unbekannt');
+}
+for (const finding of describeActorPolicy(actors)) warnings.push(`Actor-Policy: ${finding}`);
 
 const run = (args) => {
   try {
@@ -159,7 +175,7 @@ const claimInfo = claim
 // gueltigen Issue-Claim nicht: sie wird zur Warnung.
 const boardNumber = claim ? issueNumberFor(claim) : issueNumberFor({ branch });
 const issueClaim = branch !== 'main' && boardNumber
-  ? readIssueClaim({ number: boardNumber, agent: agentIdentity, cwd: ROOT })
+  ? readIssueClaim({ number: boardNumber, agent: agentIdentity, cwd: ROOT, actors })
   : { checked: false, status: 'not-linked', number: null };
 // Dieselbe Regel wie validateNewClaim: eine offene Lane ohne Issue-Nummer hat
 // keinen Board-Auftrag und startet nicht (#635).
@@ -592,17 +608,26 @@ if (branch !== 'main' && claim && existsSync(budgetFile)) {
   }
 }
 
-// Arbeits-Claim als Gate: ein laufendes Review sperrt neue Arbeit am Issue.
-const issueWork = Array.isArray(issueClaim.comments) ? workState(issueClaim.comments) : 'OPEN';
+// Arbeits-Claim als Gate: nur autorisierte, claim-gebundene Ereignisse in
+// erlaubter Reihenfolge erzeugen den Zustand (#693); ein laufendes Review
+// sperrt neue Arbeit am Issue.
+const issueWork = Array.isArray(issueClaim.comments)
+  ? evaluateWorkState(issueClaim.comments, { actors })
+  : { state: 'OPEN', rejected: [] };
 const reviewStates = ['REVIEW_PENDING', 'ACCEPTED', 'MERGED'];
 const workGate = {
-  state: issueWork,
-  blocked: reviewStates.includes(issueWork) && Boolean(issueClaim.number),
+  state: issueWork.state,
+  blocked: reviewStates.includes(issueWork.state) && Boolean(issueClaim.number),
+  rejected: issueWork.rejected.length,
 };
+if (issueWork.rejected.length > 0) {
+  const sample = issueWork.rejected.slice(0, 3).map((entry) => `${entry.kind}@${entry.commentId}:${entry.reason}`);
+  warnings.push(`Work-Ereignisse ohne Wirkung: ${issueWork.rejected.length} (${sample.join(', ')})`);
+}
 if (workGate.blocked) {
-  blockers.push(`[ERR-4027] Issue #${issueClaim.number} steht auf ${issueWork}: erst \`REWORK\` oder Review-Entscheid durch den Maintainer, keine neue Arbeit im selben Worker`);
-} else if (issueClaim.number && !canClaimWork(issueWork, { sameIssue: issueClaim.status === 'claimed-self' })) {
-  blockers.push(`[ERR-4027] Issue #${issueClaim.number} ist nicht frei (${issueWork}); Work-Claim verweigert`);
+  blockers.push(`[ERR-4027] Issue #${issueClaim.number} steht auf ${issueWork.state}: erst \`REWORK\` oder Review-Entscheid durch den Maintainer, keine neue Arbeit im selben Worker`);
+} else if (issueClaim.number && !canClaimWork(issueWork.state, { sameIssue: issueClaim.status === 'claimed-self' })) {
+  blockers.push(`[ERR-4027] Issue #${issueClaim.number} ist nicht frei (${issueWork.state}); Work-Claim verweigert`);
 }
 
 const contract = {
