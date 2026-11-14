@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/archive-merged-566",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/archive-merged-566",
+  "baseSha": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee",
+  "task": "Gemergten Jobmarkt-Claim nach PR #588 archivieren",
+  "goal": "#566",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee"
+}
