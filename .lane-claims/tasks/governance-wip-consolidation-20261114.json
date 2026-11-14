@@ -3,15 +3,20 @@
   "taskId": "governance-wip-consolidation-20261114",
   "claimId": "lane/governance/wip-consolidation-20261114",
   "branch": "lane/governance/wip-consolidation-20261114",
-  "baseSha": "27426cfacbe5862e78868c54120cbef055fd5dee",
+  "baseSha": "d29e75406136b0846f8e02a7b18394c0c1dc094f",
   "phase": "CI_PENDING",
   "title": "WIP-Konsolidierung aller lokalen Branches auditieren und als einen Integrations-PR uebergeben",
   "goal": "Alle lokalen Lane-Branches gegen origin/main pruefen, ueberholte WIP archivieren, Integrationsbeleg und Branch-Cleanup belegen",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 813,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/813",
+    "state": "open",
+    "headSha": "e22dfa52bfb25b7ffe352219a7c4ec2c6a9e86a1"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 2
+  "nextAction": "PR #813 ist offen und mit review-waiting uebergeben; Maintainer-Verdikt abwarten.",
+  "revision": 3
 }
