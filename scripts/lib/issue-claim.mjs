@@ -166,20 +166,68 @@ export function issueNumberFor(claim) {
 }
 
 /** Ein `gh`-Aufruf mit einem kontrollierten Wiederholungsversuch. */
-function ghIssue(number, { cwd, attempts = 2 } = {}) {
+function ghJson(args, { cwd, attempts = 2 } = {}) {
   const bin = process.env.RBD_GH_BIN || 'gh';
-  const base = ['issue', 'view', String(number), '--json', 'number,state,labels,comments'];
-  const args = process.env.RBD_GH_SCRIPT ? [process.env.RBD_GH_SCRIPT, ...base] : base;
+  const full = process.env.RBD_GH_SCRIPT ? [process.env.RBD_GH_SCRIPT, ...args] : args;
   let lastError = 'unbekannt';
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
-      const output = execFileSync(bin, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-      return { ok: true, issue: JSON.parse(output) };
+      const output = execFileSync(bin, full, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      return { ok: true, data: JSON.parse(output) };
     } catch (error) {
       lastError = error instanceof Error ? error.message.split('\n')[0] : 'unbekannt';
     }
   }
   return { ok: false, error: lastError };
+}
+
+/** Prioritaets- und Zustandsrang fuer die Board-Reihenfolge. */
+const PRIORITY_RANK = Object.freeze({ 'prio-p0': 0, 'prio-p1': 1, 'prio-p2': 2, 'prio-p3': 3 });
+const STATE_RANK = Object.freeze({ 'zustand-regression': 0, 'zustand-block': 1, 'zustand-open': 2 });
+
+function labelNames(labels = []) {
+  return labels
+    .map((label) => (typeof label === 'string' ? label : label?.name))
+    .filter(Boolean)
+    .map((name) => String(name).toLowerCase());
+}
+
+/** `P0 -> P1 -> P2/P3`, Regression vor Block vor offen, dann das aeltere Issue. */
+export function boardRank(issue = {}) {
+  const names = labelNames(issue.labels);
+  const priority = names.find((name) => /^prio-p[0-3]$/.test(name));
+  const state = names.find((name) => /^zustand-/.test(name)) ?? '';
+  return {
+    priority: priority ? priority.replace('prio-', '').toUpperCase() : 'P4',
+    state,
+    rank: [priority ? PRIORITY_RANK[priority] : 4, STATE_RANK[state] ?? 3],
+  };
+}
+
+/** Offene Issues in Arbeitsreihenfolge; das Board ist die Autoritaet dafuer. */
+export function orderBoard(issues = []) {
+  return issues
+    .map((issue) => ({ ...issue, ...boardRank(issue) }))
+    .sort((left, right) =>
+      left.rank[0] - right.rank[0] ||
+      left.rank[1] - right.rank[1] ||
+      String(left.createdAt ?? '').localeCompare(String(right.createdAt ?? '')) ||
+      Number(left.number ?? 0) - Number(right.number ?? 0));
+}
+
+/** Die naechsten freien Kandidaten aus dem Board; ein Lesefehler bleibt sichtbar. */
+export function readBoard({ limit = 6, cwd } = {}) {
+  const result = ghJson(['issue', 'list', '--state', 'open', '--limit', '100', '--json', 'number,title,labels,createdAt'], { cwd });
+  if (!result.ok) return { checked: false, error: result.error, items: [] };
+  const items = orderBoard(Array.isArray(result.data) ? result.data : [])
+    .slice(0, limit)
+    .map((issue) => ({ number: issue.number, title: issue.title, priority: issue.priority, state: issue.state }));
+  return { checked: true, total: Array.isArray(result.data) ? result.data.length : 0, items };
+}
+
+function ghIssue(number, { cwd } = {}) {
+  const result = ghJson(['issue', 'view', String(number), '--json', 'number,state,labels,comments'], { cwd });
+  return result.ok ? { ok: true, issue: result.data } : result;
 }
 
 /**

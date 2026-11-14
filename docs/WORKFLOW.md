@@ -8,7 +8,7 @@
 
 Die Rollen sind getrennt: **Agenten** (`agent-<n>-local`/`-cloud`) claimen, arbeiten, pushen ihren Branch und öffnen den PR; der **Maintainer** reviewt, merged, schließt Issues und setzt Tags ([`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes)).
 
-Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; danach ist der erste Befehl vor jedem Edit:
+Das **Issue-Board ist der primäre Workflow**: Arbeitsreihenfolge und Besitz stehen in den Issues (Prioritätslabels, Zustand, Kommentare), nicht in lokalen Dateien. Zu Beginn wird das Board nach Priorität gelesen (`P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste). Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; `.lane-claims/` ist danach nur die lokale Kollisionssperre für Pfade und Staging. Erster Befehl vor jedem Edit:
 
 ```bash
 RBD_AGENT=agent-1-local pnpm run agent:pretask --json
@@ -16,7 +16,7 @@ RBD_AGENT=agent-1-local pnpm run agent:pretask --json
 
 Der Lauf prüft in dieser Reihenfolge:
 
-1. den **Issue-Claim** der Lane (fremder Claim blockiert, fehlender Claim verlangt den Kommentar, ohne Issue-Nummer nur Warnung),
+1. den **Issue-Claim** der Lane (Board-Wahrheit: fremder Claim blockiert, fehlender Claim verlangt den Kommentar, ohne Issue-Nummer nur Warnung) und danach die lokale Kollisionssperre (nur Pfade, nie Besitz),
 2. offene `gate-failure`-Issues und den Issue-Status (ohne `gh` bleibt er als `unknown` sichtbar),
 3. den Arbeitsbaum und laufende Merges/Rebases,
 4. den Impact-Plan aus `agent:context`,
@@ -30,7 +30,7 @@ Ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan, korrupte WIP oder e
 
 ### Claim und Worktree
 
-Jede Lane außer `main` braucht einen Claim. Die Wahrheit ist der `CLAIM`-Kommentar am GitHub-Issue nach [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md); der Eintrag in `.lane-claims/` ist die mechanische Spiegelung davon und entscheidet nie gegen den Issue-Verlauf. Ein zweiter Agent am selben Issue ist eine Kollision: `pretask` blockiert sie, der Maintainer entscheidet über Vorrang oder `HANDOFF`. Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der gespiegelte Claim nennt:
+Besitz steht im `CLAIM`-Kommentar am GitHub-Issue nach [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Der Eintrag in `.lane-claims/` ist die **lokale Kollisionssperre**: Pfad-Allowlist für Staging, `verify:scope`, `pretask` und die Hooks, damit zwei parallele Agenten nicht dieselben Dateien im selben Task oder Turn bearbeiten. Er entscheidet nie über Besitz, Priorität oder Reihenfolge. Ein zweiter Agent am selben Issue ist eine Kollision: `pretask` blockiert sie über den Issue-Verlauf, der Maintainer entscheidet über Vorrang oder `HANDOFF`. Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der gespiegelte Claim nennt:
 
 - `id` und `branch` nach `lane/<domäne>/<task>` (Legacy: `gov/`, `hygiene/`, `fix/`),
 - Owner aus dem festen Roster,
