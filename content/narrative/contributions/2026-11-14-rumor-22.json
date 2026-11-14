@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T21:10Z-rumor-22",
+  "contributionId": "rumor-22",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Der Mann an der Theke zaehlt am Morgen die Stuehle, nicht die Gaeste. Wer die Stuehle nicht zaehlt, merkt erst am Abend, dass einer fehlt. Er sagt, eine Null sei eine Zahl und keine Entschuldigung; wer nichts gezaehlt hat, soll sagen, dass er nichts gezaehlt hat.",
+  "directives": []
+}
