@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/wip-consolidation-20261114",
+  "owner": "Integrator",
+  "branch": "lane/governance/wip-consolidation-20261114",
+  "baseSha": "27426cfacbe5862e78868c54120cbef055fd5dee",
+  "issue": 811,
+  "task": "WIP-Konsolidierung aller lokalen Branches auditieren und als einen Integrations-PR uebergeben",
+  "goal": "Alle lokalen Lane-Branches gegen origin/main pruefen, ueberholte WIP archivieren, Integrationsbeleg und Branch-Cleanup belegen",
+  "pathAllowlist": [
+    "docs/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-wip-consolidation-20261114.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "27426cfacbe5862e78868c54120cbef055fd5dee"
+}

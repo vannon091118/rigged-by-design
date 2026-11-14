@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-wip-consolidation-20261114",
+  "claimId": "lane/governance/wip-consolidation-20261114",
+  "branch": "lane/governance/wip-consolidation-20261114",
+  "baseSha": "27426cfacbe5862e78868c54120cbef055fd5dee",
+  "phase": "CI_PENDING",
+  "title": "WIP-Konsolidierung aller lokalen Branches auditieren und als einen Integrations-PR uebergeben",
+  "goal": "Alle lokalen Lane-Branches gegen origin/main pruefen, ueberholte WIP archivieren, Integrationsbeleg und Branch-Cleanup belegen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
