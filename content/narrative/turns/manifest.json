@@ -4436,6 +4436,10 @@
     {
       "turnId": "2026-11-14T11:25Z-narrative-image-diff-gate-fix",
       "contributionId": "image-diff-gate-test-repair-01"
+    },
+    {
+      "turnId": "2026-11-14T12:15Z-city-scene-56",
+      "contributionId": "city-scene-56"
     }
   ]
 }

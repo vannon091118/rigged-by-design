@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:542a56b9287006e9867ad27129b19ec644ef8568fd5c79c6f7c1b80b225637d3",
+  "contentHash": "sha256:038b3401845adfcabc2f9114496e9dbec11f9cd2b2b3fa4eca635745b2cc1087",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7245,6 +7245,28 @@
       "text": "Zwei Leute kommen sich auf dem schmalen Gehweg entgegen. Der eine tritt in den Rinnstein, der andere nickt knapp, und fuer einen Moment ist der Weg wieder frei.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-54.json"
+    },
+    {
+      "contributionId": "city-scene-56",
+      "turnId": "2026-11-14T12:15Z-city-scene-56",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Weg zum Hinterhof ist gesperrt, also geht die Schlange aussen herum. Niemand beschwert sich, der Umweg ist kuerzer als das Warten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-56.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
