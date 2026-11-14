@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/issue-746-error-code-catalog",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-746-error-code-catalog",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "issue": 746,
+  "task": "Issue #746: ERR-4028 im Fehlerregister",
+  "pathAllowlist": [
+    "src/core/governance/error-codes.ts",
+    "src/core/governance/__tests__/dependency-governance.test.ts",
+    "docs/ARCHITECTURE.md",
+    "content/narrative/contributions/2026-11-14-rumor-19.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims.json",
+    ".lane-claims/claims/lane-governance-issue-746-error-code-catalog.json",
+    ".lane-claims/tasks/infra-issue-746-error-code-catalog.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8f31a19ed22803e21fa674bd1c565dbf84a28da8"
+}
