@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ba46fce7369d335dba6d466fa6e84193e171c058bb7705fa4ab2a328bbe80938",
+  "contentHash": "sha256:f7b5e03de4b1d1bbc95d4a69a9b832a3b6701059de96773ee1fa017064c5e87e",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -684,10 +684,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -699,28 +699,6 @@
       "text": "Casino, Bar und Lounge stehen schon im Haus, nur sprach niemand von ihnen als Bereiche. Der Schnitt beginnt deshalb nicht mit einem neuen Speicher, sondern mit einer zweiten Lesart derselben Zonen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-1.json"
-    },
-    {
-      "contributionId": "agent17-business-areas-2",
-      "turnId": "2026-11-11T01:20Z-agent17-business-areas-2",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "service"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Betriebsheader nennt die Bereiche jetzt mit Zahlen: Objekte und Gäste je Zone, und ein Bereich ohne Zone steht als nicht im Haus da. Kein zweites Konto, kein zweiter Gastzähler - nur eine Lesart, die man nachrechnen kann.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-2.json"
     },
     {
       "contributionId": "agent17-business-areas-3",
@@ -765,28 +743,6 @@
       "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
-    },
-    {
-      "contributionId": "agent17-business-areas-5",
-      "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
     },
     {
       "contributionId": "agent17-ci-pending",
@@ -926,10 +882,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -948,10 +904,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -985,28 +941,6 @@
       "text": "Der Wirt zählt die Kasse und legt den Überschuss in eine Blechdose. Die Dose ist älter als der Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json"
-    },
-    {
-      "contributionId": "agent18-drink-menu-4",
-      "turnId": "2026-11-11T02:35Z-agent18-drink-menu-4",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
     },
     {
       "contributionId": "agent18-merge-pending",
@@ -1383,50 +1317,6 @@
       "source": "content/narrative/contributions/2026-11-11-agent21-merge-pending.json"
     },
     {
-      "contributionId": "agent21-room-plan-1",
-      "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Räume stehen längst im Plan: Zonen tragen ihre Funktion, Kanten ihre Türen. Der Raumplan liest beides an derselben Stelle, statt eine zweite Liste zu führen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-1.json"
-    },
-    {
-      "contributionId": "agent21-room-plan-2",
-      "turnId": "2026-11-11T05:10Z-agent21-room-plan-2",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Raum ohne Zugang ist keine Planung, sondern eine Wand. Der Plan zählt Türen und Durchgänge und rechnet die Plätze aus der Fläche – sichtbar im Editor, ohne neues Save-Feld.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-2.json"
-    },
-    {
       "contributionId": "agent21-room-plan-3",
       "turnId": "2026-11-11T05:20Z-agent21-room-plan-3",
       "agentId": "buffy",
@@ -1581,28 +1471,6 @@
       "source": "content/narrative/contributions/2026-11-11-agent22-task.json"
     },
     {
-      "contributionId": "agent22-venue-event",
-      "turnId": "2026-11-11T06:25Z-agent22-venue-event",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Bühne braucht keinen zweiten Kalender. Ankündigung, Einlass, Durchführung und Ergebnis liegen als Phasen auf derselben Instanz, die schon den Andrang trägt; das Archiv ist nur die Erinnerung daran, keine neue Liste.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent22-venue-event.json"
-    },
-    {
       "contributionId": "agent23-aftercare",
       "turnId": "2026-11-11T05:26Z-agent23-aftercare",
       "agentId": "buffy",
@@ -1667,28 +1535,6 @@
       "text": "Draußen wird es früh dunkel, und drinnen wird es spät hell. Die Lampen kennen keinen Unterschied.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-done.json"
-    },
-    {
-      "contributionId": "agent23-fight-event",
-      "turnId": "2026-11-11T09:40Z-agent23-fight-event",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Kampfabend erfindet nichts: Roster und Kampfplan sind die vorhandene Hinterhof-Leiter, der Kampf ist die vorhandene Engine, und das Nenngeld steht als eigene Ledger-Zeile. Nur der Abend selbst endet jetzt mit einem Ergebnis statt mit einer Platzhalterzeile.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-11-agent23-fight-event.json"
     },
     {
       "contributionId": "agent23-merge-pending",
@@ -9399,28 +9245,6 @@
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
     },
     {
-      "contributionId": "ledger-tick-guard-01",
-      "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
-    },
-    {
       "contributionId": "living-world-foundation-1",
       "turnId": "2026-11-11T02:15Z-living-world-foundation-1",
       "agentId": "buffy",
@@ -12611,28 +12435,6 @@
       "text": "Die Bildrate im Werkstatt-HUD und das Budget der beiden Atlasseiten sind jetzt feste Abnahmewerte statt Erinnerung. Der Test hält 60, 30 und 0 FPS samt Frame-Zeit fest und begrenzt den WebP-Atlas auf 400 kB bei 153 Frames; die echte Bildrate und der First Frame auf einem 200-Euro-Geraet bleiben davon unberührt und weiter offen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-phase34-acceptance-01.json"
-    },
-    {
-      "contributionId": "phase4-huelle-atlas-01",
-      "turnId": "2026-11-05T05:45Z-huelle-atlas-budgets-apk",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Floor zieht seine 153 Figuren-, Geraete-, Deko- und Umgebungsframes jetzt aus zwei gepackten Atlasseiten. Der Loader wartet auf den ersten echten Renderer-Frame, nicht auf eine Uhr; auf dem Pruefpfad mit 9 Mbit/s blieben 20 Requests und 2,51 Sekunden. Die Huelle traegt Hochformat und Safe Areas, die Haptik bleibt bei reduzierter Bewegung still.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-05-huelle-atlas.json"
     },
     {
       "contributionId": "phase5-rival-integration-01",
@@ -23521,10 +23323,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -23543,10 +23345,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "city-scene",
+      "slot": "description",
       "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -23555,7 +23357,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Abend kippt nicht mehr in einem Sprung: Über eine Stunde dunkeln die Fassaden nach, die Sonnenstrahlen ziehen sich zurück, und erst wenn der letzte Rest Tageslicht weg ist, übernimmt der Lichtkreis um die Figur. Wer stehen bleibt, sieht den Übergang, statt ihn zu verpassen.",
+      "text": "Der Abend kippt nicht mehr in einem Sprung: Über eine Stunde dunklen die Fassaden nach, die Sonnenstrahlen ziehen sich zurück, und erst wenn der letzte Rest Tageslicht weg ist, übernimmt der Lichtkreis um die Figur. Wer stehen bleibt, sieht den Übergang, statt ihn zu verpassen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-ambient-transition.json"
     },
@@ -23602,28 +23404,6 @@
       "text": "Der Render-Plan ordnet die naechsten Schritte: zuerst ehrliche Platzhalter und ein lokales Bild, dann Figuren, Materialien, Licht und die sichtbare Stadt. Die Simulation bleibt die Wahrheit; die Darstellung folgt ihr.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-12-render-rework-plan.json"
-    },
-    {
-      "contributionId": "render-sprite-01",
-      "turnId": "2026-11-10T00:00Z-render-sprite-pipeline",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
     },
     {
       "contributionId": "render-threshold-voice-01",
@@ -23839,10 +23619,10 @@
       "agentId": "liilith",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -23954,10 +23734,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -23998,11 +23778,10 @@
       "agentId": "shinon",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation",
-        "service"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -24383,31 +24162,6 @@
       "text": "Der Laden schließt, aber die Neonröhre bleibt an. Sie ist das letzte Gesicht, das der Straße zugewandt ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json"
-    },
-    {
-      "contributionId": "ui-queue-panel-01",
-      "turnId": "2026-11-10T23:45Z-ui-queue-panel",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita zog die Auftragskette aus der Ecke ins Licht: Jeder eingereihte Schritt blieb sichtbar, auch der fuenfte, und der Abbruch sass direkt am Eintrag. Die Karte wich dem HUD, statt es zu verdecken; erst als die Liste wirklich voll war, merkte sie, wie viel Arbeit noch vor ihr lag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-ui-queue-panel.json"
     },
     {
       "contributionId": "verify-gates-01",

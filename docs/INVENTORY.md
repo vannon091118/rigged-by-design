@@ -700,10 +700,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3081 |
-| Gelistete Dateien | 3081 |
+| Getrackte Dateien | 3066 |
+| Gelistete Dateien | 3066 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (91), artifacts (1), content (1114), docs (110), packages (27), public (571), scripts (126), src (1016) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (93), artifacts (1), content (1101), docs (108), packages (27), public (571), scripts (126), src (1014) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -716,14 +716,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 47 Datei(en)
-- `.lane-claims/tasks/` — 42 Datei(en)
+- `.lane-claims/claims/` — 48 Datei(en)
+- `.lane-claims/tasks/` — 43 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1108 Datei(en)
-- `content/narrative/registry/` — 3 Datei(en)
+- `content/narrative/contributions/` — 1097 Datei(en)
+- `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 22 Datei(en)
+- `docs/` — 20 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 2 Datei(en)
@@ -802,7 +802,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
-- `src/core/sim/narrative/composer/` — 9 Datei(en)
+- `src/core/sim/narrative/composer/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/__tests__/` — 2 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
@@ -850,6 +850,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/board-state.json` — { — gelesen: 74 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/issue-667-technical-system-events.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 81 Zeilen
@@ -917,6 +918,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/issue-667-technical-system-events.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
@@ -1005,7 +1007,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-04-warm-return-choice.json` — {"agentId":"buffy","turnId":"2026-11-04T07:22Z-warm-return-choice","contributionId":"warm-return-choice-01","r — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-04-warm-return-outcome.json` — {"agentId":"buffy","turnId":"2026-11-04T07:23Z-warm-return-outcome","contributionId":"warm-return-outcome-01", — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-04-warm-return-titel.json` — {"agentId":"buffy","turnId":"2026-11-04T07:20Z-warm-return-titel","contributionId":"warm-return-titel-01","rol — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-05-huelle-atlas.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-06-asset-semantik-messung.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-asset-semantik.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-layout-vertrag.json` — { — gelesen: 17 Zeilen
@@ -1783,11 +1784,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-player-history.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-promote-automerge.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-property-world.json` — { — gelesen: 24 Zeilen
-- `content/narrative/contributions/2026-11-10-render-sprite-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-renovation.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-review-nachpruefung.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-stale-claims.json` — { — gelesen: 24 Zeilen
-- `content/narrative/contributions/2026-11-10-ui-queue-panel.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
@@ -1819,21 +1818,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent16-staff-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-aftercare.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent17-business-areas-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent17-business-areas-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-1.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-business-areas-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-business-areas-4.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent17-business-areas-5.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent17-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent18-aftercare.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent18-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent18-done.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent18-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-aftercare.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-ci-pending.json` — { — gelesen: 21 Zeilen
@@ -1851,8 +1847,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent21-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent21-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent21-merge-pending.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent21-room-plan-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent21-room-plan-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent21-room-plan-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-aftercare.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-ci-pending.json` — { — gelesen: 21 Zeilen
@@ -1860,11 +1854,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent22-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-task.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent22-venue-event.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-aftercare.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-done.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-11-agent23-fight-event.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-task.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent24-aftercare.json` — { — gelesen: 21 Zeilen
@@ -1984,12 +1976,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-12-longturn-evidence.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-player-needs.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-acceptance-hardening.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-12-render-r7-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-rework-plan.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-threshold-voice-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-test-quality-voice-01.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-13-ambient-transition.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-ambient-transition.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-13-apartment-walls.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-bet-slip-register.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-assets.json` — { — gelesen: 21 Zeilen
@@ -2038,24 +2030,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-house-debt.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-image-diff-gate-test-repair.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-job-market-bookable.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-14-ledger-tick-guard.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-rng-entry-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-smartphone-feed.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-14-staff-qualification.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-14-staff-qualification.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-starter-crate-guidance.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 24872 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 24872 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 24872 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4437 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 24626 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4393 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2067,8 +2056,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 220 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
-- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1559 Zeilen
@@ -3416,9 +3403,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 142 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 282 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 282 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 282 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 280 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
