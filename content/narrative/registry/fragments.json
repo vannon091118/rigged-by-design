@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:752874ccc841a44007b2396cdcde224ab1ac2815df60ceb59df60b813c2b26b2",
+  "contentHash": "sha256:447d9d175718f16f68fc46435c3c3483e70bc6759513a0c8701afeb0cb2f411d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8843,6 +8843,28 @@
       "text": "Die Tür zum fremden Casino ist keine Sperre, sondern eine Schwelle: Dieselbe Figur trägt ihren Schritt, ihren Blick und ihren leeren Becher über den Boden, während die Automaten nur den Besitzer wechseln. Wer den Raum betritt, darf ihn auch durchqueren – Besitz entscheidet über Rechte, nicht über Beine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-12-foreign-walkable.json"
+    },
+    {
+      "contributionId": "furniture-action-roles-01",
+      "turnId": "2026-11-14T22:45Z-furniture-action-roles",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Spiegel im Lager, der Kuehlschrank und die Kochnische antworten jetzt auf ihre Rolle, nicht auf das Wort, das auf ihrem Schild steht. Ein umbenanntes Moebel bleibt bedienbar; die Anzeige darf sich aendern, ohne dass die Handlung verschwindet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-furniture-action-roles.json"
     },
     {
       "contributionId": "game-scout-main-merge",

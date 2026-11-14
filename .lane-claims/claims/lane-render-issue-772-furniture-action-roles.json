@@ -1,0 +1,30 @@
+{
+  "id": "lane/render/issue-772-furniture-action-roles",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/render/issue-772-furniture-action-roles",
+  "baseSha": "9d5e276d8946786c7ee548dfdea1ecb870a5a731",
+  "issue": 772,
+  "task": "Issue #772: Möbelaktionen über stabile Rollen erkennen",
+  "goal": "Möbelaktionen für Spiegel, Kühlschrank und Kochnische aus stabilen artId/Rollen statt aus Label-Regexen ableiten; homeItem auf artId umstellen; Regressionstest für alternative Anzeigenamen.",
+  "pathAllowlist": [
+    "src/render/floor-actions.ts",
+    "src/render/decor-roles.ts",
+    "src/render/__tests__/floor-actions.test.ts",
+    "src/core/sim/player-needs.ts",
+    "src/core/sim/offers.ts",
+    "src/core/sim/deliveries.ts",
+    "src/core/sim/house-presets.ts",
+    "src/core/sim/__tests__/player-needs.test.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-render-issue-772-furniture-action-roles.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9d5e276d8946786c7ee548dfdea1ecb870a5a731"
+}

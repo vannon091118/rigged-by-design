@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:45Z-furniture-action-roles",
+  "contributionId": "furniture-action-roles-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Spiegel im Lager, der Kuehlschrank und die Kochnische antworten jetzt auf ihre Rolle, nicht auf das Wort, das auf ihrem Schild steht. Ein umbenanntes Moebel bleibt bedienbar; die Anzeige darf sich aendern, ohne dass die Handlung verschwindet.",
+  "directives": []
+}
