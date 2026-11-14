@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "taskId": "governance-board-final-consistency",
+  "claimId": "lane/governance/board-final-consistency",
+  "branch": "lane/governance/board-final-consistency",
+  "baseSha": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
+  "phase": "READY",
+  "title": "Board-Finalitaet: #696, #731 und #631 am Code belegen",
+  "goal": "Jedes im letzten Bericht behauptete Ticket traegt einen am Repo belegten Status; board.head und openIssuesCount stimmen gegen die API.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "#631 existiert nicht; GitHub GraphQL liefert NOT_FOUND. Kein Ticket, keine Arbeit."
+    },
+    {
+      "id": "F-2",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Ein Commit kann seinen eigenen SHA nicht enthalten. board.head == main ist nur mit einem automatischen Post-Merge-Schreibzugriff erreichbar; head == main^ ist das Maximum, das ein Snapshot-Commit belegen kann."
+    }
+  ],
+  "nextAction": "PR oeffnen und mergen; danach Claim merged und Task DONE im Closeout.",
+  "revision": 1
+}
