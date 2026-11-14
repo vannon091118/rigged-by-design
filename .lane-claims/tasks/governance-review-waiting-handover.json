@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-review-waiting-handover",
+  "claimId": "lane/governance/review-waiting-handover",
+  "branch": "lane/governance/review-waiting-handover",
+  "baseSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
+  "phase": "CI_PENDING",
+  "title": "Uebergabe an Review: Arbeits-Claim freigeben und review-waiting setzen",
+  "goal": "AGENTS.md und docs/AGENT-ONBOARDING.md nennen Claim-Freigabe plus Label review-waiting als Uebergabe; das Label nimmt nur der Maintainer mit seinem Verdikt ab.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR #610 ist gepusht; Claim mit RELEASE [A3] done freigegeben und review-waiting gesetzt. Naechster Schritt: Maintainer-Review auf exaktem Kopf.",
+  "revision": 2
+}

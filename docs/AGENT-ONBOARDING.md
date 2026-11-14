@@ -143,7 +143,7 @@ Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kei
 5. PR öffnen gegen `main`:
    - Titel: `fix(#42): <Kurztitel>`
    - Body: Issue-Verweis, Ansatz, geänderte Dateien, Checks mit Exit-Code, Restrisiko.
-6. **Übergabe statt Merge:** PR offen lassen, `RELEASE` und den Umsetzungs-Kommentar schreiben. Mergen, schließen und taggen tut der Maintainer nach Review auf exaktem Kopf.
+6. **Übergabe statt Merge:** PR offen lassen, `RELEASE` schreiben, `review-waiting` setzen und den Umsetzungs-Kommentar schreiben. Mergen, schließen und taggen tut der Maintainer nach Review auf exaktem Kopf.
 7. Kein Force-Push, kein Rebase fremder Branches, keine fremden PRs anfassen.
 
 **Verboten:** Issues oder Pull Requests schließen oder wiedereröffnen (nur Maintainer oder User), mergen, auf `main` pushen, Release-Tags setzen, fremde Claims überschreiben, mehrere Issues gleichzeitig.
@@ -175,7 +175,13 @@ Regeln:
 - **Exit-Codes echt.** Erfundene Ergebnisse sind das Ende der Zusammenarbeit.
 - **`Nicht gemacht` und `Restrisiko` sind Qualitätsmerkmale**, keine Schwäche — sie verhindern, dass das Ticket für vollständig gehalten wird.
 - **`Review-Fokus`** sagt dem Maintainer, wo er zuerst hinschauen soll. Das beschleunigt die Prüfung und verhindert, dass ein bekanntes Loch als Überraschung auftaucht.
-- Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen (und keinen PR schließen). Der Maintainer reviewt den Kommentar gegen den Code und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
+- Danach `RELEASE [A<n>] done abc1234` und das Label setzen:
+
+  ```bash
+  gh issue edit 42 --repo vannon091118/rigged-by-design --add-label review-waiting
+  ```
+
+  Claim-Freigabe plus Label sind die Übergabe: das Ticket ist damit sichtbar `Review Waiting` und für den Peer-Review kategorisiert. Freigeben heisst **nicht** schließen (und keinen PR schließen). Der Maintainer reviewt den Kommentar gegen den Code, entscheidet `ACCEPT`/`PARTIAL`/`REJECT` und nimmt das Label mit seinem Verdikt wieder ab; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
 
 ---
 
@@ -213,7 +219,7 @@ Dieses Dokument entscheidet über **Koordination** (Claim, Priorität, Freigabe,
 | Rollen | Maintainer merged/schließt/taggt; Agenten pushen nur ihren Branch | Rechte stehen in [`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes). |
 | Textbaustein | Jeder Commit braucht einen registrierten Baustein (`AGENTS.md` Regel 6) | Bleibt bestehen; die Registry wird nicht handgeschrieben. |
 | Lokaler State | Datei außerhalb des Repos | Nie committen, nie als Beweis nutzen. |
-| Issues | werden kommentiert, nie geschlossen | Schließen und Wiederöffnen ist Maintainer-Sache. |
+| Issues | werden kommentiert, nie geschlossen | Schließen und Wiederöffnen ist Maintainer-Sache; die Übergabe setzt `review-waiting`, abgenommen wird es nur vom Maintainer-Verdikt. |
 
 ## Referenzen
 
