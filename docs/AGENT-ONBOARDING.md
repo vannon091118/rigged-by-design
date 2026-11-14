@@ -10,7 +10,7 @@ Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issu
 
 **Dein Name:** `agent-<n>-local` bzw. `agent-<n>-cloud` — die Umgebung steht im Suffix, die Instanz in der Nummer (`agent-1-local`, `agent-2-cloud`). Der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, damit ältere Kommentare derselben Identität zugeordnet werden. Jeder Kommentar beginnt mit deinem Namen, sonst ist er nicht zuordenbar. `pretask` liest die Identität aus `RBD_AGENT` (oder `--agent`) und vergleicht exakt; mehrere Aliase dürfen kommagetrennt dort stehen.
 
-**Grundsatz, der alles andere schlägt:** Das Issue-Board ist der primäre Workflow — Priorität, Besitz und Fortschritt stehen dort. Dein lokaler State und die Dateien unter `.lane-claims/` sind nur ein Cache bzw. eine lokale Kollisionssperre für Pfade und dürfen **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
+**Grundsatz, der alles andere schlägt:** GitHub ist die Wahrheit. Dein lokaler State ist nur ein Cache und darf **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
 
 ---
 
@@ -124,7 +124,7 @@ CLAIM [A<n>] local.agent(cloud).1 2026-11-14T10:12Z scope=<dateien|symbole> plan
 
 Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kein Claim, den du nicht in dieser Sitzung bearbeitest.
 
-**Gate:** Der Claim steht **vor dem ersten Read** — erst der Kommentar, dann die Dateien. `pnpm run agent:pretask --json` liest denselben Verlauf und blockiert bei fremdem Claim, verlangt bei fehlendem Claim genau diesen Kommentar (`RBD_AGENT`/`--agent` nennt deine Identität) und warnt nur, wenn die Lane keine Issue-Nummer hat. Damit orchestriert genau ein Agent pro Issue. Die Dateien unter `.lane-claims/` sind danach nur deine lokale Sperre: sie halten die Pfad-Allowlist für Staging und Gates und verhindern Doppelarbeit an denselben Dateien — Besitz oder Priorität erzeugen sie nicht.
+**Gate:** Der Claim steht **vor dem ersten Read** — erst der Kommentar, dann die Dateien. `pnpm run agent:pretask --json` liest denselben Verlauf und blockiert bei fremdem Claim, verlangt bei fehlendem Claim genau diesen Kommentar (`RBD_AGENT`/`--agent` nennt deine Identität) und warnt nur, wenn die Lane keine Issue-Nummer hat. Damit orchestriert genau ein Agent pro Issue.
 
 ---
 
@@ -199,7 +199,7 @@ Dieses Dokument entscheidet über **Koordination** (Claim, Priorität, Freigabe,
 
 | Thema | Verbindlich | Anmerkung |
 | --- | --- | --- |
-| Claim | `CLAIM`/`RELEASE`-Kommentar am Issue | Autoritativ für Besitz und Reihenfolge. Der Eintrag unter `.lane-claims/claims/` ist die **lokale Kollisionssperre** (Pfad-Allowlist für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook), damit keine zwei Agenten dieselben Dateien im selben Task oder Turn bearbeiten; er entscheidet nie gegen den Issue-Verlauf. |
+| Claim | `CLAIM`/`RELEASE`-Kommentar am Issue | Wahrheit. Der Eintrag unter `.lane-claims/claims/` ist nur die **mechanische Spiegelung** für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook; er entscheidet nie gegen den Issue-Verlauf. |
 | Lane/Branch | `lane/<domäne>/<task>` (mechanisch), `fix/<nr>-<slug>` (lesbar, Legacy-Präfix) | Beide Formen sind zulässig; das Register braucht einen Branch nach Schema. |
 | Name | `local.agent(cloud).1` | Prefix `local.agent` ist der Marker; `.1`, `.2` … je Instanz. |
 | Checks | `verify:light`, `verify:fast`, `pnpm run ci:local` | „Checks grün" meint diese Linie ([`CI.md`](CI.md), [`TESTING.md`](TESTING.md)), nicht Browser-Klicktests. |
