@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 378 Dateien — contract 209 · integration 99 · governance 57 · statistics 6 · performance 7.
+Summe: 379 Dateien — contract 209 · integration 99 · governance 58 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -209,6 +209,7 @@ Summe: 378 Dateien — contract 209 · integration 99 · governance 57 · statis
 | `src/core/governance/__tests__/tree-changes.test.ts` | pipeline | governance | ja | `scripts/lib/tree-changes.mjs` |
 | `src/core/governance/__tests__/verify-scope.test.ts` | pipeline | governance | ja | `scripts/verify-scope.mjs` |
 | `src/core/governance/__tests__/wip-takeover.test.ts` | pipeline | governance | ja | `scripts/lib/takeover.mjs` |
+| `src/core/governance/__tests__/worker-claim-gate.test.ts` | pipeline | governance | ja | `scripts/pretask.mjs` |
 | `src/core/governance/__tests__/worker-dependency-claims.test.ts` | pipeline | governance | ja | `scripts/lib/dependency-fingerprint.mjs` |
 | `src/core/governance/__tests__/worker-identity-bootstrap.test.ts` | pipeline | governance | ja | `scripts/lib/worker-identity.mjs` |
 | `src/core/governance/__tests__/worker-inventory-bootstrap.test.ts` | pipeline | governance | ja | `scripts/lib/repo-inventory.mjs` |
@@ -684,10 +685,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2957 |
-| Gelistete Dateien | 2957 |
+| Getrackte Dateien | 2960 |
+| Gelistete Dateien | 2960 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (62), artifacts (1), content (1061), docs (104), packages (27), public (571), scripts (124), src (986) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (62), artifacts (1), content (1062), docs (104), packages (27), public (571), scripts (124), src (988) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -702,7 +703,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/` — 37 Datei(en)
 - `.lane-claims/tasks/` — 24 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1057 Datei(en)
+- `content/narrative/contributions/` — 1058 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -769,7 +770,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 70 Datei(en)
+- `src/core/governance/__tests__/` — 72 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -1949,8 +1950,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23686 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4233 Zeilen
+- `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23708 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4237 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 223 Zeilen
@@ -2714,7 +2716,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 140 Zeilen
 - `scripts/lib/imports.mjs` — Import- und Kopfkommentar-Lesen ohne TypeScript-Abhaengigkeit. — gelesen: 135 Zeilen
 - `scripts/lib/integration.mjs` — Integration: entscheidet vor der teuren CI, ob ein Branch ueberhaupt — gelesen: 144 Zeilen
-- `scripts/lib/issue-claim.mjs` — Issue-Claims: GitHub ist die Wahrheit fuer Claims und Lanes. — gelesen: 270 Zeilen
+- `scripts/lib/issue-claim.mjs` — Issue-Claims: GitHub ist die Wahrheit fuer Claims und Lanes. — gelesen: 272 Zeilen
 - `scripts/lib/issue-scope.mjs` — Issue-Scope: ein Label, ein Body-Vertrag, eine Entscheidung. — gelesen: 273 Zeilen
 - `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 651 Zeilen
 - `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 145 Zeilen
@@ -2751,7 +2753,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder Abbruch und — gelesen: 335 Zeilen
 - `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 117 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 248 Zeilen
-- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 723 Zeilen
+- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 740 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 671 Zeilen
 - `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 150 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 70 Zeilen
@@ -2909,12 +2911,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/pr-body.test.ts` — Der PR-Body wird im Plan geprueft. Die exakten Ueberschriften und echte — gelesen: 34 Zeilen
 - `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 184 Zeilen
-- `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 172 Zeilen
-- `src/core/governance/__tests__/pretask-cause.test.ts` — `pretask` und `turn:finish` geben einen roten Gate-Befund automatisch als — gelesen: 115 Zeilen
-- `src/core/governance/__tests__/pretask-issues.test.ts` — Issue-Scopes blockieren nur die betroffene Lane. `remote-ci` und Issues ohne — gelesen: 187 Zeilen
-- `src/core/governance/__tests__/pretask-modes.test.ts` — Die Startmodi NEW, RESUME und NOOP sowie die Grenze zwischen eigener und — gelesen: 192 Zeilen
-- `src/core/governance/__tests__/pretask-takeover.test.ts` — Der echte `pretask`-Start mit adoptierbarer und korrupter WIP. Fremde oder — gelesen: 155 Zeilen
-- `src/core/governance/__tests__/pretask.test.ts` — Der echte `pretask`-Start in temporaeren Git-Repos. Die Isolation-Hilfe — gelesen: 200 Zeilen
+- `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 173 Zeilen
+- `src/core/governance/__tests__/pretask-cause.test.ts` — `pretask` und `turn:finish` geben einen roten Gate-Befund automatisch als — gelesen: 116 Zeilen
+- `src/core/governance/__tests__/pretask-issues.test.ts` — Issue-Scopes blockieren nur die betroffene Lane. `remote-ci` und Issues ohne — gelesen: 188 Zeilen
+- `src/core/governance/__tests__/pretask-modes.test.ts` — Die Startmodi NEW, RESUME und NOOP sowie die Grenze zwischen eigener und — gelesen: 193 Zeilen
+- `src/core/governance/__tests__/pretask-takeover.test.ts` — Der echte `pretask`-Start mit adoptierbarer und korrupter WIP. Fremde oder — gelesen: 156 Zeilen
+- `src/core/governance/__tests__/pretask.test.ts` — Der echte `pretask`-Start in temporaeren Git-Repos. Die Isolation-Hilfe — gelesen: 201 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
 - `src/core/governance/__tests__/promote-guard.test.ts` — Ein Merge darf nur den Commit treffen, den der PR als Kopf traegt, und nur — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/promotion-state.test.ts` — Ein Merge ist nur auf dem exakten PR-Lauf, mit passendem Plan-Artefakt und — gelesen: 70 Zeilen
@@ -2933,16 +2935,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 95 Zeilen
 - `src/core/governance/__tests__/task-claim-parity.test.ts` — Eine einzige Quelle fuer den Lane-Status: Der Task-Vertrag ist die Wahrheit — gelesen: 47 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
+- `src/core/governance/__tests__/test-worker-home.ts` — Fixture-Identitaet fuer Tests, die `pretask` als Kindprozess starten. — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/verify-scope.test.ts` — `verify:scope` liest ausschliesslich den Diff und vergleicht ihn mit der — gelesen: 103 Zeilen
 - `src/core/governance/__tests__/wip-takeover.test.ts` — "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel, — gelesen: 75 Zeilen
+- `src/core/governance/__tests__/worker-claim-gate.test.ts` — Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine — gelesen: 154 Zeilen
 - `src/core/governance/__tests__/worker-dependency-claims.test.ts` — Dependencies werden nur bei geaendertem Fingerprint neu gebaut, aus einem — gelesen: 76 Zeilen
 - `src/core/governance/__tests__/worker-identity-bootstrap.test.ts` — Identitaet ist ein Betriebsmittel: drei Namen, exklusive Reservierung mit — gelesen: 129 Zeilen
 - `src/core/governance/__tests__/worker-inventory-bootstrap.test.ts` — Bestaende werden am Remote erkannt, nicht am Ordnernamen. Die Inventur — gelesen: 80 Zeilen
 - `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Seit der Local-first-Migration fuehren — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/workflow-retry.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 18 Zeilen
 - `src/core/governance/__tests__/workflow-state.test.ts` — Nach dem Turn zaehlt nur ein belegter Zustand: TESTS_PASSED nach lokaler — gelesen: 196 Zeilen
-- `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 193 Zeilen
+- `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 194 Zeilen
 - `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 68 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
 - `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
