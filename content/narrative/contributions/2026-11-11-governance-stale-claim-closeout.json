@@ -4,14 +4,14 @@
   "contributionId": "governance-stale-claim-closeout",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": ["start"],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "entschlossen",
   "relationship": "neutral",
   "personaRefs": ["rita-kern"],
-  "flags": ["narrativ"],
+  "flags": ["narrativ", "rita-kern"],
   "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
   "directives": []
 }

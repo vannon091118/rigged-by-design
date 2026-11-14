@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T11:24Z-city-scene-54",
+  "contributionId": "city-scene-54",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Leute kommen sich auf dem schmalen Gehweg entgegen. Der eine tritt in den Rinnstein, der andere nickt knapp, und fuer einen Moment ist der Weg wieder frei.",
+  "directives": []
+}

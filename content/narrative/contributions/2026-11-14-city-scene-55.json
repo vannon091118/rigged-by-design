@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:05Z-city-scene-55",
+  "contributionId": "city-scene-55",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Tresen laeuft die Abrechnung, waehrend draussen der Regen gegen die Scheibe schlaegt. Niemand eilt, die Zahlen stimmen, und fuer heute genuegt das.",
+  "directives": []
+}

@@ -1,0 +1,18 @@
+{
+  "id": "issue-648-diff-gate",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/render/issue-648-diff-gate",
+  "baseSha": "5ed5d9603664121b63e317d330404b98ece6e596",
+  "issue": 648,
+  "task": "Bild-Diff-Gate-Test kompilierbar machen (PARTIAL-Review Nachbesserung PR #691)",
+  "pathAllowlist": [
+    "src/core/sim/__tests__/image-diff-gate.test.ts",
+    "src/core/sim/narrative/composer/image-diff-gate.ts",
+    ".lane-claims/claims/issue-648-diff-gate.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "archived",
+  "createdAt": "5ed5d9603664121b63e317d330404b98ece6e596"
+}

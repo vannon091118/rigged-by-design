@@ -1,0 +1,17 @@
+{
+  "id": "issue-669-worldly-mini-scenes",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/narrative/issue-669-worldly-mini-scenes",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "issue": 669,
+  "task": "ältestes freies P2-Issue (NARRATIVE-P2-Cluster #663-669) übernehmen und bearbeiten",
+  "pathAllowlist": [
+    "content/narrative/",
+    ".lane-claims/claims/issue-669-worldly-mini-scenes.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b969a923de1ab950aed90c50761eb002b1b1b667"
+}

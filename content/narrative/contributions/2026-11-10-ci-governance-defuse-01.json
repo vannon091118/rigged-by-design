@@ -4,18 +4,14 @@
   "contributionId": "ci-governance-defuse-01",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": [
-    "content"
-  ],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "entschlossen",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
+  "flags": ["narrativ"],
   "text": "Ein Lieferwagen hält vor der Tür; der Fahrer kennt den Weg zur Hintertür besser als zur Klingel.",
   "directives": []
 }

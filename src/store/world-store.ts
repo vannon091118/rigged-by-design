@@ -18,7 +18,7 @@ import { buildView } from './snapshot';
 import { clearOldSave, loadWorld, SAVE_FAILED_NOTICE, saveWorld } from './save';
 import { exportGameData, planImportData, type TransferReport } from './transfer';
 import { createWorld } from '../core/sim/templates';
-import { advanceWorld } from './narrative-clock';
+import { WorldTick } from './world-tick';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { esportEveningView, type EsportEveningView } from '../core/sim/esport-event';
 import { PORTEMONNAIE } from '../core/sim/money';
@@ -36,7 +36,6 @@ import { pickupMopCmd, dropMopCmd, cleanStainCmd, getMopAtToiletCmd } from './mo
 import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-commands';
 import { cityCmd, type CityCommand } from './city-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd, type ExclusionCommand } from './game-commands';
-import { TICK_MS } from '../core/sim/tick-timing';
 import { InteractionStore } from './interaction-store';
 import { QueueCommands } from './queue-commands';
 import { SceneCommands } from './scene-commands';
@@ -50,8 +49,12 @@ class WorldStore {
   #view: GameView;
   #notice = '150 VC Startkapital. Dein erster Automat steht gratis. Gäste kommen zum Eingang.';
   #listeners = new Set<() => void>();
-  #timer: ReturnType<typeof setInterval> | null = null;
-  #savedTick = 0;
+  readonly #tick = new WorldTick({
+    world: () => this.#world, ledger: () => this.#ledger, prng: () => this.#prng,
+    arriveStreetDoor: () => this.scene.arriveAtStreetDoor(), leaveApartmentDoor: () => this.scene.leaveApartmentAtDoor(), leaveInteriorDoor: () => this.scene.leaveInteriorAtDoor(),
+    emit: (save) => this.#emit(save), hasListeners: () => this.#listeners.size > 0,
+    fault: (message) => { this.#notice = message; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); },
+  });
   readonly #layoutEditor = new LayoutEditor({
     layout: () => this.#world.layout, apply: (layout) => applyLayout(this.#world, layout),
     emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; },
@@ -81,6 +84,7 @@ class WorldStore {
 
   /** Neuer Start: Wohnung first, eigenes Casino mit leerem Raum und Starter-Kiste. */
   #startNew(template: TemplateId): void {
+    this.#tick.reset();
     const start = createNewGame(template);
     this.#world = start.world;
     this.#ledger = start.ledger;
@@ -90,13 +94,10 @@ class WorldStore {
   }
   subscribe = (listener: () => void): (() => void) => {
     this.#listeners.add(listener);
-    if (this.#timer === null) this.#timer = setInterval(this.#advance, TICK_MS);
+    this.#tick.start();
     return () => {
       this.#listeners.delete(listener);
-      if (this.#listeners.size === 0 && this.#timer !== null) {
-        clearInterval(this.#timer);
-        this.#timer = null;
-      }
+      if (this.#listeners.size === 0) this.#tick.stop();
     };
   };
   getSnapshot = (): GameView => this.#view;
@@ -150,6 +151,7 @@ class WorldStore {
     flushNarrativeCmd(this.#world, this.#ledger);
     this.#notice = 'Spielstand importiert.';
     this.#layoutEditor.reset();
+    this.#tick.reset();
     this.#emit();
     return report;
   }
@@ -157,9 +159,7 @@ class WorldStore {
   spinTest(itemId: number): GameResult | null { const { result, notice } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = notice; this.#emit(); } return result; } deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); } setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); } exclusion(command: ExclusionCommand, limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }
   chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null { let result: ChoiceExecution | null = null; this.#guard(() => { const action = chooseNarrativeAction(this.#world, this.#ledger, eventId, choiceId); result = action.result; this.#notice = action.notice; }); return result; } dismissNarrative(eventId: number): void { this.#guard(() => { this.#notice = dismissNarrativeAction(this.#world, eventId); }); }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
-  #advance = (): void => { advanceWorld(this.#world, this.#ledger, this.#prng); if (this.scene.arriveAtStreetDoor()) return;
-    if (this.scene.leaveApartmentAtDoor()) return; if (this.scene.leaveInteriorAtDoor()) return;
-    this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
+
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
   #guard(action: () => void, flush = true): void { try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }
