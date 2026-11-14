@@ -143,11 +143,14 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
       {!guest && rpg.unspentPoints > 0 && (
         <div className="hud-skills">
           <span>LV {rpg.level} · {rpg.unspentPoints} Punkte</span>
-          {SKILLS.map(([attribute, label, hint]) => (
-            <button key={attribute} type="button" className="btn tiny warm" title={hint} onClick={() => onSkill(attribute)}>
-              {label}+
-            </button>
-          ))}
+          {SKILLS.map(([attribute, label]) => {
+            const effect = view.career.attributes.find((entry) => entry.id === attribute)?.effect;
+            return (
+              <button key={attribute} type="button" className="btn tiny warm" title={effect ?? label} onClick={() => onSkill(attribute)}>
+                {label}+
+              </button>
+            );
+          })}
         </div>
       )}
 
