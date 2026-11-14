@@ -930,7 +930,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/board-pr-triage.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen

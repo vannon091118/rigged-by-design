@@ -4,13 +4,18 @@
   "claimId": "lane/governance/board-issue-audit",
   "branch": "lane/governance/board-issue-audit",
   "baseSha": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Board-Audit der 28 offenen Issues auf 9b1a92ea",
   "goal": "Jedes offene Issue hat eine belegte Entscheidung; Board-Zahl und API stimmen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 742,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/742",
+    "state": "merged",
+    "mergedSha": "024d9a7494c525ab0e809a21a04ec2ffb0e6b418"
+  },
   "findings": [
     {
       "id": "F-1",
@@ -32,5 +37,5 @@
     }
   ],
   "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 3
+  "revision": 4
 }
