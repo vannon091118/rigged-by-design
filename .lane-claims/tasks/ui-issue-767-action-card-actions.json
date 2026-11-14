@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-767-action-card-actions",
+  "claimId": "lane/ui/issue-767-action-card-actions",
+  "branch": "lane/ui/issue-767-action-card-actions",
+  "baseSha": "2d6cb9af6a445820d9b63c688d213822a31de173",
+  "phase": "CI_PENDING",
+  "title": "Issue #767: ActionCard darf verfuegbare Gastaktionen nicht still abschneiden",
+  "goal": "Alle vom Builder gelieferten Aktionen bleiben ueber die kompakte Aktionskarte erreichbar; ein Regressionstest belegt die fuenf Gastaktionen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 819,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/819",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "PR #819 gegen den finalen Kopf pruefen, review-waiting setzen und DONE/RELEASE kommentieren.",
+  "revision": 2
+}

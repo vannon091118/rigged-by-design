@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T21:55Z-action-card-overflow",
+  "contributionId": "action-card-overflow-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita legte fünf Karten auf den Tresen, sichtbar blieben nur drei. Sie schob die fehlenden nicht beiseite, sondern öffnete einen eigenen Griff darunter: Wer wählt, soll alle Wege sehen, nicht nur die bequemen.",
+  "directives": []
+}
