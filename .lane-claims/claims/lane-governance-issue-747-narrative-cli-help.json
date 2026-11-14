@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/issue-747-narrative-cli-help",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-747-narrative-cli-help",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "issue": 747,
+  "task": "Issue #747: --help im Narrative-Gate",
+  "pathAllowlist": [
+    "scripts/verify-narrative-blocks.mjs",
+    "src/core/governance/__tests__/narrative-blocks-cli.test.ts",
+    "content/narrative/contributions/2026-11-14-rumor-20.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims.json",
+    ".lane-claims/claims/lane-governance-issue-747-narrative-cli-help.json",
+    ".lane-claims/tasks/governance-issue-747-narrative-cli-help.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8f31a19ed22803e21fa674bd1c565dbf84a28da8"
+}
