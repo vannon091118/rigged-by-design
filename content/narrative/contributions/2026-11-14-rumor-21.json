@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T20:45Z-rumor-21",
+  "contributionId": "rumor-21",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Im Hinterzimmer haengt eine Liste, auf der niemand mehr etwas nachtraegt, seit jemand entschieden hat, dass Notizen Geld kosten. Der Mann an der Theke sagt, ein Haus, das seine Risse nicht aufschreibt, streicht sie beim naechsten Anstrich mit. Er notiert jeden Riss, auch die kleinen, und legt die Liste offen auf den Tresen.",
+  "directives": []
+}

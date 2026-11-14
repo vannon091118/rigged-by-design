@@ -7,9 +7,10 @@
  * Git/Aufruf. Kill-Switch und jeder Grenzverstoss beenden den Lauf; das
  * Finding-Gate akzeptiert nur belegte, aktuelle und zugeordnete Befunde.
  */
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  decideRunBudget, validateFinding, validateRunBudget,
+  decideRunBudget, readRunBudget, validateFinding, validateRunBudget,
 } from '../../../../scripts/lib/run-budget.mjs';
 
 const budget = {
@@ -18,7 +19,7 @@ const budget = {
   maxIterations: 3,
   maxIssues: 2,
   maxCommits: 4,
-  maxNewGovernanceIssues: 0,
+  maxNewGovernanceIssues: 3,
   productProgress: { mergedProductPrs: 2, acceptedFindings: 1 },
 };
 
@@ -41,12 +42,25 @@ describe('Laufbudget und Stop-Vertrag', () => {
     expect(result.reasons).toContain('commits>4');
   });
 
-  it('stoppt bei neuen Governance-Findings ohne Produktbeleg', () => {
+  it('tickt neue Befunde zuerst und stoppt erst danach', () => {
     const result = decideRunBudget({
-      commits: 1, iterations: 1, issues: 1, newGovernanceIssues: 1,
+      commits: 1, iterations: 1, issues: 1, newGovernanceIssues: 4,
     }, budget);
     expect(result.state).toBe('BUDGET_EXHAUSTED');
-    expect(result.reasons).toContain('new-governance-issues>0');
+    expect(result.reasons).toContain('new-governance-issues>3');
+    expect(result.findingDuty).toBe('TICKET_THEN_STOP');
+    expect(result.notes.join(' ')).toContain('ZU PRUEFEN');
+  });
+
+  it('akzeptiert kein Budget, das neue Befunde verbietet', () => {
+    const result = validateRunBudget({ ...budget, maxNewGovernanceIssues: 0 });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join(' ')).toContain('mindestens 1');
+  });
+
+  it('haelt die echte Laufkonfiguration ticketing-faehig', () => {
+    const configured = readRunBudget(resolve(process.cwd(), 'docs', 'run-budget.json'));
+    expect(configured.maxNewGovernanceIssues).toBeGreaterThanOrEqual(1);
   });
 
   it('laesst den Kill-Switch jedes Budget ueberschreiben', () => {

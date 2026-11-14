@@ -711,10 +711,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3163 |
-| Gelistete Dateien | 3163 |
+| Getrackte Dateien | 3166 |
+| Gelistete Dateien | 3166 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (137), artifacts (1), content (1136), docs (108), packages (27), public (571), scripts (127), src (1031) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (139), artifacts (1), content (1137), docs (108), packages (27), public (571), scripts (127), src (1031) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -727,10 +727,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 70 Datei(en)
-- `.lane-claims/tasks/` — 65 Datei(en)
+- `.lane-claims/claims/` — 71 Datei(en)
+- `.lane-claims/tasks/` — 66 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1132 Datei(en)
+- `content/narrative/contributions/` — 1133 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -892,6 +892,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-claim-reconcile.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-issue-750-run-budget-findings.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -958,6 +959,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 44 Zeilen
 - `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-750-run-budget-findings.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -2122,6 +2124,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-rumor-14.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-15.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-16.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-rumor-21.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
@@ -2133,8 +2136,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25410 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4533 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25434 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4537 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2921,7 +2924,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/repair-plan.mjs` — Reparaturplan: aus einem roten Lauf wird genau eine Entscheidung. — gelesen: 175 Zeilen
 - `scripts/lib/repo-inventory.mjs` — Repository-Inventur: Bestaende werden am Remote erkannt, nicht am Ordnernamen. — gelesen: 111 Zeilen
 - `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 41 Zeilen
-- `scripts/lib/run-budget.mjs` — Externes Laufbudget: eine Wahrheit für Stop-Entscheidung und Finding-Gate. — gelesen: 140 Zeilen
+- `scripts/lib/run-budget.mjs` — Externes Laufbudget: eine Wahrheit für Stop-Entscheidung und Finding-Gate. — gelesen: 153 Zeilen
 - `scripts/lib/staging-scope.mjs` — Staging-Umfang: `git add -A` ist nur zulaessig, wenn jede Aenderung im — gelesen: 75 Zeilen
 - `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
 - `scripts/lib/takeover.mjs` — WIP-Takeover: "fremdes WIP" existiert nicht. — gelesen: 73 Zeilen
@@ -3117,7 +3120,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/red-team-gate-lane.test.ts` — Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate, — gelesen: 216 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/roadmap-register.test.ts` — Die Roadmap ist die einzige Liste offener Spiel- und Praesentationsarbeit. — gelesen: 162 Zeilen
-- `src/core/governance/__tests__/run-budget.test.ts` — Der Stop-Vertrag ist extern: Grenzen aus der Konfiguration, Ist-Werte aus — gelesen: 102 Zeilen
+- `src/core/governance/__tests__/run-budget.test.ts` — Der Stop-Vertrag ist extern: Grenzen aus der Konfiguration, Ist-Werte aus — gelesen: 116 Zeilen
 - `src/core/governance/__tests__/scripts-libs-ci.d.ts` — Deklarationen fuer die CI-Diagnose- und Claim-Evidenz-Bibliotheken. — gelesen: 140 Zeilen
 - `src/core/governance/__tests__/scripts-libs-claim-evidence.d.ts` — Deklarationen fuer Merge-Evidenz und den lesenden Claim-Reconcile. — gelesen: 73 Zeilen
 - `src/core/governance/__tests__/scripts-libs-impact-graph.d.ts` — Deklaration fuer das Impact-Graph-Gate. — gelesen: 22 Zeilen
@@ -3496,7 +3499,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 141 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 288 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 289 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
