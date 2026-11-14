@@ -1,0 +1,26 @@
+{
+  "id": "lane/sim/issue-556-city-acceptance",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-556-city-acceptance",
+  "baseSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596",
+  "issue": 556,
+  "task": "Stadtnetz und Stadt-Abnahme (#556)",
+  "goal": "Browserbeleg S2-08/R-2/R-3/S5-09, Probe/Screenshot/Console, Defekte fixen",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "src/store/scene-commands.ts",
+    "content/narrative/",
+    "docs/screenshots/current/",
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a725f8eae0424e7d33375f83fee1ad02acbe3596"
+}

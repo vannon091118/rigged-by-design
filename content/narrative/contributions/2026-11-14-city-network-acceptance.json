@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T06:10Z-city-network-acceptance-01",
+  "contributionId": "city-network-acceptance-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Stadt ist jetzt auch im Browser ein Netz: Vier Türen führen von der Straße in Wohnung, Casino, Kiez und Markt, und jeder Weg wird gelaufen, bevor die Szene wechselt. Der Markt bleibt gesperrt, bis der Ruf ihn öffnet; kein Sprung ersetzt die Kacheln dazwischen.",
+  "directives": []
+}

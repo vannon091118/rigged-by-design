@@ -386,6 +386,37 @@ Nacht→Morgen-Übergangs: halber Schleier, erste Strahlen, kleiner Radius),
 **Weiter offen:** Wetter, Stadt-NPCs als laufende Figuren (R9); die
 R8-Metadaten sind belegt, die R8-Sichtabnahme steht noch aus.
 
+### Browser-Sichtabnahme 2026-11-14 (#556)
+
+**Umgebung:** lokaler Vite-Dev-Server `http://localhost:3000`, lokaler Chromium,
+frischer Spielstand, `window.__rbdProbe` aktiv. Die Stadt wurde über die
+Casino-Haustür betreten; die Türwege liefen über
+`SceneCommands.enterStreetDoor` im laufenden Browser, nicht über einen
+Testaufruf am Headless-Modell.
+
+| Punkt | Ergebnis | Beleg |
+| --- | --- | --- |
+| S2-12 | PASS | `cityNetworkEdges`: 5 Knoten (`STREET`, `APARTMENT`, `CASINO`, `KIEZ`, `MARKT`), 4 Türen; der Markt meldet `buildDoorActions(...).enabled === false` (Kiez-Rang 0/9) |
+| S2-08 | PASS | Laufwege statt Sprung: (22,23) → Pfad 12 → (23,18) → `INTERIOR` (5,7); (24,14) → Pfad 11 → (23,21) → `OWN` (3,14); (22,23) → Pfad 26 → (18,20) → `APARTMENT` (11,12). Keine doppelten Actor-IDs (12 Bewohner, 12 `npcId`s) |
+| R-2 | PASS | `37-stadtnetz-abnahme.png`: Straßenraum, vier Fassaden, Türen und Spieler; `scene.kind` bleibt `CITY`, kein zweiter Szenengraph |
+| R-3 | PASS (Teil) | `39-stadtbewohner.png`: Bewohner und Türen sichtbar, 12 stabile IDs. Die Schlafenden teilen sich den Ausweich-Haushalt (8,12) und erscheinen dort als Traube — Produktentscheidung aus #508, keine Render-Duplikate |
+| S5-09 | PASS (Teil) | Vier Orte im selben Stadtnetz begehbar (Wohnung, Casino, Kiez, Straße), Markt als gesperrter Knoten; der Tagesablauf läuft (Boris/Mira „arbeitet“, Rita „schläft“) |
+
+**Konsole:** keine JS-Fehler; wiederholt PixiJS-Warnungen
+`[Assets] Asset id … was not found in the Cache` für Boden- und Lichttexturen
+(vorbekanntes Rauschen), ein abgebrochener Media-Request (`ERR_ABORTED`).
+Keine 4xx/5xx-Antworten.
+
+**Grenze:** Der Klick auf die Türkachel wurde nicht als Pointer-Event
+nachgestellt (Kamera-Mapping); die Übergänge liefen über dieselbe
+Produktionsmethode, die der Türklick aufruft. Der Klickpfad selbst ist durch
+`city-door-click.test.ts` belegt.
+
+**Nicht in diesem Slice:** Die Roadmap-Zeilen S2-08, S2-12, R-2, R-3 und S5-09
+bleiben unverändert `offen`, weil `docs/ROADMAP.md` ausschließlich
+Governance-Lanes gehört. Der Flip gehört in den Maintainer-/Governance-Zug
+nach dem Merge, mit Verweis auf diesen Abschnitt und die Screenshots.
+
 ### Prüfung der offenen Punkte 2026-11-12
 
 **R2 ist abgenommen (PASS).** Die Annahme „ein unbekanntes Möbel ist im
