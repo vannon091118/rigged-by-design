@@ -700,10 +700,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3092 |
-| Gelistete Dateien | 3092 |
+| Getrackte Dateien | 3094 |
+| Gelistete Dateien | 3094 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (87), artifacts (1), content (1133), docs (108), packages (27), public (571), scripts (126), src (1014) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (88), artifacts (1), content (1134), docs (108), packages (27), public (571), scripts (126), src (1014) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -716,10 +716,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 44 Datei(en)
+- `.lane-claims/claims/` — 45 Datei(en)
 - `.lane-claims/tasks/` — 41 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1129 Datei(en)
+- `content/narrative/contributions/` — 1130 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -847,8 +847,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 93 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 74 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
+- `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agent-board-workflow.json` — { — gelesen: 25 Zeilen
@@ -2054,6 +2055,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-grown-shell.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-home-households.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-house-debt.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-image-diff-gate-test-repair.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-job-market-bookable.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-ledger-tick-guard.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
