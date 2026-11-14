@@ -171,6 +171,8 @@ function worktreeInventory() {
   const root = repoRoot();
   const blocks = git(['worktree', 'list', '--porcelain'], root).split(/\r?\n\r?\n/);
   const entries = [];
+  // `git worktree list` nennt den primaeren Baum zuerst; nur er ist `main`.
+  let index = 0;
   for (const block of blocks) {
     const path = /^worktree (.+)$/m.exec(block)?.[1];
     if (!path) continue;
@@ -203,7 +205,7 @@ function worktreeInventory() {
     }
     entries.push({
       path,
-      role: resolve(path) === resolve(root) ? 'main' : 'worker',
+      role: index === 0 ? 'main' : 'worker',
       branch,
       dirtyPaths: dirtyPaths.filter(Boolean),
       stagedPaths: stagedPaths.filter(Boolean),
@@ -213,6 +215,7 @@ function worktreeInventory() {
       orphaned,
       readable,
     });
+    index += 1;
   }
   const report = inventoryReport(entries);
   console.log(JSON.stringify(report, null, 2));
