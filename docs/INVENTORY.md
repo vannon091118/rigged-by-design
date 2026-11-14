@@ -1030,7 +1030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
