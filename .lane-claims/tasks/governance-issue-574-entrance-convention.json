@@ -10,7 +10,12 @@
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 683,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/683",
+    "state": "open",
+    "head": "f14f8dfe"
+  },
   "findings": [
     {
       "id": "entry-fixture-drift",
@@ -20,6 +25,6 @@
       "kind": "infrastructure"
     }
   ],
-  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "nextAction": "Maintainer-Review von PR #683; danach Merge und Closeout von #574",
   "revision": 1
 }
