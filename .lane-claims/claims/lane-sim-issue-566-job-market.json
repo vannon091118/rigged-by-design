@@ -17,6 +17,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "archived",
+  "mergedEvidence": "squash-merge PR #588",
+  "mergedSha": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee",
   "createdAt": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5"
 }
