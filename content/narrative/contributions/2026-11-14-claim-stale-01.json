@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:55Z-claim-stale-01",
+  "contributionId": "claim-stale-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Am Schwarzen Brett haengt seit drei Tagen dieselbe Handschrift. Der Mann mit dem Besen sagt, eine Reservierung sei kein Besitz: Wer sie nicht mehr braucht, muss sie zurueckgeben, sonst wartet der Naechste umsonst.",
+  "directives": []
+}

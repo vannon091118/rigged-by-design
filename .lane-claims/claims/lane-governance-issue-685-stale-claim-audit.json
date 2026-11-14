@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/issue-685-stale-claim-audit",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-685-stale-claim-audit",
+  "baseSha": "27426cfacbe5862e78868c54120cbef055fd5dee",
+  "issue": 685,
+  "task": "Issue #685: 72h-Stale-Claim-Frist und gh-Retry belegen",
+  "goal": "Befund 7 als implementiert nachweisen und mit Regressionstests gegen Rueckfall sichern; Befund 9 mitpruefen.",
+  "pathAllowlist": [
+    "scripts/lib/issue-claim.mjs",
+    "src/core/governance/__tests__/work-claim-authorization.test.ts",
+    ".lane-claims/**",
+    "content/narrative/contributions/2026-11-14-claim-stale-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "27426cfacbe5862e78868c54120cbef055fd5dee"
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:57c343ec3c6669bd4f857f9208abca64d463d36d228f6dc5243abaf0d20670d1",
+  "contentHash": "sha256:30f7b820f8a71ff00dca06a5e466faef6a3126bdef1fc8450458b0fa09d3b8ff",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7731,6 +7731,28 @@
       "text": "Auf dem Sims liegt nur noch, was heute gilt; was gestern war, steht im alten Buch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-claim-shelf-cleanup.json"
+    },
+    {
+      "contributionId": "claim-stale-01",
+      "turnId": "2026-11-14T22:55Z-claim-stale-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Schwarzen Brett haengt seit drei Tagen dieselbe Handschrift. Der Mann mit dem Besen sagt, eine Reservierung sei kein Besitz: Wer sie nicht mehr braucht, muss sie zurueckgeben, sonst wartet der Naechste umsonst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-claim-stale-01.json"
     },
     {
       "contributionId": "close-rights-01",
@@ -24517,6 +24539,30 @@
       "text": "Im Schaukasten haengen Bilder von der Spielhalle, aber auf jedem Bild klebt oben links ein fremder Stempel. Der Mann mit dem Besen sagt, wer sein Haus zeigt, sollte nicht das Schild des Nachbarn mitfotografieren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-25.json"
+    },
+    {
+      "contributionId": "rumor-26",
+      "turnId": "2026-11-14T22:30Z-rumor-26",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Liste im Vorraum stehen zwei Namen doppelt, und mitten in der Abschrift liegen noch die Striche vom Zusammenlegen. Der Mann mit dem Besen sagt, wer die Striche stehen laesst, sperrt den naechsten Gast aus, ohne es zu merken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-26.json"
     },
     {
       "contributionId": "run-budget-01",

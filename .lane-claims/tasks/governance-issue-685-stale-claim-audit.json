@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-685-stale-claim-audit",
+  "claimId": "lane/governance/issue-685-stale-claim-audit",
+  "branch": "lane/governance/issue-685-stale-claim-audit",
+  "baseSha": "27426cfacbe5862e78868c54120cbef055fd5dee",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #685: 72h-Stale-Claim-Frist und gh-Retry belegen",
+  "goal": "Befund 7 als implementiert nachweisen und mit Regressionstests gegen Rueckfall sichern; Befund 9 mitpruefen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "warning",
+      "summary": "Befund 7 (kein automatischer Stale-Claim-Check) ist in scripts/lib/issue-claim.mjs implementiert, aber ohne Regressionstest; die 72h-Grenze kann unbemerkt brechen."
+    }
+  ],
+  "nextAction": "Regressionstests fuer 71h/73h und den eigenen alten Claim ergaenzen, fokussiert ausfuehren, PR oeffnen und review-waiting setzen.",
+  "revision": 1
+}

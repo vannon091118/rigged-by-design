@@ -7,8 +7,11 @@
  * der Actor-Policy, nicht aus dem Text. Replay, fremde Claim-ID und unerlaubte
  * Reihenfolge bleiben Befunde, keine Zustandsaenderung.
  */
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { evaluateIssueClaim } from '../../../../scripts/lib/issue-claim.mjs';
+import { evaluateIssueClaim, readIssueClaim } from '../../../../scripts/lib/issue-claim.mjs';
 import { evaluateWorkState } from '../../../../scripts/lib/work-claim.mjs';
 
 /** Getrennte Principals: Worker duerfen nicht wie Maintainer aussehen. */
@@ -83,5 +86,58 @@ describe('Kommentar-Autorisierung', () => {
     expect(unauthorized.rejected[0]).toMatchObject({ reason: 'unknown-author' });
     const authorized = evaluateIssueClaim({ comments: [claim('worker')], agent: 'LIILITH', actors: ACTORS });
     expect(authorized.status).toBe('claimed-self');
+  });
+
+  it('gibt einen fremden Issue-Claim erst ab 72 Stunden als stale frei', () => {
+    const base = Date.parse('2026-11-11T00:00:00Z');
+    const foreign = {
+      id: '2', author: { login: 'worker' }, createdAt: '2026-11-11T00:00:00Z',
+      body: 'CLAIM [A3] Shinon 2026-11-11T00:00Z scope=src plan=x',
+    };
+    const at = (hours: number) => evaluateIssueClaim({
+      comments: [foreign], agent: 'LIILITH', actors: ACTORS, now: base + hours * 3_600_000,
+    });
+    expect(at(71)).toMatchObject({ status: 'claimed-other', holder: 'Shinon', ageHours: 71 });
+    expect(at(72)).toMatchObject({ status: 'stale', holder: 'Shinon', ageHours: 72 });
+    expect(at(73)).toMatchObject({ status: 'stale', ageHours: 73 });
+  });
+
+  it('meldet den eigenen alten Issue-Claim nicht als stale', () => {
+    const base = Date.parse('2026-11-11T00:00:00Z');
+    const own = {
+      id: '3', author: { login: 'worker' }, createdAt: '2026-11-11T00:00:00Z',
+      body: 'CLAIM [A4] LIILITH 2026-11-11T00:00Z scope=src plan=x',
+    };
+    const result = evaluateIssueClaim({
+      comments: [own], agent: 'LIILITH', actors: ACTORS, now: base + 100 * 3_600_000,
+    });
+    expect(result).toMatchObject({ status: 'claimed-self', holder: 'LIILITH', ageHours: 100 });
+  });
+
+  it('wiederholt einen fehlgeschlagenen gh-Read genau einmal', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'rbd-gh-retry-'));
+    const counter = join(dir, 'attempts');
+    const script = join(dir, 'gh.mjs');
+    writeFileSync(script, [
+      "import { existsSync, readFileSync, writeFileSync } from 'node:fs';",
+      `const file = ${JSON.stringify(counter)};`,
+      "const attempt = existsSync(file) ? Number(readFileSync(file, 'utf8')) : 0;",
+      "writeFileSync(file, String(attempt + 1));",
+      "if (attempt === 0) { console.error('HTTP 429'); process.exit(1); }",
+      "console.log(JSON.stringify({ number: 685, state: 'OPEN', labels: [], comments: [] }));",
+    ].join('\n'));
+    const previous = { bin: process.env.RBD_GH_BIN, script: process.env.RBD_GH_SCRIPT };
+    process.env.RBD_GH_BIN = process.execPath;
+    process.env.RBD_GH_SCRIPT = script;
+    try {
+      const result = readIssueClaim({ number: 685, agent: 'LIILITH', actors: ACTORS, cwd: dir });
+      expect(result).toMatchObject({ checked: true, status: 'free' });
+      expect(readFileSync(counter, 'utf8')).toBe('2');
+    } finally {
+      if (previous.bin === undefined) delete process.env.RBD_GH_BIN;
+      else process.env.RBD_GH_BIN = previous.bin;
+      if (previous.script === undefined) delete process.env.RBD_GH_SCRIPT;
+      else process.env.RBD_GH_SCRIPT = previous.script;
+    }
   });
 });
