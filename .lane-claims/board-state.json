@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:35Z",
+  "generatedAt": "2026-11-14T18:38Z",
   "generatedBy": "maintainer",
-  "head": "d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
-  "headMessage": "PR-Triage gemergt (#740), Register geschlossen",
-  "base": "origin/main @ d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
+  "head": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
+  "headMessage": "Issue-Audit der 28 offenen Tickets: #675 in #656 konsolidiert, 27 belegt offen",
+  "base": "origin/main @ 9b1a92ea4e794edacac237df4c70bd4566ec434e",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Board nach PR-Triage auf dem per API gelesenen main-Tip a9bd146a. Drei offene PRs entschieden: #739 (Dependabot, create-github-app-token 3.3.0) gemergt; #700 und #701 als superseded durch #733 geschlossen, weil ihre Issues (#664-#667) konsolidiert geschlossen sind und beide je vier Konflikte gegen main erzeugen. Offen: 28 Issues, 0 PRs, 0 offene Claims.",
+  "summary": "Board-Audit auf dem per API gelesenen main-Tip 9b1a92ea. Alle 28 offenen Issues wurden einzeln gegen den Code geprueft und je Issue mit Kommentar entschieden: #675 ist nach #656 konsolidiert (gleicher Writer-Pfad docs/screenshots/**, area-release) und geschlossen; die uebrigen 27 sind belegt offen, keines war fertig. Neue Findings wurden geprueft: fuer das Infra-Finding (verify-narrative-blocks --help fuehrt statt zu helfen) gibt es kein Ticket, weil das Governance-Budget maxNewGovernanceIssues=0 ist; die veralteten #733-Abnahmekriterien wurden im Ticket korrigiert. Offen: 27 Issues, 0 PRs, 0 offene Claims.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -21,24 +21,18 @@
     "PR-Triage: #739 gemergt (a9bd146a, Bot-Allowlist)",
     "#700 geschlossen (superseded #733, Testmerge 4 Konflikte)",
     "#701 geschlossen (superseded #733, Testmerge 4 Konflikte)",
-    "Closeout #741: Claim merged (PR #740, d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb), Task DONE, board.head auf d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb"
+    "Closeout #741: Claim merged (PR #740, d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb), Task DONE, board.head auf d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
+    "Issue-Audit 9b1a92ea: alle 28 Tickets gesichtet, je Issue ein Entscheidungskommentar mit Datei/Zeile/Befehl",
+    "Konsolidiert und geschlossen: #675 -> #656 (Screenshot-Saetze, gleicher Ordner/area-release)",
+    "Offen mit Beleg: 27 Tickets (u. a. #652 Doku behauptet weiter city-actors.ts fehle; #630 GOVERNANCE.md:49 vs OWNERS; #693 workState ohne Autorpruefung)"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
   "closedIssuesThisRun": [
-    561,
-    563,
-    564,
-    604,
-    663,
-    664,
-    665,
-    666,
-    667,
-    677
+    675
   ],
   "openPullRequests": 0,
-  "reviewWaitingPrs": 0,
+  "reviewWaitingPrs": 1,
   "blockedIssues": [
     {
       "issue": 684,
@@ -51,16 +45,18 @@
   ],
   "nextRunChecklist": [
     "Reihenfolge ausschliesslich ueber GOVERNANCE.md Abschnitt Maintainer-Prioritaeten (kanonisch)",
-    "#640: Pixi-Abnahme (drei Bewohner, mehrere Ticks) nachholen, dann review-waiting entfernen",
-    "#731: erster Test fuer sync()/animate() mit gestubbten world/depth/createGuestArt",
-    "#733 als ein Lauf: Ersatz-Bausteine je Pool, verify-narrative-blocks --pr = 0",
-    "#696/#693/#634 haengen an der Schreibpfad-Entscheidung in #694",
-    "#733: gegen aktuelles main neu aufsetzen; #700/#701 sind geschlossen und liefern nur noch Commit-Material"
+    "#733 als ein Lauf: Ersatz-Bausteine je Pool, danach Messung gegen main",
+    "#731: erster Test fuer sync()/animate() mit Stub fuer world/depth/createGuestArt",
+    "#656: Frieregel/Guard fuer Screenshots, dann current/ erneuern und Altsaetze entfernen",
+    "#652: die sechs zitierten R9-Stellen auf CityActorSync ziehen",
+    "#640: Pixi-Abnahme (drei Bewohner, mehrere Ticks), dann review-waiting entfernen",
+    "#630/#634/#693/#694/#696: Dokument-/Enforcement-Kette; #693 braucht zuerst einen Worker-Claim",
+    "#527: Produktentscheidung des Users (Pakt-Scope) abwarten, nicht selbst entscheiden"
   ],
   "blockers": [],
   "warnings": [
-    "Vollsuite rot: src/core/governance/__tests__/pretask*.test.ts (5 Dateien, 13 Faelle); vorbestehend belegt nur fuer pretask.test.ts",
-    "Das Repo wird parallel bearbeitet: PR-Set und main-Tip gelten zum Zeitpunkt dieses Snapshots"
+    "Vollsuite rot: src/core/governance/__tests__/pretask*.test.ts (5 Dateien); vorbestehend belegt nur fuer pretask.test.ts",
+    "Visuelle Abnahmen (#640/#647/#649/#650/#651/#655) sind in dieser Sandbox nicht ausfuehrbar; sie bleiben bewusst offen"
   ],
   "issues": {
     "527": {
@@ -553,9 +549,9 @@
       }
     ],
     "newGovernanceIssuesThisRun": 0,
-    "openIssues": 28
+    "openIssues": 27
   },
-  "openIssuesCount": 28,
+  "openIssuesCount": 27,
   "mergedPrsThisRun": [
     739
   ],
@@ -573,12 +569,19 @@
     634
   ],
   "issueTriage": {
-    "method": "jedes offene Issue gegen Code/Doku auf 67a8288c geprueft; Beleg = Datei, Zeile, Commit oder Verifikationslauf",
+    "method": "jedes offene Issue am 2026-11-14 gegen Code/Doku/Commits auf 9b1a92ea geprueft; Beleg = Datei, Zeile, grep-Zaehlung oder git log --grep",
     "closedWithEvidence": {
       "604": "scripts/lib/worker-identity.mjs (IDENTITY_CLAIM-Parser) + scripts/worker-init.mjs + docs",
       "677": "board-state.json v2 + scripts/lib/board-cursors.mjs + GOVERNANCE.md:192-213; Snapshots #727-#732"
     },
     "consolidated": {
+      "656": {
+        "replaced": [
+          675
+        ],
+        "reason": "gleicher Writer-Pfad docs/screenshots/** und area-release; #656 traegt die Regel, ohne die die Erneuerung nicht sauber ausfuehrbar ist",
+        "criteria": "Frieregel + Guard, current/ erneuern, Altsaetze bewusst entfernen, README bindet nur current/"
+      },
       "733": {
         "replaced": [
           663,
@@ -600,22 +603,53 @@
       "634": "Vertragsseite (holdMerge, contractHoldReason) vorhanden, Workflow-Erzwingung fehlt: promote.yml nur workflow_dispatch, docs/CI.md ohne required checks/rulesets"
     },
     "blockers": {
-      "630": "keine kanonische Quelle fuer Gate-Zahlen/Owner; sync-generated prueft sie nicht",
-      "631": "Existiert nicht: GitHub GraphQL liefert NOT_FOUND (Could not resolve to an Issue with the number of 631). Kein Ticket, keine Arbeit.",
-      "640": "Code gemergt (#730), visuelle Pixi-Abnahme fehlt -> review-waiting bleibt",
-      "652": "docs/RENDER_REWORK_PLAN.md:46/242/522 behauptet weiter \"city-actors.ts fehlt\"; Datei existiert als city-actor-sync.ts",
-      "684": "pretask ohne gh -> UNKNOWN/Exit 1; kein Schreibpfad zu GitHub; ensure-pr liest keinen Vertrag",
-      "685": "Token im Cron-Prompt liegt ausserhalb des Repos (Betreiber); Label-Abgleich beim Merge fehlt",
-      "693": "kein Autorisierungspfad fuer schreibende Kommentare; Entscheidung liegt bei #694",
-      "694": "autoritative Klammer des Governance-Clusters; Entscheidung Schreibkanal offen",
-      "696": "P0-Kommunikationsvertrag. Erfuellt: Task 1 (Statusrekonstruktion), Task 2 (review-waiting kanonisch am Issue; AGENTS.md:27/33/55/112, GOVERNANCE.md:28), Task 3 (scripts/lib/board-cursors.mjs plus 46 Issue- und 3 PR-Cursor im State). Offen: Task 4/5/6 - die Nachrichtentypen USER_REQUEST, MAINTAINER_DIRECTIVE, AGENT_PROGRESS und ACKNOWLEDGED kommen im Repo null Mal vor (git grep auf 07a1262f); die Autorisierung haengt an #693, das auf die Schreibpfad-Entscheidung in #694 wartet. Also blockiert, nicht frei.",
-      "731": "Frei und sofort bearbeitbar: city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle); sync() ab src/render/city-actor-sync.ts:54 und animate() ab :110 sind ungetestet. Erster Test: neue Figur setzt root, from und target auf die Snapshot-Position und moveStart auf now - stepMs."
+      "527": "Produktentscheidung offen: Pakt/Suchtwert global oder fremdspielbegrenzt (Code heute nur Fremdspiel).",
+      "630": "GOVERNANCE.md:49 nennt Core-/UI-/Narrative-/Interaction-Owner, die im Roster OWNERS fehlen.",
+      "634": "Merge-Hold nicht erzwungen: promote.yml nur workflow_dispatch (Z.7/32), ensure-pr liest keinen Task-Vertrag.",
+      "640": "Visuelle Pixi-Abnahme fehlt; Code via #730 gemergt, review-waiting bleibt am Issue.",
+      "652": "RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (real: city-actor-sync.ts).",
+      "684": "Enforcement-Tracking: pretask fail-closed vorhanden, Label-Hygiene und State-Issue offen.",
+      "685": "Sammel-Issue: Stale-Claim-Frist nur Doku; Cron-/Token-Punkte ausserhalb des Repos (Betreiber).",
+      "693": "Autorisierung nicht umgesetzt: work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests.",
+      "694": "Delegation offen: #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein aktiver Worker.",
+      "696": "Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693.",
+      "731": "city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle).",
+      "733": "Abnahme 2/4 veraltet; Ersatz-Bausteine fehlen."
     },
     "governanceBudget": "0 neue Governance-Issues; #733 ist Content (area-narrative)",
-    "verifiedOn": "07a1262f",
+    "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
     "noSuchIssues": [
       631
-    ]
+    ],
+    "decisions": {
+      "527": "OFFEN · Produktentscheidung noetig (Pakt/Suchtwert global vs. fremdspielbegrenzt); recordExclusionPlay nur aus src/store/foreign-play.ts",
+      "537": "OFFEN · keine Kleidungs-/Markenlogik: grep brand|clothing in src = 0 Treffer",
+      "538": "OFFEN · kein 7-Tage-Rechnungszyklus: grep invoice|weekly in src = 0 Treffer",
+      "540": "OFFEN · Mehrbesitz hart blockiert: src/core/sim/property.ts:71 wirft bei zweiter Immobilie",
+      "541": "OFFEN · Kontext-Hooks nicht belegt; haengt an #733",
+      "542": "OFFEN · kein Replay-/Ghost-Pfad (bewusst spaet, P3)",
+      "597": "OFFEN · Foreign Floor startet ohne Gaeste: src/store/foreign-floor-commands.ts:44 setzt guests=[]",
+      "598": "OFFEN · kein Projektionsvertrag: isometric nur im Narrativ-Registry-Text",
+      "599": "OFFEN · kein Wettereingang: grep weather in src = 0 Treffer",
+      "630": "OFFEN · GOVERNANCE.md:49 nennt Core-/UI-/Narrative-/Interaction-Owner, die in OWNERS fehlen",
+      "634": "OFFEN · promote.yml nur workflow_dispatch (Z.7/32), ensure-pr liest keinen Task-Vertrag",
+      "640": "OFFEN + review-waiting · Code via #730 gemergt (view-layers.ts:64), Pixi-/Browserbeleg fehlt",
+      "647": "OFFEN · keine Bildbaseline: kein Capture-Skript, kein Commit nennt #647",
+      "649": "OFFEN · Casino-Renderer visuell nicht abgenommen",
+      "650": "OFFEN · Wand-Occlusion ohne Bildbeleg",
+      "651": "OFFEN · keine First-Frame-Messung unter Slow 4G",
+      "652": "OFFEN · RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (existiert als city-actor-sync.ts)",
+      "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
+      "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
+      "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
+      "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
+      "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
+      "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
+      "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
+      "731": "OFFEN · city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle)",
+      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen"
+    }
   },
   "newIssuesThisRun": [
     733
@@ -630,5 +664,19 @@
       667
     ]
   },
-  "headNote": "head ist der main-Tip, gegen den dieser Snapshot geprueft wurde. Ein Commit kann seinen eigenen SHA nicht enthalten; nach dem Merge dieses Snapshots gilt head == main^ (siehe headRelation)."
+  "headNote": "head ist der main-Tip, gegen den dieser Snapshot geprueft wurde. Ein Commit kann seinen eigenen SHA nicht enthalten; nach dem Merge dieses Snapshots gilt head == main^ (siehe headRelation).",
+  "consolidatedIssuesThisRun": {
+    "authoritative": 656,
+    "replaced": [
+      675
+    ]
+  },
+  "findingsNoIssue": [
+    {
+      "id": "F-3",
+      "summary": "scripts/verify-narrative-blocks.mjs --help fuehrt den Prueflauf aus statt Hilfe zu zeigen",
+      "reason": "Governance-Budget maxNewGovernanceIssues=0; kein blockierender Effekt",
+      "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e"
+    }
+  ]
 }

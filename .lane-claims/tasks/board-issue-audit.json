@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-issue-audit",
   "branch": "lane/governance/board-issue-audit",
   "baseSha": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Board-Audit der 28 offenen Issues auf 9b1a92ea",
   "goal": "Jedes offene Issue hat eine belegte Entscheidung; Board-Zahl und API stimmen.",
   "taskType": "single",
@@ -32,5 +32,5 @@
     }
   ],
   "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 2
+  "revision": 3
 }
