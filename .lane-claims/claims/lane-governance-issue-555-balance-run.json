@@ -24,6 +24,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91"
+  "status": "merged",
+  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "mergedSha": "b84623e970e0b4357fbc50316aa977bd26f3da14",
+  "mergedEvidence": "PR #680 gemergt (b84623e9); Arbeit lag auf lane/sim/issue-555-balance-run @6f20cf87, in origin/main enthalten. Nur Status nachgezogen, Vertrag unveraendert."
 }

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-574-entrance-convention",
+  "claimId": "lane/governance/issue-574-entrance-convention",
+  "branch": "lane/governance/issue-574-entrance-convention",
+  "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "phase": "IMPLEMENTING",
+  "title": "Kneipe ueberlappt Gehweg; Eingangs-Konvention vereinheitlichen (#574)",
+  "goal": "Kneipen-Grundriss endet auf der Fassadenzeile der Nachbarn (y+h=12); jede Tuer liegt auf der Gehweg-Zeile, nie auf der Fahrbahn",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "entry-fixture-drift",
+      "summary": "room-transition.test.ts nutzt noch exteriorDoorPos {x:24,y:14} als synthetische Fixture; der Uebergangstest prueft nur Distanz/Verriegelung und liest die Presets nicht. Nicht mitgeaendert (ausserhalb des Ticket-Scopes).",
+      "severity": "info",
+      "status": "open",
+      "kind": "infrastructure"
+    }
+  ],
+  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "revision": 1
+}

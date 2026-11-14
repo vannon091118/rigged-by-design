@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/issue-574-entrance-convention",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-574-entrance-convention",
+  "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "issue": 574,
+  "task": "Kneipe ueberlappt Gehweg; Eingangs-Konvention vereinheitlichen",
+  "goal": "Kneipen-Grundriss endet auf der Fassadenzeile der Nachbarn; jede Tuer liegt auf der Gehweg-Zeile, nie auf der Fahrbahn",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-issue-574-entrance-convention.json",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e844caa75824d3f100ddac6351e81eb3f65f1978"
+}
