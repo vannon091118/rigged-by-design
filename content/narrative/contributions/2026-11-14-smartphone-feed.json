@@ -1,0 +1,23 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T05:10Z-smartphone-feed",
+  "contributionId": "smartphone-feed-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": [
+    "start"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Display stand kein neuer Satz, sondern ein alter: Wer am Brunnen gesehen wurde, wusste jemand, der nicht dabei war. Die Sicherheit stand daneben wie ein Preisschild. Rita strich sie nicht weg; was sie selbst gesehen hatte, stand eine Zeile tiefer und ohne Prozentzeichen.",
+  "directives": []
+}
