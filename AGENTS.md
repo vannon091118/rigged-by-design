@@ -12,10 +12,23 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 
 | Rolle | Identität | Darf | Darf nicht |
 | --- | --- | --- | --- |
-| **Maintainer** | der benannte Reviewer und Orchestrator | Issues und Pull Requests anlegen, kommentieren, schließen und wiedereröffnen (**Schließen nur Maintainer oder User**); Verdikt `ACCEPT`/`PARTIAL`/`REJECT`; Merge nach `main` und Push auf `main`; Release-Tags; Priorisierung; Konflikte zwischen Agenten entscheiden | eine Spiel-Lane ohne eigenen Claim führen |
+| **Maintainer** | der benannte Reviewer und Orchestrator | Issues und Pull Requests anlegen, kommentieren, schließen und wiedereröffnen (**Schließen nur Maintainer oder User**); Verdikt `ACCEPT`/`PARTIAL`/`REJECT`; Merge nach `main` und Push auf `main`; Release-Tags; Priorisierung; Konflikte zwischen Agenten entscheiden | eine Spiel-Lane ohne eigenen Claim führen; Governance-Issues erstellen deren Inhalt kein laufendes Game-Feature blockiert |
 | **Agent** | `LIILITH`, `Shinon` oder `Jenova` — global im Identity-Board reserviert (`pnpm run worker:init`); `agent-<n>-local/-cloud` sind Legacy-Namen, keine neuen Identitäten | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues oder Pull Requests schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
 
+**Scope-Hierarchie für den Maintainer:** Spiel-Inhalte (Sim, Store, Render, UI) haben Vorrang vor Governance. Governance-Issues werden nur erstellt wenn sie aktive Game-Arbeit blockieren. Governance-Verbesserungen die nichts blockieren werden als Kommentar im nächsten Review-Log festgehalten — kein Issue, kein PR.
+
 - **Ein Orchestrator.** Prioritäten, Backlog-Reihenfolge und Konflikte entscheidet der Maintainer; Agenten arbeiten die so sortierten Issues ab und melden im Issue zurück.
+
+**Maintainer-Prioritäten (hart, in dieser Reihenfolge):**
+
+| Prio | Trigger | Aktion |
+|------|---------|--------|
+| P0 | Neuer User-Kommentar auf offenem Issue | Sofortmaßnahme; nichts geht vorher |
+| P1 | PR mit Label `review-waiting` | Code-Diff lesen, prüfen, mergen oder ablehnen |
+| P2 | Spiel-Bug mit direkter Gameplay-Auswirkung | Issue erstellen, priorisieren, zuweisen |
+| P3 | Echte Governance-Rekursion (Governance bricht laufende Arbeit) | Minimal-Fix |
+| — | Governance-Verbesserungen ohne Blocking-Effekt | Nicht in diesem Lauf |
+
 - **Ein Agent pro Issue.** Besitz ist der `CLAIM`-Kommentar am Issue, nicht der lokale Zustand; `pretask` prüft ihn als Startgate.
 - **Claim vor Read.** Wer ein freies Issue übernehmen will, kommentiert zuerst `CLAIM`, dann liest er Code. Zwei aktive Claims sind ein Konflikt für den Maintainer, keine Doppelarbeit.
 - **Identität vor Arbeit.** Die Worker-Identität wird einmal global im Identity-Board reserviert (`IDENTITY_CLAIM`) und lokal in `.lanes/identity.json` gehalten; sie überlebt Worktree-Neuaufbauten. Identitäts-Claim und Arbeits-Claim am Issue sind getrennt. Ohne verifizierte Reservierung kein neuer Arbeits-Claim.
@@ -32,6 +45,34 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 
 `.lane-claims/` und der Task-Vertrag sind **keine zweite Wahrheit**. Sie sind die lokale Kollisionssperre: sie halten die Pfad-Allowlist für Staging, `verify:scope`, `pretask` und die Hooks und verhindern, dass zwei parallele Agenten dieselben Dateien im selben Task oder Turn bearbeiten. Über Besitz, Priorität oder Merge entscheiden sie nie; bei Abweichung gewinnt immer das Issue, und die Sperre wird nachgezogen.
 
+## Maintainer-Protokoll
+
+**Laufbeginn — Issue-Kommentar-Check:**
+1. Scanne alle offenen Issues auf Kommentare seit dem letzten State-Snapshot
+2. Neuer User-Kommentar → P0-Aufgabe, sofort
+3. Neuer Worker-Statuskommentar → State aktualisieren, kein neues Ticket
+4. State und Ruleset sind Hilfsmittel, nicht Wahrheit — bei Abweichung gewinnt die Realität
+
+**Review-Protokoll (kein Test-Run — Tests liefen vor dem Push beim Worker):**
+1. Lies den vollständigen Diff
+2. Prüfe: Ist das, was das Issue verlangt hat? (Intention vs. Umsetzung)
+3. Prüfe: Gibt es kausale Folgen in anderen Modulen? (Import-Ketten, State-Owner, Ledger-Invarianten)
+4. Prüfe: Wurden AGENTS.md-Regeln eingehalten? (Allowlist, Lane-Phasen, Docs pro Commit)
+5. Merge mit einem Satz was geprüft wurde — ODER — lehne ab mit einem Satz was fehlt
+6. Rebase-Konflikt / Doku-Drift / generierte Konflikte: Maintainer löst selbst, nie zurück zum Worker. Generierte Dateien: `node scripts/sync-generated.mjs --all`
+
+**Neue Issues erstellen — Scope:**
+- JA: Gameplay-Bugs, fehlende Features, erkannte Code-Muster die zu Konflikten führen
+- NEIN: Issues über das Issue-Board selbst, Governance-Verbesserungen ohne Blocking-Effekt, Issues die nur existieren weil andere Issues schlecht beschrieben waren
+
+**Aktive Identitäten — Laufbeginn:**
+- Prüfe welche Worker aktive Claims haben (`pnpm run agent:pretask --json`)
+- Weise freie, ungeblockte Issues freien Workern zu
+- Bei Claim-Kollision: Maintainer entscheidet wer aufgibt — einmalig, klar, im Issue kommentiert
+
+**Rekursions-Erkennung:**
+Wenn ein Maintainer-Lauf hauptsächlich Governance-Issues über Governance produziert: STOP. Einen Kommentar ins aktuelle Control-Issue: "Governance-Drift erkannt." Nächster Lauf: ausschließlich P0/P1/Spiel-Bugs. Kein weiterer Governance-Ausbau in diesem Zyklus.
+
 ## Zehn unverhandelbare Regeln
 
 1. **Claim vor Read, Pretask vor dem Edit.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`). Die Reihenfolge kommt aus dem Board (Prioritätslabels), nicht aus dem lokalen Register; erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Danach `pnpm run agent:pretask --json`: `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`: fremder Claim blockiert, fehlender Claim verlangt den Kommentar, Lane ohne Issue-Nummer wird gewarnt) und blockiert außerdem bei offenem `gate-failure`-Issue, fehlendem Impact-Plan oder Claim-Problem (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
@@ -44,6 +85,8 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
 9. **Lieferung über Branch und PR, Merge beim Maintainer.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht den eigenen Lane-Branch; der PR gegen `main` wird erzeugt/aktualisiert, es gibt keinen Cloud-Testlauf, nächster Schritt ist `pretask`. Agenten pushen nie `main`, mergen nicht und schließen weder Issues noch Pull Requests. Der Maintainer prüft gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`), merged nach lokalem Vor-PR-Nachweis und auf exaktem Kopf, setzt Release-Tags für belegte Features und löst Claim-Konflikte. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur. Die Übergabe endet mit `RELEASE [A<n>] done <sha>` und dem Label `review-waiting`; das Label entfernt nur das Maintainer-Verdikt.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
+
+**Governance-Drift** ist ein eigener Eskalationsfall: Wenn mehr als zwei aufeinanderfolgende Maintainer-Läufe primär Governance-Issues produzieren, erstellt der Maintainer einmalig ein `[GOVERNANCE-DRIFT]`-Issue mit P2 und pausiert neue Governance-Issues bis dieses geschlossen ist. Game-Arbeit läuft weiter.
 
 ## Task-Vertrag
 
