@@ -120,7 +120,7 @@ Reihenfolge: die kanonische Priorität `P0`–`P3` aus [`GOVERNANCE.md`](GOVERNA
 3. Existiert ein Claim, danach aber ein `RELEASE done|abandoned`? → Frei. Du darfst claimen.
 4. Kein Claim vorhanden? → **Go.**
 
-Zusatzregel: Claim älter als 72 Stunden ohne Commit, Kommentar oder PR-Aktivität → im State als `deferred` mit Grund `claim-stale #<nr>` notieren und überspringen. **Nicht** selbst übernehmen — Verwaist-Erklärung ist Sache des Maintainers.
+Zusatzregel: Claim älter als 2 Stunden ohne Commit, Kommentar oder PR-Aktivität → im State als `deferred` mit Grund `claim-stale #<nr>` notieren und überspringen. **Nicht** selbst übernehmen — Verwaist-Erklärung ist Sache des Maintainers.
 
 **Claim setzen** — erster Schreibvorgang, sofort, vor jeder Analyse:
 
