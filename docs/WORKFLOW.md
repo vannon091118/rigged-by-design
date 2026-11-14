@@ -11,7 +11,8 @@ Die Rollen sind getrennt: **Agenten** (`agent-<n>-local`/`-cloud`) claimen, arbe
 Das **Issue-Board ist der primäre Workflow**: Arbeitsreihenfolge und Besitz stehen in den Issues (Prioritätslabels, Zustand, Kommentare), nicht in lokalen Dateien. Zu Beginn wird das Board nach Priorität gelesen (`P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping, innerhalb einer Stufe das älteste). Vor dem ersten Read eines freien Issues steht der `CLAIM`-Kommentar am Issue; `.lane-claims/` ist danach nur die lokale Kollisionssperre für Pfade und Staging. Erster Befehl vor jedem Edit:
 
 ```bash
-RBD_AGENT=agent-1-local pnpm run agent:pretask --json
+pnpm run worker:init -- status
+RBD_AGENT=LIILITH pnpm run agent:pretask --json
 ```
 
 Der Lauf prüft in dieser Reihenfolge:

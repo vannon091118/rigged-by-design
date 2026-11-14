@@ -18,9 +18,9 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
 - Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
 
-### Agenten (`local`/`cloud`)
+### Agenten (`LIILITH`, `Shinon`, `Jenova`)
 
-Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n>` je Instanz; der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, `RBD_AGENT` nennt die Identität). Agenten:
+Es gibt genau drei Worker-Identitäten: **`LIILITH`**, **`Shinon`** und **`Jenova`**. Sie werden global im Identity-Board-Issue mit `IDENTITY_CLAIM name=… system=… workspace=… repo=… session=… claim_id=… at=…` reserviert, nach dem Kommentar erneut gelesen und an der Kommentar-ID verifiziert; `IDENTITY_RELEASE` derselben Claim-ID gibt sie frei. Die alten Namen `agent-<n>-local`, `agent-<n>-cloud` und `local.agent(cloud).<n>` bleiben als Historie lesbar, sind aber **keine neuen Identitäten** und werden vom Parser als `legacy-identity` gemeldet. Agenten:
 
 - lesen das Issue inklusive aller Kommentare, **claimen vor dem ersten Read** und arbeiten genau ein Issue pro Turn ab;
 - ändern nur Pfade ihrer Claim-Allowlist, committen und pushen **ihren** Branch, öffnen den PR und beantworten Review-Fragen im Issue;
@@ -32,9 +32,16 @@ Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n
 - **Governance-Owner** führt Meta-, Workflow- und Register-Änderungen. Feature-Lanes dürfen Meta-Dateien nur über den mechanischen Pfad (Marker/Version) berühren.
 - **Integrator**, **Core-Owner**, **UI-Owner**, **Narrative-Owner**, **Interaction-Owner** und **Ledger-/Core-Owner** sind feste Rollen aus `OWNERS` in `scripts/lib/lane-claims.mjs`; ein Claim ohne Roster-Owner wird abgelehnt.
 - **Branch-Schema:** `lane/<domäne>/<task>`; Legacy-Präfixe `gov/`, `hygiene/` und `fix/` bleiben lesbar. Der Agent-Workflow nennt `fix/<issue-nr>-<slug>`; beide Formen sind zulässig, weil das Register einen Branch nach Schema braucht.
+- **Workspace:** `RBD_WORKSPACE_HOME` hält `.lanes/identity.json`, `.lanes/dependencies.json`, `.pnpm-store/`, `main/` und `worker/` — außerhalb beider Git-Worktrees, damit die Identität einen Neuaufbau überlebt. Regulär existieren genau **zwei** RBD-Worktrees pro System (Main und Worker); weitere Klone und Worktrees werden inventarisiert und klassifiziert, fremde oder ungeklärte WIP nie gelöscht.
 - **Worktree:** Ein verknüpfter Worktree ist optional; `--require-worktree` fordert ihn explizit. Ein neuer Agent startet in einem **eigenen** Worktree von `origin/main`; der geteilte Arbeitsbaum wird nie zurückgesetzt. Jede Branch außer `main` ist temporär und wird nach belegtem Merge entfernt.
 - **Meta-Dateien:** `AGENTS.md`, `package.json`, `pnpm-lock.yaml`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`. Inhaltliche Änderungen brauchen eine Governance- oder ausdrücklich berechtigte Lane.
 - **Kontrollebene:** `.github/`, `scripts/` und `src/Config/` bleiben Governance- oder CI-Lanes vorbehalten; Feature-Claims können sie nicht öffnen.
+
+### Worker-Identität und Dependency-Store
+
+`pnpm run worker:init -- status` prüft die lokale Identitätsdatei gegen die globale Reservierung; `-- claim` reserviert, `-- release` gibt frei, `-- inventory` klassifiziert alle Worktrees dieses Repos (clean, dirty, unpushed, review-pending, merged-pending-cleanup, duplicate, orphaned, `INVENTORY_INCOMPLETE`). Der Neuaufbau des Worker-Worktrees ist erst erlaubt, wenn GitHub `merged: true` meldet, der Merge-SHA auf `origin/main` liegt, der lokale HEAD dem PR-HEAD entspricht und der Baum keine ungesicherte Arbeit trägt (`scripts/lib/worktree-lifecycle.mjs`).
+
+Dependencies werden über einen Fingerprint aus Manifesten, Lockfile, Workspace-Konfiguration, `.npmrc`, Node-/pnpm-Version und Zielplattform gesteuert (`scripts/lib/dependency-fingerprint.mjs`). Unverändert heißt: keine Installation. Nach einem Neuaufbau wird `pnpm install --frozen-lockfile --store-dir <home>/.pnpm-store` genutzt; `--offline` nur, wenn alle Pakete im Store liegen.
 
 ## Claims
 

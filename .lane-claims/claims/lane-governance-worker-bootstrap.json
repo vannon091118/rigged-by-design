@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/worker-bootstrap",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/worker-bootstrap",
+  "baseSha": "aa91ec7646cf706789cd1db32522b0aec6d205c3",
+  "issue": 605,
+  "task": "Worker-Bootstrap: Identitaet, Worktrees, WIP und Dependencies",
+  "goal": "Drei global reservierte Identitaeten, Workspace-Home, Inventur, Merge-belegter Worktree-Neuaufbau und Dependency-Reuse sind durch Code und Tests erzwungen.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/**",
+    "package.json",
+    "scripts/lib/**",
+    "scripts/worker-init.mjs",
+    "scripts/pretask.mjs",
+    "src/core/governance/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "content/narrative/**",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "aa91ec7646cf706789cd1db32522b0aec6d205c3"
+}

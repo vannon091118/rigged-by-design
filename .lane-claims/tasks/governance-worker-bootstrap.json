@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-worker-bootstrap",
+  "claimId": "lane/governance/worker-bootstrap",
+  "branch": "lane/governance/worker-bootstrap",
+  "baseSha": "aa91ec7646cf706789cd1db32522b0aec6d205c3",
+  "phase": "IMPLEMENTING",
+  "title": "Worker-Bootstrap: Identitaet, Worktrees, WIP und Dependencies",
+  "goal": "Drei global reservierte Identitaeten, Workspace-Home, Inventur, merge-belegter Worktree-Neuaufbau und Dependency-Reuse sind durch Code und Tests erzwungen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR oeffnen und den Maintainer um Review bitten; Restumfang steht im Handover-Kommentar von #605.",
+  "revision": 1
+}

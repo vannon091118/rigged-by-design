@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:67b311ab3adb9896dbbe99728323303edea4ca4fb4839d36f5fc53f371d09267",
+  "contentHash": "sha256:a2da11ac055ec7470f0eeec5f845614e63ef63388ed145c8ce93f6aa3e727181",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -23446,6 +23446,28 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "worker-bootstrap-01",
+      "turnId": "2026-11-14T03:45Z-worker-bootstrap-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Haken hängen drei Namensschilder. Wer eines abnimmt, schreibt es zuerst ins Buch an der Tür; ohne Eintrag bleibt der Schlüssel im Kasten, auch wenn niemand hinsieht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-worker-bootstrap.json"
     },
     {
       "contributionId": "world-continuity-interaction-1",

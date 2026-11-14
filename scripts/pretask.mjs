@@ -36,6 +36,8 @@ import {
   parseStatusPaths,
 } from './lib/worktree-isolation.mjs';
 import { impact as buildImpact } from './lib/impact.mjs';
+import { dispatchRole } from './lib/worker-identity.mjs';
+import { readIdentityFile, validateIdentityFile, workspaceHome, workspacePaths } from './lib/workspace-home.mjs';
 import { ROOT } from './lib/report.mjs';
 import { causeBlock, localCauses } from './agent-cause.mjs';
 import { refreshBase } from './lib/base-refresh.mjs';
@@ -494,7 +496,32 @@ if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
   nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
 }
 
+// Worker-Bootstrap: Rolle, Identitaet und Home stehen am Anfang jedes Laufs.
+// Die Identitaet selbst wird im Identity-Board reserviert; hier wird nur
+// gelesen und geprueft, damit ein fehlender Home kein stiller Start ist.
+const workerHome = workspaceHome();
+const workerPaths = workspacePaths(workerHome);
+const workerRecord = readIdentityFile(workerPaths.identity);
+const workerCheck = workerRecord
+  ? validateIdentityFile(workerRecord)
+  : { ok: false, reasons: ['identity-file-missing'] };
+const worker = {
+  role: dispatchRole(),
+  home: workerHome,
+  identityFile: workerPaths.identity,
+  identity: workerRecord?.identity ?? null,
+  claimId: workerRecord?.claimId ?? null,
+  activeIssue: workerRecord?.activeIssue ?? null,
+  status: workerRecord?.status ?? 'IDLE',
+  identityValid: workerCheck.ok,
+  identityReasons: workerCheck.reasons,
+};
+if (!worker.identityValid) {
+  warnings.push(`Worker-Identitaet fehlt oder ist ungueltig (${worker.identityReasons.join(', ')}); \`pnpm run worker:init -- status\` pruefen, kein neuer Claim ohne Reservierung`);
+}
+
 const contract = {
+  worker,
   task: {
     id: claim?.id ?? null,
     description: claim?.task ?? null,
@@ -589,6 +616,7 @@ if (asJson) {
       head,
       claim: claimInfo ? { id: claimInfo.id, owner: claimInfo.owner, status: claimInfo.status, paths: claimInfo.allowlist.length } : null,
       issueClaim: { status: issueClaim.status, number: issueClaim.number, holder: issueClaim.holder ?? null },
+      worker: { role: worker.role, identity: worker.identity, status: worker.status, valid: worker.identityValid },
       board: board.items.map((item) => `#${item.number} ${item.priority}`),
       task: contract.task.id,
       paths: { own: contract.paths.ownWip.length, foreign: contract.paths.foreign.length, unowned: contract.paths.unowned.length, adopted: takeover.adopted, corrupted: takeover.blocked },
