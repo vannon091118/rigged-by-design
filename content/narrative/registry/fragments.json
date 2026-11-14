@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:965e013231c5d1b9a11e83a78d918739e134579d648f5d6f970b3efbf6f98474",
+  "contentHash": "sha256:c6534266f0fd57bcf0051f0049453b4cb7b578649d723c1e182345bbe114787d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3453,6 +3453,1156 @@
       "text": "Zwölf Namen, zwölf Wege: Wer im Kiez steht, ist kein Hintergrund. Jede Figur trägt ihren eigenen Tag, ihre eigene Tür und ihre eigene Geschichte — angesprochen wird sie über ihren Namen, nicht über die Ecke, an der sie zufällig wartet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-encounter-roster.json"
+    },
+    {
+      "contributionId": "city-event-01",
+      "turnId": "2026-11-11T21:00Z-city-event-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Strassenbahn bremst mit einem Klirren, das die Scheiben in den Schaufenstern zum Zittern bringt. Fuer einen Moment steht die ganze Strasse still und tut so, als haette sie nichts gehoert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-01.json"
+    },
+    {
+      "contributionId": "city-event-02",
+      "turnId": "2026-11-11T21:01Z-city-event-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Kiosk wartet ein Mann mit heruntergelassenem Schirm auf Regen, der laengst aufgehoert hat. Der Verkaeufer mustert ihn durch die Scheibe, ohne die Tuer zu oeffnen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-02.json"
+    },
+    {
+      "contributionId": "city-event-03",
+      "turnId": "2026-11-11T21:02Z-city-event-03",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Baeckereifrau kehrt den Gehweg, bevor sie das Schild umdreht. Der Mehlstaub bleibt in der Luft haengen und legt sich auf die Schuhe der ersten Kundschaft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-03.json"
+    },
+    {
+      "contributionId": "city-event-04",
+      "turnId": "2026-11-11T21:03Z-city-event-04",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Hund ist an einen Fahrradstaender gebunden und zieht an der Leine, sobald jemand vorbeikommt. Sein Besitzer diskutiert drinnen mit dem Kioskbesitzer ueber eine Rechnung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-04.json"
+    },
+    {
+      "contributionId": "city-event-05",
+      "turnId": "2026-11-11T21:04Z-city-event-05",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter dem Bauzaun laeuft ein Radio, waehrend niemand arbeitet. Auf dem Schild steht ein Datum, das schon zweimal vorbeigezogen ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-05.json"
+    },
+    {
+      "contributionId": "city-event-06",
+      "turnId": "2026-11-11T21:05Z-city-event-06",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Haltestelle stehen drei Menschen unter einem Dach, das nur zwei trocken haelt. Der Bus hat Verspaetung, und niemand will der erste sein, der es laut sagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-06.json"
+    },
+    {
+      "contributionId": "city-event-07",
+      "turnId": "2026-11-11T21:06Z-city-event-07",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Waschsalon dreht sich eine Trommel leer, waehrend draussen jemand auf einem Stuhl wartet. Der Fernseher laeuft ohne Ton, und das Summen der Maschinen uebernimmt das Gespraech.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-07.json"
+    },
+    {
+      "contributionId": "city-event-08",
+      "turnId": "2026-11-11T21:07Z-city-event-08",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Blumenladen hat seine Eimer nach draussen gestellt; die Tulpen haengen schief, als haetten sie den Morgen schon hinter sich. Eine Frau prueft die Stiele, ohne den Preis zu fragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-08.json"
+    },
+    {
+      "contributionId": "city-event-09",
+      "turnId": "2026-11-11T21:08Z-city-event-09",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Doenerbude dreht sich das Fleisch, und der Mann dahinter schneidet im Rhythmus der wartenden Menge. Zwei Gaeste streiten leise darueber, wer zuerst bestellt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-09.json"
+    },
+    {
+      "contributionId": "city-event-10",
+      "turnId": "2026-11-11T21:09Z-city-event-10",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Aus einer Regenrinne tropft es auf ein Blechdach, Tick fuer Tick. Ein Nachbar lehnt am Fensterrahmen und zaehlt die Tropfen, als koennte er damit etwas aufhalten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-10.json"
+    },
+    {
+      "contributionId": "city-event-11",
+      "turnId": "2026-11-11T21:10Z-city-event-11",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Radfahrer nimmt die Kurve zu eng, und ein Fussgaenger tritt einen Schritt zurueck. Es faellt kein Wort, nur ein Blick, der laenger dauert als noetig.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-11.json"
+    },
+    {
+      "contributionId": "city-event-12",
+      "turnId": "2026-11-11T21:11Z-city-event-12",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Strassenmusiker hat seinen Koffer geoeffnet und spielt fuer die Haltestelle statt fuer die Strasse. Niemand bleibt stehen, aber ein paar Muenzen fallen trotzdem hinein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-12.json"
+    },
+    {
+      "contributionId": "city-event-13",
+      "turnId": "2026-11-11T21:12Z-city-event-13",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein alter Mann verteilt Brotkruemel an die Tauben, die sich um seine Fuesse draengen. Als ein Kind naeher kommt, hebt er warnend die Hand, ohne aufzusehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-13.json"
+    },
+    {
+      "contributionId": "city-event-14",
+      "turnId": "2026-11-11T21:13Z-city-event-14",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Lieferwagen steht in zweiter Reihe, die Warnblinker laufen. Der Fahrer traegt Kisten in den Laden, waehrend hinter ihm ein Taxi ungeduldig hupt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-14.json"
+    },
+    {
+      "contributionId": "city-event-15",
+      "turnId": "2026-11-11T21:14Z-city-event-15",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor der Apotheke hat sich eine Schlange gebildet, die aussieht, als waere sie schon immer da. Eine Frau liest das Rezept in ihrer Hand, als koennte sie es dadurch schneller machen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-15.json"
+    },
+    {
+      "contributionId": "city-event-16",
+      "turnId": "2026-11-11T21:15Z-city-event-16",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Bar ist noch Licht, obwohl die Stuehle schon auf den Tischen stehen. Der Wirt wischt die Theke und nickt jemandem zu, der draussen vorbeigeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-16.json"
+    },
+    {
+      "contributionId": "city-event-17",
+      "turnId": "2026-11-11T21:16Z-city-event-17",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Friseurfenster haengt ein Plakat mit einem Schnitt von vor drei Jahren. Drinnen lacht jemand, und die Schere bleibt fuer einen Moment im Haar stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-17.json"
+    },
+    {
+      "contributionId": "city-event-18",
+      "turnId": "2026-11-11T21:17Z-city-event-18",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Buchladen hat einen Stapel neuer Romane ins Fenster gelegt, alle mit demselben Cover. Ein Kunde nimmt den obersten Band, legt ihn zurueck und nimmt ihn wieder.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-18.json"
+    },
+    {
+      "contributionId": "city-event-19",
+      "turnId": "2026-11-11T21:18Z-city-event-19",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Spielplatz schaukelt ein Kind allein, waehrend zwei Erwachsene auf der Bank schweigen. Das Quietschen der Kette fuellt die Pause zwischen ihren Saetzen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-19.json"
+    },
+    {
+      "contributionId": "city-event-20",
+      "turnId": "2026-11-11T21:19Z-city-event-20",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Handywerkstatt liegt ein zerlegtes Geraet auf dem Tresen, daneben eine Tasse Kaffee. Der Mann dahinter schraubt, ohne auf den Kunden zu schauen, der laengst alles erklaert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-20.json"
+    },
+    {
+      "contributionId": "city-event-21",
+      "turnId": "2026-11-11T21:20Z-city-event-21",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Metzgerei riecht es nach Kraeutern und kaltem Metall. Die Frau hinter der Theke schneidet, ohne zu messen, und trifft trotzdem jedes Mal das gleiche Gewicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-21.json"
+    },
+    {
+      "contributionId": "city-event-22",
+      "turnId": "2026-11-11T21:21Z-city-event-22",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Zeitungsstand haengt eine alte Ausgabe neben der neuen, und der Verkaeufer hat sie noch nicht ausgetauscht. Ein Stammkunde tippt auf die Schlagzeile und lacht kurz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-22.json"
+    },
+    {
+      "contributionId": "city-event-23",
+      "turnId": "2026-11-11T21:22Z-city-event-23",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Katze sitzt auf der Fensterbank ueber dem Eckladen und beobachtet die Strasse. Wer hochschaut, bekommt einen Blick, der jedes Gespraech fuer beendet erklaert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-23.json"
+    },
+    {
+      "contributionId": "city-event-24",
+      "turnId": "2026-11-11T21:23Z-city-event-24",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Strassenlaterne flackert, obwohl es noch hell ist. Ein Elektriker steht mit offenem Kasten daneben und redet mit dem Laternenmast statt mit den Passanten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-24.json"
+    },
+    {
+      "contributionId": "city-event-25",
+      "turnId": "2026-11-11T21:24Z-city-event-25",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Briefkasten klebt ein Zettel, der schon halb abgerissen ist. Ein Mann haelt einen Umschlag in der Hand und liest den Zettel zweimal, bevor er ihn einwirft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-25.json"
+    },
+    {
+      "contributionId": "city-event-26",
+      "turnId": "2026-11-11T21:25Z-city-event-26",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Geldautomaten wartet jemand mit verschraenkten Armen, waehrend drinnen das Display blinkt. Der naechste in der Schlange seufzt hoerbar und tritt einen Schritt vor.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-26.json"
+    },
+    {
+      "contributionId": "city-event-27",
+      "turnId": "2026-11-11T21:26Z-city-event-27",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Obststand hat die Kisten nach Farbe sortiert, als waere die Strasse eine Auslage. Eine Frau drueckt auf eine Melone, hoert kurz hin und legt sie zurueck.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-27.json"
+    },
+    {
+      "contributionId": "city-event-28",
+      "turnId": "2026-11-11T21:27Z-city-event-28",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schuster hat die Werkstatt offen und arbeitet an einem Schuh, der aussieht, als waere er schon zweimal repariert worden. Der Kunde wartet draussen und raucht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-28.json"
+    },
+    {
+      "contributionId": "city-event-29",
+      "turnId": "2026-11-11T21:28Z-city-event-29",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Aus der Pizzeria kommt warme Luft auf den Gehweg, und ein Lieferfahrer prueft die Adresse auf seinem Telefon. Der Duft bleibt laenger als er.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-29.json"
+    },
+    {
+      "contributionId": "city-event-30",
+      "turnId": "2026-11-11T21:29Z-city-event-30",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Parkbank liegt eine Zeitung, die jemand sorgfaeltig gefaltet hat. Ein Mann setzt sich daneben, ohne sie anzufassen, und schaut auf die Strasse.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-30.json"
+    },
+    {
+      "contributionId": "city-event-31",
+      "turnId": "2026-11-11T21:30Z-city-event-31",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein einzelner Handschuh haengt an der Haltestelle, als haette ihn jemand absichtlich dort vergessen. Zwei Leute sehen ihn, aber keiner nimmt ihn mit.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-31.json"
+    },
+    {
+      "contributionId": "city-event-32",
+      "turnId": "2026-11-11T21:31Z-city-event-32",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Musiker packt seinen Koffer zusammen, waehrend die Strasse noch nach dem letzten Ton klingt. Ein Kind wirft eine Muenze hinterher, die auf dem Deckel landet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-32.json"
+    },
+    {
+      "contributionId": "city-event-33",
+      "turnId": "2026-11-11T21:32Z-city-event-33",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Gruppe Schulkinder schiebt sich an der Bushaltestelle vorbei, alle mit demselben Rucksack. Die Lehrerin zaehlt sie zweimal und kommt beide Male auf eine andere Zahl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-33.json"
+    },
+    {
+      "contributionId": "city-event-34",
+      "turnId": "2026-11-11T21:33Z-city-event-34",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kehrmaschine faehrt im Schrittempo die Strasse entlang und draengt alle an den Rand. Der Fahrer hebt entschuldigend die Hand, als waere das genug.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-34.json"
+    },
+    {
+      "contributionId": "city-event-35",
+      "turnId": "2026-11-11T21:34Z-city-event-35",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hausflur haengt ein Zettel, auf dem die Hausverwaltung etwas reparieren laesst. Die Schrift ist so klein, dass zwei Nachbarn gemeinsam davorstehen und laut Buchstaben raten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-35.json"
+    },
+    {
+      "contributionId": "city-event-36",
+      "turnId": "2026-11-11T21:35Z-city-event-36",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am schwarzen Brett haengen ein Flohmarkt, eine Wohnung und ein Fahrrad, alle mit abgerissenen Streifen. Ein Mann sucht einen Stift und findet nur einen leeren Kugelschreiber.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-36.json"
+    },
+    {
+      "contributionId": "city-event-37",
+      "turnId": "2026-11-11T21:36Z-city-event-37",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schneider steht im Tuerrahmen und haelt einen Anzug gegen das Licht. Der Stoff ist gut, die Aermel sind zu lang, und der Kunde tut so, als waere das Absicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-37.json"
+    },
+    {
+      "contributionId": "city-event-38",
+      "turnId": "2026-11-11T21:37Z-city-event-38",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Eimer Wasser steht vor der Tuer, daneben ein Mopp, der noch tropft. Wer vorbeigeht, macht einen Bogen, als koennte der Boden die Schuld tragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-38.json"
+    },
+    {
+      "contributionId": "city-event-39",
+      "turnId": "2026-11-11T21:38Z-city-event-39",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Gemueseladen stapeln sich leere Kisten, und ein Junge balanciert eine volle auf seinem Kopf. Der Ladenbesitzer ruft etwas, das wie ein Kompliment klingt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-39.json"
+    },
+    {
+      "contributionId": "city-event-40",
+      "turnId": "2026-11-11T21:39Z-city-event-40",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Unter dem Vordach stehen zwei Menschen, die sich nicht kennen, aber den Regen teilen. Sie schauen in dieselbe Richtung und sagen nichts, bis der Bus kommt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-40.json"
+    },
+    {
+      "contributionId": "city-event-41",
+      "turnId": "2026-11-11T21:40Z-city-event-41",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachtbus haelt an der Ecke, obwohl niemand einsteigt. Der Fahrer oeffnet die Tuer, wartet einen Atemzug und schliesst sie wieder.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-41.json"
+    },
+    {
+      "contributionId": "city-event-42",
+      "turnId": "2026-11-11T21:41Z-city-event-42",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Glocken der Kirche schlagen, und fuer einen Moment gehen alle Gespraeche eine halbe Stufe leiser. Danach redet die Strasse weiter, als waere nichts gewesen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-42.json"
+    },
+    {
+      "contributionId": "city-event-43",
+      "turnId": "2026-11-11T21:42Z-city-event-43",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Sportbar laeuft ein Spiel, das niemand im Raum wirklich versteht. Beim Tor springen drei Leute auf, und die anderen heben nur die Glaeser.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-43.json"
+    },
+    {
+      "contributionId": "city-event-44",
+      "turnId": "2026-11-11T21:43Z-city-event-44",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Schaufenster steht ein Sofa mit einem Preisschild, das groesser ist als das Sofa. Eine Frau bleibt davor stehen und rechnet mit den Fingern.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-44.json"
+    },
+    {
+      "contributionId": "city-event-45",
+      "turnId": "2026-11-11T21:44Z-city-event-45",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Auto steht mit geoeffneter Motorhaube am Strassenrand, und der Besitzer starrt hinein. Ein Nachbar kommt dazu, nickt und sagt einen Satz, der nichts erklaert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-45.json"
+    },
+    {
+      "contributionId": "city-event-46",
+      "turnId": "2026-11-11T21:45Z-city-event-46",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Moped knattert an der Ampel los, als haette es etwas zu beweisen. Der Fahrer schaut nicht zurueck, aber alle anderen wissen, dass er es getan hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-46.json"
+    },
+    {
+      "contributionId": "city-event-47",
+      "turnId": "2026-11-11T21:46Z-city-event-47",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Von der Feuertreppe tropft Wasser auf den Gehweg, obwohl es nicht regnet. Eine Frau schaut nach oben und sieht nur eine Waescheleine, die sich bewegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-47.json"
+    },
+    {
+      "contributionId": "city-event-48",
+      "turnId": "2026-11-11T21:47Z-city-event-48",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Innenhof steht ein Tisch mit zwei Stuehlen, und niemand sitzt darauf. Ein Radio spielt aus einem offenen Fenster, leise genug, um jedes Wort zu verpassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-48.json"
+    },
+    {
+      "contributionId": "city-event-49",
+      "turnId": "2026-11-11T21:48Z-city-event-49",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "melancholisch",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Eckladen hat heute frueher geschlossen, aber die Kuehlung summt weiter. Ein Kunde zieht an der Tuer und liest dann das Schild, das er offenbar uebersehen hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-49.json"
+    },
+    {
+      "contributionId": "city-event-50",
+      "turnId": "2026-11-11T21:49Z-city-event-50",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-event",
+      "function": "describe",
+      "contexts": [
+        "city",
+        "encounter"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Fahrkartenautomaten klemmt ein Ticket im Ausgabefach. Ein Mann zieht daran, ohne Erfolg, und ein zweiter tritt hinter ihn, als waere das ein Warteschlangen-Ritual.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-city-event-50.json"
     },
     {
       "contributionId": "city-growth-finance-01",

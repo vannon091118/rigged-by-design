@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:02Z-city-event-03",
+  "contributionId": "city-event-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Baeckereifrau kehrt den Gehweg, bevor sie das Schild umdreht. Der Mehlstaub bleibt in der Luft haengen und legt sich auf die Schuhe der ersten Kundschaft.",
+  "directives": []
+}

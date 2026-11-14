@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:47Z-city-event-48",
+  "contributionId": "city-event-48",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Innenhof steht ein Tisch mit zwei Stuehlen, und niemand sitzt darauf. Ein Radio spielt aus einem offenen Fenster, leise genug, um jedes Wort zu verpassen.",
+  "directives": []
+}

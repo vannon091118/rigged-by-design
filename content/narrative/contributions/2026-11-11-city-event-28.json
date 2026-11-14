@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:27Z-city-event-28",
+  "contributionId": "city-event-28",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Schuster hat die Werkstatt offen und arbeitet an einem Schuh, der aussieht, als waere er schon zweimal repariert worden. Der Kunde wartet draussen und raucht.",
+  "directives": []
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:07Z-city-event-08",
+  "contributionId": "city-event-08",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Blumenladen hat seine Eimer nach draussen gestellt; die Tulpen haengen schief, als haetten sie den Morgen schon hinter sich. Eine Frau prueft die Stiele, ohne den Preis zu fragen.",
+  "directives": []
+}

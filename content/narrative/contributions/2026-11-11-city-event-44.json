@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:43Z-city-event-44",
+  "contributionId": "city-event-44",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Schaufenster steht ein Sofa mit einem Preisschild, das groesser ist als das Sofa. Eine Frau bleibt davor stehen und rechnet mit den Fingern.",
+  "directives": []
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:15Z-city-event-16",
+  "contributionId": "city-event-16",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "In der Bar ist noch Licht, obwohl die Stuehle schon auf den Tischen stehen. Der Wirt wischt die Theke und nickt jemandem zu, der draussen vorbeigeht.",
+  "directives": []
+}

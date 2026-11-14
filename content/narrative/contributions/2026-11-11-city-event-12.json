@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:11Z-city-event-12",
+  "contributionId": "city-event-12",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Strassenmusiker hat seinen Koffer geoeffnet und spielt fuer die Haltestelle statt fuer die Strasse. Niemand bleibt stehen, aber ein paar Muenzen fallen trotzdem hinein.",
+  "directives": []
+}

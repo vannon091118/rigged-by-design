@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "content-issue-546-city-events",
+  "claimId": "lane/content/issue-546-city-events",
+  "branch": "lane/content/issue-546-city-events",
+  "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
+  "phase": "READY",
+  "title": "50 Stadtbegegnungen aus PR #464 sichern (CITY_ENCOUNTER)",
+  "goal": "Die 50 city-event-Beitraege samt Slot-Map-Kontext, Pool-Test und Consumer-Audit auf aktuelles main heben; Registry und Manifest aus den Beitraegen erzeugen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Beitraege und Pool-Test uebernehmen, Registry erzeugen, Gates belegen.",
+  "revision": 1
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:14Z-city-event-15",
+  "contributionId": "city-event-15",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor der Apotheke hat sich eine Schlange gebildet, die aussieht, als waere sie schon immer da. Eine Frau liest das Rezept in ihrer Hand, als koennte sie es dadurch schneller machen.",
+  "directives": []
+}
