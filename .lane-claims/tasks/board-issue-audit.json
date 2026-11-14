@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-issue-audit",
   "branch": "lane/governance/board-issue-audit",
   "baseSha": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Board-Audit der 28 offenen Issues auf 9b1a92ea",
   "goal": "Jedes offene Issue hat eine belegte Entscheidung; Board-Zahl und API stimmen.",
   "taskType": "single",
@@ -36,6 +36,20 @@
       "summary": "Neues Infra-Finding ohne Ticket (Budget maxNewGovernanceIssues=0): verify-narrative-blocks.mjs --help fuehrt den Prueflauf aus statt Hilfe zu zeigen."
     }
   ],
-  "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 4
+  "nextAction": "Offen: 27 Issues belegt; naechste Kandidaten #733 (Narrativ), #731 (Test), #656 (Screenshot-Regel), #652 (R9-Doku).",
+  "revision": 5,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "024d9a7494c525ab0e809a21a04ec2ffb0e6b418"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  }
 }

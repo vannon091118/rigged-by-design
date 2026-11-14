@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:38Z",
+  "generatedAt": "2026-11-14T18:40Z",
   "generatedBy": "maintainer",
-  "head": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
-  "headMessage": "Issue-Audit der 28 offenen Tickets: #675 in #656 konsolidiert, 27 belegt offen",
-  "base": "origin/main @ 9b1a92ea4e794edacac237df4c70bd4566ec434e",
+  "head": "024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
+  "headMessage": "Issue-Audit gemergt (#742), Register geschlossen",
+  "base": "origin/main @ 024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board-Audit auf dem per API gelesenen main-Tip 9b1a92ea. Alle 28 offenen Issues wurden einzeln gegen den Code geprueft und je Issue mit Kommentar entschieden: #675 ist nach #656 konsolidiert (gleicher Writer-Pfad docs/screenshots/**, area-release) und geschlossen; die uebrigen 27 sind belegt offen, keines war fertig. Neue Findings wurden geprueft: fuer das Infra-Finding (verify-narrative-blocks --help fuehrt statt zu helfen) gibt es kein Ticket, weil das Governance-Budget maxNewGovernanceIssues=0 ist; die veralteten #733-Abnahmekriterien wurden im Ticket korrigiert. Offen: 27 Issues, 0 PRs, 0 offene Claims.",
@@ -24,7 +24,8 @@
     "Closeout #741: Claim merged (PR #740, d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb), Task DONE, board.head auf d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
     "Issue-Audit 9b1a92ea: alle 28 Tickets gesichtet, je Issue ein Entscheidungskommentar mit Datei/Zeile/Befehl",
     "Konsolidiert und geschlossen: #675 -> #656 (Screenshot-Saetze, gleicher Ordner/area-release)",
-    "Offen mit Beleg: 27 Tickets (u. a. #652 Doku behauptet weiter city-actors.ts fehle; #630 GOVERNANCE.md:49 vs OWNERS; #693 workState ohne Autorpruefung)"
+    "Offen mit Beleg: 27 Tickets (u. a. #652 Doku behauptet weiter city-actors.ts fehle; #630 GOVERNANCE.md:49 vs OWNERS; #693 workState ohne Autorpruefung)",
+    "Closeout #743: Claim merged (PR #742, 024d9a7494c525ab0e809a21a04ec2ffb0e6b418), Task DONE, board.head auf 024d9a7494c525ab0e809a21a04ec2ffb0e6b418"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],

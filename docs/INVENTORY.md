@@ -858,7 +858,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 682 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 683 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -871,7 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-board-final-consistency.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-board-issue-audit.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-board-issue-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-triage-closeout.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-triage.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-board-pr-triage.json` — { — gelesen: 22 Zeilen
@@ -930,7 +930,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/board-pr-triage.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
