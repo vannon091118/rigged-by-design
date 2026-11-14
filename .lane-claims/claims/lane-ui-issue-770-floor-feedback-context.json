@@ -1,0 +1,23 @@
+{
+  "id": "lane/ui/issue-770-floor-feedback-context",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/ui/issue-770-floor-feedback-context",
+  "baseSha": "5572602fd4bb1599e32af10098bbf35fe418ccf3",
+  "issue": 770,
+  "task": "Issue #770: Floor-Einstiege folgen dem Szenenkontext",
+  "goal": "DIALOG verschwindet als globaler Chip; STADT erscheint nur im Stadt-Szenenkontext. Ein Regressionstest deckt OWN, APARTMENT, CITY und FOREIGN ab.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "src/styles/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "5572602fd4bb1599e32af10098bbf35fe418ccf3"
+}

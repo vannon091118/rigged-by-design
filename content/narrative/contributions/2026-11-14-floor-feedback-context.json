@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:16Z-floor-feedback-context",
+  "contributionId": "floor-feedback-context-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Floor zeigt nur noch Einstiege, die zu seinem Ort gehoeren: DIALOG oeffnet sich aus einem konkreten Gast- oder Szenenkontext, STADT begleitet nur die Stadt. Die Oberflaeche folgt damit dem Raum, statt eine zweite Navigation ueber ihn zu legen.",
+  "directives": []
+}
