@@ -4,14 +4,29 @@
   "claimId": "lane/content/issue-546-city-events",
   "branch": "lane/content/issue-546-city-events",
   "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
-  "phase": "READY",
+  "phase": "CI_PENDING",
   "title": "50 Stadtbegegnungen aus PR #464 sichern (CITY_ENCOUNTER)",
   "goal": "Die 50 city-event-Beitraege samt Slot-Map-Kontext, Pool-Test und Consumer-Audit auf aktuelles main heben; Registry und Manifest aus den Beitraegen erzeugen",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
-  "findings": [],
-  "nextAction": "Beitraege und Pool-Test uebernehmen, Registry erzeugen, Gates belegen.",
-  "revision": 1
+  "pr": {
+    "number": 658,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/658",
+    "state": "open",
+    "head": "484fb04a"
+  },
+  "findings": [
+    {
+      "id": "main-test-quality-eslint-determinism",
+      "status": "open",
+      "severity": "blocker",
+      "code": "ERR-4002",
+      "owner": "governance/ci",
+      "path": "src/Config/__tests__/eslint-determinism.test.ts",
+      "summary": "verify-test-quality rot auf origin/main 9c82f7ac: Test importiert sein Ziel nicht. Blob 4d5b0989 auf Basis und Head identisch, 0 Diff in src/Config; Kontrollebene nur fuer Governance-/CI-Lanes."
+    }
+  ],
+  "nextAction": "PR #658 offen (Head 484fb04a, Basis 9c82f7ac). verify:light, sync-generated --check, integrate --check und verify:scope gruen; ci:local einzig an der aus main geerbten test-quality-Verletzung rot. Review beim Maintainer.",
+  "revision": 2
 }
