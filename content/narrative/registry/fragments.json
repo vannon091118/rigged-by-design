@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:480376a54d4cf01bead533ab1e90fdedd5d5387006148bd25292c3e2c11ddb67",
+  "contentHash": "sha256:57c343ec3c6669bd4f857f9208abca64d463d36d228f6dc5243abaf0d20670d1",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24327,6 +24327,150 @@
       "source": "content/narrative/contributions/2026-11-14-rumor-17.json"
     },
     {
+      "contributionId": "rumor-18",
+      "turnId": "2026-11-14T19:34Z-rumor-18",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kellnerin sagt, sie erkenne einen Gast an seinen Schritten, nicht an seinem Gesicht. Wer denselben Weg zweimal geht, geht ihn beim zweiten Mal ruhiger. Wer stehen bleibt, ohne bestellt zu haben, wird zweimal gezaehlt - einmal vom Haus, einmal von ihr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-18.json"
+    },
+    {
+      "contributionId": "rumor-19",
+      "turnId": "2026-11-14T20:05Z-rumor-19",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Mann an der Theke sagt, ein Fehler ohne Nummer sei kein Fehler, sondern eine Ausrede. Wer eine Meldung liest, die nur sagt, dass etwas nicht stimmt, muss raten, wen er ruft. Deshalb traegt hier jede Störung ihre Nummer, und die Nummer steht im Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-19.json"
+    },
+    {
+      "contributionId": "rumor-20",
+      "turnId": "2026-11-14T20:25Z-rumor-20",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast hat einmal nach dem Weg gefragt und stattdessen die ganze Karte vorgelesen bekommen. Seitdem sagt der Mann an der Theke zuerst, welche Tuer er meint. Wer eine Frage stellt, will eine Antwort und nicht die Arbeit, die er sich haette sparen koennen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-20.json"
+    },
+    {
+      "contributionId": "rumor-21",
+      "turnId": "2026-11-14T20:45Z-rumor-21",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer haengt eine Liste, auf der niemand mehr etwas nachtraegt, seit jemand entschieden hat, dass Notizen Geld kosten. Der Mann an der Theke sagt, ein Haus, das seine Risse nicht aufschreibt, streicht sie beim naechsten Anstrich mit. Er notiert jeden Riss, auch die kleinen, und legt die Liste offen auf den Tresen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-21.json"
+    },
+    {
+      "contributionId": "rumor-22",
+      "turnId": "2026-11-14T21:10Z-rumor-22",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Mann an der Theke zaehlt am Morgen die Stuehle, nicht die Gaeste. Wer die Stuehle nicht zaehlt, merkt erst am Abend, dass einer fehlt. Er sagt, eine Null sei eine Zahl und keine Entschuldigung; wer nichts gezaehlt hat, soll sagen, dass er nichts gezaehlt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-22.json"
+    },
+    {
+      "contributionId": "rumor-23",
+      "turnId": "2026-11-14T21:30Z-rumor-23",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Plan an der Wand steht seit Wochen, dass die Kellner noch nicht laufen. Sie laufen aber laengst, nur niemand hat es aufgeschrieben. Der Mann an der Theke sagt, ein Plan, der den eigenen Stand nicht kennt, schickt Leute los, die schon da sind.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-23.json"
+    },
+    {
       "contributionId": "rumor-24",
       "turnId": "2026-11-14T22:05Z-rumor-24",
       "agentId": "liilith",
@@ -24349,6 +24493,30 @@
       "text": "Zwei Zettel haengen am schwarzen Brett, beide nennen die Zahl der Kontrollen. Der eine sagt fuenfzehn, der andere sechzehn. Der Mann mit dem Besen meint, wer zwei Zahlen aufhaengt, hat noch keine gezaehlt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-24.json"
+    },
+    {
+      "contributionId": "rumor-25",
+      "turnId": "2026-11-14T22:15Z-rumor-25",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Schaukasten haengen Bilder von der Spielhalle, aber auf jedem Bild klebt oben links ein fremder Stempel. Der Mann mit dem Besen sagt, wer sein Haus zeigt, sollte nicht das Schild des Nachbarn mitfotografieren.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-25.json"
     },
     {
       "contributionId": "run-budget-01",
