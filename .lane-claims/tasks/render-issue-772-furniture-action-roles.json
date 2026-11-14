@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-issue-772-furniture-action-roles",
+  "claimId": "lane/render/issue-772-furniture-action-roles",
+  "branch": "lane/render/issue-772-furniture-action-roles",
+  "baseSha": "9d5e276d8946786c7ee548dfdea1ecb870a5a731",
+  "phase": "CI_PENDING",
+  "title": "Issue #772: Möbelaktionen über stabile Rollen erkennen",
+  "goal": "Möbelaktionen für Spiegel, Kühlschrank und Kochnische aus stabilen artId/Rollen statt aus Label-Regexen ableiten; homeItem auf artId umstellen; Regressionstest für alternative Anzeigenamen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

@@ -84,7 +84,7 @@ function placeFurniture(world: WorldState, buildId: BuildId, x: number, y: numbe
   const zone = world.zones.find((entry) =>
     x >= entry.x && y >= entry.y && x < entry.x + entry.w && y < entry.y + entry.h);
   const item: Furniture = {
-    id: world.nextFurnitureId++, kind: def.kind, gameId: def.gameId, x, y, w: def.w, h: def.h,
+    id: world.nextFurnitureId++, kind: def.kind, gameId: def.gameId, artId: def.artId, x, y, w: def.w, h: def.h,
     seats: def.seats, label: def.name, price: def.cost, quality: def.quality, condition: 100, damaged: false,
     dirt: 0, stock: 0, clog: 0, clogged: false, zoneId: zone?.id ?? 'gaming', occupants: [], mods: [],
     reels: def.reels, baseBet: def.baseBet,

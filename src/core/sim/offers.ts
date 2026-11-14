@@ -14,6 +14,7 @@ export type BuildId = GameId | 'PLANT' | 'SOFA' | 'SPIEGEL';
 interface BuildDef {
   readonly id: BuildId;
   readonly name: string;
+  readonly artId?: string;
   readonly gameId?: GameId;
   readonly kind: Furniture['kind'];
   readonly w: number;
@@ -55,7 +56,7 @@ export const BUILD_DEFS: readonly BuildDef[] = [
     baseBet: fromVC(0), quality: 2, reels: 0, description: 'Ein Platz zum Warten. Gäste bleiben länger, statt zu gehen.',
   },
   {
-    id: 'SPIEGEL', name: 'Spiegel', kind: 'DECOR', w: 1, h: 1, seats: 0, cost: fromVC(4),
+    id: 'SPIEGEL', name: 'Spiegel', kind: 'DECOR', artId: 'decor:mirror', w: 1, h: 1, seats: 0, cost: fromVC(4),
     baseBet: fromVC(0), quality: 1, reels: 0, description: 'Zeigt dein Aussehen und öffnet den Charaktereditor.',
   },
 ];
