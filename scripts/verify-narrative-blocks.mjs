@@ -24,6 +24,9 @@
  * Mit `--pr` gilt die Pflicht fuer den gesamten Branch-Diff gegen `BASE_REF`
  * (Default `origin/main`). Ein Amend verliert dann seinen bereits vorhandenen
  * Baustein nicht, weil der Branch ihn weiterhin gegen die Basis hinzufuegt.
+ *
+ * `--help` zeigt die Nutzung ohne Prueflauf (Exit 0). Eine unbekannte Option
+ * ist ein Bedienfehler und endet mit Exit 2, statt still mitzulaufen.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -42,7 +45,29 @@ import {
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
 import { ROOT } from './lib/report.mjs';
 
-const commitMode = process.argv.includes('--commit');
+const USAGE = `verify-narrative-blocks: Pools, doppelte Texte und die Pflicht pro Commit pruefen.
+
+Nutzung: node scripts/verify-narrative-blocks.mjs [--commit | --pr]
+
+  --commit    Pflicht pro Commit: der Commit braucht einen neuen registrierten Baustein.
+  --pr        Pflicht fuer den gesamten Branch-Diff gegen BASE_REF (Default origin/main).
+  --help, -h  Diese Nutzung zeigen, ohne zu pruefen.
+
+Exit: 0 PASS, 1 Verstoss, 2 unbekannte Option.`;
+
+const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(USAGE);
+  process.exit(0);
+}
+const unknownOptions = args.filter((arg) => !['--commit', '--pr'].includes(arg));
+if (unknownOptions.length > 0) {
+  console.error(`[narrative-blocks] Unbekannte Option: ${unknownOptions.join(', ')}`);
+  console.error(USAGE);
+  process.exit(2);
+}
+
+const commitMode = args.includes('--commit');
 const content = loadNarrativeContent(ROOT);
 if (!content.ok) {
   for (const problem of content.issues.slice(0, 12)) console.error(`[narrative-blocks] ${problem.path}: ${problem.message}`);
@@ -68,7 +93,7 @@ if (commitMode) {
     }
   };
   const staged = gitPaths(['diff', '--cached', '--name-only']);
-  const prMode = process.argv.includes('--pr');
+  const prMode = args.includes('--pr');
   const base = process.env.BASE_REF ?? 'origin/main';
   let changed;
   let deletedPaths;

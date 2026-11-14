@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T20:25Z-rumor-20",
+  "contributionId": "rumor-20",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Ein Gast hat einmal nach dem Weg gefragt und stattdessen die ganze Karte vorgelesen bekommen. Seitdem sagt der Mann an der Theke zuerst, welche Tuer er meint. Wer eine Frage stellt, will eine Antwort und nicht die Arbeit, die er sich haette sparen koennen.",
+  "directives": []
+}

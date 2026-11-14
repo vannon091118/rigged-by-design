@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d15f4039e6941f8b98afec1b888c825f66aaae73e0e02d2d9eedfedea559abe7",
+  "contentHash": "sha256:62abc011e9be80af935565c9465d748f2fad11c168b8d44cbe36281c804178b5",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24301,6 +24301,30 @@
       "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-16.json"
+    },
+    {
+      "contributionId": "rumor-20",
+      "turnId": "2026-11-14T20:25Z-rumor-20",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast hat einmal nach dem Weg gefragt und stattdessen die ganze Karte vorgelesen bekommen. Seitdem sagt der Mann an der Theke zuerst, welche Tuer er meint. Wer eine Frage stellt, will eine Antwort und nicht die Arbeit, die er sich haette sparen koennen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-20.json"
     },
     {
       "contributionId": "run-budget-01",
