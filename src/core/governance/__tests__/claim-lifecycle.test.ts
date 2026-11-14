@@ -127,6 +127,46 @@ describe('post-merge closeout', () => {
     expect(changes[0].contract.pr).toBeNull();
   });
 
+  it('schreibt PR-Nummer, Kopf und Merge-SHA plus getrennten Branch-Status in den Vertrag', () => {
+    const head = sha('c');
+    const merge = sha('d');
+    const tasks = [task('pr-closeout', 'CI_PENDING')];
+    const claims = [claim('pr-closeout', 'merged', { mergedEvidence: 'merged-pr', mergedSha: merge }).claim];
+    const evidenceByClaim = new Map([
+      [
+        'lane/governance/pr-closeout',
+        {
+          pr: { number: 42, url: 'https://example.test/pull/42', state: 'merged', headSha: head, mergedSha: merge },
+          branchCleanup: { state: 'pending', evidence: 'remote-branch-present' },
+        },
+      ],
+    ]);
+    const changes = planTaskCloseout({ tasks, claims, evidenceByClaim });
+    expect(changes).toHaveLength(1);
+    expect(changes[0].contract.pr).toMatchObject({
+      number: 42,
+      state: 'merged',
+      headSha: head,
+      mergedSha: merge,
+    });
+    expect(changes[0].contract.aftercare.branch).toEqual({ state: 'pending', evidence: 'remote-branch-present' });
+    expect(changes[0].contract.aftercare.claim.status).toBe('merged');
+  });
+
+  it('schliesst einen veralteten READY-Task nur, wenn der Branch entfernt ist', () => {
+    const tasks = [task('stale', 'READY'), task('follow-up', 'READY')];
+    const claims = [
+      claim('stale', 'merged', { mergedEvidence: 'merged-pr', mergedSha: sha('d') }).claim,
+      claim('follow-up', 'merged', { mergedEvidence: 'merged-pr', mergedSha: sha('d') }).claim,
+    ];
+    const evidenceByClaim = new Map([
+      ['lane/governance/stale', { branchCleanup: { state: 'done', evidence: 'remote-branch-absent' } }],
+      ['lane/governance/follow-up', { branchCleanup: { state: 'pending', evidence: 'remote-branch-present' } }],
+    ]);
+    const changes = planTaskCloseout({ tasks, claims, evidenceByClaim });
+    expect(changes.map((change: { claimId: string }) => change.claimId)).toEqual(['lane/governance/stale']);
+  });
+
   it('schliesst MERGE_PENDING und AFTERCARE, aber keinen offenen Claim', () => {
     const tasks = [
       task('merge', 'MERGE_PENDING'),

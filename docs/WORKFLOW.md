@@ -56,6 +56,8 @@ Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache.
 
 `pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` wird die Session nicht gewechselt und nicht auf CI gewartet; Review- und Doku-Arbeit läuft auf demselben Branch, statt eine parallele Lane zu öffnen. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish` und `ci-plan` rufen dieselbe Validierung auf.
 
+Ein gemergter PR ohne ausgeführten Closeout wird beim nächsten Start als `REMOTE_AUTOMATION_UNAVAILABLE` erkannt. Auf `main` zieht `pretask` Claim, Task und den belegten PR-Zustand idempotent nach; auf einer Lane bleibt der Schreibvorgang beim Maintainer. Der Task-Vertrag belegt danach `pr.number`, `pr.headSha`, `pr.mergedSha` und den separaten `aftercare.branch`-Status. Branch-Löschung ist kein Teil des Register-Schreibens.
+
 ### Resume statt Aufräumen
 
 Ein unterbrochener Task wird mit demselben Worktree und demselben Claim fortgesetzt. Eigene, fremde und unvollständige Änderungen werden adoptiert; der Modus wird `RESUME`, der Scope `SCOPE_VALID`. Nur korrupte WIP (Governance ohne Freigabe, Ledger/Save/RNG/Boot) blockiert.

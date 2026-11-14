@@ -69,7 +69,10 @@ for (const change of changes) {
   change.claim.mergedSha = change.sha;
 }
 const claimViews = claims.map((claim) => (typeof claim.toJSON === 'function' ? claim.toJSON() : claim));
-const taskChanges = planTaskCloseout({ tasks: taskLoad.tasks, claims: claimViews });
+// Der Beleg traegt PR-Nummer/Kopf/Merge-SHA und den separaten Branch-Status
+// bis in den Task-Vertrag; der Branch wird hier nicht geloescht.
+const evidenceByClaim = new Map(changes.map((change) => [change.id, change]));
+const taskChanges = planTaskCloseout({ tasks: taskLoad.tasks, claims: claimViews, evidenceByClaim });
 const updatedTasks = taskLoad.tasks.map((task) => {
   const change = taskChanges.find((entry) => entry.file === task.file);
   return change ? { ...task, contract: change.contract } : task;
@@ -103,6 +106,8 @@ if (changes.length === 0 && taskChanges.length === 0 && removals.length === 0 &&
 
 for (const change of changes) {
   console.log(`${apply ? 'setze' : 'wuerde setzen'}: ${change.id} -> ${change.status} (${change.why})`);
+  console.log(`  Branch-Cleanup: ${change.branchCleanup?.state ?? 'unknown'} (${change.branchCleanup?.evidence ?? 'ohne Beleg'})`);
+  if (change.pr) console.log(`  PR #${change.pr.number} ${change.pr.headSha ?? ''} -> ${change.pr.mergedSha ?? ''}`);
 }
 for (const change of taskChanges) {
   console.log(`${apply ? 'setze' : 'wuerde setzen'}: ${change.file} -> DONE (${change.claimId})`);
@@ -121,6 +126,8 @@ if (json) {
           evidence: change.evidence,
           sha: change.sha,
           why: change.why,
+          pr: change.pr,
+          branchCleanup: change.branchCleanup,
         })),
         tasks: taskChanges.map((change) => ({ file: change.file, claimId: change.claimId, phase: change.contract.phase })),
         retention,

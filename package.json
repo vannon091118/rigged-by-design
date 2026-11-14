@@ -20,6 +20,7 @@
     "agent:pretask": "node scripts/pretask.mjs",
     "agent:cause": "node scripts/agent-cause.mjs",
     "claim:register": "node scripts/claim-register.mjs",
+    "reconcile:claims": "node scripts/reconcile-claims.mjs",
     "worker:init": "node scripts/worker-init.mjs",
     "run:budget": "node scripts/run-budget.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",

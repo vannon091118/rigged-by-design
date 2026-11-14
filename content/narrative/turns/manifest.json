@@ -4010,6 +4010,206 @@
       "contributionId": "governance-dependency-matrix-retry"
     },
     {
+      "turnId": "2026-11-11T21:00Z-city-event-01",
+      "contributionId": "city-event-01"
+    },
+    {
+      "turnId": "2026-11-11T21:01Z-city-event-02",
+      "contributionId": "city-event-02"
+    },
+    {
+      "turnId": "2026-11-11T21:02Z-city-event-03",
+      "contributionId": "city-event-03"
+    },
+    {
+      "turnId": "2026-11-11T21:03Z-city-event-04",
+      "contributionId": "city-event-04"
+    },
+    {
+      "turnId": "2026-11-11T21:04Z-city-event-05",
+      "contributionId": "city-event-05"
+    },
+    {
+      "turnId": "2026-11-11T21:05Z-city-event-06",
+      "contributionId": "city-event-06"
+    },
+    {
+      "turnId": "2026-11-11T21:06Z-city-event-07",
+      "contributionId": "city-event-07"
+    },
+    {
+      "turnId": "2026-11-11T21:07Z-city-event-08",
+      "contributionId": "city-event-08"
+    },
+    {
+      "turnId": "2026-11-11T21:08Z-city-event-09",
+      "contributionId": "city-event-09"
+    },
+    {
+      "turnId": "2026-11-11T21:09Z-city-event-10",
+      "contributionId": "city-event-10"
+    },
+    {
+      "turnId": "2026-11-11T21:10Z-city-event-11",
+      "contributionId": "city-event-11"
+    },
+    {
+      "turnId": "2026-11-11T21:11Z-city-event-12",
+      "contributionId": "city-event-12"
+    },
+    {
+      "turnId": "2026-11-11T21:12Z-city-event-13",
+      "contributionId": "city-event-13"
+    },
+    {
+      "turnId": "2026-11-11T21:13Z-city-event-14",
+      "contributionId": "city-event-14"
+    },
+    {
+      "turnId": "2026-11-11T21:14Z-city-event-15",
+      "contributionId": "city-event-15"
+    },
+    {
+      "turnId": "2026-11-11T21:15Z-city-event-16",
+      "contributionId": "city-event-16"
+    },
+    {
+      "turnId": "2026-11-11T21:16Z-city-event-17",
+      "contributionId": "city-event-17"
+    },
+    {
+      "turnId": "2026-11-11T21:17Z-city-event-18",
+      "contributionId": "city-event-18"
+    },
+    {
+      "turnId": "2026-11-11T21:18Z-city-event-19",
+      "contributionId": "city-event-19"
+    },
+    {
+      "turnId": "2026-11-11T21:19Z-city-event-20",
+      "contributionId": "city-event-20"
+    },
+    {
+      "turnId": "2026-11-11T21:20Z-city-event-21",
+      "contributionId": "city-event-21"
+    },
+    {
+      "turnId": "2026-11-11T21:21Z-city-event-22",
+      "contributionId": "city-event-22"
+    },
+    {
+      "turnId": "2026-11-11T21:22Z-city-event-23",
+      "contributionId": "city-event-23"
+    },
+    {
+      "turnId": "2026-11-11T21:23Z-city-event-24",
+      "contributionId": "city-event-24"
+    },
+    {
+      "turnId": "2026-11-11T21:24Z-city-event-25",
+      "contributionId": "city-event-25"
+    },
+    {
+      "turnId": "2026-11-11T21:25Z-city-event-26",
+      "contributionId": "city-event-26"
+    },
+    {
+      "turnId": "2026-11-11T21:26Z-city-event-27",
+      "contributionId": "city-event-27"
+    },
+    {
+      "turnId": "2026-11-11T21:27Z-city-event-28",
+      "contributionId": "city-event-28"
+    },
+    {
+      "turnId": "2026-11-11T21:28Z-city-event-29",
+      "contributionId": "city-event-29"
+    },
+    {
+      "turnId": "2026-11-11T21:29Z-city-event-30",
+      "contributionId": "city-event-30"
+    },
+    {
+      "turnId": "2026-11-11T21:30Z-city-event-31",
+      "contributionId": "city-event-31"
+    },
+    {
+      "turnId": "2026-11-11T21:31Z-city-event-32",
+      "contributionId": "city-event-32"
+    },
+    {
+      "turnId": "2026-11-11T21:32Z-city-event-33",
+      "contributionId": "city-event-33"
+    },
+    {
+      "turnId": "2026-11-11T21:33Z-city-event-34",
+      "contributionId": "city-event-34"
+    },
+    {
+      "turnId": "2026-11-11T21:34Z-city-event-35",
+      "contributionId": "city-event-35"
+    },
+    {
+      "turnId": "2026-11-11T21:35Z-city-event-36",
+      "contributionId": "city-event-36"
+    },
+    {
+      "turnId": "2026-11-11T21:36Z-city-event-37",
+      "contributionId": "city-event-37"
+    },
+    {
+      "turnId": "2026-11-11T21:37Z-city-event-38",
+      "contributionId": "city-event-38"
+    },
+    {
+      "turnId": "2026-11-11T21:38Z-city-event-39",
+      "contributionId": "city-event-39"
+    },
+    {
+      "turnId": "2026-11-11T21:39Z-city-event-40",
+      "contributionId": "city-event-40"
+    },
+    {
+      "turnId": "2026-11-11T21:40Z-city-event-41",
+      "contributionId": "city-event-41"
+    },
+    {
+      "turnId": "2026-11-11T21:41Z-city-event-42",
+      "contributionId": "city-event-42"
+    },
+    {
+      "turnId": "2026-11-11T21:42Z-city-event-43",
+      "contributionId": "city-event-43"
+    },
+    {
+      "turnId": "2026-11-11T21:43Z-city-event-44",
+      "contributionId": "city-event-44"
+    },
+    {
+      "turnId": "2026-11-11T21:44Z-city-event-45",
+      "contributionId": "city-event-45"
+    },
+    {
+      "turnId": "2026-11-11T21:45Z-city-event-46",
+      "contributionId": "city-event-46"
+    },
+    {
+      "turnId": "2026-11-11T21:46Z-city-event-47",
+      "contributionId": "city-event-47"
+    },
+    {
+      "turnId": "2026-11-11T21:47Z-city-event-48",
+      "contributionId": "city-event-48"
+    },
+    {
+      "turnId": "2026-11-11T21:48Z-city-event-49",
+      "contributionId": "city-event-49"
+    },
+    {
+      "turnId": "2026-11-11T21:49Z-city-event-50",
+      "contributionId": "city-event-50"
+    },
+    {
       "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
       "contributionId": "gamescout-observation-01"
     },
@@ -4258,8 +4458,16 @@
       "contributionId": "city-network-acceptance-01"
     },
     {
+      "turnId": "2026-11-14T06:15Z-run-budget-01",
+      "contributionId": "run-budget-01"
+    },
+    {
       "turnId": "2026-11-14T06:15Z-scheduled-place-all-intents-01",
       "contributionId": "scheduled-place-all-intents-01"
+    },
+    {
+      "turnId": "2026-11-14T06:20Z-esport-evening",
+      "contributionId": "esport-evening-01"
     },
     {
       "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
@@ -4270,228 +4478,24 @@
       "contributionId": "determinism-computed-01"
     },
     {
-      "turnId": "2026-11-14T07:05Z-scene-frame-doors",
-      "contributionId": "scene-frame-doors-01"
-    },
-    {
-      "turnId": "2026-11-14T09:20Z-employment",
-      "contributionId": "employment-01"
-    },
-    {
-      "turnId": "2026-11-11T21:00Z-city-event-01",
-      "contributionId": "city-event-01"
-    },
-    {
-      "turnId": "2026-11-11T21:01Z-city-event-02",
-      "contributionId": "city-event-02"
-    },
-    {
-      "turnId": "2026-11-11T21:02Z-city-event-03",
-      "contributionId": "city-event-03"
-    },
-    {
-      "turnId": "2026-11-11T21:03Z-city-event-04",
-      "contributionId": "city-event-04"
-    },
-    {
-      "turnId": "2026-11-11T21:04Z-city-event-05",
-      "contributionId": "city-event-05"
-    },
-    {
-      "turnId": "2026-11-11T21:05Z-city-event-06",
-      "contributionId": "city-event-06"
-    },
-    {
-      "turnId": "2026-11-11T21:06Z-city-event-07",
-      "contributionId": "city-event-07"
-    },
-    {
-      "turnId": "2026-11-11T21:07Z-city-event-08",
-      "contributionId": "city-event-08"
-    },
-    {
-      "turnId": "2026-11-11T21:08Z-city-event-09",
-      "contributionId": "city-event-09"
-    },
-    {
-      "turnId": "2026-11-11T21:09Z-city-event-10",
-      "contributionId": "city-event-10"
-    },
-    {
-      "turnId": "2026-11-11T21:10Z-city-event-11",
-      "contributionId": "city-event-11"
-    },
-    {
-      "turnId": "2026-11-11T21:11Z-city-event-12",
-      "contributionId": "city-event-12"
-    },
-    {
-      "turnId": "2026-11-11T21:12Z-city-event-13",
-      "contributionId": "city-event-13"
-    },
-    {
-      "turnId": "2026-11-11T21:13Z-city-event-14",
-      "contributionId": "city-event-14"
-    },
-    {
-      "turnId": "2026-11-11T21:14Z-city-event-15",
-      "contributionId": "city-event-15"
-    },
-    {
-      "turnId": "2026-11-11T21:15Z-city-event-16",
-      "contributionId": "city-event-16"
-    },
-    {
-      "turnId": "2026-11-11T21:16Z-city-event-17",
-      "contributionId": "city-event-17"
-    },
-    {
-      "turnId": "2026-11-11T21:17Z-city-event-18",
-      "contributionId": "city-event-18"
-    },
-    {
-      "turnId": "2026-11-11T21:18Z-city-event-19",
-      "contributionId": "city-event-19"
-    },
-    {
-      "turnId": "2026-11-11T21:19Z-city-event-20",
-      "contributionId": "city-event-20"
-    },
-    {
-      "turnId": "2026-11-11T21:20Z-city-event-21",
-      "contributionId": "city-event-21"
-    },
-    {
-      "turnId": "2026-11-11T21:21Z-city-event-22",
-      "contributionId": "city-event-22"
-    },
-    {
-      "turnId": "2026-11-11T21:22Z-city-event-23",
-      "contributionId": "city-event-23"
-    },
-    {
-      "turnId": "2026-11-11T21:23Z-city-event-24",
-      "contributionId": "city-event-24"
-    },
-    {
-      "turnId": "2026-11-11T21:24Z-city-event-25",
-      "contributionId": "city-event-25"
-    },
-    {
-      "turnId": "2026-11-11T21:25Z-city-event-26",
-      "contributionId": "city-event-26"
-    },
-    {
-      "turnId": "2026-11-11T21:26Z-city-event-27",
-      "contributionId": "city-event-27"
-    },
-    {
-      "turnId": "2026-11-11T21:27Z-city-event-28",
-      "contributionId": "city-event-28"
-    },
-    {
-      "turnId": "2026-11-11T21:28Z-city-event-29",
-      "contributionId": "city-event-29"
-    },
-    {
-      "turnId": "2026-11-11T21:29Z-city-event-30",
-      "contributionId": "city-event-30"
-    },
-    {
-      "turnId": "2026-11-11T21:30Z-city-event-31",
-      "contributionId": "city-event-31"
-    },
-    {
-      "turnId": "2026-11-11T21:31Z-city-event-32",
-      "contributionId": "city-event-32"
-    },
-    {
-      "turnId": "2026-11-11T21:32Z-city-event-33",
-      "contributionId": "city-event-33"
-    },
-    {
-      "turnId": "2026-11-11T21:33Z-city-event-34",
-      "contributionId": "city-event-34"
-    },
-    {
-      "turnId": "2026-11-11T21:34Z-city-event-35",
-      "contributionId": "city-event-35"
-    },
-    {
-      "turnId": "2026-11-11T21:35Z-city-event-36",
-      "contributionId": "city-event-36"
-    },
-    {
-      "turnId": "2026-11-11T21:36Z-city-event-37",
-      "contributionId": "city-event-37"
-    },
-    {
-      "turnId": "2026-11-11T21:37Z-city-event-38",
-      "contributionId": "city-event-38"
-    },
-    {
-      "turnId": "2026-11-11T21:38Z-city-event-39",
-      "contributionId": "city-event-39"
-    },
-    {
-      "turnId": "2026-11-11T21:39Z-city-event-40",
-      "contributionId": "city-event-40"
-    },
-    {
-      "turnId": "2026-11-11T21:40Z-city-event-41",
-      "contributionId": "city-event-41"
-    },
-    {
-      "turnId": "2026-11-11T21:41Z-city-event-42",
-      "contributionId": "city-event-42"
-    },
-    {
-      "turnId": "2026-11-11T21:42Z-city-event-43",
-      "contributionId": "city-event-43"
-    },
-    {
-      "turnId": "2026-11-11T21:43Z-city-event-44",
-      "contributionId": "city-event-44"
-    },
-    {
-      "turnId": "2026-11-11T21:44Z-city-event-45",
-      "contributionId": "city-event-45"
-    },
-    {
-      "turnId": "2026-11-11T21:45Z-city-event-46",
-      "contributionId": "city-event-46"
-    },
-    {
-      "turnId": "2026-11-11T21:46Z-city-event-47",
-      "contributionId": "city-event-47"
-    },
-    {
-      "turnId": "2026-11-11T21:47Z-city-event-48",
-      "contributionId": "city-event-48"
-    },
-    {
-      "turnId": "2026-11-11T21:48Z-city-event-49",
-      "contributionId": "city-event-49"
-    },
-    {
-      "turnId": "2026-11-11T21:49Z-city-event-50",
-      "contributionId": "city-event-50"
-    },
-    {
-      "turnId": "2026-11-14T06:15Z-run-budget-01",
-      "contributionId": "run-budget-01"
-    },
-    {
       "turnId": "2026-11-14T06:50Z-staff-qualification",
       "contributionId": "staff-qualification-01"
     },
     {
-      "turnId": "2026-11-14T06:20Z-esport-evening",
-      "contributionId": "esport-evening-01"
+      "turnId": "2026-11-14T07:05Z-scene-frame-doors",
+      "contributionId": "scene-frame-doors-01"
+    },
+    {
+      "turnId": "2026-11-14T07:52Z-closeout-fallback",
+      "contributionId": "closeout-fallback-01"
     },
     {
       "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
       "contributionId": "board-status-01"
+    },
+    {
+      "turnId": "2026-11-14T09:20Z-employment",
+      "contributionId": "employment-01"
     }
   ]
 }

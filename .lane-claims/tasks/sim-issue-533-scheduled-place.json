@@ -4,14 +4,34 @@
   "claimId": "lane/sim/issue-533-scheduled-place",
   "branch": "lane/sim/issue-533-scheduled-place",
   "baseSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Planziele fuer alle Intents (#533)",
   "goal": "scheduledPlace fuer WORK/EAT_OUT/SHOP/PUB/LEISURE nutzen; PLACE_BUILDING fail-closed",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 631,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/631",
+    "state": "merged",
+    "headSha": "a28d6d5e016d28904f2a6ecad7b9ba0f6f9c5255",
+    "mergedSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 2
+  "nextAction": "Automatisch nach Merge geschlossen (merged-pr 6029255).",
+  "revision": 3,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "merged-pr",
+      "sha": "6029255ea6cc4ae027e88e25cf040a476fb889cc"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }

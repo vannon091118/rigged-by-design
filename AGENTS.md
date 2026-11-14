@@ -160,6 +160,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
 | `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
 | `pnpm run claim:register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln (Pfad-Allowlist für Staging, Scope und Hooks); keine Wahrheit über Besitz oder Priorität. |
+| `pnpm run reconcile:claims [--apply]` | Belegte Merges prüfen bzw. idempotent Claim, Task und PR-Beleg nachziehen; Branch-Cleanup bleibt ein separater Schritt. |
 | `pnpm run agent:pretask --json --agent <name>` | Wie oben mit expliziter Agent-Identität; `RBD_AGENT` wirkt genauso. Das Gate vergleicht exakt und blockiert fremde Claims. |
 
 ## Build & test

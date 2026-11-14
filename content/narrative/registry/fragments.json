@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:10128600c8cb02119e77c88ad4daa9b5132fd99e2a1c027502995048d01a6553",
+  "contentHash": "sha256:e4117119ae27d4ebcd22f5c8833e2aac63b834f3311485eaec9187f33ba7dbf6",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7402,6 +7402,28 @@
       "text": "Auf dem Boden liegt ein Chip, den niemand vermisst. Wer ihn aufhebt, weiß nicht, ob er Glück oder Diebstahl aufhebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-3.json"
+    },
+    {
+      "contributionId": "closeout-fallback-01",
+      "turnId": "2026-11-14T07:52Z-closeout-fallback",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem letzten Gast bleibt die Kasse offen, bis jemand den Beleg gegen die Tür legt: nicht der Anfang, sondern der tatsächliche Abschluss zählt. Wer den Stempel erst nachträgt, schreibt nicht schneller, sondern nur ehrlicher.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-closeout-fallback.json"
     },
     {
       "contributionId": "collision-scope-01",

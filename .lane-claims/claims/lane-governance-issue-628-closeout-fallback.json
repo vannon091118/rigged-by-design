@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/issue-628-closeout-fallback",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-628-closeout-fallback",
+  "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
+  "issue": 628,
+  "task": "Post-Merge-Closeout-Fallback gegen Actions-Ausfall (#628)",
+  "goal": "Merge-Beleg beim Start idempotent nachziehen, Actions-Ausfall sichtbar machen, Claim/Vertrag/Branch getrennt belegen",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/",
+    "scripts/",
+    "src/core/governance/__tests__/",
+    "src/core/sim/narrative/composer/",
+    "content/narrative/",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217"
+}
