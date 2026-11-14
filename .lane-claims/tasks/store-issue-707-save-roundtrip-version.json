@@ -4,16 +4,25 @@
   "claimId": "lane/store/issue-707-save-roundtrip-version",
   "branch": "lane/store/issue-707-save-roundtrip-version",
   "baseSha": "88b7fc8addee076ded553c710f83e1a450e853f2",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #707: Save-Roundtrip-Suite nennt v8, prueft v11",
   "goal": "Suite versionsneutral benennen und raw.version explizit gegen das exportierte SAVE_VERSION pruefen; keine Migrations- oder Laufzeitaenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 713,
+    "headSha": "186844ee72bdf0c580685a954deddae6a82b1e85",
+    "mergedSha": "b3aa55ea2a977af234cd88df3e4005f2f38571e4"
+  },
   "findings": [
-    {"id":"F-1","status":"accepted","severity":"info","summary":"SAVE_VERSION wird exportiert, damit der Test keine zweite Versionswahrheit pflegt; save.ts aendert nur die Sichtbarkeit."}
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "SAVE_VERSION wird exportiert, damit der Test keine zweite Versionswahrheit pflegt; save.ts aendert nur die Sichtbarkeit."
+    }
   ],
-  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
+  "nextAction": "Gemergt; Closeout verbucht.",
   "revision": 1
 }
