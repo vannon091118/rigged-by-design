@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T23:05Z-pretask-fixture-01",
+  "contributionId": "pretask-fixture-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Der Pruefer legte zwei Zettel auf die Theke: Auf dem einen fehlte die Nummer des Auftrags, auf dem anderen die Zahl der neuen Befunde. Rita nahm keinen davon als Freigabe; sie trug beide nach und liess die Tuer erst aufgehen, als die Pruefung wirklich lesen konnte.",
+  "directives": []
+}

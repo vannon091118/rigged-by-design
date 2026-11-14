@@ -4572,6 +4572,10 @@
     {
       "turnId": "2026-11-14T22:55Z-claim-stale-01",
       "contributionId": "claim-stale-01"
+    },
+    {
+      "turnId": "2026-11-14T23:05Z-pretask-fixture-01",
+      "contributionId": "pretask-fixture-01"
     }
   ]
 }
