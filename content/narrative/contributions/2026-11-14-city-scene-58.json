@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:25Z-city-scene-58",
+  "contributionId": "city-scene-58",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Ein Gast fragt nach dem Weg, obwohl der Pfeil ueber der Tuer haengt. Der Wirt zeigt trotzdem hin, und der Gast bedankt sich, als waere es eine Auskunft wert gewesen.",
+  "directives": []
+}

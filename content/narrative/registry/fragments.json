@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fdc2a7f19a86a5196a2b69e626089dd0ca73226f5f758623d6aa041ca94d78c0",
+  "contentHash": "sha256:e29ede5013285346476fb5df7f7e5b3f3451c08b7761434ab9d26f82829d2c01",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7313,6 +7313,28 @@
       "source": "content/narrative/contributions/2026-11-14-city-scene-57.json"
     },
     {
+      "contributionId": "city-scene-58",
+      "turnId": "2026-11-14T12:25Z-city-scene-58",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast fragt nach dem Weg, obwohl der Pfeil ueber der Tuer haengt. Der Wirt zeigt trotzdem hin, und der Gast bedankt sich, als waere es eine Auskunft wert gewesen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-58.json"
+    },
+    {
       "contributionId": "claim-closeout-535-01",
       "turnId": "2026-11-13T23:45Z-claim-closeout-535",
       "agentId": "cloud-agent-2",
@@ -9363,6 +9385,28 @@
       "text": "Wer etwas gesehen hat, erzaehlt es anders als einer, der nur davon hoerte: Jede Kunde traegt ihre urspruengliche Quelle, den Weg und die Zahl der Weitergaben mit sich. Mit der Distanz sinkt die Konfidenz, Widersprueche bleiben nebeneinander stehen, und wer zu niedergeschlagen ist, behaelt sein Wissen fuer sich.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-knowledge-domain-01.json"
+    },
+    {
+      "contributionId": "lane-ohne-auftrag-01",
+      "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer ohne Auftrag an die Mauer tritt, bekommt keinen Schlüssel: Die Reihe der ausgehängten Blätter ist die Reihenfolge, und was nicht darauf steht, wird nicht gebaut. Nur die alten Bauten aus der Zeit vor dem Brett stehen noch offen da und werden nicht nachträglich zugemauert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-lane-ohne-auftrag.json"
     },
     {
       "contributionId": "lebenssim-vision-01",

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-635-claim-requires-issue",
+  "claimId": "lane/governance/issue-635-claim-requires-issue",
+  "branch": "lane/governance/issue-635-claim-requires-issue",
+  "baseSha": "5ed5d9603664121b63e317d330404b98ece6e596",
+  "phase": "CI_PENDING",
+  "title": "Neue Lanes ohne Issue-Referenz fail-closed (#635)",
+  "goal": "validateNewClaim und pretask verlangen fuer jede neue offene Lane eine positive Issue-Nummer; abgeschlossene Bestands-Claims bleiben lesbar",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 692,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/692",
+    "state": "open",
+    "head": "cb51f9dc"
+  },
+  "findings": [
+    {
+      "id": "issue-war-optional",
+      "summary": "validateNewClaim pruefte die Issue-Nummer nur, wenn sie gesetzt war; ein fehlendes Feld erzeugte keine Verletzung. Jetzt ist sie fuer neue offene Claims Pflicht, waehrend `legacy` und abgeschlossene Claims unveraendert lesbar bleiben.",
+      "severity": "blocker",
+      "status": "resolved",
+      "kind": "defect"
+    },
+    {
+      "id": "pretask-blocker",
+      "summary": "pretask blockiert eine offene Lane ohne Issue-Nummer mit ERR-4019, statt sie stillschweigend als Legacy zu starten; die eigene Lane startet mit blockers: [].",
+      "severity": "warning",
+      "status": "resolved",
+      "kind": "defect"
+    },
+    {
+      "id": "new-test-file",
+      "summary": "Die neuen Faelle liegen in einer eigenen Datei (lane-claims-issue.test.ts), weil lane-claims.test.ts mit 180 LOC an seiner Hot-Zone-Grenze stand; der Fixture-Claim dort traegt jetzt issue 635.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "scope"
+    },
+    {
+      "id": "agent-new-worker-init",
+      "summary": "agent:new und worker:init erzeugen Claims ueber claim-register und erben die Pflicht damit, sind aber nicht einzeln getestet.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "scope"
+    },
+    {
+      "id": "pretask-test-vorab-rot",
+      "summary": "pretask.test.ts faellt mit 3 von 4 Tests identisch auf dem Basisstand ohne diesen Diff (Worktree-/Impact-Faelle in dieser Sandbox); die neue Blocker-Regel ist nicht die Ursache.",
+      "severity": "warning",
+      "status": "accepted",
+      "kind": "environment"
+    },
+    {
+      "id": "cron-lint-vorab-rot",
+      "summary": "verify:light bleibt exit 1 durch pipeline/lint ERR-4011 mit no-unused-vars in .cron/check-in.mjs und .cron/check-out.mjs; beide Dateien sind gegenueber origin/main unveraendert und kamen mit d6cbdc66 (#686). Diff-fremd, nicht in dieser Allowlist.",
+      "severity": "warning",
+      "status": "accepted",
+      "kind": "environment"
+    }
+  ],
+  "nextAction": "Maintainer-Review auf cb51f9dc; bei Merge auf exaktem Kopf Issue schliessen und Claim auf merged setzen",
+  "revision": 3
+}
