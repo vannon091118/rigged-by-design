@@ -4,21 +4,32 @@
   "claimId": "lane/sim/issue-552-staff-qualification",
   "branch": "lane/sim/issue-552-staff-qualification",
   "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
-  "phase": "CI_PENDING",
-  "title": "Personal-Qualifikation und Leistungsbewertung (S3-10)",
+  "phase": "MERGE_PENDING",
+  "title": "sim-issue-552-staff-qualification",
   "goal": "StaffAgent traegt eine Qualifikationsstufe; Lohn und Bewertung leiten sich daraus ab; Anzeige im Build-Panel; Save/Load erhaelt die Stufe",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 660,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/660",
+    "state": "open",
+    "headSha": "528a2b1267188458e28d5363324ecf14543c265f"
+  },
   "findings": [
     {
       "id": "lane-dead-export-staff-qualifications",
       "status": "resolved",
       "severity": "warning",
       "summary": "Eigener dead-code-Rot (Export STAFF_QUALIFICATIONS ohne Import) mit 0f33b6ef behoben; ci:local danach nur noch mit dem geerbten test-quality-Rot."
+    },
+    {
+      "id": "main-test-quality-eslint-determinism",
+      "status": "open",
+      "severity": "blocker",
+      "summary": "Geerbt von origin/main: src/Config/__tests__/eslint-determinism.test.ts verletzt verify-test-quality (kein Import aus src/Config/eslint.config.mjs). Blob 4d5b0989e5bb6e2d60b6971ddb92857699af9fe8 identisch auf Head und Basis, git diff origin/main..HEAD -- src/Config = 0, eingefuehrt 9a361a06 (#624) ueber 9c82f7ac (#639). Owner governance/ci; src/Config ist in dieser Lane nicht allowlistet."
     }
   ],
-  "nextAction": "Gate-Kette auf dem committeten Head fahren; PR danach oeffnen.",
-  "revision": 2
+  "nextAction": "PR #660 durch den Maintainer reviewen und mergen; danach AFTERCARE ab Issue #552.",
+  "revision": 3
 }

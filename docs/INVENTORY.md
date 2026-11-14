@@ -896,7 +896,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-552-staff-qualification.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/tasks/sim-issue-552-staff-qualification.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-acceptance.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
