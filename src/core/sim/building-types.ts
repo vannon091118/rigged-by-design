@@ -26,7 +26,7 @@ export interface OperatingHours {
 }
 
 /** Bauzustand: Rohbau (versiegelt, keine Stellen) oder fertig und zugänglich. */
-export type ConstructionState = 'SHELL' | 'OPEN';
+type ConstructionState = 'SHELL' | 'OPEN';
 
 /** Rechteckige Grundfläche eines Gebäudes auf dem Außenwelt-Raster. */
 export interface BuildingFootprint {

@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/ci-line-green",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/ci-line-green",
+  "baseSha": "9c7add6bbf31571fa66131bf969e6beeb4f27bca",
+  "issue": 612,
+  "task": "Gate-Linie auf main wieder gruen: dead-code und test-quality",
+  "goal": "ConstructionState-Export entfernen (kein Verbraucher) und den worker-claim-gate-Test auf scripts/lib/work-claim.mjs als echtes Ziel umstellen, damit ci:local auf dem PR-Kopf gruen belegbar ist.",
+  "pathAllowlist": [
+    "src/core/sim/building-types.ts",
+    "src/core/governance/__tests__/worker-claim-gate.test.ts",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "content/narrative/contributions/2026-11-14-ci-line-green.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-ci-line-green.json",
+    ".lane-claims/tasks/governance-ci-line-green.json",
+    ".lane-claims/claims/lane-governance-workspace-home-drive.json",
+    ".lane-claims/claims/lane-sim-issue-524-construction.json",
+    ".lane-claims/tasks/sim-issue-524-construction.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "ce9df7a267c8c05f643eb52b305b431964e8fbae"
+}

@@ -1,5 +1,5 @@
 /**
- * @test-target: scripts/pretask.mjs
+ * @test-target: scripts/lib/work-claim.mjs
  * @error-code: ERR-4027
  *
  * Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine
@@ -11,6 +11,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
+import { workState } from '../../../../scripts/lib/work-claim.mjs';
 import { workerEnv } from './test-worker-home';
 
 interface Payload {
@@ -128,6 +129,7 @@ describe('pretask Worker-Gates', () => {
         { id: 2, body: 'DONE claim_id=wc-1' },
         { id: 3, body: 'REVIEW_PENDING claim_id=wc-1' },
       ];
+      expect(workState(comments)).toBe('REVIEW_PENDING');
       const result = run(cwd, parent, { ...workerEnv(), FAKE_COMMENTS: JSON.stringify(comments) });
       expect(result.status).toBe(1);
       const body = payloadOf(result.stdout, result.stderr);
