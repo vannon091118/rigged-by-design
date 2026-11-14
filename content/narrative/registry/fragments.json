@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d36c6c4de0601e423a76cc0dda90d2330eb7142f0799d52f5ded1f31e70b36aa",
+  "contentHash": "sha256:01cb6573b47f73c501b5bd678c74a409520770e3ff9a4c9e972b7d91998736b8",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -25436,6 +25436,28 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "wip-consolidation-01",
+      "turnId": "2026-11-14T22:20Z-wip-consolidation",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Bevor die Schublade ins Archiv wandert, zählt der Blick auf jedes Fach: Was schon gebucht ist, braucht keinen zweiten Stempel; was nur alt aussieht, wird nicht wieder in die Kasse gelegt. Wer aufräumt, prüft zuerst, was wirklich fehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-wip-consolidation.json"
     },
     {
       "contributionId": "worker-bootstrap-01",

@@ -2581,3 +2581,15 @@ Repariert statt umgangen: Testbudget (`ERR-4012`), Claim-Allowlist nach
 `claim:register update` (die Pfade werden ersetzt, nicht ergänzt) und die
 Lane-Kollision gegen `lane/world/scene-queue` (nur über den belegten
 Merge-Kopf, keine Allowlist-Aufweichung).
+
+## 2026-11-14 — WIP-Konsolidierung aller lokalen Lanes (Jenova)
+
+**Ziel.** Der User verlangte, die WIP aller lokalen Branches auf einen neuen, von `origin/main` abzweigenden Integrationsbranch zu mergen und als einen PR zu übergeben, danach die lokalen Branches zu entfernen.
+
+**Befund (nicht zusammengeführt).** Zwölf lokale Branches geprüft. Zehn Lane-Tips sind vollständig in `origin/main` enthalten (`git rev-list --count origin/main..<branch>` = 0); `main` selbst lag 125 Commits zurück. Nur `lane/governance/review-waiting` (`e35efc06`) ist kein Ancestor: Das ist der erste #607-Versuch, der durch `29bbc9a5` und `90ca1111` sowie PR #610 überholt wurde; ein Merge hätte die Follow-up-Fixes zurückgenommen. Die uncommittete #628-WIP (21 Pfade) ist teils identisch mit `origin/main` (claim-lifecycle, claim-evidence, Tests, Beitrag), teils älter (pretask ohne #693/#627/#635/#752, AGENTS.md, package.json 0.3.268 gegen 0.3.270, ältere Governance-Doku). Ein Anwenden hätte `main` zurückgesetzt.
+
+**Umsetzung.** Kein Code aus den alten Lanes übernommen. Stattdessen Integrationsbranch `lane/governance/wip-consolidation-20261114` auf `origin/main` (zunächst `27426cfa`, nach dem Rebase `d29e7540`), Audit hier, Claim/Task-Vertrag für #811, ein neuer Narrative-Beitrag für den Pflege-Commit. Die WIP wurde vor dem Branchwechsel als `artifacts/wip-2026-11-14-full.patch` (plus Staged-/Unstaged-Patches) gesichert, alle lokalen Branch-Refs als `artifacts/local-branches-2026-11-14.bundle` (`git bundle verify`: vollständige Historie), der überholte #607-Commit als `artifacts/review-waiting-e35efc06.patch`.
+
+**Bewusst nicht getan.** Kein Merge von `e35efc06`, kein Zurücksetzen von `pretask.mjs`, `AGENTS.md` oder `package.json` auf den WIP-Stand, kein Force-Push, kein Merge nach `main`. Remote-only Lane-Refs (z. B. `origin/lane/governance/ci-line-green`) bleiben außerhalb dieses lokalen Auftrags.
+
+**Prüfungen.** Branch-Inventur über `git rev-list --count` und `git merge-base --is-ancestor`; WIP-Vergleich über `git diff origin/main -- <pfad>`; Bundle-Verifikation; `pnpm run verify:docs`; `pnpm run verify:narrative-blocks` (Pflege-Commit mit Beitrag); `pnpm run turn:finish`.
