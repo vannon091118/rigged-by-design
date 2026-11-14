@@ -1,0 +1,31 @@
+{
+  "id": "lane/render/issue-774-city-door-access",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/render/issue-774-city-door-access",
+  "baseSha": "9a2d7bf1b28cc39432d3aa235d7db96f0f839c10",
+  "issue": 774,
+  "task": "Issue #774: Stadttueren und Ortsziele per DOM und Tastatur zugaenglich machen",
+  "goal": "Dieselben buildDoorActions als fokussierbare Ortsziele anbieten; Enter/Space und Klick nutzen den bestehenden Command-Pfad.",
+  "pathAllowlist": [
+    "src/render/floor-input.ts",
+    "src/ui/city-door-access.tsx",
+    "src/ui/__tests__/action-card.test.tsx",
+    "src/App.tsx",
+    "src/styles/app.css",
+    "docs/INVENTORY.md",
+    "content/narrative/contributions/2026-11-14-city-door-access.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/tasks/render-issue-774-city-door-access.json",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-render-issue-774-city-door-access.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9a2d7bf1b28cc39432d3aa235d7db96f0f839c10"
+}

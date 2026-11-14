@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T23:10Z-city-door-access",
+  "contributionId": "city-door-access-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Stadttür ist nicht nur ein Bild im Fenster. Wer sie mit der Tastatur sucht, findet denselben Ort, denselben Namen und dieselbe Sperre wie mit der Maus. Der Weg ändert die Eingabe, nicht das Ziel: Ein Ort bleibt ein Ort, auch wenn ihn kein Finger trifft.",
+  "directives": []
+}

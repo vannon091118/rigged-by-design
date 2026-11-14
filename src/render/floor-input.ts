@@ -72,6 +72,24 @@ export function handleTap(
   };
 }
 
+/**
+ * Ein Ortsziel ohne Pixelumweg: Die DOM-Schicht uebergibt dieselbe Tuer-ID,
+ * die auch der Pixi-Treffer liefert. Aktionen und Command bleiben identisch.
+ */
+export function doorTap(view: GameView, doorId: string): FloorTap | null {
+  if (view.scene.kind !== 'CITY') return null;
+  const edge = view.layout.edges.find((entry) => entry.kind === 'DOOR' && entry.id === doorId);
+  if (!edge) return null;
+  const actions = buildDoorActions(view, doorId);
+  if (actions.length === 0) return null;
+  return {
+    target: { kind: 'door', id: doorId },
+    actions,
+    at: { x: (edge.x + 0.5) * TILE, y: (edge.y + 0.5) * TILE },
+    anchor: null,
+  };
+}
+
 /** Ab hier ist ein zweiter Klick auf dasselbe Ziel ein Doppelklick, kein zweiter Auftrag. */
 const TAP_WINDOW_MS = 320;
 
