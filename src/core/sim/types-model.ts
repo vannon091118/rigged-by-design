@@ -6,7 +6,8 @@ import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 import type { VisitorMemory } from './narrative/types';
 import type { TraitState } from './city-types';
-import type { LayoutState, LayoutZone, ZoneKind } from './layout-types';
+import type { LayoutState, LayoutZone, ZoneKind } from './layout-types';
+import type { StaffQualification } from './staff-qualification';
 
 /** Spielbedeutung einer Zone; der Layout-Vertrag ist ihre einzige Definition. */
 export type { ZoneKind };
@@ -127,7 +128,9 @@ export type StaffTask =
 export interface StaffAgent {
   id: number; role: StaffRole; x: number; y: number; path: Point[]; pathIndex: number;
   carryingCrate: number | null; workTicks: number; task: StaffTask;
-  blockedReason: string; targetDisputeId: number | null;
+  blockedReason: string; targetDisputeId: number | null;
+  /** Qualifikationsstufe des Agenten; sie bestimmt Lohn und Bewertung. */
+  qualification: StaffQualification;
 }
 export interface Dispute {
   id: number; guestIds: number[]; x: number; y: number; level: number; ticks: number;

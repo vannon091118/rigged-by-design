@@ -111,9 +111,12 @@ describe('Leistungsbewertung aus geleisteter Arbeit', () => {
     const world = createWorld('SMALL');
     const ledger = fundedLedger();
     const first = hireAgent(world, ledger, 'porter');
+    // Gleiche Stufe fuer beide: dieser Test prueft die Summe, nicht den Zuschlag.
+    first.qualification = 'LEHRLING';
     first.workTicks = REVIEW_TICKS.solid - 10;
     expect(staffPerformance([first])).toBe('FRISCH');
     const second = hireAgent(world, ledger, 'cleaner');
+    second.qualification = 'LEHRLING';
     second.workTicks = 10;
     // Zwei Agenten derselben Rolle zaehlen zusammen: 30 + 10 erreicht die Schwelle.
     expect(staffPerformance([first, second])).toBe('SOLIDE');

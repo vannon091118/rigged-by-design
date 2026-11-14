@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-552-staff-qualification",
+  "claimId": "lane/sim/issue-552-staff-qualification",
+  "branch": "lane/sim/issue-552-staff-qualification",
+  "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
+  "phase": "READY",
+  "title": "Personal-Qualifikation und Leistungsbewertung (S3-10)",
+  "goal": "StaffAgent traegt eine Qualifikationsstufe; Lohn und Bewertung leiten sich daraus ab; Anzeige im Build-Panel; Save/Load erhaelt die Stufe",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Qualifikationsmodul, Lohn-/Bewertungspfad, Anzeige, Tests und Narrativbaustein umsetzen.",
+  "revision": 1
+}

@@ -8,6 +8,7 @@
  */
 import type { StaffState, WorldState } from '../core/sim/types';
 import { spawnPoint } from '../core/sim/world';
+import { qualificationForAgent } from '../core/sim/staff-qualification';
 
 interface LegacyStaff extends StaffState {
   readonly guard?: boolean;
@@ -31,7 +32,7 @@ export function repairGuardAgent(world: WorldState, guardWasHired: boolean): voi
   const spawn = spawnPoint(world);
   world.agents.push({
     id: world.nextAgentId, role: 'guard', x: spawn.x, y: spawn.y, path: [], pathIndex: 0,
-    carryingCrate: null, workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null,
+    carryingCrate: null, workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null, qualification: qualificationForAgent(world.nextAgentId),
   });
   world.nextAgentId += 1;
   world.guardsHired = Math.max(world.guardsHired, 1);

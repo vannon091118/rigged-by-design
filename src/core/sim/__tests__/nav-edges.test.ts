@@ -162,7 +162,7 @@ describe('Navigation der Beteiligten', () => {
     const world = worldWith([at('V', 12, 15)]);
     const agent: StaffAgent = {
       id: 99, role: 'cashier', x: 20, y: 25, path: [], pathIndex: 0, carryingCrate: null,
-      workTicks: 0, task: 'idle', blockedReason: '', targetDisputeId: null,
+      workTicks: 0, task: 'idle', blockedReason: '', targetDisputeId: null, qualification: 'GESELLE',
     };
     world.agents.push(agent);
     tickAgents(world, new Ledger(), new Prng(randomSeed()));
