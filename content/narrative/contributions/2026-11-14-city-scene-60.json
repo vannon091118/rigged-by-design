@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:42Z-city-scene-60",
+  "contributionId": "city-scene-60",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Tafel im Vorraum fuehrt noch drei Namen, die laengst drinnen sitzen. Jemand streicht sie durch, ohne dass sich am Betrieb etwas aendert.",
+  "directives": []
+}

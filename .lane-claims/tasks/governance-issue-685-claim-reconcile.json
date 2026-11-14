@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-685-claim-reconcile",
+  "claimId": "lane/governance/issue-685-claim-reconcile",
+  "branch": "lane/governance/issue-685-claim-reconcile",
+  "baseSha": "95ad4214861ed859eadb6472ce622bb884c38c0d",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #685: Claim-Register gegen den Merge-Stand ziehen",
+  "goal": "Gemergte Lanes duerfen nicht open bleiben: Statusabgleich per reconcile:claims --apply im Governance-Turn, ohne Retention-Loeschungen, alles per PR.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Retention-Loeschungen (39 Dateien) bewusst zurueckgenommen; dieser PR aendert nur Claim-Status und Tasks."
+    },
+    {
+      "id": "F-2",
+      "status": "open",
+      "severity": "warning",
+      "summary": "Repo-weites npm run lint bleibt rot an den sleep-Helfern in .cron; der Fix liegt in PR #711 und wird hier absichtlich nicht dupliziert."
+    }
+  ],
+  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
+  "revision": 1
+}

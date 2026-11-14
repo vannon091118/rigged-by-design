@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a48cee74d593b614b390f4ac2afb87ff0764314bf268fda5cea73007564592e5",
+  "contentHash": "sha256:bee4f48e4dca555acf3be0b9ff12abd7d5d36808d96854b6891dc05f3cae46d3",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7355,6 +7355,50 @@
       "text": "Der Wartezettel am Tresen ist abgerissen, und niemand vermisst ihn. Die Schlange bewegt sich auch ohne Nummer, nur langsamer.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-59.json"
+    },
+    {
+      "contributionId": "city-scene-60",
+      "turnId": "2026-11-14T12:42Z-city-scene-60",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tafel im Vorraum fuehrt noch drei Namen, die laengst drinnen sitzen. Jemand streicht sie durch, ohne dass sich am Betrieb etwas aendert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-60.json"
+    },
+    {
+      "contributionId": "city-scene-61",
+      "turnId": "2026-11-14T12:50Z-city-scene-61",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Namensschilder hingen noch am Haken, obwohl ihre Traeger schon durch die Hintertuer hinaus waren. Jetzt haengen sie im Ablagefach, wo sie hingehoeren.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
