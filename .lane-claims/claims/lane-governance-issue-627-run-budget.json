@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/issue-627-run-budget",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-627-run-budget",
+  "baseSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc",
+  "issue": 627,
+  "task": "Externes Laufbudget und Stop-Kriterium (#627)",
+  "goal": "Kill-Switch, Budgets, Finding-Gate und Churn-Trennung",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/",
+    "scripts/",
+    "src/core/governance/__tests__/",
+    "src/core/sim/narrative/composer/",
+    "content/narrative/",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6029255ea6cc4ae027e88e25cf040a476fb889cc"
+}

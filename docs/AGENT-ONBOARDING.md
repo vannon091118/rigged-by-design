@@ -189,7 +189,7 @@ Regeln:
 
 State aktualisieren, zurück zu **5**: nächstes freies Issue claimen, gleicher Lauf.
 
-**Lauf beenden, wenn:** kein freies Issue mehr, Zeitbudget erreicht, oder zwei Issues in Folge durch fehlende Information blockiert. Dann State schreiben und die blockierten Fälle unter `deferred` mit Grund ablegen.
+**Lauf beenden, wenn:** kein freies Issue mehr, Zeitbudget erreicht, oder zwei Issues in Folge durch fehlende Information blockiert. Dann State schreiben und die blockierten Fälle unter `deferred` mit Grund ablegen. Vor dem naechsten Issue `pnpm run run:budget --check` ausfuehren; `BUDGET_EXHAUSTED` oder `KILL_SWITCH` beendet den Lauf, auch wenn noch freie Issues sichtbar sind.
 
 ---
 

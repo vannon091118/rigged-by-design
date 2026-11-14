@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "killSwitch": false,
+  "maxIterations": 3,
+  "maxIssues": 3,
+  "maxCommits": 6,
+  "maxNewGovernanceIssues": 0,
+  "productProgress": {
+    "mergedProductPrs": 0,
+    "acceptedFindings": 0
+  }
+}

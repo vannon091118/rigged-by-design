@@ -37,6 +37,22 @@ Es gibt genau drei Worker-Identitäten: **`LIILITH`**, **`Shinon`** und **`Jenov
 - **Meta-Dateien:** `AGENTS.md`, `package.json`, `pnpm-lock.yaml`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`. Inhaltliche Änderungen brauchen eine Governance- oder ausdrücklich berechtigte Lane.
 - **Kontrollebene:** `.github/`, `scripts/` und `src/Config/` bleiben Governance- oder CI-Lanes vorbehalten; Feature-Claims können sie nicht öffnen.
 
+### Laufbudget und Stop-Vertrag
+
+Ein Lauf endet nicht durch den Agenten, sondern durch eine externe Grenze. Die Grenzen stehen in [`run-budget.json`](run-budget.json) und werden mit `pnpm run run:budget --check` gegen die Commits aus Git geprüft:
+
+```text
+CONTINUE           innerhalb aller Grenzen
+BUDGET_EXHAUSTED   Iterationen, Issues, Commits oder neue Governance-Findings ueber dem Limit
+KILL_SWITCH        Maintainer-Stop; hat Vorrang vor jeder anderen Entscheidung
+```
+
+- `maxIterations`, `maxIssues`, `maxCommits` und `maxNewGovernanceIssues` sind nichtnegative Ganzzahlen; `maxCommits` ist mindestens 1. Eine ungueltige oder fehlende Konfiguration blockiert fail-closed.
+- Der Kill-Switch ist nur eine Stop-Quelle. Ein Agent kann ihn setzen oder ausloesen, aber nicht gegen ein erschoepftes Budget weiterlaufen lassen; jede Grenzaenderung braucht einen sichtbaren Governance-Commit.
+- Neue Findings laufen vor dem Issue durch `pnpm run run:budget --finding <datei.json>`: Beleg (`datei:zeile` oder Befehl), vollstaendiger Main-SHA, Duplikatpruefung, Severity `P0`–`P3` und Zuordnung `product`/`infrastructure` sind Pflicht. Produkt-Findings brauchen zusaetzlich ein `productGoal`.
+- Reine Meta-/Governance-Findings erzeugen keine automatische Folge-Lane; sie werden im Review-Log notiert und nur mit Maintainer-Auftrag zu einem Issue.
+- Jeder Laufbericht trennt `productProgress` (gemergte Produkt-PRs, akzeptierte Findings) von `governanceChurn` (neue Governance-Findings) und nennt Main-SHA, erledigte Produktziele, offene Blocker und die Stop-/Continue-Entscheidung.
+
 ### Worker-Identität und Dependency-Store
 
 `pnpm run worker:init -- status` prüft die lokale Identitätsdatei gegen die globale Reservierung; `-- claim` reserviert, `-- release` gibt frei, `-- inventory` klassifiziert alle Worktrees dieses Repos (clean, dirty, unpushed, review-pending, merged-pending-cleanup, duplicate, orphaned, `INVENTORY_INCOMPLETE`). Der Neuaufbau des Worker-Worktrees ist erst erlaubt, wenn GitHub `merged: true` meldet, der Merge-SHA auf `origin/main` liegt, der lokale HEAD dem PR-HEAD entspricht und der Baum keine ungesicherte Arbeit trägt (`scripts/lib/worktree-lifecycle.mjs`).

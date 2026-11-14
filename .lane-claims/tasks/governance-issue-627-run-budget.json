@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-627-run-budget",
+  "claimId": "lane/governance/issue-627-run-budget",
+  "branch": "lane/governance/issue-627-run-budget",
+  "baseSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc",
+  "phase": "IMPLEMENTING",
+  "title": "Externes Laufbudget und Stop-Kriterium (#627)",
+  "goal": "Kill-Switch, Iterations-/Issue-/Commit-Budget, Churn-Trennung und maschinenpruefbarer Stop-Zustand",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, auf origin/main rebasen, PR anlegen und mit RELEASE/review-waiting übergeben.",
+  "revision": 1
+}
