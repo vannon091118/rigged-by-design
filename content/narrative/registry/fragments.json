@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:29091ee982ce8119519eaede9c7a43841ba6a9e1b9d1c60c9815cdb38c237216",
+  "contentHash": "sha256:5d215c4c306cb4c6423f65cb0d22597f77f5bbf01c915c84fd73888640603c02",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7487,6 +7487,28 @@
       "text": "Zwei Tueren, ein Raum. Ich habe beide benutzt und darauf geachtet, dass dahinter nichts doppelt steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-66.json"
+    },
+    {
+      "contributionId": "city-scene-67",
+      "turnId": "2026-11-14T13:14Z-city-scene-67",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Tueren im Raster, zwei daneben. Ich habe jede einmal geoeffnet und bin jedes Mal denselben Weg zurueckgegangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-67.json"
     },
     {
       "contributionId": "city-scene-70",
