@@ -700,10 +700,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3094 |
-| Gelistete Dateien | 3094 |
+| Getrackte Dateien | 3074 |
+| Gelistete Dateien | 3074 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (88), artifacts (1), content (1134), docs (108), packages (27), public (571), scripts (126), src (1014) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (90), artifacts (1), content (1112), docs (108), packages (27), public (571), scripts (126), src (1014) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -716,10 +716,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 45 Datei(en)
-- `.lane-claims/tasks/` — 41 Datei(en)
+- `.lane-claims/claims/` — 46 Datei(en)
+- `.lane-claims/tasks/` — 42 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1130 Datei(en)
+- `content/narrative/contributions/` — 1108 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -850,6 +850,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/board-state.json` — { — gelesen: 74 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agent-board-workflow.json` — { — gelesen: 25 Zeilen
@@ -915,6 +916,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
@@ -1089,30 +1091,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-07-pool-description-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-description-48","contributionId":"pool-description-48","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-description-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-description-49","contributionId":"pool-description-49","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-description-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-description-50","contributionId":"pool-description-50","ro — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-documentation-27","contributionId":"pool-documentation-27" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-documentation-28","contributionId":"pool-documentation-28" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-documentation-29","contributionId":"pool-documentation-29" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-documentation-30","contributionId":"pool-documentation-30" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-documentation-31","contributionId":"pool-documentation-31" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-documentation-32","contributionId":"pool-documentation-32" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-documentation-33","contributionId":"pool-documentation-33" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-documentation-34","contributionId":"pool-documentation-34" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-documentation-35","contributionId":"pool-documentation-35" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-documentation-36","contributionId":"pool-documentation-36" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-documentation-37","contributionId":"pool-documentation-37" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-documentation-38","contributionId":"pool-documentation-38" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-documentation-39","contributionId":"pool-documentation-39" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-documentation-40","contributionId":"pool-documentation-40" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-documentation-41","contributionId":"pool-documentation-41" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-documentation-42","contributionId":"pool-documentation-42" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-documentation-43","contributionId":"pool-documentation-43" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-documentation-44","contributionId":"pool-documentation-44" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-documentation-45","contributionId":"pool-documentation-45" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-documentation-46","contributionId":"pool-documentation-46" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-documentation-47","contributionId":"pool-documentation-47" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-documentation-48","contributionId":"pool-documentation-48" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-documentation-49","contributionId":"pool-documentation-49" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-documentation-50","contributionId":"pool-documentation-50" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-event-body-08","contributionId":"pool-event-body-08","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-event-body-09","contributionId":"pool-event-body-09","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-event-body-10","contributionId":"pool-event-body-10","role — gelesen: 1 Zeilen
@@ -1465,8 +1447,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-choice-preview-52","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-description-51","contributionId":"pool-description-51","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-description-52","contributionId":"pool-description-52","ro — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-08-pool-documentation-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-documentation-51","contributionId":"pool-documentation-51" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-08-pool-documentation-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-documentation-52","contributionId":"pool-documentation-52" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-event-body-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-event-body-51","contributionId":"pool-event-body-51","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-event-body-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-event-body-52","contributionId":"pool-event-body-52","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-high-01.json` — {"agentId":"buffy","turnId":"2026-11-08T05:40Z-pool-guest-voice-high-01","contributionId":"pool-guest-voice-hi — gelesen: 1 Zeilen
@@ -2071,8 +2051,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25355 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4525 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 24871 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4437 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3431,7 +3411,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 142 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 288 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 282 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
