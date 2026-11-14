@@ -3,7 +3,7 @@
   "taskId": "governance-issue-574-entrance-convention",
   "claimId": "lane/governance/issue-574-entrance-convention",
   "branch": "lane/governance/issue-574-entrance-convention",
-  "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "baseSha": "50e0f7378365f95b072d24edb7de8ecd3f6cd5eb",
   "phase": "IMPLEMENTING",
   "title": "Kneipe ueberlappt Gehweg; Eingangs-Konvention vereinheitlichen (#574)",
   "goal": "Kneipen-Grundriss endet auf der Fassadenzeile der Nachbarn (y+h=12); jede Tuer liegt auf der Gehweg-Zeile, nie auf der Fahrbahn",
@@ -14,7 +14,7 @@
     "number": 683,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/683",
     "state": "open",
-    "head": "f14f8dfe"
+    "head": "d359fe7f"
   },
   "findings": [
     {
