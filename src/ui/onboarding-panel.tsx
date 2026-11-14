@@ -8,6 +8,39 @@ interface Props {
   readonly onOpen: (popup: Popup) => void;
 }
 
+/**
+ * Der Raum-Schritt nennt den nächsten echten Handgriff: Kiste aufnehmen, Gerät
+ * aufstellen, erst dann ist der Auftrag zu haben (#534/S1-06). Der Zustand kommt
+ * aus der Sicht, nicht aus einem zweiten Tutorial-Flag.
+ */
+function CasinoStep({ view }: { readonly view: GameView }) {
+  if (view.furniture.some((item) => item.gameId)) {
+    return (
+      <>
+        <p>Der Automat steht. Der erste Gast kommt, sobald die Kasse offen ist – er findet ein Gerät vor.</p>
+        <div className="onboarding-actions">
+          <button type="button" className="btn primary" onClick={() => worldStore.scene.finishOnboarding()}>
+            AUFTRAG ANNEHMEN
+          </button>
+        </div>
+      </>
+    );
+  }
+  const starter = view.crates.find((crate) => crate.payload.kind === 'FURNITURE' && crate.payload.buildId === 'SLOT');
+  if (starter?.carriedBy === 'player') {
+    return <p>Du trägst die Kiste. Klick auf eine freie Fläche im Raum, dann steht der Automat.</p>;
+  }
+  if (starter) {
+    return (
+      <p>
+        Die Starter-Kiste liegt am Eingang. Klick sie an und danach eine freie Fläche: dein Charakter
+        trägt sie hin und baut den Automaten auf. Erst dann kommt der erste Gast.
+      </p>
+    );
+  }
+  return <p>Im Raum steht noch kein Gerät. Bestell eins im Betrieb – ohne Automaten kommt kein Gast.</p>;
+}
+
 export function OnboardingPanel({ view, onOpen }: Props) {
   const step = view.onboarding.step;
   // Nur Wohnung, Stadt und Raum haben ein Panel; Eroeffnung, Abschluss und
@@ -48,12 +81,7 @@ export function OnboardingPanel({ view, onOpen }: Props) {
       ) : (
         <>
           <h2>Der Raum ist dein.</h2>
-          <p>Die Starter-Kiste liegt am Eingang. Stell den Automaten auf, dann kann der erste Gast kommen.</p>
-          <div className="onboarding-actions">
-            <button type="button" className="btn primary" onClick={() => worldStore.scene.finishOnboarding()}>
-              AUFTRAG ANNEHMEN
-            </button>
-          </div>
+          <CasinoStep view={view} />
         </>
       )}
     </section>

@@ -1,108 +1,28 @@
 /**
  * Nachfrage: Ankuenfte werden geplant statt pro Tick gewuerfelt.
  * Es gibt keine Gaesteobergrenze; Sitzplaetze und Kasse entscheiden nur,
- * wie gut der Betrieb den Andrang bedient.
+ * wie gut der Betrieb den Andrang bedient. Die Quellen stehen in
+ * `demand-sources.ts`, hier steht die Planung und der Einlass.
  */
+import { TICKS_PER_DAY, tickInDay } from './clock';
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
-import { recordJournal } from './journal';
 import { activeDemand } from './narrative/demand-events';
-import { attractionOf } from './offers';
-import { openVenueEvent } from './venue-event';
-import { UNSAFE_REPUTATION_SPAWN_FACTOR } from './penalty-pool';
+import { demandBreakdown, isPeak, tierRank, TIER_NAME, TIER_PER_DAY } from './demand-sources';
+import { recordJournal } from './journal';
 import { companyTier } from './progression';
-import { reputation, spawnGuest } from './spawn';
+import { openVenueEvent } from './venue-event';
+import { spawnGuest } from './spawn';
 import { exchangePoint } from './world';
-import type { DemandEventKind, DemandSnapshot, DemandSource, DemandTier, WorldState } from './types';
+import type { DemandEventKind, DemandTier, WorldState } from './types';
 
-import { TICKS_PER_DAY, tickInDay } from './clock';
+export { demandBreakdown } from './demand-sources';
+
 /** Der erste Gast steht nach sechs Sekunden vor der Tuer, egal wie der Wuerfel faellt. */
 export const FIRST_ARRIVAL_TICK = 12;
 const MIN_GAP = 4;
-const PEAK_FROM = 360;
-const PEAK_TO = 540;
 
-/** Balancierbare Nachfrage in Gaesten pro Tag; keine davon ist eine Obergrenze. */
-const BASE_PER_DAY = 8;
-const REPUTATION_PER_DAY = 12;
-const SATISFACTION_PER_DAY = 8;
-const REGULAR_PER_DAY = 2;
-const REGULAR_CAP = 14;
-const ATTRACTION_PER_DAY = 10;
-const ATTRACTION_DIVISOR = 250;
-const PEAK_PER_DAY = 6;
-
-const TIER_ORDER: readonly DemandTier[] = ['BUDE', 'KASSE', 'SAAL', 'KONZERN'];
-const TIER_NAME: Readonly<Record<DemandTier, string>> = {
-  BUDE: 'Hinterhof-Bude', KASSE: 'Bude mit Kasse', SAAL: 'Spielsaal', KONZERN: 'Konzern',
-};
-/** Jede erreichte Stufe schaltet Nachfrage hinzu; sie deckelt nichts. */
-const TIER_PER_DAY: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 8, SAAL: 12, KONZERN: 24 };
 const EVENT_CHANCE: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 0.18, SAAL: 0.28, KONZERN: 0.36 };
-
-function isPeak(world: WorldState): boolean {
-  const phase = tickInDay(world.tick);
-  return phase >= PEAK_FROM && phase < PEAK_TO;
-}
-
-function tierRank(tier: DemandTier): number {
-  return TIER_ORDER.indexOf(tier);
-}
-
-/** Alle Quellen einzeln, damit der Andrang nachvollziehbar bleibt. */
-export function demandBreakdown(world: WorldState): DemandSnapshot {
-  const rep = reputation(world);
-  const regulars = world.visitors.filter((visitor) => visitor.visits >= 2).length;
-  const sources: DemandSource[] = [
-    { id: 'BASE', label: 'Grundrauschen', perDay: BASE_PER_DAY },
-    { id: 'REPUTATION', label: `Ruf ${Math.round(rep)} %`, perDay: (rep / 100) * REPUTATION_PER_DAY },
-    {
-      id: 'SATISFACTION',
-      label: `Zufriedenheit ${Math.round(world.satisfaction)} %`,
-      perDay: (world.satisfaction / 100) * SATISFACTION_PER_DAY,
-    },
-    {
-      id: 'REGULARS',
-      label: `Stammgäste ${regulars}`,
-      // Stammgäste bringen nur Nachfrage, wenn der Laden sie auch zufrieden entlaesst.
-      perDay: Math.min(REGULAR_CAP, regulars * REGULAR_PER_DAY) * (world.satisfaction / 100),
-    },
-    {
-      id: 'ATTRACTION',
-      label: 'Anziehung',
-      perDay: Math.min(ATTRACTION_PER_DAY, attractionOf(world) / ATTRACTION_DIVISOR),
-    },
-    { id: 'TIER', label: `Stufe ${TIER_NAME[world.demandTier]}`, perDay: TIER_PER_DAY[world.demandTier] },
-  ];
-  if (isPeak(world)) sources.push({ id: 'PEAK', label: 'Stoßzeit am Abend', perDay: PEAK_PER_DAY });
-  const active = activeDemand(world);
-  if (active) {
-    sources.push({
-      id: 'EVENT',
-      label: active.definition.label,
-      perDay: active.definition.perDay,
-    });
-  }
-  let perDay = sources.reduce((sum, source) => sum + source.perDay, 0);
-  if (world.activePenalties.some((penalty) => penalty.kind === 'UNSAFE_REPUTATION')) {
-    const malus = perDay * (1 - UNSAFE_REPUTATION_SPAWN_FACTOR);
-    sources.push({ id: 'UNSAFE', label: 'Unsicherer Ruf', perDay: -malus });
-    perDay -= malus;
-  }
-  const event = active
-    ? {
-        kind: active.event.eventId as DemandEventKind,
-        label: active.definition.label,
-        ticksLeft: Math.max(0, active.event.expiresTick - world.tick),
-      }
-    : null;
-  return {
-    perDay,
-    sources,
-    nextArrivalIn: Math.max(0, world.nextArrivalTick - world.tick),
-    event,
-  };
-}
 
 /** Exponentialverteiltes Intervall; die Stichprobe folgt der angezeigten Rate ohne Deckel. */
 export function arrivalGap(prng: Prng, perDay: number): number {
@@ -164,10 +84,21 @@ function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
   openVenueEvent(world, kind);
 }
 
+/** Ein aufgestelltes Geraet ist die Voraussetzung fuer einen Gast; ohne es gibt es nichts zu spielen. */
+function hasPlayableDevice(world: WorldState): boolean {
+  return world.furniture.some((item) => Boolean(item.gameId));
+}
+
 /** Plant die naechste Ankunft und laesst faellige Gruppen herein. Kein Blick auf eine Gaestezahl. */
 export function tickDemand(world: WorldState, ledger: Ledger, prng: Prng): void {
   // Nur der eigene Floor mit Kasse zieht neue Gaeste; bestehende Gaeste ticken in tickWorld weiter.
   if (world.scene.kind !== 'OWN' || !exchangePoint(world)) return;
+  // Ohne Automat steht der erste Gast vor GERÄTE 0/0: Die Frist beginnt erst mit
+  // dem ersten spielbaren Geraet (#534/S1-06), nicht mit dem Betreten des Raums.
+  if (!hasPlayableDevice(world)) {
+    world.nextArrivalTick = world.tick + FIRST_ARRIVAL_TICK;
+    return;
+  }
   tickEvent(world, ledger, prng);
   if (world.tick < world.nextArrivalTick) return;
   const demand = demandBreakdown(world);

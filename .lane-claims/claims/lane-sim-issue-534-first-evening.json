@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/issue-534-first-evening",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-534-first-evening",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "task": "Ersten Abend bis zum ersten Automaten: Kiste fuehrt sichtbar zum Geraet (#534, S1-06)",
+  "goal": "Ein frischer Start fuehrt ohne Sackgasse von der Eroeffnung ueber die Wohnung zum eigenen Floor; der erste Gast kommt erst, wenn ein Automat steht, und findet ihn auch nach Save/Load.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/ui/**",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-sim-issue-534-first-evening.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "22e28c6af35346766bc3890bbd10aeac193b3c83"
+}

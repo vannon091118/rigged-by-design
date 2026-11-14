@@ -71,6 +71,11 @@ describe('Der erste Abend als Kette', () => {
     expect(world.onboarding?.step).toBe('CASINO');
     expect(exchangePoint(world)).not.toBeNull();
 
+    // 3. Ohne Gerät kommt niemand: der erste Gast steht nicht vor GERÄTE 0/0.
+    expect(world.furniture.some((item) => item.gameId)).toBe(false);
+    for (let step = 0; step < 30; step += 1) tickWorld(world, ledger, prng);
+    expect(world.guests).toHaveLength(0);
+
     // 3. Der Automat aus der Kiste ist der Weg fuer den ersten Gast.
     deployStarter(world);
     expect(world.furniture.some((item) => item.gameId === 'SLOT')).toBe(true);

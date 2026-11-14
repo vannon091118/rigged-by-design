@@ -1,0 +1,22 @@
+{
+  "agentId": "local-agent-1",
+  "turnId": "2026-11-14T00:55Z-first-evening-crate",
+  "contributionId": "first-evening-crate-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "start",
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Kiste steht am Eingang, ein Kantholz mit Reißverschluss aus Pappe. Solange sie zu ist, ist der Raum nur ein Raum: eine Kasse, frisches Linoleum und die Aussicht, dass hier gleich etwas surrt.",
+  "directives": []
+}

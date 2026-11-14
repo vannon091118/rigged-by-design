@@ -9,12 +9,12 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { arrivalGap, demandBreakdown } from '../demand';
+import { arrivalGap, demandBreakdown, FIRST_ARRIVAL_TICK } from '../demand';
 import { guestAccount } from '../money';
 import { activeDemandEvent, startDemandEvent } from '../narrative/demand-events';
 import { maintainEvents } from '../narrative/event-scheduler';
 import { spawnGuest } from '../spawn';
-import { createWorld } from '../templates';
+import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
 import { exchangePoint } from '../world';
 import { randomSeed } from '../../../test/random-seed';
@@ -30,6 +30,20 @@ describe('Ankunftsplanung', () => {
     for (let step = 0; step < 12; step += 1) tickWorld(world, ledger, prng);
     expect(world.guests.length).toBeGreaterThan(0);
     expect(world.nextArrivalTick).toBeGreaterThan(world.tick);
+  });
+
+  it('stellt den ersten Gast nicht in einen leeren Raum, solange kein Gerät steht', () => {
+    const { world, ledger, prng } = setup();
+    world.furniture = world.furniture.filter((item) => !item.gameId);
+    const firstId = world.nextGuestId;
+    for (let step = 0; step < 40; step += 1) tickWorld(world, ledger, prng);
+    expect(world.guests).toHaveLength(0);
+    expect(world.nextGuestId).toBe(firstId);
+
+    // Erst der Automat macht den Raum spielbar; dann steht der Gast in der Frist.
+    ensureStarter(world);
+    for (let step = 0; step < FIRST_ARRIVAL_TICK; step += 1) tickWorld(world, ledger, prng);
+    expect(world.guests.length).toBeGreaterThan(0);
   });
 
   it('sperrt den Eingang nicht bei besetzten Sitzplätzen', () => {

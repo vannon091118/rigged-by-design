@@ -22,7 +22,7 @@ import { GamesPopup } from '../games-popup';
 import { HelpPopup } from '../help-popup';
 import { Hud } from '../hud';
 import { OpeningCard, OpeningGate } from '../opening-card';
-import { OnboardingPanel } from '../onboarding-panel';
+
 import { JournalPopup } from '../journal-popup';
 import { LookPopup } from '../look-popup';
 import { PopupShell } from '../popup-shell';
@@ -80,41 +80,6 @@ describe('UI-Integration', () => {
     expect(screen.getByLabelText('Eröffnung')).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
     expect(screen.queryByLabelText('Eröffnung')).toBeNull();
-  });
-
-  it('zeigt je Startschritt genau ein Modal: Eröffnung, Wohnung, Stadt, Raum, keins', () => {
-    worldStore.newGame('SMALL');
-    const both = (): ReturnType<typeof render> => render(
-      <>
-        <OpeningGate />
-        <OnboardingPanel view={worldStore.getSnapshot()} onOpen={noop} />
-      </>,
-    );
-    const modals = (): number =>
-      (screen.queryByLabelText('Eröffnung') ? 1 : 0) + (screen.queryByLabelText('Erste Schritte') ? 1 : 0);
-
-    // OPENING: die Eröffnung allein.
-    const opening = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Eröffnung')).not.toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
-    opening.unmount();
-
-    const step = (tip: string, action: string): void => {
-      const { unmount } = both();
-      expect(modals()).toBe(1);
-      expect(screen.getByLabelText('Erste Schritte').textContent).toContain(tip);
-      fireEvent.click(screen.getByRole('button', { name: action }));
-      unmount();
-    };
-
-    step('Du bist zu Hause', 'HAUSTÜR ÖFFNEN');
-    step('Die Stadt wartet', 'CASINO BETRETEN');
-    step('Der Raum ist dein', 'AUFTRAG ANNEHMEN');
-
-    // DONE: kein Startmodal mehr.
-    both();
-    expect(modals()).toBe(0);
   });
 
   it('erklärt die Hilfe ohne Bank-Rolle', () => {

@@ -4184,6 +4184,10 @@
     {
       "turnId": "2026-11-13T23:52Z-claim-closeout-556",
       "contributionId": "claim-closeout-556-01"
+    },
+    {
+      "turnId": "2026-11-14T00:55Z-first-evening-crate",
+      "contributionId": "first-evening-crate-01"
     }
   ]
 }
