@@ -711,10 +711,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3149 |
-| Gelistete Dateien | 3149 |
+| Getrackte Dateien | 3150 |
+| Gelistete Dateien | 3150 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (125), artifacts (1), content (1134), docs (108), packages (27), public (571), scripts (127), src (1031) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (125), artifacts (1), content (1135), docs (108), packages (27), public (571), scripts (127), src (1031) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -730,7 +730,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/` — 64 Datei(en)
 - `.lane-claims/tasks/` — 59 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1130 Datei(en)
+- `content/narrative/contributions/` — 1131 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -858,7 +858,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 552 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 564 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -895,7 +895,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-infra-issue-623-ledger-tick-balance.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-render-residence-role.json` — { — gelesen: 21 Zeilen
@@ -955,7 +955,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/render-residence-role.json` — { — gelesen: 17 Zeilen
@@ -2108,6 +2108,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-rumor-12.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-13.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-rumor-14.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-rumor-15.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
@@ -2119,8 +2120,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25362 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4525 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25386 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4529 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
