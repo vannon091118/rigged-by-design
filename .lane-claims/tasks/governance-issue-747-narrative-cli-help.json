@@ -4,12 +4,12 @@
   "claimId": "lane/governance/issue-747-narrative-cli-help",
   "branch": "lane/governance/issue-747-narrative-cli-help",
   "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Issue #747: --help im Narrative-Gate",
   "goal": "`--help` zeigt die Nutzung ohne Prueflauf, unbekannte Optionen enden mit Exit 2; der normale Lauf bleibt unveraendert und ist durch Tests belegt.",
   "taskType": "single",
   "holdMerge": false,
-  "pr": null,
+  "pr": 749,
   "findings": [
     {
       "id": "F-1",
@@ -18,6 +18,6 @@
       "summary": "Nur die dokumentierten Schalter --commit und --pr sind erlaubt; weitere kuenftige Optionen muessen bewusst ergaenzt werden."
     }
   ],
-  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "nextAction": "Gemergt als 5f8be769 (PR #749); Claim freigegeben.",
   "revision": 1
 }

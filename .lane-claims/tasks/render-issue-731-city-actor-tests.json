@@ -4,12 +4,12 @@
   "claimId": "lane/render/issue-731-city-actor-tests",
   "branch": "lane/render/issue-731-city-actor-tests",
   "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Issue #731: Tests fuer CityActorSync sync/animate",
   "goal": "sync() und animate() mit gestubbten Figuren, World und Depth abdecken: Snapshot-Position sofort, Identitaet je NPC-Kennung, Interpolation im vorhandenen Tick und Aufraeumen.",
   "taskType": "single",
   "holdMerge": false,
-  "pr": null,
+  "pr": 745,
   "findings": [
     {
       "id": "F-1",
@@ -18,6 +18,6 @@
       "summary": "Ein visueller Pixi-Beleg bleibt offen; der Test belegt Geometrie und Lifecycle, nicht das gerenderte Bild."
     }
   ],
-  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "nextAction": "Gemergt als f57bfb58 (PR #745); Claim freigegeben.",
   "revision": 1
 }

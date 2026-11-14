@@ -4,12 +4,12 @@
   "claimId": "lane/governance/issue-750-run-budget-findings",
   "branch": "lane/governance/issue-750-run-budget-findings",
   "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Issue #750: Befundpflicht im Laufbudget",
   "goal": "Ein Budget von 0 fuer neue Governance-Findings als Fehlkonfiguration abweisen und den Lauf erst nach dem Ticket stoppen (TICKET_THEN_STOP).",
   "taskType": "single",
   "holdMerge": false,
-  "pr": null,
+  "pr": 751,
   "findings": [
     {
       "id": "F-1",
@@ -18,6 +18,6 @@
       "summary": "Die Pflicht ist als Mindestgrenze 1 kodiert; ein Maintainer kann sie nicht mehr auf 0 setzen, ohne die Konfiguration ungueltig zu machen."
     }
   ],
-  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "nextAction": "Gemergt als 30367911 (PR #751); Claim freigegeben.",
   "revision": 1
 }
