@@ -24,8 +24,8 @@ const service = (id: number, kind: 'EXCHANGE' | 'BAR' | 'TOILET' | 'STORAGE', la
     zoneId, occupants: [], mods: [], reels: 0, baseBet: 0 as VaCoinMicro };
 };
 
-const decor = (id: number, label: string, x: number, y: number, w: number, h: number, seats: number, zoneId: string): Furniture =>
-  ({ id, kind: 'DECOR', label, x, y, w, h, seats, price: fromVC(0), quality: 1, condition: 100, damaged: false,
+const decor = (id: number, label: string, x: number, y: number, w: number, h: number, seats: number, zoneId: string, artId?: string): Furniture =>
+  ({ id, kind: 'DECOR', label, artId, x, y, w, h, seats, price: fromVC(0), quality: 1, condition: 100, damaged: false,
     dirt: 0, stock: 0, clog: 0, clogged: false, zoneId, occupants: [], mods: [], reels: 0, baseBet: 0 as VaCoinMicro });
 
 const SMALL_ZONES: readonly Zone[] = [
@@ -70,7 +70,7 @@ export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: read
       decor(5, 'Pflanze', 10, 22, 1, 1, 0, 'lounge'),
       decor(6, 'Sofa', 7, 24, 2, 1, 2, 'lounge'),
       service(7, 'STORAGE', 'Lager', 1, 25, 'storage'),
-      decor(8, 'Spiegel', 4, 25, 1, 1, 0, 'storage'),
+      decor(8, 'Spiegel', 4, 25, 1, 1, 0, 'storage', 'decor:mirror'),
     ],
   },
   MEDIUM: {
@@ -92,7 +92,7 @@ export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: read
       decor(13, 'Pflanze', 54, 8, 1, 1, 0, 'lounge'),
       decor(14, 'Sofa', 52, 10, 2, 1, 2, 'lounge'),
       service(15, 'STORAGE', 'Lager', 51, 40, 'storage'),
-      decor(16, 'Spiegel', 54, 40, 1, 1, 0, 'storage'),
+      decor(16, 'Spiegel', 54, 40, 1, 1, 0, 'storage', 'decor:mirror'),
     ],
   },
   LARGE: {
@@ -116,7 +116,7 @@ export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: read
       decor(15, 'Pflanze', 80, 12, 1, 1, 0, 'lounge'),
       decor(16, 'Sofa', 77, 28, 2, 1, 2, 'lounge'),
       service(17, 'STORAGE', 'Lager', 75, 60, 'storage'),
-      decor(18, 'Spiegel', 78, 60, 1, 1, 0, 'storage'),
+      decor(18, 'Spiegel', 78, 60, 1, 1, 0, 'storage', 'decor:mirror'),
     ],
   },
 };

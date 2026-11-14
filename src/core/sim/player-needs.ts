@@ -122,9 +122,9 @@ export function cityReputationGain(needs: PlayerNeeds, base: number): number {
   return Math.round(base * playerCondition(needs).reputationFactor * 100) / 100;
 }
 
-function homeItem(world: WorldState, label: string): { readonly x: number; readonly y: number; readonly label: string } {
+function homeItem(world: WorldState, artId: string): { readonly x: number; readonly y: number; readonly label: string } {
   if (world.scene.kind !== 'APARTMENT') throw new Error('Essen und Trinken zu Hause geht nur in deiner Wohnung.');
-  const item = playerApartmentFurniture().find((entry) => entry.label.includes(label));
+  const item = playerApartmentFurniture().find((entry) => entry.artId === artId);
   if (!item) throw new Error('Das passende Haushaltsgeraet fehlt.');
   if (!near(world, item)) throw new Error('Geh erst an die Kuechenzeile.');
   return item;
@@ -137,7 +137,7 @@ function near(world: WorldState, item: { readonly x: number; readonly y: number 
 /** Essen an der Kochnische: Hunger sinkt, Durst sinkt mit, Erfahrung wird gutgeschrieben. */
 export function eatAtHome(world: WorldState): void {
   if (needAtMost(world.player.needs.hunger, 5)) throw new Error('Du bist satt.');
-  homeItem(world, 'Kochnische');
+  homeItem(world, 'apartment:kitchen_counter');
   world.player.needs = applyPlayerFood(world.player.needs, 'MEAL');
   grantGlobalXp(world.player.rpg, 'HOME_MEAL', PLAYER_MEAL_XP);
   world.lastEvent = `Du isst an der Kochnische. Hunger ${Math.round(world.player.needs.hunger)}, Durst ${Math.round(world.player.needs.thirst)}.`;
@@ -146,7 +146,7 @@ export function eatAtHome(world: WorldState): void {
 /** Trinken am Kuehlschrank: Durst sinkt deutlich, der Hunger nur leicht. */
 export function drinkAtHome(world: WorldState): void {
   if (needAtMost(world.player.needs.thirst, 5)) throw new Error('Du hast keinen Durst.');
-  homeItem(world, 'Kühlschrank');
+  homeItem(world, 'apartment:fridge');
   world.player.needs = applyPlayerFood(world.player.needs, 'DRINK');
   grantGlobalXp(world.player.rpg, 'HOME_DRINK', PLAYER_DRINK_XP);
   world.lastEvent = `Du trinkst am Kuehlschrank. Durst ${Math.round(world.player.needs.thirst)}, Hunger ${Math.round(world.player.needs.hunger)}.`;

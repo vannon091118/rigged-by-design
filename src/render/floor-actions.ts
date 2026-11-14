@@ -2,7 +2,9 @@
 import { cityDoorEffect, grownDoorBuilding, type CityStreetDoorId } from '../core/sim/city-doors';
 import { isShell } from '../core/sim/city-construction';
 import type { InteractionTarget } from '../core/sim/interaction';
+import type { Furniture } from '../core/sim/types';
 import type { GameView } from '../store/types';
+import { resolveFurnitureRole } from './decor-roles';
 
 export type MenuAction = {
   id: string;
@@ -133,16 +135,16 @@ export function buildDoorActions(view: GameView, doorId: string): MenuAction[] {
   }];
 }
 
+type FurnitureActionItem = Pick<Furniture, 'id' | 'kind' | 'stock' | 'label' | 'gameId' | 'artId'>;
+
 export function buildFurnitureActions(
   world: ActionView,
-  item: {
-    id: number; kind: string; stock: number; dirt: number; label: string;
-    gameId?: string;
-  },
+  item: FurnitureActionItem,
 ): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
   const actions: MenuAction[] = [];
   const focus = target('furniture', item.id);
+  const role = resolveFurnitureRole(item)?.role;
 
   if (item.gameId) {
     actions.push({ id: 'OPEN_MACHINE', label: 'Gerät öffnen', enabled: true, targetId: item.id, target: focus });
@@ -163,12 +165,12 @@ export function buildFurnitureActions(
   } else if (item.kind === 'STORAGE') {
     actions.push({ id: 'GET_DRINKS', label: 'Getränke holen', enabled: true, targetId: item.id, target: focus });
     actions.push({ id: 'GET_PARTS', label: 'Ersatzteile holen', enabled: true, targetId: item.id, target: focus });
-  } else if (item.kind === 'EXCHANGE' || item.kind === 'DESK') {
+  } else if (item.kind === 'EXCHANGE') {
     actions.push({ id: 'SERVE_DESK', label: 'Kasse bedienen', enabled: true, targetId: item.id, target: focus });
-  } else if (item.kind === 'DECOR' && /spiegel|mirror/i.test(item.label)) {
+  } else if (role === 'MIRROR' || role === 'SINK') {
     actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true, targetId: item.id, target: focus });
   }
-  if (world.scene.kind === 'APARTMENT' && item.kind === 'DECOR' && /kühlschrank/i.test(item.label)) {
+  if (world.scene.kind === 'APARTMENT' && role === 'FRIDGE') {
     const thirsty = world.player.needs.thirst > 5;
     actions.push({
       id: 'DRINK_AT_HOME', label: 'Etwas trinken', enabled: thirsty,
@@ -176,7 +178,7 @@ export function buildFurnitureActions(
       reason: thirsty ? undefined : 'Du hast keinen Durst.',
     });
   }
-  if (world.scene.kind === 'APARTMENT' && item.kind === 'DECOR' && /kochnische/i.test(item.label)) {
+  if (world.scene.kind === 'APARTMENT' && role === 'KITCHEN') {
     const hungry = world.player.needs.hunger > 5;
     actions.push({
       id: 'EAT_AT_HOME', label: 'Etwas essen', enabled: hungry,

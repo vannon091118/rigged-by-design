@@ -55,6 +55,7 @@ const ART_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
   'apartment:toilet': { role: 'TOILET', asset: null, key: 'apt:TOILET' },
   'apartment:sink': { role: 'SINK', asset: null, key: 'apt:SINK' },
   'apartment:smartphone': { role: 'SMARTPHONE', asset: null, key: 'apt:SMARTPHONE' },
+  'decor:mirror': { role: 'MIRROR', asset: null, key: 'decor:MIRROR' },
 };
 
 /** Nur exakte, bewusst registrierte Anzeigenamen; kein Muster, kein `includes`. */
@@ -91,7 +92,9 @@ const LABEL_ROLES: Readonly<Record<string, FurnitureRoleResolution>> = {
 };
 
 /** Löst eine Rolle ausschließlich aus stabilen IDs und exakten Labels. */
-export function resolveFurnitureRole(item: Furniture): FurnitureRoleResolution | null {
+export function resolveFurnitureRole(
+  item: Pick<Furniture, 'artId' | 'gameId' | 'kind' | 'label'>,
+): FurnitureRoleResolution | null {
   if (item.artId) {
     const art = ART_ROLES[item.artId];
     if (art) return art;
@@ -104,4 +107,5 @@ export function resolveFurnitureRole(item: Furniture): FurnitureRoleResolution |
 }
 
 /** Ein unbekanntes Möbel bleibt sichtbar unaufgelöst, keine geratene Rolle. */
-export const isUnresolvedFurniture = (item: Furniture): boolean => resolveFurnitureRole(item) === null;
+export const isUnresolvedFurniture = (item: Pick<Furniture, 'artId' | 'gameId' | 'kind' | 'label'>): boolean =>
+  resolveFurnitureRole(item) === null;
