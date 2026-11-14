@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c2ce4ebbe8499ccc8b1b344b64f5b41523a6788f7214c567a4e482ddb1620bef",
+  "contentHash": "sha256:9efa879482a8cd2c7259697ddfa689beba51f1616a5fa0b4e3c0e52a170436fe",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -9041,6 +9041,28 @@
       "text": "Im Geldblock steht jetzt auch, was offen ist. Die Zahl wächst nur, wenn eine Rechnung ungedeckt bleibt, und schrumpft mit jeder Tilgung; niemand führt sie neben dem Buch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-house-debt.json"
+    },
+    {
+      "contributionId": "image-diff-gate-test-repair-01",
+      "turnId": "2026-11-14T11:25Z-narrative-image-diff-gate-fix",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das lokale Bild-Diff-Gate erhielt reparierte Tests: Der kaputte it()-Oeffner wurde geschlossen, readonly-Typen entfernt, Toleranz-Grenzwerte konsistent mit der Implementierung. Vierzehn Pruefungen laufen gruen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-image-diff-gate-test-repair.json"
     },
     {
       "contributionId": "influence-matrix-01",
