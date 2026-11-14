@@ -4,7 +4,7 @@
   "claimId": "lane/sim/issue-706-pathfinding-detour",
   "branch": "lane/sim/issue-706-pathfinding-detour",
   "baseSha": "680700c0f9f1a339cf716bbacbce70ab2101c9cf",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #706: ungenutzte pathfinding-detour-API entfernen",
   "goal": "Die von keinem Verbraucher genutzte Detour-/Waypoint-API samt No-Op findBlockerOnPath entfernen; Kern-Pfadfindung bleibt unveraendert.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Gates auf dem Branch-Kopf ausfuehren, dann PR gegen main.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

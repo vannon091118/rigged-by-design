@@ -4,7 +4,7 @@
   "claimId": "lane/governance/main-gates-repair-v2",
   "branch": "lane/governance/main-gates-repair-v2",
   "baseSha": "751edc66291708f1a933b23ba6c5696f14e29e1d",
-  "phase": "READY",
+  "phase": "DONE",
   "title": "Unblocker #702: pathfinding.ts regelkonform aufteilen und Bild-Diff-Gate-Typfehler an der Ursache beheben",
   "goal": "check:loc und typecheck auf dem Branch ohne Schwellenaenderung oder Bypass auf Exit 0 bringen; verwaiste Claims geschlossener Issues nur im Status nachziehen.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

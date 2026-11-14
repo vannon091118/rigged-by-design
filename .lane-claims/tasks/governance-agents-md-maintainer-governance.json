@@ -4,13 +4,13 @@
   "claimId": "lane/governance/agents-md-maintainer-governance",
   "branch": "lane/governance/agents-md-maintainer-governance",
   "baseSha": "af032bdecafd96b774408296d3a0ee23e452909f",
-  "phase": "READY",
+  "phase": "DONE",
   "title": "AGENTS.md: Maintainer-Governance-Bloecke ergaenzen",
   "goal": "Vier Maintainer-Governance-Bloecke nach Gap-Analyse in AGENTS.md ergaenzen: Scope-Hierarchie, Maintainer-Prioritaeten, Maintainer-Protokoll, Governance-Drift-Eskalation in Regel 10",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "findings": [],
-  "nextAction": "Commit und Push der Lane; PR gegen main oeffnen; Review beim Maintainer.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

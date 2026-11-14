@@ -4,7 +4,7 @@
   "claimId": "lane/render/r8-city-assets",
   "branch": "lane/render/r8-city-assets",
   "baseSha": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "R8: Stadt-Assetpaket und Weltmetadaten als geprüften Vertrag anbinden",
   "goal": "Stadtassets erhalten Rolle, Welt, ganzzahlige displayScale und Rechteangabe; city-assets.ts wird der eine Metadatenleser mit Test.",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "PR #511 ist offen; Sichtabnahme (Screenshot/Pixel) und vollständiger App-Boot vor Merge nachholen.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 4
 }

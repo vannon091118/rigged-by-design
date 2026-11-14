@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-672-canonical-priorities",
   "branch": "lane/governance/issue-672-canonical-priorities",
   "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Maintainer-Prioritaeten und Board-Regeln kanonisch vereinheitlichen",
   "goal": "Eine kanonische P0-P3-Definition in docs/GOVERNANCE.md; AGENTS.md, WORKFLOW und AGENT-ONBOARDING ohne Regel-Duplikate",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "headSha": "06f5589a0be3c45078be95a2fef0dea7e93cd03e"
   },
   "findings": [],
-  "nextAction": "PR #682 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 2
 }

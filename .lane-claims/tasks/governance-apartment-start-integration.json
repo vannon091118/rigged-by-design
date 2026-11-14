@@ -4,7 +4,7 @@
   "claimId": "lane/governance/apartment-start-integration",
   "branch": "lane/governance/apartment-start-integration",
   "baseSha": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Integration: Wohnung und Roadmap auf main",
   "goal": "Den lokal zusammengefuehrten Baum mit Wohnungsstart und Roadmap als PR auf main bringen.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Integrationsbranch pushen, PR gegen main oeffnen und nach gruener Pruefung mergen.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

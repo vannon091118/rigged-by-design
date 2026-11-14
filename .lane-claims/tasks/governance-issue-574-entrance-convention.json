@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-574-entrance-convention",
   "branch": "lane/governance/issue-574-entrance-convention",
   "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Kneipe ueberlappt Gehweg; Eingangs-Konvention vereinheitlichen (#574)",
   "goal": "Kneipen-Grundriss endet auf der Fassadenzeile der Nachbarn (y+h=12); jede Tuer liegt auf der Gehweg-Zeile, nie auf der Fahrbahn",
   "taskType": "single",
@@ -25,7 +25,7 @@
       "kind": "infrastructure"
     }
   ],
-  "nextAction": "Maintainer-Review auf dem bereinigten Kopf; danach Merge und Closeout von #574",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "rework": {
     "verdict": "PARTIAL",
     "at": "2026-11-14T10:40:30Z",

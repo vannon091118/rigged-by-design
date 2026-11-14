@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-625-rng-entry-role",
   "branch": "lane/governance/issue-625-rng-entry-role",
   "baseSha": "50e0f7378365f95b072d24edb7de8ecd3f6cd5eb",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Negative Rollenpruefung fuer alle Gameplay-RNG-Einstiegspunkte (#625)",
   "goal": "Versionierte Liste der oeffentlichen Gameplay-RNG-Grenzen plus tabellarische Negativsuite: presentationRng wird an jeder Aussengrenze abgewiesen, der Weltzustand bleibt unveraendert",
   "taskType": "single",
@@ -32,6 +32,6 @@
       "kind": "scope"
     }
   ],
-  "nextAction": "Maintainer-Review von PR #688; danach Merge und Closeout von #625",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 1
 }

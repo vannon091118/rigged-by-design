@@ -4,7 +4,7 @@
   "claimId": "lane/governance/issue-635-claim-requires-issue",
   "branch": "lane/governance/issue-635-claim-requires-issue",
   "baseSha": "5ed5d9603664121b63e317d330404b98ece6e596",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Neue Lanes ohne Issue-Referenz fail-closed (#635)",
   "goal": "validateNewClaim und pretask verlangen fuer jede neue offene Lane eine positive Issue-Nummer; abgeschlossene Bestands-Claims bleiben lesbar",
   "taskType": "single",
@@ -60,6 +60,6 @@
       "kind": "environment"
     }
   ],
-  "nextAction": "Maintainer-Review auf cb51f9dc; bei Merge auf exaktem Kopf Issue schliessen und Claim auf merged setzen",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 3
 }

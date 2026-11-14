@@ -1,0 +1,23 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T17:20Z-rumor-12",
+  "contributionId": "rumor-12",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": [
+    "scheduler"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": [
+    "boris-falk"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Hof hiess es, die Kreidetafel neben der Kuchentuer sei ueber Nacht zweimal abgewischt worden. Wer die Striche nicht nachzaehlen kann, glaubt am Ende auch dem Lohn nicht - und hier arbeitet keiner fuer eine Zahl, die niemand belegen kann.",
+  "directives": []
+}

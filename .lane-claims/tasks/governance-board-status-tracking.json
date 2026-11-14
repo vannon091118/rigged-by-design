@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-status-tracking",
   "branch": "lane/governance/board-status-tracking",
   "baseSha": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Board-Status und Review-Status in Workflow aufnehmen (state:JSON, Worker-Statuspflicht, Maintainer-Statuspflicht)",
   "goal": "",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "nextAction": "Claim gemergt; Vertrag nachgezogen.",
   "revision": 6
 }
