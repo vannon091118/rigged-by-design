@@ -26,8 +26,14 @@ export type { Stain } from './stain';
 export type { CitySceneState } from './city-scene';
 
 /** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
-type SceneKind = 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT';
-export interface SceneState { readonly kind: SceneKind; readonly foreignFloorId?: number; }
+type SceneKind = 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT' | 'INTERIOR';
+/** Aktiver Stadt-Innenraum; der Grundriss wird deterministisch daraus erzeugt. */
+interface InteriorVisit { readonly buildingId: string; readonly layoutId: string; readonly name: string; }
+export interface SceneState {
+  readonly kind: SceneKind;
+  readonly foreignFloorId?: number;
+  readonly interior?: InteriorVisit;
+}
 /**
  * Der eine Startzustand: erst die Eröffnung, dann die Wohnung, dann Stadt und Raum.
  * Die Reihenfolge ist die einzige Wahrheit dafuer, welches Startmodal sichtbar

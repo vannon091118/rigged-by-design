@@ -77,11 +77,12 @@ describe('Stadtnetz', () => {
     // Der Markt braucht den Kiez-Rang; das ist eine Ortsregel, keine Netzkante.
     state.city = { ...cityOf(state), KIEZ: 9 };
 
+    // Kiez und Markt öffnen ihren Innenraum; die Straße bleibt der Verteiler.
     const expectedReturn = {
-      APARTMENT: 'APARTMENT', CASINO: 'CASINO', KIEZ: 'CITY', MARKT: 'CITY',
+      APARTMENT: 'APARTMENT', CASINO: 'CASINO', KIEZ: 'INTERIOR', MARKT: 'INTERIOR',
     } as const;
     const expectedScene = {
-      APARTMENT: 'APARTMENT', CASINO: 'OWN', KIEZ: 'CITY', MARKT: 'CITY',
+      APARTMENT: 'APARTMENT', CASINO: 'OWN', KIEZ: 'INTERIOR', MARKT: 'INTERIOR',
     } as const;
 
     for (const edge of cityNetworkEdges()) {

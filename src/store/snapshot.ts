@@ -25,6 +25,8 @@ import { archiveSnapshot } from './archive-snapshot';
 import type { GameView, StaffView } from './types';
 import { queueView } from '../core/sim/action-queue';
 import { playerApartmentFurniture, playerApartmentModel } from '../core/sim/player-apartment';
+import { interiorDef } from '../core/sim/interior-layouts';
+import { projectScene } from './scene-projection';
 import type { CityExteriorModel } from '../core/sim/city-exterior';
 import { cityExteriorView } from './city-exterior-view';
 
@@ -36,31 +38,34 @@ function staffView(world: WorldState): StaffView {
 function worldSnapshot(world: WorldState) {
   // Eine Projektion: die aktive Szene liefert Raum, Figuren und Spieler.
   const apartment = world.scene.kind === 'APARTMENT' ? playerApartmentModel() : null;
+  const interior = world.scene.kind === 'INTERIOR' ? interiorDef(world.scene.interior?.layoutId) : null;
   const city = world.scene.kind === 'CITY' ? world.cityScene ?? null : null;
-  const foreign = city === null && apartment === null && world.activeForeignFloorId !== null
+  const foreign = city === null && apartment === null && interior === null && world.activeForeignFloorId !== null
     ? world.foreignFloors.find((floor) => floor.id === world.activeForeignFloorId) ?? null
     : null;
   // Der Renderer bekommt das kanonische Exterieur, nicht die 30x30-Projektion:
   // dasselbe Layout wie der Floor, aber mit Gebaeuden und Requisiten.
   const cityExterior: CityExteriorModel | null = city ? cityExteriorView(city) : null;
-  const furniture = apartment
-    ? playerApartmentFurniture()
-    : city?.furniture ?? foreign?.furniture ?? world.furniture;
-  const guests = apartment || city ? [] : foreign?.guests ?? world.guests;
+  const furniture = interior
+    ? interior.furniture
+    : apartment
+      ? playerApartmentFurniture()
+      : city?.furniture ?? foreign?.furniture ?? world.furniture;
+  const guests = apartment || city || interior ? [] : foreign?.guests ?? world.guests;
   return {
     template: foreign?.template ?? world.template,
     // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
-    layout: apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
-    size: apartment?.layout.size ?? city?.layout.size ?? foreign?.layout?.size ?? foreign?.size ?? world.size,
+    layout: interior?.layout ?? apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
+    size: interior?.layout.size ?? apartment?.layout.size ?? city?.layout.size ?? foreign?.layout?.size ?? foreign?.size ?? world.size,
     // Eine räumliche Wahrheit: die Stadt liefert ihre Zonen aus dem Layout.
-    zones: apartment?.layout.zones ?? city?.layout.zones ?? foreign?.zones ?? world.zones,
+    zones: interior?.layout.zones ?? apartment?.layout.zones ?? city?.layout.zones ?? foreign?.zones ?? world.zones,
     // Die Stadtbewohner sind Figuren, keine Popup-Zeilen: Der Renderer bekommt
     // dieselbe Simulation, die auch der Stadt-View liest.
     cityActors: cityActorViews(city, world),
     cityExterior,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),
-    seats: apartment || city ? 0 : foreign
+    seats: apartment || city || interior ? 0 : foreign
       ? foreign.furniture.reduce((sum, item) => sum + (item.gameId ? item.seats : 0), 0)
       : seatCount(world),
     demand: demandBreakdown(world),
@@ -73,7 +78,7 @@ function worldSnapshot(world: WorldState) {
         carrying: foreign.playerCarrying,
       }
       : { ...world.player, position: { ...world.player.position }, path: [...world.player.path] },
-    dirtyTiles: apartment || city || foreign ? new Set<number>() : new Set(world.dirty),
+    dirtyTiles: apartment || city || interior || foreign ? new Set<number>() : new Set(world.dirty),
     tick: world.tick,
     day: world.day,
     dayPhase: dayPhaseOf(world.tick),
@@ -83,18 +88,12 @@ function worldSnapshot(world: WorldState) {
     prices: { ...world.prices },
     carpet: world.carpet,
     lastEvent: world.lastEvent,
-    crates: apartment || city || foreign ? [] : world.crates.map((crate) => ({ ...crate })),
-    agents: apartment || city || foreign ? [] : world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
-    disputes: apartment || city || foreign ? [] : world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
-    stains: apartment || city || foreign ? [] : world.stains.map((stain) => ({ ...stain })),
-    mops: apartment || city || foreign ? [] : world.mops.map((mop) => ({ ...mop })),
-    scene: apartment
-      ? { key: 'APARTMENT', kind: 'APARTMENT' as const, label: 'Wohnung' }
-      : city
-        ? { key: 'CITY', kind: 'CITY' as const, label: 'Stadt' }
-        : foreign
-          ? { key: `FOREIGN:${foreign.id}`, kind: 'FOREIGN' as const, label: `Fremdes Casino: ${foreign.rivalId}` }
-          : { key: 'OWN', kind: 'OWN' as const, label: 'Dein Casino' },
+    crates: apartment || city || interior || foreign ? [] : world.crates.map((crate) => ({ ...crate })),
+    agents: apartment || city || interior || foreign ? [] : world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
+    disputes: apartment || city || interior || foreign ? [] : world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
+    stains: apartment || city || interior || foreign ? [] : world.stains.map((stain) => ({ ...stain })),
+    mops: apartment || city || interior || foreign ? [] : world.mops.map((mop) => ({ ...mop })),
+    scene: projectScene(world, interior, apartment !== null, city !== null, foreign?.id ?? null),
     queue: queueView(world),
     onboarding: world.onboarding ?? { step: 'DONE' as const },
     parts: world.parts,

@@ -154,7 +154,8 @@ class WorldStore {
   chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null { let result: ChoiceExecution | null = null; this.#guard(() => { const action = chooseNarrativeAction(this.#world, this.#ledger, eventId, choiceId); result = action.result; this.#notice = action.notice; }); return result; } dismissNarrative(eventId: number): void { this.#guard(() => { this.#notice = dismissNarrativeAction(this.#world, eventId); }); }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
   #advance = (): void => { advanceWorld(this.#world, this.#ledger, this.#prng); if (this.scene.arriveAtStreetDoor()) return;
-    if (this.scene.leaveApartmentAtDoor()) return; this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
+    if (this.scene.leaveApartmentAtDoor()) return; if (this.scene.leaveInteriorAtDoor()) return;
+    this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
   #guard(action: () => void, flush = true): void { try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }

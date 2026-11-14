@@ -7,6 +7,7 @@ import { playerApartmentModel } from '../core/sim/player-apartment';
 import { clearActionQueue } from '../core/sim/action-queue';
 import { ensureCityPopulationForScene } from '../core/sim/city-life-state';
 import { CityDoorWalk } from './city-door-walk';
+import { enterInterior, leaveInterior, leaveInteriorAtDoor } from './interior-commands';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -37,6 +38,7 @@ export class SceneCommands {
   enterCity(): void {
     this.#doors.clear();
     const world = this.#deps.world();
+    if (world.scene.kind === 'INTERIOR') { this.leaveInterior(); return; }
     if (world.scene.kind === 'CITY') {
       // Ein geladener CITY-Save kann noch die kuratierte Dreierbesetzung
       // tragen. Der Weg in die Stadt ist auch dann der Wachstumspfad.
@@ -98,7 +100,7 @@ export class SceneCommands {
    * Die vier Strassentueren. Wohnung und Casino wechseln die Szene, Kiez und
    * Markt reisen in den bestehenden Stadtort; `null` heisst ohne Wirkung.
    */
-  enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | null {
+  enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | 'INTERIOR' | null {
     const effect = cityDoorEffect(doorId);
     const ownDoor = effect === null && this.#isOwnDoor(doorId);
     if (!effect && !ownDoor) return null;
@@ -126,9 +128,30 @@ export class SceneCommands {
       this.#deps.emit();
       return null;
     }
+    // Kneipe und Laden haben einen echten Innenraum; der Stadtort bleibt als
+    // Zustand erhalten, der Raum ist die sichtbare Projektion dieses Wechsels.
+    const layoutId = effect.location === 'KIEZ' ? 'layout_kiez_pub' : 'layout_corner_shop';
+    if (this.enterInterior(layoutId)) return 'INTERIOR';
     this.#deps.notice(world.lastEvent);
     this.#deps.emit();
     return 'CITY';
+  }
+
+  /** Betritt einen definierten Innenraum; ohne Layout bleibt der Wechsel aus. */
+  enterInterior(layoutId: string): boolean {
+    this.#doors.clear();
+    return enterInterior({ world: this.#deps.world, say: (text) => this.#say(text) }, layoutId);
+  }
+
+  /** Zurück auf die Straße: dieselbe Schwelle, über die der Raum betreten wurde. */
+  leaveInterior(): void {
+    this.#doors.clear();
+    leaveInterior({ world: this.#deps.world, say: (text) => this.#say(text) });
+  }
+
+  /** Die Innenraumtür als Ort: true, wenn ihre Kachel erreicht ist. */
+  leaveInteriorAtDoor(): boolean {
+    return leaveInteriorAtDoor({ world: this.#deps.world, say: (text) => this.#say(text) });
   }
 
   /** Ist die Tuer die eigene Haustuer des Casinos? */

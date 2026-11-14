@@ -17,6 +17,7 @@ const SCENE_TIP: Record<GameView['scene']['kind'], string> = {
   CITY: 'Du stehst auf der Straße. Dein Casino ist gleich um die Ecke.',
   OWN: 'Der Abend beginnt. Öffne BETRIEB für dein Angebot – Gäste kommen, sobald das Haus sie anzieht.',
   FOREIGN: 'Fremder Floor. Sieh dich um, aber es ist nicht dein Haus.',
+  INTERIOR: 'Du bist drinnen. Die Tür führt zurück auf die Straße.',
 };
 
 interface HudProps {

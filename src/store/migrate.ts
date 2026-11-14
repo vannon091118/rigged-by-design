@@ -18,6 +18,7 @@ import type { DemandEvent } from './legacy-demand';
 import { hydrateJobState } from '../core/sim/player-jobs';
 import { hydrateProperty } from '../core/sim/property';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
+import { interiorDef } from '../core/sim/interior-layouts';
 import { repairDeviceIdentity } from '../core/sim/device';
 import { hydrateStainsAndMops } from './migrate-stains';
 import { hydrateLayout } from './migrate-layout';
@@ -126,6 +127,11 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.scene = saved.scene ?? (world.activeForeignFloorId !== null
     ? { kind: 'FOREIGN', foreignFloorId: world.activeForeignFloorId }
     : { kind: 'OWN' });
+  // Ein unbekannter Innenraum (alte oder manipulierte Datei) faellt auf die
+  // Strasse zurueck; die Szene zeigt nie einen Grundriss, den es nicht gibt.
+  if (world.scene.kind === 'INTERIOR' && !interiorDef(world.scene.interior?.layoutId)) {
+    world.scene = { kind: 'CITY' };
+  }
   world.actionQueue = normalizeActionQueue(saved.actionQueue);
   // Alte Saves haben die 30x30-Portalstadt; sie wird auf das kanonische
   // 60x60-Exterieur gehoben, statt sie als zweite Stadt weiterzufuehren.
