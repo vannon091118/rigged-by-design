@@ -15,9 +15,14 @@
       "id": "ERR-4019-lane-collision",
       "severity": "blocker",
       "status": "resolved",
-      "summary": "Aufgeloest ohne Claim-Aenderung: Pre-Commit erkennt lane/governance/claim-register-reconcile-616 ueber den gemergten PR #618 / Branch-Kopf f7ae2fb0 auf main als gemergt (verify-lane-claims: 'Belege: 1 gemergt')."
+      "summary": "Aufgeloest ohne Claim-Aenderung: verify-lane-claims erkennt lane/governance/claim-register-reconcile-616 ueber den gemergten PR #618 (Branch-Kopf f7ae2fb0 auf main) als gemergt ('Belege: 1 gemergt')."
     }
   ],
-  "nextAction": "Gate-Kette (verify:light, sync-generated --all --check, integrate --check, ci:local) auf dem Kopf belegen, pushen, PR mit review-waiting oeffnen.",
-  "revision": 3
+  "nextAction": "PR #622 offen (Head 58531ad3, Basis d592a20); alle vier Vor-PR-Nachweise gruen. Review beim Maintainer.",
+  "revision": 4,
+  "pr": {
+    "number": 622,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/622",
+    "state": "open"
+  }
 }
