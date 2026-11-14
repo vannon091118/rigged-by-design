@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T17:45Z-rumor-15",
+  "contributionId": "rumor-15",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Am Morgen hing ein neuer Zettel neben der Tafel, und der alte war noch nicht abgehaengt. Zwei Boten, zwei Nummern, ein Auftrag - wer zuerst liest, arbeitet doppelt, und wer zuletzt liest, traegt den Verlust.",
+  "directives": []
+}

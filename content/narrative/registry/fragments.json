@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:91469c3d303b95309b7925534c235a27efbd26196132fdfc670936dd1b54af74",
+  "contentHash": "sha256:52381bd2479dae5b06545e9edc9064c55cbf86a8e3ca085c5c795a6a96cf622a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24253,6 +24253,30 @@
       "text": "Auf der Tafel an der Kuchentuer stand eine Zahl, die niemand mehr nachrechnen konnte, weil der Schreiber sie zweimal korrigiert hatte. Seitdem geht jeder, der den Lohn abholt, einmal mit dem Finger die Striche entlang - nicht aus Misstrauen, sondern weil eine Zahl ohne ihre Herkunft nur eine Behauptung ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-14.json"
+    },
+    {
+      "contributionId": "rumor-15",
+      "turnId": "2026-11-14T17:45Z-rumor-15",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Morgen hing ein neuer Zettel neben der Tafel, und der alte war noch nicht abgehaengt. Zwei Boten, zwei Nummern, ein Auftrag - wer zuerst liest, arbeitet doppelt, und wer zuletzt liest, traegt den Verlust.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-15.json"
     },
     {
       "contributionId": "run-budget-01",

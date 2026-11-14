@@ -4,16 +4,39 @@
   "claimId": "lane/render/issue-640-city-actor-frame",
   "branch": "lane/render/issue-640-city-actor-frame",
   "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #640: CityActorSync in den Frame-Renderpfad haengen",
   "goal": "Bewohner sofort an der Snapshot-Position setzen und dieselbe Figur ueber den vorhandenen Floor-Ticker interpolieren; Facing, Sticker und Depth aus der gerenderten Position.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 730,
+    "state": "merged",
+    "mergedSha": "35e39365bfa53b654fed244cd0205b4cbdb90506"
+  },
   "findings": [
-    {"id":"F-1","status":"accepted","severity":"info","summary":"Browser-/Pixi-Beleg fuer drei Bewohner ist in dieser Cloud-Umgebung ohne Pixi-Frame moeglich; der PR belegt Interpolation per Test und Typcheck, nicht per Screenshot."}
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Browser-/Pixi-Beleg fuer drei Bewohner ist in dieser Cloud-Umgebung ohne Pixi-Frame moeglich; der PR belegt Interpolation per Test und Typcheck, nicht per Screenshot."
+    }
   ],
-  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
-  "revision": 1
+  "nextAction": "Code gemergt; offen bleibt allein die visuelle Pixi-Abnahme an Issue #640.",
+  "revision": 2,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "35e39365bfa53b654fed244cd0205b4cbdb90506"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  }
 }

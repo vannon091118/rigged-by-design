@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:18:44Z",
+  "generatedAt": "2026-11-14T17:40:54Z",
   "generatedBy": "maintainer",
-  "head": "3c6b17eb6ab33195acd0c2e9d17dc0867822171d",
-  "headMessage": "Maintainer-Lauf: Board- und Claim-Register geprueft und auf den main-Tip gezogen (#729)",
-  "base": "origin/main @ 3c6b17eb6ab33195acd0c2e9d17dc0867822171d",
+  "head": "35e39365bfa53b654fed244cd0205b4cbdb90506",
+  "headMessage": "Maintainer-Lauf: #730 gemergt, PRs #700/#701 nachgezogen, adversariale 24h-Pruefung (#732)",
+  "base": "origin/main @ 35e39365bfa53b654fed244cd0205b4cbdb90506",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Snapshot auf dem per API gelesenen main-Tip 3c6b17eb. 3 offene PRs (#700, #701, #726, alle gegen main), 1 Uebergabe mit review-waiting (Issue #640 zu PR #726), 36 offene Issues, 9 geschlossene Issues des Laufs. Register: 0 offene Claims, 0 gemergte Claims mit offenem Vertrag, #669 geparkt.",
+  "summary": "Snapshot auf dem per API gelesenen main-Tip 35e39365 (nach Merge #730). 2 offene PRs (#700, #701, beide abgelehnt und auf Basis 751edc66), 1 Uebergabe mit review-waiting (Issue #640), 37 offene Issues. Register: 0 offene Claims, 0 gemergte Claims mit offenem Vertrag, #669 geparkt.",
   "lastActions": [
     "board-cursors.mjs --export/--write: 49 Cursor (46 Issues, 3 PRs) gesetzt, Kopf 5ed5d960, 0 UNKNOWN",
     "Baseline-Seeding: Cursor auf den jeweils letzten GitHub-Kommentar gesetzt; altere Kommentare gelten als gelesen und stehen als warning im State",
@@ -28,7 +28,7 @@
     671,
     707
   ],
-  "openPullRequests": 3,
+  "openPullRequests": 2,
   "reviewWaitingPrs": 1,
   "blockedIssues": [
     {
@@ -500,32 +500,25 @@
   "openPrs": [
     {
       "number": 700,
-      "base": "main",
+      "base": "751edc66",
       "headSha": "319c6c4141e1ac17b84d9966edb21c901340dade",
       "issue": 667,
-      "status": "abgelehnt (REJECT): Konfliktmarker in docs/ROADMAP.md, Claim-Allowlist deckt Reparatur nicht, Schrumpfen ohne Ersatzbaustein"
+      "status": "REJECT: 28 geloeschte Bausteine ohne Ersatz (Pool-Schrumpf-Verbot), 5 Konfliktstellen gegen main, INVENTORY veraltet"
     },
     {
       "number": 701,
-      "base": "main",
+      "base": "751edc66",
       "headSha": "6a93d07fa10c2b1f0b2042611184eb2c3a6f39ea",
       "issue": 664,
-      "status": "abgelehnt (REJECT): 27 Verstoesse gegen das Schrumpf-Verbot"
-    },
-    {
-      "number": 726,
-      "base": "main",
-      "headSha": "8316a427771d99589843480f338d999aac20bc56",
-      "issue": 640,
-      "status": "offen, wartet auf Peer-Review; ersetzt #723"
+      "status": "REJECT: 26 geloeschte Bausteine ohne Ersatz, 4 Konfliktstellen gegen main"
     }
   ],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Marke sitzt am Issue #640 (Uebergabe zu PR #726), nicht am PR; #700/#701 tragen keine review-waiting-Marke",
+  "reviewWaitingNote": "Marke sitzt am Issue #640: Code fuer #640 ist gemergt (#730), die visuelle Pixi-Abnahme fehlt noch",
   "health": {
     "verifyLight": {
       "status": "PASS",
-      "note": "alle Gates gruen auf main 3c6b17eb"
+      "note": "alle Gates gruen auf main 35e39365"
     },
     "fullSuite": {
       "status": "FAIL",
@@ -544,9 +537,28 @@
       ],
       "preExistingEvidence": "identischer Fehler auf dem Vor-Merge-Commit 21b3e924; die uebrigen vier Dateien sind nicht einzeln bisectet"
     },
+    "newIssuesThisRun": [
+      {
+        "number": 731,
+        "kind": "game/quality",
+        "note": "CityActorSync sync/animate ohne Test"
+      }
+    ],
     "newGovernanceIssuesThisRun": 0,
-    "openIssues": 36,
-    "note": "Keine erfundene gruene Vollsuite; fuer die roten pretask-Dateien wurde bewusst kein Issue angelegt (Budget maxNewGovernanceIssues 0)"
+    "openIssues": 37
   },
-  "openIssuesCount": 36
+  "openIssuesCount": 37,
+  "mergedPrsThisRun": [
+    730
+  ],
+  "adversarialReview24h": {
+    "range": "d8350cfc..35e39365 (191 Commits)",
+    "determinism": "0 echte Treffer in src/core und src/store (die 6 Grep-Treffer sind Testdaten des Determinismus-Guards selbst)",
+    "testWeakening": "0 (kein .skip/.only/eslint-disable/@ts-ignore/as any in Tests)",
+    "deletedTests": "0",
+    "typeEscapes": "0 (as any/@ts-ignore/@ts-expect-error) im Produktivcode",
+    "ledgerSources": "EXTERNAL_WORLD-Zugaenge nur in src/store/__tests__ (Fixtures)",
+    "gates": "keine Aufweichung: .githooks/commit-msg behebt eine Kollision im festen /tmp-Log, scripts/lib/lane-claims.mjs verschaerft um issue-Pflicht (#635)",
+    "finding": "#731 (Render-Testluecke CityActorSync)"
+  }
 }
