@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:711138d211e78f9a0b0f2c6e20524d77b5d83d9176e0e6c1b58f90dff4fc0b4a",
+  "contentHash": "sha256:89a7c6658a8eec0a30933e5628e1673afac98c514dd9a2934d3f634251277321",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7863,6 +7863,30 @@
       "text": "Die Stadt zählt keine Stellen mehr, sie vergibt sie: Wer keine hat, bleibt zu Hause, statt zur Schicht zu gehen und Lohn zu kassieren, den niemand eingestellt hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-employment.json"
+    },
+    {
+      "contributionId": "esport-evening-01",
+      "turnId": "2026-11-14T06:20Z-esport-evening",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Leinwand über dem Einlass standen zwei Namen und eine Zahl, die niemand erklären musste. Rita notierte sie trotzdem: die Quote war der Preis für eine Meinung, nicht das Ergebnis. Als der letzte Schuss fiel, lag der Zettel schon im Archiv.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-esport-evening.json"
     },
     {
       "contributionId": "event-scheduler-01",

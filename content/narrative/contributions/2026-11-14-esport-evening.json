@@ -1,0 +1,23 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T06:20Z-esport-evening",
+  "contributionId": "esport-evening-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf der Leinwand über dem Einlass standen zwei Namen und eine Zahl, die niemand erklären musste. Rita notierte sie trotzdem: die Quote war der Preis für eine Meinung, nicht das Ergebnis. Als der letzte Schuss fiel, lag der Zettel schon im Archiv.",
+  "directives": []
+}
