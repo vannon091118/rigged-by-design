@@ -2,9 +2,8 @@
  * @test-target: scripts/lib/work-claim.mjs
  * @error-code: ERR-4027
  *
- * Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine
- * Lane-Arbeit, und ein Issue in `REVIEW_PENDING` sperrt neue Arbeit im selben
- * Worker. Beide melden ERR-4027 und blockieren den Lauf, statt nur zu warnen.
+ * Zwei harte Startgates: ohne reservierte Worker-Identitaet und ohne freien
+ * Issue-Claim startet keine Lane-Arbeit; beide blockieren statt zu warnen.
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -15,17 +14,19 @@ import { applySnapshot, emptyCursorState, ingestComments, pendingEntries } from 
 import { workState } from '../../../../scripts/lib/work-claim.mjs';
 import { workerEnv } from './test-worker-home';
 
-interface Payload {
-  readonly state: string;
-  readonly blockers: readonly string[];
+type Payload = {
+  readonly state: string; readonly blockers: readonly string[];
   readonly contract: {
-    readonly workGate: { readonly state: string; readonly blocked: boolean };
+    readonly workGate: { readonly state: string; readonly blocked: boolean; readonly rejected: number };
     readonly worker: { readonly identityValid: boolean };
   };
-}
+};
 
 const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 40_000); };
 const WORKER_CODE = 'ERR-4027';
+const comment = (id: number, login: string, body: string) => ({ id: String(id), author: { login }, body });
+/** Gemeinsamer Fixture-Principal; `pretask` liest die Actor-Policy aus dem Repo. */
+const FIXTURE_ACTORS = { maintainers: ['vannon091118'], users: ['vannon091118'], workers: ['vannon091118'] };
 
 const git = (cwd: string, args: readonly string[]): string => {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
@@ -44,6 +45,7 @@ function repo(parent: string): string {
   git(dir, ['commit', '-q', '-m', 'fixture']);
   git(dir, ['checkout', '-q', '-b', 'lane/test/gate']);
   mkdirSync(join(dir, '.lane-claims'), { recursive: true });
+  writeFileSync(join(dir, '.lane-claims', 'actors.json'), `${JSON.stringify(FIXTURE_ACTORS, null, 2)}\n`);
   writeFileSync(join(dir, '.lane-claims', 'claims.json'), `${JSON.stringify([{
     id: 'lane/test/gate',
     owner: 'Governance-Owner',
@@ -63,7 +65,7 @@ function repo(parent: string): string {
     join(dir, 'scripts', 'agent-context.mjs'),
     "console.log(JSON.stringify({ systems: [], tests: { runAll: false, selected: [], fast: [], long: [] }, gates: [] }));\n",
   );
-  git(dir, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
+  git(dir, ['add', '.lane-claims/claims.json', '.lane-claims/actors.json', 'scripts/agent-context.mjs']);
   git(dir, ['commit', '-q', '-m', 'claim']);
   return dir;
 }
@@ -126,15 +128,15 @@ describe('pretask Worker-Gates', () => {
     try {
       const cwd = repo(parent);
       const comments = [
-        { id: 1, body: 'WORK_CLAIM claim_id=wc-1 identity=LIILITH' },
-        { id: 2, body: 'DONE claim_id=wc-1' },
-        { id: 3, body: 'REVIEW_PENDING claim_id=wc-1' },
+        comment(1, 'vannon091118', 'WORK_CLAIM claim_id=wc-1 identity=LIILITH'),
+        comment(2, 'vannon091118', 'DONE claim_id=wc-1'),
+        comment(3, 'vannon091118', 'REVIEW_PENDING claim_id=wc-1'),
       ];
-      expect(workState(comments)).toBe('REVIEW_PENDING');
+      expect(workState(comments, { actors: FIXTURE_ACTORS })).toBe('REVIEW_PENDING');
       const result = run(cwd, parent, { ...workerEnv(), FAKE_COMMENTS: JSON.stringify(comments) });
       expect(result.status).toBe(1);
       const body = payloadOf(result.stdout, result.stderr);
-      expect(body.contract.workGate).toEqual({ state: 'REVIEW_PENDING', blocked: true });
+      expect(body.contract.workGate).toEqual({ state: 'REVIEW_PENDING', blocked: true, rejected: 0 });
       expect(body.blockers.join('\n')).toContain('REVIEW_PENDING');
     } finally {
       rmSync(parent, { recursive: true, force: true });
@@ -148,13 +150,14 @@ describe('pretask Worker-Gates', () => {
       const result = run(cwd, parent, { ...workerEnv(), FAKE_COMMENTS: '[]' });
       const body = payloadOf(result.stdout, result.stderr);
       expect(body.contract.worker.identityValid).toBe(true);
-      expect(body.contract.workGate).toEqual({ state: 'OPEN', blocked: false });
+      expect(body.contract.workGate).toEqual({ state: 'OPEN', blocked: false, rejected: 0 });
       expect(body.blockers.filter((entry) => entry.includes(WORKER_CODE))).toEqual([]);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }
   });
 });
+
 
 /*
  * Board-Cursor (#671): Der Maintainer-State ist nur ein Lesefortschritt.

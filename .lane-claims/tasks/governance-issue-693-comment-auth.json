@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-693-comment-auth",
+  "claimId": "lane/governance/issue-693-comment-auth",
+  "branch": "lane/governance/issue-693-comment-auth",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "phase": "CI_PENDING",
+  "title": "Issue #693: Kommentar-Autorisierung und ALLOWED-Erzwingung",
+  "goal": "Kommentar-Ereignisse nur mit verifiziertem Autor, passender Rolle, passender Claim-ID und erlaubtem Uebergang anwenden; alles andere bleibt Befund.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "User, Maintainer und Worker teilen sich heute den GitHub-Principal vannon091118; pretask meldet das als shared-principal. Die Trennung selbst ist die Entscheidung aus #694."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, DONE-Kommentar mit SHA und Label review-waiting am Issue setzen.",
+  "revision": 1
+}

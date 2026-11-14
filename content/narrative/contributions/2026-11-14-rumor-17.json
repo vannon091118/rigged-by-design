@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T19:30Z-rumor-17",
+  "contributionId": "rumor-17",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Am Tresen hing eine neue Liste, auf der jede Entscheidung einen Namen tragen musste. Wer unterschrieb, haftete fuer den Eintrag; wer nur zusah, stand weiter ohne Zeile da. Bis zum Morgen war die Liste laenger als das Gaestebuch, und niemand hatte zweimal unterschrieben.",
+  "directives": []
+}
