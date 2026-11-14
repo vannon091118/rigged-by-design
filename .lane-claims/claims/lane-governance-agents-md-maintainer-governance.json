@@ -1,0 +1,16 @@
+{
+  "id": "lane/governance/agents-md-maintainer-governance",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agents-md-maintainer-governance",
+  "baseSha": "af032bdecafd96b774408296d3a0ee23e452909f",
+  "task": "AGENTS.md Maintainer-Governance-Bloecke ergaenzen (Scope-Hierarchie, Prioritaeten, Protokoll, Drift-Eskalation)",
+  "pathAllowlist": [
+    "AGENTS.md",
+    ".lane-claims/claims/lane-governance-agents-md-maintainer-governance.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "af032bdecafd96b774408296d3a0ee23e452909f"
+}

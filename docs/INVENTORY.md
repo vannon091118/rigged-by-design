@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 381 Dateien — contract 209 · integration 100 · governance 59 · statistics 6 · performance 7.
+Summe: 384 Dateien — contract 210 · integration 102 · governance 59 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -370,6 +370,7 @@ Summe: 381 Dateien — contract 209 · integration 100 · governance 59 · stati
 | `src/core/sim/__tests__/room-plan.test.ts` | sim | contract | ja | `src/core/sim/room-plan.ts` |
 | `src/core/sim/__tests__/room-transition.test.ts` | sim | contract | ja | `src/core/sim/room-transition.ts` |
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
+| `src/core/sim/__tests__/smartphone-views.test.ts` | sim | contract | ja | `src/core/sim/smartphone-views.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, Mechanik | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/spawn-demand.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
@@ -461,6 +462,7 @@ Summe: 381 Dateien — contract 209 · integration 100 · governance 59 · stati
 | `src/store/__tests__/save-v7.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-wage-field.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/snapshot-purity.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
+| `src/store/__tests__/staff-view.test.ts` | store | integration | ja | `src/store/staff-view.ts` |
 | `src/store/__tests__/street-population.test.ts` | store | integration | ja | `src/store/scene-commands.ts` |
 | `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/memory.bench.ts` | store | performance | nein, Mechanik | `src/store/save.ts` |
@@ -494,6 +496,7 @@ Summe: 381 Dateien — contract 209 · integration 100 · governance 59 · stati
 | `src/ui/__tests__/small-screen-dock.test.tsx` | ui | integration | ja | `src/ui/dock.tsx` |
 | `src/ui/__tests__/small-screen-layout.test.ts` | other | contract | ja | `src/styles/app.css` |
 | `src/ui/__tests__/small-screen-panels.test.tsx` | ui | integration | ja | `src/ui/popup-router.tsx` |
+| `src/ui/__tests__/smartphone-apps.test.tsx` | ui | integration | ja | `src/ui/smartphone.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 | `src/ui/__tests__/venue-history.test.tsx` | ui | integration | ja | `src/ui/venue-history.tsx` |
 | `src/ui/__tests__/world-first-ui.test.tsx` | ui | integration | ja | `src/ui/guest-context-panel.tsx` |
@@ -687,10 +690,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2966 |
-| Gelistete Dateien | 2966 |
+| Getrackte Dateien | 2987 |
+| Gelistete Dateien | 2987 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (56), artifacts (1), content (1069), docs (107), packages (27), public (571), scripts (124), src (990) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (60), artifacts (1), content (1074), docs (109), packages (27), public (571), scripts (124), src (1000) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -702,14 +705,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 28 Datei(en)
-- `.lane-claims/tasks/` — 27 Datei(en)
+- `.lane-claims/claims/` — 30 Datei(en)
+- `.lane-claims/tasks/` — 29 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1065 Datei(en)
-- `content/narrative/registry/` — 1 Datei(en)
-- `content/narrative/turns/` — 1 Datei(en)
+- `content/narrative/contributions/` — 1066 Datei(en)
+- `content/narrative/registry/` — 3 Datei(en)
+- `content/narrative/turns/` — 3 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 19 Datei(en)
+- `docs/` — 21 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 2 Datei(en)
@@ -779,15 +782,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 180 Datei(en)
-- `src/core/sim/__tests__/` — 163 Datei(en)
+- `src/core/sim/` — 181 Datei(en)
+- `src/core/sim/__tests__/` — 164 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
-- `src/core/sim/narrative/composer/` — 6 Datei(en)
+- `src/core/sim/narrative/composer/` — 8 Datei(en)
 - `src/core/sim/narrative/composer/__tests__/` — 2 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
@@ -804,12 +807,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
-- `src/store/` — 40 Datei(en)
-- `src/store/__tests__/` — 33 Datei(en)
+- `src/store/` — 41 Datei(en)
+- `src/store/__tests__/` — 34 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 99 Datei(en)
-- `src/ui/__tests__/` — 31 Datei(en)
+- `src/ui/` — 102 Datei(en)
+- `src/ui/__tests__/` — 32 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -831,6 +834,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agent-board-workflow.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-agent-onboarding.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
@@ -849,6 +853,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-acceptance.json` — { — gelesen: 26 Zeilen
@@ -859,6 +864,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agent-board-workflow.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-register-reconcile-616.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
@@ -877,6 +883,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-530-plot-road-guard.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-533-scheduled-place.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-534-first-evening.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-acceptance.json` — { — gelesen: 17 Zeilen
@@ -886,7 +893,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 126 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 169 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 186 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -1949,13 +1956,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-smartphone-feed.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23864 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4265 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23888 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23888 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23888 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4269 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4269 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4269 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 229 Zeilen
@@ -1967,6 +1979,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 135 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1559 Zeilen
@@ -3121,6 +3135,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/room-plan.test.ts` — Der Raumplan liest die vorhandene Layout-Wahrheit: eine Zone je Raum, ihre — gelesen: 92 Zeilen
 - `src/core/sim/__tests__/room-transition.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 200 Zeilen
 - `src/core/sim/__tests__/shot-seed.test.ts` — Screenshot-Saat: eine eingerichtete Etage als Save-JSON ablegen, damit die — gelesen: 70 Zeilen
+- `src/core/sim/__tests__/smartphone-views.test.ts` — Inbox, Vitter und ImmoLuck duerfen keine zweite Wahrheit anlegen: die Inbox — gelesen: 115 Zeilen
 - `src/core/sim/__tests__/soak.test.ts` — Langlauf: Ledger bleibt integer und gedeckt, und der Betrieb steht ueber — gelesen: 126 Zeilen
 - `src/core/sim/__tests__/spawn-demand.test.ts` — Der erste Gast braucht eine Kasse und den eigenen Floor. Ohne beides darf — gelesen: 79 Zeilen
 - `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 123 Zeilen
@@ -3298,6 +3313,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
 - `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 272 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 272 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 272 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3398,6 +3415,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/room-transition.ts` — Nahtlose Raum- und Gebäudeübergänge für Akteure (Spieler und NPCs). — gelesen: 192 Zeilen
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 100 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 18 Zeilen
+- `src/core/sim/smartphone-views.ts` — Smartphone-Sichten: Inbox, Vitter-Feed und ImmoLuck. — gelesen: 168 Zeilen
 - `src/core/sim/social-encounter.ts` — import type { ActorContinuityRecord } from './actor-continuity'; — gelesen: 112 Zeilen
 - `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 104 Zeilen
 - `src/core/sim/staff-cashier.ts` — Kassierer: Fiat wechseln, Service quittieren und die Warteschlange weiterziehen. — gelesen: 35 Zeilen
@@ -3590,6 +3608,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/snapshot-purity.test.ts` — Ein Snapshot ist eine Projektion: Er darf weder Bewohnerprofile anlegen noch — gelesen: 65 Zeilen
+- `src/store/__tests__/staff-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 15 Zeilen
 - `src/store/__tests__/street-population.test.ts` — Der erste Schritt vor die Tür füllt die Stadt: Die drei kuratierten Figuren — gelesen: 54 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/archive-snapshot.ts` — Archiv-Projektion: kopiert nur, wenn das Archiv gewachsen oder verschoben wurde. — gelesen: 14 Zeilen
@@ -3626,9 +3645,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/scene-commands.ts` — Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. — gelesen: 214 Zeilen
 - `src/store/scene-projection.ts` — Szenen-Kopf des Snapshots: eine Stelle, die alle Szenen benennt. — gelesen: 21 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
-- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 191 Zeilen
+- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 189 Zeilen
+- `src/store/staff-view.ts` — Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. — gelesen: 8 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
-- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 166 Zeilen
+- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 173 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 163 Zeilen
@@ -3667,6 +3687,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/small-screen-dock.test.tsx` — Abnahme Phase 2: alle Dock-Einstiege und die Gaesteuebersicht bleiben bei — gelesen: 80 Zeilen
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 138 Zeilen
+- `src/ui/__tests__/smartphone-apps.test.tsx` — Die drei neuen Apps sind nur über das Gerät erreichbar: das Tile muss den — gelesen: 65 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 179 Zeilen
 - `src/ui/__tests__/venue-history.test.tsx` — Die Historie der Veranstaltung ist ein Leser der vorhandenen Event-Instanz: — gelesen: 43 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
@@ -3762,9 +3783,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/smartphone-build.tsx` — Smartphone-App: BUILD - ersetzt BuildPanel — gelesen: 32 Zeilen
 - `src/ui/smartphone-buy.tsx` — Smartphone-App: BUY - Getränke, Ersatzteile kaufen — gelesen: 25 Zeilen
 - `src/ui/smartphone-clean.tsx` — Smartphone-App: CLEAN - Putzen — gelesen: 37 Zeilen
+- `src/ui/smartphone-immoluck.tsx` — Smartphone-App: ImmoLuck — Katalogangebote, Kauf ueber den bestehenden Stadt-Pfad. — gelesen: 44 Zeilen
+- `src/ui/smartphone-inbox.tsx` — Smartphone-App: Inbox — Nachrichten aus dem echten Ereignisarchiv. — gelesen: 33 Zeilen
 - `src/ui/smartphone-serve.tsx` — Smartphone-App: SERVE - Getränke servieren — gelesen: 33 Zeilen
 - `src/ui/smartphone-travel.tsx` — Smartphone-App: TRAVEL - Casino-Wechsel — gelesen: 30 Zeilen
-- `src/ui/smartphone.tsx` — Gerät: optionale Abkürzungen für räumliche Handlungen. — gelesen: 74 Zeilen
+- `src/ui/smartphone-vitter.tsx` — Smartphone-App: Vitter — Stadtfeed aus Erinnerungen und Geruechten. — gelesen: 38 Zeilen
+- `src/ui/smartphone.tsx` — Gerät: optionale Abkürzungen für räumliche Handlungen. — gelesen: 86 Zeilen
 - `src/ui/sound-popup.tsx` — Lautstaerke, Kanaele und Musik: Master plus Spiele, Kampf, Bedienung getrennt. — gelesen: 79 Zeilen
 - `src/ui/staff-labels.ts` — Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. — gelesen: 24 Zeilen
 - `src/ui/stage-controls.tsx` — Buehnenrand: nur die Kamera-Knoepfe. Tastenkuerzel stehen in der Werkstatt. — gelesen: 16 Zeilen
