@@ -1,0 +1,27 @@
+{
+  "id": "lane/render/issue-640-city-actor-frame",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/render/issue-640-city-actor-frame",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 640,
+  "task": "Issue #640: CityActorSync in den Frame-Renderpfad haengen",
+  "goal": "Bewohner sofort an der Snapshot-Position setzen und dieselbe Figur ueber den vorhandenen Floor-Ticker interpolieren; Facing, Sticker und Depth aus der gerenderten Position.",
+  "pathAllowlist": [
+    "src/render/city-actor-sync.ts",
+    "src/render/floor-animate.ts",
+    "src/render/floor-view.ts",
+    "src/render/view-layers.ts",
+    "src/render/__tests__/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-render-issue-640-city-actor-frame.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+}
