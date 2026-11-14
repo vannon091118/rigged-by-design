@@ -4,14 +4,19 @@
   "claimId": "lane/governance/issue-629-generated-serialization",
   "branch": "lane/governance/issue-629-generated-serialization",
   "baseSha": "a435fdf15a00832dbf6546e56b5583c133987614",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Generierte Artefakt-Lanes vor parallelen Merge-Konflikten serialisieren (#629)",
   "goal": "Reproduzierbarer Integrationslauf belegt, dass zwei parallele Narrative-Lanes nacheinander ohne Beitragsverlust integriert werden",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 673,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/673",
+    "state": "open",
+    "headSha": "03b7b5649b9c748f67b67d0a2c7870faa615aab7"
+  },
   "findings": [],
-  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
-  "revision": 1
+  "nextAction": "PR #673 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "revision": 2
 }
