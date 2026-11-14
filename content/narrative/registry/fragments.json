@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:be78dc90c898651402cdf1ce5fde674dce0fe178d0013d52eac21b08f5b629e2",
+  "contentHash": "sha256:f9abd60628f0aa0e44d49853939c7fe8a4636a4c52abc714c6bab38562061371",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -9793,6 +9793,28 @@
       "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
+    },
+    {
+      "contributionId": "lesezeichen-01",
+      "turnId": "2026-11-14T10:26Z-lesezeichen",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
     },
     {
       "contributionId": "living-world-foundation-1",

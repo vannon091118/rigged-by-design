@@ -710,10 +710,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3138 |
-| Gelistete Dateien | 3138 |
+| Getrackte Dateien | 3142 |
+| Gelistete Dateien | 3142 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (121), artifacts (1), content (1129), docs (108), packages (27), public (571), scripts (126), src (1030) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (123), artifacts (1), content (1130), docs (108), packages (27), public (571), scripts (127), src (1030) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -726,10 +726,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 62 Datei(en)
-- `.lane-claims/tasks/` — 57 Datei(en)
+- `.lane-claims/claims/` — 63 Datei(en)
+- `.lane-claims/tasks/` — 58 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1125 Datei(en)
+- `content/narrative/contributions/` — 1126 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -784,7 +784,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 66 Datei(en)
-- `scripts/lib/` — 60 Datei(en)
+- `scripts/lib/` — 61 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
 - `src/Config/__tests__/` — 1 Datei(en)
@@ -857,7 +857,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 74 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 603 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -881,6 +881,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-629-generated-serialization.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-claim-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 29 Zeilen
@@ -939,6 +940,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-629-generated-serialization.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
+- `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 79 Zeilen
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
@@ -2096,6 +2098,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-job-market-bookable.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-lane-ohne-auftrag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-ledger-tick-guard.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-lesezeichen.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-rng-entry-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-run-budget.json` — { — gelesen: 21 Zeilen
@@ -2109,8 +2112,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25246 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4505 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25268 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4509 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2854,6 +2857,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/atlas-png.mjs` — Deterministischer PNG-Atlas ohne neue Abhaengigkeit. — gelesen: 175 Zeilen
 - `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
 - `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 149 Zeilen
+- `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 162 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
@@ -3108,7 +3112,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/verify-scope.test.ts` — `verify:scope` liest ausschliesslich den Diff und vergleicht ihn mit der — gelesen: 103 Zeilen
 - `src/core/governance/__tests__/wip-takeover.test.ts` — "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel, — gelesen: 75 Zeilen
-- `src/core/governance/__tests__/worker-claim-gate.test.ts` — Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine — gelesen: 156 Zeilen
+- `src/core/governance/__tests__/worker-claim-gate.test.ts` — Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine — gelesen: 207 Zeilen
 - `src/core/governance/__tests__/worker-dependency-claims.test.ts` — Dependencies werden nur bei geaendertem Fingerprint neu gebaut, aus einem — gelesen: 76 Zeilen
 - `src/core/governance/__tests__/worker-identity-bootstrap.test.ts` — Identitaet ist ein Betriebsmittel: drei Namen, exklusive Reservierung mit — gelesen: 129 Zeilen
 - `src/core/governance/__tests__/worker-inventory-bootstrap.test.ts` — Bestaende werden am Remote erkannt, nicht am Ordnernamen. Die Inventur — gelesen: 80 Zeilen
