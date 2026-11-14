@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-pr-triage",
   "branch": "lane/governance/board-pr-triage",
   "baseSha": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "PR-Triage: #700/#701 geschlossen, #739 gemergt, Board-PR-Liste geleert",
   "goal": "Jede der drei offenen PRs hat ein am Repo belegtes Ergebnis; board.openPullRequests stimmt mit der API.",
   "taskType": "single",
@@ -36,6 +36,20 @@
       "summary": "#739 gemergt (a9bd146a): create-github-app-token v2.2.2 -> v3.3.0, Bot-Allowlist deckt .github/workflows/, app-id bleibt gueltige Eingabe."
     }
   ],
-  "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 4
+  "nextAction": "Offen: #733 (Narrativ, gegen aktuelles main neu aufsetzen), #731 (Test), #640 (Pixi-Abnahme), #696/#693/#694 (Schreibpfad).",
+  "revision": 5,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  }
 }

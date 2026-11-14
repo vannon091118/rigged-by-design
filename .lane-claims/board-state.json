@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:32Z",
+  "generatedAt": "2026-11-14T18:35Z",
   "generatedBy": "maintainer",
-  "head": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
-  "headMessage": "PR-Triage abgeschlossen: #739 gemergt, #700/#701 superseded geschlossen",
-  "base": "origin/main @ a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
+  "head": "d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
+  "headMessage": "PR-Triage gemergt (#740), Register geschlossen",
+  "base": "origin/main @ d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board nach PR-Triage auf dem per API gelesenen main-Tip a9bd146a. Drei offene PRs entschieden: #739 (Dependabot, create-github-app-token 3.3.0) gemergt; #700 und #701 als superseded durch #733 geschlossen, weil ihre Issues (#664-#667) konsolidiert geschlossen sind und beide je vier Konflikte gegen main erzeugen. Offen: 28 Issues, 0 PRs, 0 offene Claims.",
@@ -20,7 +20,8 @@
     "Closeout #738: Claim merged (PR #737, 2ec888d3), Task DONE, board.head auf 2ec888d3",
     "PR-Triage: #739 gemergt (a9bd146a, Bot-Allowlist)",
     "#700 geschlossen (superseded #733, Testmerge 4 Konflikte)",
-    "#701 geschlossen (superseded #733, Testmerge 4 Konflikte)"
+    "#701 geschlossen (superseded #733, Testmerge 4 Konflikte)",
+    "Closeout #741: Claim merged (PR #740, d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb), Task DONE, board.head auf d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
