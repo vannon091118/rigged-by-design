@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T23:10Z-rumor-27",
+  "contributionId": "rumor-27",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Zwischen zwei Leuten steht nie nur eine Zahl. Wer Vertrauen als Konto fuehrt und Kraenkung als Rabatt, merkt irgendwann, dass die Rechnung nicht aufgeht: Der andere erinnert sich an den Ton, nicht an die Summe.",
+  "directives": []
+}
