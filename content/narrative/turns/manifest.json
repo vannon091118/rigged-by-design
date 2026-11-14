@@ -4198,6 +4198,10 @@
       "contributionId": "home-households-01"
     },
     {
+      "turnId": "2026-11-14T00:10Z-job-market-bookable",
+      "contributionId": "job-market-bookable-01"
+    },
+    {
       "turnId": "2026-11-14T00:32Z-goal-cost-truth",
       "contributionId": "goal-cost-truth-01"
     }

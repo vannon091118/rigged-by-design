@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:245ed4b96ca7d576d0d08e36d730051653dd6d6ca5e69ee94615d90f20f5f06b",
+  "contentHash": "sha256:1d237debb4cbe6a9db39c48c716a43db9f6664104754eca48b940cabc3bdbf7e",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7616,6 +7616,28 @@
       "text": "Auf der Karte stand Köder-Doppel, und gemeint war, dass zwei Aufkleber zusammen mehr ziehen als jeder allein. Der Betriebsplan darunter rechnete es vor: derselbe Zulauf, zwei Zehntel mehr Kosten je Tick. Rita strich die zweite Zeile nicht durch. Sie schrieb daneben, dass niemand die zweite Zeile liest, solange die erste leuchtet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-items-und-synergien.json"
+    },
+    {
+      "contributionId": "job-market-bookable-01",
+      "turnId": "2026-11-14T00:10Z-job-market-bookable",
+      "agentId": "local-agent-1",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Neubau an der Ecke hat Fenster, aber noch keinen Griff. Wer dort eine Schicht sucht, steht vor einer Wand und geht weiter — die Stellen entstehen erst mit der Tür.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-job-market-bookable.json"
     },
     {
       "contributionId": "journal-und-profilweg-01",

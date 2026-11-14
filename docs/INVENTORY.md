@@ -680,10 +680,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2921 |
-| Gelistete Dateien | 2921 |
+| Getrackte Dateien | 2928 |
+| Gelistete Dateien | 2928 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (50), artifacts (1), content (1053), docs (103), packages (27), public (571), scripts (116), src (979) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (53), artifacts (1), content (1055), docs (103), packages (27), public (571), scripts (116), src (981) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -695,10 +695,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 30 Datei(en)
-- `.lane-claims/tasks/` — 19 Datei(en)
+- `.lane-claims/claims/` — 32 Datei(en)
+- `.lane-claims/tasks/` — 20 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1049 Datei(en)
+- `content/narrative/contributions/` — 1051 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -772,8 +772,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 178 Datei(en)
-- `src/core/sim/__tests__/` — 161 Datei(en)
+- `src/core/sim/` — 179 Datei(en)
+- `src/core/sim/__tests__/` — 162 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -844,11 +844,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-506-interiors-2.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-508-home-household.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-528-goal-cost-truth.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
@@ -869,6 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1921,12 +1924,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-door-walk.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-employment.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-first-evening-crate.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-14-goal-cost-truth.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-home-households.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-job-market-bookable.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23501 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4201 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23545 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4209 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -2941,7 +2946,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
 - `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 148 Zeilen
-- `src/core/sim/__tests__/city-employment.test.ts` — Eine Stelle gehoert einer Figur: Der Arbeitsmarkt zaehlt Zuordnungen, nicht — gelesen: 85 Zeilen
+- `src/core/sim/__tests__/city-employment.test.ts` — Eine Stelle gehoert einer Figur: Der Arbeitsmarkt zaehlt Zuordnungen, nicht — gelesen: 129 Zeilen
 - `src/core/sim/__tests__/city-encounter-all-residents.test.ts` — Jeder Bewohner ist ansprechbar: Öffnen, Dialog und soziale Handlung müssen — gelesen: 115 Zeilen
 - `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 173 Zeilen
 - `src/core/sim/__tests__/city-exterior-walls.test.ts` — Die Fassaden sind sichtbar, also muessen sie auch begangen werden koennen wie — gelesen: 86 Zeilen
@@ -3081,6 +3086,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/tx-reasons.test.ts` — Jeder Grund, den ein Aufrufer bucht, muss in der Kennzahl landen, die er — gelesen: 81 Zeilen
 - `src/core/sim/__tests__/tycoon-needs.test.ts` — Bedürfnisse steuern Gastentscheidungen; Wut wird zum sichtbaren Streit mit Schaden. — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/tycoon-ops.test.ts` — Käufe kommen als Kiste, Personal arbeitet auf dem Floor, WC verstopft, Umbau braucht Ruf. — gelesen: 223 Zeilen
+- `src/core/sim/__tests__/upkeep-costs.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 30 Zeilen
 - `src/core/sim/__tests__/venue-event.test.ts` — Die zentrale Event-Infrastruktur ist eine Projektion auf die vorhandene — gelesen: 112 Zeilen
 - `src/core/sim/__tests__/visitor-disposition.test.ts` — E2: Zwei Besucher gleicher Persona, einer mit GOOD-Erinnerung und Sympathie, — gelesen: 165 Zeilen
 - `src/core/sim/__tests__/visitors.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 139 Zeilen
@@ -3104,7 +3110,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 59 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 137 Zeilen
 - `src/core/sim/city-doors.ts` — Die vier Strassentueren und ihr bestehender Uebergang. — gelesen: 25 Zeilen
-- `src/core/sim/city-employment.ts` — Jede Stelle gehoert einer konkreten Figur. Die Zuordnung ist eine reine — gelesen: 87 Zeilen
+- `src/core/sim/city-employment.ts` — Jede Stelle gehoert einer konkreten Figur. Die Zuordnung ist eine reine — gelesen: 97 Zeilen
 - `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Command, Geld, Energie, Erinnerung, Wissen und Urteil. — gelesen: 150 Zeilen
 - `src/core/sim/city-encounter-dialog.ts` — Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. — gelesen: 103 Zeilen
 - `src/core/sim/city-encounter.ts` — Die Begegnung im Ort ist der zentrale Loop der Stadt: — gelesen: 103 Zeilen
@@ -3364,7 +3370,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 90 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 154 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 143 Zeilen
-- `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 69 Zeilen
+- `src/core/sim/upkeep-costs.ts` — Laufende Wohnkosten: eine Quelle fuer Tagesbuchung und HUD-Ziel. — gelesen: 10 Zeilen
+- `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 70 Zeilen
 - `src/core/sim/venue-event.ts` — Zentrale Event-Infrastruktur: Veranstaltungen laufen als Phasen ueber die — gelesen: 176 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 105 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 177 Zeilen
@@ -3512,7 +3519,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/city-actors.test.ts` — Stadtbewohner sind Figuren, keine Popup-Zeilen: Der Snapshot liefert sie mit — gelesen: 61 Zeilen
 - `src/store/__tests__/city-door-walk.test.ts` — Ein ferner Tuerklick ist ein Weg, kein Sprung: Der Spieler laeuft zur — gelesen: 63 Zeilen
 - `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
-- `src/store/__tests__/city-growth-view.test.ts` — Die Wachstumssicht ist eine Projektion: `buildView` liest dieselbe — gelesen: 67 Zeilen
+- `src/store/__tests__/city-growth-view.test.ts` — Die Wachstumssicht ist eine Projektion: `buildView` liest dieselbe — gelesen: 68 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 111 Zeilen
@@ -3591,14 +3598,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/anchor-layout.test.ts` — Reine Klemm-Geometrie: Der Viewport ist eine Zahl, der Kamerawechsel ein — gelesen: 106 Zeilen
 - `src/ui/__tests__/card-tables.test.tsx` — Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden, — gelesen: 134 Zeilen
 - `src/ui/__tests__/casino-window-header.test.tsx` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
-- `src/ui/__tests__/city-popup.test.tsx` — Ansprechbar ist nur, wer am selben Ort steht. Der Klick reicht die — gelesen: 95 Zeilen
+- `src/ui/__tests__/city-popup.test.tsx` — Ansprechbar ist nur, wer am selben Ort steht. Der Klick reicht die — gelesen: 96 Zeilen
 - `src/ui/__tests__/dialog-request.test.ts` — Der Router oeffnet genau dann einen Dialog, wenn eine aufgeloeste Choice — gelesen: 49 Zeilen
 - `src/ui/__tests__/dialogue-ui.test.tsx` — Die Blase zeigt Sprecher und Lauftext des aktuellen Knotens; Direktlinks — gelesen: 55 Zeilen
 - `src/ui/__tests__/editor-gate.test.ts` — Editor-Freigabe: der Query-Parameter allein oeffnet nie einen Produktionsbuild. — gelesen: 31 Zeilen
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/floor-keyboard.test.ts` — E waehlt die Hauptaktion des offenen Fokus, aber nie aus einem Eingabefeld — gelesen: 78 Zeilen
 - `src/ui/__tests__/floor-scenes.test.ts` — Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder — gelesen: 44 Zeilen
-- `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
+- `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 79 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/hud-labels.test.ts` — HUD-Texte: Schwellen bleiben stabil, damit Ruf und Laune nicht springen. — gelesen: 37 Zeilen
 - `src/ui/__tests__/hud-money.test.tsx` — import { describe, expect, it } from 'vitest'; — gelesen: 40 Zeilen
@@ -3669,7 +3676,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/games/slot-popup.tsx` — Ein Slot-Fenster: Walzen, Wettkonsole und die Risiko-Karte nach jedem Gewinn. — gelesen: 140 Zeilen
 - `src/ui/games/video-poker-popup.tsx` — Video Poker: fuenf Karten, Halten per Klick, Nachziehen, Auszahlung nach 9/6-Tabelle. — gelesen: 159 Zeilen
 - `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 44 Zeilen
-- `src/ui/goal.ts` — Das eine sichtbare Ziel des ersten Abends: eine Zahl, ein Balken, kein zweiter Zustand. — gelesen: 50 Zeilen
+- `src/ui/goal.ts` — Das eine sichtbare Ziel des ersten Abends: eine Zahl, ein Balken, kein zweiter Zustand. — gelesen: 84 Zeilen
 - `src/ui/guest-context-panel.tsx` — Objektpanel Gast: Eigenschaften und Handlungen am NPC, ohne die Welt zu verlassen. — gelesen: 119 Zeilen
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 152 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 104 Zeilen

@@ -6,10 +6,17 @@
   "task": "Startziel an echte Tagesmiete binden und nach Deckung zur Firmenstufe wechseln",
   "goal": "#528",
   "pathAllowlist": [
-    "src/",
-    "content/",
+    "src/ui/goal.ts",
+    "src/ui/__tests__/goal.test.ts",
+    "src/core/sim/upkeep.ts",
+    "src/core/sim/upkeep-costs.ts",
+    "src/core/sim/__tests__/upkeep-costs.test.ts",
+    "content/narrative/contributions/2026-11-14-goal-cost-truth.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
     "docs/INVENTORY.md",
-    ".lane-claims/"
+    ".lane-claims/claims/lane-sim-issue-528-goal-cost-truth.json"
   ],
   "contracts": [],
   "dependencies": [],

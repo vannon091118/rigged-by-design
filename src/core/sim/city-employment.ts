@@ -29,9 +29,19 @@ export interface CityJobMarket {
   readonly jobless: number;
 }
 
+/**
+ * Belegbar ist nur ein Haus, das offen steht und einen echten Eingang hat.
+ * Ein Neubau startet versiegelt (`locked`, `entrance -1/-1`): niemand kommt
+ * hinein, also darf er auch keine Stellen vergeben (#566).
+ */
+export function isBookable(building: BuildingState): boolean {
+  return !building.locked && building.entrance.x >= 0 && building.entrance.y >= 0;
+}
+
 function capacityOf(buildings: readonly BuildingState[]): Map<string, number> {
   const capacity = new Map<string, number>();
   for (const building of buildings) {
+    if (!isBookable(building)) continue;
     const slots = JOB_CAPACITY[building.kind] ?? 0;
     if (slots > 0) capacity.set(building.id, slots);
   }
@@ -75,7 +85,7 @@ export function cityJobMarket(
   buildings: readonly BuildingState[],
   candidates: readonly EmploymentCandidate[],
 ): CityJobMarket {
-  const jobs = buildings.reduce((sum, building) => sum + (JOB_CAPACITY[building.kind] ?? 0), 0);
+  const jobs = buildings.reduce((sum, building) => sum + (isBookable(building) ? JOB_CAPACITY[building.kind] ?? 0 : 0), 0);
   const employed = assignEmployment(candidates, buildings).size;
   return {
     residents: candidates.length,
