@@ -64,7 +64,7 @@ export class CityActorSync {
       const y = (actor.y + 0.8) * TILE;
       let art = this.#arts.get(actor.npcId);
       if (!art) {
-        art = createGuestArt('CITY', actor.name, false, this.#arts.size * 0.9);
+        art = createGuestArt(actor.persona, actor.name, false, this.#arts.size * 0.9);
         art.sticker.visible = false;
         this.#arts.set(actor.npcId, art);
         world.addChild(art.root);
@@ -85,12 +85,18 @@ export class CityActorSync {
         art.moveStart = now - stepMs;
       }
       art.root.visible = true;
-      art.setMood(62, false, 0);
+      // Profil und Stimmung kommen aus demselben Snapshot wie Position und
+      // Reisestatus. Ein Wechsel der Persona bleibt damit sichtbar, ohne dass
+      // die Figur neu entsteht.
+      art.setPersona(actor.persona);
+      art.setMood(actor.mood, false, 0);
       art.setState(actorStateFor({
         state: actor.traveling ? 'ENTER' : 'WAIT',
         pathLength: actor.traveling ? 1 : 0, pathIndex: 0,
       }));
-      art.setNameVisible(false);
+      // In der Naehe (Detail-LOD) traegt die Figur ihren Namen; die
+      // Uebersicht bleibt lesbar, ohne die Identitaet zu ersetzen.
+      art.setNameVisible(lod === 1);
       art.setLod(lod === 1);
       depth.set(art.root, art.root.y, 'actor', actorKey(actor.npcId));
     }

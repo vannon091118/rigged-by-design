@@ -146,6 +146,8 @@ export interface CityResidentView {
   readonly npcId: string;
   readonly name: string;
   readonly role: string;
+  /** Anzeigeprofil aus dem gebundenen Besucherzustand; nie eine zweite Quelle. */
+  readonly persona: string;
   readonly location: CityLifePlace;
   readonly locationLabel: string;
   /** Ziel des laufenden Wegs; `null` heisst: steht still. */

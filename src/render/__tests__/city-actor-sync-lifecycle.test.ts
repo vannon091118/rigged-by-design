@@ -29,10 +29,14 @@ interface StubArt {
   facing: string;
   animated: number[];
   lods: boolean[];
+  moods: Array<[number, boolean, number]>;
+  personas: string[];
+  nameVisibility: boolean[];
   animate: (now: number) => void;
-  setMood: () => void;
+  setMood: (mood: number, angry: boolean, addiction: number) => void;
+  setPersona: (persona: string) => void;
   setState: () => void;
-  setNameVisible: () => void;
+  setNameVisible: (visible: boolean) => void;
   setLod: (lod: boolean) => void;
   setFacing: (facing: string) => void;
 }
@@ -40,6 +44,9 @@ interface StubArt {
 function makeArt(): StubArt {
   const animated: number[] = [];
   const lods: boolean[] = [];
+  const moods: Array<[number, boolean, number]> = [];
+  const personas: string[] = [];
+  const nameVisibility: boolean[] = [];
   const root = {
     x: 0, y: 0, rotation: 0, visible: false, destroyed: false,
     destroy: () => { root.destroyed = true; },
@@ -50,19 +57,22 @@ function makeArt(): StubArt {
   };
   return {
     root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase: 0, facing: 'down',
-    animated, lods,
+    animated, lods, moods, personas, nameVisibility,
     animate: (now: number) => { animated.push(now); },
-    setMood: () => undefined,
+    setMood: (mood: number, angry: boolean, addiction: number) => { moods.push([mood, angry, addiction]); },
+    setPersona: (persona: string) => { personas.push(persona); },
     setState: () => undefined,
-    setNameVisible: () => undefined,
+    setNameVisible: (visible: boolean) => { nameVisibility.push(visible); },
     setLod: (lod: boolean) => { lods.push(lod); },
     setFacing: (_facing: string) => undefined,
   };
 }
 
-const cityView = (actors: readonly { npcId: string; x: number; y: number; name?: string; traveling?: boolean }[]) => ({
+const cityView = (actors: readonly { npcId: string; x: number; y: number; name?: string; persona?: string; mood?: number; traveling?: boolean }[]) => ({
   scene: { kind: 'CITY' },
-  cityActors: actors.map((actor) => ({ name: 'Gast', traveling: false, ...actor })),
+  cityActors: actors.map((actor) => ({
+    name: 'Gast', persona: 'STREET', mood: 62, traveling: false, ...actor,
+  })),
 }) as unknown as GameView;
 
 function harness() {
@@ -98,6 +108,15 @@ describe('CityActorSync · sync', () => {
     expect(arts[0]?.sticker.visible).toBe(false);
     expect(arts[0]?.lods).toEqual([true]);
     expect(depth.set).toHaveBeenCalledWith(arts[0]?.root, 3.8 * TILE, 'actor', expect.any(Number));
+  });
+
+  it('reicht Persona und Snapshot-Mood an die Figur weiter', () => {
+    const { sync, arts } = harness();
+    sync.sync(cityView([{ npcId: 'npc-1', x: 2, y: 3, persona: 'BUSINESS', mood: 17 }]), 1_000, 1);
+    expect(artMock.create).toHaveBeenCalledWith('BUSINESS', 'Gast', false, 0);
+    expect(arts[0]?.personas).toEqual(['BUSINESS']);
+    expect(arts[0]?.moods).toEqual([[17, false, 0]]);
+    expect(arts[0]?.nameVisibility).toEqual([true]);
   });
 
   it('haelt dieselbe Figur ueber Ticks und Zielwechsel an der Kennung', () => {

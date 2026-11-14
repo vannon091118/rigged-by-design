@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:752874ccc841a44007b2396cdcde224ab1ac2815df60ceb59df60b813c2b26b2",
+  "contentHash": "sha256:194912ba79841dd5e750f1b86b59d4562a2085443413874d60d2b8aadc2f4f2e",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3246,6 +3246,31 @@
       "text": "Im Lager stapeln sich Kisten mit Etiketten, die niemand mehr liest. Die oberste ist leer und wiegt trotzdem.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
+    },
+    {
+      "contributionId": "city-actor-persona-mood-773",
+      "turnId": "2026-11-14T23:15Z-city-actor-persona-mood",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita kam nicht als graue Huelle aus dem Speicher: Ihre Jacke trug die Farbe ihres Profils, und ihr Gesicht wechselte mit der Laune, die im selben Augenblick im Stadtzustand stand. Der Renderer hatte nichts hinzuerfunden; er hatte nur endlich hingesehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-actor-persona-mood.json"
     },
     {
       "contributionId": "city-asset-ledger-01",

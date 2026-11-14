@@ -46,6 +46,7 @@ export function cityLifeView(world: WorldState): readonly CityResidentView[] {
       npcId: resident.npcId,
       name: resident.name,
       role: resident.role,
+      persona: visitor?.persona ?? 'STREET',
       location: resident.location,
       locationLabel: PLACE_LABELS[resident.location],
       travelTo: resident.travel ? PLACE_LABELS[resident.travel.to] : null,

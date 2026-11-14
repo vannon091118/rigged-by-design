@@ -52,6 +52,10 @@ export interface CityActorView {
   readonly npcId: string;
   readonly name: string;
   readonly role: string;
+  /** Kleidung/Silhouette der Figur, abgeleitet aus dem Besucherprofil. */
+  readonly persona: string;
+  /** Stimmung aus dem Snapshot; der Renderer erfindet keinen Wert. */
+  readonly mood: number;
   readonly x: number;
   readonly y: number;
   /** Laueft gerade: die Figur zeigt den Weg, nicht den Stand. */
