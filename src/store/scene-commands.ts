@@ -1,7 +1,7 @@
 /** Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. */
 import type { WorldState } from '../core/sim/types';
 import { travel } from '../core/sim/city';
-import { cityDoorEffect } from '../core/sim/city-doors';
+import { cityDoorEffect, grownDoorBuilding, grownDoorEffect, isShell } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { clearActionQueue } from '../core/sim/action-queue';
@@ -101,9 +101,22 @@ export class SceneCommands {
    * Markt reisen in den bestehenden Stadtort; `null` heisst ohne Wirkung.
    */
   enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | 'INTERIOR' | null {
-    const effect = cityDoorEffect(doorId);
+    const world = this.#deps.world();
+    const buildings = world.scene.kind === 'CITY' ? world.cityScene?.exterior.buildings ?? [] : [];
+    // Eine fertige Neubau-Tuer wirkt wie die kuratierten: der Laden fuehrt in die
+    // Marktgasse, das Wohnhaus bleibt privat, der Rohbau ist Kulisse (#524).
+    const grown = grownDoorBuilding(doorId, buildings);
+    const effect = (grown && !isShell(grown) ? grownDoorEffect(grown) : null) ?? cityDoorEffect(doorId);
     const ownDoor = effect === null && this.#isOwnDoor(doorId);
-    if (!effect && !ownDoor) return null;
+    if (!effect && !ownDoor) {
+      // Eine fertige Privatwohnung ist ein echter Ort, aber kein oeffentlicher:
+      // Der Klick nennt den Grund statt still zu bleiben (#524).
+      if (grownDoorBuilding(doorId, buildings)) {
+        this.#deps.notice('Privatwohnung — kein öffentlicher Zugang.');
+        this.#deps.emit();
+      }
+      return null;
+    }
     // Eine Tuer ist ein Ort, kein Menuepunkt: Ohne Nahe zur Schwelle schickt der
     // Klick den Spieler erst hin; der Uebergang laeuft bei Ankunft (#506).
     if (!this.#doors.atDoor(doorId)) {
@@ -119,7 +132,6 @@ export class SceneCommands {
     }
     if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
     if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
-    const world = this.#deps.world();
     try {
       travel(world, effect.location);
       clearActionQueue(world);

@@ -7,6 +7,7 @@
  * dieser Tick schon bewegt hat, und kein Schritt liest einen halben Zustand.
  */
 import type { Ledger } from '../economy/ledger';
+import { completeCityConstruction } from './city-construction';
 import { advanceCityGrowth } from './city-growth';
 import { tickCityLife } from './city-life';
 import { tickCityMovement } from './city-life-movement';
@@ -20,4 +21,6 @@ export function tickCity(world: WorldState, ledger: Ledger): void {
   // Wachstum folgt dem Signal (Joblose); finanziert wird aus Startkapital und
   // Stadtfoerderung, jede Bewegung im Ledger (#525).
   advanceCityGrowth(world, ledger);
+  // Der Vortag wird zuerst fertig: Rohbau oeffnen, dann erst weiterbauen (#524).
+  completeCityConstruction(world);
 }

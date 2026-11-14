@@ -1,0 +1,24 @@
+{
+  "id": "lane/sim/issue-524-construction",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-524-construction",
+  "baseSha": "77f11ff59dc4bd99c4a03f52c9100fd424607144",
+  "issue": 524,
+  "task": "Rohbau und Fertigstellung der Stadtneubauten (#524)",
+  "goal": "Neubauten starten versiegelt, oeffnen am Folgetag, Tueren wirken und Stellen werden erst dann belegbar.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/render/floor-actions.ts",
+    "src/store/scene-commands.ts",
+    ".lane-claims/claims/lane-sim-issue-524-construction.json",
+    ".lane-claims/tasks/sim-issue-524-construction.json",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "77f11ff59dc4bd99c4a03f52c9100fd424607144"
+}

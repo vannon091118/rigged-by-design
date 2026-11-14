@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:92ecda132710cb8c31dddbd684ba055390907e92779fce92eac20bad7d32d626",
+  "contentHash": "sha256:67b311ab3adb9896dbbe99728323303edea4ca4fb4839d36f5fc53f371d09267",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7554,6 +7554,28 @@
       "text": "Rita legte ein schmales Heft neben die Kasse. Auf jeder Seite standen drei Zeilen: was gerade läuft, was offen ist und was als Nächstes kommt. Wer die Schicht übernahm, las zuerst das Heft, nicht den Chatverlauf. Der nächste Schritt war damit nie eine Erinnerung, sondern eine Notiz.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-task-vertrag.json"
+    },
+    {
+      "contributionId": "grown-shell-01",
+      "turnId": "2026-11-14T03:10Z-grown-shell-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Rohbau steht da wie ein zugeknöpfter Mantel: Fassade, kein Griff, keine Tür. Am nächsten Morgen ist der Schlitz da, und aus dem Laden riecht es nach frischem Holz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-grown-shell.json"
     },
     {
       "contributionId": "guest-voice-mid-51",

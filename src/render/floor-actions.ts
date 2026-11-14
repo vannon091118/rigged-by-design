@@ -1,5 +1,6 @@
 /** Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. */
-import { cityDoorEffect, type CityStreetDoorId } from '../core/sim/city-doors';
+import { cityDoorEffect, grownDoorBuilding, type CityStreetDoorId } from '../core/sim/city-doors';
+import { isShell } from '../core/sim/city-construction';
 import type { InteractionTarget } from '../core/sim/interaction';
 import type { GameView } from '../store/types';
 
@@ -100,6 +101,23 @@ const DOOR_LABELS: Readonly<Record<CityStreetDoorId, string>> = Object.freeze({
 /** Die Schwelle ist ein Ziel wie jedes andere; der Effekt kommt aus city-doors. */
 export function buildDoorActions(view: GameView, doorId: string): MenuAction[] {
   if (view.scene.kind !== 'CITY') return [];
+  // Neubauten: Der Rohbau ist Kulisse, der fertige Laden oeffentlich, das
+  // fertige Wohnhaus privat. Die Aktion nennt den Grund statt zu fehlen (#524).
+  const grown = grownDoorBuilding(doorId, view.cityExterior?.buildings ?? []);
+  if (grown) {
+    if (isShell(grown)) return [];
+    if (grown.kind === 'RESIDENCE') {
+      return [{ id: 'ENTER_DOOR', label: 'Wohnhaus betreten', enabled: false, doorId, reason: 'Privatwohnung — kein öffentlicher Zugang.' }];
+    }
+    const marketLocked = view.city.locations.find((entry) => entry.id === 'MARKT')?.locked ?? false;
+    return [{
+      id: 'ENTER_DOOR',
+      label: 'Laden betreten',
+      enabled: !marketLocked,
+      doorId,
+      reason: marketLocked ? 'Der Markt öffnet erst ab Kiez-Rang Stammgast.' : undefined,
+    }];
+  }
   const effect = cityDoorEffect(doorId);
   const label = DOOR_LABELS[doorId as CityStreetDoorId];
   if (!effect || !label) return [];

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T03:10Z-grown-shell-01",
+  "contributionId": "grown-shell-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Rohbau steht da wie ein zugeknöpfter Mantel: Fassade, kein Griff, keine Tür. Am nächsten Morgen ist der Schlitz da, und aus dem Laden riecht es nach frischem Holz.",
+  "directives": []
+}

@@ -69,7 +69,8 @@ describe('Bauträger und Wachstum', () => {
     expect(events[0]!.kind).toBe('SYSTEM');
     expect(events[0]!.amount).toBe(BUILD_COST);
     expect(events[0]!.refs?.buildingId).toBe(report!.building.id);
-    expect(events[0]!.effect).toContain(`${JOB_CAPACITY.SHOP} neue Stellen`);
+    // Der Rohbau verspricht die Stellen, vergibt sie aber erst nach der Fertigstellung (#524).
+    expect(events[0]!.effect).toContain(`${JOB_CAPACITY.SHOP} Stellen nach Fertigstellung`);
     expect(world.lastEvent).toBe(events[0]!.effect);
   });
 

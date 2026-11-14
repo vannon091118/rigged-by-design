@@ -33,6 +33,9 @@ export function createBuilding(params: CreateBuildingParams): BuildingState {
     operatingHours: params.operatingHours ? Object.freeze({ ...params.operatingHours }) : undefined,
     locked: params.locked ?? false,
     occupancy: 0,
+    // Ein kuratiertes Gebaeude ist fertig; nur der Wachstumspfad baut Rohbauten.
+    construction: params.construction ?? 'OPEN',
+    builtDay: params.builtDay ?? 0,
   });
 }
 

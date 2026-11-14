@@ -72,8 +72,8 @@ function freePlot(buildings: readonly BuildingState[]): CityPlot | null {
   return free.find((plot) => plot.zoning !== 'HOME') ?? free[0] ?? null;
 }
 
-/** Wohnfläche bleibt Wohnung, alles andere Geschäft. */
-function buildingFor(plot: CityPlot, count: number): BuildingState {
+/** Wohnfläche bleibt Wohnung, alles andere Geschäft; jeder Bau startet als Rohbau. */
+function buildingFor(plot: CityPlot, count: number, day: number): BuildingState {
   const home = plot.zoning === 'HOME';
   return createBuilding({
     id: `bld_grown_${count + 1}`,
@@ -84,6 +84,8 @@ function buildingFor(plot: CityPlot, count: number): BuildingState {
     interiorLayoutId: 'layout_grown_unit',
     operatingHours: home ? undefined : { openHour: 8, closeHour: 20 },
     locked: true,
+    construction: 'SHELL',
+    builtDay: day,
   });
 }
 
@@ -128,7 +130,7 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
     ledger.transfer(EXTERNAL, BUILDER_ACCOUNT, subVC(BUILD_COST, balance),
       `Stadtfoerderung: ${buildingLabel(plot)}`, world.tick);
   }
-  const building = buildingFor(plot, growth.built.length);
+  const building = buildingFor(plot, growth.built.length, world.day);
   ledger.transfer(BUILDER_ACCOUNT, EXTERNAL_WORK, BUILD_COST, `Bau: ${building.name}`, world.tick);
   placeBuilding(world, building);
   world.cityGrowth = { lastBuildDay: world.day, built: [...growth.built, building.id] };
@@ -139,7 +141,7 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
     kind: 'SYSTEM',
     subject: `Neubau: ${building.name}`,
     cause: `${market.jobless} Joblose vor dem Bau; Grundstück ${plot.label}.`,
-    effect: `${toVCString(BUILD_COST)} Baukosten gebucht; ${slots} neue Stellen.`,
+    effect: `${toVCString(BUILD_COST)} Baukosten gebucht; ${slots} Stellen nach Fertigstellung.`,
     amount: BUILD_COST,
     refs: { buildingId: building.id },
   });

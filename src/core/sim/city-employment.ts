@@ -30,12 +30,14 @@ export interface CityJobMarket {
 }
 
 /**
- * Belegbar ist nur ein Haus, das offen steht und einen echten Eingang hat.
- * Ein Neubau startet versiegelt (`locked`, `entrance -1/-1`): niemand kommt
- * hinein, also darf er auch keine Stellen vergeben (#566).
+ * Belegbar ist nur ein Haus, das offen steht, einen echten Eingang hat und
+ * fertig ist. Ein Neubau startet versiegelt (`locked`, `entrance -1/-1`) und als
+ * Rohbau: niemand kommt hinein, also darf er auch keine Stellen vergeben
+ * (#566, #524).
  */
 export function isBookable(building: BuildingState): boolean {
-  return !building.locked && building.entrance.x >= 0 && building.entrance.y >= 0;
+  return !building.locked && building.entrance.x >= 0 && building.entrance.y >= 0
+    && building.construction !== 'SHELL';
 }
 
 function capacityOf(buildings: readonly BuildingState[]): Map<string, number> {

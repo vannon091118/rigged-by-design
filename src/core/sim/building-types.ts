@@ -25,6 +25,9 @@ export interface OperatingHours {
   readonly closeHour: number;
 }
 
+/** Bauzustand: Rohbau (versiegelt, keine Stellen) oder fertig und zugänglich. */
+export type ConstructionState = 'SHELL' | 'OPEN';
+
 /** Rechteckige Grundfläche eines Gebäudes auf dem Außenwelt-Raster. */
 export interface BuildingFootprint {
   readonly x: number;
@@ -57,6 +60,10 @@ export interface BuildingState {
   readonly locked: boolean;
   /** Aktuelle Anzahl der im Innenraum anwesenden Personen (LOD-Zähler). */
   readonly occupancy: number;
+  /** Bauzustand; fehlt in alten Saves und gilt dann als fertig. */
+  readonly construction?: ConstructionState;
+  /** Tag der Errichtung; ein Rohbau wird am Folgetag fertiggestellt. */
+  readonly builtDay?: number;
 }
 
 /** Parameter zur Erstellung eines neuen Gebäudes. */
@@ -71,4 +78,6 @@ export interface CreateBuildingParams {
   readonly tenantIds?: readonly string[];
   readonly operatingHours?: OperatingHours;
   readonly locked?: boolean;
+  readonly construction?: ConstructionState;
+  readonly builtDay?: number;
 }
