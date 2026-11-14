@@ -1,0 +1,17 @@
+{
+  "agentId": "local-agent-1",
+  "turnId": "2026-11-14T00:40Z-agent-onboarding",
+  "contributionId": "agent-onboarding-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita strich die alte Zeile durch und schrieb daneben: Wer zuerst am Ticket steht, arbeitet es; wer fertig ist, gibt es zurueck. Der Zettelkasten am Rand hatte damit nur noch eine Aufgabe.",
+  "directives": []
+}

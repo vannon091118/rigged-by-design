@@ -53,6 +53,7 @@ export const DOC_SET = Object.freeze([
   { path: 'docs/ARCHITECTURE.md', title: 'Architektur', sections: ['## Zustandsbesitz', '## Pipeline', '## Delivery-Regel'] },
   { path: 'docs/ROADMAP.md', title: 'Roadmap', sections: ['## Jetzt', '## Als Nächstes', '## Später'] },
   { path: 'docs/WORKFLOW.md', title: 'Workflow', sections: ['## Einstieg', '## Arbeitsablauf', '## Abschluss', '## Referenzen'] },
+  { path: 'docs/AGENT-ONBOARDING.md', title: 'Agent-Onboarding', sections: ['## Der Lauf als Schleife', '## 5 · Prioritäten prüfen und nächstes freies Issue claimen', '## 7 · Umsetzungs-Kommentar für den Maintainer-Review', '## Referenzen'] },
   { path: 'docs/CI.md', title: 'CI', sections: ['## Required Gates', '## Zustände', '## Workflows', '## Nachweise'] },
   { path: 'docs/GOVERNANCE.md', title: 'Governance', sections: ['## Rollen und Lanes', '## Claims', '## Eskalation', '## Branch-Schutz'] },
   { path: 'docs/TESTING.md', title: 'Testing', sections: ['### Die eine Testlinie', '## Testmatrix', '## Zusatzregressionen'] },

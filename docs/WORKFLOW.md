@@ -27,7 +27,7 @@ Ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan, korrupte WIP oder e
 
 ### Claim und Worktree
 
-Jede Lane außer `main` braucht einen Claim in `.lane-claims/`; ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Claim nennt:
+Jede Lane außer `main` braucht einen Claim. Die Wahrheit ist der `CLAIM`-Kommentar am GitHub-Issue nach [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md); der Eintrag in `.lane-claims/` ist die mechanische Spiegelung davon und entscheidet nie gegen den Issue-Verlauf. Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der gespiegelte Claim nennt:
 
 - `id` und `branch` nach `lane/<domäne>/<task>` (Legacy: `gov/`, `hygiene/`, `fix/`),
 - Owner aus dem festen Roster,

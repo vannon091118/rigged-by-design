@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1d237debb4cbe6a9db39c48c716a43db9f6664104754eca48b940cabc3bdbf7e",
+  "contentHash": "sha256:a714ff5c5fd5d41c5abe3a5967c426461fbe5f4ce425a5832ca10c577e7be45c",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -77,6 +77,31 @@
       "text": "Hinter dem Haus sammelt sich das Wasser in einer Mulde. Jeder Regen erinnert daran, dass der Boden kein Gefälle kennt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-agent-bootstrap.json"
+    },
+    {
+      "contributionId": "agent-onboarding-01",
+      "turnId": "2026-11-14T00:40Z-agent-onboarding",
+      "agentId": "local-agent-1",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita strich die alte Zeile durch und schrieb daneben: Wer zuerst am Ticket steht, arbeitet es; wer fertig ist, gibt es zurueck. Der Zettelkasten am Rand hatte damit nur noch eine Aufgabe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-agent-onboarding.json"
     },
     {
       "contributionId": "agent14-changelog-1",

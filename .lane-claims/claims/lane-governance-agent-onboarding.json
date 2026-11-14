@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/agent-onboarding",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent-onboarding",
+  "baseSha": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee",
+  "task": "Agent-Onboarding als verbindlichen Workflow verankern; Claims und Lanes ueber GitHub-Issues loesen",
+  "goal": "AGENTS.md, GOVERNANCE.md, WORKFLOW.md und INDEX.md verweisen direkt auf docs/AGENT-ONBOARDING.md und loesen den Widerspruch Register vs. Issue-Verlauf zugunsten der Issues auf.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/**",
+    "scripts/lib/doc-sync.mjs",
+    "content/narrative/**",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-agent-onboarding.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f7c00e8aa51993bbaa5ca296a09fb7d3909ce3ee"
+}
