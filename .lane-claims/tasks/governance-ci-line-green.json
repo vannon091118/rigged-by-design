@@ -4,14 +4,18 @@
   "claimId": "lane/governance/ci-line-green",
   "branch": "lane/governance/ci-line-green",
   "baseSha": "9c7add6bbf31571fa66131bf969e6beeb4f27bca",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "ci:local auf main wieder gruen belegen",
   "goal": "dead-code (ConstructionState) und test-quality (worker-claim-gate) reparieren, ohne Spielverhalten zu aendern; ci:local muss auf dem PR-Kopf exit 0 liefern.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 613,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/613",
+    "state": "open"
+  },
   "findings": [],
-  "nextAction": "Beide Gates einzeln belegen, dann ci:local vollstaendig fahren, PR oeffnen und mit RELEASE [A4] done uebergeben.",
-  "revision": 1
+  "nextAction": "PR #613 ist gepusht; Claim mit RELEASE [A4] done 0ed71240 freigegeben, Label review-waiting gesetzt. Naechster Schritt: Maintainer-Review auf exaktem Kopf.",
+  "revision": 2
 }
