@@ -1,0 +1,27 @@
+{
+  "id": "lane/sim/issue-706-pathfinding-detour",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-706-pathfinding-detour",
+  "baseSha": "680700c0f9f1a339cf716bbacbce70ab2101c9cf",
+  "issue": 706,
+  "task": "Issue #706: ungenutzte pathfinding-detour-API entfernen",
+  "goal": "Die von keinem Verbraucher genutzte Detour-/Waypoint-API samt No-Op findBlockerOnPath entfernen, damit kein irrefuehrender toter Pfad im Sim-Kern bleibt; Kern-Pfadfindung bleibt unveraendert.",
+  "pathAllowlist": [
+    "src/core/sim/pathfinding.ts",
+    "src/core/sim/pathfinding-detour.ts",
+    "src/core/sim/__tests__/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "head-on-main",
+  "mergedSha": "c2d5f275088599cdc502add91762ad5de85291d7",
+  "createdAt": "680700c0f9f1a339cf716bbacbce70ab2101c9cf"
+}

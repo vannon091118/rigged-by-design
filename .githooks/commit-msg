@@ -5,10 +5,16 @@
 set -e
 if [ ! -d node_modules ]; then exit 0; fi
 node scripts/sanitize-commit.mjs "$1" >/dev/null 2>&1 || true
-if node scripts/verify-commit-msg.mjs "$1" >/tmp/rbd-commit-msg.log 2>&1; then
+# Prozesseigener Logpfad: ein fester Name in /tmp kollidiert zwischen
+# parallelen Worktrees und macht den Hook fuer alle ausser dem Erstbesitzer
+# unbrauchbar (Permission denied statt Verdikt).
+LOG="${TMPDIR:-/tmp}/rbd-commit-msg.$$.log"
+if node scripts/verify-commit-msg.mjs "$1" >"$LOG" 2>&1; then
+  rm -f "$LOG"
   exit 0
 fi
 echo "commit-msg: Pflichtsektionen fehlen - Commit blockiert."
-grep -E "ERR-4006|ERR-4005" /tmp/rbd-commit-msg.log | head -3 | sed 's/^/  /'
+grep -E "ERR-4006|ERR-4005" "$LOG" | head -3 | sed 's/^/  /' || true
 echo "  Naechster Schritt: Nachricht mit den drei Pflichtsektionen neu setzen (git commit --amend -F <datei>)."
+rm -f "$LOG"
 exit 1

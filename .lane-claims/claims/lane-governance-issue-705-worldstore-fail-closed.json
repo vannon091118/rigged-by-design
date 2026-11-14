@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/issue-705-worldstore-fail-closed",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/governance/issue-705-worldstore-fail-closed",
+  "baseSha": "680700c0f9f1a339cf716bbacbce70ab2101c9cf",
+  "issue": 705,
+  "task": "Issue #705: WorldStore-Timer nach LedgerBalanceError fail-closed anhalten",
+  "goal": "Der Welt-Takt stoppt beim ersten Tickfehler dauerhaft, ohne Save oder Journal-Buchung aus dem Catch; die Ledger-Diagnose steht in view.notice. Neues Spiel und Import geben den Takt wieder frei. Der gemergte Governance-Claim wird im selben Zug auf merged gezogen.",
+  "pathAllowlist": [
+    "src/store/world-store.ts",
+    "src/store/world-tick.ts",
+    "src/store/tick-scheduler.ts",
+    "src/store/ledger-halt.ts",
+    "src/store/__tests__/world-tick-fail-closed.test.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "head-on-main",
+  "mergedSha": "ed56eee09c036a3ffd0434780f54f354e88af405",
+  "createdAt": "680700c0f9f1a339cf716bbacbce70ab2101c9cf"
+}

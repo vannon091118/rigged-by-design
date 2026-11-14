@@ -4,18 +4,14 @@
   "contributionId": "governance-closeout-main-sync-01",
   "role": "BEOBACHTER",
   "locale": "de",
-  "slot": "documentation",
-  "function": "document",
-  "contexts": [
-    "content"
-  ],
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["ambient-dokumentation"],
   "tone": "sachlich",
   "mood": "entschlossen",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": [
-    "narrativ"
-  ],
+  "flags": ["narrativ"],
   "text": "Der Aufzug im Haus ist seit Wochen kaputt. Die Miete ist trotzdem pünktlich, das Treppenhaus nicht.",
   "directives": []
 }

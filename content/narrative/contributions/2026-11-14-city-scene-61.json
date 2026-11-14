@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:50Z-city-scene-61",
+  "contributionId": "city-scene-61",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Zwei Namensschilder hingen noch am Haken, obwohl ihre Traeger schon durch die Hintertuer hinaus waren. Jetzt haengen sie im Ablagefach, wo sie hingehoeren.",
+  "directives": []
+}

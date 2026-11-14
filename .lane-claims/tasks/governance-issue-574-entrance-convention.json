@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-574-entrance-convention",
+  "claimId": "lane/governance/issue-574-entrance-convention",
+  "branch": "lane/governance/issue-574-entrance-convention",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "phase": "CI_PENDING",
+  "title": "Kneipe ueberlappt Gehweg; Eingangs-Konvention vereinheitlichen (#574)",
+  "goal": "Kneipen-Grundriss endet auf der Fassadenzeile der Nachbarn (y+h=12); jede Tuer liegt auf der Gehweg-Zeile, nie auf der Fahrbahn",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 683,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/683",
+    "state": "open",
+    "head": "d85b7b83"
+  },
+  "findings": [
+    {
+      "id": "entry-fixture-drift",
+      "summary": "room-transition.test.ts nutzt noch exteriorDoorPos {x:24,y:14} als synthetische Fixture; der Uebergangstest prueft nur Distanz/Verriegelung und liest die Presets nicht. Nicht mitgeaendert (ausserhalb des Ticket-Scopes).",
+      "severity": "info",
+      "status": "open",
+      "kind": "infrastructure"
+    }
+  ],
+  "nextAction": "Maintainer-Review auf dem bereinigten Kopf; danach Merge und Closeout von #574",
+  "rework": {
+    "verdict": "PARTIAL",
+    "at": "2026-11-14T10:40:30Z",
+    "done": [
+      "Basis origin/main b969a923 gemergt (keine Umschreibung veroeffentlichter Historie)",
+      "fremden Claim lane-governance-issue-555-balance-run.json auf origin/main zurueckgesetzt",
+      "Narrative-Beigabe 2026-11-14-kiez-fassadenzeile.json entfernt, Registry/Manifest regeneriert",
+      "Claim-Allowlist auf die betroffenen Dateien verengt (Kollision mit issue-648-diff-gate aufgeloest)"
+    ],
+    "open": [
+      "PR-Head und Uebergabe-Kommentar nach dem Commit auf den tatsaechlichen SHA ziehen"
+    ],
+    "blocked": [
+      "check:loc und typecheck sind auf origin/main b969a923 rot (src/core/sim/pathfinding.ts 274 LOC, image-diff-gate.ts); diff-fremd, vom Maintainer als separater Refactor eingeordnet"
+    ]
+  },
+  "revision": 2
+}

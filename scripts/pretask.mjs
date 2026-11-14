@@ -161,6 +161,11 @@ const boardNumber = claim ? issueNumberFor(claim) : issueNumberFor({ branch });
 const issueClaim = branch !== 'main' && boardNumber
   ? readIssueClaim({ number: boardNumber, agent: agentIdentity, cwd: ROOT })
   : { checked: false, status: 'not-linked', number: null };
+// Dieselbe Regel wie validateNewClaim: eine offene Lane ohne Issue-Nummer hat
+// keinen Board-Auftrag und startet nicht (#635).
+if (branch !== 'main' && claim && claim.status === 'open' && !boardNumber) {
+  blockers.push(`[ERR-4019] Claim '${claim.id}' traegt keine Issue-Nummer; neue Lanes brauchen eine positive Issue-Referenz (pnpm run claim:register --issue <nr>)`);
+}
 if (branch !== 'main') {
   if (issueClaim.status === 'claimed-other') {
     blockers.push(`[ERR-4019] ${describeIssueClaim(issueClaim)}; erst RELEASE/HANDOFF im Issue abwarten, kein paralleler Read`);

@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · statistics 6 · performance 7.
+Summe: 404 Dateien — contract 218 · integration 111 · governance 62 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -183,6 +183,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/core/governance/__tests__/impact.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
 | `src/core/governance/__tests__/integration-controller.test.ts` | pipeline | governance | ja | `scripts/lib/integration.mjs` |
 | `src/core/governance/__tests__/issue-scope.test.ts` | pipeline | governance | ja | `scripts/lib/issue-scope.mjs` |
+| `src/core/governance/__tests__/lane-claims-issue.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
 | `src/core/governance/__tests__/lane-claims.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
 | `src/core/governance/__tests__/narrative-compiler.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-compiler.mjs` |
 | `src/core/governance/__tests__/narrative-content-quality.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-blocks.mjs` |
@@ -240,6 +241,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
 | `src/core/sim/__tests__/building.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
 | `src/core/sim/__tests__/business-areas.test.ts` | sim | contract | ja | `src/core/sim/business-areas.ts` |
+| `src/core/sim/__tests__/city-building-entrances.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
 | `src/core/sim/__tests__/city-construction.test.ts` | sim | contract | ja | `src/core/sim/city-construction.ts` |
 | `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
 | `src/core/sim/__tests__/city-employment.test.ts` | sim | contract | ja | `src/core/sim/city-employment.ts` |
@@ -285,7 +287,6 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/core/sim/__tests__/guest-voice.test.ts` | sim | contract | ja | `src/core/sim/narrative/guest-voice.ts` |
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
 | `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` | sim | contract | ja | `src/core/sim/hybrid-flow.ts` |
-| `src/core/sim/__tests__/image-diff-gate.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/image-diff-gate.ts` |
 | `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/interaction.test.ts` | sim | contract | ja | `src/core/sim/interaction.ts` |
 | `src/core/sim/__tests__/interior-layouts.test.ts` | sim | contract | ja | `src/core/sim/interior-layouts.ts` |
@@ -397,6 +398,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
 | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
+| `src/core/sim/narrative/composer/__tests__/image-diff-gate.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/image-diff-gate.ts` |
 | `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/narrative/events/definitions/__tests__/city-event-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/definitions/city-encounter.ts` |
@@ -452,6 +454,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/store/__tests__/house-debt.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
 | `src/store/__tests__/ledger-tick-balance.test.ts` | store | integration | ja | `src/store/narrative-clock.ts` |
 | `src/store/__tests__/loaded-city-population.test.ts` | store | integration | ja | `src/store/save.ts` |
+| `src/store/__tests__/mirror-roundtrip.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/narrative-commands.test.ts` | store | integration | ja | `src/store/narrative-commands.ts` |
 | `src/store/__tests__/narrative-rival-source.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/narrative-save.test.ts` | store | integration | ja | `src/store/save.ts` |
@@ -475,6 +478,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/store/__tests__/staff-view.test.ts` | store | integration | ja | `src/store/staff-view.ts` |
 | `src/store/__tests__/street-population.test.ts` | store | integration | ja | `src/store/scene-commands.ts` |
 | `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
+| `src/store/__tests__/world-tick-fail-closed.test.ts` | store | integration | ja | `src/store/tick-scheduler.ts` |
 | `src/store/memory.bench.ts` | store | performance | nein, Mechanik | `src/store/save.ts` |
 | `src/store/narrative.bench.ts` | sim | performance | nein, Mechanik | `src/core/sim/narrative/runtime.ts` |
 | `src/store/perf-hot-paths.bench.ts` | store | performance | nein, Mechanik | `src/store/snapshot.ts` |
@@ -489,6 +493,7 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/ui/__tests__/editor-tools.test.ts` | ui | integration | ja | `src/ui/editor-tools.ts` |
 | `src/ui/__tests__/floor-keyboard.test.ts` | ui | integration | ja | `src/ui/floor-keyboard.ts` |
 | `src/ui/__tests__/floor-scenes.test.ts` | ui | integration | ja | `src/ui/floor-scenes.ts` |
+| `src/ui/__tests__/fps-meter.test.ts` | ui | integration | ja | `src/ui/fps-meter.ts` |
 | `src/ui/__tests__/goal.test.ts` | ui | integration | ja | `src/ui/goal.ts` |
 | `src/ui/__tests__/guest-profile.test.tsx` | ui | integration | ja | `src/ui/guest-popup.tsx` |
 | `src/ui/__tests__/hud-labels.test.ts` | ui | integration | ja | `src/ui/hud-labels.ts` |
@@ -502,13 +507,18 @@ Summe: 394 Dateien — contract 217 · integration 103 · governance 61 · stati
 | `src/ui/__tests__/placement-fit.test.ts` | ui | integration | ja | `src/ui/app-model.ts` |
 | `src/ui/__tests__/player-dashboard.test.tsx` | ui | integration | ja | `src/ui/look-popup.tsx` |
 | `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
+| `src/ui/__tests__/skill-path.test.tsx` | ui | integration | ja | `src/ui/hud.tsx` |
+| `src/ui/__tests__/skill-tooltips.test.tsx` | ui | integration | ja | `src/ui/hud.tsx` |
 | `src/ui/__tests__/small-screen-acceptance.test.tsx` | other | contract | ja | `src/App.tsx` |
 | `src/ui/__tests__/small-screen-dock.test.tsx` | ui | integration | ja | `src/ui/dock.tsx` |
 | `src/ui/__tests__/small-screen-layout.test.ts` | other | contract | ja | `src/styles/app.css` |
 | `src/ui/__tests__/small-screen-panels.test.tsx` | ui | integration | ja | `src/ui/popup-router.tsx` |
 | `src/ui/__tests__/smartphone-apps.test.tsx` | ui | integration | ja | `src/ui/smartphone.tsx` |
+| `src/ui/__tests__/smartphone-window-states.test.tsx` | ui | integration | ja | `src/ui/smartphone.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 | `src/ui/__tests__/venue-history.test.tsx` | ui | integration | ja | `src/ui/venue-history.tsx` |
+| `src/ui/__tests__/workshop-entries.test.tsx` | ui | integration | ja | `src/ui/workshop.tsx` |
+| `src/ui/__tests__/workshop-tiles.test.tsx` | ui | integration | ja | `src/ui/workshop.tsx` |
 | `src/ui/__tests__/world-first-ui.test.tsx` | ui | integration | ja | `src/ui/guest-context-panel.tsx` |
 <!-- TEST_CATALOG_END -->
 
@@ -700,10 +710,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3098 |
-| Gelistete Dateien | 3098 |
+| Getrackte Dateien | 3142 |
+| Gelistete Dateien | 3142 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (90), artifacts (1), content (1135), docs (108), packages (27), public (571), scripts (127), src (1014) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (123), artifacts (1), content (1130), docs (108), packages (27), public (571), scripts (127), src (1030) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -716,10 +726,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 46 Datei(en)
-- `.lane-claims/tasks/` — 42 Datei(en)
+- `.lane-claims/claims/` — 63 Datei(en)
+- `.lane-claims/tasks/` — 58 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1131 Datei(en)
+- `content/narrative/contributions/` — 1126 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -787,14 +797,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 75 Datei(en)
+- `src/core/governance/__tests__/` — 76 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
-- `src/core/sim/` — 184 Datei(en)
+- `src/core/sim/` — 186 Datei(en)
 - `src/core/sim/__tests__/` — 168 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
@@ -803,7 +813,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 7 Datei(en)
-- `src/core/sim/narrative/composer/__tests__/` — 2 Datei(en)
+- `src/core/sim/narrative/composer/__tests__/` — 3 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
@@ -820,22 +830,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
-- `src/store/` — 41 Datei(en)
-- `src/store/__tests__/` — 35 Datei(en)
+- `src/store/` — 44 Datei(en)
+- `src/store/__tests__/` — 37 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 102 Datei(en)
-- `src/ui/__tests__/` — 32 Datei(en)
+- `src/ui/` — 103 Datei(en)
+- `src/ui/__tests__/` — 38 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
 
 - `.cron/SECURITY.md` — Sicherheit: GITHUB_TOKEN für Maintainer-Cronjob — gelesen: 21 Zeilen
-- `.cron/check-in.mjs` — .cron/check-in.mjs — gelesen: 124 Zeilen
-- `.cron/check-out.mjs` — .cron/check-out.mjs — gelesen: 127 Zeilen
+- `.cron/check-in.mjs` — .cron/check-in.mjs — gelesen: 120 Zeilen
+- `.cron/check-out.mjs` — .cron/check-out.mjs — gelesen: 123 Zeilen
 - `.cron/maintainer-prompt.md` — Maintainer-Cron-Prompt (Version 1.0) — gelesen: 57 Zeilen
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
-- `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 14 Zeilen
+- `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
 - `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 42 Zeilen
 - `.github/CODEOWNERS` — Feste Owner. Auch ohne Pflicht-Review macht diese Datei sichtbar, wer eine — gelesen: 12 Zeilen
@@ -850,6 +860,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/board-state.json` — { — gelesen: 603 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-ci-issue-710-cron-sleep-lint.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agent-board-workflow.json` — { — gelesen: 25 Zeilen
@@ -860,14 +873,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-555-balance-run.json` — { — gelesen: 31 Zeilen
+- `.lane-claims/claims/lane-governance-issue-574-entrance-convention.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-617-generated-gate.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-issue-624-determinism-computed.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-625-rng-entry-role.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-627-run-budget.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-629-generated-serialization.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-governance-issue-685-claim-reconcile.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
@@ -893,8 +911,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-ui-issue-642-workshop-entries.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-ui-issue-643-workshop-tiles.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-ui-issue-645-fps-frames.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-ui-issue-646-smartphone-states.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
+- `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agent-board-workflow.json` — { — gelesen: 17 Zeilen
@@ -905,18 +933,24 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-claim-register-reconcile-616.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-555-balance-run.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-issue-574-entrance-convention.json` — { — gelesen: 46 Zeilen
 - `.lane-claims/tasks/governance-issue-617-generated-gate.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-625-rng-entry-role.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-issue-627-run-budget.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-629-generated-serialization.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
 - `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 79 Zeilen
 - `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
@@ -936,7 +970,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
+- `.lane-claims/tasks/ui-issue-642-workshop-entries.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-643-workshop-tiles.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-645-fps-frames.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1091,30 +1134,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-07-pool-description-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-description-48","contributionId":"pool-description-48","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-description-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-description-49","contributionId":"pool-description-49","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-description-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-description-50","contributionId":"pool-description-50","ro — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-documentation-27","contributionId":"pool-documentation-27" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-documentation-28","contributionId":"pool-documentation-28" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-documentation-29","contributionId":"pool-documentation-29" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-documentation-30","contributionId":"pool-documentation-30" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-documentation-31","contributionId":"pool-documentation-31" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-documentation-32","contributionId":"pool-documentation-32" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-documentation-33","contributionId":"pool-documentation-33" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-documentation-34","contributionId":"pool-documentation-34" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-documentation-35","contributionId":"pool-documentation-35" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-documentation-36","contributionId":"pool-documentation-36" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-documentation-37","contributionId":"pool-documentation-37" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-documentation-38","contributionId":"pool-documentation-38" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-documentation-39","contributionId":"pool-documentation-39" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-documentation-40","contributionId":"pool-documentation-40" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-documentation-41","contributionId":"pool-documentation-41" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-documentation-42","contributionId":"pool-documentation-42" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-documentation-43","contributionId":"pool-documentation-43" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-documentation-44","contributionId":"pool-documentation-44" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-documentation-45","contributionId":"pool-documentation-45" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-documentation-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-documentation-46","contributionId":"pool-documentation-46" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-documentation-47","contributionId":"pool-documentation-47" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-documentation-48","contributionId":"pool-documentation-48" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-documentation-49","contributionId":"pool-documentation-49" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-07-pool-documentation-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-documentation-50","contributionId":"pool-documentation-50" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-event-body-08","contributionId":"pool-event-body-08","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-event-body-09","contributionId":"pool-event-body-09","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-event-body-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-event-body-10","contributionId":"pool-event-body-10","role — gelesen: 1 Zeilen
@@ -1467,8 +1490,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-choice-preview-52","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-description-51","contributionId":"pool-description-51","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-description-52","contributionId":"pool-description-52","ro — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-08-pool-documentation-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-documentation-51","contributionId":"pool-documentation-51" — gelesen: 1 Zeilen
-- `content/narrative/contributions/2026-11-08-pool-documentation-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-documentation-52","contributionId":"pool-documentation-52" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-event-body-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-event-body-51","contributionId":"pool-event-body-51","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-event-body-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-event-body-52","contributionId":"pool-event-body-52","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-high-01.json` — {"agentId":"buffy","turnId":"2026-11-08T05:40Z-pool-guest-voice-high-01","contributionId":"pool-guest-voice-hi — gelesen: 1 Zeilen
@@ -1765,9 +1786,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-world-first-ui-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-world-first-ui-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-agent-bootstrap.json` — { — gelesen: 17 Zeilen
-- `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-main-sync.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-2b.json` — { — gelesen: 21 Zeilen
@@ -1783,7 +1804,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-fight-career.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-first-property.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-floor-work.json` — { — gelesen: 24 Zeilen
-- `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-eine-stimme.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json` — { — gelesen: 17 Zeilen
@@ -2042,6 +2063,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-ci-line-green.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-network-acceptance.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-proximity.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-54.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-55.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-56.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-57.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-58.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-59.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-60.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-61.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-62.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-64.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-65.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-66.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-67.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-68.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-69.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-city-scene-70.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-claim-register.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-close-rights.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-closeout-fallback.json` — { — gelesen: 21 Zeilen
@@ -2059,6 +2096,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-house-debt.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-image-diff-gate-test-repair.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-job-market-bookable.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-14-lane-ohne-auftrag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-ledger-tick-guard.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-lesezeichen.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
@@ -2074,9 +2112,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25377 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4529 Zeilen
-- `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25268 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4509 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1745 Zeilen
@@ -2846,7 +2884,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/integration.mjs` — Integration: entscheidet vor der teuren CI, ob ein Branch ueberhaupt — gelesen: 144 Zeilen
 - `scripts/lib/issue-claim.mjs` — Issue-Claims: GitHub ist die Wahrheit fuer Claims und Lanes. — gelesen: 272 Zeilen
 - `scripts/lib/issue-scope.mjs` — Issue-Scope: ein Label, ein Body-Vertrag, eine Entscheidung. — gelesen: 273 Zeilen
-- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 651 Zeilen
+- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 657 Zeilen
 - `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 145 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 277 Zeilen
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
@@ -2882,7 +2920,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder Abbruch und — gelesen: 335 Zeilen
 - `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 117 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 248 Zeilen
-- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 810 Zeilen
+- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 815 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 671 Zeilen
 - `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 157 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 70 Zeilen
@@ -3034,7 +3072,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/core/governance/__tests__/integration-controller.test.ts` — Der Integrationscontroller muss die Ursache eines Konflikts erkennen, nicht — gelesen: 184 Zeilen
 - `src/core/governance/__tests__/issue-scope.test.ts` — Ein Scope-Label entscheidet, ob ein offenes Issue eine Lane blockiert. — gelesen: 140 Zeilen
-- `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 209 Zeilen
+- `src/core/governance/__tests__/lane-claims-issue.test.ts` — Das Issue-Board ist die Wahrheit ueber Auftrag und Besitz. Eine neue, offene — gelesen: 46 Zeilen
+- `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 211 Zeilen
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 180 Zeilen
 - `src/core/governance/__tests__/narrative-content-quality.test.ts` — Quality-First: Der Bestand wird nicht nach Poolgroesse, sondern nach — gelesen: 140 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 201 Zeilen
@@ -3117,6 +3156,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
 - `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
+- `src/core/sim/__tests__/city-building-entrances.test.ts` — Eine Nordzeile, eine Fassadenzeile: Jede Tuer liegt auf der Gehweg-Zeile des — gelesen: 58 Zeilen
 - `src/core/sim/__tests__/city-construction.test.ts` — Ein Neubau ist zuerst ein Rohbau: versiegelt, ohne Tuerkante, ohne belegbare — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/city-employment.test.ts` — Eine Stelle gehoert einer Figur: Der Arbeitsmarkt zaehlt Zuordnungen, nicht — gelesen: 127 Zeilen
@@ -3162,7 +3202,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guest-voice.test.ts` — Der Ruf hoert man: Das Rufband waehlt den Pool, der Gast waehlt den Satz, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
 - `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` — Hybrid-Besucherstroeme: der Veranstaltungsgast kommt mit Durst und geht — gelesen: 86 Zeilen
-- `src/core/sim/__tests__/image-diff-gate.test.ts` — Testet den lokalen Bild-Diff-Gate mit expliziten Toleranzen: — gelesen: 188 Zeilen
 - `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 185 Zeilen
 - `src/core/sim/__tests__/interaction.test.ts` — Ein Ziel, ein Weg, eine Reichweite: die Figur laeuft zum Standplatz, statt zu — gelesen: 156 Zeilen
 - `src/core/sim/__tests__/interior-layouts.test.ts` — Kneipe und Späti sind echte, begehbare Innenräume: eigener Grundriss, eine — gelesen: 105 Zeilen
@@ -3283,7 +3322,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 150 Zeilen
 - `src/core/sim/building-types.ts` — Kanonische Typen für physische Gebäude in der Living World Engine. — gelesen: 83 Zeilen
-- `src/core/sim/building.ts` — Pure Funktionen zur Verwaltung physischer Gebäude in der Living World. — gelesen: 161 Zeilen
+- `src/core/sim/building.ts` — Pure Funktionen zur Verwaltung physischer Gebäude in der Living World. — gelesen: 163 Zeilen
 - `src/core/sim/business-areas.ts` — Modulare Business-Bereiche: das Haus fuehrt seine Bereiche im einen — gelesen: 86 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 59 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 137 Zeilen
@@ -3431,11 +3470,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/registry.ts` — Allowlist der Commands: ID, Familie, Parameter und Handler-Vertrag. — gelesen: 100 Zeilen
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
+- `src/core/sim/narrative/composer/__tests__/image-diff-gate.test.ts` — Testet den lokalen Bild-Diff-Gate mit expliziten Toleranzen: — gelesen: 188 Zeilen
 - `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` — NAR-11: Die Fehlerpfade des Runtime-Composers lehnen ungueltige Direktiven, — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
-- `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 142 Zeilen
+- `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 141 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 288 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 287 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3510,7 +3550,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/num.ts` — Die Modelle rundeten und klemmten bisher jeweils lokal. Eine Stelle fuer — gelesen: 24 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 105 Zeilen
 - `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 186 Zeilen
-- `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 398 Zeilen
+- `src/core/sim/pathfinding-detour.ts` — Erweiterte Pfadfindung: Zwischenstopps, belegte Wege und Umleitungen. — gelesen: 126 Zeilen
+- `src/core/sim/pathfinding-heap.ts` — Binaerer Min-Heap auf Tile-Indizes fuer A*: der Schluessel liegt im — gelesen: 56 Zeilen
+- `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 146 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 40 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
 - `src/core/sim/player-apartment.ts` — Kanonisches Layout und Einrichtungs-Modell der Spieler-Wohnung. — gelesen: 155 Zeilen
@@ -3712,6 +3754,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/house-debt.test.ts` — Die offene Haus-Schuld ist keine zweite Zahl: Der Snapshot liest den negativen — gelesen: 43 Zeilen
 - `src/store/__tests__/ledger-tick-balance.test.ts` — Die Bilanz ist eine Invariante des vollstaendigen Takts, nicht nur des — gelesen: 79 Zeilen
 - `src/store/__tests__/loaded-city-population.test.ts` — Die Kette Laden -> Sicht -> Begegnung: Ein Save, der bereits in der Stadt — gelesen: 86 Zeilen
+- `src/store/__tests__/mirror-roundtrip.test.ts` — Der Lager-Spiegel laeuft durch Kauf, Aufnehmen und Aufstellen und muss nach — gelesen: 76 Zeilen
 - `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
 - `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 55 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 143 Zeilen
@@ -3727,7 +3770,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-migration.test.ts` — Ein v5-Spielstand behaelt Fiat und offene Ansprueruche beim Laden. — gelesen: 123 Zeilen
 - `src/store/__tests__/save-reels.test.ts` — Alte Speicherstaende koennen eine ungueltige Walzenzahl tragen. Das Laden — gelesen: 65 Zeilen
 - `src/store/__tests__/save-rivals.test.ts` — Der Rivalen-Zustand steht im Save und ueberlebt einen Neustart; ein v9-Stand — gelesen: 47 Zeilen
-- `src/store/__tests__/save-roundtrip.test.ts` — Speichern, laden und danach exakt dieselbe Simulation fortsetzen. — gelesen: 129 Zeilen
+- `src/store/__tests__/save-roundtrip.test.ts` — Speichern, laden und danach exakt dieselbe Simulation fortsetzen. — gelesen: 136 Zeilen
 - `src/store/__tests__/save-staff.test.ts` — Alte Speicherstaende trugen den Guard als Flag neben den Agenten. Beim Laden — gelesen: 77 Zeilen
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
@@ -3735,6 +3778,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/staff-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 15 Zeilen
 - `src/store/__tests__/street-population.test.ts` — Der erste Schritt vor die Tür füllt die Stadt: Die drei kuratierten Figuren — gelesen: 54 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
+- `src/store/__tests__/world-tick-fail-closed.test.ts` — Ein Bilanzbruch ist terminal: Der produktive Takt haelt beim ersten Fehler — gelesen: 112 Zeilen
 - `src/store/archive-snapshot.ts` — Archiv-Projektion: kopiert nur, wenn das Archiv gewachsen oder verschoben wurde. — gelesen: 14 Zeilen
 - `src/store/city-actors-view.ts` — Bewohner als Renderdaten: eine Ableitung aus dem Stadtleben, keine Kopie. — gelesen: 22 Zeilen
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 111 Zeilen
@@ -3747,6 +3791,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/interior-commands.ts` — Szenenwechsel in und aus Stadt-Innenräumen; ein Zustand, keine Kopie der Stadt. — gelesen: 52 Zeilen
 - `src/store/layout-editing.ts` — Editor-Verlauf am Store-Rand: typisierte Commands anwenden, Pinselstriche — gelesen: 90 Zeilen
 - `src/store/layout-transfer.ts` — Layout-Export und -Import am Store-Rand. Der Import prueft das Dokument — gelesen: 55 Zeilen
+- `src/store/ledger-halt.ts` — Der erste Fehler gewinnt: Spaetere Laeufe duerfen die Diagnose des echten — gelesen: 30 Zeilen
 - `src/store/legacy-demand.ts` — Legacy-Savefeld aus der Zeit vor NAR-13; nur noch fuer die Migration. — gelesen: 7 Zeilen
 - `src/store/memory.bench.ts` — Speicher- und Save-Groesse: eine definierte 1000-Tick-Sitzung, kein Sample-Ring. — gelesen: 33 Zeilen
 - `src/store/migrate-layout.ts` — Layout-Migration: v11 liest den gespeicherten Plan, v5–v10 leiten ihn — gelesen: 31 Zeilen
@@ -3771,11 +3816,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
 - `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 189 Zeilen
 - `src/store/staff-view.ts` — Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. — gelesen: 8 Zeilen
+- `src/store/tick-scheduler.ts` — Der Scheduler besitzt das Intervall und die Fehlergrenze: Ein Fehler im Tick — gelesen: 51 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 173 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 167 Zeilen
+- `src/store/world-tick.ts` — Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn — gelesen: 67 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 742 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
@@ -3794,6 +3841,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/floor-keyboard.test.ts` — E waehlt die Hauptaktion des offenen Fokus, aber nie aus einem Eingabefeld — gelesen: 78 Zeilen
 - `src/ui/__tests__/floor-scenes.test.ts` — Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder — gelesen: 44 Zeilen
+- `src/ui/__tests__/fps-meter.test.ts` — Die Bildrate folgt den echten Frame-Zeitpunkten: bekannte Folgen ergeben — gelesen: 50 Zeilen
 - `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 144 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/hud-labels.test.ts` — HUD-Texte: Schwellen bleiben stabil, damit Ruf und Laune nicht springen. — gelesen: 37 Zeilen
@@ -3807,13 +3855,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/placement-fit.test.ts` — Das Ablegen per Enter stellt am eigenen Feld ab; die eigene Kachel darf — gelesen: 41 Zeilen
 - `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 177 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
+- `src/ui/__tests__/skill-path.test.tsx` — Der Skillpunkt-Klick laeuft ueber den echten Command-Pfad bis in die — gelesen: 99 Zeilen
+- `src/ui/__tests__/skill-tooltips.test.tsx` — HUD und Karrierefenster lesen dieselbe Effektbeschreibung. Der Test haelt — gelesen: 85 Zeilen
 - `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen
 - `src/ui/__tests__/small-screen-dock.test.tsx` — Abnahme Phase 2: alle Dock-Einstiege und die Gaesteuebersicht bleiben bei — gelesen: 80 Zeilen
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 138 Zeilen
 - `src/ui/__tests__/smartphone-apps.test.tsx` — Die drei neuen Apps sind nur über das Gerät erreichbar: das Tile muss den — gelesen: 65 Zeilen
+- `src/ui/__tests__/smartphone-window-states.test.tsx` — Ein Durchlauf auf derselben Geraeteflaeche: Home, App, Zurueck zur Home und — gelesen: 107 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 187 Zeilen
 - `src/ui/__tests__/venue-history.test.tsx` — Die Historie der Veranstaltung ist ein Leser der vorhandenen Event-Instanz: — gelesen: 43 Zeilen
+- `src/ui/__tests__/workshop-entries.test.tsx` — Beide Werkstatt-Einstiege oeffnen dieselbe Oberflaeche ueber der laufenden — gelesen: 111 Zeilen
+- `src/ui/__tests__/workshop-tiles.test.tsx` — Sechs Kacheln, sechs vorhandene Panels: jede Kachel oeffnet genau ihren — gelesen: 97 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 65 Zeilen
 - `src/ui/action-queue-panel.tsx` — Queue-Anzeige: der aktive Auftrag und seine naechsten Schritte, direkt am Floor. — gelesen: 40 Zeilen
@@ -3852,6 +3905,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 97 Zeilen
 - `src/ui/foreign-floor-popup.tsx` — Fenster auf einem fremden Floor: HUD plus Job-Menue an der gewaehlten Station. — gelesen: 54 Zeilen
 - `src/ui/format.ts` — Kompakte Anzeige: VC ohne Zahlenrauschen. — gelesen: 19 Zeilen
+- `src/ui/fps-meter.ts` — Bildrate aus echten Frame-Zeitpunkten. Die Messung kennt keinen Sollwert und — gelesen: 37 Zeilen
 - `src/ui/games-popup-lazy.tsx` — Chunk-Grenze fuer das Spiel-Paket: Engines, Tische und Pixi-Buehnen der — gelesen: 26 Zeilen
 - `src/ui/games-popup.tsx` — Fremdes Haus: echte Rivalen mit Betreiber, Regeln, Maschinen und Hausvorteil. — gelesen: 150 Zeilen
 - `src/ui/games-venue.tsx` — Fremdes Haus: Kopfzeile, Betreiberprofil und Geraetebuehne als eigene Zustaendigkeit. — gelesen: 120 Zeilen
@@ -3871,9 +3925,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 152 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 104 Zeilen
 - `src/ui/hud-icons.ts` — HUD-Icons als Data-URI: die zwei 32x32-PNGs sind zusammen rund 4 KB und — gelesen: 10 Zeilen
-- `src/ui/hud-labels.ts` — HUD-Texte: Labels, Ruf-Toene und Skill-Tipps als eigene Zustaendigkeit. — gelesen: 23 Zeilen
+- `src/ui/hud-labels.ts` — HUD-Texte: Labels, Ruf-Toene und Skill-Tipps als eigene Zustaendigkeit. — gelesen: 28 Zeilen
 - `src/ui/hud-money.tsx` — Geldblock des HUD: Betrag, Kasse/Offen und Tagesziel in einer Achse. — gelesen: 56 Zeilen
-- `src/ui/hud.tsx` — HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. — gelesen: 159 Zeilen
+- `src/ui/hud.tsx` — HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. — gelesen: 162 Zeilen
 - `src/ui/icons.ts` — Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. — gelesen: 28 Zeilen
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 125 Zeilen
@@ -3925,7 +3979,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 46 Zeilen
 - `src/ui/use-world-anchor.ts` — Weltanker: haelt eine React-Karte am Objekt, auch wenn die Kamera faehrt. — gelesen: 158 Zeilen
 - `src/ui/venue-history.tsx` — Veranstaltungs-Historie: Phasen und Ergebnis der vorhandenen Event-Instanz. — gelesen: 26 Zeilen
-- `src/ui/workshop-parts.tsx` — Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. — gelesen: 108 Zeilen
+- `src/ui/workshop-parts.tsx` — Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. — gelesen: 102 Zeilen
 - `src/ui/workshop.tsx` — Werkstatt: sechs Bereiche in einem Raster, erreichbar nur ueber Marke oder Tastatur. — gelesen: 115 Zeilen
 - `src/vite-env.d.ts` — / <reference types="vite/client" /> — gelesen: 3 Zeilen
 

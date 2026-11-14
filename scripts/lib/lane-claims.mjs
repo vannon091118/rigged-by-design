@@ -444,7 +444,13 @@ export function validateNewClaim(claim, { legacy = false } = {}) {
   }
   const allowlist = Array.isArray(claim.pathAllowlist) ? claim.pathAllowlist : [];
   if (allowlist.length === 0) violations.push(`${label}: Pfad-Allowlist ist leer`);
-  if (claim.issue !== undefined && claim.issue !== null) {
+  // Das Issue-Board ist die Wahrheit ueber Auftrag und Besitz: eine neue, offene
+  // Lane ohne Issue-Nummer ist kein Legacy-Fall, sondern eine Umgehung (#635).
+  // Bereits abgeschlossene Claims bleiben als Bestand lesbar.
+  const needsIssue = !legacy && claim.status === 'open';
+  if (claim.issue === undefined || claim.issue === null) {
+    if (needsIssue) violations.push(`${label}: issue fehlt; jede neue offene Lane braucht eine positive Issue-Nummer`);
+  } else {
     const issue = Number(claim.issue);
     if (!Number.isInteger(issue) || issue <= 0) violations.push(`${label}: issue '${claim.issue}' ist keine Issue-Nummer`);
   }

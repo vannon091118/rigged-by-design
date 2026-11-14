@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
+  "contributionId": "lane-ohne-auftrag-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer ohne Auftrag an die Mauer tritt, bekommt keinen Schlüssel: Die Reihe der ausgehängten Blätter ist die Reihenfolge, und was nicht darauf steht, wird nicht gebaut. Nur die alten Bauten aus der Zeit vor dem Brett stehen noch offen da und werden nicht nachträglich zugemauert.",
+  "directives": []
+}

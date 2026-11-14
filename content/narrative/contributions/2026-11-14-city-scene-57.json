@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:22Z-city-scene-57",
+  "contributionId": "city-scene-57",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Am Eingang steht ein Schild, das den Weg zur Bar erklaert, obwohl jeder Gast ihn kennt. Die Wirtin laesst es haengen; es hat noch niemandem geschadet.",
+  "directives": []
+}

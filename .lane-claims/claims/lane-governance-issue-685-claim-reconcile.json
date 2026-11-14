@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/issue-685-claim-reconcile",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-685-claim-reconcile",
+  "baseSha": "95ad4214861ed859eadb6472ce622bb884c38c0d",
+  "issue": 685,
+  "task": "Issue #685: Claim-Register gegen den Merge-Stand ziehen",
+  "goal": "Gemergte Lanes duerfen nicht open bleiben: reconcile:claims --apply im Governance-Turn, Retention zulaessig, alles per PR.",
+  "pathAllowlist": [
+    ".lane-claims/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-685-claim-reconcile.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "95ad4214861ed859eadb6472ce622bb884c38c0d"
+}
