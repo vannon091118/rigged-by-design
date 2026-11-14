@@ -12,12 +12,17 @@ export const reputationOf = (value: number): { readonly label: string; readonly 
     : value >= 40 ? { label: 'solide', tone: '' }
       : { label: 'ramponiert', tone: 'warn' };
 
-export const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
-  ['speed', 'SPD', 'Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.'],
-  ['charisma', 'CHA', 'Charisma: bessere Talk-Chance, mehr Trinkgeld.'],
-  ['brawl', 'BRW', 'Brawl: mehr HP, mehr Kampfschaden.'],
-  ['perception', 'PER', 'Wahrnehmung: bessere Queue-Position, Dreck früher sehen.'],
-  ['technique', 'TEC', 'Technik: schnellere Reparatur, bessere Mods.'],
-  ['endurance', 'END', 'Ausdauer: schnellere Regeneration, kürzere Verletzungen.'],
-  ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
+/**
+ * Nur Kuerzel und Beschriftung: der Tooltip kommt aus der Karriere-Sicht
+ * (`view.career.attributes`), damit HUD und Karrierefenster dieselbe
+ * Effektbeschreibung lesen und kein UI-Text eigene Wirkungen verspricht.
+ */
+export const SKILLS: readonly (readonly [RpgAttribute, string])[] = [
+  ['speed', 'SPD'],
+  ['charisma', 'CHA'],
+  ['brawl', 'BRW'],
+  ['perception', 'PER'],
+  ['technique', 'TEC'],
+  ['endurance', 'END'],
+  ['luck', 'LCK'],
 ];

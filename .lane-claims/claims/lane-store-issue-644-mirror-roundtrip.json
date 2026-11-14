@@ -1,0 +1,26 @@
+{
+  "id": "lane/store/issue-644-mirror-roundtrip",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/store/issue-644-mirror-roundtrip",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 644,
+  "task": "Issue #644: Spiegel im Lager ueber Save/Load erhalten",
+  "goal": "Spiegel ueber den Produktionspfad platzieren, speichern, laden und Dekor, Position und Interaktion unveraendert belegen.",
+  "pathAllowlist": [
+    "src/store/**",
+    "src/core/sim/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "mergedSha": "8cea9427b1c56477b45eb56753101378ec3644df",
+  "mergedPr": 719
+}

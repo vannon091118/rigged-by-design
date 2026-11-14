@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-671-board-cursors",
+  "claimId": "lane/governance/issue-671-board-cursors",
+  "branch": "lane/governance/issue-671-board-cursors",
+  "baseSha": "2eae4c31e76b2f143489df82a8eaaaebb95a2efb",
+  "phase": "DONE",
+  "title": "P0-Kommentar-Eingang mit Issue-Cursorn absichern (#671)",
+  "goal": "Kommentar-Cursor je Issue und PR als reine, getestete Logik: neue Eingaenge genau einmal, keine Duplikate, unvollstaendige Pagination und API-Ausfall als UNKNOWN ohne Cursor-Vorschub; State gegen den echten Board-Stand neu aufgebaut",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 698,
+    "headSha": "262be24a",
+    "mergedSha": "4750661a25a5299f2302a0974cda50a410f05634"
+  },
+  "findings": [
+    {
+      "id": "cursor-fehlt",
+      "summary": "board-state.json fuehrte nur Summen und aktive Claims, keinen Kommentar-Cursor je Issue; ein neuer Lauf konnte nicht zeigen, welche Kommentare neu sind. Neu: scripts/lib/board-cursors.mjs mit ingestComments, applySnapshot, pendingEntries.",
+      "severity": "blocker",
+      "status": "resolved",
+      "kind": "defect"
+    },
+    {
+      "id": "pagination-als-freigabe",
+      "summary": "Ohne Cursor war unvollstaendige Pagination von 'keine neuen Kommentare' nicht unterscheidbar. Neu: complete=false ergibt STATUS UNKNOWN, keine Eingaenge und keinen Cursor-Vorschub; der State traegt eine warning.",
+      "severity": "blocker",
+      "status": "resolved",
+      "kind": "defect"
+    },
+    {
+      "id": "state-veraltet",
+      "summary": "Der alte Snapshot meldete 0 offene PRs, obwohl #683/#691/#692 offen sind, und ordnete #552 dem nicht gemergten PR #660 zu. Neu aufgebaut: 46 Issues + 3 PRs mit Cursor, Basis-Kopf 2eae4c31, #552 via #661 (0bad32ea), #660 als CLOSED/merged=false markiert.",
+      "severity": "warning",
+      "status": "resolved",
+      "kind": "defect"
+    },
+    {
+      "id": "baseline-seeding",
+      "summary": "Der Erstaufbau setzt die Cursor auf den jeweils letzten GitHub-Kommentar; aeltere Kommentare gelten damit als gelesen und werden nicht nachgemeldet. Das ist bewusst als warning im State vermerkt, damit kein stiller Verlust entsteht.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "scope"
+    },
+    {
+      "id": "testort-matrix-neutral",
+      "summary": "Ein eigener Testkopf haette die generierte docs/DEPENDENCY-MATRIX.md verschoben; dieser Pfad ist im offenen Claim zu #635 gebunden. Die Cursor-Tests liegen deshalb im bestehenden Board-Gate-Test (worker-claim-gate.test.ts), und der Runner (scripts/board-cursors.mjs) folgt als eigener Schritt, sobald #692/#635 gemergt sind. Inhalt von #671 unveraendert.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "scope"
+    },
+    {
+      "id": "noch-kein-runner",
+      "summary": "Die reine Cursor-Logik ist implementiert und getestet; das CLI, das einen Board-Export einliest und den State schreibt, kommt nach dem Merge von #692 nach, weil jede neue Datei mit Node-Imports die Zeile @types/node in der generierten Matrix veraendert und damit den Claim zu #635 kreuzt.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "scope"
+    },
+    {
+      "id": "narrative-snapshot-aus-main",
+      "summary": "Der Branch setzt vor #691 auf; damit der Narrative-Pool gegenueber origin/main nicht schrumpft, ist der Beitrag 2026-11-14-image-diff-gate-test-repair samt Manifest-Zeile aus main uebernommen. Keine eigene Narrative-Aenderung in diesem Commit.",
+      "severity": "info",
+      "status": "accepted",
+      "kind": "environment"
+    },
+    {
+      "id": "cron-lint-vorab-rot",
+      "summary": "verify:light bleibt durch pipeline/lint ERR-4011 (no-unused-vars in .cron/check-in.mjs/.cron/check-out.mjs) rot; beide Dateien sind gegenueber origin/main unveraendert (seit d6cbdc66/#686). Diff-fremd, nicht in dieser Allowlist.",
+      "severity": "warning",
+      "status": "accepted",
+      "kind": "environment"
+    }
+  ],
+  "nextAction": "Gemergt; Closeout verbucht.",
+  "revision": 1,
+  "stackedOn": {
+    "pr": 692,
+    "head": "2eae4c31e76b2f143489df82a8eaaaebb95a2efb",
+    "reason": "main@5ed5d960 ist nicht committierbar (pathfinding.ts 274 LOC, ERR-4012); #692 enthaelt den LOC-Split"
+  }
+}

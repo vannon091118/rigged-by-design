@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-654-skill-path-test",
+  "claimId": "lane/ui/issue-654-skill-path-test",
+  "branch": "lane/ui/issue-654-skill-path-test",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "phase": "DONE",
+  "title": "Issue #654: Skillpunkt-Klickpfad dauerhaft testen",
+  "goal": "Die sieben HUD-Skill-Buttons ueber spendSkillCmd klicken, Level und Punkte pruefen und die echten Wirkungen auf Reinigungsradius, Wartungsgewinn und Unfallrisiko belegen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 715,
+    "headSha": "2513a961",
+    "mergedSha": "f564acbf5e1efdeaf1ab2a10c49784fc23b08a39"
+  },
+  "findings": [],
+  "nextAction": "Gemergt; Closeout verbucht.",
+  "revision": 1
+}

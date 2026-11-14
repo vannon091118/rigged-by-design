@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T16:55Z-city-scene-77",
+  "contributionId": "city-scene-77",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Zum Schluss räumte ich die Theke ab. Sieben Krüge, sieben Kreidestriche, ein Tuch. Was gestern noch offen lag, stand jetzt an seinem Platz, und ich musste nichts zweimal nachsehen.",
+  "directives": []
+}

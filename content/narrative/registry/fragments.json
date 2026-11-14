@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:eb52526a38359f9057f52b6fe4a8f7185ce459aacd1de0fddef24a742f306049",
+  "contentHash": "sha256:81deaedb2f59fda0d0e873b39d4d3b2cde5337551e34a35f6e2bd346eb0ce0c4",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7423,6 +7423,138 @@
       "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
     },
     {
+      "contributionId": "city-scene-64",
+      "turnId": "2026-11-14T13:24Z-city-scene-64",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sieben Schalter standen an der Wand, jeder mit einem Etikett. Ich habe alle sieben gedrueckt und danach geprueft, ob das Licht wirklich angeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-64.json"
+    },
+    {
+      "contributionId": "city-scene-65",
+      "turnId": "2026-11-14T13:16Z-city-scene-65",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Schild stand, was der Schalter tut. Danach habe ich den Schalter umgelegt und nachgesehen, ob das Schild noch stimmt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-65.json"
+    },
+    {
+      "contributionId": "city-scene-66",
+      "turnId": "2026-11-14T13:12Z-city-scene-66",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Tueren, ein Raum. Ich habe beide benutzt und darauf geachtet, dass dahinter nichts doppelt steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-66.json"
+    },
+    {
+      "contributionId": "city-scene-67",
+      "turnId": "2026-11-14T13:14Z-city-scene-67",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Tueren im Raster, zwei daneben. Ich habe jede einmal geoeffnet und bin jedes Mal denselben Weg zurueckgegangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-67.json"
+    },
+    {
+      "contributionId": "city-scene-68",
+      "turnId": "2026-11-14T13:17Z-city-scene-68",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Spiegel stand im Lager, bevor ich das Licht ausmachte. Am Morgen stand er noch da, an derselben Stelle, und zeigte denselben Raum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-68.json"
+    },
+    {
+      "contributionId": "city-scene-69",
+      "turnId": "2026-11-14T13:22Z-city-scene-69",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Zahl an der Wand zaehlte die Bilder, nicht die Sekunden. Als ich kurz wegsah, sprang sie nicht, sie begann einfach neu zu zaehlen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-69.json"
+    },
+    {
       "contributionId": "city-scene-70",
       "turnId": "2026-11-14T13:28Z-city-scene-70",
       "agentId": "liilith",
@@ -7443,6 +7575,28 @@
       "text": "Acht Kacheln, ein Geraet. Ich ging hinein, kam zurueck, ging hinein und schloss es. Zwischendurch war nie mehr als eine Flaeche da.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-70.json"
+    },
+    {
+      "contributionId": "city-scene-77",
+      "turnId": "2026-11-14T16:55Z-city-scene-77",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zum Schluss räumte ich die Theke ab. Sieben Krüge, sieben Kreidestriche, ein Tuch. Was gestern noch offen lag, stand jetzt an seinem Platz, und ich musste nichts zweimal nachsehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-77.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
@@ -9661,6 +9815,28 @@
       "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
+    },
+    {
+      "contributionId": "lesezeichen-01",
+      "turnId": "2026-11-14T10:26Z-lesezeichen",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
     },
     {
       "contributionId": "living-world-foundation-1",
