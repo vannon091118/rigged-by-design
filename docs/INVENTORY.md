@@ -697,10 +697,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3061 |
-| Gelistete Dateien | 3061 |
+| Getrackte Dateien | 3065 |
+| Gelistete Dateien | 3065 |
 | Getrackte Ordner | 117 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (72), artifacts (1), content (1126), docs (108), packages (27), public (571), scripts (126), src (1009) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (75), artifacts (1), content (1127), docs (108), packages (27), public (571), scripts (126), src (1009) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -711,11 +711,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
-- `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 37 Datei(en)
-- `.lane-claims/tasks/` — 34 Datei(en)
+- `.lane-claims/` — 2 Datei(en)
+- `.lane-claims/claims/` — 38 Datei(en)
+- `.lane-claims/tasks/` — 35 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1122 Datei(en)
+- `content/narrative/contributions/` — 1123 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -839,6 +839,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 74 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 79 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
@@ -846,6 +847,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-agent-onboarding.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-board-status-tracking.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-issue-617-generated-gate.json` — { — gelesen: 29 Zeilen
@@ -868,10 +870,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-sim-issue-539-esport-evening.json` — { — gelesen: 31 Zeilen
+- `.lane-claims/claims/lane-sim-issue-539-esport-evening.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-sim-issue-552-staff-qualification.json` — { — gelesen: 40 Zeilen
+- `.lane-claims/claims/lane-sim-issue-552-staff-qualification.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-acceptance.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
@@ -883,6 +885,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-board-status-tracking.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-register-reconcile-616.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-617-generated-gate.json` — { — gelesen: 21 Zeilen
@@ -903,7 +906,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-533-scheduled-place.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-534-first-evening.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/tasks/sim-issue-539-esport-evening.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/sim-issue-539-esport-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-552-staff-qualification.json` — { — gelesen: 35 Zeilen
@@ -914,7 +917,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 170 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 201 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 186 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -2010,6 +2013,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-verify-gates.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-board.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-onboarding.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-board-status-dokumentation.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-ci-line-green.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-network-acceptance.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-proximity.json` — { — gelesen: 21 Zeilen
@@ -2039,8 +2043,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25175 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4493 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25197 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4497 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 229 Zeilen
@@ -2050,7 +2054,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2583 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
-- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 151 Zeilen
+- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 174 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen

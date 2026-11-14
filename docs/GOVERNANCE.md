@@ -143,6 +143,29 @@ Issue-Scopes:
 
 Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch den **Maintainer** nach Review und auf dem exakten Kopf, Agenten pushen nur ihren Lane-Branch. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
 
+## Board-Status & Review-Status (Pflicht)
+
+Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem Ort aus einsehbar sein (Desktop, Termux, Remote-Node). Ein State-Snapshot sichert den Fortschritt über Gerätegrenzen hinweg.
+
+**state:JSON — Laufnachweis**
+- Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
+- Sie zeigt: wo der letzte Lauf aufgehört hat, welche Issues aktualisiert wurden, welche Claims aktiv sind, welche PRs `review-waiting` sind.
+- Der nächste Lauf liest die `state:JSON` zu Beginn und sieht direkt, welche Issues upgedatet sind und was zu tun ist.
+
+**Worker-Statuspflicht (jedes Gerät)**
+- Jeder Worker aktualisiert seinen eigenen Status immer als Issue-Kommentar am zugehörigen Issue: `CLAIM`, `RELEASE [A<n>] done <sha>`, Blocker, Testergebnis, Frage.
+- Ein Issue-Kommentar ist ein Ticket-Update. Der Maintainer aktualisiert den Board-Zustand sofort bei neuem Kommentar (P0).
+- Worker dürfen den Status nicht nur lokal halten; er muss im Issue sichtbar sein.
+
+**Maintainer-Statuspflicht**
+- Der Maintainer hält den Board-Zustand aktuell: Issues schließen, Labels setzen/entfernen, Claims zuweisen, `state:JSON` pflegen.
+- Bei Claim-Kollision entscheidet der Maintainer einmalig und klar im Issue.
+- Review-Stats: offene Reviews, `review-waiting`-PRs, akzeptierte/abgelehnte PRs sind Teil des Board-Status und werden bei jedem Lauf geprüft.
+
+**Pflicht-Issues pinnen**
+- P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
+- Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
+
 ## Referenzen
 
 - [`WORKFLOW.md`](WORKFLOW.md) — Pretask, Claim-Nutzung und Abschluss.

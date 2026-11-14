@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:89a7c6658a8eec0a30933e5628e1673afac98c514dd9a2934d3f634251277321",
+  "contentHash": "sha256:10128600c8cb02119e77c88ad4daa9b5132fd99e2a1c027502995048d01a6553",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -2900,6 +2900,28 @@
       "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-bet-slip-register.json"
+    },
+    {
+      "contributionId": "board-status-01",
+      "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Maintainer pflegt den Issue-Board-Status: state:JSON sichert den Laufnachweis, Worker aktualisieren ihren Status als Issue-Kommentar, Review-Status bleibt sichtbar für alle Geräte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-board-status-dokumentation.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",
