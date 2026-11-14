@@ -4456,6 +4456,10 @@
     {
       "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
       "contributionId": "lane-ohne-auftrag-01"
+    },
+    {
+      "turnId": "2026-11-14T12:42Z-city-scene-60",
+      "contributionId": "city-scene-60"
     }
   ]
 }

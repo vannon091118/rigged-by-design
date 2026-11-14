@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e29ede5013285346476fb5df7f7e5b3f3451c08b7761434ab9d26f82829d2c01",
+  "contentHash": "sha256:d2de029daa45f415985726c1238de9ea3f558dbe3fc4e07b16dc91813199953d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7333,6 +7333,28 @@
       "text": "Ein Gast fragt nach dem Weg, obwohl der Pfeil ueber der Tuer haengt. Der Wirt zeigt trotzdem hin, und der Gast bedankt sich, als waere es eine Auskunft wert gewesen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-58.json"
+    },
+    {
+      "contributionId": "city-scene-60",
+      "turnId": "2026-11-14T12:42Z-city-scene-60",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tafel im Vorraum fuehrt noch drei Namen, die laengst drinnen sitzen. Jemand streicht sie durch, ohne dass sich am Betrieb etwas aendert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-60.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
