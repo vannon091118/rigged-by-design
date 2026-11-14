@@ -14,7 +14,7 @@
     "number": 660,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/660",
     "state": "open",
-    "headSha": "528a2b1267188458e28d5363324ecf14543c265f"
+    "headSha": "0f33b6ef9c7d6c1db4056a45df84ee6b51d8c5aa"
   },
   "findings": [
     {
@@ -31,5 +31,5 @@
     }
   ],
   "nextAction": "PR #660 durch den Maintainer reviewen und mergen; danach AFTERCARE ab Issue #552.",
-  "revision": 3
+  "revision": 4
 }
