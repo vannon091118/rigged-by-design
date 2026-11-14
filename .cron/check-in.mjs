@@ -13,10 +13,6 @@ const LOCK_TTL_MS = 15 * 60 * 1000; // 15 Minuten
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function apiGet(path, attempt = 1) {
   return new Promise((resolve, reject) => {
     const req = request(`${API}${path}`, {

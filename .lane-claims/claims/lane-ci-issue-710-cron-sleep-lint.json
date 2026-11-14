@@ -1,0 +1,24 @@
+{
+  "id": "lane/ci/issue-710-cron-sleep-lint",
+  "owner": "Governance-Owner",
+  "branch": "lane/ci/issue-710-cron-sleep-lint",
+  "baseSha": "95ad4214861ed859eadb6472ce622bb884c38c0d",
+  "issue": 710,
+  "task": "Issue #710: ungenutzte sleep-Helper in .cron entfernen",
+  "goal": "Die definierten, aber nie aufgerufenen sleep-Helper in .cron/check-in.mjs und .cron/check-out.mjs entfernen, ohne Lock-, Retry- oder Exit-Verhalten zu aendern.",
+  "pathAllowlist": [
+    ".cron/check-in.mjs",
+    ".cron/check-out.mjs",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-ci-issue-710-cron-sleep-lint.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "95ad4214861ed859eadb6472ce622bb884c38c0d"
+}

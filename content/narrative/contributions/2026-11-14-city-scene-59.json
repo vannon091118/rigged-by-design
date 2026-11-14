@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:34Z-city-scene-59",
+  "contributionId": "city-scene-59",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Wartezettel am Tresen ist abgerissen, und niemand vermisst ihn. Die Schlange bewegt sich auch ohne Nummer, nur langsamer.",
+  "directives": []
+}
