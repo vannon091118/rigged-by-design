@@ -115,6 +115,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | --- | --- |
 | `pnpm run agent:new --json` | Ein Startvorgang: Branch, Claim, Task-Vertrag (Phase `READY`) und Pretask in einem Lauf. |
 | `pnpm run agent:pretask --json` | Startblocker, Issue-Check, Impact, Claim und Worktree prüfen. |
+| `pnpm run run:budget --check` | Externes Laufbudget und Kill-Switch prüfen; `BUDGET_EXHAUSTED`/`KILL_SWITCH` beendet den Lauf. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen; vollständige Fassung unter `.verify-cache/agent-context.json` (`--full`). |
 | `pnpm run agent:feedback --json` | Aus dem echten Diff den nächsten sinnvollen Testschritt ableiten. |
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |

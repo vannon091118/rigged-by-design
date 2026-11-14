@@ -16,7 +16,7 @@
  * Arbeitsbaum ist der Normalfall; Isolation fordert nur `--require-worktree`.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { filterMergedCollisions, mergedPullRequestIndex, planReconcile } from './lib/claim-evidence.mjs';
@@ -47,6 +47,7 @@ import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mj
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 import { describeIssueClaim, issueNumberFor, readBoard, readIssueClaim } from './lib/issue-claim.mjs';
+import { decideRunBudget, readRunBudget } from './lib/run-budget.mjs';
 
 const argv = process.argv.slice(2);
 // `--brief` ist die token-sparsame Form fuer Agenten: Status, Claim, Blocker
@@ -520,6 +521,42 @@ const worker = {
 if (!worker.identityValid && branch !== 'main' && claim) {
   // Harte Sperre: ohne reservierte Identitaet startet keine Lane-Arbeit.
   blockers.push(`[ERR-4027] Worker-Identitaet fehlt oder ist ungueltig (${worker.identityReasons.join(', ')}); \`pnpm run worker:init -- claim\` im Identity-Board, kein Read vor der Reservierung`);
+}
+
+// Externes Laufbudget: der Stop-Vertrag greift vor dem ersten Edit, nicht erst
+// beim Turn-Ende. Fehlt die Konfiguration, bleibt Legacy-Arbeit startbar.
+const budgetFile = join(ROOT, 'docs/run-budget.json');
+if (branch !== 'main' && claim && existsSync(budgetFile)) {
+  try {
+    const budget = readRunBudget(budgetFile);
+    // Nach einem Rebase enthaelt die Lane die neuen main-Commits; gezaehlt
+    // werden nur die eigenen Commits seit dem gemeinsamen Vorfahren.
+    let base = claim.baseSha ?? 'origin/main';
+    try {
+      base = execFileSync('git', ['merge-base', 'HEAD', 'origin/main'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim() || base;
+    } catch {
+      // Ohne origin/main bleibt die Claim-Basis der belastbare Startpunkt.
+    }
+    const commits = Number(execFileSync('git', ['rev-list', '--count', `${base}..HEAD`], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim());
+    const decision = decideRunBudget({ commits, iterations: 1, issues: 1, newGovernanceIssues: 0 }, budget);
+    if (decision.state !== 'CONTINUE') {
+      blockers.push(
+        `[ERR-4019] Laufbudget ${decision.state}: ${decision.reasons.join(', ')}; ` +
+        `Main-SHA ${head}, Produktziele ${budget.productProgress.mergedProductPrs}/${budget.productProgress.acceptedFindings}, ` +
+        'Stop durch externes Budget - kein neuer Edit in diesem Lauf',
+      );
+    }
+  } catch (error) {
+    blockers.push(`[ERR-4019] Laufbudget nicht pruefbar: ${String(error?.message ?? error).slice(0, 160)}`);
+  }
 }
 
 // Arbeits-Claim als Gate: ein laufendes Review sperrt neue Arbeit am Issue.

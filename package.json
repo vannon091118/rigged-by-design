@@ -21,6 +21,7 @@
     "agent:cause": "node scripts/agent-cause.mjs",
     "claim:register": "node scripts/claim-register.mjs",
     "worker:init": "node scripts/worker-init.mjs",
+    "run:budget": "node scripts/run-budget.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",
     "verify:scope": "node scripts/verify-scope.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",

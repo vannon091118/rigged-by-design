@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:965e013231c5d1b9a11e83a78d918739e134579d648f5d6f970b3efbf6f98474",
+  "contentHash": "sha256:5d8abb37c45c386cbdcd6adb21a9f458e5af788a49b9a90f0250034a699f604c",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22915,6 +22915,28 @@
       "text": "Ein alter Hase sagt, der Ruf eines Hauses haenge an dem, was Gaeste einander erzaehlen, nicht an dem, was auf dem Schild steht. Wer sich um seine Leute kuemmert, wird weitergetragen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-roadmap-register-01.json"
+    },
+    {
+      "contributionId": "run-budget-01",
+      "turnId": "2026-11-14T06:15Z-run-budget-01",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf hat jetzt eine Uhr, die nicht ihm gehört: Commits, Issues und neue Governance-Funde werden gegen eine externe Grenze gezählt. Der Kill-Switch stoppt auch dann, wenn der Agent weiterarbeiten möchte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-run-budget.json"
     },
     {
       "contributionId": "runtime-composer-01",
