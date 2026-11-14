@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 406 Dateien — contract 218 · integration 112 · governance 63 · statistics 6 · performance 7.
+Summe: 407 Dateien — contract 218 · integration 113 · governance 63 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -407,6 +407,7 @@ Summe: 406 Dateien — contract 218 · integration 112 · governance 63 · stati
 | `src/render/__tests__/ambient-late-texture.test.ts` | render | integration | ja | `src/render/ambient-layer.ts` |
 | `src/render/__tests__/ambient-plan.test.ts` | render | integration | ja | `src/render/ambient-plan.ts` |
 | `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
+| `src/render/__tests__/city-actor-sync-lifecycle.test.ts` | render | integration | ja | `src/render/city-actor-sync.ts` |
 | `src/render/__tests__/city-actor-sync.test.ts` | render | integration | ja | `src/render/city-actor-sync.ts` |
 | `src/render/__tests__/city-door-click.test.ts` | render | integration | ja | `src/render/floor-hit.ts` |
 | `src/render/__tests__/city-exterior.test.ts` | render | integration | ja | `src/render/city-exterior-layer.ts` |
