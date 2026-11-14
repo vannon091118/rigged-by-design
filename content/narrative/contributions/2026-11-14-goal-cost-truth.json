@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-14T00:32Z-goal-cost-truth",
+  "contributionId": "goal-cost-truth-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die erste Miete ist keine runde Zahl mehr im Kopf: Sie steht als Tagesbetrag im Hauskonto, und wer sie gedeckt hat, sieht statt eines vollen Balkens die nächste offene Bedingung.",
+  "directives": []
+}
