@@ -1,0 +1,23 @@
+{
+  "id": "lane/ui/issue-643-workshop-tiles",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/ui/issue-643-workshop-tiles",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 643,
+  "task": "Issue #643: sechs Werkstatt-Kacheln und Zusatzflaechen abnehmen",
+  "goal": "Jede Kachel oeffnet genau ihr vorhandenes Panel; Zurueck ins Raster, Schliessen in die Szene, Geraet und Hilfe separat.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-ui-issue-643-workshop-tiles.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+}

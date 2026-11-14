@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "ui-issue-643-workshop-tiles",
+  "claimId": "lane/ui/issue-643-workshop-tiles",
+  "branch": "lane/ui/issue-643-workshop-tiles",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #643: sechs Werkstatt-Kacheln und Zusatzflaechen abnehmen",
+  "goal": "Jede Kachel oeffnet genau ihr vorhandenes Panel; Zurueck ins Raster, Schliessen in die Szene, Geraet und Hilfe separat.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates auf dem Kopf belegen, dann PR gegen main.",
+  "revision": 1
+}
