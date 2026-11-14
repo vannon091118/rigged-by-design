@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T04:45Z-review-waiting-01",
+  "contributionId": "review-waiting-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer die Arbeit abgibt, hängt den Schlüssel zurück und schreibt „zur Prüfung“ an die Tür. Öffnen darf sie erst der Prüfer; bis zu seinem Wort hängt kein zweiter Schlüssel daneben.",
+  "directives": []
+}

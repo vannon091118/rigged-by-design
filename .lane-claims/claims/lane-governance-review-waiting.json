@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/review-waiting",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/review-waiting",
+  "baseSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
+  "issue": 607,
+  "task": "Uebergabe an Review: Arbeits-Claim freigeben und review-waiting-Label setzen",
+  "goal": "Die Uebergabe an den Maintainer ist ein Board-Zustand: RELEASE plus review-waiting-Label; Label-Abnahme nur durch den Maintainer.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "ce9df7a267c8c05f643eb52b305b431964e8fbae"
+}

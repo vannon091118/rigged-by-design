@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e84cfd238b775f65d0d9c69c2abd6237879e01a62a833bcbb7386613cd63b5aa",
+  "contentHash": "sha256:228624985673b49ec994269b31a177f559e3fedabee389a94943bafac3f803bc",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22713,6 +22713,28 @@
       "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-trigger-bedingungen.json"
+    },
+    {
+      "contributionId": "review-waiting-01",
+      "turnId": "2026-11-14T04:45Z-review-waiting-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer die Arbeit abgibt, hängt den Schlüssel zurück und schreibt „zur Prüfung“ an die Tür. Öffnen darf sie erst der Prüfer; bis zu seinem Wort hängt kein zweiter Schlüssel daneben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-review-waiting.json"
     },
     {
       "contributionId": "roadmap-register-01",

@@ -176,6 +176,7 @@ Regeln:
 - **`Nicht gemacht` und `Restrisiko` sind Qualitätsmerkmale**, keine Schwäche — sie verhindern, dass das Ticket für vollständig gehalten wird.
 - **`Review-Fokus`** sagt dem Maintainer, wo er zuerst hinschauen soll. Das beschleunigt die Prüfung und verhindert, dass ein bekanntes Loch als Überraschung auftaucht.
 - Danach `RELEASE [A<n>] done abc1234` — Ticket freigeben, **nicht** schließen (und keinen PR schließen). Der Maintainer reviewt den Kommentar gegen den Code und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`; bei `REJECT` beginnst du nicht denselben Ansatz erneut.
+- **Label gehört zur Übergabe.** Nach `RELEASE [A<n>] done <sha>` setzt du am Issue `review-waiting` (`gh issue edit <nr> --add-label review-waiting`); damit kategorisiert das Board das Ticket als Review Waiting. Das Label nimmt ausschließlich der Maintainer mit seinem Verdikt wieder ab (`ACCEPT` führt zum Merge, `REWORK`/`REJECT` zurück in Arbeit).
 
 ---
 
