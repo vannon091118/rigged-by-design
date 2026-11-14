@@ -1,0 +1,22 @@
+{
+  "id": "lane/ui/issue-653-skill-tooltips",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/ui/issue-653-skill-tooltips",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 653,
+  "task": "Issue #653: PER/TEC/LCK-HUD-Texte aus der echten Skill-Wirkung ableiten",
+  "goal": "HUD und Karrierefenster lesen dieselbe Effektbeschreibung; die Tooltips versprechen nur implementierte Wirkungen.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+}

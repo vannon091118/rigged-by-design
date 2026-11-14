@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T13:16Z-city-scene-65",
+  "contributionId": "city-scene-65",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Auf dem Schild stand, was der Schalter tut. Danach habe ich den Schalter umgelegt und nachgesehen, ob das Schild noch stimmt.",
+  "directives": []
+}

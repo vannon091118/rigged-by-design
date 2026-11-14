@@ -4402,16 +4402,12 @@
       "contributionId": "closeout-fallback-01"
     },
     {
-      "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
-      "contributionId": "board-status-01"
-    },
-    {
-      "turnId": "2026-11-14T09:20Z-employment",
-      "contributionId": "employment-01"
-    },
-    {
       "turnId": "2026-11-14T08:20Z-generated-artifact-serialization",
       "contributionId": "generated-artifact-serialization-01"
+    },
+    {
+      "turnId": "2026-11-14T08:36Z-board-status-dokumentation",
+      "contributionId": "board-status-01"
     },
     {
       "turnId": "2026-11-14T08:40Z-balance-lane-on-demand",
@@ -4426,8 +4422,16 @@
       "contributionId": "canonical-priorities-01"
     },
     {
+      "turnId": "2026-11-14T09:20Z-employment",
+      "contributionId": "employment-01"
+    },
+    {
       "turnId": "2026-11-14T09:45Z-rng-entry-role",
       "contributionId": "rng-entry-role-01"
+    },
+    {
+      "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
+      "contributionId": "lane-ohne-auftrag-01"
     },
     {
       "turnId": "2026-11-14T11:24Z-city-scene-54",
@@ -4454,10 +4458,6 @@
       "contributionId": "city-scene-58"
     },
     {
-      "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
-      "contributionId": "lane-ohne-auftrag-01"
-    },
-    {
       "turnId": "2026-11-14T12:34Z-city-scene-59",
       "contributionId": "city-scene-59"
     },
@@ -4470,8 +4470,24 @@
       "contributionId": "city-scene-61"
     },
     {
+      "turnId": "2026-11-14T12:56Z-city-scene-62",
+      "contributionId": "city-scene-62"
+    },
+    {
       "turnId": "2026-11-14T13:12Z-city-scene-66",
       "contributionId": "city-scene-66"
+    },
+    {
+      "turnId": "2026-11-14T13:16Z-city-scene-65",
+      "contributionId": "city-scene-65"
+    },
+    {
+      "turnId": "2026-11-14T13:24Z-city-scene-64",
+      "contributionId": "city-scene-64"
+    },
+    {
+      "turnId": "2026-11-14T13:28Z-city-scene-70",
+      "contributionId": "city-scene-70"
     }
   ]
 }
