@@ -4612,6 +4612,10 @@
     {
       "turnId": "2026-11-14T23:15Z-city-actor-persona-mood",
       "contributionId": "city-actor-persona-mood-773"
+    },
+    {
+      "turnId": "2026-11-14T23:10Z-city-door-access",
+      "contributionId": "city-door-access-01"
     }
   ]
 }
