@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:52381bd2479dae5b06545e9edc9064c55cbf86a8e3ca085c5c795a6a96cf622a",
+  "contentHash": "sha256:d15f4039e6941f8b98afec1b888c825f66aaae73e0e02d2d9eedfedea559abe7",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24277,6 +24277,30 @@
       "text": "Am Morgen hing ein neuer Zettel neben der Tafel, und der alte war noch nicht abgehaengt. Zwei Boten, zwei Nummern, ein Auftrag - wer zuerst liest, arbeitet doppelt, und wer zuletzt liest, traegt den Verlust.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-15.json"
+    },
+    {
+      "contributionId": "rumor-16",
+      "turnId": "2026-11-14T17:55Z-rumor-16",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-16.json"
     },
     {
       "contributionId": "run-budget-01",

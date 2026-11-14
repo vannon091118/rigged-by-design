@@ -1,32 +1,35 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:40:54Z",
+  "generatedAt": "2026-11-14T17:55:00Z",
   "generatedBy": "maintainer",
-  "head": "35e39365bfa53b654fed244cd0205b4cbdb90506",
-  "headMessage": "Maintainer-Lauf: #730 gemergt, PRs #700/#701 nachgezogen, adversariale 24h-Pruefung (#732)",
-  "base": "origin/main @ 35e39365bfa53b654fed244cd0205b4cbdb90506",
+  "head": "67a8288c4cea5a412bdfddfe36a9798265598999",
+  "headMessage": "Board-Aufraeumung: 10 Issues geschlossen, Narrative-Cluster in #733 konsolidiert, #634 wieder geoeffnet (#734)",
+  "base": "origin/main @ 67a8288c4cea5a412bdfddfe36a9798265598999",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Snapshot auf dem per API gelesenen main-Tip 35e39365 (nach Merge #730). 2 offene PRs (#700, #701, beide abgelehnt und auf Basis 751edc66), 1 Uebergabe mit review-waiting (Issue #640), 37 offene Issues. Register: 0 offene Claims, 0 gemergte Claims mit offenem Vertrag, #669 geparkt.",
+  "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
   "lastActions": [
-    "board-cursors.mjs --export/--write: 49 Cursor (46 Issues, 3 PRs) gesetzt, Kopf 5ed5d960, 0 UNKNOWN",
-    "Baseline-Seeding: Cursor auf den jeweils letzten GitHub-Kommentar gesetzt; altere Kommentare gelten als gelesen und stehen als warning im State",
-    "Korrektur: #552 kam uber PR #661 (Merge-SHA 0bad32ea) nach main, nicht uber PR #660; #660 ist CLOSED und merged=false",
-    "Korrektur: PRs #683 (#574), #691 (#648) und #692 (#635) sind offen und review-waiting; der alte Snapshot meldete 0 offene PRs",
-    "Neu belegt: #625 uber PR #688 (7b657983), #626 uber PR #689 (10811b14), #596 als Direktpush 5ed5d960"
+    "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
+    "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
+    "Geschlossen als konsolidiert: #561/#563/#564 (Lebenddokumente, ersetzt durch GOVERNANCE kanonische Prioritaeten + ROADMAP + board-state)",
+    "Geschlossen als Duplikate: #663,#664,#665,#666,#667 -> neues autoritatives Ticket #733 mit Abnahmekriterien",
+    "Korrektur: #634 nach dem Close am Code geprueft und wieder geoeffnet (promote.yml nur workflow_dispatch, keine Rulesets)",
+    "Rest-Blocker praezisiert auf #684, #685, #693, #694, #630 (jeweils mit Datei-/Zeilennachweis)",
+    "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
   "closedIssuesThisRun": [
-    646,
-    642,
-    643,
-    644,
-    645,
-    653,
-    654,
-    671,
-    707
+    561,
+    563,
+    564,
+    604,
+    663,
+    664,
+    665,
+    666,
+    667,
+    677
   ],
   "openPullRequests": 2,
   "reviewWaitingPrs": 1,
@@ -41,10 +44,11 @@
     }
   ],
   "nextRunChecklist": [
-    "Peer-Review #726 (#640) gegen den aktuellen main-Tip; PR nennt noch 75571c15 als Basis und braucht vor dem Merge ein Rebase",
-    "#700 (#667) und #701 (#664) warten auf Nachbesserung; review-waiting nicht wieder setzen",
-    "Vollsuite: 5 pretask*-Testdateien rot; vorbestehend belegt ist nur pretask.test.ts (21b3e924)",
-    "Neue Kommentare nur ueber die Cursor lesen: unvollstaendige Seite oder API-Ausfall ergibt UNKNOWN, nie Freigabe"
+    "Offene Issues sind jetzt 28; Reihenfolge ausschliesslich ueber GOVERNANCE.md \"Maintainer-Prioritaeten (kanonisch)\"",
+    "#640: Pixi-Abnahme (drei Bewohner, mehrere Ticks) nachholen, dann review-waiting entfernen",
+    "#733 als ein Lauf: Ersatz-Bausteine je Pool, danach verify-narrative-blocks --pr = 0",
+    "#700/#701 bleiben unberuehrt und ungemergt; keine RELEASE-Aufforderung mehr an die Worker",
+    "Vollsuite: 5 pretask*-Dateien rot; vorbestehend belegt nur pretask.test.ts (21b3e924)"
   ],
   "blockers": [],
   "warnings": [
@@ -500,21 +504,25 @@
   "openPrs": [
     {
       "number": 700,
-      "base": "751edc66",
+      "baseRef": "main",
+      "baseCommit": "751edc66",
       "headSha": "319c6c4141e1ac17b84d9966edb21c901340dade",
       "issue": 667,
-      "status": "REJECT: 28 geloeschte Bausteine ohne Ersatz (Pool-Schrumpf-Verbot), 5 Konfliktstellen gegen main, INVENTORY veraltet"
+      "issueState": "CLOSED (konsolidiert in #733)",
+      "status": "REJECT: 28 geloeschte Bausteine ohne Ersatz (29 Verstoesse gegen Basis, 51 gegen main), 5 Konfliktstellen"
     },
     {
       "number": 701,
-      "base": "751edc66",
+      "baseRef": "main",
+      "baseCommit": "751edc66",
       "headSha": "6a93d07fa10c2b1f0b2042611184eb2c3a6f39ea",
       "issue": 664,
-      "status": "REJECT: 26 geloeschte Bausteine ohne Ersatz, 4 Konfliktstellen gegen main"
+      "issueState": "CLOSED (konsolidiert in #733)",
+      "status": "REJECT: 26 geloeschte Bausteine ohne Ersatz (27 Verstoesse gegen Basis, 49 gegen main), 4 Konfliktstellen"
     }
   ],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Marke sitzt am Issue #640: Code fuer #640 ist gemergt (#730), die visuelle Pixi-Abnahme fehlt noch",
+  "reviewWaitingNote": "Marke sitzt nur an #640: Code ist gemergt (#730), die visuelle Pixi-Abnahme fehlt",
   "health": {
     "verifyLight": {
       "status": "PASS",
@@ -539,15 +547,15 @@
     },
     "newIssuesThisRun": [
       {
-        "number": 731,
-        "kind": "game/quality",
-        "note": "CityActorSync sync/animate ohne Test"
+        "number": 733,
+        "kind": "narrative-consolidation",
+        "note": "autoritatives Ticket fuer #663-#667"
       }
     ],
     "newGovernanceIssuesThisRun": 0,
-    "openIssues": 37
+    "openIssues": 28
   },
-  "openIssuesCount": 37,
+  "openIssuesCount": 28,
   "mergedPrsThisRun": [
     730
   ],
@@ -560,5 +568,60 @@
     "ledgerSources": "EXTERNAL_WORLD-Zugaenge nur in src/store/__tests__ (Fixtures)",
     "gates": "keine Aufweichung: .githooks/commit-msg behebt eine Kollision im festen /tmp-Log, scripts/lib/lane-claims.mjs verschaerft um issue-Pflicht (#635)",
     "finding": "#731 (Render-Testluecke CityActorSync)"
+  },
+  "reopenedIssuesThisRun": [
+    634
+  ],
+  "issueTriage": {
+    "method": "jedes offene Issue gegen Code/Doku auf 67a8288c geprueft; Beleg = Datei, Zeile, Commit oder Verifikationslauf",
+    "closedWithEvidence": {
+      "604": "scripts/lib/worker-identity.mjs (IDENTITY_CLAIM-Parser) + scripts/worker-init.mjs + docs",
+      "677": "board-state.json v2 + scripts/lib/board-cursors.mjs + GOVERNANCE.md:192-213; Snapshots #727-#732"
+    },
+    "consolidated": {
+      "733": {
+        "replaced": [
+          663,
+          664,
+          665,
+          666,
+          667
+        ],
+        "reason": "gleicher Writer-Pfad content/narrative/** + registry.generated.ts; getrennte Laeufe kollidieren",
+        "criteria": "Ersatz-Baustein pro Pool, verify-narrative-blocks --pr = 0, sync-generated --check PASS, verify:light PASS"
+      }
+    },
+    "closedAsLivingDocument": {
+      "561": "Review-Log ist kein Ticket; Belege liegen in PR-/Issue-Kommentaren, board-state und kanonischen Prioritaeten",
+      "563": "Backlog-Order dupliziert GOVERNANCE.md \"Maintainer-Prioritaeten (kanonisch)\" und war seit 751edc66 veraltet",
+      "564": "Konsolidierungs-Landkarte dupliziert ROADMAP/RENDER_REWORK_PLAN/INVENTORY und war veraltet"
+    },
+    "reopened": {
+      "634": "Vertragsseite (holdMerge, contractHoldReason) vorhanden, Workflow-Erzwingung fehlt: promote.yml nur workflow_dispatch, docs/CI.md ohne required checks/rulesets"
+    },
+    "blockers": {
+      "630": "keine kanonische Quelle fuer Gate-Zahlen/Owner; sync-generated prueft sie nicht",
+      "640": "Code gemergt (#730), visuelle Pixi-Abnahme fehlt -> review-waiting bleibt",
+      "652": "docs/RENDER_REWORK_PLAN.md:46/242/522 behauptet weiter \"city-actors.ts fehlt\"; Datei existiert als city-actor-sync.ts",
+      "684": "pretask ohne gh -> UNKNOWN/Exit 1; kein Schreibpfad zu GitHub; ensure-pr liest keinen Vertrag",
+      "685": "Token im Cron-Prompt liegt ausserhalb des Repos (Betreiber); Label-Abgleich beim Merge fehlt",
+      "693": "kein Autorisierungspfad fuer schreibende Kommentare; Entscheidung liegt bei #694",
+      "694": "autoritative Klammer des Governance-Clusters; Entscheidung Schreibkanal offen",
+      "731": "neu, frei: sync/animate von CityActorSync ungetestet"
+    },
+    "governanceBudget": "0 neue Governance-Issues; #733 ist Content (area-narrative)"
+  },
+  "newIssuesThisRun": [
+    733
+  ],
+  "consolidatedIssues": {
+    "authoritative": 733,
+    "replaced": [
+      663,
+      664,
+      665,
+      666,
+      667
+    ]
   }
 }
