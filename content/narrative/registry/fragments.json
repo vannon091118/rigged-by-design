@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d15f4039e6941f8b98afec1b888c825f66aaae73e0e02d2d9eedfedea559abe7",
+  "contentHash": "sha256:c92d6f94be7dca830735b6aa7ab3fb23f9b893dcb03ef704495fec24f71bfd87",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24301,6 +24301,30 @@
       "text": "Hinter dem Tresen lagen fuenf Zettel mit demselben Anliegen, jeder mit eigener Nummer. Am Abend war nur noch einer uebrig, und niemand konnte sagen, wer die anderen abgehaengt hatte - nur dass jetzt alle denselben Weg gingen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-rumor-16.json"
+    },
+    {
+      "contributionId": "rumor-21",
+      "turnId": "2026-11-14T20:45Z-rumor-21",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "boris-falk"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer haengt eine Liste, auf der niemand mehr etwas nachtraegt, seit jemand entschieden hat, dass Notizen Geld kosten. Der Mann an der Theke sagt, ein Haus, das seine Risse nicht aufschreibt, streicht sie beim naechsten Anstrich mit. Er notiert jeden Riss, auch die kleinen, und legt die Liste offen auf den Tresen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-rumor-21.json"
     },
     {
       "contributionId": "run-budget-01",

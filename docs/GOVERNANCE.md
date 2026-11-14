@@ -63,10 +63,10 @@ BUDGET_EXHAUSTED   Iterationen, Issues, Commits oder neue Governance-Findings ue
 KILL_SWITCH        Maintainer-Stop; hat Vorrang vor jeder anderen Entscheidung
 ```
 
-- `maxIterations`, `maxIssues`, `maxCommits` und `maxNewGovernanceIssues` sind nichtnegative Ganzzahlen; `maxCommits` ist mindestens 1. Eine ungueltige oder fehlende Konfiguration blockiert fail-closed.
+- `maxIterations`, `maxIssues` und `maxNewGovernanceIssues` sind nichtnegative Ganzzahlen; `maxCommits` und `maxNewGovernanceIssues` sind mindestens 1. Ein Budget von 0 fuer neue Governance-Findings ist ungueltig, weil es die Pflicht aushebelt, jeden Befund als Issue zu oeffnen. Eine ungueltige oder fehlende Konfiguration blockiert fail-closed.
 - Der Kill-Switch ist nur eine Stop-Quelle. Ein Agent kann ihn setzen oder ausloesen, aber nicht gegen ein erschoepftes Budget weiterlaufen lassen; jede Grenzaenderung braucht einen sichtbaren Governance-Commit.
 - Neue Findings laufen vor dem Issue durch `pnpm run run:budget --finding <datei.json>`: Beleg (`datei:zeile` oder Befehl), vollstaendiger Main-SHA, Duplikatpruefung, Severity `P0`–`P3` und Zuordnung `product`/`infrastructure` sind Pflicht. Produkt-Findings brauchen zusaetzlich ein `productGoal`.
-- Reine Meta-/Governance-Findings erzeugen keine automatische Folge-Lane; sie werden im Review-Log notiert und nur mit Maintainer-Auftrag zu einem Issue.
+- Jeder neue Meta-/Governance-Befund wird sofort als Issue mit `ZU PRÜFEN` plus Zustands-, Prio- und Area-Label geoeffnet. Das Budget zaehlt ihn als `governanceChurn`; wird die Grenze ueberschritten, endet der Lauf erst nach dem Ticket (`findingDuty: TICKET_THEN_STOP`). Kein Befund geht verloren, weil das Budget erschoepft ist.
 - Jeder Laufbericht trennt `productProgress` (gemergte Produkt-PRs, akzeptierte Findings) von `governanceChurn` (neue Governance-Findings) und nennt Main-SHA, erledigte Produktziele, offene Blocker und die Stop-/Continue-Entscheidung.
 
 ### Worker-Identität und Dependency-Store

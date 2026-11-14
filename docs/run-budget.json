@@ -4,7 +4,7 @@
   "maxIterations": 3,
   "maxIssues": 3,
   "maxCommits": 6,
-  "maxNewGovernanceIssues": 0,
+  "maxNewGovernanceIssues": 3,
   "productProgress": {
     "mergedProductPrs": 0,
     "acceptedFindings": 0
