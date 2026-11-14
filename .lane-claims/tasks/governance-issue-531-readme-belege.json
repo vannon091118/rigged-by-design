@@ -11,7 +11,11 @@
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "findings": [],
-  "nextAction": "Auf dem committeten Head: sync-generated --all --check, verify:light, integrate --check, ci:local; danach Push und PR.",
-  "revision": 2,
-  "pr": null
+  "nextAction": "PR #620 offen (Head 4390e3e3, Basis a725f8ea); alle vier Nachweise gruen. Review beim Maintainer.",
+  "revision": 3,
+  "pr": {
+    "number": 620,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/620",
+    "state": "open"
+  }
 }
