@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/agent-board-workflow",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent-board-workflow",
+  "baseSha": "590f97adc3f1e04a5f47d58514c9200a6a306421",
+  "task": "Agent-Board: Rollen, Claim-Gate und Widersprueche aufloesen",
+  "goal": "Maintainer und Agenten sind getrennt, Claims laufen vor dem Read ueber das Issue, pretask prueft sie als Startgate.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/**",
+    "scripts/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "src/Config/eslint.config.mjs",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-agent-board-workflow.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "590f97adc3f1e04a5f47d58514c9200a6a306421"
+}

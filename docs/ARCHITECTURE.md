@@ -25,7 +25,7 @@
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
-- Direktpush auf `main` ist durch den klassischen Branch-Schutz gesperrt: Weg ist Arbeitsbranch, PR gegen `main`, lokaler Vor-PR-Nachweis und **manueller Merge durch Mensch oder Agent**. Es gibt keinen Cloud-Check; `promote` ist nur ein Status-/Notausgang. `turn-push.mjs` meldet den Direktpush als ERR-4023.
+- Direktpush auf `main` ist durch den klassischen Branch-Schutz gesperrt: Weg ist Arbeitsbranch, PR gegen `main`, lokaler Vor-PR-Nachweis und **manueller Merge durch den Maintainer**. Es gibt keinen Cloud-Check; `promote` ist nur ein Status-/Notausgang. `turn-push.mjs` meldet den Direktpush als ERR-4023.
 Lokal laufen `verify` (Quick), die betroffenen schnellen Tests und `verify:all`; Mechanik laeuft ausschliesslich gezielt ueber `test:mechanics`. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus. Es gibt keinen Cloud-Testlauf und keinen Remote-Status, auf den ein Merge wartet.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
@@ -115,7 +115,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
-| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, lokal vorpruefen und durch Mensch oder Agent mergen; es gibt keinen Cloud-Check, kein Direktpush auf main. |
+| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, lokal vorpruefen und durch den Maintainer mergen; es gibt keinen Cloud-Check, kein Direktpush auf main. |
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
@@ -261,7 +261,7 @@ wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
 
 ## Promotion und Phasen-Hold
 
-**Status: manuell.** `promote.yml` ist kein Merge-Akteur und reagiert nur auf `workflow_dispatch`. Es zeigt den PR-Status oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an. Der Merge erfolgt durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; es gibt keinen Cloud-Check. Kein Auto-Merge, kein Merge auf einem alten Kopf.
+**Status: manuell.** `promote.yml` ist kein Merge-Akteur und reagiert nur auf `workflow_dispatch`. Es zeigt den PR-Status oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an. Der Merge erfolgt durch den Maintainer nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; es gibt keinen Cloud-Check. Kein Auto-Merge, kein Merge auf einem alten Kopf.
 
 Der folgende Abschnitt beschreibt den historischen Integrationspfad; er ist kein Normalweg mehr.
 
@@ -1013,7 +1013,7 @@ Im Repository ist der klassische Schutz aktiv: `main` verlangt einen Pull
 Request, hat aber **keine Required-Status-Checks**; Force-Pushes und das
 Loeschen des Branches sind verboten, `enforce_admins` ist aktiv, Rulesets
 existieren nicht. Ein Direktpush endet deshalb mit `GH006`; dann den
-Arbeitsbranch pushen und einen fokussierten PR durch Mensch oder Agent mergen.
+Arbeitsbranch pushen und einen fokussierten PR durch den Maintainer mergen.
 
 Der Merge-Commit wird von `verify-commit-msg --head` geprueft. Titel und Body
 muessen die exakten Ueberschriften `### Changes (Was ist neu)`,
@@ -1049,7 +1049,7 @@ PR-Plan und keinen Wochenlauf.
 
 ### Promotion
 
-**Status: manuell.** Der Merge nach `main` erfolgt durch Mensch oder Agent nach
+**Status: manuell.** Der Merge nach `main` erfolgt durch den Maintainer nach
 lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf. `promote.yml` ist ein
 manueller Status-/Notausgang (`workflow_dispatch`), kein Auto-Merge und kein
 Merge-Akteur. Es gibt keinen Cloud-Check; kein Merge wartet auf einen CI-Lauf. `integration` bleibt ein ausdruecklicher Notausgang.

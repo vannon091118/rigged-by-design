@@ -43,6 +43,7 @@ import { parseWorktrees, planCleanup } from './lib/branch-lifecycle.mjs';
 import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
+import { describeIssueClaim, issueNumberFor, readIssueClaim } from './lib/issue-claim.mjs';
 
 const argv = process.argv.slice(2);
 // `--brief` ist die token-sparsame Form fuer Agenten: Status, Claim, Blocker
@@ -53,6 +54,11 @@ const asJson = argv.includes('--json') || brief;
 const wantNew = argv.includes('--new');
 const wantResume = argv.includes('--resume');
 const requireWorktree = argv.includes('--require-worktree') || process.env.RBD_REQUIRE_WORKTREE === '1';
+// Identitaet der Lane: `agent-<n>-local` bzw. `agent-<n>-cloud`. Alte Namen
+// (`local.agent(cloud).1`) bleiben als Alias zulaessig; mehrere duerfen
+// kommagetrennt in RBD_AGENT stehen.
+const agentFlag = argv.indexOf('--agent');
+const agentIdentity = process.env.RBD_AGENT || (agentFlag >= 0 ? argv[agentFlag + 1] : '') || 'agent-local';
 /** Der Impact-Block wird nicht zweimal in die Ausgabe gelegt. */
 const CONTEXT_FILE = '.verify-cache/agent-context.json';
 
@@ -161,6 +167,27 @@ if (taskContractLoad.error) {
 }
 const prState = claim && branch !== 'main' ? readPullRequestState({ branch }) : { known: false };
 const ciState = claim && branch !== 'main' ? readCiState({ branch }) : { known: false, complete: false, conclusion: null };
+
+// Der Issue-Claim ist die Wahrheit ueber Besitz, dieser Lane-Eintrag nur seine
+// Spiegelung. Das Gate steht vor jedem Read: ein fremder Claim blockiert, ein
+// fehlender Claim verlangt den CLAIM-Kommentar zuerst. Ohne Issue-Nummer bleibt
+// die Lane legacy und wird nur gewarnt, damit alte Lanes nicht stehenbleiben.
+const issueClaim = claim && branch !== 'main'
+  ? readIssueClaim({ number: issueNumberFor(claim), agent: agentIdentity, cwd: ROOT })
+  : { checked: false, status: 'not-linked', number: null };
+if (claim && branch !== 'main') {
+  if (issueClaim.status === 'claimed-other') {
+    blockers.push(`[ERR-4019] ${describeIssueClaim(issueClaim)}; erst RELEASE/HANDOFF im Issue abwarten, kein paralleler Read`);
+  } else if (issueClaim.status === 'free') {
+    blockers.push(`[ERR-4019] ${describeIssueClaim(issueClaim)}; vor dem ersten Read 'gh issue comment ${issueClaim.number} --body "CLAIM [A1] ${agentIdentity} <UTC> scope=<pfade> plan=<ein Satz>"' setzen`);
+  } else if (issueClaim.status === 'stale') {
+    warnings.push(`${describeIssueClaim(issueClaim)}; als deferred notieren und ueberspringen`);
+  } else if (issueClaim.status === 'unknown') {
+    warnings.push(`${describeIssueClaim(issueClaim)}; lokale Arbeit erlaubt, Claim-Lage vor dem Push erneut pruefen`);
+  } else if (issueClaim.status === 'not-linked') {
+    warnings.push('Lane ohne Issue-Nummer: CLAIM-Kommentar nicht pruefbar; Issue-Nummer im Claim nachtragen');
+  }
+}
 
 let contextData = null;
 let contextError = '';
@@ -468,6 +495,7 @@ const contract = {
     owner: claim?.owner ?? null,
   },
   claim: claimInfo,
+  issueClaim,
   paths: {
     allowed: claim?.pathAllowlist ?? [],
     ownWip: ownWipPaths,
@@ -548,6 +576,7 @@ if (asJson) {
       base,
       head,
       claim: claimInfo ? { id: claimInfo.id, owner: claimInfo.owner, status: claimInfo.status, paths: claimInfo.allowlist.length } : null,
+      issueClaim: { status: issueClaim.status, number: issueClaim.number, holder: issueClaim.holder ?? null },
       task: contract.task.id,
       paths: { own: contract.paths.ownWip.length, foreign: contract.paths.foreign.length, unowned: contract.paths.unowned.length, adopted: takeover.adopted, corrupted: takeover.blocked },
       blockers,
@@ -574,6 +603,7 @@ if (asJson) {
     baseRefresh,
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
+    issueClaim,
     issues: { ...issueCheck, issues: issueResults, mergeBlocked },
     mergeBlocked,
     followUp,
@@ -594,6 +624,8 @@ if (asJson) {
   console.log(`pretask: Branch ${branch} · Modus ${mode}`);
   console.log('');
   console.log('=== Issue-Check ===');
+  console.log(`  Agent: ${agentIdentity}`);
+  console.log(`  Issue-Claim: ${describeIssueClaim(issueClaim)}`);
   if (!issueCheck.checked) console.log(`  nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
   else if (issueResults.length === 0) console.log('  keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues');
   else for (const issue of issueResults) console.log(`  #${issue.number} [${issue.scope.kind}${issue.scope.lane ? `:${issue.scope.lane}` : ''}] ${issue.disposition}: ${issue.title}`);

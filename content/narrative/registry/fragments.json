@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a714ff5c5fd5d41c5abe3a5967c426461fbe5f4ce425a5832ca10c577e7be45c",
+  "contentHash": "sha256:1a2b5809728d528e4efae0768f89ff12b354864f83e226bc007e980f60d852fe",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -52,6 +52,31 @@
       "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
+    },
+    {
+      "contributionId": "agent-board-01",
+      "turnId": "2026-11-14T02:10Z-agent-board",
+      "agentId": "agent-1-local",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Am schwarzen Brett haengt jetzt eine Reihenfolge: erst der Name, dann die Arbeit. Rita klebte den Zettel ueber die alte Notiz, auf der noch drei Namen fuer dieselbe Zeile standen, und strich sie einzeln durch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-agent-board.json"
     },
     {
       "contributionId": "agent-bootstrap-01",

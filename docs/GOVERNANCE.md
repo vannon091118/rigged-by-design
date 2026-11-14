@@ -6,22 +6,59 @@
 
 ## Rollen und Lanes
 
+Zwei Rollen, ein Board. Das Issue ist die Wahrheit; dieses Dokument beschreibt, wer welche Rechte hat. Die ausführende Schleife steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md).
+
+### Maintainer
+
+Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
+
+- Issues anlegen, kommentieren, **schließen und wiedereröffnen**; Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT` gegen den Code, nicht gegen die Behauptung.
+- **Merge nach `main`, Push auf `main`, Release-Tags** für belegte Features; `main` bleibt sonst tabu.
+- **Priorisierung:** `P0` → Regression → Unblocker → `P1` → `P2/P3` → Housekeeping; die Reihenfolge wird am Ende jedes Laufs neu geschrieben, auch bei `IDLE`.
+- **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
+- Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
+
+### Agenten (`local`/`cloud`)
+
+Jede Umgebung hat eigene Instanzen: `agent-<n>-local` und `agent-<n>-cloud` (`<n>` je Instanz; der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, `RBD_AGENT` nennt die Identität). Agenten:
+
+- lesen das Issue inklusive aller Kommentare, **claimen vor dem ersten Read** und arbeiten genau ein Issue pro Turn ab;
+- ändern nur Pfade ihrer Claim-Allowlist, committen und pushen **ihren** Branch, öffnen den PR und beantworten Review-Fragen im Issue;
+- mergen nicht, pushen nicht `main`, schließen/wiedereröffnen keine Issues und setzen keine Tags;
+- melden Nebenbefunde als Kommentar (`Nebenbefund: … datei:zeile`), statt den Scope zu dehnen.
+
+### Lanes
+
 - **Governance-Owner** führt Meta-, Workflow- und Register-Änderungen. Feature-Lanes dürfen Meta-Dateien nur über den mechanischen Pfad (Marker/Version) berühren.
 - **Integrator**, **Core-Owner**, **UI-Owner**, **Narrative-Owner**, **Interaction-Owner** und **Ledger-/Core-Owner** sind feste Rollen aus `OWNERS` in `scripts/lib/lane-claims.mjs`; ein Claim ohne Roster-Owner wird abgelehnt.
 - **Branch-Schema:** `lane/<domäne>/<task>`; Legacy-Präfixe `gov/`, `hygiene/` und `fix/` bleiben lesbar. Der Agent-Workflow nennt `fix/<issue-nr>-<slug>`; beide Formen sind zulässig, weil das Register einen Branch nach Schema braucht.
-- **Worktree:** Ein verknüpfter Worktree ist optional; `--require-worktree` fordert ihn explizit. Der geteilte Cloud-Clone ist der Normalfall. Jede Branch außer `main` ist temporär und wird nach belegtem Merge entfernt.
+- **Worktree:** Ein verknüpfter Worktree ist optional; `--require-worktree` fordert ihn explizit. Ein neuer Agent startet in einem **eigenen** Worktree von `origin/main`; der geteilte Arbeitsbaum wird nie zurückgesetzt. Jede Branch außer `main` ist temporär und wird nach belegtem Merge entfernt.
 - **Meta-Dateien:** `AGENTS.md`, `package.json`, `pnpm-lock.yaml`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`. Inhaltliche Änderungen brauchen eine Governance- oder ausdrücklich berechtigte Lane.
 - **Kontrollebene:** `.github/`, `scripts/` und `src/Config/` bleiben Governance- oder CI-Lanes vorbehalten; Feature-Claims können sie nicht öffnen.
 
 ## Claims
 
-**Die Wahrheit ist der Issue-Verlauf.** Ein Claim ist ab sofort ein Kommentar am GitHub-Issue — `CLAIM [A<n>] local.agent(cloud).1 <UTC-Zeit> scope=… plan=…` vor der Analyse, `RELEASE [A<n>] done <sha>` nach dem Merge; das Ablaufmuster steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt. Der Lane-Eintrag unter `.lane-claims/claims/` (Register `.lane-claims/claims.json`) ist nur die **mechanische Spiegelung** für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook: er wird aus dem Issue-Claim abgeleitet und entscheidet nie gegen den Issue-Verlauf. Bei Widerspruch zwischen Register, Task-Vertrag und Issue gewinnt das Issue, und die Spiegelung wird nachgezogen.
+**Die Wahrheit ist der Issue-Verlauf.** Ein Claim ist ab sofort ein Kommentar am GitHub-Issue — `CLAIM [A<n>] agent-1-local <UTC-Zeit> scope=… plan=…` vor dem ersten Read, `RELEASE [A<n>] done <sha>` nach der Übergabe; das Ablaufmuster steht in [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md). Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt. Der Lane-Eintrag unter `.lane-claims/claims/` (Register `.lane-claims/claims.json`) ist nur die **mechanische Spiegelung** für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook: er wird aus dem Issue-Claim abgeleitet und entscheidet nie gegen den Issue-Verlauf. Bei Widerspruch zwischen Register, Task-Vertrag und Issue gewinnt das Issue, und die Spiegelung wird nachgezogen.
+
+**Ablauf im Issue.** Vor dem ersten Read eines freien Issues steht der Claim, danach die Arbeit, am Ende die Freigabe:
+
+```text
+CLAIM [A<n>] agent-1-local 2026-11-14T10:12Z scope=src/core/sim plan=Rohbau-Zustand im Bau-Pfad
+HANDOFF [A<n>] → agent-1-cloud Grund
+RELEASE [A<n>] done <sha|—> ein Satz
+```
+
+- Genau ein aktiver Claim pro Issue; ein zweiter Claim ist ein Konflikt, den der Maintainer entscheidet.
+- `CLAIM` ohne `RELEASE` heißt besetzt — auch ohne neuen Kommentar (WIP parallel).
+- Claim älter als 72 Stunden ohne Commit, PR- oder Kommentaraktivität ist `stale`: im lokalen State als `deferred` notieren, nicht übernehmen.
+- `RELEASE done` verlangt SHA und PR; ohne Beleg gilt die Arbeit als nicht gemacht.
+- `pretask` prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`): fremder Claim blockiert, fehlender Claim nennt den nötigen Kommentar, eine Lane ohne Issue-Nummer wird gewarnt statt blockiert.
 
 Der gespiegelte Eintrag ist der Vertrag einer Lane, kein Token pro Pull Request.
 
 Pflichtfelder:
 
-- `id`, `branch`, `owner`, `task`,
+- `id`, `branch`, `owner`, `task`, `issue` (Nummer; ohne sie ist die Lane Legacy und das Gate warnt nur),
 - `baseSha` (Startpunkt, **kein** Merge-Beleg),
 - `pathAllowlist`,
 - optionale `contracts` mit Modus `write`/`read`,
@@ -36,7 +73,7 @@ Regeln (sie prüfen die Spiegelung, nicht die Koordination):
 5. **Gemergte Lane bleibt ansprechbar.** `selectClaim()` führt einen `merged` Claim weiter, damit der Register-Nachtrag nach dem Merge keinen neuen Claim eröffnet. `claim-evidence.mjs` akzeptiert einen gemergten PR, einen Branch-Kopf auf `main` oder einen baumgleichen Commit auf `main`; `baseSha` reicht nicht.
 6. **Fail-closed.** Ohne Claim, ohne Owner oder bei einer unklaren Kollision wird nicht committet.
 7. **Retention.** Lane-Claims und Task-Verträge werden auf die letzten **zehn Tasks** begrenzt. Aktive Tasks, offene oder geparkte Claims und die gerade bearbeitete Lane bleiben immer erhalten; geschlossene Claims ohne zugehörigen Task fallen mit der Retention weg. Das Legacy-Register `.lane-claims/claims.json` wird nicht beschnitten. `reconcile-claims --apply` führt die Retention mit aus, `claim:register prune` ist der manuelle Weg.
-8. **Post-Merge.** Ein belegter Merge zieht den Claim auf `merged` und den Task von `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE` — ohne offenen Blocker. Der Workflow `PR Cleanup` startet dafür nach jedem Merge einen eigenen Closeout-PR; der Closeout-Task trägt `closeout: post-merge` und darf nur über diesen ausdrücklichen Pfad als `DONE` durch Mensch oder Agent gemergt werden. Ein Direktpush auf `main` bleibt ausgeschlossen.
+8. **Post-Merge.** Ein belegter Merge zieht den Claim auf `merged` und den Task von `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE` — ohne offenen Blocker. Der Workflow `PR Cleanup` startet dafür nach jedem Merge einen eigenen Closeout-PR; der Closeout-Task trägt `closeout: post-merge` und darf nur über diesen ausdrücklichen Pfad als `DONE` durch den Maintainer gemergt werden. Ein Direktpush auf `main` bleibt ausgeschlossen.
 
 Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Basis. `pnpm run verify:claims` ist der lokale Lauf.
 
@@ -77,7 +114,7 @@ Issue-Scopes:
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch Mensch oder Agent nach Review und auf dem exakten Kopf. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
+Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch den **Maintainer** nach Review und auf dem exakten Kopf, Agenten pushen nur ihren Lane-Branch. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
 
 ## Referenzen
 

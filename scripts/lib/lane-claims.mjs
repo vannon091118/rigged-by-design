@@ -176,10 +176,14 @@ export class LaneClaim {
    * @param {string|null} mergedEvidence - Belegart des Merge-Nachweises
    * @param {string|null} mergedSha - Commit, der den Beleg traegt
    */
-  constructor({ id, owner, branch, baseSha, task = '', goal = '', pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
+  constructor({ id, owner, branch, baseSha, task = '', goal = '', issue = null, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
+    // Issue-Nummer der Lane: der CLAIM-Kommentar dort ist die Wahrheit, dieser
+    // Eintrag nur die mechanische Spiegelung. Ohne Nummer bleibt die Lane
+    // legacy und wird von der Startpruefung nur gewarnt, nie blockiert.
+    this.issue = Number.isInteger(issue) && issue > 0 ? issue : null;
     this.baseSha = baseSha;
     this.task = task;
     this.goal = goal;
@@ -215,6 +219,7 @@ export class LaneClaim {
       owner: this.owner,
       branch: this.branch,
       baseSha: this.baseSha,
+      ...(this.issue ? { issue: this.issue } : {}),
       ...(this.task ? { task: this.task } : {}),
       ...(this.goal ? { goal: this.goal } : {}),
       pathAllowlist: this.pathAllowlist,
@@ -439,6 +444,10 @@ export function validateNewClaim(claim, { legacy = false } = {}) {
   }
   const allowlist = Array.isArray(claim.pathAllowlist) ? claim.pathAllowlist : [];
   if (allowlist.length === 0) violations.push(`${label}: Pfad-Allowlist ist leer`);
+  if (claim.issue !== undefined && claim.issue !== null) {
+    const issue = Number(claim.issue);
+    if (!Number.isInteger(issue) || issue <= 0) violations.push(`${label}: issue '${claim.issue}' ist keine Issue-Nummer`);
+  }
   if (!['light', 'quick', 'full'].includes(claim.gateProfile)) violations.push(`${label}: gateProfile '${claim.gateProfile ?? ''}' ist unbekannt`);
   if (!legacy) {
     if (!String(claim.task ?? '').trim()) violations.push(`${label}: task fehlt`);
@@ -509,6 +518,7 @@ const claimFingerprint = (claim) =>
     owner: claim.owner,
     branch: claim.branch,
     baseSha: claim.baseSha,
+    issue: claim.issue ?? null,
     task: claim.task ?? '',
     goal: claim.goal ?? '',
     pathAllowlist: claim.pathAllowlist ?? [],
@@ -626,6 +636,7 @@ export function contextSummary() {
       owner: c.owner,
       branch: c.branch,
       baseSha: c.baseSha,
+      issue: c.issue ?? null,
       task: c.task ?? '',
       goal: c.goal ?? '',
       pathAllowlist: c.pathAllowlist,

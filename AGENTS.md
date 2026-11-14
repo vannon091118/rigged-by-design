@@ -6,6 +6,19 @@
 
 Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumenten unter `docs/`; sie sind die einzige Quelle für Abläufe, Gate-Listen und Governance-Details. Kein zweiter Langtext hier.
 
+## Rollen
+
+Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md), die Rechte in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#rollen-und-lanes).
+
+| Rolle | Identität | Darf | Darf nicht |
+| --- | --- | --- | --- |
+| **Maintainer** | der benannte Reviewer und Orchestrator | Issues anlegen, kommentieren, schließen und wiedereröffnen; Verdikt `ACCEPT`/`PARTIAL`/`REJECT`; Merge nach `main` und Push auf `main`; Release-Tags; Priorisierung; Konflikte zwischen Agenten entscheiden | eine Spiel-Lane ohne eigenen Claim führen |
+| **Agent** | `agent-<n>-local` bzw. `agent-<n>-cloud` je Umgebung (Alias `local.agent(cloud).<n>`, gesetzt über `RBD_AGENT`) | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
+
+- **Ein Orchestrator.** Prioritäten, Backlog-Reihenfolge und Konflikte entscheidet der Maintainer; Agenten arbeiten die so sortierten Issues ab und melden im Issue zurück.
+- **Ein Agent pro Issue.** Besitz ist der `CLAIM`-Kommentar am Issue, nicht der lokale Zustand; `pretask` prüft ihn als Startgate.
+- **Claim vor Read.** Wer ein freies Issue übernehmen will, kommentiert zuerst `CLAIM`, dann liest er Code. Zwei aktive Claims sind ein Konflikt für den Maintainer, keine Doppelarbeit.
+
 ## Verbindlicher Agent-Workflow
 
 **Direktverweis:** Der Arbeitsablauf für jeden Agenten steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) — Issue-Check, Main-Fetch, Review-Prüfung, Claim, Lösung mit PR, Umsetzungs-Kommentar und die Schleife zum nächsten Issue. Dieses Dokument ist verbindlich; es schlägt jede ältere Beschreibung von Claims und Lanes.
@@ -14,15 +27,15 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 
 ## Zehn unverhandelbare Regeln
 
-1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), damit kein Diff gegen einen alten Ref rechnet; ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Der Claim selbst ist der `CLAIM`-Kommentar am Issue (Agent-Workflow oben); das Register spiegelt ihn nur.
-2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird immer als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird weiterhin nur, was der Claim deckt; kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung. Alle Branches außer `main` sind temporär und werden nach dem Merge entfernt.
+1. **Claim vor Read, Pretask vor dem Edit.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`); erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Danach `pnpm run agent:pretask --json`: `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`: fremder Claim blockiert, fehlender Claim verlangt den Kommentar, Lane ohne Issue-Nummer wird gewarnt) und blockiert außerdem bei offenem `gate-failure`-Issue, fehlendem Impact-Plan oder Claim-Problem (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
+2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird immer als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird weiterhin nur, was der Claim deckt; kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung. `reset --hard`, `clean -xdf`, `stash`, `push --force` und `branch -D` sind für Agenten verboten; der Maintainer nutzt sie ausschließlich in seinem eigenen Review-Checkout, nie im geteilten Arbeitsbaum. Alle Branches außer `main` sind temporär und werden nach dem Merge entfernt.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen, nie für Spielzustand, PRNG oder Seeds. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder neue Pool braucht einen Leser im Spiel (ein System, das ihn anzeigt), sonst ist der Text tot - das ist die Qualitätsseite dieser Regel. Die Mengenquoten (50 je Pool, 1500 gesamt, Schrumpf-Verbot) sind nur ihre Planungshilfe und werden von `verify:narrative-blocks` gemessen. Normativ ist dieser Absatz; die Tabelle in `docs/ROADMAP.md` ist die aktuelle Messung, kein zweites Regelwerk. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt.
 7. **Eine Testlinie, lokal.** Während der Arbeit gezielte Tests und `verify:light`; der Standard vor dem Push ist `verify:fast`, der Vor-PR-Nachweis `pnpm run ci:local`. GitHub-Workflows führen keine Tests, Gates, Builds oder APKs aus. Mechanik (Statistik, Soak, Langlauf, Benchmarks) läuft ausschließlich über `pnpm run test:mechanics` und ist nie Teil eines Regelprofils. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, es gibt keinen Cloud-Testlauf, nächster Schritt ist `pretask`. Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und exaktem Kopf; keine CI-Bedingung, kein Auto-Merge. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur.
+9. **Lieferung über Branch und PR, Merge beim Maintainer.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht den eigenen Lane-Branch; der PR gegen `main` wird erzeugt/aktualisiert, es gibt keinen Cloud-Testlauf, nächster Schritt ist `pretask`. Agenten pushen nie `main`, mergen nicht und schließen keine Issues. Der Maintainer prüft gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`), merged nach lokalem Vor-PR-Nachweis und auf exaktem Kopf, setzt Release-Tags für belegte Features und löst Claim-Konflikte. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
 
 ## Task-Vertrag
@@ -64,7 +77,8 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
 | `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
-| `pnpm run claim:register` | Den Issue-Claim in das Lane-Register spiegeln (mechanisch, keine eigene Wahrheit). |
+| `pnpm run claim:register --issue <nr>` | Den Issue-Claim in das Lane-Register spiegeln (mechanisch, keine eigene Wahrheit); die Nummer macht das Claim-Gate prüfbar. |
+| `pnpm run agent:pretask --json --agent <name>` | Wie oben mit expliziter Agent-Identität; `RBD_AGENT` wirkt genauso. Das Gate vergleicht exakt und blockiert fremde Claims. |
 
 ## Build & test
 
@@ -73,9 +87,9 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 ## Delivery
 
-- Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
+- Arbeit auf der eigenen Lane; Commit und Push des eigenen Branches über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
 - Claim und Freigabe laufen als Issue-Kommentare (`CLAIM`/`RELEASE`) nach [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md); Issues werden kommentiert, nie geschlossen.
-- Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; es gibt keinen Cloud-Testlauf, kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge, Close/Reopen und Release-Tags macht der Maintainer nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; Agenten pushen nie `main`. Es gibt keinen Cloud-Testlauf, keinen Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
 
