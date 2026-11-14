@@ -18,6 +18,30 @@ const direct = [
   { object: 'performance', property: 'now', message: 'Determinismus: Wall-Clock gehoert nicht in den Spielzustand.' },
 ];
 
+/**
+ * Computed Keys stehen als Literal in `property.value`, nicht in `property.name`.
+ * Die Matrix deckt direkte, Namespace- und `globalThis['X']`-Zugriffe ab.
+ */
+const computedMember = (object, property, message) => [
+  `MemberExpression[object.name='${object}'][property.value='${property}']`,
+  `MemberExpression[object.property.name='${object}'][property.value='${property}']`,
+  `MemberExpression[object.property.value='${object}'][property.value='${property}']`,
+  `MemberExpression[object.property.value='${object}'][property.name='${property}']`,
+].map((selector) => ({ selector, message }));
+
+/** Destructuring und einfache Namespace-Aliase wuerden den Member-Zugriff sonst verstecken. */
+const computedBinding = (object, property, message) => [
+  `VariableDeclarator[init.name='${object}'] > ObjectPattern > Property[key.name='${property}']`,
+  `VariableDeclarator[init.property.name='${object}'] > ObjectPattern > Property[key.name='${property}']`,
+  `VariableDeclarator[init.property.value='${object}'] > ObjectPattern > Property[key.name='${property}']`,
+  `VariableDeclarator[init.name='${object}'] > ObjectPattern > Property[key.value='${property}']`,
+  `VariableDeclarator[init.property.name='${object}'] > ObjectPattern > Property[key.value='${property}']`,
+  `VariableDeclarator[init.property.value='${object}'] > ObjectPattern > Property[key.value='${property}']`,
+  `VariableDeclarator[init.name='${object}'][id.type='Identifier']`,
+  `VariableDeclarator[init.property.name='${object}'][id.type='Identifier']`,
+  `VariableDeclarator[init.property.value='${object}'][id.type='Identifier']`,
+].map((selector) => ({ selector, message }));
+
 /** Uhr-Zugriffe, die an `no-restricted-properties` vorbeilaufen (Namespace, `new`, computed). */
 const clockSyntax = [
   { selector: "NewExpression[callee.name='Date']", message: 'Determinismus: kein Datum aus der Uhr; Zeit kommt aus world.tick und world.day.' },
@@ -31,6 +55,15 @@ const clockSyntax = [
   { selector: "MemberExpression[object.property.name='Math'][property.name='random']", message: 'Determinismus: kein Math.random ueber globalThis/window.' },
   { selector: "MemberExpression[object.name='performance'][property.name='now']", message: 'Determinismus: kein performance.now im Spielzustand.' },
   { selector: "MemberExpression[object.property.name='performance'][property.name='now']", message: 'Determinismus: kein performance.now ueber globalThis/window.' },
+  { selector: "NewExpression[callee.property.value='Date']", message: 'Determinismus: kein Datum aus der Uhr, auch nicht ueber computed globalThis/window.' },
+  { selector: "CallExpression[callee.property.value='Date']", message: 'Determinismus: auch computed globalThis.Date() liest die Uhr.' },
+  { selector: "MemberExpression[property.value='timeOrigin']", message: 'Determinismus: performance[timeOrigin] ist ein Epoch-Zeitstempel.' },
+  ...computedMember('Math', 'random', 'Determinismus: kein Math.random, auch nicht computed.'),
+  ...computedMember('Date', 'now', 'Determinismus: kein Date.now, auch nicht computed.'),
+  ...computedMember('performance', 'now', 'Determinismus: kein performance.now, auch nicht computed.'),
+  ...computedBinding('Math', 'random', 'Determinismus: Math.random nicht per Destructuring/Alias verstecken.'),
+  ...computedBinding('Date', 'now', 'Determinismus: Date.now nicht per Destructuring/Alias verstecken.'),
+  ...computedBinding('performance', 'now', 'Determinismus: performance.now nicht per Destructuring/Alias verstecken.'),
 ];
 
 /** Ohne Uhr: fuer Tooling, das Zeitstempel schreibt, aber weiterhin keinen Zufall ziehen darf. */
@@ -40,6 +73,8 @@ const clockSyntaxNoDate = clockSyntax.filter((entry) => !entry.selector.includes
 const entropySyntax = [
   { selector: "MemberExpression[property.name='getRandomValues']", message: 'Determinismus: echte Entropie nur in entropySeed() (src/core/rng/streams.ts).' },
   { selector: "MemberExpression[property.name='randomUUID']", message: 'Determinismus: keine UUID aus der Umgebung; IDs kommen aus dem Spielzustand.' },
+  { selector: "MemberExpression[property.value='getRandomValues']", message: 'Determinismus: echte Entropie nur in entropySeed(), auch nicht computed.' },
+  { selector: "MemberExpression[property.value='randomUUID']", message: 'Determinismus: keine UUID aus der Umgebung, auch nicht computed.' },
 ];
 
 /** Nur Pacing von Bild und Ton darf die Uhr lesen; der Spielzustand nie. */
