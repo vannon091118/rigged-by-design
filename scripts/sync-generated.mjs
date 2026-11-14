@@ -62,20 +62,40 @@ function changedPaths() {
 const before = new Set(changedPaths());
 const stale = [];
 
+/**
+ * Ein Generator meldet seine eigene Veraltung. Im Check-Modus wird der Befund
+ * gesammelt, nicht als Abbruch geworfen: der Lauf nennt alle veralteten
+ * Artefakte in einem Bericht. Fremde Aenderungen im Arbeitsbaum zaehlen nicht.
+ */
+function generate(scriptName, extra, outdated) {
+  try {
+    run(scriptName, extra);
+  } catch (error) {
+    if (!check) throw error;
+    stale.push(...outdated);
+  }
+}
+
 // 1. Testkatalog: derselbe Lauf, damit die Inventur nicht zweimal entsteht.
-if (catalog) run('test-catalog.mjs', check ? ['--check'] : []);
+if (catalog) generate('test-catalog.mjs', check ? ['--check'] : [], ['docs/TEST-CATALOG.md']);
 
-// 2. Inventur: vollstaendig aus `git ls-files`.
-run('build-inventory.mjs');
+// 2. Doku-Marker: alte Versionsmarker werden kanonisch, fehlende ergaenzt.
+generate('doc-sync.mjs', check ? ['--check'] : staged ? ['--staged'] : [], ['docs (Marker)']);
 
-// 3. Doku-Marker: alte Versionsmarker werden kanonisch, fehlende ergaenzt.
-run('doc-sync.mjs', check ? ['--check'] : staged ? ['--staged'] : []);
-
-// 4. Narrative Registry: nur aus Beitraegen, nur wenn Quellen betroffen sind.
+// 3. Narrative Registry: nur aus Beitraegen, nur wenn Quellen betroffen sind.
+//    Vor der Inventur, weil die Inventur die erzeugten Dateien mitzaehlt.
 const narrativeTouched = all || [...before].some((file) => file.startsWith(NARRATIVE_SOURCE_PREFIX));
 if (narrativeTouched) {
-  run('compile-narrative-content.mjs', check ? ['--check'] : ['--write']);
+  generate('compile-narrative-content.mjs', check ? ['--check'] : ['--write'], [
+    'content/narrative/registry/fragments.json',
+    'content/narrative/turns/manifest.json',
+    'src/core/sim/narrative/composer/registry.generated.ts',
+  ]);
 }
+
+// 4. Inventur: vollstaendig aus `git ls-files`, nach allen erzeugten Texten.
+//    Im Check-Modus rein lesend.
+generate('build-inventory.mjs', check ? ['--check'] : [], ['docs/INVENTORY.md']);
 
 // 5. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
 const roadmapFile = join(ROOT, 'docs', 'ROADMAP.md');
@@ -101,7 +121,9 @@ if (staged && !check) {
 }
 
 if (check) {
-  const dirty = [...new Set([...changedPaths(), ...stale])].filter(Boolean);
+  // Nur die Generatoren melden Veraltung; ein schmutziger Arbeitsbaum allein
+  // ist kein Befund dieses Gates.
+  const dirty = [...new Set(stale)].filter(Boolean);
   if (dirty.length > 0) {
     console.error('sync-generated: generierte Artefakte sind nicht aktuell:');
     for (const file of dirty.slice(0, 20)) console.error(`  - ${file}`);

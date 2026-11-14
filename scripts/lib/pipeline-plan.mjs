@@ -69,6 +69,16 @@ export const GATES = Object.freeze({
   assets: { ...NODE, name: 'assets', script: 'scripts/verify-assets.mjs', code: 'ERR-4016', cache: true },
   capabilities: { ...NODE, name: 'capabilities', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', cache: true },
   narrative: { ...NODE, name: 'narrative', script: 'scripts/verify-narrative-blocks.mjs', code: 'ERR-4022', cache: true },
+  // Generierte Narrative-/Register-Artefakte sind nur aus ihren Generatoren
+  // gueltig; ein veralteter Stand ist ein Befund, kein Merge-Konflikt.
+  generated: {
+    ...NODE,
+    name: 'generated',
+    script: 'scripts/sync-generated.mjs',
+    args: ['--all', '--check'],
+    code: 'ERR-4028',
+    cache: true,
+  },
   audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004' },
   // Ein roter Test ist ein Befund, kein Notfall: ERR-4026 steht auf AGENT und
   // wird als Issue abgeholt. Nur Geld-, Ledger-, RNG- und Save-Invarianten
@@ -103,7 +113,7 @@ export const GATES = Object.freeze({
 });
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit.
-const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'generated', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
 // Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
 // betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
 const FAST = [...LIGHT, 'dead-code', 'test-quality', 'affected', 'build'];
@@ -124,6 +134,7 @@ export const QUICK_GATES = Object.freeze([
   'assets',
   'capabilities',
   'narrative',
+  'generated',
   'tests',
 ]);
 export const REQUIRED_CI_GATES = Object.freeze([...QUICK_GATES, 'build']);

@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/issue-617-generated-gate",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-617-generated-gate",
+  "baseSha": "f61752a9695b1310d82bc3de7268b428c5897ca3",
+  "issue": 617,
+  "task": "Generierte Narrative-/Register-Artefakte als Gate pruefen",
+  "goal": "sync-generated --all --check rein lesend und idempotent machen, als Pflicht-Gate in Light/Required verdrahten und den Eigentuemer der generierten Dateien dokumentieren.",
+  "pathAllowlist": [
+    "scripts/build-inventory.mjs",
+    "scripts/sync-generated.mjs",
+    "scripts/lib/pipeline-plan.mjs",
+    "docs/CI.md",
+    "docs/INVENTORY.md",
+    "content/narrative/contributions/2026-11-14-generated-gate.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-617-generated-gate.json",
+    ".lane-claims/tasks/governance-issue-617-generated-gate.json",
+    "src/core/governance/__tests__/ci-docs-parity.test.ts",
+    "src/core/governance/__tests__/red-team-gate-lane.test.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f61752a9695b1310d82bc3de7268b428c5897ca3"
+}
