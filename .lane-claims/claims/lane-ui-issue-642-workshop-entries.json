@@ -1,0 +1,24 @@
+{
+  "id": "lane/ui/issue-642-workshop-entries",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/ui/issue-642-workshop-entries",
+  "baseSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0",
+  "issue": 642,
+  "task": "Issue #642: Werkstatt ueber Marke und Tastenkürzel oeffnen",
+  "goal": "Beide Einstiege oeffnen dieselbe Werkstatt ueber der laufenden Szene, ohne doppelte Aktion oder Zustandsverlust.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "src/main.tsx",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-ui-issue-642-workshop-entries.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+}
