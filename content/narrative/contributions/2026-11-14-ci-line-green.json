@@ -1,0 +1,21 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T04:20Z-ci-line-green-01",
+  "contributionId": "ci-line-green-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Siegel am Prüfstand: das eine hält eine Tür, die niemand mehr benutzt; das andere bewacht eine Tür, die noch niemand geprüft hat. Beide werden gelöst, bevor der nächste Schlüssel gedreht wird.",
+  "directives": []
+}

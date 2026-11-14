@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-ci-line-green",
+  "claimId": "lane/governance/ci-line-green",
+  "branch": "lane/governance/ci-line-green",
+  "baseSha": "9c7add6bbf31571fa66131bf969e6beeb4f27bca",
+  "phase": "IMPLEMENTING",
+  "title": "ci:local auf main wieder gruen belegen",
+  "goal": "dead-code (ConstructionState) und test-quality (worker-claim-gate) reparieren, ohne Spielverhalten zu aendern; ci:local muss auf dem PR-Kopf exit 0 liefern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Beide Gates einzeln belegen, dann ci:local vollstaendig fahren, PR oeffnen und mit RELEASE [A4] done uebergeben.",
+  "revision": 1
+}
