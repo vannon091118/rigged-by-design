@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 379 Dateien — contract 209 · integration 99 · governance 58 · statistics 6 · performance 7.
+Summe: 380 Dateien — contract 209 · integration 99 · governance 59 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -216,6 +216,7 @@ Summe: 379 Dateien — contract 209 · integration 99 · governance 58 · statis
 | `src/core/governance/__tests__/workflow-hardening.test.ts` | ci | governance | ja | `.github/workflows/ensure-pr.yml` |
 | `src/core/governance/__tests__/workflow-retry.test.ts` | pipeline | governance | ja | `scripts/lib/pending-commit.mjs` |
 | `src/core/governance/__tests__/workflow-state.test.ts` | pipeline | governance | ja | `scripts/task-state.mjs` |
+| `src/core/governance/__tests__/workspace-home-drive.test.ts` | pipeline | governance | ja | `scripts/lib/workspace-home.mjs` |
 | `src/core/governance/__tests__/worktree-isolation.test.ts` | pipeline | governance | ja | `scripts/lib/worktree-isolation.mjs` |
 | `src/core/io/__tests__/escalation.test.ts` | other | contract | ja | `src/core/io/issues.ts` |
 | `src/core/physics/__tests__/physics.test.ts` | physics | contract | ja | `src/core/physics/world.ts` |
@@ -685,10 +686,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2962 |
-| Gelistete Dateien | 2962 |
+| Getrackte Dateien | 2966 |
+| Gelistete Dateien | 2966 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (64), artifacts (1), content (1062), docs (104), packages (27), public (571), scripts (124), src (988) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (66), artifacts (1), content (1063), docs (104), packages (27), public (571), scripts (124), src (989) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -700,10 +701,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 38 Datei(en)
-- `.lane-claims/tasks/` — 25 Datei(en)
+- `.lane-claims/claims/` — 39 Datei(en)
+- `.lane-claims/tasks/` — 26 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1058 Datei(en)
+- `content/narrative/contributions/` — 1059 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -770,7 +771,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 72 Datei(en)
+- `src/core/governance/__tests__/` — 73 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -845,6 +846,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-verify-all-green.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-worker-bootstrap.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-workspace-home-drive.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-535-apartment-room.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
@@ -875,6 +877,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-workspace-home-drive.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
@@ -1953,8 +1956,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23708 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4237 Zeilen
+- `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23730 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4241 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 229 Zeilen
@@ -2745,7 +2749,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lib/work-claim.mjs` — Arbeits-Claim am Issue: getrennt von der Identitaet. — gelesen: 107 Zeilen
 - `scripts/lib/worker-identity.mjs` — Worker-Identitaet: drei Namen, globale Reservierung, sonst nichts. — gelesen: 210 Zeilen
-- `scripts/lib/workspace-home.mjs` — Workspace-Home: der einzige Ort, der Worktree-Neuaufbauten ueberlebt. — gelesen: 149 Zeilen
+- `scripts/lib/workspace-home.mjs` — Workspace-Home: der einzige Ort, der Worktree-Neuaufbauten ueberlebt. — gelesen: 153 Zeilen
 - `scripts/lib/worktree-isolation.mjs` — Technische Worktree-Isolation fuer Agenten. — gelesen: 91 Zeilen
 - `scripts/lib/worktree-lifecycle.mjs` — Worker-Worktree-Lifecycle: Neuaufbau nur mit belegtem Merge. — gelesen: 74 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt den vollstaendigen PR-Diff in einen abgegrenzten Automationsbereich. — gelesen: 141 Zeilen
@@ -2948,6 +2952,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Seit der Local-first-Migration fuehren — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/workflow-retry.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 18 Zeilen
 - `src/core/governance/__tests__/workflow-state.test.ts` — Nach dem Turn zaehlt nur ein belegter Zustand: TESTS_PASSED nach lokaler — gelesen: 196 Zeilen
+- `src/core/governance/__tests__/workspace-home-drive.test.ts` — Das Workspace-Home liegt ausserhalb des Repositories. Ueber Laufwerksgrenzen — gelesen: 40 Zeilen
 - `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 194 Zeilen
 - `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 68 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen

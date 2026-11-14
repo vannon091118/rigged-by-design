@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/workspace-home-drive",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/workspace-home-drive",
+  "baseSha": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
+  "issue": 608,
+  "task": "Windows: Workspace-Home auf fremdem Laufwerk korrekt als ausserhalb erkennen",
+  "goal": "worker:init -- claim muss auf Windows mit Home auf C: und Repo auf D: funktionieren; isInsideRepository prueft den absoluten relative()-Fall.",
+  "pathAllowlist": [
+    "scripts/lib/workspace-home.mjs",
+    "src/core/governance/__tests__/",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-governance-workspace-home-drive.json",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "ce9df7a267c8c05f643eb52b305b431964e8fbae"
+}
