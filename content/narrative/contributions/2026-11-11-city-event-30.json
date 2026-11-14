@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:29Z-city-event-30",
+  "contributionId": "city-event-30",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf der Parkbank liegt eine Zeitung, die jemand sorgfaeltig gefaltet hat. Ein Mann setzt sich daneben, ohne sie anzufassen, und schaut auf die Strasse.",
+  "directives": []
+}

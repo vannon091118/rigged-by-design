@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:24Z-city-event-25",
+  "contributionId": "city-event-25",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Briefkasten klebt ein Zettel, der schon halb abgerissen ist. Ein Mann haelt einen Umschlag in der Hand und liest den Zettel zweimal, bevor er ihn einwirft.",
+  "directives": []
+}

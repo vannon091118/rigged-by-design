@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:49Z-city-event-50",
+  "contributionId": "city-event-50",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Fahrkartenautomaten klemmt ein Ticket im Ausgabefach. Ein Mann zieht daran, ohne Erfolg, und ein zweiter tritt hinter ihn, als waere das ein Warteschlangen-Ritual.",
+  "directives": []
+}

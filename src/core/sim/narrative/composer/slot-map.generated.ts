@@ -3,7 +3,7 @@ import type { ContentSlotKind } from '../events/template-types';
 
 export const COMPOSER_SLOT_SOURCES = {
   "TITLE": ["opening"],
-  "BODY": ["event-body","description"],
+  "BODY": ["event-body","description","city-event"],
   "CHOICE_LABEL": ["choice-preview"],
   "OUTCOME": ["reaction"],
 } as const satisfies Readonly<Record<ContentSlotKind, readonly string[]>>;

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:10Z-city-event-11",
+  "contributionId": "city-event-11",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Radfahrer nimmt die Kurve zu eng, und ein Fussgaenger tritt einen Schritt zurueck. Es faellt kein Wort, nur ein Blick, der laenger dauert als noetig.",
+  "directives": []
+}

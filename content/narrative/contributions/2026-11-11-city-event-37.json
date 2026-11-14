@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:36Z-city-event-37",
+  "contributionId": "city-event-37",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Schneider steht im Tuerrahmen und haelt einen Anzug gegen das Licht. Der Stoff ist gut, die Aermel sind zu lang, und der Kunde tut so, als waere das Absicht.",
+  "directives": []
+}

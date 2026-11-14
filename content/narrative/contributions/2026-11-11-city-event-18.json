@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:17Z-city-event-18",
+  "contributionId": "city-event-18",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Buchladen hat einen Stapel neuer Romane ins Fenster gelegt, alle mit demselben Cover. Ein Kunde nimmt den obersten Band, legt ihn zurueck und nimmt ihn wieder.",
+  "directives": []
+}

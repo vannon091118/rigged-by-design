@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:19Z-city-event-20",
+  "contributionId": "city-event-20",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "In der Handywerkstatt liegt ein zerlegtes Geraet auf dem Tresen, daneben eine Tasse Kaffee. Der Mann dahinter schraubt, ohne auf den Kunden zu schauen, der laengst alles erklaert hat.",
+  "directives": []
+}

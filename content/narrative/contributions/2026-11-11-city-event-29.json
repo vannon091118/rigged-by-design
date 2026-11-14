@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:28Z-city-event-29",
+  "contributionId": "city-event-29",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Aus der Pizzeria kommt warme Luft auf den Gehweg, und ein Lieferfahrer prueft die Adresse auf seinem Telefon. Der Duft bleibt laenger als er.",
+  "directives": []
+}

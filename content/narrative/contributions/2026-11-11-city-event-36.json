@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:35Z-city-event-36",
+  "contributionId": "city-event-36",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am schwarzen Brett haengen ein Flohmarkt, eine Wohnung und ein Fahrrad, alle mit abgerissenen Streifen. Ein Mann sucht einen Stift und findet nur einen leeren Kugelschreiber.",
+  "directives": []
+}

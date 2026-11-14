@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:03Z-city-event-04",
+  "contributionId": "city-event-04",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Hund ist an einen Fahrradstaender gebunden und zieht an der Leine, sobald jemand vorbeikommt. Sein Besitzer diskutiert drinnen mit dem Kioskbesitzer ueber eine Rechnung.",
+  "directives": []
+}
