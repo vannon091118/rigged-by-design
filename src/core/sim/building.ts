@@ -132,8 +132,10 @@ export const CITY_PRESET_BUILDINGS: readonly BuildingState[] = Object.freeze([
     id: 'bld_kiez_pub',
     name: 'Kiezkneipe Zum Anker',
     kind: 'PUB',
-    footprint: { x: 18, y: 4, w: 12, h: 10 },
-    entrance: { x: 24, y: 14 },
+    // Gleiche Fassadenzeile wie Wohnhaus und Späti (y+h=12): die Nordzeile hat
+    // eine gemeinsame Gehweg-Kante, keine Tuer liegt auf der Fahrbahn (#574).
+    footprint: { x: 18, y: 4, w: 12, h: 8 },
+    entrance: { x: 24, y: 12 },
     interiorLayoutId: 'layout_kiez_pub',
     operatingHours: { openHour: 16, closeHour: 4 },
     locked: false,

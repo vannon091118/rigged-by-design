@@ -110,7 +110,7 @@ export function createCityStreetLayout(): LayoutState {
 
   const doors: LayoutEdge[] = [
     { axis: 'H', x: 8, y: 12, kind: 'DOOR', id: 'door_street_to_player_apt', zoneId: 'ext_zone_north_sidewalk' },
-    { axis: 'H', x: 24, y: 14, kind: 'DOOR', id: 'door_street_to_kiez_pub', zoneId: 'ext_zone_north_sidewalk' },
+    { axis: 'H', x: 24, y: 12, kind: 'DOOR', id: 'door_street_to_kiez_pub', zoneId: 'ext_zone_north_sidewalk' },
     { axis: 'H', x: 39, y: 12, kind: 'DOOR', id: 'door_street_to_corner_shop', zoneId: 'ext_zone_north_sidewalk' },
     { axis: 'H', x: 22, y: 22, kind: 'DOOR', id: 'door_street_to_casino_grand', zoneId: 'ext_zone_casino_plaza' },
   ];
