@@ -1,6 +1,7 @@
 /** Popup-Pause fuer Erzaehlfristen: der Welt-Tick laeuft weiter, offene Szenen verlieren keine Zeit. */
 import type { Ledger } from '../core/economy/ledger';
 import type { Prng } from '../core/rng/prng';
+import { assertLedgerBalanced } from '../core/economy/ledger-tick-guard';
 import { holdLiveDeadlines } from '../core/sim/narrative/event-lifecycle';
 import { tickWorld } from '../core/sim/tick';
 import { tickActionQueue } from '../core/sim/action-queue';
@@ -17,4 +18,6 @@ export function advanceWorld(world: WorldState, ledger: Ledger, prng: Prng): voi
   tickWorld(world, ledger, prng);
   // Die Queue laeuft nach dem Welt-Tick; sie liest und schreibt nur Weltzustand.
   tickActionQueue(world, ledger);
+  // Erst nach dem vollstaendigen Takt sind Welt- und Queue-Buchungen erfasst.
+  assertLedgerBalanced(ledger, world.tick, 'advanceWorld');
 }
