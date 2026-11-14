@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bee4f48e4dca555acf3be0b9ff12abd7d5d36808d96854b6891dc05f3cae46d3",
+  "contentHash": "sha256:299fa128df949c9df3602e56eddf05a852f97cfae634be1e1025649d5bf325b7",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7399,6 +7399,28 @@
       "text": "Zwei Namensschilder hingen noch am Haken, obwohl ihre Traeger schon durch die Hintertuer hinaus waren. Jetzt haengen sie im Ablagefach, wo sie hingehoeren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
+    },
+    {
+      "contributionId": "city-scene-62",
+      "turnId": "2026-11-14T12:56Z-city-scene-62",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

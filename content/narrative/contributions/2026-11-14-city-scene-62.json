@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T12:56Z-city-scene-62",
+  "contributionId": "city-scene-62",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
+  "directives": []
+}
