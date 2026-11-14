@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { ERROR_CODES, formatError } from '../error-codes';
+import { GATES } from '../../../../scripts/lib/pipeline-plan.mjs';
 
 const ROOT = process.cwd();
 const packageJson = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8')) as {
@@ -70,6 +71,13 @@ describe('Dependency-Governance', () => {
     expect(() => formatError(1, 'ERR-9999', 'test', 'unbekannt')).toThrow(/ERR-0000/);
     expect(() => formatError(1, 'ERR-0000', 'test', 'unbekannt')).toThrow(/ERR-0000/);
     expect(formatError(2, 'ERR-4001', 'test', 'bekannt')).toContain('[ERR-4001]');
+  });
+
+  it('registriert jeden Gate-Code im Fehlerregister', () => {
+    const registered = new Set<string>(Object.values(ERROR_CODES).map((entry) => entry.code));
+    const gateCodes = (Object.values(GATES) as { code: string }[]).map((gate) => gate.code);
+    expect(gateCodes.filter((code) => !registered.has(code))).toEqual([]);
+    expect(gateCodes).not.toContain('ERR-0000');
   });
 
   it('haelt Fehlerregister und Katalog deckungsgleich', () => {
