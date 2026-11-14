@@ -7,18 +7,11 @@
  * Git/Aufruf. Kill-Switch und jeder Grenzverstoss beenden den Lauf; das
  * Finding-Gate akzeptiert nur belegte, aktuelle und zugeordnete Befunde.
  */
-<<<<<<< HEAD
-import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
-import {
-  decideRunBudget, readRunBudget, validateFinding, validateRunBudget,
-=======
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  decideRunBudget, parseGovernanceFindingCount, validateFinding, validateRunBudget,
->>>>>>> 1621224f (fix(#752): Pretask zaehlt neue Befunde nicht mehr als 0)
+  decideRunBudget, parseGovernanceFindingCount, readRunBudget, validateFinding, validateRunBudget,
 } from '../../../../scripts/lib/run-budget.mjs';
 
 const budget = {
