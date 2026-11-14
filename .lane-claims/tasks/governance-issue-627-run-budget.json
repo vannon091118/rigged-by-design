@@ -3,15 +3,19 @@
   "taskId": "governance-issue-627-run-budget",
   "claimId": "lane/governance/issue-627-run-budget",
   "branch": "lane/governance/issue-627-run-budget",
-  "baseSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc",
-  "phase": "IMPLEMENTING",
+  "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
+  "phase": "CI_PENDING",
   "title": "Externes Laufbudget und Stop-Kriterium (#627)",
   "goal": "Kill-Switch, Iterations-/Issue-/Commit-Budget, Churn-Trennung und maschinenpruefbarer Stop-Zustand",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 659,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/659",
+    "state": "open"
+  },
   "findings": [],
-  "nextAction": "Commit, auf origin/main rebasen, PR anlegen und mit RELEASE/review-waiting übergeben.",
-  "revision": 1
+  "nextAction": "Review abwarten; nach Merge Claim auf merged und Vertrag auf DONE.",
+  "revision": 2
 }
