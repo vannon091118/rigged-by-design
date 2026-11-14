@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T17:55:00Z",
+  "generatedAt": "2026-11-14T17:54Z",
   "generatedBy": "maintainer",
-  "head": "67a8288c4cea5a412bdfddfe36a9798265598999",
-  "headMessage": "Board-Aufraeumung: 10 Issues geschlossen, Narrative-Cluster in #733 konsolidiert, #634 wieder geoeffnet (#734)",
-  "base": "origin/main @ 67a8288c4cea5a412bdfddfe36a9798265598999",
+  "head": "6d511b8341c29ec6bffe721a814bc510362b1e76",
+  "headMessage": "Board-Triage gemergt (#734): 10 Issues geschlossen, #733 konsolidiert, Blocker praezisiert",
+  "base": "origin/main @ 6d511b8341c29ec6bffe721a814bc510362b1e76",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
   "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
@@ -15,7 +15,8 @@
     "Geschlossen als Duplikate: #663,#664,#665,#666,#667 -> neues autoritatives Ticket #733 mit Abnahmekriterien",
     "Korrektur: #634 nach dem Close am Code geprueft und wieder geoeffnet (promote.yml nur workflow_dispatch, keine Rulesets)",
     "Rest-Blocker praezisiert auf #684, #685, #693, #694, #630 (jeweils mit Datei-/Zeilennachweis)",
-    "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen"
+    "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen",
+    "Closeout #735: Claim lane/governance/board-issue-triage auf merged (PR #734, 6d511b83), Task DONE mit Aftercare, Board auf neuen main-Tip"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
