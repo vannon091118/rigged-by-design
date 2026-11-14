@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:24c2c90982d92efe928872cf01f484425cce85bf1ee351cc99f7a5bcad31e0bb",
+  "contentHash": "sha256:ae55b1973e4db7cfdc883e283e266af71222062cce34aff7ba05b837fca2c926",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -8446,6 +8446,28 @@
       "text": "Manche Gaeste kommen nicht einfach wieder - sie kommen zurueck: Wer gute Abende mitbringt, bekommt neben der gewohnten Begruessung eine zweite, waermere Szene. Kein Zustaendlichkeitsbuch fuehrt darueber Buch, nur Erinnerung, Kante und ein Trigger, der beides liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-f-warm-return.json"
+    },
+    {
+      "contributionId": "factor-contract-01",
+      "turnId": "2026-11-14T21:45Z-factor-contract",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Faktor-Vertrag liegt jetzt in einer Fassung vor, die Code, Test und Referenz gemeinsam lesen: Kategorie, Grundgewicht und Untereinflüsse stehen an derselben Stelle, und die alte Aufrufsignatur behält ihre Defaults. Wer die Version ändert, muss die Referenz mitnehmen; der Test vergleicht beide, bevor die Tür aufgeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-factor-contract.json"
     },
     {
       "contributionId": "fight-career-01",

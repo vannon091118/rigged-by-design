@@ -10,6 +10,9 @@
  * @dead-code-exception: Contract-Stub, Exporte werden von spaeteren Lanes importiert.
  */
 
+/** Maschinenlesbare Version des Factor-Contracts; Referenz und Test muessen passen. */
+export const FACTOR_CONTRACT_VERSION = '1.1' as const;
+
 export type FactorId = string;
 
 /** String-zu-String-Kontext eines Factors. */

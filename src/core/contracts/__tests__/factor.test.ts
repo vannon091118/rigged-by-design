@@ -5,13 +5,16 @@
  * Contract factor v1.1: IDs, Kategorie, Grundgewicht, Untereinfluesse,
  * Kontext und Contribution-Trace.
  */
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { ActorId } from '../actor-id';
 import type { RelationshipId, RelationshipType, RelationshipEdge } from '../relationship';
 import type {
   FactorId, FactorContext, ContributionTrace, Factor, FactorChild, FactorOptions,
 } from '../factor';
-import { createFactorId, createFactor, validateFactor } from '../factor';
+import {
+  FACTOR_CONTRACT_VERSION, createFactorId, createFactor, validateFactor,
+} from '../factor';
 
 describe('Contract: factor v1.1', () => {
   const sampleActor: ActorId = 'guest_42';
@@ -72,6 +75,22 @@ describe('Contract: factor v1.1', () => {
     expect(validateFactor(createFactor('factor_42', {}, [], {
       children: [{ ...child, weight: 2 }],
     }))).toBe(false);
+  });
+
+  it('haelt Code, Test und Referenz auf derselben Contract-Version', () => {
+    const reference = readFileSync(
+      new URL('../../../../docs/contracts/factor.md', import.meta.url),
+      'utf8',
+    );
+    expect(FACTOR_CONTRACT_VERSION).toBe('1.1');
+    expect(reference).toContain(`# Contract: factor v${FACTOR_CONTRACT_VERSION}`);
+    expect(reference).toContain(`**Version:** ${FACTOR_CONTRACT_VERSION}`);
+    for (const field of ['category', 'baseWeight', 'children']) {
+      expect(reference).toContain(`\`${field}\``);
+    }
+    expect(reference).toContain('FactorChild');
+    expect(reference).toContain('0..1');
+    expect(reference).toContain('-1..1');
   });
 
   it('behandelt leeren Trace als gueltig', () => {
