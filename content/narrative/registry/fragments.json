@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e4117119ae27d4ebcd22f5c8833e2aac63b834f3311485eaec9187f33ba7dbf6",
+  "contentHash": "sha256:97fe7a6c59a68b482fbc19986a411a7942e903813f619e19381de3b2a8875e93",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -2878,6 +2878,29 @@
       "text": "Turnierabend: Die Tische füllen sich.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-b4-turnier-titel.json"
+    },
+    {
+      "contributionId": "balance-lane-on-demand-01",
+      "turnId": "2026-11-14T08:40Z-balance-lane-on-demand",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Messstand läuft am Rand der Schicht, nicht im Betrieb: Wer ihn an die Kasse hängt, misst jeden Handgriff mit und kommt nie zum Arbeiten. Deshalb steht auf dem Zettel neben dem Gerät eine Zahl, ein Tag und der Stand des Hauses — vergleichen lässt sich nur, was denselben Stand trägt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-balance-lane-on-demand.json"
     },
     {
       "contributionId": "bet-slip-register-01",

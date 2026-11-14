@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-555-balance-run",
+  "claimId": "lane/governance/issue-555-balance-run",
+  "branch": "lane/governance/issue-555-balance-run",
+  "baseSha": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "phase": "IMPLEMENTING",
+  "title": "Balance-Messlauf an den aktiven Simulations- und Balancing-Bericht anschliessen (#555)",
+  "goal": "Bewusste On-Demand-Entscheidung dokumentieren; reproduzierbarer Bericht mit Seed, Tagen und Main-SHA ohne stilles Ueberschreiben",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "revision": 1
+}

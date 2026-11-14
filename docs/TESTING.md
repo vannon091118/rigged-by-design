@@ -71,6 +71,20 @@ pnpm run balance
 pnpm run ci:local --profile=apk
 ```
 
+## Balance-Messlauf (bewusst On-Demand)
+
+`pnpm run balance` bleibt ein **separater, bewusster Messlauf** und ist nicht Teil des Ausführungsmodells der Gates: nicht in `src/Config/test-lanes.json`, nicht in `verify:light`, nicht in `verify:fast`, kein Required-Gate. Ein 40-Tage-Lauf kostet Minuten und würde jede schnelle Iteration blockieren; Mechanik gehört ohnehin ausschließlich nach `test:mechanics`, und der Balance-Lauf ist keine Mechanik-Lane, sondern eine Balance-Messung ([`CI.md`](CI.md), [`AGENTS.md`](../AGENTS.md) Regel 7).
+
+```bash
+pnpm run balance                       # 40 Tage, Seed 12345, main-SHA im Bericht
+pnpm run balance -- --seed=4711 --days=40
+pnpm run balance -- --force            # vorhandenen Bericht bewusst neu messen
+```
+
+- Der Bericht liegt unter `artifacts/balance-<seed>-<days>d.md` (nicht versioniert) und trägt Seed, Tageszahl und Main-SHA im Kopf. Ein vorhandener Bericht wird **nie stillschweigend überschrieben**: der Lauf bricht mit `ERR-2001` ab und verweist auf `--force`.
+- Vergleichbarkeit: gleicher Seed und gleiche Tageszahl auf demselben Main-SHA ergeben byte-gleiche Berichte; ein anderer SHA ist eine neue Messung, kein Rückschritt. Der Nachweis liegt in `src/core/sim/__tests__/balance-report.test.ts`.
+- Der Test selbst ist `skipIf(!RBD_BALANCE)`; normale Testläufe führen ihn nicht aus.
+
 ## Referenzen
 
 - [`CI.md`](CI.md) — Required-Gates und Zustände.
