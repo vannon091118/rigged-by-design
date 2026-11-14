@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-ci-line-green",
+  "claimId": "lane/governance/ci-line-green",
+  "branch": "lane/governance/ci-line-green",
+  "baseSha": "9c7add6bbf31571fa66131bf969e6beeb4f27bca",
+  "phase": "CI_PENDING",
+  "title": "ci:local auf main wieder gruen belegen",
+  "goal": "dead-code (ConstructionState) und test-quality (worker-claim-gate) reparieren, ohne Spielverhalten zu aendern; ci:local muss auf dem PR-Kopf exit 0 liefern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 613,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/613",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "Scope-Audit: Allowlist auf die tatsaechlich geaenderten Dateien verengt; Register-Nachtraege als Governance-Statuspflege belegt. Naechster Schritt: Maintainer-Review PR #613.",
+  "revision": 3
+}

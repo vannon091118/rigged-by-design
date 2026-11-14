@@ -4,14 +4,14 @@
   "claimId": "lane/sim/issue-524-construction",
   "branch": "lane/sim/issue-524-construction",
   "baseSha": "3fc7702f7d64b1c9fc12c391dcd3bac20f911711",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Rohbau und Fertigstellung der Stadtneubauten (#524)",
   "goal": "Neubauten starten versiegelt, oeffnen am Folgetag, ihre Tueren wirken und Stellen werden erst mit der Fertigstellung belegbar.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR gegen main oeffnen und den Maintainer um Review bitten; die ungesicherten Bestaende bleiben in #602.",
+  "nextAction": "Abgeschlossen: Fix liegt als aa91ec76 auf main, Issue #524 ist geschlossen; Claim auf merged nachgezogen.",
   "revision": 1
 }

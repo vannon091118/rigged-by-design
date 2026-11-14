@@ -209,7 +209,7 @@ Summe: 381 Dateien — contract 209 · integration 100 · governance 59 · stati
 | `src/core/governance/__tests__/tree-changes.test.ts` | pipeline | governance | ja | `scripts/lib/tree-changes.mjs` |
 | `src/core/governance/__tests__/verify-scope.test.ts` | pipeline | governance | ja | `scripts/verify-scope.mjs` |
 | `src/core/governance/__tests__/wip-takeover.test.ts` | pipeline | governance | ja | `scripts/lib/takeover.mjs` |
-| `src/core/governance/__tests__/worker-claim-gate.test.ts` | pipeline | governance | ja | `scripts/pretask.mjs` |
+| `src/core/governance/__tests__/worker-claim-gate.test.ts` | pipeline | governance | ja | `scripts/lib/work-claim.mjs` |
 | `src/core/governance/__tests__/worker-dependency-claims.test.ts` | pipeline | governance | ja | `scripts/lib/dependency-fingerprint.mjs` |
 | `src/core/governance/__tests__/worker-identity-bootstrap.test.ts` | pipeline | governance | ja | `scripts/lib/worker-identity.mjs` |
 | `src/core/governance/__tests__/worker-inventory-bootstrap.test.ts` | pipeline | governance | ja | `scripts/lib/repo-inventory.mjs` |
@@ -687,10 +687,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2970 |
-| Gelistete Dateien | 2970 |
+| Getrackte Dateien | 2973 |
+| Gelistete Dateien | 2973 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (68), artifacts (1), content (1064), docs (104), packages (27), public (571), scripts (124), src (990) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (70), artifacts (1), content (1065), docs (104), packages (27), public (571), scripts (124), src (990) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -702,10 +702,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 40 Datei(en)
-- `.lane-claims/tasks/` — 27 Datei(en)
+- `.lane-claims/claims/` — 41 Datei(en)
+- `.lane-claims/tasks/` — 28 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1060 Datei(en)
+- `content/narrative/contributions/` — 1061 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -834,6 +834,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-archive-merged-534.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-archive-merged-566.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-ci-line-green.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-506.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-508.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-535.json` — { — gelesen: 21 Zeilen
@@ -847,7 +848,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-verify-all-green.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-worker-bootstrap.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-workspace-home-drive.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-workspace-home-drive.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-hud-house-debt.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-535-apartment-room.json` — { — gelesen: 23 Zeilen
@@ -858,7 +859,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-506-interiors-2.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-508-home-household.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-524-construction.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-issue-524-construction.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-issue-528-goal-cost-truth.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
@@ -872,6 +873,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent-board-workflow.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-ci-line-green.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-post-merge-568.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-review-waiting-handover.json` — { — gelesen: 17 Zeilen
@@ -1944,6 +1946,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-verify-gates.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-board.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-agent-onboarding.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-ci-line-green.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-city-proximity.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-close-rights.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-door-walk.json` — { — gelesen: 21 Zeilen
@@ -1961,8 +1964,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23752 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4245 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23774 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4249 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 229 Zeilen
@@ -2949,7 +2952,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/verify-scope.test.ts` — `verify:scope` liest ausschliesslich den Diff und vergleicht ihn mit der — gelesen: 103 Zeilen
 - `src/core/governance/__tests__/wip-takeover.test.ts` — "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel, — gelesen: 75 Zeilen
-- `src/core/governance/__tests__/worker-claim-gate.test.ts` — Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine — gelesen: 154 Zeilen
+- `src/core/governance/__tests__/worker-claim-gate.test.ts` — Zwei harte Startgates: ohne reservierte Worker-Identitaet startet keine — gelesen: 156 Zeilen
 - `src/core/governance/__tests__/worker-dependency-claims.test.ts` — Dependencies werden nur bei geaendertem Fingerprint neu gebaut, aus einem — gelesen: 76 Zeilen
 - `src/core/governance/__tests__/worker-identity-bootstrap.test.ts` — Identitaet ist ein Betriebsmittel: drei Namen, exklusive Reservierung mit — gelesen: 129 Zeilen
 - `src/core/governance/__tests__/worker-inventory-bootstrap.test.ts` — Bestaende werden am Remote erkannt, nicht am Ordnernamen. Die Inventur — gelesen: 80 Zeilen
@@ -3301,7 +3304,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` — NAR-11: Die Fehlerpfade des Runtime-Composers lehnen ungueltige Direktiven, — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 270 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 271 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

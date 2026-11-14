@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b914f3fa875db83ce480c9d7613426281997b7596efd0a6696173134e3821528",
+  "contentHash": "sha256:a2124253b4579ee24015de43727fa13b6b22fc9ed7b42359a0caa669b997ec75",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3087,6 +3087,28 @@
       "text": "Ein Lieferwagen hält vor der Tür; der Fahrer kennt den Weg zur Hintertür besser als zur Klingel.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json"
+    },
+    {
+      "contributionId": "ci-line-green-01",
+      "turnId": "2026-11-14T04:20Z-ci-line-green-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Siegel am Prüfstand: das eine hält eine Tür, die niemand mehr benutzt; das andere bewacht eine Tür, die noch niemand geprüft hat. Beide werden gelöst, bevor der nächste Schlüssel gedreht wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-ci-line-green.json"
     },
     {
       "contributionId": "ci-main-sync-01",
