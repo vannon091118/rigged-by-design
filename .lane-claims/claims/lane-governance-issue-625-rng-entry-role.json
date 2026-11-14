@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-625-rng-entry-role",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-625-rng-entry-role",
+  "baseSha": "50e0f7378365f95b072d24edb7de8ecd3f6cd5eb",
+  "issue": 625,
+  "task": "Negative Rollenpruefung fuer alle Gameplay-RNG-Einstiegspunkte",
+  "goal": "Versionierte Liste der oeffentlichen Gameplay-RNG-Grenzen plus tabellarische Negativsuite: presentationRng wird an jeder Aussengrenze abgelehnt, World-State bleibt unveraendert",
+  "pathAllowlist": [
+    "src/core/rng/",
+    "src/core/sim/tick.ts",
+    "src/core/sim/narrative/composer/",
+    "content/narrative/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-issue-625-rng-entry-role.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "50e0f7378365f95b072d24edb7de8ecd3f6cd5eb"
+}

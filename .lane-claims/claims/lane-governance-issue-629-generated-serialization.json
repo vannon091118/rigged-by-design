@@ -19,6 +19,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91"
+  "status": "merged",
+  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "mergedSha": "50e0f7378365f95b072d24edb7de8ecd3f6cd5eb",
+  "mergedEvidence": "Branch-Kopf liegt auf origin/main (50e0f737), Lane in main enthalten. Nur Status nachgezogen, Vertrag unveraendert."
 }
