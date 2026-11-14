@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-555-balance-run",
+  "claimId": "lane/governance/issue-555-balance-run",
+  "branch": "lane/governance/issue-555-balance-run",
+  "baseSha": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "phase": "CI_PENDING",
+  "title": "Balance-Messlauf an den aktiven Simulations- und Balancing-Bericht anschliessen (#555)",
+  "goal": "Bewusste On-Demand-Entscheidung dokumentieren; reproduzierbarer Bericht mit Seed, Tagen und Main-SHA ohne stilles Ueberschreiben",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 678,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/678",
+    "state": "open",
+    "headSha": "8d45246c8de4ad9b471c1fb81ffa2dec071f688d"
+  },
+  "findings": [],
+  "nextAction": "PR #678 review-waiting; Merge und Issue-Schliessen durch den Maintainer",
+  "revision": 2
+}

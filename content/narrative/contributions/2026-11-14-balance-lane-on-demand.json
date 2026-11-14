@@ -1,0 +1,22 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T08:40Z-balance-lane-on-demand",
+  "contributionId": "balance-lane-on-demand-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation",
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Messstand läuft am Rand der Schicht, nicht im Betrieb: Wer ihn an die Kasse hängt, misst jeden Handgriff mit und kommt nie zum Arbeiten. Deshalb steht auf dem Zettel neben dem Gerät eine Zahl, ein Tag und der Stand des Hauses — vergleichen lässt sich nur, was denselben Stand trägt.",
+  "directives": []
+}

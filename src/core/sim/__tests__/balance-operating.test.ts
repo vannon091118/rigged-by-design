@@ -40,7 +40,7 @@ describe('Betriebs-Messlauf', () => {
     // Der Bericht entsteht zuerst: auch ein roter Lauf muss nachvollziehbar bleiben.
     const report = process.env.RBD_BALANCE_OUT;
     if (report) {
-      writeFileSync(report, balanceReport(rows, SEED));
+      writeFileSync(report, balanceReport(rows, SEED, { mainSha: process.env.RBD_BALANCE_SHA }));
       console.log(`balance: Bericht geschrieben nach ${report}`);
     }
     const violations = balanceViolations(rows, DAYS);
@@ -62,5 +62,39 @@ describe('Betriebs-Messlauf', () => {
         f(mean((row) => row.economy.wages)),
       ].join(' '));
     }
+  });
+});
+
+/**
+ * Der Bericht muss seinen eigenen Stand tragen (#555): Seed, Tageszahl und
+ * Main-SHA. Ohne diese drei Angaben ist ein Vergleich zweier Laeufe nicht
+ * belastbar, weil ein anderer SHA eine andere Messung ist. Diese Pruefung
+ * laeuft ohne Simulation und ohne RBD_BALANCE.
+ */
+const fixtureRow = (day: number, tier: string): DayRow => ({
+  day, tier, arrivals: 10, active: 5, waitDesk: 0, waitDevice: 0, rounds: 20,
+  totalDepartures: 2, capital: 1000, perMin: 1.5,
+  economy: { operatingProfit: 100, rent: 50 },
+} as unknown as DayRow);
+
+const fixtureRows = (count: number): DayRow[] =>
+  Array.from({ length: count }, (_, index) => fixtureRow(index + 1, 'BUDE'));
+
+describe('Balance-Bericht', () => {
+  it('nennt Seed, Tageszahl und Main-SHA im Kopf', () => {
+    const report = balanceReport(fixtureRows(40), 12345, { mainSha: '6f20cf87ec75' });
+    expect(report.split('\n')[0]).toBe('# Balance-Spur · Seed 12345 · 40 Spieltage · main 6f20cf87ec75');
+    expect(report).toContain('fester Seed 12345 und 40 Tage auf demselben main-SHA');
+  });
+
+  it('markiert einen fehlenden SHA als unbekannt statt ihn zu erfinden', () => {
+    expect(balanceReport(fixtureRows(2), 7).split('\n')[0])
+      .toBe('# Balance-Spur · Seed 7 · 2 Spieltage · main unbekannt');
+    expect(balanceReport(fixtureRows(2), 7, { mainSha: '   ' }).split('\n')[0]).toContain('main unbekannt');
+  });
+
+  it('ist fuer denselben Stand und Seed byte-gleich', () => {
+    expect(balanceReport(fixtureRows(3), 99, { mainSha: 'abc' }))
+      .toBe(balanceReport(fixtureRows(3), 99, { mainSha: 'abc' }));
   });
 });
