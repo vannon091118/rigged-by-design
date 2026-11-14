@@ -1,5 +1,6 @@
 /** Floor-Animation: Tick, Kamera, Figuren-Animation. */
 import { TICK_MS } from '../core/sim/tick-timing';
+import type { CityActorSync } from './city-actor-sync';
 import type { FloorCameraRig } from './floor-camera-rig';
 import type { GuestArt } from './guest-art';
 import { ActorPool } from './actor-pool';
@@ -14,8 +15,11 @@ export function animateFloor(
   player: GuestArt,
   cues: FloorCues,
   props: FloorProps,
+  cityActors: CityActorSync,
 ): void {
   rig.follow(player.root.x, player.root.y);
+  // Bewohner laufen im selben Frame-Ticker wie Gaeste und Spieler (#640).
+  cityActors.animate(now);
   for (const art of actors.active.values()) {
     art.animate(now);
     const t = Math.min(1, (now - art.moveStart) / TICK_MS);

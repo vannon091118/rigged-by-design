@@ -231,7 +231,7 @@ export class FloorView {
   #animate = (): void => {
     if (this.#destroyed) return;
     const now = performance.now();
-    animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props);
+    animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props, this.#layers.cityActors);
     this.#ambient.animate(this.#player.root.x, this.#player.root.y);
     this.#city.animate(now, this.#view.dayPhase);
     this.#fx.update(now);

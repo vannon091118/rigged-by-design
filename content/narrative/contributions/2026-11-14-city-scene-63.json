@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T13:10Z-city-scene-63",
+  "contributionId": "city-scene-63",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Mann an der Ecke stand erst mitten auf der Kreuzung, dann endlich am Bordstein. Niemand hatte ihn zweimal gesetzt, nur einmal richtig.",
+  "directives": []
+}
