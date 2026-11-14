@@ -99,6 +99,11 @@ for (const task of featureTasks) {
       headSha,
       mergedSha: mergeSha,
     },
+    aftercare: {
+      claim: { status: 'merged', evidence: 'post-merge-closeout', sha: mergeSha },
+      task: { phase: 'DONE' },
+      branch: { state: 'pending', evidence: 'delete-branch-workflow' },
+    },
   };
 }
 featureClaim.status = 'merged';

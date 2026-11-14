@@ -9,9 +9,10 @@
  *   offene oder geparkte Claims bleiben. Das Legacy-Register `claims.json`
  *   wird nie beschnitten.
  * - `planTaskCloseout` zieht einen Task nach belegtem Merge von
- *   `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE`. Der Beleg ist
- *   der bereits auf `merged` gesetzte Claim; ein offener Blocker haelt den
- *   Task offen.
+ *   `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE`; ein veraltetes
+ *   `READY`/`IMPLEMENTING` wird nur bei nachweislich entferntem Branch
+ *   geschlossen. Der Beleg ist der bereits auf `merged` gesetzte Claim; ein
+ *   offener Blocker haelt den Task offen.
  *
  * Die Dateisystem-Schicht liegt in `reconcile-claims.mjs`,
  * `claim-register.mjs` und `post-merge-closeout.mjs`.
@@ -95,28 +96,49 @@ export function planRetention({
 }
 
 /** Ein Task schliesst nur mit belastbarem Merge-Beleg und ohne offenen Blocker. */
-export function planTaskCloseout({ tasks = [], claims = [] } = {}) {
+export function planTaskCloseout({ tasks = [], claims = [], evidenceByClaim = new Map() } = {}) {
   const claimById = new Map(claims.map((claim) => [claim?.id, claim]));
   const changes = [];
   for (const task of tasks) {
     const contract = task?.contract;
     const claim = claimById.get(contract?.claimId);
     if (!contract || !claim || claim.status !== 'merged') continue;
-    if (!CLOSEABLE_PHASES.includes(contract.phase)) continue;
+    const evidenceEntry = evidenceByClaim.get(claim.id) ?? evidenceByClaim.get(contract.claimId) ?? null;
+    // Ein veralteter READY/IMPLEMENTING-Task eines belegten Merges wird nur
+    // geschlossen, wenn der Branch nachweislich weg ist. Ein neuer Task auf
+    // demselben Branch hat noch einen Remote-Kopf und bleibt aktiv.
+    const staleMergedTask =
+      ['READY', 'IMPLEMENTING'].includes(contract.phase) &&
+      evidenceEntry?.branchCleanup?.state === 'done';
+    if (!CLOSEABLE_PHASES.includes(contract.phase) && !staleMergedTask) continue;
     if ((contract.findings ?? []).some((finding) => finding.status === 'open' && finding.severity === 'blocker')) continue;
     const sha = String(claim.mergedSha ?? '').slice(0, 7);
     const evidence = claim.mergedEvidence ? `${claim.mergedEvidence}${sha ? ` ${sha}` : ''}` : 'Merge-Beleg';
-    const pr = contract.pr
+    // Nur ein PR-Beleg kennt Nummer, Kopf und Merge-Commit. Branch- oder
+    // Baum-Belege bleiben ehrlich ohne PR-Objekt; sie erfinden keine Nummer.
+    const pr = evidenceEntry?.pr
       ? {
-          ...contract.pr,
+          ...evidenceEntry.pr,
           state: 'merged',
           ...(claim.mergedSha ? { mergedSha: claim.mergedSha } : {}),
         }
-      : contract.pr ?? null;
+      : contract.pr
+        ? {
+            ...contract.pr,
+            state: 'merged',
+            ...(claim.mergedSha ? { mergedSha: claim.mergedSha } : {}),
+          }
+        : null;
+    const aftercare = {
+      claim: { status: 'merged', evidence: claim.mergedEvidence ?? 'merge-evidence', sha: claim.mergedSha ?? null },
+      task: { phase: 'DONE' },
+      branch: evidenceEntry?.branchCleanup ?? { state: 'unknown', evidence: 'no-branch-evidence' },
+    };
     const next = {
       ...contract,
       phase: 'DONE',
       pr,
+      aftercare,
       nextAction: `Automatisch nach Merge geschlossen (${evidence}).`,
       revision: (Number.isInteger(contract.revision) ? contract.revision : 0) + 1,
     };

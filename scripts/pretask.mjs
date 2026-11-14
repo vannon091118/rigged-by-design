@@ -235,9 +235,36 @@ try {
 const prIndex = mergedPullRequestIndex();
 const reconcile = planReconcile({ claims, baseRef: originMain || 'origin/main', git: gitStrict, prIndex });
 const reconciledLanes = new Set(reconcile.changes.map((change) => change.id));
+let automation = { state: 'AVAILABLE', applied: false, pending: 0 };
+let nextActionsHint = '';
 if (reconcile.changes.length > 0) {
   const sample = reconcile.changes.slice(0, 4).map((change) => `${change.id}:${change.evidence}`).join(', ');
-  notes.push(`Reconcile: ${reconcile.changes.length} Claim(s) belegbar merged (${sample}${reconcile.changes.length > 4 ? ', ...' : ''}); Register mit 'reconcile-claims --apply' nachziehen`);
+  automation = {
+    state: 'REMOTE_AUTOMATION_UNAVAILABLE',
+    applied: false,
+    pending: reconcile.changes.length,
+    reason: 'Merged PR ohne vollstaendigen Closeout; der Actions-Lauf hat Claim/Task nicht nachgezogen.',
+    sample,
+  };
+  notes.push(`Reconcile: ${reconcile.changes.length} Claim(s) belegbar merged (${sample}${reconcile.changes.length > 4 ? ', ...' : ''})`);
+  // Der Maintainer-Start auf main zieht den belegten Closeout lokal und
+  // idempotent nach; Lanes schreiben nie in ein fremdes Register. Der Branch
+  // selbst bleibt Cleanup-Schritt des Workflows bzw. des Maintainers.
+  if (branch === 'main' && dirtyPaths.length === 0) {
+    try {
+      execFileSync(process.execPath, [join(ROOT, 'scripts', 'reconcile-claims.mjs'), '--apply'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      automation.applied = true;
+      notes.push('Closeout-Fallback: belegte Merges automatisch nachgezogen; Register-Aenderung ist noch zu committen.');
+    } catch (error) {
+      warnings.push(`Closeout-Fallback fehlgeschlagen: ${String(error?.message ?? error).split('\n')[0].slice(0, 160)}`);
+    }
+  } else if (branch !== 'main') {
+    nextActionsHint = `Closeout offen: \`pnpm run reconcile:claims --apply\` auf main nachziehen (${reconcile.changes.length} Claim(s))`;
+  }
 }
 
 if (claim && branch !== 'main' && !botBranch) {
@@ -497,6 +524,7 @@ else nextActions.push('Auf main keine Lane-Arbeit starten.');
 if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
   nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
 }
+if (nextActionsHint) nextActions.push(nextActionsHint);
 
 // Worker-Bootstrap: Rolle, Identitaet und Home stehen am Anfang jedes Laufs.
 // Die Identitaet selbst wird im Identity-Board reserviert; hier wird nur
@@ -613,9 +641,12 @@ const contract = {
       evidence: change.evidence,
       sha: change.sha,
       why: change.why,
+      pr: change.pr ?? null,
+      branchCleanup: change.branchCleanup ?? null,
     })),
     unresolved: reconcile.unresolved,
   },
+  automation,
   worktreePrune,
   completionRequirements,
   mergeBlocked,
@@ -651,7 +682,7 @@ const taskStatePath = join(ROOT, '.verify-cache', 'task-state.json');
 mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
 writeFileSync(
   taskStatePath,
-  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, pr: prState, ci: ciState, baseRefresh, contract, blockers, warnings }, null, 2)}\n`,
+  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, automation, pr: prState, ci: ciState, baseRefresh, contract, blockers, warnings }, null, 2)}\n`,
   'utf8',
 );
 
@@ -672,6 +703,7 @@ if (asJson) {
       worker: { role: worker.role, identity: worker.identity, status: worker.status, valid: worker.identityValid },
       workGate,
       board: board.items.map((item) => `#${item.number} ${item.priority}`),
+      automation: automation.state,
       task: contract.task.id,
       paths: { own: contract.paths.ownWip.length, foreign: contract.paths.foreign.length, unowned: contract.paths.unowned.length, adopted: takeover.adopted, corrupted: takeover.blocked },
       blockers,
@@ -694,6 +726,7 @@ if (asJson) {
     worktree,
     taskStatus: taskState.status,
     taskInfo: contract.taskState,
+    automation,
     git: { dir: gitDir, commonDir, linked },
     baseRefresh,
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },

@@ -102,9 +102,11 @@ Regeln (sie prüfen die Spiegelung, nicht die Koordination):
 7. **Retention.** Lane-Claims und Task-Verträge werden auf die letzten **zehn Tasks** begrenzt. Aktive Tasks, offene oder geparkte Claims und die gerade bearbeitete Lane bleiben immer erhalten; geschlossene Claims ohne zugehörigen Task fallen mit der Retention weg. Das Legacy-Register `.lane-claims/claims.json` wird nicht beschnitten. `reconcile-claims --apply` führt die Retention mit aus, `claim:register prune` ist der manuelle Weg.
 8. **Post-Merge.** Ein belegter Merge zieht den Claim auf `merged` und den Task von `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE` — ohne offenen Blocker. Der Workflow `PR Cleanup` startet dafür nach jedem Merge einen eigenen Closeout-PR; der Closeout-Task trägt `closeout: post-merge` und darf nur über diesen ausdrücklichen Pfad als `DONE` durch den Maintainer gemergt werden. Ein Direktpush auf `main` bleibt ausgeschlossen.
 
+   Fällt Actions aus, erkennt der nächste normale `pretask` den belegten Merge und meldet `REMOTE_AUTOMATION_UNAVAILABLE`; auf `main` zieht er den idempotenten Closeout automatisch nach, auf einer Lane nennt er `pnpm run reconcile:claims --apply` als nächsten Schritt. Claim-Status, Task-Vertrag und Branch-Cleanup bleiben getrennte Belege: der Vertrag trägt PR-Nummer, Head-SHA, Merge-SHA und den tatsächlichen Branch-Status; gelöscht wird der Branch nur durch den Cleanup-Workflow bzw. den Maintainer.
+
 Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Basis. `pnpm run verify:claims` ist der lokale Lauf.
 
-`reconcile-claims --apply` schreibt nur Claims, deren Status oder Beleg sich geändert hat. Unbeteiligte Claim-Dateien und ein unverändertes Legacy-Register behalten ihren Dateistand.
+`reconcile-claims --apply` schreibt nur Claims, deren Status oder Beleg sich geändert hat. Unbeteiligte Claim-Dateien und ein unverändertes Legacy-Register behalten ihren Dateistand. Der Lauf ist idempotent: ein bereits geschlossener Claim oder ein `DONE`-Task wird nicht erneut geschrieben. Auf `main` ruft `pretask` ihn bei sauberem Baum automatisch auf; die Registeränderung bleibt als lokaler Commit für den Maintainer sichtbar.
 
 ## Eskalation
 

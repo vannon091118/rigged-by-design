@@ -387,6 +387,23 @@ export function planReconcile({
           : evidence.evidence === 'branch-tree-on-main'
             ? local.treeOnMain
             : (local.headSha ?? remoteSha);
+      // Die drei Nachsorge-Schritte bleiben getrennt belegt: Claim, Task und
+      // Branch-Cleanup. Der Workflow loescht Branches; der Reconcile-Plan
+      // behauptet das nicht, sondern meldet den tatsaechlichen Remote-Zustand.
+      const branchCleanup = branchExists
+        ? { state: 'pending', evidence: 'remote-branch-present' }
+        : heads === null
+          ? { state: 'unknown', evidence: 'remote-heads-unreadable' }
+          : { state: 'done', evidence: 'remote-branch-absent' };
+      const pr = evidence.evidence === 'merged-pr' && mergedPr
+        ? {
+            number: mergedPr.number,
+            url: mergedPr.url ?? null,
+            state: 'merged',
+            headSha: mergedPr.headRefOid ?? null,
+            mergedSha: sha ?? null,
+          }
+        : null;
       changes.push({
         id: claim.id,
         branch: claim.branch,
@@ -394,6 +411,9 @@ export function planReconcile({
         evidence: LIFECYCLE_EVIDENCE[evidence.evidence] ?? evidence.evidence,
         sha: sha ?? null,
         why: evidence.why,
+        branchExists,
+        branchCleanup,
+        pr,
         claim,
       });
       continue;

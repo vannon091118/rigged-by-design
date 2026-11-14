@@ -189,6 +189,8 @@ Regeln:
 
 State aktualisieren, zurück zu **5**: nächstes freies Issue claimen, gleicher Lauf.
 
+Meldet `pretask` `REMOTE_AUTOMATION_UNAVAILABLE`, ist ein gemergter PR noch nicht verbucht. Auf `main` zieht der Start den belegten Closeout automatisch nach; auf einer Lane ist `pnpm run reconcile:claims --apply` der Maintainer-Schritt. Der Task-Vertrag muss danach PR-Nummer, PR-Kopf, Merge-SHA und den Branch-Status tragen.
+
 **Lauf beenden, wenn:** kein freies Issue mehr, Zeitbudget erreicht, oder zwei Issues in Folge durch fehlende Information blockiert. Dann State schreiben und die blockierten Fälle unter `deferred` mit Grund ablegen. Vor dem naechsten Issue `pnpm run run:budget --check` ausfuehren; `BUDGET_EXHAUSTED` oder `KILL_SWITCH` beendet den Lauf, auch wenn noch freie Issues sichtbar sind.
 
 ---

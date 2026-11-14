@@ -4,7 +4,7 @@
   "claimId": "lane/ledger/issue-532-external-work-split",
   "branch": "lane/ledger/issue-532-external-work-split",
   "baseSha": "d1499e2118d93f521fee51c73bce1c5bafe30b8e",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Bautraeger-Zahlungen und Pakt-Reserve auf getrennte Ledger-Konten legen (#532)",
   "goal": "BUILDER_ESCROW und PACT_RESERVE trennen, Legacy-Saldo migrieren, Ledger-Tests in beiden Reihenfolgen",
   "taskType": "single",
@@ -13,9 +13,25 @@
   "pr": {
     "number": 637,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/637",
-    "state": "open"
+    "state": "merged",
+    "headSha": "e4f371a19046b138432b15d23f7cc966625ef900",
+    "mergedSha": "b8ad955fb8e82ad0c2087a82deab82707f9ec3a8"
   },
   "findings": [],
-  "nextAction": "PR #637 offen (Head 887445eb, Basis d1499e21); alle vier Vor-PR-Nachweise gruen. Review beim Maintainer.",
-  "revision": 2
+  "nextAction": "Automatisch nach Merge geschlossen (merged-pr b8ad955).",
+  "revision": 3,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "merged-pr",
+      "sha": "b8ad955fb8e82ad0c2087a82deab82707f9ec3a8"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }

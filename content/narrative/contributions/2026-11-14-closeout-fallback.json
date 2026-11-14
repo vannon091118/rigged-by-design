@@ -1,0 +1,21 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-14T07:52Z-closeout-fallback",
+  "contributionId": "closeout-fallback-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Nach dem letzten Gast bleibt die Kasse offen, bis jemand den Beleg gegen die Tür legt: nicht der Anfang, sondern der tatsächliche Abschluss zählt. Wer den Stempel erst nachträgt, schreibt nicht schneller, sondern nur ehrlicher.",
+  "directives": []
+}

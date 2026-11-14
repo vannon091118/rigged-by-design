@@ -80,13 +80,31 @@ describe('claim-evidence reconcile', () => {
       'ls-remote --heads origin': '',
     });
     const prIndex = new Map([
-      ['lane/gone', { number: 7, headRefOid: 'd'.repeat(40), mergeCommit: merge, url: null }],
+      ['lane/gone', { number: 7, headRefOid: 'd'.repeat(40), mergeCommit: merge, url: 'https://example.test/pull/7' }],
     ]);
     const plan = planReconcile({
       claims: [{ id: 'lane/test/gone', branch: 'lane/gone', status: 'open' }],
       git,
       prIndex,
     });
-    expect(plan.changes[0]).toMatchObject({ status: 'merged', evidence: 'merged-pr', sha: merge });
+    expect(plan.changes[0]).toMatchObject({
+      status: 'merged',
+      evidence: 'merged-pr',
+      sha: merge,
+      pr: { number: 7, headSha: 'd'.repeat(40), mergedSha: merge },
+      branchCleanup: { state: 'done', evidence: 'remote-branch-absent' },
+    });
+  });
+
+  it('ist idempotent und laesst einen bereits gemergten Claim unveraendert', () => {
+    const git = fakeGit({ 'ls-remote --heads origin': '' });
+    const plan = planReconcile({
+      claims: [{ id: 'lane/test/done', branch: 'lane/done', status: 'merged' }],
+      git,
+      prIndex: null,
+    });
+    expect(plan.changes).toEqual([]);
+    expect(plan.unresolved).toEqual([]);
+    expect(plan.remoteHeads?.size).toBe(0);
   });
 });

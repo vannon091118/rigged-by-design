@@ -697,10 +697,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3065 |
-| Gelistete Dateien | 3065 |
+| Getrackte Dateien | 3068 |
+| Gelistete Dateien | 3068 |
 | Getrackte Ordner | 117 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (75), artifacts (1), content (1127), docs (108), packages (27), public (571), scripts (126), src (1009) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (77), artifacts (1), content (1128), docs (108), packages (27), public (571), scripts (126), src (1009) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -712,10 +712,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 38 Datei(en)
-- `.lane-claims/tasks/` — 35 Datei(en)
+- `.lane-claims/claims/` — 39 Datei(en)
+- `.lane-claims/tasks/` — 36 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1123 Datei(en)
+- `content/narrative/contributions/` — 1124 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -851,15 +851,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-issue-617-generated-gate.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-issue-624-determinism-computed.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-issue-624-determinism-computed.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-627-run-budget.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-verify-all-green.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-worker-bootstrap.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-infra-issue-623-ledger-tick-balance.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 34 Zeilen
+- `.lane-claims/claims/lane-infra-issue-623-ledger-tick-balance.json` — { — gelesen: 28 Zeilen
+- `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 29 Zeilen
@@ -867,7 +868,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-render-staff-actor-state.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-issue-539-esport-evening.json` — { — gelesen: 33 Zeilen
@@ -890,12 +891,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-617-generated-gate.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-627-run-budget.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
@@ -903,7 +905,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/render-staff-actor-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-519-employment.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-530-plot-road-guard.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-533-scheduled-place.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-533-scheduled-place.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/sim-issue-534-first-evening.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/tasks/sim-issue-539-esport-evening.json` — { — gelesen: 22 Zeilen
@@ -917,7 +919,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 201 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 202 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 186 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -2019,6 +2021,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-city-proximity.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-claim-register.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-14-close-rights.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-closeout-fallback.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-determinism-computed.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-door-walk.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-employment.json` — { — gelesen: 21 Zeilen
@@ -2043,18 +2046,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25197 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4497 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25219 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4501 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 206 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 229 Zeilen
+- `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1745 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1189 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 114 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2583 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
-- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 174 Zeilen
+- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 176 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
@@ -2062,7 +2065,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen
-- `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 158 Zeilen
+- `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 160 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -2156,7 +2159,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
-- `package.json` — { — gelesen: 121 Zeilen
+- `package.json` — { — gelesen: 122 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
 - `packages/gamescout/README.md` — GameScout — gelesen: 74 Zeilen
 - `packages/gamescout/bin/gamescout` — GameScout CLI bin entry point. — gelesen: 20 Zeilen
@@ -2795,8 +2798,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/ci-plan.mjs` — CI-Plan: der Event-Zustand entscheidet, welche Gates und Tests laufen. — gelesen: 312 Zeilen
 - `scripts/lib/ci-state.mjs` — CI-State: genau ein maschinenlesbarer Kommentar am PR. — gelesen: 113 Zeilen
 - `scripts/lib/claim-collisions.mjs` — Reine Kollisionslogik fuer Lane-Claims. — gelesen: 104 Zeilen
-- `scripts/lib/claim-evidence.mjs` — Merge-Nachweis fuer Lane-Claims. — gelesen: 405 Zeilen
-- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 132 Zeilen
+- `scripts/lib/claim-evidence.mjs` — Merge-Nachweis fuer Lane-Claims. — gelesen: 425 Zeilen
+- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 154 Zeilen
 - `scripts/lib/compact.mjs` — Kompakte Werkzeugausgabe: eine Bildschirmseite statt eines Logs. — gelesen: 81 Zeilen
 - `scripts/lib/dependency-change.mjs` — Eine Wahrheit fuer eine kleine, aber teure Frage: haben sich Abhaengigkeiten — gelesen: 68 Zeilen
 - `scripts/lib/dependency-fingerprint.mjs` — Dependency-Fingerprint: Installation nur, wenn sich wirklich etwas aendert. — gelesen: 82 Zeilen
@@ -2846,13 +2849,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lift-commit-body.mjs` — Hebt den vollstaendigen PR-Diff in einen abgegrenzten Automationsbereich. — gelesen: 141 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 36 Zeilen
 - `scripts/local-ci.mjs` — Der lokale CI-Runner. Er ersetzt die frueheren GitHub-Workflows fuer — gelesen: 76 Zeilen
-- `scripts/post-merge-closeout.mjs` — Post-Merge-Closeout: nach einem Merge den Registerstand nachziehen. — gelesen: 244 Zeilen
+- `scripts/post-merge-closeout.mjs` — Post-Merge-Closeout: nach einem Merge den Registerstand nachziehen. — gelesen: 249 Zeilen
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder Abbruch und — gelesen: 335 Zeilen
 - `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 117 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 248 Zeilen
-- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 777 Zeilen
+- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 810 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 671 Zeilen
-- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 150 Zeilen
+- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 157 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 70 Zeilen
 - `scripts/run-budget.mjs` — run-budget — externer Stop-Vertrag für einen Lauf. — gelesen: 78 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 144 Zeilen
@@ -2990,9 +2993,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/ci-workflow-contracts.test.ts` — Die verbliebenen Workflows sind Repository-Verwaltung: Lane-PR anlegen, — gelesen: 81 Zeilen
 - `src/core/governance/__tests__/claim-collisions.test.ts` — Die Kollisionspruefung entscheidet, welche zwei Lanes parallel arbeiten — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/claim-evidence-ambiguity.test.ts` — Ein Branch-Name, zwei gemergte PRs: Für die Identität eines Claims bleibt das — gelesen: 70 Zeilen
-- `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` — Der lesende Reconcile: eine Branch auf `main` oder ein gemergter PR mit — gelesen: 92 Zeilen
+- `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` — Der lesende Reconcile: eine Branch auf `main` oder ein gemergter PR mit — gelesen: 110 Zeilen
 - `src/core/governance/__tests__/claim-evidence.test.ts` — Ein geloeschter Branch ist kein Merge-Nachweis. Genau dieser Fall steht — gelesen: 195 Zeilen
-- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 156 Zeilen
+- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 196 Zeilen
 - `src/core/governance/__tests__/claim-save-scope.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 33 Zeilen
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 83 Zeilen
 - `src/core/governance/__tests__/destructive-commands.test.ts` — Ein Resume ist kein Aufraeumen: kein Produktionsskript darf fremde Arbeit — gelesen: 60 Zeilen

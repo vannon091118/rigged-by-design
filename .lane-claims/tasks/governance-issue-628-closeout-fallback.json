@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-628-closeout-fallback",
+  "claimId": "lane/governance/issue-628-closeout-fallback",
+  "branch": "lane/governance/issue-628-closeout-fallback",
+  "baseSha": "9c82f7ac43fbb02d2846a4d9f7f07e66bb4f0217",
+  "phase": "CI_PENDING",
+  "title": "Post-Merge-Closeout-Fallback gegen Actions-Ausfall (#628)",
+  "goal": "Merge-Beleg beim Start idempotent nachziehen, Actions-Ausfall sichtbar machen, Claim/Vertrag/Branch getrennt belegen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}
