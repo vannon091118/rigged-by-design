@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC, ZERO_VC } from '../../economy/vacoin';
 import { createWorld } from '../../sim/templates';
-import { EXTERNAL_WORK, PLAYER_CASH } from '../../sim/money';
+import { PACT_RESERVE, PLAYER_CASH } from '../../sim/money';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { playSlot } from '../engines/slot';
@@ -80,7 +80,7 @@ describe('Selbstbeherrschungs-Pakt', () => {
     const world = createWorld('SMALL');
     const ledger = new Ledger();
     startExclusionPact(world, ledger, fromVC(100), 0);
-    expect(ledger.getBalance(EXTERNAL_WORK)).toBe(fromVC(25));
+    expect(ledger.getBalance(PACT_RESERVE)).toBe(fromVC(25));
     recordExclusionPlay(world, fromVC(100), ZERO_VC, 0);
     expect(world.exclusionPact?.status).toBe('LIMIT_REACHED');
     expect(() => honorExclusionPact(world, ledger, 7)).toThrow();

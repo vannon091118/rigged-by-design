@@ -26,7 +26,7 @@ import { cityJobMarket, JOB_CAPACITY, type CityJobMarket, type EmploymentCandida
 import { cityBuildingWalls } from './city-exterior';
 import { CITY_PLOTS, plotAtRect, type CityPlot } from './city-plots';
 import { recordJournal } from './journal';
-import { EXTERNAL, EXTERNAL_WORK } from './money';
+import { BUILDER_ESCROW, EXTERNAL } from './money';
 import type { WorldState } from './types';
 
 /** Konto des Bauträgers; er ist ein Stadtakteur, kein Spielerteil. */
@@ -131,7 +131,7 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
       `Stadtfoerderung: ${buildingLabel(plot)}`, world.tick);
   }
   const building = buildingFor(plot, growth.built.length, world.day);
-  ledger.transfer(BUILDER_ACCOUNT, EXTERNAL_WORK, BUILD_COST, `Bau: ${building.name}`, world.tick);
+  ledger.transfer(BUILDER_ACCOUNT, BUILDER_ESCROW, BUILD_COST, `Bau: ${building.name}`, world.tick);
   placeBuilding(world, building);
   world.cityGrowth = { lastBuildDay: world.day, built: [...growth.built, building.id] };
   // Ein Zustandsübergang, ein Ereignis: Der Bericht wird nicht verworfen, sondern

@@ -678,7 +678,7 @@ Bauträgerkonto. Beides ist Headless prüfbar; der Renderer liest danach nur noc
 **Nachgerechnet (S3):** `src/core/sim/city-growth.ts` liest den Arbeitsmarkt aus
 Gebäuden und Bewohnern (`JOB_CAPACITY`: Kneipe 6, Späti 5, Casino 8, Wohnung 0)
 und baut nur bei `jobless > 0`, freiem Platz und Kapital des Kontos `BAUTRAGER`
-(6000 VC Startkapital, 1800 VC pro Bau, Buchung an `EXTERNAL_WORK`). Ein Bau pro
+(6000 VC Startkapital, 1800 VC pro Bau, Buchung an `BUILDER_ESCROW`). Ein Bau pro
 Tag, Kennung `bld_grown_<n>`, neue Wände in der Szene (ohne Tür, kein Innenraum),
 Zustand `cityGrowth` im Save. `city-growth.test.ts` belegt: 12 Bewohner bei 19
 Stellen bauen nicht, 60 Bewohner bauen bei Kapital, der zweite Bau am selben Tag
