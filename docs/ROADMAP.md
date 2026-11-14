@@ -136,10 +136,14 @@ Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | P-13 | 767 / 1500 gewertete Textbausteine (1030 gesamt; `documentation`, `memory`, `rumor` quota-frei) | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 gewertete Bausteine, kein gewerteter Pool unter 50, freigestellte Slots mit Befund dokumentiert |
 =======
 | P-13 | 757 / 1500 gewertete Textbausteine (1030 gesamt; `documentation`, `memory`, `rumor` quota-frei) | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 gewertete Bausteine, kein gewerteter Pool unter 50, freigestellte Slots mit Befund dokumentiert |
 >>>>>>> dc750d7 (chore(#666): NAR-06 bis NAR-16 Engine-Architekturtexte aus content/narrative entfernt)
+=======
+| P-13 | 754 / 1500 gewertete Textbausteine (1030 gesamt; `documentation`, `memory`, `rumor` quota-frei) | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 gewertete Bausteine, kein gewerteter Pool unter 50, freigestellte Slots mit Befund dokumentiert |
+>>>>>>> 9e10647 (chore(#665): Agenten-, Worker- und Workspace-Bootstrap-Beiträge aus dem Narrativ-Bestand entfernt)
 | S4-01 | Neue Pools brauchen einen Leser im Spiel | offen | `scripts/verify-narrative-blocks.mjs`, `src/core/sim/narrative` | Die Prüfung lehnt einen Textpool ohne anzeigendes System ab |
 | S4-02 | Geräte-, Lager- und Personal-Facts | offen | `src/core/sim/narrative/facts.ts` | Jeder Fact hat Definition, Template und Leser |
 | S4-03 | Narrative Balance messen statt begrenzen | offen | `src/core/sim/__tests__/balance-operating.test.ts` | Die Grenzen haben eine Messreihe, nicht nur einen Deckel |

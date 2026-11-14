@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f59db73cfa63db029deb60008122feffbaca48ef36456cc1534b2306e3c7b503",
+  "contentHash": "sha256:7c89f4355de336d06f32bc1f92715ae365de7e0f441f3692b390b15c9967504b",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -54,31 +54,6 @@
       "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
     },
     {
-      "contributionId": "agent-board-01",
-      "turnId": "2026-11-14T02:10Z-agent-board",
-      "agentId": "agent-1-local",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Am schwarzen Brett haengt jetzt eine Reihenfolge: erst der Name, dann die Arbeit. Rita klebte den Zettel ueber die alte Notiz, auf der noch drei Namen fuer dieselbe Zeile standen, und strich sie einzeln durch.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-agent-board.json"
-    },
-    {
       "contributionId": "agent-bootstrap-01",
       "turnId": "2026-11-10T11:55Z-agent-bootstrap",
       "agentId": "buffy",
@@ -102,31 +77,6 @@
       "text": "Hinter dem Haus sammelt sich das Wasser in einer Mulde. Jeder Regen erinnert daran, dass der Boden kein Gefälle kennt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-agent-bootstrap.json"
-    },
-    {
-      "contributionId": "agent-onboarding-01",
-      "turnId": "2026-11-14T00:40Z-agent-onboarding",
-      "agentId": "local-agent-1",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita strich die alte Zeile durch und schrieb daneben: Wer zuerst am Ticket steht, arbeitet es; wer fertig ist, gibt es zurueck. Der Zettelkasten am Rand hatte damit nur noch eine Aufgabe.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-agent-onboarding.json"
     },
     {
       "contributionId": "agent14-changelog-1",
@@ -24066,94 +24016,6 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
-    },
-    {
-      "contributionId": "worker-bootstrap-01",
-      "turnId": "2026-11-14T03:45Z-worker-bootstrap-01",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Am Haken hängen drei Namensschilder. Wer eines abnimmt, schreibt es zuerst ins Buch an der Tür; ohne Eintrag bleibt der Schlüssel im Kasten, auch wenn niemand hinsieht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-worker-bootstrap.json"
-    },
-    {
-      "contributionId": "worker-bootstrap-02",
-      "turnId": "2026-11-14T03:55Z-worker-bootstrap-02",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der erste Haken an der Wand ist der Hauptschlüssel; alle anderen hängen daneben. Wer den ersten für einen Nebenplatz hält, zählt am Ende drei Türen statt zwei.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json"
-    },
-    {
-      "contributionId": "worker-bootstrap-03",
-      "turnId": "2026-11-14T04:05Z-worker-bootstrap-03",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Schlüssel geht nur heraus, wenn der Name im Buch steht. Steht neben der Schicht schon „zur Prüfung“, bleibt die Tür zu, bis jemand sie wieder aufschließt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-worker-gate.json"
-    },
-    {
-      "contributionId": "workspace-home-drive-01",
-      "turnId": "2026-11-14T04:30Z-workspace-home-drive-01",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Zwei Räume, zwei Schlüsselbretter: Wer den Schlüssel am falschen Brett sucht, hält das Haus für verschlossen. Erst der Blick auf beide Bretter zeigt, dass die Tür die ganze Zeit offen stand.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-14-workspace-home-drive.json"
     },
     {
       "contributionId": "world-continuity-interaction-1",

@@ -4210,16 +4210,8 @@
       "contributionId": "goal-cost-truth-01"
     },
     {
-      "turnId": "2026-11-14T00:40Z-agent-onboarding",
-      "contributionId": "agent-onboarding-01"
-    },
-    {
       "turnId": "2026-11-14T00:55Z-first-evening-crate",
       "contributionId": "first-evening-crate-01"
-    },
-    {
-      "turnId": "2026-11-14T02:10Z-agent-board",
-      "contributionId": "agent-board-01"
     },
     {
       "turnId": "2026-11-14T02:10Z-city-proximity",
@@ -4238,28 +4230,12 @@
       "contributionId": "staff-actor-state-01"
     },
     {
-      "turnId": "2026-11-14T03:45Z-worker-bootstrap-01",
-      "contributionId": "worker-bootstrap-01"
-    },
-    {
-      "turnId": "2026-11-14T03:55Z-worker-bootstrap-02",
-      "contributionId": "worker-bootstrap-02"
-    },
-    {
-      "turnId": "2026-11-14T04:05Z-worker-bootstrap-03",
-      "contributionId": "worker-bootstrap-03"
-    },
-    {
       "turnId": "2026-11-14T04:20Z-ci-line-green-01",
       "contributionId": "ci-line-green-01"
     },
     {
       "turnId": "2026-11-14T04:20Z-generated-gate-01",
       "contributionId": "generated-gate-01"
-    },
-    {
-      "turnId": "2026-11-14T04:30Z-workspace-home-drive-01",
-      "contributionId": "workspace-home-drive-01"
     },
     {
       "turnId": "2026-11-14T04:45Z-claim-register-01",
