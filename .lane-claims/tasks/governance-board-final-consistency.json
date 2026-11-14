@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-final-consistency",
   "branch": "lane/governance/board-final-consistency",
   "baseSha": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Board-Finalitaet: #696, #731 und #631 am Code belegen",
   "goal": "Jedes im letzten Bericht behauptete Ticket traegt einen am Repo belegten Status; board.head und openIssuesCount stimmen gegen die API.",
   "taskType": "single",
@@ -24,6 +24,26 @@
       "summary": "Ein Commit kann seinen eigenen SHA nicht enthalten. board.head == main ist nur mit einem automatischen Post-Merge-Schreibzugriff erreichbar; head == main^ ist das Maximum, das ein Snapshot-Commit belegen kann."
     }
   ],
-  "nextAction": "PR oeffnen und mergen; danach Claim merged und Task DONE im Closeout.",
-  "revision": 4
+  "nextAction": "Offen bleiben #696 (Schreibpfad in #694), #640 (Pixi-Abnahme), #731 (Test), #733 (Narrative).",
+  "revision": 5,
+  "pr": {
+    "number": 737,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/737",
+    "state": "merged",
+    "mergedSha": "2ec888d3f860b84ca7ea88baacacfd5d2abe6abb"
+  },
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "2ec888d3f860b84ca7ea88baacacfd5d2abe6abb"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  }
 }

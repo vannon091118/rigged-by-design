@@ -858,7 +858,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 636 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 637 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -870,7 +870,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-agent-onboarding.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-board-final-consistency.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-board-final-consistency.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-triage-closeout.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-triage.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-board-status-tracking.json` — { — gelesen: 32 Zeilen
@@ -935,7 +935,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-board-final-consistency.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/tasks/governance-board-final-consistency.json` — { — gelesen: 49 Zeilen
 - `.lane-claims/tasks/governance-board-issue-triage-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-board-issue-triage.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/governance-board-status-tracking.json` — { — gelesen: 17 Zeilen
