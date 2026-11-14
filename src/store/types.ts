@@ -19,6 +19,7 @@ import type { CityGrowthView } from '../core/sim/city-growth-view';
 import type { ActionTaskView } from '../core/sim/action-queue';
 import type { VenueView } from '../core/sim/venue-event';
 import type { CityExteriorModel } from '../core/sim/city-exterior';
+import type { ImmoluckView, InboxMessageView, VitterPostView } from '../core/sim/smartphone-views';
 
 interface SceneView {
   readonly key: string;
@@ -115,6 +116,12 @@ export interface GameView {
   readonly career: PlayerCareer;
   /** Veranstaltungsphasen und ihre Historie aus derselben Event-Instanz. */
   readonly venue: VenueView;
+  /** Inbox: Nachrichten aus dem Archiv; kein zweiter Posteingang im Save. */
+  readonly inbox: readonly InboxMessageView[];
+  /** Vitter: Erinnerungen und Geruechte der Stadtbewohner samt Quelle/Sicherheit. */
+  readonly vitter: readonly VitterPostView[];
+  /** ImmoLuck: derselbe Immobilienkatalog, den auch das Charakterfenster liest. */
+  readonly immoluck: ImmoluckView;
   readonly parts: number;
   readonly guestsServed: number;
   readonly wallColor: string;

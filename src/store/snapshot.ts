@@ -16,24 +16,20 @@ import { cityView } from '../core/sim/city';
 import { cityGrowthView } from '../core/sim/city-growth-view';
 import { cityActorViews } from './city-actors-view';
 import { venueView } from '../core/sim/venue-event';
+import { smartphoneSnapshot } from '../core/sim/smartphone-views';
 import { dayPhaseOf } from '../core/sim/day-phase';
-import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
 import { buildNarrativeView } from '../core/sim/narrative/view';
 import { archiveSnapshot } from './archive-snapshot';
-import type { GameView, StaffView } from './types';
+import type { GameView } from './types';
+import { staffView } from './staff-view';
 import { queueView } from '../core/sim/action-queue';
 import { playerApartmentFurniture, playerApartmentModel } from '../core/sim/player-apartment';
 import { interiorDef } from '../core/sim/interior-layouts';
 import { projectScene } from './scene-projection';
 import type { CityExteriorModel } from '../core/sim/city-exterior';
 import { cityExteriorView } from './city-exterior-view';
-
-/** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
-function staffView(world: WorldState): StaffView {
-  return { ...world.staff, guard: hasStaff(world, 'guard') };
-}
 
 function worldSnapshot(world: WorldState) {
   // Eine Projektion: die aktive Szene liefert Raum, Figuren und Spieler.
@@ -175,6 +171,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     career: playerCareer(world, ledger.getBalance(PORTEMONNAIE), ledger.getBalance(PLAYER_CASH)),
     // Agent 22: Phasen und Historie der einen Veranstaltungsinstanz, kein zweiter Kalender.
     venue: venueView(world),
+    // Smartphone: reine Ableitungen aus Archiv, Erinnerungen und Katalog (Hot-Zone-neutral).
+    ...smartphoneSnapshot(world, ledger.getBalance(PORTEMONNAIE)),
     desk: ledger.getBalance(WECHSELKASSE),
     pending,
     guestMoney,
