@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T13:14Z-city-scene-67",
+  "contributionId": "city-scene-67",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Sechs Tueren im Raster, zwei daneben. Ich habe jede einmal geoeffnet und bin jedes Mal denselben Weg zurueckgegangen.",
+  "directives": []
+}

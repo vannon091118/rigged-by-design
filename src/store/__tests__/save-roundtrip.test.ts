@@ -14,7 +14,7 @@ import { createWorld, ensureStarter } from '../../core/sim/templates';
 import { tickWorld } from '../../core/sim/tick';
 import { Prng } from '../../core/rng/prng';
 import { buildView } from '../snapshot';
-import { replaySave, toSavedGame } from '../save';
+import { SAVE_VERSION, replaySave, toSavedGame } from '../save';
 import { createNewGame } from '../new-game';
 import { randomSeed } from '../../test/random-seed';
 import { defaultPlinkoConfig, normalizePlinkoConfig } from '../../core/games/plinko-config';
@@ -45,7 +45,14 @@ function fixture() {
   return { world, ledger };
 }
 
-describe('Save-/Load-Roundtrip v8', () => {
+describe('Save-/Load-Roundtrip', () => {
+  it('serialisiert die aktuelle Save-Version', () => {
+    const { world, ledger } = createNewGame('SMALL');
+    const raw = JSON.parse(JSON.stringify(toSavedGame(world, ledger, randomSeed())));
+    expect(raw.version).toBe(SAVE_VERSION);
+    expect(replaySave(raw)).not.toBeNull();
+  });
+
   it('schenkt dem frischen Start nach dem Laden kein Gerät und behält die Starter-Kiste', () => {
     const { world, ledger } = createNewGame('SMALL');
     expect(world.furniture.some((item) => item.gameId)).toBe(false);

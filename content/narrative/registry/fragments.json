@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c90fa455aa17873006eb5b37df6e24171d9ebfa03e444a870eaf3cbad7e58a39",
+  "contentHash": "sha256:be78dc90c898651402cdf1ce5fde674dce0fe178d0013d52eac21b08f5b629e2",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7401,6 +7401,138 @@
       "source": "content/narrative/contributions/2026-11-14-city-scene-61.json"
     },
     {
+      "contributionId": "city-scene-62",
+      "turnId": "2026-11-14T12:56Z-city-scene-62",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
+    },
+    {
+      "contributionId": "city-scene-64",
+      "turnId": "2026-11-14T13:24Z-city-scene-64",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sieben Schalter standen an der Wand, jeder mit einem Etikett. Ich habe alle sieben gedrueckt und danach geprueft, ob das Licht wirklich angeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-64.json"
+    },
+    {
+      "contributionId": "city-scene-65",
+      "turnId": "2026-11-14T13:16Z-city-scene-65",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Schild stand, was der Schalter tut. Danach habe ich den Schalter umgelegt und nachgesehen, ob das Schild noch stimmt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-65.json"
+    },
+    {
+      "contributionId": "city-scene-66",
+      "turnId": "2026-11-14T13:12Z-city-scene-66",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Tueren, ein Raum. Ich habe beide benutzt und darauf geachtet, dass dahinter nichts doppelt steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-66.json"
+    },
+    {
+      "contributionId": "city-scene-67",
+      "turnId": "2026-11-14T13:14Z-city-scene-67",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Tueren im Raster, zwei daneben. Ich habe jede einmal geoeffnet und bin jedes Mal denselben Weg zurueckgegangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-67.json"
+    },
+    {
+      "contributionId": "city-scene-68",
+      "turnId": "2026-11-14T13:17Z-city-scene-68",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Spiegel stand im Lager, bevor ich das Licht ausmachte. Am Morgen stand er noch da, an derselben Stelle, und zeigte denselben Raum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-68.json"
+    },
+    {
       "contributionId": "city-scene-69",
       "turnId": "2026-11-14T13:22Z-city-scene-69",
       "agentId": "liilith",
@@ -7421,6 +7553,28 @@
       "text": "Die Zahl an der Wand zaehlte die Bilder, nicht die Sekunden. Als ich kurz wegsah, sprang sie nicht, sie begann einfach neu zu zaehlen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-69.json"
+    },
+    {
+      "contributionId": "city-scene-70",
+      "turnId": "2026-11-14T13:28Z-city-scene-70",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Acht Kacheln, ein Geraet. Ich ging hinein, kam zurueck, ging hinein und schloss es. Zwischendurch war nie mehr als eine Flaeche da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-70.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
