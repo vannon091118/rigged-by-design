@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-pr-triage",
   "branch": "lane/governance/board-pr-triage",
   "baseSha": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "PR-Triage: #700/#701 geschlossen, #739 gemergt, Board-PR-Liste geleert",
   "goal": "Jede der drei offenen PRs hat ein am Repo belegtes Ergebnis; board.openPullRequests stimmt mit der API.",
   "taskType": "single",
@@ -32,5 +32,5 @@
     }
   ],
   "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
-  "revision": 2
+  "revision": 3
 }

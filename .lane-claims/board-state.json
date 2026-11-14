@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:02Z",
+  "generatedAt": "2026-11-14T18:32Z",
   "generatedBy": "maintainer",
-  "head": "2ec888d3f860b84ca7ea88baacacfd5d2abe6abb",
-  "headMessage": "Board-Finalitaet gemergt (#737), Register geschlossen",
-  "base": "origin/main @ 2ec888d3f860b84ca7ea88baacacfd5d2abe6abb",
+  "head": "a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
+  "headMessage": "PR-Triage abgeschlossen: #739 gemergt, #700/#701 superseded geschlossen",
+  "base": "origin/main @ a9bd146a5eadbb79505232b9d7eb5f5d7e8d3dbb",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Board-Triage auf dem per API gelesenen main-Tip 67a8288c. Jedes der 37 offenen Issues wurde gegen den Code geprueft. Geschlossen mit Beleg: #677, #604 (umgesetzt), #561/#563/#564 (Lebenddokumente, durch kanonische Quellen ersetzt), #663-#667 (in #733 konsolidiert). #634 nach Nachpruefung wieder geoeffnet, weil die Workflow-Erzwingung fehlt. Neues Issue: #733 (Narrative-Konsolidat, kein Governance-Ticket). Offen: 28 Issues, 2 PRs (#700/#701, unberuehrt), 0 offene Claims.",
+  "summary": "Board nach PR-Triage auf dem per API gelesenen main-Tip a9bd146a. Drei offene PRs entschieden: #739 (Dependabot, create-github-app-token 3.3.0) gemergt; #700 und #701 als superseded durch #733 geschlossen, weil ihre Issues (#664-#667) konsolidiert geschlossen sind und beide je vier Konflikte gegen main erzeugen. Offen: 28 Issues, 0 PRs, 0 offene Claims.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -17,7 +17,10 @@
     "Rest-Blocker praezisiert auf #684, #685, #693, #694, #630 (jeweils mit Datei-/Zeilennachweis)",
     "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen",
     "Closeout #735: Claim lane/governance/board-issue-triage auf merged (PR #734, 6d511b83), Task DONE mit Aftercare, Board auf neuen main-Tip",
-    "Closeout #738: Claim merged (PR #737, 2ec888d3), Task DONE, board.head auf 2ec888d3"
+    "Closeout #738: Claim merged (PR #737, 2ec888d3), Task DONE, board.head auf 2ec888d3",
+    "PR-Triage: #739 gemergt (a9bd146a, Bot-Allowlist)",
+    "#700 geschlossen (superseded #733, Testmerge 4 Konflikte)",
+    "#701 geschlossen (superseded #733, Testmerge 4 Konflikte)"
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [],
@@ -33,8 +36,8 @@
     667,
     677
   ],
-  "openPullRequests": 2,
-  "reviewWaitingPrs": 1,
+  "openPullRequests": 0,
+  "reviewWaitingPrs": 0,
   "blockedIssues": [
     {
       "issue": 684,
@@ -51,7 +54,7 @@
     "#731: erster Test fuer sync()/animate() mit gestubbten world/depth/createGuestArt",
     "#733 als ein Lauf: Ersatz-Bausteine je Pool, verify-narrative-blocks --pr = 0",
     "#696/#693/#634 haengen an der Schreibpfad-Entscheidung in #694",
-    "#700/#701 bleiben unberuehrt und ungemergt"
+    "#733: gegen aktuelles main neu aufsetzen; #700/#701 sind geschlossen und liefern nur noch Commit-Material"
   ],
   "blockers": [],
   "warnings": [
@@ -502,34 +505,27 @@
       "state": "CLOSED",
       "merged": false,
       "note": "durch PR #726 ersetzt (Basis 75571c15)"
-    }
-  ],
-  "openPrs": [
-    {
-      "number": 700,
-      "baseRef": "main",
-      "baseCommit": "751edc66",
-      "headSha": "319c6c4141e1ac17b84d9966edb21c901340dade",
-      "issue": 667,
-      "issueState": "CLOSED (konsolidiert in #733)",
-      "status": "REJECT: 28 geloeschte Bausteine ohne Ersatz (29 Verstoesse gegen Basis, 51 gegen main), 5 Konfliktstellen"
     },
     {
-      "number": 701,
-      "baseRef": "main",
-      "baseCommit": "751edc66",
-      "headSha": "6a93d07fa10c2b1f0b2042611184eb2c3a6f39ea",
-      "issue": 664,
-      "issueState": "CLOSED (konsolidiert in #733)",
-      "status": "REJECT: 26 geloeschte Bausteine ohne Ersatz (27 Verstoesse gegen Basis, 49 gegen main), 4 Konfliktstellen"
+      "pr": 700,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "superseded durch #733; Branch behaelt die Commits"
+    },
+    {
+      "pr": 701,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "superseded durch #733; Branch behaelt den Commit"
     }
   ],
+  "openPrs": [],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
   "reviewWaitingNote": "Marke sitzt nur an #640 (wieder geoeffnet, Automatik-Closeout war falsch): Code gemergt (#730), Pixi-Abnahme fehlt",
   "health": {
     "verifyLight": {
       "status": "PASS",
-      "note": "alle Gates gruen auf main 35e39365"
+      "note": "alle Gates gruen auf main a9bd146a"
     },
     "fullSuite": {
       "status": "FAIL",
@@ -560,7 +556,7 @@
   },
   "openIssuesCount": 28,
   "mergedPrsThisRun": [
-    730
+    739
   ],
   "adversarialReview24h": {
     "range": "d8350cfc..35e39365 (191 Commits)",
