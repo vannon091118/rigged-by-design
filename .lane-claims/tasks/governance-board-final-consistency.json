@@ -4,7 +4,7 @@
   "claimId": "lane/governance/board-final-consistency",
   "branch": "lane/governance/board-final-consistency",
   "baseSha": "07a1262f2c45145a1f1ed5f252a0b8b545850abf",
-  "phase": "READY",
+  "phase": "CI_PENDING",
   "title": "Board-Finalitaet: #696, #731 und #631 am Code belegen",
   "goal": "Jedes im letzten Bericht behauptete Ticket traegt einen am Repo belegten Status; board.head und openIssuesCount stimmen gegen die API.",
   "taskType": "single",
@@ -25,5 +25,5 @@
     }
   ],
   "nextAction": "PR oeffnen und mergen; danach Claim merged und Task DONE im Closeout.",
-  "revision": 1
+  "revision": 2
 }
