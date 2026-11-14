@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2c80e1df54751c3c9dea09eab52a67fbd32adc120e772083f803450401d4d96a",
+  "contentHash": "sha256:601e81c9c1ee55a4b3997649305e36682f894db126c9de9278fd14f3a8a5bf3d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22941,6 +22941,30 @@
       "text": "Der Drucklader hat entladen; der Gast zählt das Geld nach, als hätte er nicht damit gerechnet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-slot-discharge-fact-01.json"
+    },
+    {
+      "contributionId": "smartphone-feed-01",
+      "turnId": "2026-11-14T05:10Z-smartphone-feed",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Display stand kein neuer Satz, sondern ein alter: Wer am Brunnen gesehen wurde, wusste jemand, der nicht dabei war. Die Sicherheit stand daneben wie ein Preisschild. Rita strich sie nicht weg; was sie selbst gesehen hatte, stand eine Zeile tiefer und ohne Prozentzeichen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-smartphone-feed.json"
     },
     {
       "contributionId": "snapshot-purity-01",
