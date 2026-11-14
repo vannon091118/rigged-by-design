@@ -15,6 +15,7 @@ import { rosterDefById } from './city-npc-roster';
 import { buildingOfPlace, placeOfBuilding, slotForBuilding } from './city-npc-shift';
 import { assignEmployment } from './city-employment';
 import { CITY_PRESET_BUILDINGS } from './building';
+import { homeFor } from './city-households';
 import type {
   CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
@@ -36,8 +37,6 @@ export {
   normalizeCityLife,
 } from './city-life-state';
 export { CITY_POPULATION_DEFAULT, rosterDefAt, rosterDefs } from './city-npc-roster';
-
-const HOME_BUILDING = 'bld_player_home';
 
 /** Figur zu einer Kennung; ein Save ohne Besetzung hat keine Figur. */
 function defFor(npcId: string, seed: number): CityNpcDef | null {
@@ -96,18 +95,20 @@ export function tickCityLife(world: WorldState): void {
       return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     }
     const def = defFor(record.npcId, seed);
+    // HOME kommt aus der Wohnadresse des Bewohners, nicht aus einer Konstante.
+    const homeBuildingId = homeFor(record, buildings);
     const workplaceId = employment.get(record.npcId) ?? null;
     const slot = workplaceId ? slotForBuilding(record.npcId, workplaceId) : null;
     // Ohne Stelle oder in einem noch versiegelten Neubau gibt es keine Schicht:
     // Der Tag laeuft ohne WORK und ohne Lohn.
     const plan = slot && workplaceId
-      ? createDayPlan(record.npcId, HOME_BUILDING, workplaceId, slot)
-      : createIdleDayPlan(record.npcId, HOME_BUILDING);
+      ? createDayPlan(record.npcId, homeBuildingId, workplaceId, slot)
+      : createIdleDayPlan(record.npcId, homeBuildingId);
     const scheduled = nextIntentForHour(plan, hour);
     if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     // Das konkrete Ziel des Plans gehoert in die Entscheidung: sonst routet
     // COMMUTE immer zum Arbeitsplatz, auch auf dem Heimweg nach Schichtende.
-    const scheduledPlace = placeOfBuilding(scheduled.targetBuildingId);
+    const scheduledPlace = placeOfBuilding(scheduled.targetBuildingId, homeBuildingId);
     const input = {
       resident: record,
       scheduled: scheduled.intent,
@@ -143,7 +144,7 @@ export function tickCityLife(world: WorldState): void {
     let resident = { ...moved, lastHour: hour, lastDay: world.day };
     if (target !== record.location) {
       // Ein neues Ziel ersetzt eine alte Route; ohne Weg bleibt der Ort alt.
-      const start = startTravel(moved.position, cityMap(world), target);
+      const start = startTravel(moved.position, cityMap(world), target, homeBuildingId);
       if (start.travel) resident = { ...resident, location: record.location, travel: start.travel };
       else if (start.here) resident = { ...resident, location: target };
       else resident = { ...resident, location: record.location };

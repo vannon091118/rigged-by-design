@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-14T00:18Z-home-households",
+  "contributionId": "home-households-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer nach Hause will, geht nicht mehr in die Wohnung des Spielers; die eigene Adresse steht im Eintrag, und der Weg endet vor einer anderen Haustür.",
+  "directives": []
+}

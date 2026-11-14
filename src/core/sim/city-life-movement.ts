@@ -15,6 +15,8 @@
 import type { CitySceneState } from './city-scene';
 import { cityNav } from './city-scene';
 import { buildingById } from './city-life-venues';
+import { PLAYER_HOME_BUILDING } from './city-households';
+import type { BuildingState } from './building-types';
 import type { CityLifePlace, CityResidentState } from './city-life-types';
 import type { Point } from './types-model';
 import { findPath, isWalkable, nearestWalkable } from './pathfinding';
@@ -62,8 +64,13 @@ export function cityMap(world: WorldState): CitySceneState {
 }
 
 /** Zielkachel eines Ortes: die Tür seines Gebäudes, sonst der Ort selbst. */
-export function placeEntrance(place: CityLifePlace): Point | null {
-  const building = buildingById(placeBuildingId(place));
+export function placeEntrance(
+  place: CityLifePlace,
+  homeBuildingId?: string | null,
+  buildings?: readonly BuildingState[],
+): Point | null {
+  const id = place === 'HOME' ? homeBuildingId ?? PLAYER_HOME_BUILDING : placeBuildingId(place);
+  const building = buildings?.find((entry) => entry.id === id) ?? buildingById(id);
   return building ? { ...building.entrance } : null;
 }
 
@@ -80,11 +87,13 @@ function placeBuildingId(place: CityLifePlace): string {
  * Route zu einem Ort. Ist die Tür versperrt, geht der Weg zur nächsten freien
  * Kachel davor; ist auch das unmöglich, gibt es keinen Weg (kein Teleport).
  */
-export function routeTo(city: CitySceneState, from: Point, place: CityLifePlace): Point[] {
+export function routeTo(
+  city: CitySceneState, from: Point, place: CityLifePlace, homeBuildingId?: string | null,
+): Point[] {
   const nav = cityNav(city);
   const start = isWalkable(nav, from.x, from.y) ? from : nearestWalkable(nav, from);
   if (!start) return [];
-  const entrance = placeEntrance(place);
+  const entrance = placeEntrance(place, homeBuildingId, city.exterior.buildings);
   if (!entrance) return [];
   const goal = nearestWalkable(nav, entrance);
   if (!goal) return [];
@@ -96,9 +105,9 @@ export function routeTo(city: CitySceneState, from: Point, place: CityLifePlace)
  * `travel: null` ohne `here` heisst: kein Weg, also kein Teleport.
  */
 export function startTravel(
-  position: Point, city: CitySceneState, place: CityLifePlace,
+  position: Point, city: CitySceneState, place: CityLifePlace, homeBuildingId?: string | null,
 ): { readonly travel: CityTravel | null; readonly here: boolean } {
-  const path = routeTo(city, position, place);
+  const path = routeTo(city, position, place, homeBuildingId);
   if (path.length === 0) return { travel: null, here: false };
   if (path.length === 1) return { travel: null, here: true };
   return { travel: { to: place, path, index: 0 }, here: false };

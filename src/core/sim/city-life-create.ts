@@ -14,6 +14,7 @@ import { rosterDefAt, CITY_POPULATION_DEFAULT } from './city-npc-roster';
 import { createDefaultNeeds } from './npc-needs';
 import { clampNeedValue } from './needs-core';
 import { defaultSkills, seedOffset } from './city-life-normalize';
+import { PLAYER_HOME_BUILDING, SHARED_HOUSEHOLD_ID } from './city-households';
 import type { NpcNeeds } from './npc-types';
 
 const INITIAL_NEEDS: Readonly<Record<string, Partial<NpcNeeds>>> = {
@@ -35,6 +36,10 @@ function residentAt(index: number, seed: number): CityResidentState {
     name: def.name,
     role: def.role,
     location: 'HOME',
+    // Die Adresse wird beim ersten `ensureCityLife` gegen die echten
+    // Wohngebaeude aufgeloest; ohne Wohnhaus bleibt der geteilte Ausweichort.
+    homeBuildingId: PLAYER_HOME_BUILDING,
+    householdId: SHARED_HOUSEHOLD_ID,
     position: { x: 8, y: 12 },
     travel: null,
     intent: 'SLEEP',

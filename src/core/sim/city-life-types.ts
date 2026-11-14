@@ -43,6 +43,10 @@ export interface CityResidentState {
   readonly name: string;
   readonly role: string;
   readonly location: CityLifePlace;
+  /** Eigene Wohnung; HOME wird daraus aufgeloest, nicht aus einer Konstante. */
+  readonly homeBuildingId: string;
+  /** Haushalt der Wohnung; mehrere Bewohner koennen ihn teilen. */
+  readonly householdId: string;
   /** Kachel in der Stadt; der Ort wechselt erst bei Ankunft. */
   readonly position: Point;
   /** Laufender Weg; `null` heisst: steht still. */

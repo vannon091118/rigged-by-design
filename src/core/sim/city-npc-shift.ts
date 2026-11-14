@@ -46,8 +46,12 @@ export function buildingOfPlace(place: CityLifePlace): string {
  * Rueckweg Gebaeude -> Ort. Der Tagesplan nennt ein Gebaeude; die Bewegung
  * braucht einen Ort. Ohne Treffer bleibt der Ort offen (kein Rateziel).
  */
-export function placeOfBuilding(buildingId: string | null | undefined): CityLifePlace | null {
+export function placeOfBuilding(
+  buildingId: string | null | undefined, homeBuildingId?: string | null,
+): CityLifePlace | null {
   if (!buildingId) return null;
+  // Das eigene Wohnhaus ist HOME, auch wenn es nicht im Preset steht.
+  if (homeBuildingId && buildingId === homeBuildingId) return 'HOME';
   const entry = (Object.entries(PLACE_BUILDING) as [CityLifePlace, string][])
     .find(([, id]) => id === buildingId);
   return entry ? entry[0] : null;

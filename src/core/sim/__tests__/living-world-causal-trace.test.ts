@@ -55,6 +55,7 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     // hungrigen Bewohner statt einer zufaelligen Trace-Zeile.
     const poor: CityResidentState = {
       npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: 'PUB',
+      homeBuildingId: 'bld_player_home', householdId: 'household_shared_player_home',
       position: { x: 8, y: 12 }, travel: null,
       needs: { hunger: 20, thirst: 40, fatigue: 40, social: 70, money: 200, mood: 75 },
       attributes: { charisma: 8, intellect: 4 }, skills: { cooking: 20, work: 100, social: 20 },
