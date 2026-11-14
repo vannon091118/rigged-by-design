@@ -4564,6 +4564,14 @@
     {
       "turnId": "2026-11-14T22:15Z-rumor-25",
       "contributionId": "rumor-25"
+    },
+    {
+      "turnId": "2026-11-14T22:30Z-rumor-26",
+      "contributionId": "rumor-26"
+    },
+    {
+      "turnId": "2026-11-14T22:55Z-claim-stale-01",
+      "contributionId": "claim-stale-01"
     }
   ]
 }
