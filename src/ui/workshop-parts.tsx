@@ -1,5 +1,6 @@
 /** Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createFrameMeter } from './fps-meter';
 
 interface WorkshopTileProps {
   readonly index: string;
@@ -31,21 +32,14 @@ export function WorkshopBack({ onBack }: { readonly onBack: () => void }) {
 /** Ein Sekundenfenster aus echten Browser-Frames; keine Weltuhr, keine zweite Simulation. */
 export function useFps(): number {
   const [fps, setFps] = useState(0);
+  const meter = useRef(createFrameMeter());
 
   useEffect(() => {
     if (typeof requestAnimationFrame !== 'function') return undefined;
-    let frames = 0;
-    let started = 0;
     let raf = 0;
     const tick = (now: number): void => {
-      if (started === 0) started = now;
-      frames += 1;
-      const elapsed = now - started;
-      if (elapsed >= 500) {
-        setFps(Math.round((frames * 1000) / elapsed));
-        frames = 0;
-        started = now;
-      }
+      const measured = meter.current(now);
+      if (measured !== null) setFps(measured);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
