@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T22:30Z-rumor-26",
+  "contributionId": "rumor-26",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Auf der Liste im Vorraum stehen zwei Namen doppelt, und mitten in der Abschrift liegen noch die Striche vom Zusammenlegen. Der Mann mit dem Besen sagt, wer die Striche stehen laesst, sperrt den naechsten Gast aus, ohne es zu merken.",
+  "directives": []
+}
