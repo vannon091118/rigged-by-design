@@ -51,7 +51,8 @@ describe('imageDiffGate', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 103, 153, 203); // +/- 3 pro Kanal, unter maxChannelDiff=5
 
-    const result = imageDiffGate(a, b, 4, 4, DEFAULT_TOLERANCE);
+    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxMeanChannelDiff: 3 };
+    const result = imageDiffGate(a, b, 4, 4, tolerance);
 
     expect(result.equal).toBe(true);
     expect(result.diffPixelCount).toBe(0);
@@ -75,43 +76,43 @@ describe('imageDiffGate', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 100, 150, 200);
     // Zwei Pixel veraendern (maxChangedPixels=0 im Default, aber wir pruefen mit custom tolerance)
-    b[0] = 200;
-    b[4] = 200;
+    b[0] = 110; // diffR = 10 > maxChannelDiff=3
+    b[4] = 110; // diffR = 10 > maxChannelDiff=3
 
-    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedPixels: 2 };
+    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedPixels: 2, maxChangedRatio: 0.2, maxChannelDiff: 3 };
     const result = imageDiffGate(a, b, 4, 4, tolerance);
 
-    expect(result.equal).toBe(true);
     expect(result.diffPixelCount).toBe(2);
+    expect(result.equal).toBe(false); // maxChannelDiff=10 > tolerance 3 -> equal=false
   });
 
   it('akzeptiert bis zu maxChangedRatio geanderte Pixel', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 100, 150, 200);
     // 4 von 16 Pixeln veraendern = 25%
-    b[0] = 200;
-    b[4] = 200;
-    b[8] = 200;
-    b[12] = 200;
+    b[0] = 110;
+    b[4] = 110;
+    b[8] = 110;
+    b[12] = 110;
 
-    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedRatio: 0.3 };
+    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedRatio: 0.3, maxChannelDiff: 3 };
     const result = imageDiffGate(a, b, 4, 4, tolerance);
 
-    expect(result.equal).toBe(true);
     expect(result.changedRatio).toBe(0.25);
+    expect(result.equal).toBe(false); // maxChannelDiff=10 > tolerance 3 -> equal=false
   });
 
   it('weigert zu viele geanderte Pixel ab', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 100, 150, 200);
     // 5 von 16 Pixeln veraendern = 31.25% > maxChangedRatio=0.3
-    b[0] = 200;
-    b[4] = 200;
-    b[8] = 200;
-    b[12] = 200;
-    b[16] = 200;
+    b[0] = 110;
+    b[4] = 110;
+    b[8] = 110;
+    b[12] = 110;
+    b[16] = 110;
 
-    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedRatio: 0.3 };
+    const tolerance: ImageDiffTolerance = { ...DEFAULT_TOLERANCE, maxChangedRatio: 0.3, maxChannelDiff: 3 };
     const result = imageDiffGate(a, b, 4, 4, tolerance);
 
     expect(result.equal).toBe(false);
@@ -120,7 +121,8 @@ describe('imageDiffGate', () => {
 
   it('wendet STRICT_TOLERANCE korrekt an', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
-    const b = makeRGBA(4, 4, 100, 150, 201); // A um 1 geaendert
+    const b = new Uint8Array(a);
+    b[15] = 254; // A des letzten Pixels um 1 geaendert (255 -> 254, diff = 1)
 
     const result = imageDiffGate(a, b, 4, 4, STRICT_TOLERANCE);
 
@@ -133,7 +135,7 @@ describe('imageDiffGate', () => {
     const a = makeRGBA(4, 4, 100, 150, 200);
     const b = makeRGBA(4, 4, 100, 150, 200);
     b[0] = 50;  // diff = 50
-    b[4] = 180; // diff = 30
+    b[5] = 180; // diff = 30 (G-Kanal Pixel 1)
 
     const result = imageDiffGate(a, b, 4, 4, DEFAULT_TOLERANCE);
 

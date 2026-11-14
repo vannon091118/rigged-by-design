@@ -4516,6 +4516,10 @@
     {
       "turnId": "2026-11-14T09:45Z-rng-entry-role",
       "contributionId": "rng-entry-role-01"
+    },
+    {
+      "turnId": "2026-11-14T11:25Z-narrative-image-diff-gate-fix",
+      "contributionId": "image-diff-gate-test-repair-01"
     }
   ]
 }

@@ -60,8 +60,8 @@ export const STRICT_TOLERANCE: ImageDiffTolerance = {
  * @return Ergebnis mit Diff-Statistik und ob die Toleranz eingehalten wurde
  */
 export function imageDiffGate(
-  a: readonly Uint8Array,
-  b: readonly Uint8Array,
+  a: Uint8Array,
+  b: Uint8Array,
   width: number,
   height: number,
   tolerance: ImageDiffTolerance = DEFAULT_TOLERANCE,
@@ -132,8 +132,8 @@ export function imageDiffGate(
  * Wrapper um imageDiffGate mit booleschem Rueckgabewert.
  */
 export function imagesAreEqual(
-  a: readonly Uint8Array,
-  b: readonly Uint8Array,
+  a: Uint8Array,
+  b: Uint8Array,
   width: number,
   height: number,
   tolerance: ImageDiffTolerance = DEFAULT_TOLERANCE,
