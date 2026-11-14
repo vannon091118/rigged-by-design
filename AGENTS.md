@@ -6,9 +6,15 @@
 
 Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumenten unter `docs/`; sie sind die einzige Quelle für Abläufe, Gate-Listen und Governance-Details. Kein zweiter Langtext hier.
 
+## Verbindlicher Agent-Workflow
+
+**Direktverweis:** Der Arbeitsablauf für jeden Agenten steht in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) — Issue-Check, Main-Fetch, Review-Prüfung, Claim, Lösung mit PR, Umsetzungs-Kommentar und die Schleife zum nächsten Issue. Dieses Dokument ist verbindlich; es schlägt jede ältere Beschreibung von Claims und Lanes.
+
+**Claims und Lanes werden über GitHub-Issues gelöst und sind Pflicht.** Die Koordination liegt ausschließlich im Issue-Verlauf: `CLAIM [A<n>] <agent> <UTC-Zeit> scope=<dateien|symbole> plan=<ein Satz>` vor jeder Analyse, `RELEASE [A<n>] done <sha>` nach dem Merge. Ein Issue ohne Claim ist frei, ein Issue mit Claim ohne `RELEASE` ist besetzt und tabu. Der Lane-Claim unter `.lane-claims/` ist nur die mechanische Spiegelung für `turn:finish`, `verify:claims` und den Pre-Commit-Hook — er entscheidet **nie** gegen den Issue-Verlauf. Abweichungen zwischen Register, Task-Vertrag und Issue löst immer das Issue.
+
 ## Zehn unverhandelbare Regeln
 
-1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), damit kein Diff gegen einen alten Ref rechnet; ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
+1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), damit kein Diff gegen einen alten Ref rechnet; ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Der Claim selbst ist der `CLAIM`-Kommentar am Issue (Agent-Workflow oben); das Register spiegelt ihn nur.
 2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird immer als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird weiterhin nur, was der Claim deckt; kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung. Alle Branches außer `main` sind temporär und werden nach dem Merge entfernt.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
@@ -58,7 +64,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
 | `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
-| `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
+| `pnpm run claim:register` | Den Issue-Claim in das Lane-Register spiegeln (mechanisch, keine eigene Wahrheit). |
 
 ## Build & test
 
@@ -68,6 +74,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Delivery
 
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
+- Claim und Freigabe laufen als Issue-Kommentare (`CLAIM`/`RELEASE`) nach [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md); Issues werden kommentiert, nie geschlossen.
 - Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; es gibt keinen Cloud-Testlauf, kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
@@ -82,6 +89,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 | Dokument | Inhalt |
 | --- | --- |
+| [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) | Verbindliche Agent-Schleife, Issue-Claims, Review-Antwort und Abgleich mit der Repo-Mechanik. |
 | [`docs/INDEX.md`](docs/INDEX.md) | Einstieg, Doku-Landkarte und Vertragsindex. |
 | [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | Pretask, Resume, Arbeitsweise, Abschluss und manueller Merge. |
 | [`docs/CI.md`](docs/CI.md) | Required-Gates, Zustände, Workflows, Branch-Schutz und Nachweise. |
