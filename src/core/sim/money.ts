@@ -13,7 +13,15 @@ export const EXTERNAL = MINTING_ACCOUNT;
 export const SHOP = 'SHOP';
 export const STAFF = 'STAFF';
 export const UTILITIES = 'UTILITIES';
-/** Arbeitsleistung finanziert den Disziplin-Bonus; PLAYER_CASH ist das ehrliche Gegenkonto. */
+/** Bautraeger-Escrow: nimmt nur die Bauzahlungen der Stadt auf (#532). */
+export const BUILDER_ESCROW = 'BUILDER_ESCROW';
+/** Pakt-Reserve: deckt nur den Disziplin-Bonus und zahlt ihn aus (#532). */
+export const PACT_RESERVE = 'PACT_RESERVE';
+/**
+ * v11-Konto, in dem Bautraeger-Zahlungen und Pakt-Reserve gemeinsam lagen.
+ * Es wird beim Laden einmalig nach BUILDER_ESCROW migriert; im Spiel bucht
+ * niemand mehr darauf (#532).
+ */
 export const EXTERNAL_WORK = 'EXTERNAL_WORK';
 export const PLAYER_CASH = 'PLAYER_CASH';
 /** Gebuchte Verbindlichkeit: offener Gewinn, den das Hauskonto gerade nicht deckt. */

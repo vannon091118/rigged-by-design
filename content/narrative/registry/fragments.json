@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:380f2f06fa6f938952cb1a8a4567c336adcf3d013c10840b90d780d2853e3b84",
+  "contentHash": "sha256:965e013231c5d1b9a11e83a78d918739e134579d648f5d6f970b3efbf6f98474",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6602,6 +6602,28 @@
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
     },
     {
+      "contributionId": "determinism-computed-01",
+      "turnId": "2026-11-14T06:35Z-determinism-computed-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die alte Sperre las nur den Punkt hinter Math und Date. Jetzt sieht sie auch den Schlüssel in eckigen Klammern, das Destructuring und den Alias; nur die eine benannte Entropie-Quelle bleibt offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-determinism-computed.json"
+    },
+    {
       "contributionId": "dialog-open-01",
       "turnId": "2026-11-09T18:20Z-dialog-open-01",
       "agentId": "buffy",
@@ -7971,6 +7993,30 @@
       "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
     },
     {
+      "contributionId": "ledger-escrow-01",
+      "turnId": "2026-11-14T05:58Z-external-work-split",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Töpfe, zwei Deckel: Der Bauträger zahlt in seinen Escrow, der Pakt legt seine Reserve daneben. Rita hat die alte Zeile durchgestrichen, in der beides auf einem Konto stand, und daneben geschrieben, dass ein Bau dem Bonus nichts mehr wegnehmen kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-external-work-split.json"
+    },
+    {
       "contributionId": "ledger-game-type-01",
       "turnId": "2026-11-09T08:45Z-ledger-game-type",
       "agentId": "buffy",
@@ -8041,6 +8087,28 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "ledger-tick-guard-01",
+      "turnId": "2026-11-14T06:25Z-ledger-tick-guard-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bilanz wird jetzt nach jedem vollen Takt geprüft, nicht mehr nur alle zweihundertfünfzig. Bricht sie, nennt der Fehler Tick, Buchung und Konto, bevor der nächste Gast zahlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-ledger-tick-guard.json"
     },
     {
       "contributionId": "living-world-foundation-1",

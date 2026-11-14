@@ -1,7 +1,7 @@
 /** Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. */
 import type { Ledger } from '../economy/ledger';
 import { addVC, mulVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
-import { EXTERNAL, EXTERNAL_WORK, PLAYER_CASH, PORTEMONNAIE } from './money';
+import { EXTERNAL, PACT_RESERVE, PLAYER_CASH, PORTEMONNAIE } from './money';
 import { clamp } from './num';
 import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
@@ -33,8 +33,8 @@ export function startExclusionPact(
     throw new Error('Es läuft bereits ein Selbstbeherrschungs-Pakt.');
   }
   const reward = mulVC(limit, 2_500);
-  const reserve = ledger.getBalance(EXTERNAL_WORK);
-  if (reserve < reward) ledger.transfer(EXTERNAL, EXTERNAL_WORK, subVC(reward, reserve), TX_REASON.PACT_RESERVE, tick);
+  const reserve = ledger.getBalance(PACT_RESERVE);
+  if (reserve < reward) ledger.transfer(EXTERNAL, PACT_RESERVE, subVC(reward, reserve), TX_REASON.PACT_RESERVE, tick);
   world.exclusionPact = {
     limit, reward, bets: ZERO_VC, wins: ZERO_VC, netLoss: ZERO_VC,
     status: 'ACTIVE', thresholdTick: -1, pauseUntilTick: -1,
@@ -88,7 +88,7 @@ export function honorExclusionPact(world: WorldState, ledger: Ledger, tick: numb
   const pact = world.exclusionPact;
   if (!pact || pact.status !== 'LIMIT_REACHED') throw new Error('Kein Pakt an der Verlustgrenze.');
   if (tick < pact.pauseUntilTick) throw new Error(`Noch ${pact.pauseUntilTick - tick} Ticks Pause einhalten.`);
-  ledger.transfer(EXTERNAL_WORK, PLAYER_CASH, pact.reward, TX_REASON.PACT_BONUS, tick);
+  ledger.transfer(PACT_RESERVE, PLAYER_CASH, pact.reward, TX_REASON.PACT_BONUS, tick);
   pact.status = 'HELD';
   world.clarityBadge = true;
   world.playerAddictionScore = clamp(world.playerAddictionScore - 20);

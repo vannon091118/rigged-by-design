@@ -1,0 +1,23 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T05:58Z-external-work-split",
+  "contributionId": "ledger-escrow-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Töpfe, zwei Deckel: Der Bauträger zahlt in seinen Escrow, der Pakt legt seine Reserve daneben. Rita hat die alte Zeile durchgestrichen, in der beides auf einem Konto stand, und daneben geschrieben, dass ein Bau dem Bonus nichts mehr wegnehmen kann.",
+  "directives": []
+}
