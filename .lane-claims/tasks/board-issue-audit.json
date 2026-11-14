@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "taskId": "board-issue-audit",
+  "claimId": "lane/governance/board-issue-audit",
+  "branch": "lane/governance/board-issue-audit",
+  "baseSha": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
+  "phase": "CI_PENDING",
+  "title": "Board-Audit der 28 offenen Issues auf 9b1a92ea",
+  "goal": "Jedes offene Issue hat eine belegte Entscheidung; Board-Zahl und API stimmen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "#675 in #656 konsolidiert und geschlossen (gleicher Writer-Pfad docs/screenshots/**, area-release)."
+    },
+    {
+      "id": "F-2",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "27 Issues belegt offen: je Issue Kommentar mit Datei/Zeile/Befehl; 0 erledigte Tickets gefunden."
+    },
+    {
+      "id": "F-3",
+      "status": "accepted",
+      "severity": "warning",
+      "summary": "Neues Infra-Finding ohne Ticket (Budget maxNewGovernanceIssues=0): verify-narrative-blocks.mjs --help fuehrt den Prueflauf aus statt Hilfe zu zeigen."
+    }
+  ],
+  "nextAction": "PR oeffnen und mergen; danach Closeout mit Claim merged und board.head auf den Merge-SHA.",
+  "revision": 2
+}
