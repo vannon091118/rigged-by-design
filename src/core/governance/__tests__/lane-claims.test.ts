@@ -58,6 +58,7 @@ type ClaimShape = {
   id: string;
   branch: string;
   owner: string;
+  issue?: number;
   status: string;
   task: string;
   baseSha: string;
@@ -70,6 +71,7 @@ const makeClaim = (patch: Partial<ClaimShape> = {}): ClaimShape => ({
   id: 'lane/feature/demo',
   branch: 'lane/feature/demo',
   owner: 'Integrator',
+  issue: 635,
   status: 'open',
   task: 'Feature bauen',
   baseSha: 'a'.repeat(40),

@@ -4516,6 +4516,10 @@
     {
       "turnId": "2026-11-14T09:45Z-rng-entry-role",
       "contributionId": "rng-entry-role-01"
+    },
+    {
+      "turnId": "2026-11-14T10:05Z-lane-ohne-auftrag",
+      "contributionId": "lane-ohne-auftrag-01"
     }
   ]
 }

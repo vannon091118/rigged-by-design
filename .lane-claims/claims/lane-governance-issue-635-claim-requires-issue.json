@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/issue-635-claim-requires-issue",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-635-claim-requires-issue",
+  "baseSha": "5ed5d9603664121b63e317d330404b98ece6e596",
+  "issue": 635,
+  "task": "Neue Lanes ohne Issue-Nummer fail-closed",
+  "goal": "validateNewClaim und pretask verlangen fuer neue Claims eine positive Issue-Nummer; Legacy bleibt lesbar",
+  "pathAllowlist": [
+    "scripts/lib/lane-claims.mjs",
+    "scripts/pretask.mjs",
+    "src/core/governance/__tests__/lane-claims.test.ts",
+    "src/core/governance/__tests__/lane-claims-issue.test.ts",
+    ".lane-claims/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json",
+    "docs/DEPENDENCY-MATRIX.md",
+    "src/core/sim/pathfinding.ts",
+    "src/core/sim/pathfinding-heap.ts",
+    "src/core/sim/pathfinding-detour.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "10811b142178472993f9b9aa6ab6e7636a4c6e0f"
+}
