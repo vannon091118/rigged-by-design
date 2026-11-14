@@ -9,7 +9,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { advanceCityGrowth, BUILD_COST } from '../../core/sim/city-growth';
-import { JOB_CAPACITY } from '../../core/sim/city-employment';
+
 import { ensureCityLife, ensureCityPopulation } from '../../core/sim/city-life-state';
 import { createCityScene } from '../../core/sim/city-scene';
 import { buildView } from '../snapshot';
@@ -35,7 +35,8 @@ describe('Wachstum im GameView', () => {
 
     expect(view.cityGrowth.residents).toBe(60);
     expect(view.cityGrowth.jobs).toBeGreaterThan(0);
-    expect(view.cityGrowth.jobless).toBe(report.joblessBefore - JOB_CAPACITY.SHOP);
+    // Der Neubau steht versiegelt: Er vergibt noch keine Stellen (#566).
+    expect(view.cityGrowth.jobless).toBe(report.joblessBefore);
     expect(view.cityGrowth.capital).toBeGreaterThanOrEqual(0);
     expect(view.cityGrowth.freePlots).toBeGreaterThan(0);
     expect(view.cityGrowth.built).toBe(1);

@@ -57,9 +57,9 @@ describe('Bauträger und Wachstum', () => {
     expect(ledger.getBalance(BUILDER_ACCOUNT)).toBe(BUILDER_START_CAPITAL - BUILD_COST);
     expect(ledger.entries.some((entry) => entry.from === BUILDER_ACCOUNT && entry.to === EXTERNAL_WORK)).toBe(true);
     expect(world.cityGrowth?.built).toEqual([report!.building.id]);
-    // Der Neubau gibt Arbeit: die Zahl der Joblosen sinkt um seine Stellen.
+    // Der Rohbau ist versiegelt: Er vergibt noch keine Stellen, die Joblosen bleiben (#566).
     expect(jobMarket(cityBuildings(world), world.cityLife.residents).jobless)
-      .toBe(report!.joblessBefore - JOB_CAPACITY.SHOP);
+      .toBe(report!.joblessBefore);
     // Er steht als Wand in der Szene, nicht nur im Register.
     const walls = world.cityScene!.layout.edges.filter((edge) => edge.kind === 'WALL').length;
     expect(walls).toBeGreaterThan(0);

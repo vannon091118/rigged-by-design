@@ -86,7 +86,8 @@ describe('Stadtfenster', () => {
 
     const growth = screen.getByLabelText('Stadtwachstum');
     expect(growth.textContent).toContain('Bewohner 60');
-    expect(growth.textContent).toContain(`Joblose ${report.joblessBefore - 5}`);
+    // Der versiegelte Neubau zaehlt nicht als Stelle: die Joblosen bleiben (#566).
+    expect(growth.textContent).toContain(`Joblose ${report.joblessBefore}`);
     expect(growth.textContent).toContain('Bauträger-Kapital');
     expect(growth.textContent).toContain('Ein Bau ist möglich.');
     expect(growth.textContent).toContain(report.building.name);

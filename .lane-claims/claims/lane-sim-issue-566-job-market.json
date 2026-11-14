@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/issue-566-job-market",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-566-job-market",
+  "baseSha": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5",
+  "task": "Jobmarkt zaehlt nur offene, begehbare Gebaeude als belegbare Stellen (#566)",
+  "goal": "Versiegelte Neubauten (locked, entrance -1/-1) liefern keine Jobs; erst ein offener Bau mit Tuer vergibt seine Kapazitaet, damit jobless das Wachstum ehrlich steuert.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/ui/**",
+    "content/narrative/**",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-sim-issue-566-job-market.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "35b54e2e162b3fdae66ef3eb734f1c66d9d5cef5"
+}
