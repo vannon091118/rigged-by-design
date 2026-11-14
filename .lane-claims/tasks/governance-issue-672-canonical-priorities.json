@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-672-canonical-priorities",
+  "claimId": "lane/governance/issue-672-canonical-priorities",
+  "branch": "lane/governance/issue-672-canonical-priorities",
+  "baseSha": "e844caa75824d3f100ddac6351e81eb3f65f1978",
+  "phase": "IMPLEMENTING",
+  "title": "Maintainer-Prioritaeten und Board-Regeln kanonisch vereinheitlichen",
+  "goal": "Eine kanonische P0-P3-Definition in docs/GOVERNANCE.md; AGENTS.md, WORKFLOW und AGENT-ONBOARDING ohne Regel-Duplikate",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit pushen, PR gegen main oeffnen, RELEASE done <sha> und review-waiting setzen",
+  "revision": 1
+}

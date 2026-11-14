@@ -6,7 +6,7 @@
 
 Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issues — du kommentierst, und der Maintainer prüft.
 
-**Deine Rolle.** Claimen, lesen, arbeiten, eigenen Branch pushen, PR öffnen, im Issue belegen. **Merge, Close/Reopen, Push auf `main` und Release-Tags** macht ausschließlich der Maintainer; er reviewt deine Meldung gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`) und entscheidet Konflikte zwischen `local` und `cloud`. Deshalb gibt es keine Merge-Anweisung in dieser Schleife — nur die Übergabe.
+**Deine Rolle.** Claimen, lesen, arbeiten, eigenen Branch pushen, PR öffnen, im Issue belegen. **Merge, Close/Reopen, Push auf `main` und Release-Tags** macht ausschließlich der Maintainer; er reviewt deine Meldung gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`) und entscheidet Konflikte zwischen Agenten. Deshalb gibt es keine Merge-Anweisung in dieser Schleife — nur die Übergabe.
 
 **Du schließt nie.** Issues und Pull Requests werden von dir nur **erstellt und kommentiert**; Schließen, Wiedereröffnen und Mergen liegen ausschließlich bei Maintainer oder User. Auch ein erledigtes Ticket bleibt offen, bis der Maintainer es schließt.
 
@@ -89,7 +89,7 @@ Der State ist **nicht persistent** und nicht systemübergreifend — er existier
 
 ```json
 {
-  "agent": "local.agent(cloud).1",
+  "agent": "LIILITH",
   "host": "<hostname>",
   "updated_at": "2026-11-14T10:12:00Z",
   "main_sha": "abc1234",
@@ -111,7 +111,7 @@ Der State ist **nicht persistent** und nicht systemübergreifend — er existier
 
 ## 5 · Prioritäten prüfen und nächstes freies Issue claimen
 
-Reihenfolge: `P0` → Regressionen → Unblocker → `P1` → `P2/P3` → Housekeeping. Innerhalb einer Stufe: ältestes zuerst.
+Reihenfolge: die kanonische Priorität `P0`–`P3` aus [`GOVERNANCE.md`](GOVERNANCE.md#maintainer-prioritäten-kanonisch); innerhalb einer Stufe das älteste zuerst. Dieses Dokument wiederholt die Tabelle nicht.
 
 **Freiheitsprüfung vor dem Claim — in dieser Reihenfolge:**
 
@@ -125,7 +125,7 @@ Zusatzregel: Claim älter als 72 Stunden ohne Commit, Kommentar oder PR-Aktivit�
 **Claim setzen** — erster Schreibvorgang, sofort, vor jeder Analyse:
 
 ```
-CLAIM [A<n>] local.agent(cloud).1 2026-11-14T10:12Z scope=<dateien|symbole> plan=<1 Satz>
+CLAIM [A<n>] LIILITH 2026-11-14T10:12Z scope=<dateien|symbole> plan=<1 Satz>
 ```
 
 Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kein Claim, den du nicht in dieser Sitzung bearbeitest.
@@ -155,7 +155,7 @@ Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kei
 Nach dem Merge — Pflicht, immer, ausführlich genug, dass der Reviewer **ohne deinen Kopf** prüfen kann:
 
 ```
-local.agent(cloud).1 — DONE [A<n>] #42
+LIILITH — DONE [A<n>] #42
 PR: #51 · sha: abc1234 · base: <main-sha>
 Ansatz: <2–3 Sätze: warum so, welche Alternative verworfen und warum>
 Geändert: src/combat.ts:88-104 (Rüstung wird jetzt vor Schadensabzug geprüft)
@@ -215,7 +215,7 @@ Dieses Dokument entscheidet über **Koordination** (Claim, Priorität, Freigabe,
 | --- | --- | --- |
 | Claim | `CLAIM`/`RELEASE`-Kommentar am Issue | Autoritativ für Besitz und Reihenfolge. Der Eintrag unter `.lane-claims/claims/` ist die **lokale Kollisionssperre** (Pfad-Allowlist für `turn:finish`, `verify:claims`, `verify:scope` und den Pre-Commit-Hook), damit keine zwei Agenten dieselben Dateien im selben Task oder Turn bearbeiten; er entscheidet nie gegen den Issue-Verlauf. |
 | Lane/Branch | `lane/<domäne>/<task>` (mechanisch), `fix/<nr>-<slug>` (lesbar, Legacy-Präfix) | Beide Formen sind zulässig; das Register braucht einen Branch nach Schema. |
-| Name | `local.agent(cloud).1` | Prefix `local.agent` ist der Marker; `.1`, `.2` … je Instanz. |
+| Name | `LIILITH`, `Shinon` oder `Jenova` | Global im Identity-Board reserviert (`IDENTITY_CLAIM`), lokal in `.lanes/identity.json`; ein Kommentar nennt Identität und Claim-ID. |
 | Checks | `verify:light`, `verify:fast`, `pnpm run ci:local` | „Checks grün" meint diese Linie ([`CI.md`](CI.md), [`TESTING.md`](TESTING.md)), nicht Browser-Klicktests. |
 | Abschluss | Commit + Push + PR nach grünem Nachweis; Merge durch den Maintainer | `turn:finish` bleibt der lokale Abschlussweg; ein pauschaler Cloud-Testlauf existiert nicht. |
 | Rollen | Maintainer merged/schließt/taggt; Agenten pushen nur ihren Branch | Rechte stehen in [`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes). |

@@ -1,0 +1,22 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T09:05Z-canonical-priorities",
+  "contributionId": "canonical-priorities-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "service",
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Türrahmen hängt eine Tafel, mit Kreide geschrieben und oft nachgezogen: erst das, was heute nicht warten kann, dann das, was jemand vor die Tür gestellt hat, zuletzt die eigene Liste. Wer sie umstellt, muss sie neu schreiben; zwei Tafeln im Haus hat noch niemand gelesen.",
+  "directives": []
+}
