@@ -1,0 +1,22 @@
+{
+  "id": "issue-668-repeat-meta-remove",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "lane/narrative/issue-668-repeat-meta-content-remove",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "issue": 668,
+  "task": "Wiederholte Meta-/Content-Vertragsbausteine aus dem Ingame-Pool entfernen",
+  "pathAllowlist": [
+    "content/narrative/",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/issue-668-repeat-meta-remove.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b969a923de1ab950aed90c50761eb002b1b1b667"
+}
