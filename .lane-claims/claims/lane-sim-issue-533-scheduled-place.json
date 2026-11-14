@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/issue-533-scheduled-place",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-533-scheduled-place",
+  "baseSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858",
+  "issue": 533,
+  "task": "Planziele fuer alle Intents (#533)",
+  "goal": "scheduledPlace fuer WORK/EAT_OUT/SHOP/PUB/LEISURE nutzen; PLACE_BUILDING fail-closed",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "content/narrative/",
+    "docs/screenshots/current/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-sim-issue-533-scheduled-place.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d592a20f77bca13d0c4d50d5500226fcc1d22858"
+}
