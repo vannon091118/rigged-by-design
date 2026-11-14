@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /** Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. */
+import { verifyDocParity } from './lib/doc-parity.mjs';
 import { verifyDocs } from './lib/doc-sync.mjs';
 import { describePlan, plan } from './lib/escalation.mjs';
 import { fail } from './lib/report.mjs';
 
-const problems = verifyDocs();
+// Struktur und Marker allein reichen nicht: die Zahlen und Rollen muessen zum
+// ausfuehrbaren Plan passen, sonst arbeitet ein Agent nach einer zweiten Wahrheit.
+const problems = [...verifyDocs(), ...verifyDocParity()];
 if (problems.length === 0) {
   console.log('verify:docs: PASS');
   process.exit(0);

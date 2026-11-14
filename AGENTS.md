@@ -73,7 +73,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 15 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Alle Tests, Gates, Builds und APKs laufen lokal; die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
+- **CI:** 16 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; 10 Light-Gates, 11 mit `affected`. Alle Tests, Gates, Builds und APKs laufen lokal; die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
 - **Workflows:** drei Dateien, ausschließlich Repository-Verwaltung: `Ensure PR`, `PR Cleanup` und `Promote` (manueller Status-/Notausgang). Kein Workflow führt Tests, Gates, Builds oder APKs aus. Die Testlinie ist `pnpm run ci:local`.
 - **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Es gibt keinen Cloud-Testlauf; der lokale Vor-PR-Nachweis `pnpm run ci:local` ist die Autorität. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#branch-schutz).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
@@ -91,7 +91,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run verify:scope` | Nur der Diff gegen die Claim-Allowlist; keine Tests, kein Build, kein Typecheck. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run ci:local` | Der lokale Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build; `--profile=full`, `--profile=release`, `--profile=mechanics`, `--profile=apk`. |
-| `pnpm run verify:all` | Der lokale Vollnachweis: 15 Required-Gates plus Audit (16 Läufe), ohne Mechanik. |
+| `pnpm run verify:all` | Der lokale Vollnachweis: 16 Required-Gates plus Audit (17 Läufe), ohne Mechanik. |
 | `pnpm run test:mechanics` | Gezielte Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie Teil eines Regelprofils. |
 | `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, der lokale Nachweis entscheidet. |
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |

@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/issue-630-doc-parity",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-630-doc-parity",
+  "baseSha": "b0dfe061ef3daee22a01dd50535d98633efcce4d",
+  "issue": 630,
+  "task": "Issue #630: Gate-Zahlen und Owner-Roster zwischen Doku und Code synchron halten",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/GOVERNANCE.md",
+    "docs/CI.md",
+    "scripts/verify-docs.mjs",
+    "scripts/lib/doc-parity.mjs",
+    "scripts/lib/doc-sync.mjs",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/ROADMAP.md",
+    ".lane-claims",
+    ".lane-claims/claims/lane-governance-issue-630-doc-parity.json",
+    "src/core/governance/__tests__/ci-docs-parity.test.ts",
+    "content/narrative/contributions/2026-11-14-rumor-24.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b0dfe061ef3daee22a01dd50535d98633efcce4d"
+}

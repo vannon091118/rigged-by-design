@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-630-doc-parity",
+  "claimId": "lane/governance/issue-630-doc-parity",
+  "branch": "lane/governance/issue-630-doc-parity",
+  "baseSha": "b0dfe061ef3daee22a01dd50535d98633efcce4d",
+  "phase": "CI_PENDING",
+  "title": "Issue #630: Gate-Zahlen und Owner-Roster zwischen Doku und Code synchron halten",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokaler Vor-PR-Nachweis ist die Autoritaet; PR oeffnen, Handover am Issue, Review durch den Maintainer.",
+  "revision": 1
+}
