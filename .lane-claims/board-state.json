@@ -1,74 +1,603 @@
 {
-  "version": 1,
-  "generatedAt": "2026-11-14T08:26:00Z",
-  "generatedBy": "maintainer",
-  "head": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5",
+  "version": 2,
+  "generatedAt": "2026-11-14T10:25:00Z",
+  "generatedBy": "worker",
+  "head": "5ed5d9603664121b63e317d330404b98ece6e596",
   "headMessage": "Merge review-waiting PRs #658, #660, #641 (#661)",
-  "base": "origin/main @ 0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5",
-  "worktree": "C:/Users/vanno/OneDrive/Desktop/Peerreviewtrack",
+  "base": "origin/main @ 5ed5d9603664121b63e317d330404b98ece6e596",
+  "worktree": "cloud:/workspace/chats/6879216b8774d6c6af4b4bc4",
   "status": "READY",
-  "summary": "Maintainer-Lauf abgeschlossen: Claims abgeglichen, Issues geschlossen, Board-Status gepflegt. Keine offenen PRs. Zwei aktive Worker-Claims (Shinon #625, Jenova #628).",
+  "summary": "Cursor-State neu aufgebaut (#671): je offenem Issue und offenem PR ein Kommentar-Cursor, 46 Issues und 3 PRs gegenuber GitHub gelesen. Offen: drei Nicht-Draft-PRs (#683, #691, #692), alle mit review-waiting; kein Closeout offen ausser #625/#626.",
   "lastActions": [
-    "reconcile-claims --apply: 12 Claims auf merged gezogen (#546, #531, #616, #532, #617, #624, #627, #623, #556, #533, #536, agents-md-maintainer-governance), 8 Tasks auf DONE, 18 Retention-Dateien entfernt",
-    "Issue #539 (E-Sport-Abend): ACCEPT via PR #641 in main@0bad32ea, Issue geschlossen, review-waiting entfernt, Claim auf merged (mergeSha 9427e2cf), Task DONE",
-    "Issue #552 (Staff-Qualifikation): ACCEPT via PR #660 in main@0bad32ea, Issue geschlossen, review-waiting entfernt, Claim auf merged (mergeSha 0bc14650), Task DONE",
-    "Label review-waiting von Issues #539 und #552 entfernt (beide geschlossen via Maintainer-Verdikt ACCEPT)",
-    "AGENTS.md: Rollentrennung Maintainer/Worker, Board-Status & Review-Status (state:JSON, Worker-Statuspflicht, Maintainer-Statuspflicht, Pflicht-Issues) ergänzt",
-    "docs/GOVERNANCE.md: Board-Status & Review-Status Sektion ergänzt",
-    "Board-Kommentare zu Issue #625 (Shinon CLAIM [A9]) und Issue #628 (Jenova CLAIM [A13]) als aktiv gebucht",
-    "Temp-JSON-Dateien aus Workspace-Root entfernt"
+    "board-cursors.mjs --export/--write: 49 Cursor (46 Issues, 3 PRs) gesetzt, Kopf 5ed5d960, 0 UNKNOWN",
+    "Baseline-Seeding: Cursor auf den jeweils letzten GitHub-Kommentar gesetzt; altere Kommentare gelten als gelesen und stehen als warning im State",
+    "Korrektur: #552 kam uber PR #661 (Merge-SHA 0bad32ea) nach main, nicht uber PR #660; #660 ist CLOSED und merged=false",
+    "Korrektur: PRs #683 (#574), #691 (#648) und #692 (#635) sind offen und review-waiting; der alte Snapshot meldete 0 offene PRs",
+    "Neu belegt: #625 uber PR #688 (7b657983), #626 uber PR #689 (10811b14), #596 als Direktpush 5ed5d960"
   ],
   "activeClaims": [
     {
-      "issue": 625,
-      "title": "[RNG][P2] Negative Rollenprüfung für alle Gameplay-Einstiegspunkte ergänzen",
-      "agent": "Shinon [A9]",
-      "claimedAt": "2026-11-14T07:02Z",
+      "issue": 671,
+      "title": "[GOVERNANCE][P3] P0-Kommentar-Eingang mit Issue-Cursorn im Maintainer-State absichern",
+      "agent": "LILITH [A18]",
+      "claimedAt": "2026-11-14T10:13Z",
       "status": "ACTIVE",
-      "scope": "src/core/rng/gameplay-entry-points.ts, src/core/rng/__tests__/gameplay-entry-role.test.ts, src/core/sim/tick.ts, content/narrative/contributions/2026-11-14-rng-entry-role.json",
-      "plan": "Öffentliche Gameplay-Einstiegspunkte mit Prng-Argument inventarisieren, versionierte Liste als Datenquelle, tabellarische Negativsuite mit presentationRng je Einstiegspunkt, Guard an den echten Außengrenzen"
-    },
-    {
-      "issue": 628,
-      "title": "[GOVERNANCE][P1] Post-Merge-Closeout gegen Actions-Ausfall absichern",
-      "agent": "Jenova [A13]",
-      "claimedAt": "2026-11-14T06:48Z",
-      "status": "ACTIVE",
-      "identity": "Jenova (activeIssue 628, status ACTIVE)",
-      "scope": "scripts/post-merge-closeout.mjs, scripts/pretask.mjs, scripts/reconcile-claims.mjs, scripts/lib/, src/core/governance/__tests__/, docs/, AGENTS.md, package.json, content/narrative/, .lane-claims/",
-      "plan": "Idempotenten Merge-Closeout-Fallback im normalen Startpfad verankern, Actions-Ausfall sichtbar machen, Claim/Vertrag/Branch nur bei echtem Merge-Beleg nachziehen"
+      "scope": "scripts/lib/board-cursors.mjs, scripts/board-cursors.mjs, src/core/governance/__tests__/board-cursors.test.ts, .lane-claims/board-state.json",
+      "plan": "Kommentar-Cursor je Issue und PR als reine, getestete Logik; State gegen echten main-Stand neu aufbauen"
     }
   ],
   "mergedClaimsThisRun": [
-    { "lane": "lane/content/issue-546-city-events", "issue": 546, "pr": 658, "mergeSha": "de71d10b16a6b384b3c977f3a89b8237ffe7d383" },
-    { "lane": "lane/governance/agents-md-maintainer-governance", "issue": null, "pr": 633, "mergeSha": "aa8583a00a8a4c4c98e46c3df9fee34ece7c915d" },
-    { "lane": "lane/governance/claim-register-reconcile-616", "issue": 616, "pr": 618, "mergeSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596" },
-    { "lane": "lane/governance/issue-531-readme-belege", "issue": 531, "pr": 620, "mergeSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858" },
-    { "lane": "lane/governance/issue-617-generated-gate", "issue": 617, "pr": 619, "mergeSha": "d2639066d647bce51ead9973caeb399c9df06323" },
-    { "lane": "lane/governance/issue-624-determinism-computed", "issue": 624, "pr": 638, "mergeSha": "857e6f3905834a54848e3ed06bd539373d64ebe1" },
-    { "lane": "lane/governance/issue-627-run-budget", "issue": 627, "pr": 659, "mergeSha": "100f88ac79c86a5e89240b9aac9ff8b93c419ed2" },
-    { "lane": "lane/infra/issue-623-ledger-tick-balance", "issue": 623, "pr": 632, "mergeSha": "f2fde8b268c4c7ac5a00ffc1c06f0ceb2a4041d1" },
-    { "lane": "lane/ledger/issue-532-external-work-split", "issue": 532, "pr": 637, "mergeSha": "b8ad955fb8e82ad0c2087a82deab82707f9ec3a8" },
-    { "lane": "lane/sim/issue-533-scheduled-place", "issue": 533, "pr": 631, "mergeSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc" },
-    { "lane": "lane/sim/issue-536-smartphone-inbox-vitter-immoluck", "issue": 536, "pr": 622, "mergeSha": "82159039100af55803f0879ba03eb3e9336a3ee1" },
-    { "lane": "lane/sim/issue-556-city-acceptance", "issue": 556, "pr": 621, "mergeSha": "af032bdecafd96b774408296d3a0ee23e452909f" },
-    { "lane": "lane/sim/issue-539-esport-evening", "issue": 539, "pr": 641, "mergeSha": "9427e2cf784ab3bb8f659e5c90dba22d3da0383d" },
-    { "lane": "lane/sim/issue-552-staff-qualification", "issue": 552, "pr": 660, "mergeSha": "0bc146507de720bcdb416f2f64dadcfd479c2621" }
+    {
+      "lane": "lane/content/issue-546-city-events",
+      "issue": 546,
+      "pr": 658,
+      "mergeSha": "de71d10b16a6b384b3c977f3a89b8237ffe7d383"
+    },
+    {
+      "lane": "lane/governance/agents-md-maintainer-governance",
+      "issue": null,
+      "pr": 633,
+      "mergeSha": "aa8583a00a8a4c4c98e46c3df9fee34ece7c915d"
+    },
+    {
+      "lane": "lane/governance/claim-register-reconcile-616",
+      "issue": 616,
+      "pr": 618,
+      "mergeSha": "a725f8eae0424e7d33375f83fee1ad02acbe3596"
+    },
+    {
+      "lane": "lane/governance/issue-531-readme-belege",
+      "issue": 531,
+      "pr": 620,
+      "mergeSha": "d592a20f77bca13d0c4d50d5500226fcc1d22858"
+    },
+    {
+      "lane": "lane/governance/issue-617-generated-gate",
+      "issue": 617,
+      "pr": 619,
+      "mergeSha": "d2639066d647bce51ead9973caeb399c9df06323"
+    },
+    {
+      "lane": "lane/governance/issue-624-determinism-computed",
+      "issue": 624,
+      "pr": 638,
+      "mergeSha": "857e6f3905834a54848e3ed06bd539373d64ebe1"
+    },
+    {
+      "lane": "lane/governance/issue-627-run-budget",
+      "issue": 627,
+      "pr": 659,
+      "mergeSha": "100f88ac79c86a5e89240b9aac9ff8b93c419ed2"
+    },
+    {
+      "lane": "lane/infra/issue-623-ledger-tick-balance",
+      "issue": 623,
+      "pr": 632,
+      "mergeSha": "f2fde8b268c4c7ac5a00ffc1c06f0ceb2a4041d1"
+    },
+    {
+      "lane": "lane/ledger/issue-532-external-work-split",
+      "issue": 532,
+      "pr": 637,
+      "mergeSha": "b8ad955fb8e82ad0c2087a82deab82707f9ec3a8"
+    },
+    {
+      "lane": "lane/sim/issue-533-scheduled-place",
+      "issue": 533,
+      "pr": 631,
+      "mergeSha": "6029255ea6cc4ae027e88e25cf040a476fb889cc"
+    },
+    {
+      "lane": "lane/sim/issue-536-smartphone-inbox-vitter-immoluck",
+      "issue": 536,
+      "pr": 622,
+      "mergeSha": "82159039100af55803f0879ba03eb3e9336a3ee1"
+    },
+    {
+      "lane": "lane/sim/issue-556-city-acceptance",
+      "issue": 556,
+      "pr": 621,
+      "mergeSha": "af032bdecafd96b774408296d3a0ee23e452909f"
+    },
+    {
+      "lane": "lane/sim/issue-539-esport-evening",
+      "issue": 539,
+      "pr": 641,
+      "mergeSha": "9427e2cf784ab3bb8f659e5c90dba22d3da0383d"
+    },
+    {
+      "lane": "lane/sim/issue-552-staff-qualification",
+      "issue": 552,
+      "pr": 661,
+      "mergeSha": "0bad32eab2ccd5dcd2e85f462bf717f22dadc2f5"
+    },
+    {
+      "lane": "lane/governance/issue-625-rng-entry-role",
+      "issue": 625,
+      "pr": 688,
+      "mergeSha": "7b657983"
+    },
+    {
+      "lane": "lane/sim/issue-626-raw-walls-sentinel",
+      "issue": 626,
+      "pr": 689,
+      "mergeSha": "10811b14"
+    }
   ],
   "closedIssuesThisRun": [
-    { "issue": 539, "verdict": "ACCEPT", "via": "PR #641 in main@0bad32ea", "reviewWaitingRemoved": true },
-    { "issue": 552, "verdict": "ACCEPT", "via": "PR #660 in main@0bad32ea", "reviewWaitingRemoved": true }
+    {
+      "issue": 625,
+      "verdict": "ACCEPT",
+      "via": "PR #688 in main@7b657983"
+    },
+    {
+      "issue": 626,
+      "verdict": "ACCEPT",
+      "via": "PR #689 in main@10811b14"
+    }
   ],
-  "openPullRequests": 0,
-  "reviewWaitingPrs": 0,
-  "blockedIssues": [],
+  "openPullRequests": 3,
+  "reviewWaitingPrs": 3,
+  "blockedIssues": [
+    {
+      "issue": 684,
+      "reason": "fehlende User-Entscheidung"
+    },
+    {
+      "issue": 596,
+      "reason": "Produktentscheidung"
+    },
+    {
+      "issue": 597,
+      "reason": "Produktentscheidung Gastquelle"
+    }
+  ],
   "nextRunChecklist": [
-    "Alle offenen Issues auf neue Kommentare scannen (P0 sofort)",
-    "Aktive Claims prüfen: Shinon #625, Jenova #628",
-    "Keine offenen PRs → keine Review-Pending-PRs",
-    "Worker-Status-Kommentare auf Issues #625 und #628 abwarten (CLAIM/RELEASE/Blocker)",
-    "state:JSON zu Beginn des nächsten Laufs lesen, um Fortschritt zu sehen"
+    "Neue Kommentare nur uber die Cursor lesen: unvollstaendige Seite oder API-Ausfall ergibt UNKNOWN, nie Freigabe",
+    "Offene review-waiting-PRs zuerst: #683 (#574), #691 (#648), #692 (#635)",
+    "Aktive Claims prufen: LILITH #671; weitere Worker-Claims uber CLAIM-Kommentare, nicht uber diesen State",
+    "Cursor erst vorschieben, wenn die komplette Kommentar-Seite gelesen und die Eingange triagiert sind"
   ],
   "blockers": [],
-  "warnings": []
+  "warnings": [],
+  "issues": {
+    "527": {
+      "kind": "issues",
+      "number": 527,
+      "lastCommentId": 6868618783,
+      "lastCommentAt": "2026-11-14T00:37:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "537": {
+      "kind": "issues",
+      "number": 537,
+      "lastCommentId": 6868621287,
+      "lastCommentAt": "2026-11-14T00:37:35Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "538": {
+      "kind": "issues",
+      "number": 538,
+      "lastCommentId": 6868621602,
+      "lastCommentAt": "2026-11-14T00:37:36Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "540": {
+      "kind": "issues",
+      "number": 540,
+      "lastCommentId": 6875024398,
+      "lastCommentAt": "2026-11-14T09:11:59Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "541": {
+      "kind": "issues",
+      "number": 541,
+      "lastCommentId": 6868622619,
+      "lastCommentAt": "2026-11-14T00:37:40Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "542": {
+      "kind": "issues",
+      "number": 542,
+      "lastCommentId": 6875024587,
+      "lastCommentAt": "2026-11-14T09:11:59Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "561": {
+      "kind": "issues",
+      "number": 561,
+      "lastCommentId": 6874484742,
+      "lastCommentAt": "2026-11-14T08:23:30Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "563": {
+      "kind": "issues",
+      "number": 563,
+      "lastCommentId": 6872454349,
+      "lastCommentAt": "2026-11-14T05:33:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "564": {
+      "kind": "issues",
+      "number": 564,
+      "lastCommentId": 6872454732,
+      "lastCommentAt": "2026-11-14T05:33:28Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "574": {
+      "kind": "issues",
+      "number": 574,
+      "lastCommentId": 6875383489,
+      "lastCommentAt": "2026-11-14T09:42:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "597": {
+      "kind": "issues",
+      "number": 597,
+      "lastCommentId": 6869885137,
+      "lastCommentAt": "2026-11-14T02:04:54Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "598": {
+      "kind": "issues",
+      "number": 598,
+      "lastCommentId": 6869860111,
+      "lastCommentAt": "2026-11-14T02:03:04Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "599": {
+      "kind": "issues",
+      "number": 599,
+      "lastCommentId": 6869860378,
+      "lastCommentAt": "2026-11-14T02:03:06Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "604": {
+      "kind": "issues",
+      "number": 604,
+      "lastCommentId": 6875719496,
+      "lastCommentAt": "2026-11-14T10:11:41Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "630": {
+      "kind": "issues",
+      "number": 630,
+      "lastCommentId": 6872442141,
+      "lastCommentAt": "2026-11-14T05:32:25Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "634": {
+      "kind": "issues",
+      "number": 634,
+      "lastCommentId": 6872447410,
+      "lastCommentAt": "2026-11-14T05:32:51Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "635": {
+      "kind": "issues",
+      "number": 635,
+      "lastCommentId": 6875719358,
+      "lastCommentAt": "2026-11-14T10:11:41Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "640": {
+      "kind": "issues",
+      "number": 640,
+      "lastCommentId": 6874412517,
+      "lastCommentAt": "2026-11-14T08:17:05Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "642": {
+      "kind": "issues",
+      "number": 642,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "643": {
+      "kind": "issues",
+      "number": 643,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "644": {
+      "kind": "issues",
+      "number": 644,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "645": {
+      "kind": "issues",
+      "number": 645,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "646": {
+      "kind": "issues",
+      "number": 646,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "647": {
+      "kind": "issues",
+      "number": 647,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "648": {
+      "kind": "issues",
+      "number": 648,
+      "lastCommentId": 6875719118,
+      "lastCommentAt": "2026-11-14T10:11:39Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "649": {
+      "kind": "issues",
+      "number": 649,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "650": {
+      "kind": "issues",
+      "number": 650,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "651": {
+      "kind": "issues",
+      "number": 651,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "652": {
+      "kind": "issues",
+      "number": 652,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "653": {
+      "kind": "issues",
+      "number": 653,
+      "lastCommentId": 6875024742,
+      "lastCommentAt": "2026-11-14T09:12:00Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "654": {
+      "kind": "issues",
+      "number": 654,
+      "lastCommentId": 6875024951,
+      "lastCommentAt": "2026-11-14T09:12:01Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "655": {
+      "kind": "issues",
+      "number": 655,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "656": {
+      "kind": "issues",
+      "number": 656,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "657": {
+      "kind": "issues",
+      "number": 657,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "663": {
+      "kind": "issues",
+      "number": 663,
+      "lastCommentId": 6875023144,
+      "lastCommentAt": "2026-11-14T09:11:52Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "664": {
+      "kind": "issues",
+      "number": 664,
+      "lastCommentId": 6875024227,
+      "lastCommentAt": "2026-11-14T09:11:58Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "665": {
+      "kind": "issues",
+      "number": 665,
+      "lastCommentId": 6875024026,
+      "lastCommentAt": "2026-11-14T09:11:57Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "666": {
+      "kind": "issues",
+      "number": 666,
+      "lastCommentId": 6875023839,
+      "lastCommentAt": "2026-11-14T09:11:56Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "667": {
+      "kind": "issues",
+      "number": 667,
+      "lastCommentId": 6875023689,
+      "lastCommentAt": "2026-11-14T09:11:55Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "668": {
+      "kind": "issues",
+      "number": 668,
+      "lastCommentId": 6875023558,
+      "lastCommentAt": "2026-11-14T09:11:54Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "669": {
+      "kind": "issues",
+      "number": 669,
+      "lastCommentId": 6875023346,
+      "lastCommentAt": "2026-11-14T09:11:53Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "671": {
+      "kind": "issues",
+      "number": 671,
+      "lastCommentId": 6875740348,
+      "lastCommentAt": "2026-11-14T10:13:36Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "675": {
+      "kind": "issues",
+      "number": 675,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "677": {
+      "kind": "issues",
+      "number": 677,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "684": {
+      "kind": "issues",
+      "number": 684,
+      "lastCommentId": 6875510657,
+      "lastCommentAt": "2026-11-14T09:53:30Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "685": {
+      "kind": "issues",
+      "number": 685,
+      "lastCommentId": 6875719247,
+      "lastCommentAt": "2026-11-14T10:11:40Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    }
+  },
+  "pullRequests": {
+    "683": {
+      "kind": "pullRequests",
+      "number": 683,
+      "lastCommentId": 6875510974,
+      "lastCommentAt": "2026-11-14T09:53:31Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "691": {
+      "kind": "pullRequests",
+      "number": 691,
+      "lastCommentId": 6875718950,
+      "lastCommentAt": "2026-11-14T10:11:38Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "692": {
+      "kind": "pullRequests",
+      "number": 692,
+      "lastCommentId": 6875692734,
+      "lastCommentAt": "2026-11-14T10:09:20Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    }
+  },
+  "triaged": [
+    "issues:527:6868618783",
+    "issues:537:6868621287",
+    "issues:538:6868621602",
+    "issues:540:6875024398",
+    "issues:541:6868622619",
+    "issues:542:6875024587",
+    "issues:561:6874484742",
+    "issues:563:6872454349",
+    "issues:564:6872454732",
+    "issues:574:6875383489",
+    "issues:597:6869885137",
+    "issues:598:6869860111",
+    "issues:599:6869860378",
+    "issues:604:6875719496",
+    "issues:630:6872442141",
+    "issues:634:6872447410",
+    "issues:635:6875719358",
+    "issues:640:6874412517",
+    "issues:648:6875719118",
+    "issues:653:6875024742",
+    "issues:654:6875024951",
+    "issues:663:6875023144",
+    "issues:664:6875024227",
+    "issues:665:6875024026",
+    "issues:666:6875023839",
+    "issues:667:6875023689",
+    "issues:668:6875023558",
+    "issues:669:6875023346",
+    "issues:671:6875740348",
+    "issues:684:6875510657",
+    "issues:685:6875719247",
+    "pullRequests:683:6875510974",
+    "pullRequests:691:6875718950",
+    "pullRequests:692:6875692734"
+  ],
+  "unmergedClosedPullRequests": [
+    {
+      "pr": 660,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "#552 kam uber PR #661 nach main; #660 ist kein Merge-Beleg"
+    }
+  ]
 }

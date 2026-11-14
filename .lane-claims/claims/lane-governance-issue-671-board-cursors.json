@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-671-board-cursors",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-671-board-cursors",
+  "baseSha": "2eae4c31e76b2f143489df82a8eaaaebb95a2efb",
+  "issue": 671,
+  "task": "P0-Kommentar-Eingang mit Issue-Cursorn absichern",
+  "goal": "Kommentar-Cursor je Issue und PR: neue Eingaenge genau einmal, Duplikate vermeiden, Pagination und API-Ausfall als UNKNOWN statt Freigabe",
+  "pathAllowlist": [
+    "scripts/lib/board-cursors.mjs",
+    "src/core/governance/__tests__/worker-claim-gate.test.ts",
+    ".lane-claims/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-governance-issue-671-board-cursors.json",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md"
+  ],
+  "contracts": [],
+  "dependencies": [692],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2eae4c31e76b2f143489df82a8eaaaebb95a2efb"
+}
