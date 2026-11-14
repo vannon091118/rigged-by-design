@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-764-money-counterfactual",
+  "claimId": "lane/sim/issue-764-money-counterfactual",
+  "branch": "lane/sim/issue-764-money-counterfactual",
+  "baseSha": "edf39a7444ba0b99ee5936bf91214ebd26dee07e",
+  "phase": "CI_PENDING",
+  "title": "Issue #764: Bargeld-Gegenprobe als eigene Oekonomie-Familie fuehren",
+  "goal": "Bargeld wird als eigene money-Familie im Decision Trace gefuehrt; environment bleibt fuer reine Umgebungsursachen, damit beide Proben getrennt zaehlen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 816,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/816",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "PR #816 gegen den finalen Kopf pruefen, review-waiting setzen und DONE/RELEASE kommentieren.",
+  "revision": 4
+}

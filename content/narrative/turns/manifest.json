@@ -4582,6 +4582,10 @@
       "contributionId": "pretask-fixture-01"
     },
     {
+      "turnId": "2026-11-14T21:40Z-money-counterfactual",
+      "contributionId": "money-counterfactual-01"
+    },
+    {
       "turnId": "2026-11-14T23:10Z-rumor-27",
       "contributionId": "rumor-27"
     },

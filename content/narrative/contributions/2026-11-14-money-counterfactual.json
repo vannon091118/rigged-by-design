@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T21:40Z-money-counterfactual",
+  "contributionId": "money-counterfactual-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Bargeld ist keine Wetterlage: Wer knapp bei Kasse ist, traegt seinen Grund selbst. Der Entscheidungsbericht nennt ihn jetzt beim Namen und trennt ihn von dem Raum, in dem er wirkt.",
+  "directives": []
+}
