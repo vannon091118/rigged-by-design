@@ -715,10 +715,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3209 |
-| Gelistete Dateien | 3209 |
+| Getrackte Dateien | 3212 |
+| Gelistete Dateien | 3212 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (164), artifacts (1), content (1149), docs (108), packages (27), public (571), scripts (129), src (1035) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (166), artifacts (1), content (1150), docs (108), packages (27), public (571), scripts (129), src (1035) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -731,10 +731,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 83 Datei(en)
-- `.lane-claims/tasks/` — 78 Datei(en)
+- `.lane-claims/claims/` — 84 Datei(en)
+- `.lane-claims/tasks/` — 79 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1145 Datei(en)
+- `content/narrative/contributions/` — 1146 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -938,6 +938,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-sim-issue-764-money-counterfactual.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
@@ -1017,6 +1018,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-764-money-counterfactual.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
@@ -2147,6 +2149,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-lane-ohne-auftrag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-ledger-tick-guard.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-lesezeichen.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-14-money-counterfactual.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-pretask-fixture.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-rng-entry-role.json` — { — gelesen: 21 Zeilen
@@ -2177,8 +2180,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-bootstrap.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 25718 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4585 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 25740 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4589 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3288,7 +3291,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/layout-history.test.ts` — Verlauf: 30 Schritte, ein Pinselstrich ist ein Schritt, Redo endet bei neuer Arbeit. — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/layout-json.test.ts` — Layout-Export/-Import: runde Reise, feste Bytes, fail-closed bei fremden Daten. — gelesen: 51 Zeilen
 - `src/core/sim/__tests__/ledger-account-split.test.ts` — Bauträger und Pakt teilen sich kein Konto mehr (#532): Ein Bau bucht in den — gelesen: 75 Zeilen
-- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 146 Zeilen
+- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 157 Zeilen
 - `src/core/sim/__tests__/living-world-continuity.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/living-world-longturn.test.ts` — Ereignisketten-Evidenz: Ein langer Turn verbindet Umgebung, Erfahrung und — gelesen: 213 Zeilen
 - `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 26 Zeilen
@@ -3409,7 +3412,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-identity.ts` — Jeder Bewohner bekommt eine individuelle Kennung, die auf sein Profil zeigt. — gelesen: 34 Zeilen
 - `src/core/sim/city-life-apply.ts` — Der Intent ist erst dann echt, wenn er Beduerfnisse, Bargeld, Faehigkeiten, — gelesen: 149 Zeilen
 - `src/core/sim/city-life-create.ts` — Ein Bewohner entsteht aus seiner Figur in der Besetzung (`city-npc-roster`): — gelesen: 97 Zeilen
-- `src/core/sim/city-life-decision.ts` — Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion — gelesen: 118 Zeilen
+- `src/core/sim/city-life-decision.ts` — Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion — gelesen: 114 Zeilen
 - `src/core/sim/city-life-effects.ts` — Der Tagesplan und der Score waehlen nur; erst diese Effekte veraendern — gelesen: 99 Zeilen
 - `src/core/sim/city-life-memory.ts` — Erinnerungen sind das Erfahrungsgedaechtnis der NPCs: eine Begegnung erzeugt — gelesen: 45 Zeilen
 - `src/core/sim/city-life-movement.ts` — Ein Ortswechsel ist keine Etikette: Der Bewohner steht auf einer Kachel, das — gelesen: 203 Zeilen

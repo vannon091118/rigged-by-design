@@ -25,8 +25,22 @@ const DAYS = 5;
 const ARTIFACT = 'artifacts/living-world/trace-424242-5d.json';
 const FAMILIES: readonly CityDecisionFamily[] = [
   'hunger', 'thirst', 'fatigue', 'routine', 'traits', 'attributes', 'skills',
-  'emotion', 'relationship', 'memory', 'social', 'environment',
+  'emotion', 'relationship', 'memory', 'social', 'money', 'environment',
 ];
+
+const POOR_RESIDENT: CityResidentState = {
+  npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: 'PUB',
+  homeBuildingId: 'bld_player_home', householdId: 'household_shared_player_home',
+  position: { x: 8, y: 12 }, travel: null,
+  needs: { hunger: 20, thirst: 40, fatigue: 40, social: 70, money: 200, mood: 75 },
+  attributes: { charisma: 8, intellect: 4 }, skills: { cooking: 20, work: 100, social: 20 },
+  relationships: {}, memories: [], lastHour: 19, lastDay: 1,
+};
+
+const POOR_INPUT: CityDecisionInput = {
+  resident: POOR_RESIDENT, scheduled: 'PUB', workplace: 'KIEZ', hour: 19, day: 1, tick: 475,
+  peers: [], traits: [], seed: SEED,
+};
 
 function sequence(decisions: readonly CityLifeDecision[]): string {
   return JSON.stringify(decisions.map((entry) => `${entry.npcId}:${entry.intent}`));
@@ -53,21 +67,9 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     // Bargeld bindet nur, solange es knapp ist: Der Lauf reichert die Bewohner
     // an, deshalb prueft dieselbe Entscheidungsfunktion hier einen armen,
     // hungrigen Bewohner statt einer zufaelligen Trace-Zeile.
-    const poor: CityResidentState = {
-      npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: 'PUB',
-      homeBuildingId: 'bld_player_home', householdId: 'household_shared_player_home',
-      position: { x: 8, y: 12 }, travel: null,
-      needs: { hunger: 20, thirst: 40, fatigue: 40, social: 70, money: 200, mood: 75 },
-      attributes: { charisma: 8, intellect: 4 }, skills: { cooking: 20, work: 100, social: 20 },
-      relationships: {}, memories: [], lastHour: 19, lastDay: 1,
-    };
-    const poorInput: CityDecisionInput = {
-      resident: poor, scheduled: 'PUB', workplace: 'KIEZ', hour: 19, day: 1, tick: 475,
-      peers: [], traits: [], seed: SEED,
-    };
-    const poorPlan = decideCityLife(poorInput);
+    const poorPlan = decideCityLife(POOR_INPUT);
     expect(poorPlan.choice.intent).toBe('WORK');
-    expect(poorPlan.counterfactuals.some((probe) => probe.detail.includes('Bargeld') && probe.changed)).toBe(true);
+    expect(poorPlan.counterfactuals.some((probe) => probe.family === 'money' && probe.changed)).toBe(true);
 
     const chain = findCausalChain(result.decisions);
     expect(chain).not.toBeNull();
@@ -125,6 +127,15 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     console.log(`[living-world] chain=${chain.meal.npcId} meal@${chain.meal.day}/${chain.meal.hour} `
       + `memory=${chain.memory.outcome.memoryCreatedId}@${chain.memory.day}/${chain.memory.hour} `
       + `use@${chain.use.day}/${chain.use.hour}->${chain.use.intent}`);
+  });
+
+  it('fuehrt Bargeld als eigene money-Gegenprobe statt environment', () => {
+    const plan = decideCityLife(POOR_INPUT);
+    const cashProbe = plan.counterfactuals.find((probe) => probe.family === 'money');
+    expect(cashProbe?.detail).toContain('Bargeld');
+    expect(cashProbe?.changed).toBe(true);
+    expect(plan.counterfactuals.some((probe) => probe.family === 'environment' && probe.detail.includes('Bargeld'))).toBe(false);
+    expect(plan.counterfactuals.some((probe) => probe.family === 'environment')).toBe(true);
   });
 
   it('bewahrt Attribute, Faehigkeiten, Beziehungen und Erinnerungen ueber Save/Load', () => {

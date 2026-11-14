@@ -97,9 +97,9 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
       add('skills', `Kochen ${skills.cooking}`, skills.cooking, skills.cooking * 1.1);
       add('attributes', `Intellekt ${attributes.intellect}`, attributes.intellect, attributes.intellect * 0.4);
       add('traits', `Sparsamkeit ${gain.toFixed(2)}`, gain, gain * 8);
-      add('environment', `Bargeld ${needs.money}`, needs.money, Math.max(0, 3000 - needs.money) * 0.004);
+      add('money', `Bargeld ${needs.money}`, needs.money, Math.max(0, 3000 - needs.money) * 0.004);
     } else {
-      add('environment', `Bargeld ${needs.money}`, needs.money,
+      add('money', `Bargeld ${needs.money}`, needs.money,
         -Math.max(0, 6000 - needs.money) * 0.008 - (needs.money < 3000 ? 12 : 0));
       add('traits', `Verschwendung ${gain.toFixed(2)}`, gain, -gain * 8);
       add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, needs.mood - 60) * 0.05);
@@ -114,7 +114,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
     add('attributes', `Charisma ${attributes.charisma}`, attributes.charisma, attributes.charisma * 1.2);
     add('skills', `Soziale Faehigkeit ${skills.social}`, skills.social, skills.social * 0.7);
     add('environment', `Anwesende ${present.length}`, present.length, present.length * 2);
-    add('environment', `Bargeld ${needs.money}`, needs.money, -Math.max(0, 5000 - needs.money) * 0.006);
+    add('money', `Bargeld ${needs.money}`, needs.money, -Math.max(0, 5000 - needs.money) * 0.006);
     if (hour < 7) add('environment', `Nachtstunde ${hour}`, hour, -50);
   }
   if (intent === 'VISIT_FRIEND') {
@@ -137,7 +137,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
   if (intent === 'WORK') {
     add('skills', `Arbeitsfaehigkeit ${skills.work}`, skills.work, skills.work * 0.9);
     add('attributes', `Intellekt ${attributes.intellect}`, attributes.intellect, attributes.intellect * 1.2);
-    add('environment', `Bargeld ${needs.money}`, needs.money, Math.max(0, 5000 - needs.money) * 0.008);
+    add('money', `Bargeld ${needs.money}`, needs.money, Math.max(0, 5000 - needs.money) * 0.008);
     add('fatigue', `Muedigkeit ${needs.fatigue}`, needs.fatigue, -Math.max(0, needs.fatigue - 55) * 0.5);
     add('traits', `Erwerbssinn ${gain.toFixed(2)}`, gain, gain * 6);
     add('emotion', `Laune ${needs.mood}`, needs.mood, -Math.max(0, 55 - needs.mood) * 2);
@@ -146,7 +146,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
     add('emotion', `Laune ${needs.mood}`, needs.mood, Math.max(0, 40 - needs.mood) * 0.5);
     add('fatigue', `Muedigkeit ${needs.fatigue}`, needs.fatigue, -Math.max(0, needs.fatigue - 60) * 0.25);
   }
-  if (intent === 'SHOP') add('environment', `Bargeld ${needs.money}`, needs.money, -Math.max(0, 4000 - needs.money) * 0.004);
+  if (intent === 'SHOP') add('money', `Bargeld ${needs.money}`, needs.money, -Math.max(0, 4000 - needs.money) * 0.004);
   const tilt = seedTilt(seed, resident.npcId, tick);
   score += tilt;
   if (tilt !== 0) factors.push({ family: 'environment', detail: `Seed ${seed} Tie-Break`, value: seed, delta: tilt });

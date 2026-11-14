@@ -64,7 +64,7 @@ export interface CityResidentState {
 
 export type CityDecisionFamily =
   | 'hunger' | 'thirst' | 'fatigue' | 'routine' | 'traits' | 'attributes'
-  | 'skills' | 'emotion' | 'relationship' | 'memory' | 'social' | 'environment';
+  | 'skills' | 'emotion' | 'relationship' | 'memory' | 'social' | 'money' | 'environment';
 
 export interface CityDecisionFactor {
   readonly family: CityDecisionFamily;

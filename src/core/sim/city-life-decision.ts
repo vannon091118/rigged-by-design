@@ -25,8 +25,10 @@ export interface CityDecisionPlan {
 
 const FAMILIES: readonly CityDecisionFamily[] = [
   'hunger', 'thirst', 'fatigue', 'routine', 'traits', 'attributes', 'skills',
-  'emotion', 'relationship', 'memory', 'social', 'environment',
+  'emotion', 'relationship', 'memory', 'social', 'money', 'environment',
 ];
+
+const FAMILY_LABEL: Partial<Record<CityDecisionFamily, string>> = { money: 'Bargeld' };
 
 function withNeeds(resident: CityResidentState, patch: Partial<CityResidentState['needs']>): CityResidentState {
   return { ...resident, needs: { ...resident.needs, ...patch } };
@@ -48,6 +50,7 @@ function neutralInput(input: CityDecisionInput, family: CityDecisionFamily): Cit
     };
     case 'relationship': return { ...input, resident: { ...input.resident, relationships: {} } };
     case 'memory': return { ...input, resident: { ...input.resident, memories: [] } };
+    case 'money': return { ...input, resident: withNeeds(input.resident, { money: 999_999 }) };
     case 'environment': return { ...input, peers: [] };
   }
 }
@@ -78,16 +81,9 @@ export function decideCityLife(input: CityDecisionInput): CityDecisionPlan {
       family,
       intent: alternative.intent,
       changed: alternative.intent !== choice.intent,
-      detail: `ohne ${family} -> ${alternative.intent}`,
+      detail: `ohne ${FAMILY_LABEL[family] ?? family} -> ${alternative.intent}`,
     };
   });
-  const cashAlternative = chooseCityIntent({ ...input, resident: withNeeds(input.resident, { money: 999_999 }) });
-  if (cashAlternative.intent !== choice.intent) {
-    counterfactuals.push({
-      family: 'environment', intent: cashAlternative.intent, changed: true,
-      detail: `ohne Bargeld -> ${cashAlternative.intent}`,
-    });
-  }
   const memory = memoryUsed(input.resident, target);
   return {
     choice,
