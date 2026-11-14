@@ -680,10 +680,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2928 |
-| Gelistete Dateien | 2928 |
+| Getrackte Dateien | 2929 |
+| Gelistete Dateien | 2929 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (53), artifacts (1), content (1055), docs (103), packages (27), public (571), scripts (116), src (981) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (54), artifacts (1), content (1055), docs (103), packages (27), public (571), scripts (116), src (981) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -695,7 +695,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 32 Datei(en)
+- `.lane-claims/claims/` — 33 Datei(en)
 - `.lane-claims/tasks/` — 20 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1051 Datei(en)
@@ -824,6 +824,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-archive-merged-534.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-governance-archive-merged-566.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-506.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-508.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-535.json` — { — gelesen: 21 Zeilen
@@ -844,13 +845,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-506-interiors-2.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-508-home-household.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-528-goal-cost-truth.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-sim-issue-528-goal-cost-truth.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
