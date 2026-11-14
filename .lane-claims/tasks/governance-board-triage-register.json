@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "taskId": "governance-board-triage-register",
+  "claimId": "lane/governance/board-triage-register",
+  "branch": "lane/governance/board-triage-register",
+  "baseSha": "8e8aae4884b3d72956277c8a880a0bb550cd3f53",
+  "phase": "DONE",
+  "title": "Register der Board-Triage schliessen",
+  "goal": "Closeout-Claim merged, Board-head == main",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "closeout": "post-merge",
+  "pr": {
+    "number": 735,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/735",
+    "state": "merged",
+    "mergedSha": "8e8aae4884b3d72956277c8a880a0bb550cd3f53"
+  },
+  "findings": [],
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "pr-merge",
+      "sha": "8e8aae4884b3d72956277c8a880a0bb550cd3f53"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  },
+  "nextAction": "Register ist leer; naechste Arbeit: #733 und Pixi-Abnahme #640.",
+  "revision": 1
+}
