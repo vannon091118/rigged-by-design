@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "issue-668-repeat-meta-remove",
+  "claimId": "issue-668-repeat-meta-remove",
+  "branch": "lane/narrative/issue-668-repeat-meta-content-remove",
+  "baseSha": "b969a923de1ab950aed90c50761eb002b1b1b667",
+  "phase": "CI_PENDING",
+  "title": "Wiederholte Meta-/Content-Vertragsbausteine aus dem Ingame-Pool entfernen",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9efa879482a8cd2c7259697ddfa689beba51f1616a5fa0b4e3c0e52a170436fe",
+  "contentHash": "sha256:fdc2a7f19a86a5196a2b69e626089dd0ca73226f5f758623d6aa041ca94d78c0",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -84,10 +84,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neutral",
@@ -3140,10 +3140,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -3206,10 +3206,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -7225,6 +7225,94 @@
       "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
     },
     {
+      "contributionId": "city-scene-54",
+      "turnId": "2026-11-14T11:24Z-city-scene-54",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Leute kommen sich auf dem schmalen Gehweg entgegen. Der eine tritt in den Rinnstein, der andere nickt knapp, und fuer einen Moment ist der Weg wieder frei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-54.json"
+    },
+    {
+      "contributionId": "city-scene-55",
+      "turnId": "2026-11-14T12:05Z-city-scene-55",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tresen laeuft die Abrechnung, waehrend draussen der Regen gegen die Scheibe schlaegt. Niemand eilt, die Zahlen stimmen, und fuer heute genuegt das.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-55.json"
+    },
+    {
+      "contributionId": "city-scene-56",
+      "turnId": "2026-11-14T12:15Z-city-scene-56",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Weg zum Hinterhof ist gesperrt, also geht die Schlange aussen herum. Niemand beschwert sich, der Umweg ist kuerzer als das Warten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-56.json"
+    },
+    {
+      "contributionId": "city-scene-57",
+      "turnId": "2026-11-14T12:22Z-city-scene-57",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Eingang steht ein Schild, das den Weg zur Bar erklaert, obwohl jeder Gast ihn kennt. Die Wirtin laesst es haengen; es hat noch niemandem geschadet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-57.json"
+    },
+    {
       "contributionId": "claim-closeout-535-01",
       "turnId": "2026-11-13T23:45Z-claim-closeout-535",
       "agentId": "cloud-agent-2",
@@ -8592,10 +8680,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8614,10 +8702,10 @@
       "agentId": "codex",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8763,10 +8851,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8788,10 +8876,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8838,10 +8926,10 @@
       "agentId": "codex",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8911,10 +8999,10 @@
       "agentId": "buffy",
       "role": "BEOBACHTER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "start"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -8923,7 +9011,8 @@
         "rita-kern"
       ],
       "flags": [
-        "narrativ"
+        "narrativ",
+        "rita-kern"
       ],
       "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
       "directives": [],
@@ -14709,103 +14798,15 @@
       "source": "content/narrative/contributions/2026-11-08-pool-description-52.json"
     },
     {
-      "contributionId": "pool-documentation-27",
-      "turnId": "2026-11-07T23:27Z-pool-documentation-27",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Baustein beschreibt einen Slot, nicht eine Mechanik. Das ist der ganze Vertrag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-27.json"
-    },
-    {
-      "contributionId": "pool-documentation-28",
-      "turnId": "2026-11-07T23:28Z-pool-documentation-28",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Baustein beschreibt einen Slot, nicht eine Mechanik. Mehr braucht der Baustein nicht zu wissen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-28.json"
-    },
-    {
-      "contributionId": "pool-documentation-29",
-      "turnId": "2026-11-07T23:29Z-pool-documentation-29",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "vertrauen",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Baustein beschreibt einen Slot, nicht eine Mechanik. Die Pruefung entscheidet, nicht die Absicht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-29.json"
-    },
-    {
-      "contributionId": "pool-documentation-30",
-      "turnId": "2026-11-07T23:30Z-pool-documentation-30",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "konflikt",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Baustein beschreibt einen Slot, nicht eine Mechanik. So bleibt Content pruefbar.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-30.json"
-    },
-    {
       "contributionId": "pool-documentation-31",
       "turnId": "2026-11-07T23:31Z-pool-documentation-31",
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "trocken",
       "mood": "entschlossen",
@@ -14819,103 +14820,15 @@
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-31.json"
     },
     {
-      "contributionId": "pool-documentation-32",
-      "turnId": "2026-11-07T23:32Z-pool-documentation-32",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "argwoehnisch",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Diese Zeile gehoert in die Registry und nicht in den Simulationscode. Das ist der ganze Vertrag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-32.json"
-    },
-    {
-      "contributionId": "pool-documentation-33",
-      "turnId": "2026-11-07T23:33Z-pool-documentation-33",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "vertrauen",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Diese Zeile gehoert in die Registry und nicht in den Simulationscode. Mehr braucht der Baustein nicht zu wissen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-33.json"
-    },
-    {
-      "contributionId": "pool-documentation-34",
-      "turnId": "2026-11-07T23:34Z-pool-documentation-34",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "konflikt",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Diese Zeile gehoert in die Registry und nicht in den Simulationscode. Die Pruefung entscheidet, nicht die Absicht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-34.json"
-    },
-    {
-      "contributionId": "pool-documentation-35",
-      "turnId": "2026-11-07T23:35Z-pool-documentation-35",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Diese Zeile gehoert in die Registry und nicht in den Simulationscode. So bleibt Content pruefbar.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-35.json"
-    },
-    {
       "contributionId": "pool-documentation-36",
       "turnId": "2026-11-07T23:36Z-pool-documentation-36",
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "documentation"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "neugierig",
@@ -14929,103 +14842,15 @@
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-36.json"
     },
     {
-      "contributionId": "pool-documentation-37",
-      "turnId": "2026-11-07T23:37Z-pool-documentation-37",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "trocken",
-      "mood": "entschlossen",
-      "relationship": "vertrauen",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Text traegt keinen Zustand und keine Kosten. Das ist der ganze Vertrag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-37.json"
-    },
-    {
-      "contributionId": "pool-documentation-38",
-      "turnId": "2026-11-07T23:38Z-pool-documentation-38",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "argwoehnisch",
-      "relationship": "konflikt",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Text traegt keinen Zustand und keine Kosten. Mehr braucht der Baustein nicht zu wissen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-38.json"
-    },
-    {
-      "contributionId": "pool-documentation-39",
-      "turnId": "2026-11-07T23:39Z-pool-documentation-39",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Text traegt keinen Zustand und keine Kosten. Die Pruefung entscheidet, nicht die Absicht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-39.json"
-    },
-    {
-      "contributionId": "pool-documentation-40",
-      "turnId": "2026-11-07T23:40Z-pool-documentation-40",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Der Text traegt keinen Zustand und keine Kosten. So bleibt Content pruefbar.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-40.json"
-    },
-    {
       "contributionId": "pool-documentation-41",
       "turnId": "2026-11-07T23:41Z-pool-documentation-41",
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "commands"
+        "ambient-dokumentation"
       ],
       "tone": "trocken",
       "mood": "argwoehnisch",
@@ -15039,103 +14864,15 @@
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-41.json"
     },
     {
-      "contributionId": "pool-documentation-42",
-      "turnId": "2026-11-07T23:42Z-pool-documentation-42",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "konflikt",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Fragment ohne Verdrahtung ist kein Baustein, sondern ein Entwurf. Das ist der ganze Vertrag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-42.json"
-    },
-    {
-      "contributionId": "pool-documentation-43",
-      "turnId": "2026-11-07T23:43Z-pool-documentation-43",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "trocken",
-      "mood": "entschlossen",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Fragment ohne Verdrahtung ist kein Baustein, sondern ein Entwurf. Mehr braucht der Baustein nicht zu wissen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-43.json"
-    },
-    {
-      "contributionId": "pool-documentation-44",
-      "turnId": "2026-11-07T23:44Z-pool-documentation-44",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "argwoehnisch",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Fragment ohne Verdrahtung ist kein Baustein, sondern ein Entwurf. Die Pruefung entscheidet, nicht die Absicht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-44.json"
-    },
-    {
-      "contributionId": "pool-documentation-45",
-      "turnId": "2026-11-07T23:45Z-pool-documentation-45",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "vertrauen",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Fragment ohne Verdrahtung ist kein Baustein, sondern ein Entwurf. So bleibt Content pruefbar.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-45.json"
-    },
-    {
       "contributionId": "pool-documentation-46",
       "turnId": "2026-11-07T23:46Z-pool-documentation-46",
       "agentId": "buffy",
       "role": "ERZAEHLER",
       "locale": "de",
-      "slot": "documentation",
-      "function": "document",
+      "slot": "description",
+      "function": "describe",
       "contexts": [
-        "content"
+        "ambient-dokumentation"
       ],
       "tone": "sachlich",
       "mood": "entschlossen",
@@ -15147,138 +14884,6 @@
       "text": "Im Spielsaal riecht es nach kaltem Rauch und Bohnerwachs. Der Geruch bleibt länger als jeder Gast.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-46.json"
-    },
-    {
-      "contributionId": "pool-documentation-47",
-      "turnId": "2026-11-07T23:47Z-pool-documentation-47",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Klassifizierung nennt Slot, Funktion und Kontext. Das ist der ganze Vertrag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-47.json"
-    },
-    {
-      "contributionId": "pool-documentation-48",
-      "turnId": "2026-11-07T23:48Z-pool-documentation-48",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Klassifizierung nennt Slot, Funktion und Kontext. Mehr braucht der Baustein nicht zu wissen.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-48.json"
-    },
-    {
-      "contributionId": "pool-documentation-49",
-      "turnId": "2026-11-07T23:49Z-pool-documentation-49",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "content"
-      ],
-      "tone": "trocken",
-      "mood": "entschlossen",
-      "relationship": "vertrauen",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Klassifizierung nennt Slot, Funktion und Kontext. Die Pruefung entscheidet, nicht die Absicht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-49.json"
-    },
-    {
-      "contributionId": "pool-documentation-50",
-      "turnId": "2026-11-07T23:50Z-pool-documentation-50",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "argwoehnisch",
-      "relationship": "konflikt",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Klassifizierung nennt Slot, Funktion und Kontext. So bleibt Content pruefbar.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-07-pool-documentation-50.json"
-    },
-    {
-      "contributionId": "pool-documentation-51",
-      "turnId": "2026-11-08T00:10Z-pool-documentation-51",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Jede Regel nennt ihren Grund und ihren Pruefpfad. Wer sie liest, muss sie nicht raten.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-08-pool-documentation-51.json"
-    },
-    {
-      "contributionId": "pool-documentation-52",
-      "turnId": "2026-11-08T00:20Z-pool-documentation-52",
-      "agentId": "buffy",
-      "role": "ERZAEHLER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "commands"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Die Sektionskoepfe sind zeichengenau vorgegeben. Ein fehlender Umlaut ist ein roter Lauf, kein Formfehler.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-08-pool-documentation-52.json"
     },
     {
       "contributionId": "pool-event-body-08",
