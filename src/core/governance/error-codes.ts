@@ -50,6 +50,7 @@ export const ERROR_CODES = {
   CAPABILITY_GATE: { code: 'ERR-4025', level: 'AGENT', area: 'governance', cause: 'Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise.', fix: 'Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren.' },
   GOVERNANCE_FREEZE: { code: 'ERR-4030', level: 'BLOCKED', area: 'governance', cause: 'Governance-Pfad ohne gueltige PIN-Freigabe oder ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad.', fix: 'Freigabe ueber scripts/freeze-unlock.mjs erzeugen oder die Aenderung verwerfen; keine stille Uebernahme.' },
   TEST_RED: { code: 'ERR-4026', level: 'AGENT', area: 'governance', cause: 'Die Testsuite ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten.', fix: 'Befund als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt.' },
+  WORKER_BOOTSTRAP: { code: 'ERR-4027', level: 'BLOCKED', area: 'governance', cause: 'Worker-Identitaet ist nicht global reserviert, der Workspace-Home fehlt oder der Worktree-Neuaufbau hat keinen Merge-Beleg.', fix: 'IDENTITY_CLAIM im Identity-Board verifizieren, .lanes/identity.json pruefen und den Worker-Worktree erst nach belegtem Merge neu aufbauen.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(Object.values(ERROR_CODES).map((entry) => [entry.code, entry]));

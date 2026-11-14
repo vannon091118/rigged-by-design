@@ -11,6 +11,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
 import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
+import { workerEnv } from './test-worker-home';
 
 interface Payload {
   readonly ok: boolean;
@@ -85,7 +86,7 @@ const run = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv = {}) 
   spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'pretask.mjs'), ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, RBD_ROOT: cwd, ...env },
+    env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, ...env },
   });
 
 const claimRepo = (parent: string, name: string, branch: string): string => {

@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T04:05Z-worker-bootstrap-03",
+  "contributionId": "worker-bootstrap-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Schlüssel geht nur heraus, wenn der Name im Buch steht. Steht neben der Schicht schon „zur Prüfung“, bleibt die Tür zu, bis jemand sie wieder aufschließt.",
+  "directives": []
+}

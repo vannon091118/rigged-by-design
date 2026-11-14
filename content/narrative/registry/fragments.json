@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:67b311ab3adb9896dbbe99728323303edea4ca4fb4839d36f5fc53f371d09267",
+  "contentHash": "sha256:e84cfd238b775f65d0d9c69c2abd6237879e01a62a833bcbb7386613cd63b5aa",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -23446,6 +23446,72 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "worker-bootstrap-01",
+      "turnId": "2026-11-14T03:45Z-worker-bootstrap-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Haken hängen drei Namensschilder. Wer eines abnimmt, schreibt es zuerst ins Buch an der Tür; ohne Eintrag bleibt der Schlüssel im Kasten, auch wenn niemand hinsieht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-worker-bootstrap.json"
+    },
+    {
+      "contributionId": "worker-bootstrap-02",
+      "turnId": "2026-11-14T03:55Z-worker-bootstrap-02",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Haken an der Wand ist der Hauptschlüssel; alle anderen hängen daneben. Wer den ersten für einen Nebenplatz hält, zählt am Ende drei Türen statt zwei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-worker-bootstrap-roles.json"
+    },
+    {
+      "contributionId": "worker-bootstrap-03",
+      "turnId": "2026-11-14T04:05Z-worker-bootstrap-03",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schlüssel geht nur heraus, wenn der Name im Buch steht. Steht neben der Schicht schon „zur Prüfung“, bleibt die Tür zu, bis jemand sie wieder aufschließt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-worker-gate.json"
     },
     {
       "contributionId": "world-continuity-interaction-1",

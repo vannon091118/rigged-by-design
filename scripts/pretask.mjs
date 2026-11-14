@@ -36,6 +36,9 @@ import {
   parseStatusPaths,
 } from './lib/worktree-isolation.mjs';
 import { impact as buildImpact } from './lib/impact.mjs';
+import { dispatchRole } from './lib/worker-identity.mjs';
+import { canClaimWork, workState } from './lib/work-claim.mjs';
+import { readIdentityFile, validateIdentityFile, workspaceHome, workspacePaths } from './lib/workspace-home.mjs';
 import { ROOT } from './lib/report.mjs';
 import { causeBlock, localCauses } from './agent-cause.mjs';
 import { refreshBase } from './lib/base-refresh.mjs';
@@ -494,7 +497,47 @@ if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
   nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
 }
 
+// Worker-Bootstrap: Rolle, Identitaet und Home stehen am Anfang jedes Laufs.
+// Die Identitaet selbst wird im Identity-Board reserviert; hier wird nur
+// gelesen und geprueft, damit ein fehlender Home kein stiller Start ist.
+const workerHome = workspaceHome();
+const workerPaths = workspacePaths(workerHome);
+const workerRecord = readIdentityFile(workerPaths.identity);
+const workerCheck = workerRecord
+  ? validateIdentityFile(workerRecord)
+  : { ok: false, reasons: ['identity-file-missing'] };
+const worker = {
+  role: dispatchRole(),
+  home: workerHome,
+  identityFile: workerPaths.identity,
+  identity: workerRecord?.identity ?? null,
+  claimId: workerRecord?.claimId ?? null,
+  activeIssue: workerRecord?.activeIssue ?? null,
+  status: workerRecord?.status ?? 'IDLE',
+  identityValid: workerCheck.ok,
+  identityReasons: workerCheck.reasons,
+};
+if (!worker.identityValid && branch !== 'main' && claim) {
+  // Harte Sperre: ohne reservierte Identitaet startet keine Lane-Arbeit.
+  blockers.push(`[ERR-4027] Worker-Identitaet fehlt oder ist ungueltig (${worker.identityReasons.join(', ')}); \`pnpm run worker:init -- claim\` im Identity-Board, kein Read vor der Reservierung`);
+}
+
+// Arbeits-Claim als Gate: ein laufendes Review sperrt neue Arbeit am Issue.
+const issueWork = Array.isArray(issueClaim.comments) ? workState(issueClaim.comments) : 'OPEN';
+const reviewStates = ['REVIEW_PENDING', 'ACCEPTED', 'MERGED'];
+const workGate = {
+  state: issueWork,
+  blocked: reviewStates.includes(issueWork) && Boolean(issueClaim.number),
+};
+if (workGate.blocked) {
+  blockers.push(`[ERR-4027] Issue #${issueClaim.number} steht auf ${issueWork}: erst \`REWORK\` oder Review-Entscheid durch den Maintainer, keine neue Arbeit im selben Worker`);
+} else if (issueClaim.number && !canClaimWork(issueWork, { sameIssue: issueClaim.status === 'claimed-self' })) {
+  blockers.push(`[ERR-4027] Issue #${issueClaim.number} ist nicht frei (${issueWork}); Work-Claim verweigert`);
+}
+
 const contract = {
+  worker,
+  workGate,
   task: {
     id: claim?.id ?? null,
     description: claim?.task ?? null,
@@ -589,6 +632,8 @@ if (asJson) {
       head,
       claim: claimInfo ? { id: claimInfo.id, owner: claimInfo.owner, status: claimInfo.status, paths: claimInfo.allowlist.length } : null,
       issueClaim: { status: issueClaim.status, number: issueClaim.number, holder: issueClaim.holder ?? null },
+      worker: { role: worker.role, identity: worker.identity, status: worker.status, valid: worker.identityValid },
+      workGate,
       board: board.items.map((item) => `#${item.number} ${item.priority}`),
       task: contract.task.id,
       paths: { own: contract.paths.ownWip.length, foreign: contract.paths.foreign.length, unowned: contract.paths.unowned.length, adopted: takeover.adopted, corrupted: takeover.blocked },

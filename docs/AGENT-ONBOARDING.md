@@ -10,7 +10,7 @@ Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issu
 
 **Du schließt nie.** Issues und Pull Requests werden von dir nur **erstellt und kommentiert**; Schließen, Wiedereröffnen und Mergen liegen ausschließlich bei Maintainer oder User. Auch ein erledigtes Ticket bleibt offen, bis der Maintainer es schließt.
 
-**Dein Name:** `agent-<n>-local` bzw. `agent-<n>-cloud` — die Umgebung steht im Suffix, die Instanz in der Nummer (`agent-1-local`, `agent-2-cloud`). Der alte Name `local.agent(cloud).<n>` bleibt als Alias gültig, damit ältere Kommentare derselben Identität zugeordnet werden. Jeder Kommentar beginnt mit deinem Namen, sonst ist er nicht zuordenbar. `pretask` liest die Identität aus `RBD_AGENT` (oder `--agent`) und vergleicht exakt; mehrere Aliase dürfen kommagetrennt dort stehen.
+**Dein Name:** `LIILITH`, `Shinon` oder `Jenova` — eine der drei Worker-Identitäten. Welche dir gehört, steht im Identity-Board-Issue (`IDENTITY_CLAIM`) und lokal in `RBD_WORKSPACE_HOME/.lanes/identity.json`; `pnpm run worker:init -- status` prüft beides. Die alten Namen `agent-<n>-local/-cloud` bleiben als Historie lesbar, sind aber keine neuen Identitäten. Jeder Kommentar nennt deine Identität und deine Claim-ID, sonst ist er nicht zuordenbar.
 
 **Grundsatz, der alles andere schlägt:** Das Issue-Board ist der primäre Workflow — Priorität, Besitz und Fortschritt stehen dort. Dein lokaler State und die Dateien unter `.lane-claims/` sind nur ein Cache bzw. eine lokale Kollisionssperre für Pfade und dürfen **nie** gegen den Issue-Verlauf entscheiden. Du arbeitest auf mehreren Systemen, also ist lokaler State flüchtig und systemgebunden — was zählt, steht im Issue.
 
@@ -30,6 +30,8 @@ Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issu
 
 Verschaffe dir den Bestand, bevor du irgendetwas anfasst.
 
+- `pnpm run worker:init -- status` prueft Identitaet, Claim-ID und Workspace-Home. Ungueltige Datei oder fehlende globale Reservierung heisst `BLOCKED`: keine neue Arbeit ohne Identitaet.
+
 - `gh issue list --state open -R vannon091118/rigged-by-design --limit 100` mit Labels, Alter, letztem Kommentar.
 - Für die obersten Kandidaten: Body **und alle Kommentare** lesen.
 - Blockierte Issues (`blocked by` offen) sind für dich nicht wählbar.
@@ -40,6 +42,8 @@ Verschaffe dir den Bestand, bevor du irgendetwas anfasst.
 ---
 
 ## 2 · Main-Fetch
+
+`pnpm run worker:init -- inventory` listet alle Worktrees dieses Repos mit Git-Zustand, Stashes und nicht gepushten Commits. `INVENTORY_INCOMPLETE` oder Dubletten sperren jedes Aufraeumen; fremde WIP bleibt liegen.
 
 Vor jeder Arbeit den aktuellen Stand holen — nie auf einem veralteten `main` urteilen. Der geteilte Arbeitsbaum wird **nicht** zurückgesetzt: `reset --hard`, `clean -xdf` und `stash` sind für Agenten verboten (`AGENTS.md` Regel 2) und würden fremdes WIP vernichten.
 

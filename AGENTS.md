@@ -13,11 +13,14 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 | Rolle | Identität | Darf | Darf nicht |
 | --- | --- | --- | --- |
 | **Maintainer** | der benannte Reviewer und Orchestrator | Issues und Pull Requests anlegen, kommentieren, schließen und wiedereröffnen (**Schließen nur Maintainer oder User**); Verdikt `ACCEPT`/`PARTIAL`/`REJECT`; Merge nach `main` und Push auf `main`; Release-Tags; Priorisierung; Konflikte zwischen Agenten entscheiden | eine Spiel-Lane ohne eigenen Claim führen |
-| **Agent** | `agent-<n>-local` bzw. `agent-<n>-cloud` je Umgebung (Alias `local.agent(cloud).<n>`, gesetzt über `RBD_AGENT`) | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues oder Pull Requests schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
+| **Agent** | `LIILITH`, `Shinon` oder `Jenova` — global im Identity-Board reserviert (`pnpm run worker:init`); `agent-<n>-local/-cloud` sind Legacy-Namen, keine neuen Identitäten | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues oder Pull Requests schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
 
 - **Ein Orchestrator.** Prioritäten, Backlog-Reihenfolge und Konflikte entscheidet der Maintainer; Agenten arbeiten die so sortierten Issues ab und melden im Issue zurück.
 - **Ein Agent pro Issue.** Besitz ist der `CLAIM`-Kommentar am Issue, nicht der lokale Zustand; `pretask` prüft ihn als Startgate.
 - **Claim vor Read.** Wer ein freies Issue übernehmen will, kommentiert zuerst `CLAIM`, dann liest er Code. Zwei aktive Claims sind ein Konflikt für den Maintainer, keine Doppelarbeit.
+- **Identität vor Arbeit.** Die Worker-Identität wird einmal global im Identity-Board reserviert (`IDENTITY_CLAIM`) und lokal in `.lanes/identity.json` gehalten; sie überlebt Worktree-Neuaufbauten. Identitäts-Claim und Arbeits-Claim am Issue sind getrennt. Ohne verifizierte Reservierung kein neuer Arbeits-Claim.
+- **Zwei Worktrees.** Pro System genau ein `main`- und ein `worker`-Worktree im Workspace-Home; weitere Klone und Worktrees werden inventarisiert, nicht blind gelöscht. Ein `node_modules` wird nur bei geändertem Dependency-Fingerprint neu gebaut, aus einem persistenten Store.
+- **DONE ist kein Merge.** `DONE` führt nach `REVIEW_PENDING` und schließt nichts; `MERGED` braucht einen echten Merge-SHA auf `origin/main`.
 - **Nur erstellen und kommentieren.** Agenten legen Issues und Pull Requests an und kommentieren sie; **schließen oder wiedereröffnen** sie nie — nicht das eigene, nicht ein erledigtes, nicht ein fremdes. `RELEASE` und der DONE-Kommentar sind die Übergabe; das Ticket bleibt offen, bis der Maintainer oder der User es schließt.
 
 ## Verbindlicher Agent-Workflow

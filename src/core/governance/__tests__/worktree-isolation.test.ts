@@ -11,6 +11,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
+import { workerEnv } from './test-worker-home';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -90,7 +91,7 @@ const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv
   spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'pretask.mjs'), ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, RBD_ROOT: cwd, ...env },
+    env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, ...env },
   });
 
 const payloadOf = (stdout: string): PretaskPayload => JSON.parse(stdout) as PretaskPayload;

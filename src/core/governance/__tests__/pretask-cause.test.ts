@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { causeBlock, causeForGate } from '../../../../scripts/agent-cause.mjs';
+import { workerEnv } from './test-worker-home';
 
 interface Payload {
   readonly causes?: readonly {
@@ -71,7 +72,7 @@ const run = (cwd: string, args: readonly string[]) => {
   return spawnSync(process.execPath, [SCRIPT, ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, RBD_ROOT: cwd, RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: gh },
+    env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: gh },
   });
 };
 

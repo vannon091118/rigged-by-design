@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T03:45Z-worker-bootstrap-01",
+  "contributionId": "worker-bootstrap-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Haken hängen drei Namensschilder. Wer eines abnimmt, schreibt es zuerst ins Buch an der Tür; ohne Eintrag bleibt der Schlüssel im Kasten, auch wenn niemand hinsieht.",
+  "directives": []
+}

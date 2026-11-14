@@ -244,6 +244,8 @@ export function readIssueClaim({ number, agent, cwd, now = Date.now(), staleHour
     number,
     state: result.issue?.state ?? '',
     labels: (result.issue?.labels ?? []).map((label) => label?.name).filter(Boolean),
+    // Der Arbeits-Claim braucht den Verlauf, nicht nur das Verdikt (#605).
+    comments: result.issue?.comments ?? [],
     ...evaluation,
   };
 }

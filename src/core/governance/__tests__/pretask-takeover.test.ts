@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
 import { TAKEOVER_CODE } from '../../../../scripts/lib/takeover.mjs';
+import { workerEnv } from './test-worker-home';
 
 interface Payload {
   readonly mode: string;
@@ -99,7 +100,7 @@ const run = (cwd: string, parent: string) =>
   spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'pretask.mjs'), '--json'], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, RBD_ROOT: cwd, RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: writeEmptyGh(parent) },
+    env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: writeEmptyGh(parent) },
   });
 
 const payloadOf = (stdout: string): Payload => JSON.parse(stdout) as Payload;
