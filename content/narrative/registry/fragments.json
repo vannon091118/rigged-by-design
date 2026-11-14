@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:380f2f06fa6f938952cb1a8a4567c336adcf3d013c10840b90d780d2853e3b84",
+  "contentHash": "sha256:d7c7c59ef3733c8858e1325508a8fce854cfea491de24dd071f53241aff3fc76",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6600,6 +6600,28 @@
       "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "determinism-computed-01",
+      "turnId": "2026-11-14T06:35Z-determinism-computed-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die alte Sperre las nur den Punkt hinter Math und Date. Jetzt sieht sie auch den Schlüssel in eckigen Klammern, das Destructuring und den Alias; nur die eine benannte Entropie-Quelle bleibt offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-determinism-computed.json"
     },
     {
       "contributionId": "dialog-open-01",

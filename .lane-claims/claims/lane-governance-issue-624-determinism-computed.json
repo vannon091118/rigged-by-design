@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/issue-624-determinism-computed",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-624-determinism-computed",
+  "baseSha": "aa8583a00a8a4c4c98e46c3df9fee34ece7c915d",
+  "issue": 624,
+  "task": "Determinismus-Ban fuer computed Property Access (#624)",
+  "goal": "AST-Regel plus Fixture; entropySeed bleibt erlaubt",
+  "pathAllowlist": [
+    "src/Config/",
+    "scripts/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "aa8583a00a8a4c4c98e46c3df9fee34ece7c915d"
+}

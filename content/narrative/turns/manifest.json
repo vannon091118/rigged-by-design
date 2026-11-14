@@ -4258,6 +4258,10 @@
       "contributionId": "scheduled-place-all-intents-01"
     },
     {
+      "turnId": "2026-11-14T06:35Z-determinism-computed-01",
+      "contributionId": "determinism-computed-01"
+    },
+    {
       "turnId": "2026-11-14T07:05Z-scene-frame-doors",
       "contributionId": "scene-frame-doors-01"
     },

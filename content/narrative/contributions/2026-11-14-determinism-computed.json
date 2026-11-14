@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T06:35Z-determinism-computed-01",
+  "contributionId": "determinism-computed-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die alte Sperre las nur den Punkt hinter Math und Date. Jetzt sieht sie auch den Schlüssel in eckigen Klammern, das Destructuring und den Alias; nur die eine benannte Entropie-Quelle bleibt offen.",
+  "directives": []
+}
