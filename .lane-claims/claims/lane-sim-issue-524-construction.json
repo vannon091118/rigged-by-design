@@ -19,8 +19,6 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "merged",
-  "createdAt": "77f11ff59dc4bd99c4a03f52c9100fd424607144",
-  "mergedEvidence": "squash-merge PR #524 (aa91ec76), Issue #524 geschlossen (completed 2026-11-14T02:27:27Z)",
-  "mergedSha": "aa91ec7646cf706789cd1db32522b0aec6d205c3"
+  "status": "open",
+  "createdAt": "77f11ff59dc4bd99c4a03f52c9100fd424607144"
 }

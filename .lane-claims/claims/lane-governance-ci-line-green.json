@@ -9,11 +9,16 @@
   "pathAllowlist": [
     "src/core/sim/building-types.ts",
     "src/core/governance/__tests__/worker-claim-gate.test.ts",
-    "content/narrative/**",
-    "docs/INVENTORY.md",
-    ".lane-claims/**",
     "src/core/sim/narrative/composer/registry.generated.ts",
-    "src/core/sim/narrative/composer/slot-map.generated.ts"
+    "content/narrative/contributions/2026-11-14-ci-line-green.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-ci-line-green.json",
+    ".lane-claims/tasks/governance-ci-line-green.json",
+    ".lane-claims/claims/lane-governance-workspace-home-drive.json",
+    ".lane-claims/claims/lane-sim-issue-524-construction.json",
+    ".lane-claims/tasks/sim-issue-524-construction.json"
   ],
   "contracts": [],
   "dependencies": [],

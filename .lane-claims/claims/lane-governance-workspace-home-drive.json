@@ -18,8 +18,6 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "merged",
-  "createdAt": "ce9df7a267c8c05f643eb52b305b431964e8fbae",
-  "mergedEvidence": "merge PR #609 (Maintainer, main 9c7add6b); Fix als 308a6599 auf main",
-  "mergedSha": "308a6599e720d726b55316b59543f16a0ee37611"
+  "status": "open",
+  "createdAt": "ce9df7a267c8c05f643eb52b305b431964e8fbae"
 }

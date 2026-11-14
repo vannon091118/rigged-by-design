@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "PR #613 ist gepusht; Claim mit RELEASE [A4] done 0ed71240 freigegeben, Label review-waiting gesetzt. Naechster Schritt: Maintainer-Review auf exaktem Kopf.",
-  "revision": 2
+  "nextAction": "Scope-Audit: Allowlist auf die tatsaechlich geaenderten Dateien verengt; Register-Nachtraege als Governance-Statuspflege belegt. Naechster Schritt: Maintainer-Review PR #613.",
+  "revision": 3
 }
