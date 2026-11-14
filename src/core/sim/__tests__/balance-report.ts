@@ -61,8 +61,16 @@ export function balanceViolations(rows: readonly DayRow[], days: number): readon
   return found;
 }
 
+/**
+ * Herkunft eines Berichts. Der Main-SHA ist Pflicht fuer Vergleichbarkeit:
+ * gleicher Seed und gleiche Tage auf einem anderen Stand sind keine Regression.
+ */
+interface BalanceReportMeta {
+  readonly mainSha?: string;
+}
+
 /** Markdown-Bericht: Phasenmittel, Extremtage und die Rohzeilen — ohne Neuberechnung. */
-export function balanceReport(rows: readonly DayRow[], seed: number): string {
+export function balanceReport(rows: readonly DayRow[], seed: number, meta: BalanceReportMeta = {}): string {
   const head = '| Tag | Stufe | Gäste | aktiv | wKasse | wGerät | Runden | Abbrüche | Betrieb | Kapital |';
   const rule = '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |';
   const body = rows.map((row) => `| ${row.day} | ${row.tier} | ${f(row.arrivals)} | ${row.active} | `
@@ -77,8 +85,12 @@ export function balanceReport(rows: readonly DayRow[], seed: number): string {
       + `| ${f(mean((row) => row.waitDesk), 0)} | ${f(mean((row) => row.economy.operatingProfit))} `
       + `| ${f(mean((row) => row.economy.rent))} |`;
   });
+  const mainSha = String(meta.mainSha ?? '').trim() || 'unbekannt';
   return [
-    `# Balance-Spur · Seed ${seed} · ${rows.length} Spieltage`,
+    `# Balance-Spur · Seed ${seed} · ${rows.length} Spieltage · main ${mainSha}`,
+    '',
+    `Vergleich: fester Seed ${seed} und ${rows.length} Tage auf demselben main-SHA ergeben denselben Bericht;`,
+    'ein anderer SHA ist eine neue Messung, kein Rueckschritt.',
     '',
     '## Phasen',
     '| Stufe | Tage | Gäste/min | Runden | wKasse | Betrieb/Tag | Miete/Tag |',

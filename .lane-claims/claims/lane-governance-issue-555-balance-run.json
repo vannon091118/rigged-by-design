@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/issue-555-balance-run",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-555-balance-run",
+  "baseSha": "6f20cf87ec755d6cbed29e5a4230b209e8323c91",
+  "issue": 555,
+  "task": "Balance-Messlauf an den aktiven Simulations- und Balancing-Bericht anschliessen",
+  "goal": "Bewusste On-Demand-Entscheidung dokumentieren; reproduzierbarer 40-Tage-Bericht mit Seed/Tagen/Main-SHA ohne Ueberschreiben",
+  "pathAllowlist": [
+    "scripts/balance-run.mjs",
+    "src/core/sim/__tests__/",
+    "src/Config/test-lanes.json",
+    "package.json",
+    "docs/TESTING.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/TEST-CATALOG.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-issue-555-balance-run.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6f20cf87ec755d6cbed29e5a4230b209e8323c91"
+}
