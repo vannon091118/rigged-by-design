@@ -9,7 +9,7 @@ import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
 import { SAVE_VERSIONS } from '../core/io/repair';
 
-const SAVE_VERSION = 11;
+export const SAVE_VERSION = 11;
 const KEY = 'vcoin.casino.v11';
 /** v10 kennt keinen Layout-Vertrag; v9 den Rivalen-Zustand nicht; v8 nicht die Narrative-Domaene; v5 trug das Fiat im Gastobjekt. */
 const LEGACY_KEYS = ['vcoin.casino.v10', 'vcoin.casino.v9', 'vcoin.casino.v8', 'vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
