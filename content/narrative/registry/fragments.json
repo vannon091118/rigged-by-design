@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:da47dcb1e9fef5df4ada2213bdd74f7c720a52cdd5e6a504a4dd91d0007bffe7",
+  "contentHash": "sha256:a2124253b4579ee24015de43727fa13b6b22fc9ed7b42359a0caa669b997ec75",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7642,6 +7642,28 @@
       "text": "Wer nach Hause will, geht nicht mehr in die Wohnung des Spielers; die eigene Adresse steht im Eintrag, und der Weg endet vor einer anderen Haustür.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-home-households.json"
+    },
+    {
+      "contributionId": "house-debt-01",
+      "turnId": "2026-11-14T05:05Z-house-debt-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Geldblock steht jetzt auch, was offen ist. Die Zahl wächst nur, wenn eine Rechnung ungedeckt bleibt, und schrumpft mit jeder Tilgung; niemand führt sie neben dem Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-house-debt.json"
     },
     {
       "contributionId": "influence-matrix-01",

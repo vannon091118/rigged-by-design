@@ -1,7 +1,7 @@
 /** Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. */
 import type { Ledger } from '../core/economy/ledger';
 import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
-import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
+import { DEBT_ACCOUNT, fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
 import { duelPreview, type DuelPreview } from '../core/sim/duel';
 import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
@@ -161,6 +161,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardHandling(world, dispute)])),
     duels,
     house: ledger.getBalance(HAUSKONTO),
+    // Die Schuld ist der negative Saldo der Verbindlichkeit, nie ein zweiter Zaehler.
+    debt: Math.max(0, -ledger.getBalance(DEBT_ACCOUNT)) as VaCoinMicro,
     // Agent 09: der Zustand der Immobilie kommt aus Belegen plus Material und Konto.
     renovation: renovationView(world, ledger),
     // Agent 10: die Halle ist die Summe der Automaten auf der eigenen Flaeche.

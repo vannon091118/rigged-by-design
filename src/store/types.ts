@@ -122,6 +122,8 @@ export interface GameView {
   readonly barLevel: number;
   readonly wcLevel: number;
   readonly house: VaCoinMicro;
+  /** Offene Haus-Schuld aus `DEBT_ACCOUNT`, vorzeichenrichtig positiv (0 = keine). */
+  readonly debt: VaCoinMicro;
   /** Renovierungsstufe der eigenen Immobilie samt naechstem Schritt. */
   readonly renovation: RenovationView;
   /** Automaten der eigenen Flaeche samt Wartungsbedarf. */

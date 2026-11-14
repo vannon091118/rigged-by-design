@@ -37,4 +37,15 @@ describe('HudMoney', () => {
     expect(html).toContain('Pakt 20');
     expect(html).not.toContain('hud-goal-row');
   });
+
+  it('zeigt die offene Haus-Schuld nur bei positivem Betrag', () => {
+    const withDebt = renderToStaticMarkup(
+      <HudMoney guest={false} amount="150.00 VC" desk="12.00 VC" pending="3.00 VC" debt="7.50 VC" pact="kein Pakt" goal={goal} />,
+    );
+    expect(withDebt).toContain('Schuld 7.50 VC');
+    const withoutDebt = renderToStaticMarkup(
+      <HudMoney guest={false} amount="150.00 VC" desk="12.00 VC" pending="3.00 VC" debt={null} pact="kein Pakt" goal={goal} />,
+    );
+    expect(withoutDebt).not.toContain('Schuld');
+  });
 });
