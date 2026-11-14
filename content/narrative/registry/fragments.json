@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:66408d63a3a02051d0de2866d9b494a3c421b866ed55dc71fd2cde16cfc5b031",
+  "contentHash": "sha256:965e013231c5d1b9a11e83a78d918739e134579d648f5d6f970b3efbf6f98474",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7991,6 +7991,30 @@
       "text": "Rita las die neue Fassung und fand dieselbe Kette wieder, die sie am Tresen erlebt hatte: Laune, Charisma, Erinnerung, Preis. Nur stand sie diesmal nicht als Regel des Hauses da, sondern als Leben, das schon vor dem ersten Gast angefangen hatte. Der Automat blieb stehen, wo er stand - als Testumgebung, nicht als Genre.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
+    },
+    {
+      "contributionId": "ledger-escrow-01",
+      "turnId": "2026-11-14T05:58Z-external-work-split",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Töpfe, zwei Deckel: Der Bauträger zahlt in seinen Escrow, der Pakt legt seine Reserve daneben. Rita hat die alte Zeile durchgestrichen, in der beides auf einem Konto stand, und daneben geschrieben, dass ein Bau dem Bonus nichts mehr wegnehmen kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-external-work-split.json"
     },
     {
       "contributionId": "ledger-game-type-01",
