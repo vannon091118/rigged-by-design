@@ -1,0 +1,23 @@
+{
+  "id": "lane/render/issue-731-city-actor-tests",
+  "owner": "Integrator",
+  "branch": "lane/render/issue-731-city-actor-tests",
+  "baseSha": "8f31a19ed22803e21fa674bd1c565dbf84a28da8",
+  "issue": 731,
+  "task": "Issue #731: Tests fuer CityActorSync sync/animate",
+  "pathAllowlist": [
+    "src/render/__tests__/city-actor-sync-lifecycle.test.ts",
+    "content/narrative/contributions/2026-11-14-rumor-18.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-render-issue-731-city-actor-tests.json",
+    ".lane-claims/tasks/render-issue-731-city-actor-tests.json",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8f31a19ed22803e21fa674bd1c565dbf84a28da8"
+}

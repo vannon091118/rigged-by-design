@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-14T19:34Z-rumor-18",
+  "contributionId": "rumor-18",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["boris-falk"],
+  "flags": ["narrativ"],
+  "text": "Die Kellnerin sagt, sie erkenne einen Gast an seinen Schritten, nicht an seinem Gesicht. Wer denselben Weg zweimal geht, geht ihn beim zweiten Mal ruhiger. Wer stehen bleibt, ohne bestellt zu haben, wird zweimal gezaehlt - einmal vom Haus, einmal von ihr.",
+  "directives": []
+}
