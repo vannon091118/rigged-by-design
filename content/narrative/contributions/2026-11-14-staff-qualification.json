@@ -1,0 +1,22 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-14T06:50Z-staff-qualification",
+  "contributionId": "staff-qualification-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation",
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Personalbuch steht neben jedem Namen eine Stufe, und daneben der Satz, der an ihr haengt. Zwei Reinigungskraefte, zwei Zeilen, zwei Betraege: Wer den Meister einstellt, zahlt mehr und bekommt mehr, und das steht vorher da.",
+  "directives": []
+}

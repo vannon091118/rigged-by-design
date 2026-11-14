@@ -7,6 +7,7 @@
  * ein Agent existiert, im Dienst heisst, dass er nicht steckt.
  */
 import type { Point, StaffAgent, StaffRole, WorldState } from './types';
+import { qualificationWorkBonus } from './staff-qualification';
 
 const distance = (ax: number, ay: number, bx: number, by: number): number =>
   Math.abs(ax - bx) + Math.abs(ay - by);
@@ -75,19 +76,21 @@ export function hasActiveGuard(world: WorldState): boolean {
 export const REVIEW_TICKS = { solid: 40, stark: 120 } as const;
 
 /**
- * Die Bewertung kennt nur zwei Eingaenge: geleistete Arbeit und Blockade.
- * Ein Agent, der steckt, ist nie stark – egal wie lange er eingestellt ist.
+ * Die Bewertung kennt drei Eingaenge: geleistete Arbeit, Qualifikationsstufe
+ * und Blockade. Ein Agent, der steckt, ist nie stark – egal wie lange er
+ * eingestellt ist und welche Stufe er hat.
  */
 export type StaffPerformance = 'FRISCH' | 'SOLIDE' | 'STARK' | 'EINGESCHRAENKT';
 
 /**
- * Leistungsbewertung aus dem, was die uebergebenen Agenten wirklich getan haben.
+ * Leistungsbewertung aus dem, was die uebergebenen Agenten wirklich getan haben,
+ * gewichtet um ihre Stufe.
  * Mehrere Agenten derselben Rolle zaehlen gemeinsam; `FRISCH` heisst: noch keine
  * belastbare Arbeitsmenge, nicht „schlecht“.
  */
 export function staffPerformance(agents: readonly StaffAgent[]): StaffPerformance {
   if (agents.some((agent) => !isOnDuty(agent))) return 'EINGESCHRAENKT';
-  const worked = agents.reduce((sum, agent) => sum + agent.workTicks, 0);
+  const worked = agents.reduce((sum, agent) => sum + agent.workTicks + qualificationWorkBonus(agent.qualification), 0);
   if (worked >= REVIEW_TICKS.stark) return 'STARK';
   if (worked >= REVIEW_TICKS.solid) return 'SOLIDE';
   return 'FRISCH';

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9d682393ff2b3ff9bbe764ac94366407e4c7184661d89cd21644db2264395406",
+  "contentHash": "sha256:711138d211e78f9a0b0f2c6e20524d77b5d83d9176e0e6c1b58f90dff4fc0b4a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -24293,6 +24293,29 @@
       "text": "Der Portier trägt die Kiste nicht mehr unsichtbar durch den Flur: Sie hängt an seinen Händen, wiegt bei jedem Schritt mit, und er dreht den Oberkörper dorthin, wo er hingeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-staff-actor-state.json"
+    },
+    {
+      "contributionId": "staff-qualification-01",
+      "turnId": "2026-11-14T06:50Z-staff-qualification",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Personalbuch steht neben jedem Namen eine Stufe, und daneben der Satz, der an ihr haengt. Zwei Reinigungskraefte, zwei Zeilen, zwei Betraege: Wer den Meister einstellt, zahlt mehr und bekommt mehr, und das steht vorher da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-staff-qualification.json"
     },
     {
       "contributionId": "stale-claims-01",

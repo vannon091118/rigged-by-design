@@ -13,7 +13,7 @@ import { replaySave } from '../save';
 
 const GUARD: StaffAgent = {
   id: 700, role: 'guard', x: 5, y: 5, path: [], pathIndex: 0, carryingCrate: null,
-  workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null,
+  workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null, qualification: 'GESELLE',
 };
 
 function oldSave(overrides: Record<string, unknown> = {}) {

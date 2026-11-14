@@ -19,7 +19,7 @@ const SEED = 7;
 
 const GUARD: StaffAgent = {
   id: 900, role: 'guard', x: 5, y: 5, path: [], pathIndex: 0, carryingCrate: null,
-  workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null,
+  workTicks: 0, task: 'patrol', blockedReason: '', targetDisputeId: null, qualification: 'GESELLE',
 };
 
 function house(): WorldState {

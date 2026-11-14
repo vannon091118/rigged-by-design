@@ -159,7 +159,7 @@ describe('UI-Integration', () => {
   it('zeigt den Personalstatus mit Auftrag und Blockadegrund', () => {
     const agent: StaffAgent = {
       id: 1, role: 'porter', x: 2, y: 2, path: [], pathIndex: 0, carryingCrate: null,
-      workTicks: 0, task: 'toStorage', blockedReason: 'Lager voll', targetDisputeId: null,
+      workTicks: 0, task: 'toStorage', blockedReason: 'Lager voll', targetDisputeId: null, qualification: 'GESELLE',
     };
     render(<StaffStatus view={{ ...view(), agents: [agent] }} />);
     expect(screen.getByText('bringt Ersatzteile').textContent).toBe('bringt Ersatzteile');

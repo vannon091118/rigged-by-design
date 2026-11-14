@@ -4480,6 +4480,10 @@
     {
       "turnId": "2026-11-14T06:15Z-run-budget-01",
       "contributionId": "run-budget-01"
+    },
+    {
+      "turnId": "2026-11-14T06:50Z-staff-qualification",
+      "contributionId": "staff-qualification-01"
     }
   ]
 }
