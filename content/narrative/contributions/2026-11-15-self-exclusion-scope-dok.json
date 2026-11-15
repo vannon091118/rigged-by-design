@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T22:00Z-self-exclusion-scope-dok",
+  "contributionId": "self-exclusion-scope-dok-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita legte die Pakt-Karten auf den Tresen und zählte: Fremde Spiele trinken den Suchtwert, eigene Runden bleiben unberührt. Wer das Limit bricht, tut es im fremden Haus – nicht im eigenen.",
+  "directives": []
+}
