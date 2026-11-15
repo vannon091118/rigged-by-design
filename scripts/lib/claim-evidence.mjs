@@ -11,6 +11,11 @@
  * Branch mit eigenem, nicht gemergtem Kopf bleibt fail-closed.
  */
 import { execFileSync } from 'node:child_process';
+import {
+  MERGED_INDEX_PATH,
+  mergedIndexGroups,
+  readMergedIndex,
+} from './merged-index.mjs';
 
 /** Ein Git-Aufruf; Tests setzen dieselbe Signatur mit eigener Implementierung. */
 const defaultGit = (args) =>
@@ -188,14 +193,19 @@ export function filterMergedCollisions({
   onMerged = null,
   prIndex,
   prGroups,
+  root,
+  mergedIndexFile = MERGED_INDEX_PATH,
+  mergedIndexData,
 } = {}) {
-  const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
+  const mergedIndex = prIndex === undefined
+    ? mergedPullRequestIndex({ gh, baseRef: 'main', root, file: mergedIndexFile, indexData: mergedIndexData })
+    : prIndex;
   // Mehrdeutige Branch-Namen (ein Name, mehrere gemergte PRs) bleiben fuer die
   // Identitaet unbrauchbar, taugen aber als Merge-Beleg: Wenn jede Fassung des
   // Branches auf `main` liegt, ist die Arbeit gemergt, egal welche davon der
   // Claim meinte. Genau dieser Fall blockierte Lane-Pfade dauerhaft.
   const mergedGroups = prGroups === undefined && prIndex === undefined
-    ? mergedPullRequestGroups({ gh, baseRef: 'main' })
+    ? mergedPullRequestGroups({ gh, baseRef: 'main', root, file: mergedIndexFile, indexData: mergedIndexData })
     : prGroups ?? null;
   let baseTip = null;
   try {
@@ -254,10 +264,17 @@ export function filterMergedCollisions({
 }
 
 /**
- * Gemergte Pull Requests je Head-Branch. Ohne `gh` oder ohne Token `null`:
- * dann gibt es keinen Nachweis, und niemand behauptet einen.
+ * Gemergte Pull Requests je Head-Branch. Ist `gh` nicht verfuegbar, liest der
+ * Fallback den lokal erzeugten Merge-Beleg-Index; fehlt auch der, bleibt es bei
+ * `null` und niemand behauptet einen Nachweis.
  */
-export function mergedPullRequestGroups({ gh = defaultGh, baseRef = 'main' } = {}) {
+export function mergedPullRequestGroups({
+  gh = defaultGh,
+  baseRef = 'main',
+  root,
+  file = MERGED_INDEX_PATH,
+  indexData,
+} = {}) {
   try {
     const output = gh([
       'pr',
@@ -287,7 +304,8 @@ export function mergedPullRequestGroups({ gh = defaultGh, baseRef = 'main' } = {
     }
     return groups;
   } catch {
-    return null;
+    const index = indexData ?? readMergedIndex(root === undefined ? { file } : { root, file });
+    return mergedIndexGroups(index);
   }
 }
 
@@ -296,8 +314,14 @@ export function mergedPullRequestGroups({ gh = defaultGh, baseRef = 'main' } = {
  * gemergten PRs ist keine Identitaet und wird hier verworfen; wer nur wissen
  * will, ob die Arbeit gemergt ist, liest `mergedPullRequestGroups`.
  */
-export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}) {
-  const groups = mergedPullRequestGroups({ gh, baseRef });
+export function mergedPullRequestIndex({
+  gh = defaultGh,
+  baseRef = 'main',
+  root,
+  file = MERGED_INDEX_PATH,
+  indexData,
+} = {}) {
+  const groups = mergedPullRequestGroups({ gh, baseRef, root, file, indexData });
   if (groups === null) return null;
   const index = new Map();
   for (const [branch, list] of groups) {
@@ -345,8 +369,13 @@ export function planReconcile({
   git = defaultGit,
   gh = defaultGh,
   prIndex,
+  root,
+  mergedIndexFile = MERGED_INDEX_PATH,
+  mergedIndexData,
 } = {}) {
-  const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
+  const mergedIndex = prIndex === undefined
+    ? mergedPullRequestIndex({ gh, baseRef: 'main', root, file: mergedIndexFile, indexData: mergedIndexData })
+    : prIndex;
   const heads = remoteHeads({ git });
   let baseTip;
   try {

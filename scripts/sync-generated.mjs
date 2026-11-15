@@ -93,11 +93,15 @@ if (narrativeTouched) {
   ]);
 }
 
-// 4. Inventur: vollstaendig aus `git ls-files`, nach allen erzeugten Texten.
+// 4. Merge-Beleg-Index: offline lesbare Zweitquelle fuer claim-evidence.
+//    Er entsteht aus der lokalen Merge-Historie und hat keinen Zeitstempel.
+generate('sync-merged-index.mjs', check ? ['--check'] : [], ['.lane-claims/merged-index.json']);
+
+// 5. Inventur: vollstaendig aus `git ls-files`, nach allen erzeugten Texten.
 //    Im Check-Modus rein lesend.
 generate('build-inventory.mjs', check ? ['--check'] : [], ['docs/INVENTORY.md']);
 
-// 5. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
+// 6. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
 const roadmapFile = join(ROOT, 'docs', 'ROADMAP.md');
 const count = registryQuotaCount(ROOT);
 if (existsSync(roadmapFile) && count !== null) {
@@ -108,7 +112,7 @@ if (existsSync(roadmapFile) && count !== null) {
   }
 }
 
-// 6. Staging: nur generierte Pfade, nie fremde Arbeit.
+// 7. Staging: nur generierte Pfade, nie fremde Arbeit.
 if (staged && !check) {
   const present = GENERATED_PATHS.filter((file) => existsSync(join(ROOT, file)));
   if (present.length > 0) {

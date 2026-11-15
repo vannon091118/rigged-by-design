@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b2fc0c4e1a553672d7b935534be9f2530ba49c25294d6d0bdbcc6df197ff3d1a",
+  "contentHash": "sha256:09d8cea44c84352ecc91f3cf4b1bb7015219a9d252608185e14bfe107cacfc55",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9868,6 +9868,28 @@
       "text": "An der Bar zaehlt, wer dir zuhoert; am Automaten zaehlt nur, was ueber ihn geredet wird. Wer beides gleich behandelt, wundert sich, warum ein freundliches Wort keinen Einsatz ersetzt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-influence-matrix-01.json"
+    },
+    {
+      "contributionId": "integrator-862-merged-index",
+      "turnId": "2026-11-15T20:09Z-integrator-862-merged-index",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Merge-Nachweis, der nur mit Netz und Token funktioniert, verschwindet genau dann, wenn man ihn braucht. Der neue Index liest die lokale Merge-Historie, hält PR-Nummer, Lane-Kopf und Merge-Commit fest und lässt sich ohne gh prüfen; fehlt der Index, bleibt der Claim offen, statt einen Beleg zu erfinden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-integrator-862-merged-index.json"
     },
     {
       "contributionId": "interiors-01",
