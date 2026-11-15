@@ -117,6 +117,14 @@ Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits ge
 
 Der Review gehört dem Maintainer, nicht dem Worker: er liest den vollständigen Diff, prüft Intention gegen Umsetzung und die kausalen Folgen in anderen Modulen und entscheidet `ACCEPT`/`PARTIAL`/`REJECT`. **Rebase-, Doku- und Generated-Drift behebt er selbst** (`node scripts/sync-generated.mjs --all` für generierte Dateien); nur echte Code-Findings gehen an den Worker zurück. Die Verantwortlichkeiten und Prioritäten stehen in [`GOVERNANCE.md`](GOVERNANCE.md#maintainer-protokoll).
 
+### Generierte Dateien im Merge
+
+`docs/INVENTORY.md`, `docs/ROADMAP.md` und die Narrative-Registry entstehen deterministisch aus Quellen. Bei einem echten `git merge` oder `git pull` beseitigt der Merge-Driver `generated-regenerate` ihren Konflikt, indem er die eigene Fassung des Artefakts bestehen laesst; verhandelt wird nur der Quellcode. Regeneriert wird danach im `post-merge`-Hook, weil erst dann der Arbeitsbaum vollstaendig gemischt ist. Eine Regeneration im Driver selbst wuerde einen halb gemischten Baum lesen und still falschen Inhalt schreiben. Ein `--amend` ist dort unmoeglich (git haelt noch `MERGE_HEAD`), deshalb entsteht ein schlanker Folge-Commit `chore(generated): ...`; wird er abgelehnt, bleibt die Regeneration gestaged.
+
+Registriert werden Driver und Hook repo-lokal durch `pnpm run hooks:install` (bzw. `prepare`), die Pfadzuordnung steht in `.gitattributes`.
+
+Fail-closed: nur Pfade der Generated-Liste werden uebernommen. Ein Handdatei-Konflikt, eine fehlende Arbeitsdatei oder Konfliktmarker bleiben ein offener Konflikt. Ohne Registrierung verhaelt sich git wie bisher.
+
 Der Commit-Body trägt exakt:
 
 ```text
