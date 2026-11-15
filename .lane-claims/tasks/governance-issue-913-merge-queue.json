@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-913-merge-queue",
+  "claimId": "lane/governance/issue-913-merge-queue",
+  "branch": "lane/governance/issue-913-merge-queue",
+  "baseSha": "3d2bb28e9bcd5aa5c2875e986b484a2a99217e01",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #913: Merge-Queue auf aktuellem main-Stand grün abschließen",
+  "goal": "Die vier Merge-Queue-Dateien bleiben erhalten; Inventur, Testkatalog und Docs-Marker sind regeneriert; Precommit und lokale Gates sind grün.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 915,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/915",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "Regenerierte Artefakte committen, Gates prüfen und PR #915 auf exaktem Head mergen.",
+  "revision": 1
+}

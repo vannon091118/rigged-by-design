@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8f4ba466e58e7d880964c4cdd6ff2743e56aa2033b03ff12e7a6a10b2b027f7d",
+  "contentHash": "sha256:3d5ecdff30241d32d7e9aa676161f0d4bbac09a9ab96025c67fd695206ee75b3",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25274,6 +25274,28 @@
       "text": "Der Kern bleibt headless. Kein Pixi, kein React, kein DOM und kein Weg in Renderer, UI oder Store: Wer die Grenze einmal zieht, sieht den Unterschied zwischen einem Zustand und seinem Bild. Das Gate macht aus dieser Regel einen täglichen Nachweis, nicht eine Absicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json"
+    },
+    {
+      "contributionId": "shinon-913-merge-queue-green",
+      "turnId": "2026-11-15T09:59Z-shinon-913-merge-queue-green",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Reihenfolge ist erst dann eine Reihenfolge, wenn alle Beteiligten dieselbe Revision sehen. Der grüne Stand bringt die Queue auf den aktuellen Main-Pfad, ohne die fremden Commits zu überschreiben; die Zustimmung bleibt ein sichtbarer Schritt, kein stiller Default.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-913-merge-queue-green.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

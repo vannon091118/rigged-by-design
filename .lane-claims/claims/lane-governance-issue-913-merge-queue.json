@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/issue-913-merge-queue",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-913-merge-queue",
+  "baseSha": "3d2bb28e9bcd5aa5c2875e986b484a2a99217e01",
+  "issue": 913,
+  "task": "Merge-Queue-Vertrag auf den aktuellen main-Stand bringen und die abgeleiteten Artefakte regenerieren",
+  "goal": "PR #915 ist nach Regeneration, Precommit und allen lokalen Gates grün mergebar; die fremden Commits bleiben erhalten.",
+  "pathAllowlist": [
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    "docs/MERGE-QUEUE.md",
+    "scripts/lib/merge-queue.mjs",
+    "scripts/merge-queue.mjs",
+    "src/core/governance/__tests__/merge-queue.test.ts",
+    ".lane-claims/claims/lane-governance-issue-913-merge-queue.json",
+    ".lane-claims/tasks/governance-issue-913-merge-queue.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3d2bb28e9bcd5aa5c2875e986b484a2a99217e01"
+}
