@@ -46,8 +46,8 @@ Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFL
 
 | Prio | Trigger | Aktion |
 |------|---------|--------|
-| **P0** | Jeder neue User- **oder Agenten-Kommentar** auf einem Issue oder PR | Eingangsticket: sofort triagieren; nichts geht vorher |
-| **P1** | Offene PRs mit `review-waiting` und andere ausdrücklich wartende Maintainer-Reviews | Diff lesen, Findings beheben lassen oder `ACCEPT`/`PARTIAL`/`REJECT` |
+| **P0** | Echter Notfall: Sicherheits-, Datenintegritäts-, Save-/RNG-/Ledger- oder Boot-Schaden; eine Kernschleife, die niemand mehr spielen kann; ausdrückliche User-Richtungsentscheidung | Sofort behandeln, alles andere wartet |
+| **P1** | Ein aktives Gate, das mehrere Lanes blockiert; offene PRs mit `review-waiting` und andere ausdrücklich wartende Reviews | Blockade lösen, Diff lesen, `ACCEPT`/`PARTIAL`/`REJECT` |
 | **P2** | Gameplay-Bugs und fehlende spielrelevante Inhalte | Issue erstellen, priorisieren, zuweisen; pre-existing Flakiness bis zur Root-Cause mit Causal-Chain erfassen |
 | **P3** | Board-/Governance-Struktur, die echte Rekursionen, Kommunikationsverlust oder laufende Spielarbeit blockiert | Minimal-Fix |
 | — | Governance-Verbesserungen ohne Blocking-Effekt | Kein Issue, kein PR; Kommentar im Review-Log |
@@ -55,6 +55,24 @@ Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFL
 - **Inhaltlicher Schwerpunkt bleibt das Spiel.** Governance darf nicht zum Backlog-Multiplikator werden.
 - **Innerhalb einer Stufe gilt das älteste Issue zuerst.** Die Reihenfolge aus dieser Tabelle ist die des Boards; lokale Dateien und Register können sie nicht ändern.
 - **Kein neues Ticket ohne Board-Prüfung.** Erst der bestehende Zustand, dann ein neues Issue; ein Ticket, das nur wegen schlechter Beschreibung eines anderen entsteht, entfällt.
+
+### Ereignisklassifizierung
+
+Ein Kommentar ist ein **Ereignis**, keine Aufgabe und keine Priorität. Jede Nachricht am Board hat genau einen Typ; der Typ entscheidet, was als Nächstes passiert, nicht die bloße Existenz des Kommentars.
+
+| Typ | Erkennungsmerkmal | Wirkung |
+| --- | --- | --- |
+| **Anforderung** | neues Issue oder User-Kommentar mit Richtungsentscheidung | Board-Auftrag; Priorität folgt der Tabelle, nie automatisch P0 |
+| **Entscheidung** | `ACCEPT`/`PARTIAL`/`REJECT` oder `ENTSCHEIDUNG` von Maintainer oder User | ändert Auftrag und Status |
+| **Claim** | `CLAIM`, `HANDOFF`, `RELEASE` | Besitzwechsel am Issue |
+| **Fortschrittsbericht** | `PROGRESS`, Statuskommentar ohne Frage | Snapshot aktualisieren, kein neues Ticket |
+| **Finding** | `FINDING`, `Nebenbefund: … datei:zeile` | P3, oder Ticket nur bei Blockade |
+| **Blocker** | `BLOCKED` mit Blocker, Owner und nächstem Ereignis | P1, wenn mehrere Lanes blockiert sind, sonst P2 |
+| **Abnahme** | Verdikt mit Beleg (Diff, Gate, visueller Beleg) | schließt den Review, nicht automatisch das Produktziel |
+
+- **Nur echte Notfälle unterbrechen die Reihenfolge.** Ein `CLAIM`, ein Fortschrittsbericht oder ein Finding ist keine Notfallmeldung.
+- **Incident-Schweregrad und Arbeitspriorität sind getrennt.** `incident-sev-1`–`incident-sev-3` beschreibt die Schwere eines Vorfalls, `prio-P0`–`prio-P3` die Reihenfolge der Arbeit. Ein schwerer Prozessvorfall ist kein Gameplay-P0.
+- **Keine Erfolgsmeldung ohne Beleg.** Ein grünes Gate ist keine visuelle Abnahme, ein gemergter PR kein abgeschlossenes Produktziel; die Abnahme nennt ihren Beleg.
 
 ### Agenten (`LIILITH`, `Shinon`, `Jenova`)
 
@@ -205,8 +223,8 @@ Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist 
 
 **Laufbeginn — Issue-Kommentar-Check:**
 1. Scanne alle offenen Issues auf Kommentare seit dem letzten State-Snapshot
-2. Neuer User- oder Agenten-Kommentar → `P0`, sofort
-3. Neuer Worker-Statuskommentar ohne Frage → State aktualisieren, kein neues Ticket
+2. Klassifiziere jeden neuen Kommentar nach [Ereignisklassifizierung](#ereignisklassifizierung); nur ein P0-Notfall unterbricht die Reihenfolge
+3. Fortschrittsbericht, Claim oder Finding ohne Frage → State aktualisieren, kein neues Ticket und keine Prioritätsänderung
 4. State und Ruleset sind Hilfsmittel, nicht Wahrheit — bei Abweichung gewinnt die Realität
 
 **Review-Protokoll (kein Test-Run — Tests liefen vor dem Push beim Worker):**
@@ -241,7 +259,7 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 
 **Worker-Statuspflicht (jedes Gerät)**
 - Jeder Worker aktualisiert seinen eigenen Status immer als Issue-Kommentar am zugehörigen Issue: `CLAIM`, `RELEASE [A<n>] done <sha>`, Blocker, Testergebnis, Frage.
-- Ein Issue-Kommentar ist ein Ticket-Update. Der Maintainer aktualisiert den Board-Zustand sofort bei neuem Kommentar (P0).
+- Ein Issue-Kommentar ist ein Ereignis. Der Maintainer aktualisiert den Board-Zustand bei klassifizierten Ereignissen (Claim, Release, Verdikt, Blocker), nicht bei jedem Kommentar.
 - Worker dürfen den Status nicht nur lokal halten; er muss im Issue sichtbar sein.
 
 **Maintainer-Statuspflicht**
@@ -250,7 +268,7 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 - Review-Stats: offene Reviews, `review-waiting`-PRs, akzeptierte/abgelehnte PRs sind Teil des Board-Status und werden bei jedem Lauf geprüft.
 
 **Pflicht-Issues pinnen**
-- P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
+- P0-Notfälle und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
 - Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
 
 **Cron-Lock — atomar statt gelesen-geschrieben (#835)**
