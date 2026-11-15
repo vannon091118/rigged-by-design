@@ -43,7 +43,7 @@ describe('Karriereleitern (Issue #803)', () => {
     requestAndComplete(world);
     const check = checkPromotion(world);
     expect(check.promotable).toBe(false);
-    expect(check.reason).toBeDefined();
+    expect(check.reason).toMatch(/Fach-Skill|Arbeitstage|Leistung/);
   });
 
   it('erfahrene Arbeitskraft mit genug Arbeitstagen, Skill und Performance wird befördert', () => {

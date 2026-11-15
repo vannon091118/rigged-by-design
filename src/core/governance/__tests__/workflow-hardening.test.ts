@@ -62,7 +62,14 @@ describe('workflow hardening (local only)', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
     expect(agents).toContain('pnpm run agent:pretask --json');
     expect(agents).toContain('docs/TESTING.md');
-    expect(agents.match(/^\d+\. \*\*/gm)?.length ?? 0).toBe(10);
+    // Nur der Regelblock zaehlt: AGENTS.md traegt davor einen eigenen
+    // Pin-Vertrag mit drei nummerierten Punkten, der nicht zu den Regeln gehoert.
+    const rules = agents.slice(
+      agents.indexOf('Zehn unverhandelbare Regeln'),
+      agents.indexOf('## Prompts sind Board-Tickets'),
+    );
+    expect(rules.length).toBeGreaterThan(0);
+    expect(rules.match(/^\d+\. \*\*/gm)?.length ?? 0).toBe(10);
     expect(agents).toContain('pnpm run ci:local');
 
     const testing = readFileSync(resolve(process.cwd(), 'docs', 'TESTING.md'), 'utf8');
