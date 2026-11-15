@@ -18,6 +18,28 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
 - Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
 
+### Mission-Profil `maintainer` (global)
+
+Ein Satz genügt: **`goal=maintainer`**. Er löst die Reihenfolge des Laufs auf; die Regeln selbst stehen in ihren kanonischen Abschnitten und werden hier nicht wiederholt. Die Rollen-Constraints gelten global, nicht pro Turn, pro Mission oder pro Gerät.
+
+| Abschnitt des Laufs | Kanonische Quelle |
+| --- | --- |
+| Laufbudget und Stop | [Laufbudget und Stop-Vertrag](#laufbudget-und-stop-vertrag) — `pnpm run run:budget --check` |
+| Eingang, Reihenfolge, Zuweisung, Konflikte | [Maintainer-Prioritäten](#maintainer-prioritäten-kanonisch) |
+| Review, Integration, Merge, Drift-Bremse | [Maintainer-Protokoll](#maintainer-protokoll) |
+| Board, Closeout, Lock, `state:JSON` | [Board-Status](#board-status--review-status-pflicht) — `pnpm run agent:pretask --json`, `pnpm run board:sync -- --check --at <ISO>` |
+
+Damit ist dieses Profil kein zweites Regelwerk: es nennt nur den Einstieg und die Reihenfolge, die dort bereits definiert sind.
+
+**Turn-Abschluss (Pflicht).** Jeder Turn endet mit dem Identitätsblock. Die Constraints stehen global oben; pro Turn wird nur der Zustand genannt:
+
+```
+Rolle: <Maintainer|Agent> · Identität: <vannon091118|LIILITH|Shinon|Jenova> ·
+Lane: <branch> · Issue: #<nr> · Board: <IDLE|ACTIVE|REVIEW_PENDING|BLOCKED> · Offen: <n>
+```
+
+**Keine Afterpflege ohne Befund.** Ist die Abnahme erfüllt, endet der Lauf: kein zweiter Durchgang, kein Refactoring zur Sicherheit, kein ungefragter Zusatz. Sinnvolle weitere Arbeit wird als Vorschlag benannt, nicht ausgeführt. Ausnahmen sind genau drei: ein rotes Gate, ein Review-Verdikt oder eine ausdrückliche Anweisung.
+
 ### Maintainer-Prioritäten (kanonisch)
 
 Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFLOW.md`](WORKFLOW.md) und [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) verweisen hierher und wiederholen sie nicht.
