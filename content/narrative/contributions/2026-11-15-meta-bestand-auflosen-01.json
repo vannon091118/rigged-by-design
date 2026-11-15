@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T22:40Z-meta-bestand-auflosen-01",
+  "contributionId": "meta-bestand-auflosen-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita zieht die alten Meta-Karten vom Stapel und legt neue Stadtgeschichten darauf: Jeder entfernte Block wird durch einen lebendigen Text ersetzt, kein Pool schrumpft, jede Geschichte hat ihren Ort im Spiel.",
+  "directives": []
+}

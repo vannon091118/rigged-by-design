@@ -4724,6 +4724,10 @@
     {
       "turnId": "2026-11-15T22:35Z-job-market-01",
       "contributionId": "job-market-01"
+    },
+    {
+      "turnId": "2026-11-15T22:40Z-meta-bestand-auflosen-01",
+      "contributionId": "meta-bestand-auflosen-01"
     }
   ]
 }

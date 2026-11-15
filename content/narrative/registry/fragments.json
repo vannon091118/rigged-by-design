@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5a2dff2960b42de72037b7da7d822d52948abc5625cc86161a0b61db6c627fe4",
+  "contentHash": "sha256:e0f02d94d16042c77c5410ae4ae13a510b2c9684bfa8c3dc114730d5ea2736d2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10748,6 +10748,30 @@
       "text": "Im Hinterzimmer haengt eine Tafel mit allen Knoepfen des Hauses, und neben jedem Knopf steht genau eine Hand, die ihn druecken darf. Ein Lehrling fragte, was passiere, wenn jemand einen Knopf ohne Hand an die Tafel male. Der Hausmeister sagte nur: dann faellt es auf, bevor ein Gast sich wundert. Seitdem ist die Tafel kuerzer als die Geruechte ueber sie.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-menu-action-contract.json"
+    },
+    {
+      "contributionId": "meta-bestand-auflosen-01",
+      "turnId": "2026-11-15T22:40Z-meta-bestand-auflosen-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita zieht die alten Meta-Karten vom Stapel und legt neue Stadtgeschichten darauf: Jeder entfernte Block wird durch einen lebendigen Text ersetzt, kein Pool schrumpft, jede Geschichte hat ihren Ort im Spiel.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-meta-bestand-auflosen-01.json"
     },
     {
       "contributionId": "mod-engine-01",
