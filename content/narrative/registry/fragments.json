@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:27e0321c8aee155561f5bd55d00f1257afb5a7a77254380f3e4aae14817cb22f",
+  "contentHash": "sha256:7d6edbcfd026fb4fdcb72d8824cdf7a27ac58842750b94b53585d6b602feb0a0",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25207,6 +25207,29 @@
       "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-schicht-und-lohn.json"
+    },
+    {
+      "contributionId": "shinon-541-fact-reader",
+      "turnId": "2026-11-15T09:00Z-shinon-541-fact-reader",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "start",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein defektes Gerät ist mehr als eine kaputte Animation: es ist ein Fact, den der Spieler lesen muss. Ein leeres Lager ist mehr als eine fehlende Ware: es ist ein Fact, der eine Entscheidung erzwingt. Jeder Fact braucht einen Trigger im Weltzustand und einen Leser in der Ansicht — Journal, Smartphone oder NPC-Gespräch. Ohne Leser bleibt der Text toter Inhalt im Pool.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-541-fact-reader.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

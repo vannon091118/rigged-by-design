@@ -28,7 +28,9 @@ type FactDraft =
   | {
     readonly kind: 'EVENT_RESOLVED'; readonly eventId: number; readonly eventKind: string;
     readonly choiceId: string; readonly outcomeId: string;
-  };
+  }
+  | { readonly kind: 'DEVICE_FAULT'; readonly furnitureId: number; readonly kindLabel: 'SLOT' | 'TABLE' | 'BAR' | 'TOILET' | 'EXCHANGE' | 'DECOR' | 'STORAGE' | 'JOB_STATION'; readonly reason: 'DAMAGED' | 'CLOGGED' }
+  | { readonly kind: 'STOCK_LOW'; readonly furnitureId: number; readonly kindLabel: 'BAR' | 'STORAGE'; readonly stock: number };
 
 /** Haengt einen Fact mit naechster ID, Tick und Tag an die Queue; aelteste fallen bei Ueberlauf. */
 export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
@@ -87,4 +89,18 @@ export function pushRecent(world: WorldState, facts: readonly NarrativeFact[]): 
 
 export function recentFacts(world: WorldState, kind: NarrativeFact['kind']): readonly NarrativeFact[] {
   return world.narrative.recent.filter((fact) => fact.kind === kind);
+}
+
+/** Ein Gerät ist defekt oder verstopft; erst nach der Zustandsprüfung aufrufen. */
+export function emitDeviceFault(
+  world: WorldState, furnitureId: number, kindLabel: 'SLOT' | 'TABLE' | 'BAR' | 'TOILET' | 'EXCHANGE' | 'DECOR' | 'STORAGE' | 'JOB_STATION', reason: 'DAMAGED' | 'CLOGGED',
+): NarrativeFact {
+  return emitFact(world, { kind: 'DEVICE_FAULT', furnitureId, kindLabel, reason });
+}
+
+/** Ein Bar- oder Lager-Gerät hat keinen Bestand mehr; erst nach der Zustandsprüfung aufrufen. */
+export function emitStockLow(
+  world: WorldState, furnitureId: number, kindLabel: 'BAR' | 'STORAGE', stock: number,
+): NarrativeFact {
+  return emitFact(world, { kind: 'STOCK_LOW', furnitureId, kindLabel, stock });
 }

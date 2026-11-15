@@ -1,0 +1,22 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T09:00Z-shinon-541-fact-reader",
+  "contributionId": "shinon-541-fact-reader",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": [
+    "start",
+    "facts"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein defektes Gerät ist mehr als eine kaputte Animation: es ist ein Fact, den der Spieler lesen muss. Ein leeres Lager ist mehr als eine fehlende Ware: es ist ein Fact, der eine Entscheidung erzwingt. Jeder Fact braucht einen Trigger im Weltzustand und einen Leser in der Ansicht — Journal, Smartphone oder NPC-Gespräch. Ohne Leser bleibt der Text toter Inhalt im Pool.",
+  "directives": []
+}

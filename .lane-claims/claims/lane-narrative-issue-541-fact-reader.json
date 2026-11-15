@@ -1,0 +1,20 @@
+{
+  "id": "lane/narrative/issue-541-fact-reader",
+  "owner": "Governance-Owner",
+  "branch": "lane/narrative/issue-541-fact-reader",
+  "baseSha": "8ee2337bfbf66146dd45ab71f952d16cfe7c9fff",
+  "issue": 541,
+  "task": "Narrative-Fakten (Geräte, Lager, Personal) aus World/Ledger/Staff-Zuständen komponieren und an echte Leser (Journal, Smartphone, Event, NPC) einhängen",
+  "pathAllowlist": [
+    "content/narrative/**",
+    "src/core/sim/narrative/**",
+    "src/store/world-store.ts",
+    "src/store/ledger.ts",
+    ".lane-claims/claims/lane-narrative-issue-541-fact-reader.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8ee2337bfbf66146dd45ab71f952d16cfe7c9fff"
+}
