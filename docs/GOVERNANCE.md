@@ -18,28 +18,6 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
 - Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
 
-### Mission-Profil `maintainer` (global)
-
-Ein Satz genügt: **`goal=maintainer`**. Er löst die Reihenfolge des Laufs auf; die Regeln selbst stehen in ihren kanonischen Abschnitten und werden hier nicht wiederholt. Die Rollen-Constraints gelten global, nicht pro Turn, pro Mission oder pro Gerät.
-
-| Abschnitt des Laufs | Kanonische Quelle |
-| --- | --- |
-| Laufbudget und Stop | [Laufbudget und Stop-Vertrag](#laufbudget-und-stop-vertrag) — `pnpm run run:budget --check` |
-| Eingang, Reihenfolge, Zuweisung, Konflikte | [Maintainer-Prioritäten](#maintainer-prioritäten-kanonisch) |
-| Review, Integration, Merge, Drift-Bremse | [Maintainer-Protokoll](#maintainer-protokoll) |
-| Board, Closeout, Lock, `state:JSON` | [Board-Status](#board-status--review-status-pflicht) — `pnpm run agent:pretask --json`, `pnpm run board:sync -- --check --at <ISO>` |
-
-Damit ist dieses Profil kein zweites Regelwerk: es nennt nur den Einstieg und die Reihenfolge, die dort bereits definiert sind.
-
-**Turn-Abschluss (Pflicht).** Jeder Turn endet mit dem Identitätsblock. Die Constraints stehen global oben; pro Turn wird nur der Zustand genannt:
-
-```
-Rolle: <Maintainer|Agent> · Identität: <vannon091118|LIILITH|Shinon|Jenova> ·
-Lane: <branch> · Issue: #<nr> · Board: <IDLE|ACTIVE|REVIEW_PENDING|BLOCKED> · Offen: <n>
-```
-
-**Keine Afterpflege ohne Befund.** Ist die Abnahme erfüllt, endet der Lauf: kein zweiter Durchgang, kein Refactoring zur Sicherheit, kein ungefragter Zusatz. Sinnvolle weitere Arbeit wird als Vorschlag benannt, nicht ausgeführt. Ausnahmen sind genau drei: ein rotes Gate, ein Review-Verdikt oder eine ausdrückliche Anweisung.
-
 ### Maintainer-Prioritäten (kanonisch)
 
 Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFLOW.md`](WORKFLOW.md) und [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) verweisen hierher und wiederholen sie nicht.
@@ -75,22 +53,27 @@ Es gibt genau drei Worker-Identitäten: **`LIILITH`**, **`Shinon`** und **`Jenov
 - **Meta-Dateien:** `AGENTS.md`, `package.json`, `pnpm-lock.yaml`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`. Inhaltliche Änderungen brauchen eine Governance- oder ausdrücklich berechtigte Lane.
 - **Kontrollebene:** `.github/`, `scripts/` und `src/Config/` bleiben Governance- oder CI-Lanes vorbehalten; Feature-Claims können sie nicht öffnen.
 
-### Laufbudget und Stop-Vertrag
+### Missionskontinuität statt Laufbudget
 
-Ein Lauf endet nicht durch den Agenten, sondern durch eine externe Grenze. Die Grenzen stehen in [`run-budget.json`](run-budget.json) und werden mit `pnpm run run:budget --check` gegen die Commits aus Git geprüft:
+Die Mission bleibt dauerhaft aktiv, bis sie nachweislich erreicht oder ausdrücklich durch den User pausiert wird. Das Ende eines einzelnen Agenten-Turns ist niemals das Ende der Mission; jeder Turn hinterlässt einen überprüfbaren Zustand und einen konkreten nächsten Arbeitsschritt. Die Mission wird in einem folgenden Lauf fortgesetzt.
 
-```text
-CONTINUE           innerhalb aller Grenzen
-BUDGET_EXHAUSTED   Iterationen, Issues, Commits oder neue Governance-Findings ueber dem Limit
-KILL_SWITCH        Maintainer-Stop; hat Vorrang vor jeder anderen Entscheidung
-```
+Es gibt keine künstlichen Maximalwerte für Iterationen, Issues oder Commits und kein externes Laufbudget, das einen Start blockiert. Die lokalen Nutzungsgrenzen kontrolliert der User außerhalb des Maintainer-Systems; das Repository enthält keine zweite, künstliche Begrenzung.
 
-- `maxIterations`, `maxIssues` und `maxNewGovernanceIssues` sind nichtnegative Ganzzahlen; `maxCommits` und `maxNewGovernanceIssues` sind mindestens 1. Ein Budget von 0 fuer neue Governance-Findings ist ungueltig, weil es die Pflicht aushebelt, jeden Befund als Issue zu oeffnen. Eine ungueltige oder fehlende Konfiguration blockiert fail-closed.
-- Der Kill-Switch ist nur eine Stop-Quelle. Ein Agent kann ihn setzen oder ausloesen, aber nicht gegen ein erschoepftes Budget weiterlaufen lassen; jede Grenzaenderung braucht einen sichtbaren Governance-Commit.
-- `pretask` uebergibt die Zahl der in diesem Lauf geoeffneten Governance-Issues nicht mehr als feste 0: sie kommt aus `--new-governance-issues <n>` oder `RBD_NEW_GOVERNANCE_ISSUES=<n>`. Fehlt sie, blockiert der Start mit `new-governance-issues=unknown`; ein angenommenes 0 gilt nicht mehr.
-- Neue Findings laufen vor dem Issue durch `pnpm run run:budget --finding <datei.json>`: Beleg (`datei:zeile` oder Befehl), vollstaendiger Main-SHA, Duplikatpruefung, Severity `P0`–`P3` und Zuordnung `product`/`infrastructure` sind Pflicht. Produkt-Findings brauchen zusaetzlich ein `productGoal`.
-- Jeder neue Meta-/Governance-Befund wird sofort als Issue mit `ZU PRÜFEN` plus Zustands-, Prio- und Area-Label geoeffnet. Das Budget zaehlt ihn als `governanceChurn`; wird die Grenze ueberschritten, endet der Lauf erst nach dem Ticket (`findingDuty: TICKET_THEN_STOP`). Kein Befund geht verloren, weil das Budget erschoepft ist.
-- Jeder Laufbericht trennt `productProgress` (gemergte Produkt-PRs, akzeptierte Findings) von `governanceChurn` (neue Governance-Findings) und nennt Main-SHA, erledigte Produktziele, offene Blocker und die Stop-/Continue-Entscheidung.
+Arbeit wird individuell verwaltet: Jedes Issue kann unabhängig bearbeitet, übergeben, zurückgestellt oder abgeschlossen werden. Ein blockiertes Issue beendet keine anderen Aufgaben. Der Maintainer bewertet und steuert anhand echter Nachweise (gemergte PRs, erfüllte Akzeptanzkriterien, bestandene Tests, gelöste Blockaden, abgeschlossene Übergaben), nicht anhand einer Budget-Zahl.
+
+Recovery-Logik:
+
+| Ereignis | Handlung des Maintainers |
+| --- | --- |
+| Worker meldet BLOCKED | Ursache prüfen und alternative Lösung oder andere Zuweisung suchen |
+| Worker antwortet nicht | Nachfassen, Status prüfen, bei Bedarf neu zuweisen |
+| PR wird abgelehnt | Findings konkretisieren, Nacharbeit veranlassen und erneut reviewen |
+| Tests schlagen fehl | Betroffene Ursache isolieren und reparieren lassen |
+| Issue wartet auf User-Entscheidung | Frage dokumentieren, andere unabhängige Arbeit fortsetzen |
+| Keine freie Aufgabe | Roadmap, Spielmechaniken und bekannte Gaps prüfen und neue Arbeit ableiten |
+| Lauf endet unerwartet | Letzten belegten Zustand lesen und fortsetzen |
+
+Eine beschädigte Save-/Ledger-/RNG-Invariante darf den betroffenen Arbeitsbereich sperren. Sie darf aber nicht automatisch alle unabhängigen Arbeiten zum Stillstand bringen.
 
 ### Worker-Identität und Dependency-Store
 
@@ -160,9 +143,7 @@ Ein Kommentar ändert Board-Zustand nur, wenn sein **verifizierter GitHub-Autor*
 
 - `ALLOWED` wird bei jedem Zustandsübergang geprüft. Unerlaubte Reihenfolgen, fremde Claim-IDs, Replays und unbekannte Autoren ändern nichts; sie erscheinen als `rejected` im `workGate` von `pretask` und als Warnung mit Kommentar-ID.
 - Fehlt die Datei oder ist sie unlesbar, ist keine Rolle zuständig: fail-closed, kein Steuerbefehl wirkt.
-- Sind Worker und Maintainer derselbe GitHub-Principal, meldet `pretask` die Befunde `shared-principal` und `no-exclusive-maintainer-principal`. Ein Verdikt (`ACCEPT`, `PARTIAL`, `REJECT`, `MERGED`, `CLOSED`) von einem Principal, der zugleich in `workers` steht, ist wirkungslos (`shared-principal-not-authorized`). Die technische Rollentrennung (#694) braucht einen eigenen Maintainer-Login, der nicht in `workers` steht; Worker-Ereignisse bleiben am gemeinsamen Login funktionsfähig.
-- Ein Issue-`CLAIM` auf ein bereits laufendes Issue mit anderer Claim-ID ist ein `claim-conflict` und ändert nichts. `RELEASE`/`HANDOFF` eines fremden Claims ist `not-claim-holder`; nur `maintainers`/`users` dürfen fremde Claims freigeben oder übergeben.
-- `IDENTITY_CLAIM`/`IDENTITY_RELEASE` wirken nur von `workers` oder `maintainers`. Unbekannte oder unzuständige Autoren reservieren nichts und stehen als `rejected` im Identity-Read; fehlt die Policy, ist der Lauf fail-closed.
+- Sind Worker und Maintainer derselbe GitHub-Principal, meldet `pretask` den Befund `shared-principal`. Die Rollentrennung ist eine Entscheidung aus #694 und wird nicht behauptet.
 
 ## Eskalation
 
@@ -235,7 +216,6 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 
 **state:JSON — Laufnachweis**
 - Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
-- Der Board-Snapshot `.lane-claims/board-state.json` wird ausschließlich nachgezogen, nie aus dem Gedächtnis geschrieben: `pnpm run board:sync -- --at <ISO>` liest offene Issues, offene PRs und `origin/main` und aktualisiert Kopf, Zähler und `openPrs`; Claims auf geschlossene Issues fallen heraus. Die Zeit kommt aus `--at`/`RBD_NOW` (kein Uhrenlesen). `pnpm run board:sync -- --check --at <ISO>` schreibt nichts und meldet Drift mit Exit 1.
 - Sie zeigt: wo der letzte Lauf aufgehört hat, welche Issues aktualisiert wurden, welche Claims aktiv sind, welche PRs `review-waiting` sind.
 - Der nächste Lauf liest die `state:JSON` zu Beginn und sieht direkt, welche Issues upgedatet sind und was zu tun ist.
 
@@ -252,12 +232,6 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 **Pflicht-Issues pinnen**
 - P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
 - Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
-
-**Cron-Lock — atomar statt gelesen-geschrieben (#835)**
-- Der Maintainer-Lock ist der Git-Ref `refs/heads/rbd-lock/maintainer-cron`, kein Feld in einem Issue-Body. `POST /git/refs` legt ihn genau einmal an; ein zweiter Lauf erhält 422 und verliert. Damit gibt es bei einem freien Lock genau einen Gewinner, auch geräteübergreifend.
-- Der Lock zeigt auf einen Commit mit `owner`, `claim_id` und Aufnahmezeit in der Nachricht. Nach Ablauf der TTL (Standard 15 Minuten) wird ein hängender Lock genau einmal eingesammelt und neu reserviert.
-- `node .cron/check-in.mjs --owner <name> --claim-id <id>` reserviert (Exit 0 erlangt, 1 belegt, 2 API-Fehler). `node .cron/check-out.mjs '<state-json>' --owner <name> --claim-id <id>` prüft zuerst den Halter, schreibt dann die `state:JSON` und gibt erst danach frei; ein fremder Lock gibt nichts frei (Exit 1). Ein Schreibfehler bricht vor der Freigabe ab, damit die TTL greift.
-- 4xx ist eine Antwort, kein Netzfehler: der Client meldet den Status als Fehler (Exit 2) und wiederholt nur 5xx/429.
 
 ## Referenzen
 

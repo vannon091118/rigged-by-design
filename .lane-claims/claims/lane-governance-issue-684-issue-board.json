@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/issue-684-issue-board",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-684-issue-board",
+  "baseSha": "936ea72257a4e56bbeec1ba51bca84ffc2e299f4",
+  "issue": 684,
+  "task": "Issue-Board-Incident-Response-Struktur verifizieren und dokumentieren",
+  "pathAllowlist": [
+    "docs/INCIDENT-RESPONSE.md AGENTS.md docs/GOVERNANCE.md",
+    ".lane-claims/claims/lane-governance-issue-684-issue-board.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "936ea72257a4e56bbeec1ba51bca84ffc2e299f4"
+}

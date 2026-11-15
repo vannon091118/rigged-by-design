@@ -36,7 +36,7 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 
 ## Maintainer
 
-**`goal=maintainer` genügt.** Es löst das [Mission-Profil](docs/GOVERNANCE.md#mission-profil-maintainer-global) auf: die Reihenfolge des Laufs, den Identitätsblock am Turn-Ende und die Regel *keine Afterpflege ohne Befund*. Die Rollen-Constraints gelten global; pro Turn wird nur der Zustand genannt. Laufbeginn, Review-Protokoll, Issue-Scope, Identitätsprüfung, Rekursions-Erkennung und die Pflichten am Board stehen in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-protokoll). Der Kurzvertrag wiederholt sie nicht; bei Widerspruch gewinnt dieses Dokument dort.
+Laufbeginn, Review-Protokoll, Issue-Scope, Identitätsprüfung, Rekursions-Erkennung und die Pflichten am Board stehen in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-protokoll). Der Kurzvertrag wiederholt sie nicht; bei Widerspruch gewinnt dieses Dokument dort.
 
 ## Board-Status
 
@@ -84,7 +84,6 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | --- | --- |
 | `pnpm run agent:new --json` | Ein Startvorgang: Branch, Claim, Task-Vertrag (Phase `READY`) und Pretask in einem Lauf. |
 | `pnpm run agent:pretask --json` | Startblocker, Issue-Check, Impact, Claim und Worktree prüfen. |
-| `pnpm run run:budget --check` | Externes Laufbudget und Kill-Switch prüfen; `BUDGET_EXHAUSTED`/`KILL_SWITCH` beendet den Lauf. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen; vollständige Fassung unter `.verify-cache/agent-context.json` (`--full`). |
 | `pnpm run agent:feedback --json` | Aus dem echten Diff den nächsten sinnvollen Testschritt ableiten. |
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
