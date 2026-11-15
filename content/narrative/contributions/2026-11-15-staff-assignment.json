@@ -1,0 +1,17 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-15T00:45Z-staff-assignment",
+  "contributionId": "staff-assignment-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "An der Tafel steht jetzt neben jedem Namen, was er gerade tut und warum nicht. Wer steckt, steht mit Grund da; wer arbeitet, mit Aufgabe. Die Liste luegt nicht mehr durch Weglassen — abwesend heisst abwesend, und das steht auch so da.",
+  "directives": []
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-788-staff-assignment-view",
+  "claimId": "lane/sim/issue-788-staff-assignment-view",
+  "branch": "lane/sim/issue-788-staff-assignment-view",
+  "baseSha": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
+  "phase": "CI_PENDING",
+  "title": "Issue #788: Auftrag, Blockadegrund und Leistung gemeinsam sichtbar",
+  "goal": "Eine abgeleitete Staff-Sicht aus Agent-Daten plus Regressionstests; kein zweiter Staff-State.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

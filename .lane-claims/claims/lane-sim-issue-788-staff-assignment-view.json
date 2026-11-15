@@ -1,0 +1,28 @@
+{
+  "id": "lane/sim/issue-788-staff-assignment-view",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-788-staff-assignment-view",
+  "baseSha": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
+  "issue": 788,
+  "task": "Issue #788: Auftrag, Blockadegrund und Leistung gemeinsam sichtbar",
+  "goal": "Eine abgeleitete Staff-Sicht aus Agent-Daten plus Regressionstests; kein zweiter Staff-State.",
+  "pathAllowlist": [
+    "src/core/sim/staff-queries.ts",
+    "src/core/sim/staff-qualification.ts",
+    "src/store/staff-view.ts",
+    "src/ui/staff-labels.ts",
+    "src/ui/build-panel-parts.tsx",
+    "src/core/sim/__tests__/staff-assignment-view.test.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-sim-issue-788-staff-assignment-view.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5"
+}
