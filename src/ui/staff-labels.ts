@@ -1,6 +1,6 @@
 /** Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. */
 import type { StaffRole, StaffTask } from '../core/sim/types';
-import type { StaffPerformance } from '../core/sim/staff-queries';
+import type { StaffAvailability, StaffPerformance } from '../core/sim/staff-queries';
 
 export const ROLE_LABEL: Readonly<Record<StaffRole, string>> = {
   guard: 'Türsteher', cleaner: 'Reinigung', bartender: 'Barkeeper', cashier: 'Kassierer', porter: 'Lagerträger',
@@ -21,4 +21,8 @@ export const TASK_LABEL: Readonly<Record<StaffTask, string>> = {
 
 export const PERFORMANCE_LABEL: Readonly<Record<StaffPerformance, string>> = {
   FRISCH: 'noch keine Bewertung', SOLIDE: 'solide', STARK: 'stark', EINGESCHRAENKT: 'eingeschraenkt',
+};
+
+export const AVAILABILITY_LABEL: Readonly<Record<StaffAvailability, string>> = {
+  ABWESEND: 'nicht eingestellt', INAKTIV: 'alle blockiert', VERFUEGBAR: 'einsatzbereit', BESCHAEFTIGT: 'im Einsatz',
 };

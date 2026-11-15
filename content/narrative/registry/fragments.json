@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:869a72ed25e46f570d51df3873811265d27f67b60e24c6356d0efc1f9b5e678c",
+  "contentHash": "sha256:4c98abf6357872bcd2e3e97bc5a1fe334edd443fc5c8982e981324e9eb2a0727",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25068,6 +25068,28 @@
       "text": "Der Portier trägt die Kiste nicht mehr unsichtbar durch den Flur: Sie hängt an seinen Händen, wiegt bei jedem Schritt mit, und er dreht den Oberkörper dorthin, wo er hingeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-staff-actor-state.json"
+    },
+    {
+      "contributionId": "staff-assignment-01",
+      "turnId": "2026-11-15T00:45Z-staff-assignment",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Tafel steht jetzt neben jedem Namen, was er gerade tut und warum nicht. Wer steckt, steht mit Grund da; wer arbeitet, mit Aufgabe. Die Liste luegt nicht mehr durch Weglassen — abwesend heisst abwesend, und das steht auch so da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-staff-assignment.json"
     },
     {
       "contributionId": "staff-qualification-01",
