@@ -2,6 +2,7 @@
 
 import { acceptJob, quitJob, requestJobTask, buyBar } from '../core/sim/player-jobs';
 import { getOrCreateForeignFloor } from '../core/sim/foreign-floor-tick';
+import { ensureForeignFloorGuests } from '../core/sim/foreign-floor-guests';
 import { getRival, type RivalId } from '../core/sim/rivals';
 import { BLUEPRINTS } from '../core/sim/house-presets';
 import { layoutFromTemplate, zonesFromLayout } from '../core/sim/layout-derive';
@@ -41,9 +42,11 @@ export function visitForeignCmd(world: WorldState, rivalId: RivalId): void {
   floor.template = template;
   floor.zones = zonesFromLayout(layout);
   floor.furniture = furniture;
-  floor.guests = [];
   world.activeForeignFloorId = floor.id;
   world.scene = { kind: 'FOREIGN', foreignFloorId: floor.id };
+  // Die Besucher gehoeren dem Floor: einmal aus dem geseedeten Prng erzeugt,
+  // bleiben sie bei jedem weiteren Besuch und im Save dieselben.
+  ensureForeignFloorGuests(world, floor);
   // Der Startpunkt liegt auf dem foreign-eigenen Raster, nicht auf dem des
   // eigenen Casinos. Ein alter, inzwischen blockierter Stand wird korrigiert.
   const start = floor.playerPosition ?? { x: 2, y: 2 };

@@ -7,6 +7,7 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { payDailyWage, completeJobTask } from './player-jobs';
+import { ensureForeignFloorGuests } from './foreign-floor-guests';
 import type { WorldState, ForeignFloorState, RivalId, Zone, Furniture, JobStationDef } from './types';
 
 /** Ein Tick für einen einzelnen Foreign Floor. */
@@ -17,6 +18,9 @@ export function tickForeignFloor(
 ): void {
   // Synchronisiere Tag mit Welt
   floor.day = world.day;
+  // Alte Saves tragen noch keine Belegung; der Tick legt sie nach, bevor
+  // irgendein Bild oder Menue den Floor liest.
+  ensureForeignFloorGuests(world, floor);
 
   // Nur der Floor, auf dem der Spieler steht und für den er arbeitet, treibt die Aufgabe.
   if (world.activeForeignFloorId !== floor.id) return;

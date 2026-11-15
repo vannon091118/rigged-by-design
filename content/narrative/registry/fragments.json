@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:31da23befa4bff198a99b9f6304ee009f90d012bb02ef9bcac4ea9f354847e1c",
+  "contentHash": "sha256:0a8ed821b68eac722d778b123d567bc1e11f42cccc38361f08a871dfb7d04f37",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9006,6 +9006,28 @@
       "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
+    },
+    {
+      "contributionId": "foreign-floor-guests-01",
+      "turnId": "2026-11-15T04:35Z-foreign-floor-guests",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im fremden Saal sitzt niemand zufaellig: Wer am Tisch lehnt, hat seinen Platz von der ersten Tür an, und beim zweiten Besuch sind es dieselben Gesichter. Die Stühle sagen, wie viele noch frei sind; wer sich dazustellen will, liest die Zahl, bevor er den Mund aufmacht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-foreign-floor-guests.json"
     },
     {
       "contributionId": "foreign-walkable-01",

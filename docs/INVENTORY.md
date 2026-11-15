@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 413 Dateien — contract 220 · integration 115 · governance 65 · statistics 6 · performance 7.
+Summe: 416 Dateien — contract 221 · integration 117 · governance 65 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -284,6 +284,7 @@ Summe: 413 Dateien — contract 220 · integration 115 · governance 65 · stati
 | `src/core/sim/__tests__/fight-event.test.ts` | sim | contract | ja | `src/core/sim/fight-event.ts` |
 | `src/core/sim/__tests__/fight-odds.test.ts` | sim | contract | ja | `src/core/sim/fight-bets.ts` |
 | `src/core/sim/__tests__/floor-work.test.ts` | sim | contract | ja | `src/core/sim/floor-work.ts` |
+| `src/core/sim/__tests__/foreign-floor-guests.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-guests.ts` |
 | `src/core/sim/__tests__/foreign-floor-tick.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-tick.ts` |
 | `src/core/sim/__tests__/grid-zones.test.ts` | sim | contract | ja | `src/core/sim/grid-zones.ts` |
 | `src/core/sim/__tests__/guest-flow.test.ts` | sim | contract | ja | `src/core/sim/world.ts` |
@@ -419,6 +420,7 @@ Summe: 413 Dateien — contract 220 · integration 115 · governance 65 · stati
 | `src/render/__tests__/city-shadow-late-texture.test.ts` | render | integration | ja | `src/render/city-exterior-layer.ts` |
 | `src/render/__tests__/decor-roles.test.ts` | render | integration | ja | `src/render/decor-roles.ts` |
 | `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
+| `src/render/__tests__/floor-actions-foreign.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
 | `src/render/__tests__/floor-actions.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
 | `src/render/__tests__/floor-anchor.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
 | `src/render/__tests__/floor-cache.test.ts` | render | integration | ja | `src/render/floor-math.ts` |
@@ -457,6 +459,7 @@ Summe: 413 Dateien — contract 220 · integration 115 · governance 65 · stati
 | `src/store/__tests__/determinism.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/__tests__/exclusion-command.test.ts` | store | integration | ja | `src/store/game-commands.ts` |
 | `src/store/__tests__/first-evening.test.ts` | store | integration | ja | `src/store/new-game.ts` |
+| `src/store/__tests__/foreign-guests-save.test.ts` | store | integration | ja | `src/store/foreign-floor-commands.ts` |
 | `src/store/__tests__/foreign-walkable.test.ts` | store | integration | ja | `src/store/foreign-floor-commands.ts` |
 | `src/store/__tests__/house-debt.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
 | `src/store/__tests__/ledger-tick-balance.test.ts` | store | integration | ja | `src/store/narrative-clock.ts` |
@@ -719,10 +722,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3271 |
-| Gelistete Dateien | 3271 |
+| Getrackte Dateien | 3280 |
+| Gelistete Dateien | 3280 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (198), artifacts (1), content (1168), docs (108), packages (27), public (571), scripts (129), src (1044) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (200), artifacts (1), content (1169), docs (108), packages (27), public (571), scripts (129), src (1050) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -735,10 +738,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 100 Datei(en)
-- `.lane-claims/tasks/` — 95 Datei(en)
+- `.lane-claims/claims/` — 101 Datei(en)
+- `.lane-claims/tasks/` — 96 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1164 Datei(en)
+- `content/narrative/contributions/` — 1165 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -813,8 +816,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
-- `src/core/sim/` — 187 Datei(en)
-- `src/core/sim/__tests__/` — 170 Datei(en)
+- `src/core/sim/` — 188 Datei(en)
+- `src/core/sim/__tests__/` — 171 Datei(en)
 - `src/core/sim/narrative/` — 40 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -829,8 +832,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/__tests__/` — 1 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
-- `src/render/` — 65 Datei(en)
-- `src/render/__tests__/` — 35 Datei(en)
+- `src/render/` — 67 Datei(en)
+- `src/render/__tests__/` — 36 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 2 Datei(en)
 - `src/render/city/` — 1 Datei(en)
@@ -840,7 +843,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
 - `src/store/` — 44 Datei(en)
-- `src/store/__tests__/` — 37 Datei(en)
+- `src/store/__tests__/` — 38 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 105 Datei(en)
@@ -946,6 +949,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-556-city-acceptance.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-issue-597-foreign-floors.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-issue-759-decision-peer-index.json` — { — gelesen: 27 Zeilen
@@ -1043,6 +1047,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-556-city-acceptance.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-597-foreign-floors.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-759-decision-peer-index.json` — { — gelesen: 17 Zeilen
@@ -2232,10 +2237,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-city-growth-population.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-city-life-peer-index.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-15-city-tile-occupancy-dedupe.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-15-foreign-floor-guests.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26156 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4661 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26178 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4665 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3323,6 +3329,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/fight-event.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 136 Zeilen
 - `src/core/sim/__tests__/fight-odds.test.ts` — Der Markt darf nie besser sein als die Wahrscheinlichkeit, die er selbst — gelesen: 113 Zeilen
 - `src/core/sim/__tests__/floor-work.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 124 Zeilen
+- `src/core/sim/__tests__/foreign-floor-guests.test.ts` — Fremde Floors tragen ihre eigene Belegung: geseedet aus Rivale und Floor, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/foreign-floor-tick.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 52 Zeilen
 - `src/core/sim/__tests__/grid-zones.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 87 Zeilen
 - `src/core/sim/__tests__/guest-flow.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 171 Zeilen
@@ -3528,7 +3535,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
 - `src/core/sim/fight-history.ts` — Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell, — gelesen: 98 Zeilen
 - `src/core/sim/floor-work.ts` — Arbeitsqualitaet auf dem Floor: welches Attribut welche Arbeit traegt. — gelesen: 129 Zeilen
-- `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 81 Zeilen
+- `src/core/sim/foreign-floor-guests.ts` — Besucher eines fremden Floors. — gelesen: 93 Zeilen
+- `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 85 Zeilen
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 134 Zeilen
 - `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 148 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 20 Zeilen
@@ -3605,7 +3613,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 141 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 296 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 297 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3750,6 +3758,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/city-shadow-late-texture.test.ts` — Schatten und Licht teilen die lazy geladene Radialtextur. Fehlt sie beim — gelesen: 69 Zeilen
 - `src/render/__tests__/decor-roles.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
 - `src/render/__tests__/depth.test.ts` — Ein gemeinsamer Tiefenvertrag: Fussanker statt Oberkante, deterministisches — gelesen: 119 Zeilen
+- `src/render/__tests__/floor-actions-foreign.test.ts` — Auf einem fremden Floor nennt die Aktionskarte den Platzstatus: belegte — gelesen: 78 Zeilen
 - `src/render/__tests__/floor-actions.test.ts` — Der Lager-Spiegel ist die einzige Deko mit einer Charaktereditor-Aktion; — gelesen: 51 Zeilen
 - `src/render/__tests__/floor-anchor.test.ts` — Der Weltanker ist die Gegenrichtung zum Trefferpfad: derselbe Punkt muss — gelesen: 42 Zeilen
 - `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 88 Zeilen
@@ -3788,6 +3797,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/textures.ts` — Texturen aus dem Pixel-Paket: erst der Laufzeit-Atlas, dann die Einzeldatei. — gelesen: 109 Zeilen
 - `src/render/city-actor-actions.ts` — Aktionen einer sichtbaren Stadtfigur: npcId statt Casino-Guest-ID. — gelesen: 28 Zeilen
 - `src/render/city-actor-sync.ts` — Stadtbewohner als Straßenfiguren. — gelesen: 140 Zeilen
+- `src/render/city-door-actions.ts` — Stadtschwellen: die Tuer ist ein Ziel wie jedes andere; der Effekt kommt aus city-doors. — gelesen: 47 Zeilen
 - `src/render/city-exterior-layer.ts` — Sichtbare Stadt: Fassaden, Strassenrequisiten und Tuerkanten aus dem einen — gelesen: 243 Zeilen
 - `src/render/city-plan.ts` — Reiner Renderplan der Stadt: Rollen, Assets und echte Layoutkanten. — gelesen: 97 Zeilen
 - `src/render/city-roles.ts` — Stabile Rollen fuer die Stadtflaechen. Kein Label-Regex, kein Farbwert als — gelesen: 69 Zeilen
@@ -3799,7 +3809,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/depth.ts` — Gemeinsamer Tiefenvertrag der Szene: sortiert wird ausschliesslich nach dem — gelesen: 56 Zeilen
 - `src/render/editor-overlay.ts` — Editor-Auswahl als reine Pixi-Darstellung: eine Zelle und optional ihre Kante. — gelesen: 50 Zeilen
 - `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 221 Zeilen
-- `src/render/floor-actions.ts` — Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. — gelesen: 227 Zeilen
+- `src/render/floor-actions.ts` — Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. — gelesen: 189 Zeilen
 - `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 49 Zeilen
 - `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 116 Zeilen
 - `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen und expliziten Weltgrenzen; lerpt ohne Frame-Allokationen. — gelesen: 209 Zeilen
@@ -3809,7 +3819,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-events.ts` — Die eine Tabelle: Ereignis -> Burst, Ton, Licht, Shake und Anker. — gelesen: 131 Zeilen
 - `src/render/floor-hit.ts` — Ein Trefferpfad fuer Maus und Finger. — gelesen: 215 Zeilen
 - `src/render/floor-input.ts` — Floor-Input: ein Trefferpfad, eine Aktionsliste, ein Ergebnis. Kein zweiter Klickpfad. — gelesen: 149 Zeilen
-- `src/render/floor-interact.ts` — Verarbeitet Radial-Menu-Aktionen vom Floor. — gelesen: 26 Zeilen
+- `src/render/floor-interact.ts` — Verarbeitet Radial-Menu-Aktionen vom Floor. — gelesen: 29 Zeilen
 - `src/render/floor-material.ts` — Bodenmaterialien aus dem Layout: pro `FloorMaterialId` genau eine — gelesen: 141 Zeilen
 - `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 156 Zeilen
 - `src/render/floor-perf.bench.ts` — Worst-Case: 90×90-Floor, 9 Regionen, 500 Dreck-Tiles, 200 Entities. — gelesen: 55 Zeilen
@@ -3819,6 +3829,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 127 Zeilen
 - `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 181 Zeilen
 - `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 242 Zeilen
+- `src/render/foreign-floor-actions.ts` — Aktionskarte auf fremden Floors: eigene Ziele, eigene Aussagen, keine eigenen Commands. — gelesen: 44 Zeilen
 - `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 132 Zeilen
 - `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 220 Zeilen
 - `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 171 Zeilen
@@ -3884,6 +3895,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 111 Zeilen
+- `src/store/__tests__/foreign-guests-save.test.ts` — Die Belegung ist Snapshot-Daten des fremden Floors: sie erscheint im Bild, — gelesen: 56 Zeilen
 - `src/store/__tests__/foreign-walkable.test.ts` — Der fremde Floor ist begehbar: Bewegung, Tick, Maus-/Touch-Laufauftrag, — gelesen: 121 Zeilen
 - `src/store/__tests__/house-debt.test.ts` — Die offene Haus-Schuld ist keine zweite Zahl: Der Snapshot liest den negativen — gelesen: 43 Zeilen
 - `src/store/__tests__/ledger-tick-balance.test.ts` — Die Bilanz ist eine Invariante des vollstaendigen Takts, nicht nur des — gelesen: 79 Zeilen
@@ -3918,7 +3930,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 111 Zeilen
 - `src/store/city-door-walk.ts` — Der Weg zur Stadtschwelle: ein ferner Tuerklick ist ein Auftrag, kein Sprung. — gelesen: 83 Zeilen
 - `src/store/city-exterior-view.ts` — Eine Exterieur-Ansicht je gespeicherter Stadt. — gelesen: 19 Zeilen
-- `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 62 Zeilen
+- `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 65 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
 - `src/store/interaction-store.ts` — Zielfokus des Stores: planen, laufen lassen, abbrechen. Haelt keinen zweiten Zustand. — gelesen: 59 Zeilen
@@ -3976,7 +3988,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/floor-feedback.test.tsx` — Floor-Einstiege entstehen aus dem Ort. DIALOG braucht einen konkreten — gelesen: 92 Zeilen
 - `src/ui/__tests__/floor-keyboard.test.ts` — E waehlt die Hauptaktion des offenen Fokus, aber nie aus einem Eingabefeld — gelesen: 96 Zeilen
-- `src/ui/__tests__/floor-scenes.test.ts` — Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder — gelesen: 47 Zeilen
+- `src/ui/__tests__/floor-scenes.test.ts` — Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder — gelesen: 50 Zeilen
 - `src/ui/__tests__/fps-meter.test.ts` — Die Bildrate folgt den echten Frame-Zeitpunkten: bekannte Folgen ergeben — gelesen: 50 Zeilen
 - `src/ui/__tests__/goal.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 144 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
@@ -4037,8 +4049,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/floor-feedback.tsx` — Floor-Rueckmeldung: Hinweise, Story-/Dialog-/Stadt-Einstiege und Toast. — gelesen: 49 Zeilen
 - `src/ui/floor-keyboard.ts` — Tastaturpfad des Floors: E waehlt das naechste Ziel oder die Hauptaktion. — gelesen: 67 Zeilen
 - `src/ui/floor-role-bar.tsx` — Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. — gelesen: 28 Zeilen
-- `src/ui/floor-scenes.ts` — Eine Regel fuer alle Floor-Eingaenge: Maus, Touch und Tastatur lesen dieselbe Szene. — gelesen: 32 Zeilen
-- `src/ui/floor-tap.ts` — Reine Tap-Aufloesung fuer Boden, Tueren und Stadtfiguren. — gelesen: 65 Zeilen
+- `src/ui/floor-scenes.ts` — Eine Regel fuer alle Floor-Eingaenge: Maus, Touch und Tastatur lesen dieselbe Szene. — gelesen: 34 Zeilen
+- `src/ui/floor-tap.ts` — Reine Tap-Aufloesung fuer Boden, Tueren und Stadtfiguren. — gelesen: 79 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
 - `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 97 Zeilen
 - `src/ui/foreign-floor-popup.tsx` — Fenster auf einem fremden Floor: HUD plus Job-Menue an der gewaehlten Station. — gelesen: 54 Zeilen
@@ -4111,7 +4123,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/table-launcher.tsx` — Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. — gelesen: 145 Zeilen
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen
 - `src/ui/use-crate-actions.ts` — Kisten am Floor: Ein Klick gibt das Ziel, der Charakter laeuft hin und hebt auf oder stellt ab. — gelesen: 101 Zeilen
-- `src/ui/use-floor-interaction.ts` — Ein Fokus fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln. — gelesen: 159 Zeilen
+- `src/ui/use-floor-interaction.ts` — Ein Fokus fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln. — gelesen: 158 Zeilen
 - `src/ui/use-floor-keyboard.ts` — Bindet den reinen Floor-Tastenpfad an das Fenster; kein zweiter Listener je Szene. — gelesen: 13 Zeilen
 - `src/ui/use-floor-selection-lifecycle.ts` — Fokus-Lebenszyklus des Floors: Szene, Zielart und Ankunft raeumen dieselbe Auswahl. — gelesen: 42 Zeilen
 - `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 46 Zeilen
