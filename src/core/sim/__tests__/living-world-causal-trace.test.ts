@@ -138,6 +138,19 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     expect(plan.counterfactuals.some((probe) => probe.family === 'environment')).toBe(true);
   });
 
+  it('liest Peer-Orte pro Entscheidung hoechstens linear', () => {
+    for (const size of [12, 50, 100, 250, 1_000]) {
+      let reads = 0;
+      const peers = Array.from({ length: size }, (_, index) => new Proxy(
+        { ...POOR_RESIDENT, npcId: `npc_${index}`, location: index % 2 === 0 ? 'KIEZ' : 'HOME' } as CityResidentState,
+        { get(target, property, receiver) { if (property === 'location') reads += 1; return Reflect.get(target, property, receiver); } },
+      ));
+      decideCityLife({ ...POOR_INPUT, peers });
+      // Ein Indexaufbau; kein zweiter Scan pro Intent und Gegenfaktlauf.
+      expect(reads, `N=${size}: Ortszugriffe`).toBeLessThanOrEqual(size + 20);
+    }
+  });
+
   it('bewahrt Attribute, Faehigkeiten, Beziehungen und Erinnerungen ueber Save/Load', () => {
     const { world, ledger, prng } = runCityLifeSimulation(SEED, 1);
     const before = world.cityLife.residents.map((resident) => ({

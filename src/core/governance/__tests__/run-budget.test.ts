@@ -1,5 +1,5 @@
 /**
- * @test-target: scripts/run-budget.mjs
+ * @test-target: scripts/lib/run-budget.mjs
  * @proof-class: governance
  * @error-code: ERR-4019
  *

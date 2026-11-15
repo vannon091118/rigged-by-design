@@ -8,7 +8,7 @@ const DEFAULT_WINDOW_MS = 500;
 /** Ab dieser Luecke gilt die Zeitreihe als unterbrochen, nicht als langsames Frame. */
 const DEFAULT_PAUSE_GAP_MS = 250;
 
-export type FrameMeter = (now: number) => number | null;
+type FrameMeter = (now: number) => number | null;
 
 export function createFrameMeter(
   windowMs: number = DEFAULT_WINDOW_MS,

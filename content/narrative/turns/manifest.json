@@ -4622,12 +4622,28 @@
       "contributionId": "city-tile-occupancy-01"
     },
     {
-      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
-      "contributionId": "city-tile-occupancy-02"
+      "turnId": "2026-11-15T00:44Z-city-life-peer-index",
+      "contributionId": "city-life-peer-index-01"
     },
     {
       "turnId": "2026-11-15T00:45Z-staff-assignment",
       "contributionId": "staff-assignment-01"
+    },
+    {
+      "turnId": "2026-11-14T23:20Z-main-green",
+      "contributionId": "main-green-01"
+    },
+    {
+      "turnId": "2026-11-14T23:55Z-main-green-02",
+      "contributionId": "main-green-02"
+    },
+    {
+      "turnId": "2026-11-15T01:05Z-city-growth-population",
+      "contributionId": "city-growth-population-01"
+    },
+    {
+      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
+      "contributionId": "city-tile-occupancy-02"
     }
   ]
 }

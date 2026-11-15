@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-759-decision-peer-index",
+  "claimId": "lane/sim/issue-759-decision-peer-index",
+  "branch": "lane/sim/issue-759-decision-peer-index",
+  "baseSha": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
+  "phase": "CI_PENDING",
+  "title": "Issue #759: Anwesendenindex einmal pro Stadtentscheidung statt pro Intent",
+  "goal": "presentAt nicht in jeder Intent-Bewertung und jedem Gegenfaktlauf neu ueber die Bewohnerliste filtern; Entscheidungen bleiben unveraendert, Zugriffszahl skaliert linear.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR nach Push oeffnen, CI/Gates auf dem PR-Kopf pruefen; Merge bleibt beim Maintainer.",
+  "revision": 2
+}
