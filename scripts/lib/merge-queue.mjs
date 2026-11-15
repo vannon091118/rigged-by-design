@@ -10,6 +10,8 @@
  *
  * Es gibt keinen stillen Default auf Zustimmung: fehlt ein ACK, ist eine
  * Session unbekannt, weicht ein Head ab oder bricht die Kette, ist das HOLD.
+ * Auch die Plan-Autoritaet ist geprueft: nur eine aktive Maintainer-Session
+ * darf eine Revision veroeffentlichen.
  */
 import { createHash } from 'node:crypto';
 
@@ -18,6 +20,14 @@ const EVENT_LINE = /^\s*(MERGE_(?:SESSION_JOIN|SESSION_LEAVE|PLAN|ACK|STARTED|CO
 const SHA = /^[0-9a-f]{7,40}$/i;
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
+
+/** Zeitvergleich ueber den Zeitstempel, nicht lexikographisch (Offsets sind erlaubt). */
+function isBefore(left, right) {
+  const a = Date.parse(String(left ?? ''));
+  const b = Date.parse(String(right ?? ''));
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return Boolean(left && right && left < right);
+  return a < b;
+}
 
 /** `key=value`-Felder; Werte ohne Leerzeichen, damit ein Kommentar parsebar bleibt. */
 function fields(rest) {
@@ -86,7 +96,11 @@ export function hashChain(events = []) {
   return { entries, head: prev };
 }
 
-/** Prueft die Kette; ein erwarteter Kopf muss exakt passen, sonst Drift. */
+/**
+ * Prueft die Kette; ein erwarteter Kopf muss exakt passen, sonst Drift.
+ * `verified` sagt, ob ueberhaupt ein externer Anker geprueft wurde: ohne ihn
+ * ist die Kette nur manipulationserkennend, nicht manipulationsresistent.
+ */
 export function verifyChain(events = [], expectedHead = '') {
   const { entries, head } = hashChain(events);
   const breaks = [];
@@ -95,7 +109,7 @@ export function verifyChain(events = [], expectedHead = '') {
     if (entry.prev !== want) breaks.push(index);
   });
   if (expectedHead && expectedHead !== head) breaks.push(-1);
-  return { ok: breaks.length === 0, head, breaks };
+  return { ok: breaks.length === 0, head, breaks, verified: Boolean(expectedHead) };
 }
 
 /**
@@ -135,7 +149,17 @@ export function buildMergeState(comments = [], { expectedChainHead = '' } = {}) 
         problems.push(`PLAN unvollstaendig (${event.commentId})`);
         continue;
       }
-      const next = { rev, main: String(f.main).toLowerCase(), prs, at: event.at, commentId: event.commentId };
+      // Plan-Autoritaet: nur eine aktive Maintainer-Session darf eine Revision
+      // veroeffentlichen. Ohne diese Pruefung koennte ein Worker-Plan seine
+      // eigene Bestaetigung nachschieben (#909 bliebe sonst halb geloest).
+      const authorSession = sessions.get(f.session);
+      if (!authorSession || authorSession.left || authorSession.role !== 'maintainer') {
+        problems.push(`PLAN ohne aktive Maintainer-Session (${event.commentId})`);
+        continue;
+      }
+      const next = {
+        rev, main: String(f.main).toLowerCase(), prs, at: event.at, commentId: event.commentId, session: authorSession.session,
+      };
       next.hash = planHash(next);
       if (plan && rev <= plan.rev) { problems.push(`PLAN rev ${rev} ist nicht neuer als ${plan.rev}`); continue; }
       plan = next;
@@ -160,7 +184,7 @@ export function buildMergeState(comments = [], { expectedChainHead = '' } = {}) 
         problems.push(`ACK passt nicht zum aktuellen PLAN (${event.commentId})`);
         continue;
       }
-      if (event.at && plan.at && event.at < plan.at) { problems.push(`ACK aelter als der PLAN (${event.commentId})`); continue; }
+      if (isBefore(event.at, plan.at)) { problems.push(`ACK aelter als der PLAN (${event.commentId})`); continue; }
       if (previous === wants.hash) continue;
       ackHashes.set(key, wants.hash);
       acks.set(`${plan.hash}:${session.session}`, {
@@ -178,6 +202,7 @@ export function buildMergeState(comments = [], { expectedChainHead = '' } = {}) 
   const participants = [...sessions.values()].filter((session) => !session.left);
   const hold = [...problems];
   if (!chain.ok) hold.push(chain.breaks.includes(-1) ? 'Ereignis-Kette weicht vom erwarteten Kopf ab' : 'Ereignis-Kette ist gebrochen');
+  if (!chain.verified) hold.push('kein externer Kettenkopf gesetzt (Kette nur erkennend, nicht verhindernd)');
   if (!plan) hold.push('kein MERGE_PLAN veroeffentlicht');
   if (participants.length === 0) hold.push('keine aktive Session registriert');
   if (plan) {
