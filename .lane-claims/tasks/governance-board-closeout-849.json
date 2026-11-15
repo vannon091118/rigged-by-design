@@ -24,6 +24,6 @@
       "summary": "verify:dead-code (19 tote Exporte) und verify:test-quality (1 toBeTruthy) bleiben vorbestehend rot, getrackt in #847; blockiert keinen Merge (kein Required-Status-Check)."
     }
   ],
-  "nextAction": "#847 Gate-Zahlen 7->19 korrigieren; #597 (Jenova) weiterverfolgen; #640 Pixi-Abnahme als Spielarbeit planen.",
+  "nextAction": "Lane freigegeben: Arbeit war mit Merge #849 (56313e2b) erledigt, Board-Snapshot wird von lane/governance/board-reconcile-858 nachgezogen.",
   "revision": 1
 }
