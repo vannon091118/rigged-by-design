@@ -35,16 +35,18 @@ Der Required-Plan besteht aus sechzehn Gates:
 
 Lokal gilt:
 
-- `verify:light` = zehn Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`.
+- `verify:light` = elf Gates: `lint`, `check:loc`, `typecheck`, `headless-core`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`.
 - `verify:fast` = Light plus `dead-code`, `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
 - `verify:quick` = fünfzehn Gates: Required ohne `build`.
-- `verify:integration` = vierzehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
+- `verify:integration` = fünfzehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
 - `verify:all` = sechzehn Required plus Audit (siebzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
 - `test:mechanics` = ausschließlich Statistik, Soak, Langlauf und Benchmarks; nie Teil eines Regelprofils.
 
 Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein Gate schreibt nie vorher die Akte um.
+
+`headless-core` ist ein Light-Gate: `pnpm run verify:headless` prüft, dass `src/core/` weder `pixi.js`, `react`, `react-dom`, DOM-/Testbibliotheken noch relative Pfade in Renderer, UI oder Store importiert. Der Lauf ist rein lesend und fail-closed; das Gate läuft damit in `verify:light`, `verify:fast`, `verify:dev` und im lokalen Vor-PR-Nachweis `verify:integration`.
 
 ## Zustände
 

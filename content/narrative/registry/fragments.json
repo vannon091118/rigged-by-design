@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d6f8bcbe26c15366761deaff6de5a9fcf8c0695466f1a1eb82d08a6b030414c2",
+  "contentHash": "sha256:8f4ba466e58e7d880964c4cdd6ff2743e56aa2033b03ff12e7a6a10b2b027f7d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25252,6 +25252,28 @@
       "text": "Der erste Gast kommt nicht mit dem Spielstart. Er kommt, wenn der Automat steht: erst die Kiste auf den Floor, dann der Weg zur Kasse. Wer die Reihenfolge im Blick behält, sieht den Anfang des Abends als Kette und nicht als Sprung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-782-first-guest.json"
+    },
+    {
+      "contributionId": "shinon-839-headless-imports",
+      "turnId": "2026-11-15T09:45Z-shinon-839-headless-imports",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kern bleibt headless. Kein Pixi, kein React, kein DOM und kein Weg in Renderer, UI oder Store: Wer die Grenze einmal zieht, sieht den Unterschied zwischen einem Zustand und seinem Bild. Das Gate macht aus dieser Regel einen täglichen Nachweis, nicht eine Absicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

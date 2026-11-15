@@ -50,6 +50,8 @@ export const GATES = Object.freeze({
     cache: true,
   },
   'dead-code': { ...NODE, name: 'dead-code', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', cache: true },
+  // Der Core bleibt headless; UI, Renderer, Pixi, React und DOM sind dort tabu.
+  'headless-core': { ...NODE, name: 'headless-core', script: 'scripts/verify-headless-core.mjs', code: 'ERR-4019', cache: true },
   // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum.
   docs: { ...NODE, name: 'docs', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', cache: true },
   // Der Katalog ist abgeleitet, aber im Verify nicht selbstschreibend.
@@ -113,7 +115,7 @@ export const GATES = Object.freeze({
 });
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit.
-const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'generated', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'headless-core', 'docs', 'catalog', 'generated', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
 // Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
 // betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
 const FAST = [...LIGHT, 'dead-code', 'test-quality', 'affected', 'build'];
