@@ -5,8 +5,8 @@
  * C1: Die Spec-Regel „nur triggern, wo ein Template mit Mehrwert existiert“
  * gilt als getesteter Vertrag. Jede Trigger-Definition findet mindestens ein
  * Template, jedes Fact-Template ist an genau eine Definition gebunden, und der
- * Fact-Vertrag fuehrt SLOT_DISCHARGE als einzigen neuen Kind; Geraete-,
- * Lager- und Personal-Facts bleiben dokumentiert offen.
+ * Fact-Vertrag fuehrt SLOT_DISCHARGE, DEVICE_FAULT und STOCK_LOW; Personal-
+ * Facts bleiben dokumentiert offen.
  */
 import { describe, expect, it } from 'vitest';
 import { EVENT_TEMPLATES } from '../narrative/events/definitions';
@@ -35,10 +35,10 @@ describe('Trigger-Template-Vertrag (C1)', () => {
     }
   });
 
-  it('fuehrt nur den Slot-Discharge-Fact neu ein', () => {
+  it('fuehrt genau die vereinbarten Fact-Arten', () => {
     expect([...NARRATIVE_FACT_KINDS].sort()).toEqual([
-      'COMMAND_REJECTED', 'EVENT_RESOLVED', 'HOUSE_BALANCE', 'RIVAL_ACTION',
-      'RIVAL_ENCOUNTER', 'SLOT_DISCHARGE', 'START_POOL', 'VISITOR_CONFLICT',
+      'COMMAND_REJECTED', 'DEVICE_FAULT', 'EVENT_RESOLVED', 'HOUSE_BALANCE', 'RIVAL_ACTION',
+      'RIVAL_ENCOUNTER', 'SLOT_DISCHARGE', 'START_POOL', 'STOCK_LOW', 'VISITOR_CONFLICT',
       'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISITOR_SERVICE', 'VISIT_ENDED',
     ]);
   });

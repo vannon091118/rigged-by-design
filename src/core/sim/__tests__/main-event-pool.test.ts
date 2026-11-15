@@ -32,8 +32,16 @@ interface PairWorld {
   readonly to: ActorRef;
 }
 
+/** Bestueckt die Startwelt, damit der Boundary keine Lager-Facts komponiert. */
+function bestuecke(world: ReturnType<typeof createWorld>): void {
+  for (const item of world.furniture) {
+    if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+  }
+}
+
 function pairWorld(): PairWorld {
   const world = createWorld('SMALL');
+  bestuecke(world);
   const add = (id: number, name: string): ActorRef => {
     const visitor = recordVisitor(world, { name, persona: 'STAMMGAST', tick: 0 });
     const guest: Guest = makeGuest({ id, persona: 'STAMMGAST', prng: new Prng(SEED + id), spawn: { x: 2, y: 13 } });

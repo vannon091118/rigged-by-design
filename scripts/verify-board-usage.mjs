@@ -41,11 +41,10 @@ function branchName() {
 const branch = branchName();
 const agent = process.env.RBD_AGENT || 'agent-local';
 
-let claims = [];
 let claim = null;
 let loadError = '';
 try {
-  claims = loadClaimsStrict();
+  const claims = loadClaimsStrict();
   claim = selectClaim(claims, branch);
 } catch (error) {
   loadError = error instanceof Error ? error.message : 'unbekannt';

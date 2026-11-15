@@ -11,8 +11,16 @@ import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
 import { recordVisitor } from '../visitors';
 
+/** Bestueckt die Startwelt, damit der Boundary keine Lager-Facts komponiert. */
+function bestuecke(world: ReturnType<typeof createWorld>): void {
+  for (const item of world.furniture) {
+    if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+  }
+}
+
 function setup() {
   const world = createWorld('SMALL');
+  bestuecke(world);
   const ledger = new Ledger();
   const visitor = recordVisitor(world, { name: 'Rita Test', persona: 'STAMMGAST', tick: 0 });
   return { world, ledger, visitor };
@@ -79,6 +87,7 @@ describe('Narrative Runtime', () => {
 
   it('plant hoechstens drei neue Events pro Lauf', () => {
     const world = createWorld('SMALL');
+    bestuecke(world);
     for (let index = 0; index < 6; index += 1) {
       const visitor = recordVisitor(world, { name: `Gast ${index}`, persona: 'STREET', tick: 0 });
       emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });
@@ -98,6 +107,7 @@ describe('Narrative Runtime', () => {
     processNarrativeRuntime(world, ledger);
 
     const restored = createWorld('SMALL');
+    bestuecke(restored);
     restored.narrative = normalizeNarrativeState(JSON.parse(JSON.stringify(world.narrative)));
     restored.visitors = world.visitors.map((entry) => ({ ...entry, memories: [...(entry.memories ?? [])] }));
     restored.tick = world.tick;
