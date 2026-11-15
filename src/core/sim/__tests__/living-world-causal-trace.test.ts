@@ -139,7 +139,7 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
   });
 
   it('liest Peer-Orte pro Entscheidung hoechstens linear', () => {
-    for (const size of [12, 1_000]) {
+    for (const size of [12, 50, 100, 250, 1_000]) {
       let reads = 0;
       const peers = Array.from({ length: size }, (_, index) => new Proxy(
         { ...POOR_RESIDENT, npcId: `npc_${index}`, location: index % 2 === 0 ? 'KIEZ' : 'HOME' } as CityResidentState,
