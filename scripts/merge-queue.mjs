@@ -7,7 +7,8 @@
  * Eingabe ist der Issue-Kommentarverlauf als JSON (`[{id, createdAt, author:{login}, body}]`),
  * wie ihn `gh issue view --json comments` oder der REST-Fallback liefert.
  * Ausgabe ist die rekonstruierte Queue; Exit 0 nur bei READY, sonst 1 (HOLD).
- * `--write` legt einen abgeleiteten Snapshot ab, der nie Quelle ist.
+ * Ohne `--expected-chain` ist die Kette nur erkennend und die Queue bleibt
+ * HOLD; der Snapshot traegt `chainVerified: false` statt eines scheinbaren Ankers.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { buildMergeState } from './lib/merge-queue.mjs';
@@ -36,7 +37,11 @@ if (!Array.isArray(comments)) {
   process.exit(2);
 }
 
-const state = buildMergeState(comments, { expectedChainHead: value('--expected-chain') });
+const expectedChain = value('--expected-chain');
+const state = buildMergeState(comments, { expectedChainHead: expectedChain });
+if (!expectedChain) {
+  console.error('merge-queue: ohne --expected-chain ist die Kette nur erkennend; Queue bleibt HOLD.');
+}
 const snapshot = {
   ready: state.ready,
   hold: state.hold,
@@ -44,6 +49,7 @@ const snapshot = {
   participants: state.participants,
   queue: state.queue,
   chainHead: state.chain.head,
+  chainVerified: state.chain.verified,
 };
 const target = value('--write');
 if (target) writeFileSync(target, `${JSON.stringify(snapshot, null, 2)}\n`);
