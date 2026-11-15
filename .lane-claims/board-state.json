@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-14T18:40Z",
+  "generatedAt": "2026-11-15T03:21Z",
   "generatedBy": "maintainer",
-  "head": "024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
-  "headMessage": "Issue-Audit gemergt (#742), Register geschlossen",
-  "base": "origin/main @ 024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
+  "head": "56313e2b20daee4cac2075c0d16602cffdc2f4c9",
+  "headMessage": "Merge PR #849: fix(#776): Stadtbegegnungen nur am gemeinsamen Ort und in Reichweite",
+  "base": "origin/main @ 56313e2b20daee4cac2075c0d16602cffdc2f4c9",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Board-Audit auf dem per API gelesenen main-Tip 9b1a92ea. Alle 28 offenen Issues wurden einzeln gegen den Code geprueft und je Issue mit Kommentar entschieden: #675 ist nach #656 konsolidiert (gleicher Writer-Pfad docs/screenshots/**, area-release) und geschlossen; die uebrigen 27 sind belegt offen, keines war fertig. Neue Findings wurden geprueft: fuer das Infra-Finding (verify-narrative-blocks --help fuehrt statt zu helfen) gibt es kein Ticket, weil das Governance-Budget maxNewGovernanceIssues=0 ist; die veralteten #733-Abnahmekriterien wurden im Ticket korrigiert. Offen: 27 Issues, 0 PRs, 0 offene Claims.",
+  "summary": "Maintainer-Lauf auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9: PR #849 (Jenova, #776 Stadtbegegnungen Ort+Naehe) nach Voll-Diff-Review (Determinismus, Invarianten, Narrative-Register, 6 neue Tests) gemergt; alle PR-eigenen ci:local-Gates gruen, 2 vorbestehende rote Gates (dead-code 19 Exporte, test-quality 1) bleiben bei #847. Issue #776 mit Merge-Beleg 56313e2b geschlossen, Labels review-waiting/invalid entzogen, Remote-Branch vom pr-cleanup entfernt. Board: 73 offene Issues, 0 offene PRs. Next: #847 Gate-Zahlen korrigieren, #597 (Jenova, Foreign-Floor-Gaeste) laeuft.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -25,39 +25,52 @@
     "Issue-Audit 9b1a92ea: alle 28 Tickets gesichtet, je Issue ein Entscheidungskommentar mit Datei/Zeile/Befehl",
     "Konsolidiert und geschlossen: #675 -> #656 (Screenshot-Saetze, gleicher Ordner/area-release)",
     "Offen mit Beleg: 27 Tickets (u. a. #652 Doku behauptet weiter city-actors.ts fehle; #630 GOVERNANCE.md:49 vs OWNERS; #693 workState ohne Autorpruefung)",
-    "Closeout #743: Claim merged (PR #742, 024d9a7494c525ab0e809a21a04ec2ffb0e6b418), Task DONE, board.head auf 024d9a7494c525ab0e809a21a04ec2ffb0e6b418"
+    "Closeout #743: Claim merged (PR #742, 024d9a7494c525ab0e809a21a04ec2ffb0e6b418), Task DONE, board.head auf 024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
+    "PR #849 nach Voll-Diff-Review gemergt (56313e2b, exakter Kopf e17950653d); alle PR-eigenen ci:local-Gates gruen; 2 rote Gates vorbestehend (#847)",
+    "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
+    "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
+    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs"
   ],
-  "activeClaims": [],
+  "activeClaims": [
+    {
+      "issue": 597,
+      "worker": "Jenova",
+      "note": "CLAIM [A19] Foreign-Floor-Gaeste, aktiv"
+    },
+    {
+      "issue": 685,
+      "worker": "LIILITH",
+      "note": "CLAIM [A27] Governance claim-reconcile, aktiv"
+    }
+  ],
   "mergedClaimsThisRun": [],
   "closedIssuesThisRun": [
-    675
+    675,
+    776
   ],
   "openPullRequests": 0,
-  "reviewWaitingPrs": 1,
+  "reviewWaitingPrs": 0,
   "blockedIssues": [
     {
       "issue": 684,
       "reason": "fehlende User-Entscheidung (P0)"
     },
     {
-      "issue": 597,
-      "reason": "Produktentscheidung Gastquelle"
+      "issue": 527,
+      "reason": "Produktentscheidung Pakt/Suchtwert (User) offen; an Shinon [A2] zugewiesen, Arbeits-Claim ausstehend"
     }
   ],
   "nextRunChecklist": [
-    "Reihenfolge ausschliesslich ueber GOVERNANCE.md Abschnitt Maintainer-Prioritaeten (kanonisch)",
-    "#733 als ein Lauf: Ersatz-Bausteine je Pool, danach Messung gegen main",
-    "#731: erster Test fuer sync()/animate() mit Stub fuer world/depth/createGuestArt",
-    "#656: Frieregel/Guard fuer Screenshots, dann current/ erneuern und Altsaetze entfernen",
-    "#652: die sechs zitierten R9-Stellen auf CityActorSync ziehen",
-    "#640: Pixi-Abnahme (drei Bewohner, mehrere Ticks), dann review-waiting entfernen",
-    "#630/#634/#693/#694/#696: Dokument-/Enforcement-Kette; #693 braucht zuerst einen Worker-Claim",
-    "#527: Produktentscheidung des Users (Pakt-Scope) abwarten, nicht selbst entscheiden"
+    "#847: Gate-Zahlen von 7->19 tote Exporte + 1 test-quality korrigieren (Kettenpflicht pro Export, Blind-Cut verbieten)",
+    "#597 Jenova weiterverfolgen (Foreign-Floor-Gaeste); naechste uebergabe = RELEASE + review-waiting",
+    "#527 an Shinon [A2]: Arbeits-CLAIM noch ausstehend (2x erinnert); wenn weiter inaktiv -> Maintainer-Entscheidung",
+    "#640 Pixi-Abnahme (drei Bewohner, mehrere Ticks) als Spielarbeit planen (Sandbox-Visuell-Abnahme offen)",
+    "P0 #684/#696: User-Entscheidung(en) nachziehen, bevor weitere Governance-Ketten laufen"
   ],
   "blockers": [],
   "warnings": [
-    "Vollsuite rot: src/core/governance/__tests__/pretask*.test.ts (5 Dateien); vorbestehend belegt nur fuer pretask.test.ts",
-    "Visuelle Abnahmen (#640/#647/#649/#650/#651/#655) sind in dieser Sandbox nicht ausfuehrbar; sie bleiben bewusst offen"
+    "Vollsuite: vorbestehende rote Gates verify:dead-code (19 Exporte) + verify:test-quality (1 toBeTruthy) auf main, getrackt in #847; blockiert kein Merge (kein Required-Status-Check)",
+    "Visuelle Pixi-Abnahmen (#640/#647/#649/#650/#651) in dieser Sandbox nicht ausfuehrbar; bewusst offen"
   ],
   "issues": {
     "527": {
@@ -427,6 +440,14 @@
       "lastCommentAt": "2026-11-14T10:11:40Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
       "status": "OK"
+    },
+    "776": {
+      "kind": "issues",
+      "number": 776,
+      "lastCommentId": 6888473270,
+      "lastCommentAt": "2026-11-15T05:20Z",
+      "lastScanAt": "2026-11-15T03:21Z",
+      "status": "OK"
     }
   },
   "pullRequests": {
@@ -452,6 +473,14 @@
       "lastCommentId": 6875692734,
       "lastCommentAt": "2026-11-14T10:09:20Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "849": {
+      "kind": "pullRequests",
+      "number": 849,
+      "lastCommentId": 6888466799,
+      "lastCommentAt": "2026-11-15T05:18Z",
+      "lastScanAt": "2026-11-15T03:21Z",
       "status": "OK"
     }
   },
@@ -489,7 +518,9 @@
     "issues:685:6875719247",
     "pullRequests:683:6875510974",
     "pullRequests:691:6875718950",
-    "pullRequests:692:6875692734"
+    "pullRequests:692:6875692734",
+    "issues:776:6888473270",
+    "pullRequests:849:6888466799"
   ],
   "unmergedClosedPullRequests": [
     {
@@ -519,7 +550,7 @@
   ],
   "openPrs": [],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Marke sitzt nur an #640 (wieder geoeffnet, Automatik-Closeout war falsch): Code gemergt (#730), Pixi-Abnahme fehlt",
+  "reviewWaitingNote": "Keine review-waiting-PRs: #849 gemergt (56313e2b), #776 mit Merge-Beleg geschlossen. #640 traegt kein review-waiting-Label mehr (Pixi-Abnahme nach wie vor offen als Spielarbeit).",
   "health": {
     "verifyLight": {
       "status": "PASS",
@@ -552,9 +583,10 @@
     "newGovernanceIssuesThisRun": 0,
     "openIssues": 27
   },
-  "openIssuesCount": 27,
+  "openIssuesCount": 73,
   "mergedPrsThisRun": [
-    739
+    739,
+    849
   ],
   "adversarialReview24h": {
     "range": "d8350cfc..35e39365 (191 Commits)",
