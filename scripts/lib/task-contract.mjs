@@ -23,6 +23,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
+import { rest } from './github-rest.mjs';
 import { TASK_CONTRACT_PREFIX } from './lane-claims.mjs';
 import { latestCiState, readCiStateResult } from './ci-state.mjs';
 
@@ -260,6 +261,18 @@ export function readCiState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', ro
       { cwd: root, encoding: 'utf8', timeout: 10000, stdio: ['ignore', 'pipe', 'ignore'] },
     );
     const data = JSON.parse(output);
+    return ciStateFrom(data);
+  } catch {
+    // Zweiter Lesepfad: derselbe CI-Kommentar ueber den Token-Connector.
+    const fallback = rest('ci-for-branch', { branch });
+    if (fallback.ok) return ciStateFrom(fallback.data);
+    return { known: false, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
+  }
+}
+
+/** CI-Zustand aus gh- oder REST-Daten; der Kommentar schlaegt den Rollup. */
+function ciStateFrom(data) {
+  {
     const comment = latestCiState(data?.comments ?? []);
     if (comment && comment.headSha === data?.headRefOid) {
       return {
@@ -282,12 +295,29 @@ export function readCiState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', ro
       url: required.detailsUrl ?? required.targetUrl ?? null,
       prNumber: data?.number ?? null,
     };
-  } catch {
-    return { known: false, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
   }
 }
 
-/** PR-Zustand aus GitHub; ohne `gh` bleibt er `unknown` und blockiert nie. */
+/** Ein PR-Datensatz aus gh- oder REST-Form; beide liefern dieselben Felder. */
+function pullStateFrom(data) {
+  if (!data || data.number === undefined || data.number === null) return null;
+  return {
+    known: true,
+    number: data.number ?? null,
+    url: data.url ?? null,
+    state: String(data.state ?? '').toLowerCase() || 'open',
+    draft: Boolean(data.isDraft),
+    headSha: data.headRefOid ?? null,
+    base: data.baseRefName ?? null,
+    merged: Boolean(data.mergedAt) || String(data.state).toUpperCase() === 'MERGED',
+  };
+}
+
+/**
+ * PR-Zustand aus GitHub. Zwei Lesepfade, ein Ergebnis: `gh` bevorzugt, sonst
+ * der Token-Connector (GH_TOKEN/GITHUB_TOKEN). Ohne beides bleibt er `unknown`
+ * und blockiert nie.
+ */
 export function readPullRequestState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', root = ROOT } = {}) {
   if (!branch) return { known: false, error: 'kein Branch' };
   try {
@@ -296,20 +326,18 @@ export function readPullRequestState({ branch, ghBin = process.env.RBD_GH_BIN ||
       ['pr', 'view', branch, '--json', 'number,url,state,isDraft,headRefOid,baseRefName,mergedAt'],
       { cwd: root, encoding: 'utf8', timeout: 10000, stdio: ['ignore', 'pipe', 'ignore'] },
     );
-    const data = JSON.parse(output);
-    return {
-      known: true,
-      number: data.number ?? null,
-      url: data.url ?? null,
-      state: String(data.state ?? '').toLowerCase() || 'open',
-      draft: Boolean(data.isDraft),
-      headSha: data.headRefOid ?? null,
-      base: data.baseRefName ?? null,
-      merged: Boolean(data.mergedAt) || String(data.state).toUpperCase() === 'MERGED',
-    };
+    const state = pullStateFrom(JSON.parse(output));
+    if (state) return state;
   } catch {
-    return { known: false, error: 'PR-Zustand nicht lesbar (gh fehlt oder ist nicht angemeldet)' };
+    // Weiter mit dem Token-Pfad.
   }
+  const fallback = rest('pull-for-branch', { branch });
+  const state = fallback.ok ? pullStateFrom(fallback.data) : null;
+  if (state) return state;
+  return {
+    known: false,
+    error: `PR-Zustand nicht lesbar (gh nicht angemeldet und ${fallback.error ?? 'kein Token'})`,
+  };
 }
 
 /**

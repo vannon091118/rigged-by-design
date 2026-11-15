@@ -98,7 +98,7 @@ export function evaluateBoardUsage({
   if (!issueClaim || issueClaim.checked !== true) {
     failures.push(
       `Issue #${claim.issue ?? '?'} nicht lesbar; ohne Board-Beleg startet und pusht keine Lane ` +
-        '(gh auth login oder GH_TOKEN setzen, dann pnpm run verify:board-usage)',
+        '(gh auth login oder Token in GH_TOKEN/GITHUB_TOKEN, dann pnpm run verify:board-usage)',
     );
     return result();
   }
