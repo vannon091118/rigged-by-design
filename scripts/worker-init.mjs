@@ -16,9 +16,9 @@
  * Keine Maintainer-Rechte, keine fremde WIP, kein `--force`.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { hostname } from 'node:os';
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import {
   dispatchRole, formatIdentityClaim, formatIdentityRelease, resolveReservations,
 } from './lib/worker-identity.mjs';
@@ -56,17 +56,37 @@ function commentId(url) {
   return match ? match[1] : '';
 }
 
+/**
+ * Actor-Policy (#693): ohne verifizierbare Zuordnung reserviert niemand.
+ * Fehlt die Datei, ist der Lauf fail-closed statt stillschweigend offen.
+ */
+function actorPolicy() {
+  const file = join(repoRoot(), '.lane-claims', 'actors.json');
+  if (!existsSync(file)) {
+    throw new Error('WORKER: .lane-claims/actors.json fehlt; ohne Actor-Policy ist keine Identitaetsreservierung moeglich');
+  }
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(
+      `WORKER: Actor-Policy unlesbar (${error instanceof Error ? error.message : String(error)})`,
+      { cause: error },
+    );
+  }
+}
+
 function boardComments() {
   if (!IDENTITY_BOARD) throw new Error('WORKER: RBD_IDENTITY_BOARD (Issue-Nummer) fehlt');
   const raw = gh(['issue', 'view', String(IDENTITY_BOARD), '--repo', REPO, '--json', 'comments']);
   return JSON.parse(raw).comments.map((comment) => ({
     id: String(comment.id ?? commentId(comment.url)),
+    author: { login: comment.author?.login ?? '' },
     body: comment.body,
   }));
 }
 
 function requireFreeBoard() {
-  const state = resolveReservations(boardComments());
+  const state = resolveReservations(boardComments(), { actors: actorPolicy() });
   if (state.conflicts.some((entry) => entry.reason === 'exclusive-claim')) {
     throw new Error(`WORKER: Identitaetskonflikt: ${state.conflicts.map((entry) => entry.reason).join(', ')}`);
   }
@@ -82,7 +102,7 @@ function status() {
     return 0;
   }
   const validation = validateIdentityFile(record);
-  const board = IDENTITY_BOARD ? resolveReservations(boardComments()) : null;
+  const board = IDENTITY_BOARD ? resolveReservations(boardComments(), { actors: actorPolicy() }) : null;
   const verified = board
     ? board.reserved.some((entry) => entry.name === record.identity && entry.claimId === record.claimId)
     : null;
@@ -127,7 +147,7 @@ function claim(args) {
     at,
   });
   const created = gh(['issue', 'comment', String(IDENTITY_BOARD), '--repo', REPO, '--body', line]);
-  const verified = resolveReservations(boardComments()).reserved
+  const verified = resolveReservations(boardComments(), { actors: actorPolicy() }).reserved
     .find((entry) => entry.name === requested && entry.claimId === claimId);
   if (!verified) throw new Error('WORKER: Reservierung nach dem Kommentar nicht nachweisbar');
   const record = createIdentityRecord({

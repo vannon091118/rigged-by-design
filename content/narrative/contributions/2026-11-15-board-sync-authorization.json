@@ -1,0 +1,17 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-15T04:45Z-board-sync-authorization",
+  "contributionId": "board-sync-authorization-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Kontor liegt jetzt nur noch ein Buch, und wer es aufschlaegt, schreibt zuerst seinen Namen hinein. Zwei Haende am selben Blatt gibt es nicht mehr; das Siegel bricht nur, wer es selbst gesetzt hat. Die Angestellten tuscheln, dass der alte Streit um die doppelte Abrechnung damit endlich ruht.",
+  "directives": []
+}

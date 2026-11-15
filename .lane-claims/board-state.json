@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-15T03:21Z",
+  "generatedAt": "2026-11-15T04:26:00Z",
   "generatedBy": "maintainer",
-  "head": "56313e2b20daee4cac2075c0d16602cffdc2f4c9",
-  "headMessage": "Merge PR #849: fix(#776): Stadtbegegnungen nur am gemeinsamen Ort und in Reichweite",
-  "base": "origin/main @ 56313e2b20daee4cac2075c0d16602cffdc2f4c9",
+  "head": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
+  "headMessage": "fix(#597): Foreign Floors mit eigener Belegung und belegten Sitzplaetzen (#851)",
+  "base": "origin/main @ ac38b39ae6d46a28b93686b954aea047e0bd23ab",
   "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
   "status": "READY",
-  "summary": "Maintainer-Lauf auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9: PR #849 (Jenova, #776 Stadtbegegnungen Ort+Naehe) nach Voll-Diff-Review (Determinismus, Invarianten, Narrative-Register, 6 neue Tests) gemergt; alle PR-eigenen ci:local-Gates gruen, 2 vorbestehende rote Gates (dead-code 19 Exporte, test-quality 1) bleiben bei #847. Issue #776 mit Merge-Beleg 56313e2b geschlossen, Labels review-waiting/invalid entzogen, Remote-Branch vom pr-cleanup entfernt. Board: 73 offene Issues, 0 offene PRs. Next: #847 Gate-Zahlen korrigieren, #597 (Jenova, Foreign-Floor-Gaeste) laeuft.",
+  "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -29,18 +29,14 @@
     "PR #849 nach Voll-Diff-Review gemergt (56313e2b, exakter Kopf e17950653d); alle PR-eigenen ci:local-Gates gruen; 2 rote Gates vorbestehend (#847)",
     "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
     "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
-    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs"
+    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
+    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt"
   ],
   "activeClaims": [
     {
       "issue": 597,
       "worker": "Jenova",
       "note": "CLAIM [A19] Foreign-Floor-Gaeste, aktiv"
-    },
-    {
-      "issue": 685,
-      "worker": "LIILITH",
-      "note": "CLAIM [A27] Governance claim-reconcile, aktiv"
     }
   ],
   "mergedClaimsThisRun": [],
@@ -550,7 +546,7 @@
   ],
   "openPrs": [],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Keine review-waiting-PRs: #849 gemergt (56313e2b), #776 mit Merge-Beleg geschlossen. #640 traegt kein review-waiting-Label mehr (Pixi-Abnahme nach wie vor offen als Spielarbeit).",
+  "reviewWaitingNote": "Keine offenen PRs. #597 traegt review-waiting als Issue-Label, nicht als PR-Warteschlange.",
   "health": {
     "verifyLight": {
       "status": "PASS",
@@ -583,7 +579,7 @@
     "newGovernanceIssuesThisRun": 0,
     "openIssues": 27
   },
-  "openIssuesCount": 73,
+  "openIssuesCount": 75,
   "mergedPrsThisRun": [
     739,
     849

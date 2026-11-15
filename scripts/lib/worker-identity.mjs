@@ -8,9 +8,15 @@
  * derselben Claim-ID aufgehoben. Ein Claim eines anderen Workspace ist ein
  * Konflikt, keine Uebernahme; Zeitablauf gibt nichts frei.
  *
+ * Seit #693 ist auch die Reservierung selbst an den verifizierten Autor
+ * gebunden: nur Rollen aus `IDENTITY_ROLES` und der Actor-Policy duerfen
+ * reservieren oder freigeben. Unbekannte Autoren aendern nichts und stehen als
+ * Befund in `rejected`.
+ *
  * Die Datei ist rein: sie parst Kommentare und entscheidet, sie schreibt nicht
  * nach GitHub. Wer kommentiert, liegt in `worker-init.mjs`.
  */
+import { roleForAuthor } from './work-claim.mjs';
 
 /** Einzige Worker-Identitaeten. Reihenfolge ist stabil und wird getestet. */
 export const WORKER_IDENTITIES = Object.freeze(['LIILITH', 'Shinon', 'Jenova']);
@@ -24,6 +30,9 @@ const LEGACY_IDENTITY = /^(agent-\d+(-(local|cloud))?|buffy|codex|claude|chatgpt
 
 /** Ein Ereignis steht am Zeilenanfang eines Issue-Kommentars. */
 const EVENT_LINE = /^(IDENTITY_CLAIM|IDENTITY_RELEASE)\s+(.+)$/i;
+
+/** Identitaets-Ops sind Worker-/Maintainer-Recht, nie ein User-Kommando. */
+const IDENTITY_ROLES = Object.freeze(['WORKER', 'MAINTAINER']);
 
 /** Pflichtfelder einer Reservierung; ein fehlendes Feld ist kein Claim. */
 const CLAIM_FIELDS = Object.freeze(['name', 'system', 'workspace', 'repo', 'session', 'claim_id', 'at']);
@@ -72,6 +81,7 @@ export function parseIdentityEvents(comments = []) {
         events.push({
           kind,
           commentId: String(comment.id),
+          author: String(comment?.author?.login ?? ''),
           name: fields.name,
           system: fields.system,
           workspace: fields.workspace,
@@ -91,6 +101,7 @@ export function parseIdentityEvents(comments = []) {
       events.push({
         kind,
         commentId: String(comment.id),
+        author: String(comment?.author?.login ?? ''),
         name: fields.name,
         system: fields.system,
         workspace: fields.workspace,
@@ -109,11 +120,25 @@ export function parseIdentityEvents(comments = []) {
  * derselben Identitaet aus einem anderen Workspace ist ein Konflikt. Ein
  * Release wirkt nur mit passender Claim-ID.
  */
-export function resolveReservations(comments = []) {
+export function resolveReservations(comments = [], { actors = {} } = {}) {
   const { events, invalid } = parseIdentityEvents(comments);
   const held = new Map();
   const conflicts = [];
+  const rejected = [];
   for (const event of events) {
+    // #693: Der Kommentar autorisiert nur ueber seinen verifizierten Autor.
+    const role = roleForAuthor(event.author, actors);
+    if (!IDENTITY_ROLES.includes(role)) {
+      rejected.push({
+        kind: event.kind,
+        name: event.name,
+        commentId: event.commentId,
+        author: event.author || null,
+        role,
+        reason: role === 'UNKNOWN' ? 'unknown-author' : 'unauthorized-author',
+      });
+      continue;
+    }
     if (!isWorkerIdentity(event.name)) {
       conflicts.push({
         name: event.name,
@@ -161,19 +186,20 @@ export function resolveReservations(comments = []) {
     reserved,
     free: WORKER_IDENTITIES.filter((name) => !held.has(name)),
     conflicts,
+    rejected,
     invalid,
   };
 }
 
 /** Die Identitaet, die diesen Workspace haelt; `null` heisst: keine. */
-export function identityForWorkspace(comments, { system, workspace } = {}) {
-  const { reserved } = resolveReservations(comments);
+export function identityForWorkspace(comments, { system, workspace, actors } = {}) {
+  const { reserved } = resolveReservations(comments, { actors });
   return reserved.find((entry) => entry.system === system && entry.workspace === workspace) ?? null;
 }
 
 /** Erste freie Identitaet oder `null`; es wird keine vierte erfunden. */
-export function nextFreeIdentity(comments) {
-  return resolveReservations(comments).free[0] ?? null;
+export function nextFreeIdentity(comments, { actors } = {}) {
+  return resolveReservations(comments, { actors }).free[0] ?? null;
 }
 
 function requireFields(fields, names) {

@@ -138,7 +138,9 @@ Ein Kommentar ändert Board-Zustand nur, wenn sein **verifizierter GitHub-Autor*
 
 - `ALLOWED` wird bei jedem Zustandsübergang geprüft. Unerlaubte Reihenfolgen, fremde Claim-IDs, Replays und unbekannte Autoren ändern nichts; sie erscheinen als `rejected` im `workGate` von `pretask` und als Warnung mit Kommentar-ID.
 - Fehlt die Datei oder ist sie unlesbar, ist keine Rolle zuständig: fail-closed, kein Steuerbefehl wirkt.
-- Sind Worker und Maintainer derselbe GitHub-Principal, meldet `pretask` den Befund `shared-principal`. Die Rollentrennung ist eine Entscheidung aus #694 und wird nicht behauptet.
+- Sind Worker und Maintainer derselbe GitHub-Principal, meldet `pretask` die Befunde `shared-principal` und `no-exclusive-maintainer-principal`. Ein Verdikt (`ACCEPT`, `PARTIAL`, `REJECT`, `MERGED`, `CLOSED`) von einem Principal, der zugleich in `workers` steht, ist wirkungslos (`shared-principal-not-authorized`). Die technische Rollentrennung (#694) braucht einen eigenen Maintainer-Login, der nicht in `workers` steht; Worker-Ereignisse bleiben am gemeinsamen Login funktionsfähig.
+- Ein Issue-`CLAIM` auf ein bereits laufendes Issue mit anderer Claim-ID ist ein `claim-conflict` und ändert nichts. `RELEASE`/`HANDOFF` eines fremden Claims ist `not-claim-holder`; nur `maintainers`/`users` dürfen fremde Claims freigeben oder übergeben.
+- `IDENTITY_CLAIM`/`IDENTITY_RELEASE` wirken nur von `workers` oder `maintainers`. Unbekannte oder unzuständige Autoren reservieren nichts und stehen als `rejected` im Identity-Read; fehlt die Policy, ist der Lauf fail-closed.
 
 ## Eskalation
 
@@ -211,6 +213,7 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 
 **state:JSON — Laufnachweis**
 - Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
+- Der Board-Snapshot `.lane-claims/board-state.json` wird ausschließlich nachgezogen, nie aus dem Gedächtnis geschrieben: `pnpm run board:sync -- --at <ISO>` liest offene Issues, offene PRs und `origin/main` und aktualisiert Kopf, Zähler und `openPrs`; Claims auf geschlossene Issues fallen heraus. Die Zeit kommt aus `--at`/`RBD_NOW` (kein Uhrenlesen). `pnpm run board:sync -- --check --at <ISO>` schreibt nichts und meldet Drift mit Exit 1.
 - Sie zeigt: wo der letzte Lauf aufgehört hat, welche Issues aktualisiert wurden, welche Claims aktiv sind, welche PRs `review-waiting` sind.
 - Der nächste Lauf liest die `state:JSON` zu Beginn und sieht direkt, welche Issues upgedatet sind und was zu tun ist.
 
@@ -227,6 +230,12 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 **Pflicht-Issues pinnen**
 - P0-Issues (User- & Agenten-Kommentare) und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
 - Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
+
+**Cron-Lock — atomar statt gelesen-geschrieben (#835)**
+- Der Maintainer-Lock ist der Git-Ref `refs/heads/rbd-lock/maintainer-cron`, kein Feld in einem Issue-Body. `POST /git/refs` legt ihn genau einmal an; ein zweiter Lauf erhält 422 und verliert. Damit gibt es bei einem freien Lock genau einen Gewinner, auch geräteübergreifend.
+- Der Lock zeigt auf einen Commit mit `owner`, `claim_id` und Aufnahmezeit in der Nachricht. Nach Ablauf der TTL (Standard 15 Minuten) wird ein hängender Lock genau einmal eingesammelt und neu reserviert.
+- `node .cron/check-in.mjs --owner <name> --claim-id <id>` reserviert (Exit 0 erlangt, 1 belegt, 2 API-Fehler). `node .cron/check-out.mjs '<state-json>' --owner <name> --claim-id <id>` prüft zuerst den Halter, schreibt dann die `state:JSON` und gibt erst danach frei; ein fremder Lock gibt nichts frei (Exit 1). Ein Schreibfehler bricht vor der Freigabe ab, damit die TTL greift.
+- 4xx ist eine Antwort, kein Netzfehler: der Client meldet den Status als Fehler (Exit 2) und wiederholt nur 5xx/429.
 
 ## Referenzen
 

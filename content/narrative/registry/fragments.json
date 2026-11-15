@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:83b1664d6324cac1495452db5d29a2609beea16ffcea84b208b37d74cf46bdd5",
+  "contentHash": "sha256:e88cb6651fcb998dfbf97480e0cc1cc38d5a50156fd59c3eb95eb63fb58c658c",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -2970,6 +2970,28 @@
       "text": "Der Maintainer pflegt den Issue-Board-Status: state:JSON sichert den Laufnachweis, Worker aktualisieren ihren Status als Issue-Kommentar, Review-Status bleibt sichtbar für alle Geräte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-board-status-dokumentation.json"
+    },
+    {
+      "contributionId": "board-sync-authorization-01",
+      "turnId": "2026-11-15T04:45Z-board-sync-authorization",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Kontor liegt jetzt nur noch ein Buch, und wer es aufschlaegt, schreibt zuerst seinen Namen hinein. Zwei Haende am selben Blatt gibt es nicht mehr; das Siegel bricht nur, wer es selbst gesetzt hat. Die Angestellten tuscheln, dass der alte Streit um die doppelte Abrechnung damit endlich ruht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-board-sync-authorization.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",
