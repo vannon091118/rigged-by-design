@@ -36,7 +36,7 @@ Zwei Rollen, eine Wahrheit: das Issue. Wer was darf, steht hier; die Schleife st
 
 ## Maintainer
 
-Laufbeginn, Review-Protokoll, Issue-Scope, Identitätsprüfung, Rekursions-Erkennung und die Pflichten am Board stehen in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-protokoll). Der Kurzvertrag wiederholt sie nicht; bei Widerspruch gewinnt dieses Dokument dort.
+**`goal=maintainer` genügt.** Es löst das [Mission-Profil](docs/GOVERNANCE.md#mission-profil-maintainer) auf: die geordnete Aufgabenliste des Laufs, den Identitätsblock am Turn-Ende und die Regel *keine Afterpflege ohne Befund*. Die Rollen-Constraints gelten global; pro Turn wird nur der Zustand genannt. Laufbeginn, Review-Protokoll, Issue-Scope, Identitätsprüfung, Rekursions-Erkennung und die Pflichten am Board stehen in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-protokoll). Der Kurzvertrag wiederholt sie nicht; bei Widerspruch gewinnt dieses Dokument dort.
 
 ## Board-Status
 

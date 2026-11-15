@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-857-mission-profile",
+  "claimId": "lane/governance/issue-857-mission-profile",
+  "branch": "lane/governance/issue-857-mission-profile",
+  "baseSha": "0e570d4ea6c2c2e9f5fbcc4c2fabea6ddae85bc5",
+  "phase": "IMPLEMENTING",
+  "title": "#857: Rollen-Constraints global als Mission-Profil `maintainer`",
+  "goal": "goal=maintainer loest die vollstaendige Maintainer-Aufgabenliste auf; Identitaetsblock am Turn-Ende und keine Afterpflege ohne Befund stehen global in docs/GOVERNANCE.md, AGENTS.md verlinkt nur.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "verify:light und ci:local auf dem Kopf, dann Commit, Push, PR gegen main und RELEASE an #857.",
+  "revision": 1
+}

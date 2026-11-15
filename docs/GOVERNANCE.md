@@ -18,6 +18,34 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 - **Konfliktauflösung:** Claim-, Scope-, Semantik-, Reihenfolge- und Branch-Konflikte zwischen `local` und `cloud` entscheidet er im Issue (Vorrang, `HANDOFF`, `blocked by`, Zusammenführung).
 - Er führt keine Spiel-Lane ohne eigenen Claim; auch für ihn gilt Claim vor Read.
 
+### Mission-Profil `maintainer` (global)
+
+Ein Satz genügt: **`goal=maintainer`**. Das Profil ist die vollständige Aufgabenliste des Maintainer-Laufs; die Rollen-Constraints stehen global hier und werden nicht pro Turn, pro Mission oder pro Gerät neu gesetzt. Jeder Schritt endet mit einem Beleg (Befehl, Exit-Code oder Kommentar); kein Schritt ohne Befehl.
+
+| # | Schritt | Beleg | Done |
+| --- | --- | --- | --- |
+| 1 | Laufbudget und Stop-Vertrag | `pnpm run run:budget --check` | Exit 0; `BUDGET_EXHAUSTED`/`KILL_SWITCH` beendet den Lauf |
+| 2 | Startzustand | `pnpm run agent:pretask --json`, `pnpm run board:sync -- --check --at <ISO>` | Board-Drift bekannt, fremde Claims unberührt |
+| 3 | P0-Eingang | offene Issues und PRs seit der letzten `state:JSON` | jeder neue User-/Agenten-Kommentar triagiert |
+| 4 | Review-Queue (P1) | `review-waiting`-PRs: Diff, Intention gegen Umsetzung, `pnpm run ci:local` auf exaktem Kopf | Verdikt `ACCEPT`/`PARTIAL`/`REJECT` im PR |
+| 5 | Integration | Merge auf exaktem Kopf, Push auf `main` | Merge-SHA liegt auf `origin/main` |
+| 6 | Closeout | `pnpm run reconcile:claims --apply`, Issue mit Merge-Beleg schließen, Branch entfernen | Claim/Task `DONE`, Board aktuell |
+| 7 | Zuweisung | freie Issues nach [Prioritäten](#maintainer-prioritäten-kanonisch) an freie Identitäten | Claim im Issue sichtbar |
+| 8 | Konflikte | Claim-, Scope- oder Reihenfolge-Kollision | einmalig im Issue entschieden und kommentiert |
+| 9 | Drift-Bremse | mehr als zwei Läufe primär Governance | `[GOVERNANCE-DRIFT]` P2 existiert, neue Governance-Issues pausiert |
+| 10 | Abschluss | `state:JSON` schreiben, Lock freigeben | Lock frei, Board-Snapshot aktuell |
+
+Protokoll, Board-Pflichten und Prioritäten bleiben in ihren Abschnitten; dieses Profil ordnet sie nur und wiederholt sie nicht.
+
+**Turn-Abschluss (Pflicht).** Jeder Turn endet mit dem Identitätsblock. Die Constraints stehen global oben; pro Turn wird nur der Zustand genannt:
+
+```
+Rolle: <Maintainer|Agent> · Identität: <vannon091118|LIILITH|Shinon|Jenova> ·
+Lane: <branch> · Issue: #<nr> · Board: <IDLE|ACTIVE|REVIEW_PENDING|BLOCKED> · Offen: <n>
+```
+
+**Keine Afterpflege ohne Befund.** Ist die Abnahme erfüllt, endet der Lauf: kein zweiter Durchgang, kein Refactoring zur Sicherheit, kein ungefragter Zusatz. Sinnvolle weitere Arbeit wird als Vorschlag benannt, nicht ausgeführt. Ausnahmen sind genau drei: ein rotes Gate, ein Review-Verdikt oder eine ausdrückliche Anweisung.
+
 ### Maintainer-Prioritäten (kanonisch)
 
 Diese Tabelle ist die **einzige verbindliche Definition**. `AGENTS.md`, [`WORKFLOW.md`](WORKFLOW.md) und [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) verweisen hierher und wiederholen sie nicht.
