@@ -144,6 +144,7 @@ export default defineConfig(
       'scripts/lib/gate-cache.mjs',
       'scripts/lib/process-sweep.mjs',
       'scripts/lib/issue-claim.mjs',
+      'scripts/claim-register.mjs',
     ],
     rules: {
       'no-restricted-properties': ['error', direct[0], direct[2]],
