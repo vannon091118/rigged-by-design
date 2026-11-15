@@ -18,6 +18,7 @@ import { fightEventView, type FightEventView } from './fight-event';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
 import { propertyView, type PlayerPropertyView } from './property';
+import { jobAverageQuality, jobPromotionView, jobRankOf, jobWageVC } from './job-career';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
 import { normalizePlayerNeeds, playerNeedsView, type PlayerNeedsView } from './player-needs';
@@ -40,8 +41,16 @@ interface CareerJob {
   readonly rivalId: string;
   readonly workDays: number;
   readonly lastWorkDay: number;
-  /** Tageslohn aus derselben Job-Definition, die den Lohn bucht. */
+  /** Tageslohn aus derselben Job-Definition, die den Lohn bucht, inklusive Rang. */
   readonly wageVC: number;
+  /** Karrierestufe in Klartext. */
+  readonly rankLabel: string;
+  /** Durchschnitt der Schichten in dieser Stufe; 0 heisst: noch keine. */
+  readonly averageQuality: number;
+  /** Qualitaet der letzten Schicht; null heisst: noch keine Schicht. */
+  readonly lastQuality: number | null;
+  /** Aufstieg ist belegt und kann angeboten werden. */
+  readonly promotionAvailable: boolean;
 }
 
 interface CareerAchievement {
@@ -114,7 +123,11 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
       rivalId: job.rivalId,
       workDays: job.workDays,
       lastWorkDay: job.lastWorkDay,
-      wageVC: JOB_DEFS[job.jobId].dailyWageVC,
+      wageVC: jobWageVC(JOB_DEFS[job.jobId].dailyWageVC, job),
+      rankLabel: jobRankOf(job).label,
+      averageQuality: jobAverageQuality(job),
+      lastQuality: job.lastQuality,
+      promotionAvailable: jobPromotionView(world)?.available ?? false,
     },
     record,
     achievements: achievementsOf(world, record),

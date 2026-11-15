@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a745bb0b991cc0dc097e055f3ec9b90404996810fc175acf961d5b82badb9e2d",
+  "contentHash": "sha256:56573d5ae24c47feaf5daba2cf2e079f5725d55032f240d08452ae2fe425fae1",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10267,6 +10267,28 @@
       "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
+    },
+    {
+      "contributionId": "liilith-803-job-career",
+      "turnId": "2026-11-15T23:58Z-803-job-career",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende einer Schicht bleibt jetzt eine Zahl. Sie kommt aus dem, was wirklich passiert ist: wie gut die Hand sitzt, wie der Körper den Tag verträgt, ob etwas wehgetan hat. Drei solcher Schichten mit sauberer Arbeit öffnen die nächste Stufe - aber niemand wird befördert, weil Zeit vergangen ist. Wer die Leitung übernimmt, verdient mehr und steht kürzer am Tisch, weil Verantwortung die Zeit frisst, die die Hand gewinnt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-liilith-803-job-career.json"
     },
     {
       "contributionId": "living-world-foundation-1",

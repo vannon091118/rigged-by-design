@@ -125,6 +125,26 @@ export interface PlayerJobState {
 
   lastWorkDay: number;
 
+  /** Karrierestufe in der Joblinie; 0 = Einstieg, 1 = Leitung. */
+
+  rank: number;
+
+  /** Abgeschlossene Schichten in der aktuellen Stufe. */
+
+  rankShifts: number;
+
+  /** Summe der Schichtqualitaeten in der aktuellen Stufe (0..100 je Schicht). */
+
+  rankQuality: number;
+
+  /** Qualitaet der letzten Schicht; null heisst: noch keine Schicht. */
+
+  lastQuality: number | null;
+
+  /** Schichten ueber alle Stufen; ueberlebt einen Aufstieg. */
+
+  totalShifts: number;
+
 }
 
 export interface PlayerJobTask {

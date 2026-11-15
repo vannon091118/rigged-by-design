@@ -7,51 +7,16 @@ import { grantGlobalXp, injuryDurationReduction, luckInjuryFactor } from './play
 import { grantSkillXp } from './player-skills';
 import { normalizePlayerNeeds, playerCondition } from './player-needs';
 import { recordJournal } from './journal';
+import { JOB_DEFS, JOB_TO_SKILL, JOB_XP_SOURCE } from './job-defs';
+import { jobPromotionView, jobTaskTicks, jobWageVC } from './job-career';
+import { evaluateShift } from './job-performance';
 import type { PlayerJobState, WorldState, PlayerJobId } from './types';
 
-const TICKS_PER_TASK = { CLEANER: 30, BARTENDER: 45, CARD_DEALER: 60, MECHANIC: 90 } as const;
-const QUEUE_CAPACITY = { CLEANER: 3, BARTENDER: 2, CARD_DEALER: 1, MECHANIC: 2 } as const;
-const XP_PER_TASK = { CLEANER: 8, BARTENDER: 12, CARD_DEALER: 15, MECHANIC: 20 } as const;
-const DAILY_WAGE_VC = { CLEANER: 3, BARTENDER: 5, CARD_DEALER: 8, MECHANIC: 12 } as const;
-const INJURY_CHANCE = { CLEANER: 0, BARTENDER: 0.05, CARD_DEALER: 0, MECHANIC: 0.1 } as const;
-const JOB_XP_SOURCE: Record<PlayerJobId, string> = {
-  CLEANER: 'JOB_CLEANER', BARTENDER: 'JOB_BARTENDER', CARD_DEALER: 'JOB_CARD_DEALER', MECHANIC: 'JOB_MECHANIC',
-} as const;
+export { JOB_DEFS } from './job-defs';
 
-const JOB_TO_SKILL: Record<PlayerJobId, 'cleaning' | 'service' | 'cardDealing' | 'repair'> = {
-  CLEANER: 'cleaning', BARTENDER: 'service', CARD_DEALER: 'cardDealing', MECHANIC: 'repair',
-} as const;
 const INJURY_TICKS = 120;
 const BAR_PURCHASE_COST_VC = 50;
 export { BAR_PURCHASE_COST_VC };
-
-export const JOB_DEFS: Record<PlayerJobId, {
-  readonly id: PlayerJobId; readonly label: string; readonly rivalId: RivalId;
-  readonly dailyWageVC: number; readonly baseXpPerTask: number; readonly xpSourceKey: string;
-  readonly injuryChance: number; readonly taskDurationTicks: number;
-  readonly queueCapacity: number; readonly description: string;
-}> = {
-  CLEANER: { id: 'CLEANER', label: 'Reinigungskraft', rivalId: 'HAFENKLAUSE',
-    dailyWageVC: DAILY_WAGE_VC.CLEANER, baseXpPerTask: XP_PER_TASK.CLEANER,
-    xpSourceKey: JOB_XP_SOURCE.CLEANER, injuryChance: INJURY_CHANCE.CLEANER,
-    taskDurationTicks: TICKS_PER_TASK.CLEANER, queueCapacity: QUEUE_CAPACITY.CLEANER,
-    description: 'Flecken entfernen, Gäste begrüßen. Trainiert: Wahrnehmung, Speed, Ausdauer.' },
-  BARTENDER: { id: 'BARTENDER', label: 'Barkeeper', rivalId: 'HAFENKLAUSE',
-    dailyWageVC: DAILY_WAGE_VC.BARTENDER, baseXpPerTask: XP_PER_TASK.BARTENDER,
-    xpSourceKey: JOB_XP_SOURCE.BARTENDER, injuryChance: INJURY_CHANCE.BARTENDER,
-    taskDurationTicks: TICKS_PER_TASK.BARTENDER, queueCapacity: QUEUE_CAPACITY.BARTENDER,
-    description: 'Drinks zapfen, Streit schlichten. Trainiert: Charisma, Brawl, Wahrnehmung, Ausdauer.' },
-  CARD_DEALER: { id: 'CARD_DEALER', label: 'Croupier', rivalId: 'GOLDENE_HAND',
-    dailyWageVC: DAILY_WAGE_VC.CARD_DEALER, baseXpPerTask: XP_PER_TASK.CARD_DEALER,
-    xpSourceKey: JOB_XP_SOURCE.CARD_DEALER, injuryChance: INJURY_CHANCE.CARD_DEALER,
-    taskDurationTicks: TICKS_PER_TASK.CARD_DEALER, queueCapacity: QUEUE_CAPACITY.CARD_DEALER,
-    description: 'Karten geben, Wetten managen. Trainiert: Technik, Speed, Glück, Wahrnehmung.' },
-  MECHANIC: { id: 'MECHANIC', label: 'Automaten-Mechaniker', rivalId: 'NEBELPALAST',
-    dailyWageVC: DAILY_WAGE_VC.MECHANIC, baseXpPerTask: XP_PER_TASK.MECHANIC,
-    xpSourceKey: JOB_XP_SOURCE.MECHANIC, injuryChance: INJURY_CHANCE.MECHANIC,
-    taskDurationTicks: TICKS_PER_TASK.MECHANIC, queueCapacity: QUEUE_CAPACITY.MECHANIC,
-    description: 'Automaten reparieren, Hochspannung. Trainiert: Technik, Brawl, Ausdauer, Wahrnehmung.' },
-};
 
 export function acceptJob(world: WorldState, rivalId: RivalId, jobId: PlayerJobId): void {
   if (world.player.job !== null) throw new Error('Du hast bereits einen Job. Kündige zuerst.');
@@ -60,14 +25,16 @@ export function acceptJob(world: WorldState, rivalId: RivalId, jobId: PlayerJobI
   const rival = getRival(rivalId);
   const station = rival.jobStations.find((s) => s.jobId === jobId);
   if (!station) throw new Error(`Keine Arbeitsstation für ${jobId} im ${rival.name} gefunden.`);
-  world.player.job = { jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day, lastWorkDay: 0 };
-  world.lastEvent = `Job angenommen: ${def.label} in ${rival.name}.`;
+  world.player.job = {
+    jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day, lastWorkDay: 0,
+    rank: 0, rankShifts: 0, rankQuality: 0, lastQuality: null, totalShifts: 0,
+  };
+  world.lastEvent = `Job angenommen: ${def.label} in ${rival.name}. Einstiegsstufe.`;
 }
 
 export function quitJob(world: WorldState): void {
   if (world.player.job === null) throw new Error('Du hast keinen Job.');
-  const jobId = world.player.job.jobId;
-  const def = JOB_DEFS[jobId];
+  const def = JOB_DEFS[world.player.job.jobId];
   world.player.job = null;
   world.lastEvent = `Job gekündigt: ${def.label}.`;
 }
@@ -81,7 +48,7 @@ export function requestJobTask(world: WorldState): { started: boolean; queuePosi
     stationId: job.stationId,
     taskType: job.jobId === 'CLEANER' ? 'CLEAN' : job.jobId === 'BARTENDER' ? 'SERVE'
       : job.jobId === 'CARD_DEALER' ? 'DEAL' : 'REPAIR',
-    ticksElapsed: 0, ticksTotal: def.taskDurationTicks,
+    ticksElapsed: 0, ticksTotal: jobTaskTicks(def.taskDurationTicks, job),
   };
   return { started: true, queuePosition: -1 };
 }
@@ -91,7 +58,7 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
   if (job === null || job.currentTask === null) return;
   const def = JOB_DEFS[job.jobId];
   const condition = playerCondition(normalizePlayerNeeds(world.player.needs));
-  grantGlobalXp(world.player.rpg, def.xpSourceKey, Math.max(1, Math.round(def.baseXpPerTask * condition.workXpFactor)));
+  grantGlobalXp(world.player.rpg, JOB_XP_SOURCE[job.jobId], Math.max(1, Math.round(def.baseXpPerTask * condition.workXpFactor)));
   grantSkillXp(world.player.skills, JOB_TO_SKILL[job.jobId], Math.max(1, Math.round(def.baseXpPerTask * condition.workXpFactor)));
   const injuryChance = def.injuryChance * luckInjuryFactor(world.player.rpg) * condition.injuryFactor;
   const injured = injuryChance > 0 && prng.nextFloat() < injuryChance;
@@ -100,17 +67,36 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
     world.player.rpg.injuryTicks = Math.max(1, INJURY_TICKS - reduction);
     world.player.rpg.hp = Math.max(1, world.player.rpg.hp - 5);
   }
+  const evaluation = evaluateShift(world, job, injured);
   job.currentTask = null;
   job.workDays += 1;
+  job.rankShifts += 1;
+  job.rankQuality += evaluation.quality;
+  job.totalShifts += 1;
+  job.lastQuality = evaluation.quality;
   job.lastWorkDay = world.day;
-  world.lastEvent = injured
-    ? `Schicht beendet: ${def.label}. Leicht verletzt bei der Arbeit.`
-    : `Schicht beendet: ${def.label}.`;
+  const promotion = jobPromotionView(world);
+  const offer = promotion?.available ? ' Aufstieg moeglich: Angebot an der Station pruefen.' : '';
+  world.lastEvent = `Schicht beendet: ${def.label}. Qualitaet ${evaluation.quality} (${evaluation.grade}).`
+    + `${injured ? ' Leicht verletzt bei der Arbeit.' : ''}${offer}`;
 }
 
-/** Saves vor der Anwesenheitsregel tragen kein `lastWorkDay`: ohne Schicht kein rueckwirkender Lohn. */
+/**
+ * Saves vor der Anwesenheitsregel tragen kein `lastWorkDay`: ohne Schicht kein
+ * rueckwirkender Lohn. Saves vor der Karriere tragen keinen Rang und keine
+ * Stufen-Zaehler; sie starten in Stufe 0, ohne erfundene Leistung nachzutragen.
+ */
 export function hydrateJobState(job: PlayerJobState): PlayerJobState {
-  return { ...job, lastWorkDay: Number.isFinite(job.lastWorkDay) ? job.lastWorkDay : 0 };
+  const workDays = Number.isFinite(job.workDays) ? job.workDays : 0;
+  return {
+    ...job,
+    lastWorkDay: Number.isFinite(job.lastWorkDay) ? job.lastWorkDay : 0,
+    rank: Number.isInteger(job.rank) && job.rank >= 0 ? job.rank : 0,
+    rankShifts: Number.isFinite(job.rankShifts) ? job.rankShifts : 0,
+    rankQuality: Number.isFinite(job.rankQuality) ? job.rankQuality : 0,
+    lastQuality: Number.isFinite(job.lastQuality) ? job.lastQuality : null,
+    totalShifts: Number.isFinite(job.totalShifts) ? job.totalShifts : workDays,
+  };
 }
 
 export function payDailyWage(
@@ -126,8 +112,8 @@ export function payDailyWage(
   // am Tageswechsel ausgezahlt, wer nicht gearbeitet hat bekommt nichts und auch nichts nachtraeglich.
   if (job.lastWorkDay < world.day - 1) return false;
   const def = JOB_DEFS[job.jobId];
-  const wage = fromVC(def.dailyWageVC);
-  ledger.transfer(EXTERNAL, PORTEMONNAIE, wage, `tageslohn ${def.id}`, tick);
+  const wage = fromVC(jobWageVC(def.dailyWageVC, job));
+  ledger.transfer(EXTERNAL, PORTEMONNAIE, wage, `tageslohn ${def.id} stufe ${job.rank}`, tick);
   job.lastPaidDay = world.day;
   const condition = playerCondition(normalizePlayerNeeds(world.player.needs));
   const injuryChance = def.injuryChance * luckInjuryFactor(world.player.rpg) * condition.injuryFactor;

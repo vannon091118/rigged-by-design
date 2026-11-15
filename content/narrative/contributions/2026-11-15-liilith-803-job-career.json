@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T23:58Z-803-job-career",
+  "contributionId": "liilith-803-job-career",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Am Ende einer Schicht bleibt jetzt eine Zahl. Sie kommt aus dem, was wirklich passiert ist: wie gut die Hand sitzt, wie der Körper den Tag verträgt, ob etwas wehgetan hat. Drei solcher Schichten mit sauberer Arbeit öffnen die nächste Stufe - aber niemand wird befördert, weil Zeit vergangen ist. Wer die Leitung übernimmt, verdient mehr und steht kürzer am Tisch, weil Verantwortung die Zeit frisst, die die Hand gewinnt.",
+  "directives": []
+}

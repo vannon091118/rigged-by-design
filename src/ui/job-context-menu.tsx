@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import type { JobStationDef, PlayerJobId, PlayerJobState, RivalId } from '../core/sim/types';
 import { JOB_DEFS } from '../core/sim/player-jobs';
+import type { JobPromotionView } from '../core/sim/job-career';
 import { PopupShell } from './popup-shell';
 
 interface JobContextMenuProps {
@@ -18,6 +19,9 @@ interface JobContextMenuProps {
   readonly onQuitJob: () => void;
   readonly onStartTask: () => void;
   readonly onLeaveFloor: () => void;
+  /** Aufstiegsangebot aus dem echten Jobzustand; null = keine weitere Stufe. */
+  readonly promotion: JobPromotionView | null;
+  readonly onPromote: () => void;
 }
 
 const JOB_LABEL: Record<PlayerJobId, string> = {
@@ -28,7 +32,7 @@ const JOB_LABEL: Record<PlayerJobId, string> = {
 };
 
 export function JobContextMenu({
-  station, playerJob, rivalId, onClose, onAcceptJob, onQuitJob, onStartTask, onLeaveFloor,
+  station, playerJob, rivalId, onClose, onAcceptJob, onQuitJob, onStartTask, onLeaveFloor, promotion, onPromote,
 }: JobContextMenuProps) {
   const def = JOB_DEFS[station.jobId];
   const [selectedJob, setSelectedJob] = useState<PlayerJobId | null>(null);
@@ -92,6 +96,19 @@ export function JobContextMenu({
         {isOwnJob && (
           <div className="job-active-section">
             <span className="ok">Job aktiv: {JOB_LABEL[playerJob.jobId]}</span>
+            {promotion && (
+              <div className="job-career" aria-label="Karrierestufe">
+                <span>Stufe: {promotion.fromLabel}</span>
+                <span>Schnitt: {promotion.averageQuality} Punkte</span>
+                {promotion.available ? (
+                  <button type="button" className="btn primary" onClick={onPromote}>
+                    AUFSTIEG ANNEHMEN: {promotion.toLabel}
+                  </button>
+                ) : (
+                  <small className="hint">Aufstieg offen: {promotion.blockReason}</small>
+                )}
+              </div>
+            )}
             <button type="button" className="btn primary" onClick={onStartTask}>
               ARBEIT AUFNEHMEN
             </button>

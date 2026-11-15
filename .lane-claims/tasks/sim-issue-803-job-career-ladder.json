@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-803-job-career-ladder",
+  "claimId": "lane/sim/issue-803-job-career-ladder",
+  "branch": "lane/sim/issue-803-job-career-ladder",
+  "baseSha": "562f1848301477233e85ff07ab3d246c29401fb0",
+  "phase": "CI_PENDING",
+  "title": "Issue #803: Jobleistung und Karriereleitern fuer die vier vorhandenen Spielerjobs",
+  "goal": "Schichten werden aus echten Task-Ergebnissen bewertet; zwei Rangstufen je Joblinie mit belegtem Aufstiegsangebot; Rang veraendert Dauer/Lohn; Lohn nur ueber den Ledger; Save/Load erhaelt die Historie.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

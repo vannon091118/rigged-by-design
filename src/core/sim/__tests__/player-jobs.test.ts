@@ -98,7 +98,7 @@ describe('Player-Jobs: Aufgaben', () => {
     requestJobTask(world);
     completeJobTask(world, { nextFloat: () => 0.9 });
     expect(world.player.rpg.injuryTicks).toBe(0);
-    expect(world.lastEvent).toBe('Schicht beendet: Automaten-Mechaniker.');
+    expect(world.lastEvent).toContain('Schicht beendet: Automaten-Mechaniker. Qualitaet');
   });
 
   it('senkt mit Glueck das Unfallrisiko der Mechaniker-Schicht', () => {

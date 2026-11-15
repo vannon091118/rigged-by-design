@@ -46,6 +46,11 @@ export function ForeignFloorPopup({ view, onClose, onOpenMap, onOpenGames }: Pro
             worldStore.requestJobTask();
             setStationId(null);
           }}
+          promotion={worldStore.jobPromotion()}
+          onPromote={() => {
+            worldStore.promoteJob();
+            setStationId(null);
+          }}
           onLeaveFloor={() => { worldStore.leaveForeign(); onClose(); }}
         />
       )}
