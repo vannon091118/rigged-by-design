@@ -23,6 +23,7 @@ import { cityLifeView } from '../city-life-view';
 import { isWalkable } from '../pathfinding';
 import { cityNav } from '../city-scene';
 import { normalizeCityLife } from '../city-life-state';
+import type { CityResidentState } from '../city-life-types';
 import type { Point } from '../types-model';
 
 const city = createCityScene();
@@ -155,24 +156,20 @@ describe('Bewegung', () => {
 
     tickCityMovement(world);
     const after = ensureCityLife(world).residents;
-    const rita = after.find((entry) => entry.npcId === 'rita')!;
-    const boris = after.find((entry) => entry.npcId === 'boris')!;
+    const [rita, boris] = ['rita', 'boris'].map((id) => after.find((entry) => entry.npcId === id)!) as [CityResidentState, CityResidentState];
     const moved = [rita, boris].filter((entry) => entry.position.x !== HOME.x || entry.position.y !== HOME.y);
     expect(moved).toHaveLength(1);
     expect(moved[0]!.position).toEqual(travel.path[1]);
 
     const waiting = [rita, boris].find((entry) => entry.position.x === HOME.x && entry.position.y === HOME.y);
-    expect(waiting).toBeDefined();
-    expect(waiting!.travel).toEqual(travel);
+    expect(waiting?.travel).toEqual(travel);
 
     for (let guard = 0; guard < 100; guard += 1) {
-      const current = ensureCityLife(world).residents
-        .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
+      const current = ensureCityLife(world).residents.filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
       if (current.every((entry) => entry.travel === null)) break;
       tickCityMovement(world);
     }
-    const arrived = ensureCityLife(world).residents
-      .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
+    const arrived = ensureCityLife(world).residents.filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
     expect(arrived.every((entry) => entry.location === 'KIEZ')).toBe(true);
     expect(new Set(arrived.map((entry) => `${entry.position.x},${entry.position.y}`)).size).toBe(2);
   });
@@ -189,14 +186,21 @@ describe('Bewegung', () => {
     };
     tickCityMovement(world);
 
-    const saved = JSON.parse(JSON.stringify(world.cityLife));
-    world.cityLife = normalizeCityLife(saved);
+    world.cityLife = normalizeCityLife(JSON.parse(JSON.stringify(world.cityLife)));
     tickCityMovement(world);
 
-    const positions = ensureCityLife(world).residents
-      .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris')
+    const positions = ensureCityLife(world).residents.filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris')
       .map((entry) => `${entry.position.x},${entry.position.y}`);
     expect(new Set(positions).size).toBe(2);
+  });
+
+  it('hält über einen vollen Tag jede Kachel eindeutig', () => {
+    const { world, ledger, prng } = makeWorld();
+    for (let i = 0; i < 600; i += 1) {
+      tickWorld(world, ledger, prng);
+      const positions = world.cityLife!.residents.map((entry) => `${entry.position.x},${entry.position.y}`);
+      expect(new Set(positions).size).toBe(positions.length);
+    }
   });
 
   it('lässt einen Bewohner ohne Weg stehen', () => {

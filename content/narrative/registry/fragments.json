@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1e9f4944aa8e7b795946e8f193b83abafce401b8a63c33329822910ca1c7f63a",
+  "contentHash": "sha256:14b1c3f5da6b446c3c07087df52ca7dac8f75bc27d31ea85b87b3b4192f175e6",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -7760,6 +7760,28 @@
       "text": "Zwei Wege können sich kreuzen, ohne dass zwei Menschen denselben Schritt machen. Wer zuerst geht, nimmt die Kachel; wer folgt, wartet einen Atemzug und geht dann. Am Ziel steht niemand im anderen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-tile-occupancy.json"
+    },
+    {
+      "contributionId": "city-tile-occupancy-02",
+      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer auf demselben Fleck steht, tritt einen Schritt zur Seite, wenn ein anderer denselben Weg nimmt. So bleibt jede Kachel einem Namen zugeordnet, auch wenn der Tag noch so voll ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-tile-occupancy-dedupe.json"
     },
     {
       "contributionId": "claim-closeout-535-01",
