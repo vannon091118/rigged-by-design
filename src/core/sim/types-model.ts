@@ -274,6 +274,61 @@ export interface Dispute {
 
 export type { FightFx } from './fight-fx';
 
+/** Verbindlicher Issue-Lebenszyklus (Issue #920). Jeder Zustand hat exakt ein zustand-*-Label. */
+export type IssueLifeCycle =
+  | 'OPEN_UNTRIAGED'
+  | 'OPEN_READY'
+  | 'OPEN_CLAIMED'
+  | 'OPEN_IN_PROGRESS'
+  | 'OPEN_BLOCKED'
+  | 'OPEN_REVIEW'
+  | 'OPEN_WAITING'
+  | 'CLOSED_COMPLETED'
+  | 'CLOSED_NOT_PLANNED'
+  | 'CLOSED_DUPLICATE';
+
+/** Beleg fuer einen Issue-Closeout (Issue #920, Regel 4). */
+export interface CloseoutEvidence {
+  readonly prNumber: number | null;
+  readonly prHeadSha: string | null;
+  readonly prMergedSha: string | null;
+  readonly acceptanceCriteriaMet: boolean;
+  readonly metBy: string;
+  readonly authorizedBy: string;
+  readonly remainingPoints: string | null;
+  readonly followUpIssue: number | null;
+}
+
+/** Zustandsuebergang im Issue-Lebenszyklus (Issue #920). */
+export interface IssueStateTransition {
+  readonly from: IssueLifeCycle;
+  readonly to: IssueLifeCycle;
+  readonly actor: string;
+  readonly actorRole: 'maintainer' | 'user' | 'worker';
+  readonly at: string;
+  readonly evidence: CloseoutEvidence | null;
+}
+
+/** Identitaetsgebundenes ID-Postfach (Issue #920, Abschnitt B). */
+export interface MailboxMessage {
+  readonly messageId: string;
+  readonly issueNumber: number | null;
+  readonly prNumber: number | null;
+  readonly commentId: number | null;
+  readonly sender: string;
+  readonly senderRole: 'maintainer' | 'user' | 'worker';
+  readonly recipient: string;
+  readonly recipientRole: 'maintainer' | 'user' | 'worker';
+  readonly sessionId: string | null;
+  readonly type: 'requirement' | 'decision' | 'claim' | 'progress' | 'finding' | 'blocker' | 'acceptance';
+  readonly expectedAction: string | null;
+  readonly status: 'NEW' | 'ACKNOWLEDGED' | 'IN_PROGRESS' | 'WAITING' | 'RESOLVED' | 'REJECTED';
+  readonly nextActor: string | null;
+  readonly timestamp: string;
+  readonly cursor: number;
+  readonly read: boolean;
+}
+
 export interface Visitor {
 
   readonly id: number; readonly name: string; readonly persona: PersonaId;

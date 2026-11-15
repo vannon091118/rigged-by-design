@@ -39,6 +39,34 @@ Jeder Kommentar nennt Identität und Claim-ID. Ein Agent bearbeitet genau ein Is
 
 `BLOCKED` ist ein Zustand mit konkretem Blocker, Owner und nächstem Ereignis, kein Endlager. Nicht jedes Issue durchläuft alle Stufen. Label, Kommentar und PR müssen dieselbe Phase ausdrücken; ein Status ohne Beleg zählt nicht.
 
+## Verbindlicher Issue-Closeout (Issue #920, P0)
+
+Ein Issue darf nur geschlossen werden, wenn ein vollständiger Closeout-Beleg vorliegt:
+
+- **Ergebnis:** Was wurde umgesetzt oder warum wurde abgeschlossen ohne Codeänderung?
+- **Verknüpfter PR/Commit:** PR-Nummer, Head-SHA und Merge-SHA (falls gemergt)
+- **Verifizierter Beleg:** Merge auf main oder begründeter Abschluss ohne Code
+- **Erfüllte Akzeptanzkriterien:** Welche ACs aus dem Issue sind erfüllt?
+- **Verbleibende Restpunkte:** Was bleibt offen, mit Folge-Issue?
+• **Autorisierter schließender Akteur:** Nur Maintainer oder User dürfen schließen
+
+Worker dürfen den Abschluss vorbereiten (RELEASE + PR) und Nachweise liefern, aber nicht eigenmächtig schließen oder die Prüfung umgehen. Ein `RELEASE done <sha>` ohne PR und ohne Closeout-Beleg gilt als nicht erledigt.
+
+## Identitaetsgebundene ID-Postfache (Issue #920, P0)
+
+Jede handlungsrelevante Nachricht am Board muss eindeutig adressiert sein:
+
+- GitHub Issue-/PR-Nummer und Kommentar-/Review-/Event-ID
+- Authentifizierter Absender mit verifizierter Rolle/Capability
+- Eindeutiger Empfänger bzw. Empfängerkreis
+- Empfänger-Identitäts-ID und Session-ID (sofern sessiongebunden)
+- Nachrichtentyp und erwartete Aktion
+- Zeitstempel und persistente Cursor-/Gelesen-Markierung
+- Status: NEW, ACKNOWLEDGED, IN_PROGRESS, WAITING, RESOLVED, REJECTED
+- Nächster Akteur sowie Verweis auf Antwort/Entscheidung/Closeout
+
+Jede Nachricht wird genau einmal verarbeitet. Unklare Adressierung geht in die Maintainer-Triage, nicht ins Leere. Ein ACK eines Workers ist keine Maintainer-Freigabe und umgekehrt.
+
 ## Zehn unverhandelbare Regeln
 
 1. **Claim vor Read, Pretask vor dem Edit.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`); erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Danach `pnpm run agent:pretask --json`: der Lauf holt `origin/main` (ein Fetch pro Minute, nie blockierend), prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`: fremder Claim blockiert, fehlender Claim verlangt den Kommentar) und blockiert bei offenem `gate-failure`-Issue, fehlendem Impact-Plan oder Claim-Problem (`ERR-4019`). Ein nicht leerer Baum wird adoptiert (Regel 2). Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` protokolliert Phase, Befunde und nächste Aktion als **Mechanik**, nicht als Board-Wahrheit; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
