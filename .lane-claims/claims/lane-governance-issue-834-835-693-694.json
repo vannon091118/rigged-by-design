@@ -38,6 +38,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "ac38b39ae6d46a28b93686b954aea047e0bd23ab"
+  "status": "merged",
+  "createdAt": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
+  "mergedEvidence": "on-main-commit",
+  "mergedSha": "f415cf26"
 }
