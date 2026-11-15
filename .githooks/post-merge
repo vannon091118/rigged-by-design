@@ -1,0 +1,26 @@
+#!/bin/sh
+# Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877).
+#
+# Der Merge-Driver `generated-regenerate` beseitigt nur den Konflikt; erst
+# hier ist der Arbeitsbaum vollstaendig gemischt. Ein Amend ist an dieser
+# Stelle unmoeglich (git haelt noch MERGE_HEAD), deshalb wird die
+# Regeneration als eigener Folge-Commit festgehalten. Wird der Commit
+# abgelehnt, bleibt die Aenderung gestaged liegen - kein stiller Verlust.
+set -e
+
+[ -f scripts/sync-generated.mjs ] || exit 0
+
+node scripts/sync-generated.mjs --all >/dev/null 2>&1 || exit 0
+
+changed="$(git status --porcelain -- docs content/narrative src/core/sim/narrative 2>/dev/null || true)"
+[ -n "$changed" ] || exit 0
+
+for file in docs/INVENTORY.md docs/ROADMAP.md \
+  content/narrative/registry/fragments.json \
+  src/core/sim/narrative/composer/registry.generated.ts \
+  src/core/sim/narrative/composer/slot-map.generated.ts; do
+  [ -e "$file" ] && git add -- "$file"
+done
+
+git commit -q -m "chore(generated): Artefakte nach Merge regeneriert" >/dev/null 2>&1 || true
+exit 0
