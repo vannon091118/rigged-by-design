@@ -175,16 +175,19 @@ describe('pretask fail-closed issue check', () => {
     }
   });
 
-  it('laesst lokale Arbeit bei UNKNOWN zu und sperrt nur den Merge', () => {
+  it('blockiert lokale Arbeit, wenn das Board nicht lesbar ist', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-unknown-'));
     try {
       const worktree = linkedRepo(parent, 'repo', 'lane/test/unknown');
       const result = run(worktree, { RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: brokenGh(parent) });
-      expect(result.status).toBe(0);
+      // Fail-closed: ohne lesbaren Issue-Verlauf gibt es keinen Board-Beleg.
+      // Frueher startete die Lane trotzdem und stuetze sich auf ihre eigene
+      // Claim-Datei - damit war "das Board ist die Wahrheit" nicht erzwungen.
+      expect(result.status).toBe(1);
       const data = payload(result.stdout);
-      expect(data.blockers.join('\n')).not.toContain('Issue-Check UNKNOWN');
-      expect(data.blockers.join('\n')).not.toContain(ISOLATION_CODE);
-      expect(data.warnings.join('\n')).toContain('Issue-Check UNKNOWN');
+      const blockers = data.blockers.join('\n');
+      expect(blockers).toContain('Claim-Lage unbekannt');
+      expect(blockers).toContain('verify:board-usage');
       expect(data.mergeBlocked).toContain('Merge');
     } finally {
       rmSync(parent, { recursive: true, force: true });

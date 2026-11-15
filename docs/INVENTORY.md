@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 421 Dateien — contract 222 · integration 117 · governance 69 · statistics 6 · performance 7.
+Summe: 422 Dateien — contract 222 · integration 117 · governance 70 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -162,6 +162,7 @@ Summe: 421 Dateien — contract 222 · integration 117 · governance 69 · stati
 | `src/core/governance/__tests__/apk-signing.test.ts` | config | contract | ja | `src/Config/android-signing.json` |
 | `src/core/governance/__tests__/auto-resolve.test.ts` | pipeline | governance | ja | `scripts/auto-resolve.mjs` |
 | `src/core/governance/__tests__/board-state-sync.test.ts` | pipeline | governance | ja | `scripts/lib/board-state.mjs` |
+| `src/core/governance/__tests__/board-usage.test.ts` | pipeline | governance | ja | `scripts/lib/board-usage.mjs` |
 | `src/core/governance/__tests__/body-sync.test.ts` | pipeline | governance | ja | `scripts/lib/body-sync.mjs` |
 | `src/core/governance/__tests__/branch-lifecycle.test.ts` | pipeline | governance | ja | `scripts/lib/branch-lifecycle.mjs` |
 | `src/core/governance/__tests__/branch-prune.test.ts` | pipeline | governance | ja | `scripts/lib/branch-prune.mjs` |
@@ -727,10 +728,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3313 |
-| Gelistete Dateien | 3313 |
+| Getrackte Dateien | 3318 |
+| Gelistete Dateien | 3318 |
 | Getrackte Ordner | 119 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (217), artifacts (1), content (1173), docs (107), packages (27), public (571), scripts (133), src (1057) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (219), artifacts (1), content (1173), docs (107), packages (27), public (571), scripts (135), src (1058) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -744,8 +745,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 110 Datei(en)
-- `.lane-claims/tasks/` — 104 Datei(en)
+- `.lane-claims/claims/` — 111 Datei(en)
+- `.lane-claims/tasks/` — 105 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1169 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -801,8 +802,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 67 Datei(en)
-- `scripts/lib/` — 66 Datei(en)
+- `scripts/` — 68 Datei(en)
+- `scripts/lib/` — 67 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
 - `src/Config/__tests__/` — 1 Datei(en)
@@ -815,7 +816,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 85 Datei(en)
+- `src/core/governance/__tests__/` — 86 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -867,7 +868,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
-- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 42 Zeilen
+- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 52 Zeilen
 - `.github/CODEOWNERS` — Feste Owner. Auch ohne Pflicht-Review macht diese Datei sichtbar, wer eine — gelesen: 12 Zeilen
 - `.github/ISSUE_TEMPLATE/contract.md` — Markdown-Dokument — gelesen: 65 Zeilen
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
@@ -931,6 +932,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/claims/lane-governance-issue-886-board-gate.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-897-generated-classification.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-prompts-unification.json` — { — gelesen: 33 Zeilen
@@ -1036,6 +1038,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-886-board-gate.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-897-generated-classification.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
@@ -2381,7 +2384,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
-- `package.json` — { — gelesen: 123 Zeilen
+- `package.json` — { — gelesen: 124 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
 - `packages/gamescout/README.md` — GameScout — gelesen: 74 Zeilen
 - `packages/gamescout/bin/gamescout` — GameScout CLI bin entry point. — gelesen: 20 Zeilen
@@ -3015,6 +3018,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 149 Zeilen
 - `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 162 Zeilen
 - `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 129 Zeilen
+- `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 144 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
@@ -3081,7 +3085,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder Abbruch und — gelesen: 335 Zeilen
 - `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 117 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 248 Zeilen
-- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 863 Zeilen
+- `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 869 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 671 Zeilen
 - `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 157 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 70 Zeilen
@@ -3095,8 +3099,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/task-state.mjs` — Task-Zustand: nach dem Turn ist vor dem naechsten. — gelesen: 284 Zeilen
 - `scripts/test-affected.mjs` — Schneller Entwicklungsfeedback-Lauf: nur Tests, die vom aktuellen Diff — gelesen: 52 Zeilen
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 62 Zeilen
-- `scripts/turn-push.mjs` — Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein  — gelesen: 576 Zeilen
+- `scripts/turn-push.mjs` — Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein  — gelesen: 585 Zeilen
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 155 Zeilen
+- `scripts/verify-board-usage.mjs` — verify-board-usage: belegt, dass die Lane am Issue-Board gefuehrt wird. — gelesen: 97 Zeilen
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
@@ -3213,6 +3218,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/apk-signing.test.ts` — Installierbarkeit ist ein Vertrag, keine Annahme. Der Test haelt drei — gelesen: 71 Zeilen
 - `src/core/governance/__tests__/auto-resolve.test.ts` — Die Reihenfolge ist der Vertrag: NOOP/PR_HANDOFF erzeugen nichts, ein — gelesen: 149 Zeilen
 - `src/core/governance/__tests__/board-state-sync.test.ts` — #834: Der Board-Snapshot kommt aus dem Live-Board. Offene Issues und Pull — gelesen: 93 Zeilen
+- `src/core/governance/__tests__/board-usage.test.ts` — Das Board ist die Steuerungswahrheit; die lokale Claim-Datei ist nur ein — gelesen: 126 Zeilen
 - `src/core/governance/__tests__/body-sync.test.ts` — Body-Synchronisation darf vorhandene Inhalte nie ersetzen. Genau diese — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/branch-lifecycle.test.ts` — Jede Branch ausser `main` ist temporaer. Geloescht wird nur mit Merge-Beleg; — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/branch-prune.test.ts` — Nach dem Merge mit gruenen Gates ist ein Wegwerf-Branch nur noch Arbeit, die — gelesen: 39 Zeilen
@@ -3251,7 +3257,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/pr-body.test.ts` — Der PR-Body wird im Plan geprueft. Die exakten Ueberschriften und echte — gelesen: 34 Zeilen
 - `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 184 Zeilen
-- `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 193 Zeilen
+- `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 196 Zeilen
 - `src/core/governance/__tests__/pretask-cause.test.ts` — `pretask` und `turn:finish` geben einen roten Gate-Befund automatisch als — gelesen: 118 Zeilen
 - `src/core/governance/__tests__/pretask-issues.test.ts` — Issue-Scopes blockieren nur die betroffene Lane. `remote-ci` und Issues ohne — gelesen: 197 Zeilen
 - `src/core/governance/__tests__/pretask-modes.test.ts` — Die Startmodi NEW, RESUME und NOOP sowie die Grenze zwischen eigener und — gelesen: 129 Zeilen

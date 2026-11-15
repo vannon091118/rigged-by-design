@@ -191,7 +191,13 @@ if (branch !== 'main') {
   } else if (issueClaim.status === 'stale') {
     warnings.push(`${describeIssueClaim(issueClaim)}; als deferred notieren und ueberspringen`);
   } else if (issueClaim.status === 'unknown') {
-    warnings.push(`${describeIssueClaim(issueClaim)}; Board nicht lesbar, lokale Sperre entscheidet ueber die Pfade`);
+    // Fail-closed: ohne lesbaren Verlauf ist der Claim nicht belegt. Frueher war
+    // das nur eine Warnung - damit konnte eine Lane mit selbst geschriebener
+    // Claim-Datei starten, ohne das Issue je zu benutzen.
+    blockers.push(
+      `[ERR-4019] ${describeIssueClaim(issueClaim)}; 'gh auth login' oder GH_TOKEN einrichten, ` +
+        'danach pnpm run verify:board-usage gruen stellen',
+    );
   }
 }
 if (branch !== 'main' && !claim) {

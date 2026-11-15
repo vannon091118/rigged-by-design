@@ -130,7 +130,7 @@ CLAIM [A<n>] LIILITH 2026-11-14T10:12Z scope=<dateien|symbole> plan=<1 Satz>
 
 Genau ein aktiver Claim pro Issue. Kein Claim auf zwei Tickets gleichzeitig. Kein Claim, den du nicht in dieser Sitzung bearbeitest.
 
-**Gate:** Der Claim steht **vor dem ersten Read** — erst der Kommentar, dann die Dateien. `pnpm run agent:pretask --json` liest denselben Verlauf und blockiert bei fremdem Claim, verlangt bei fehlendem Claim genau diesen Kommentar (`RBD_AGENT`/`--agent` nennt deine Identität) und warnt nur, wenn die Lane keine Issue-Nummer hat. Damit orchestriert genau ein Agent pro Issue. Die Dateien unter `.lane-claims/` sind danach nur deine lokale Sperre: sie halten die Pfad-Allowlist für Staging und Gates und verhindern Doppelarbeit an denselben Dateien — Besitz oder Priorität erzeugen sie nicht.
+**Gate:** Der Claim steht **vor dem ersten Read** — erst der Kommentar, dann die Dateien. `pnpm run agent:pretask --json` liest denselben Verlauf und blockiert bei fremdem Claim, verlangt bei fehlendem Claim genau diesen Kommentar (`RBD_AGENT`/`--agent` nennt deine Identität) und warnt nur, wenn die Lane keine Issue-Nummer hat. Ist das Board **nicht lesbar** (kein `gh auth login`, kein `GH_TOKEN`), blockiert der Start statt zu warnen: ohne Verlauf gibt es keinen Beleg. Dasselbe prüft `pnpm run verify:board` vor dem Push und `pnpm run turn:finish`; für die Übergabe kommt `--closeout` dazu und verlangt `RELEASE [<id>] done <sha>` plus Label `review-waiting`. Damit orchestriert genau ein Agent pro Issue. Die Dateien unter `.lane-claims/` sind danach nur deine lokale Sperre: sie halten die Pfad-Allowlist für Staging und Gates und verhindern Doppelarbeit an denselben Dateien — Besitz oder Priorität erzeugen sie nicht.
 
 ---
 
