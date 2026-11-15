@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e88cb6651fcb998dfbf97480e0cc1cc38d5a50156fd59c3eb95eb63fb58c658c",
+  "contentHash": "sha256:fef8c39db7f4e42fd125d391207dafc0e7e95ad0f7b80537952fc331809820e6",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8490,6 +8490,28 @@
       "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "dead-exports-847-01",
+      "turnId": "2026-11-15T05:15Z-dead-exports-847",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Lagerraum haengen jetzt Zettel an neunzehn Werkzeugen, die niemand mehr in die Hand nimmt: kein Griff passt, keine Werkbank ruft danach. Der Verwalter hat sie stillgelegt statt weggeworfen, und an der Tafel steht nur eine Zeile darueber, wer sie zuletzt gehalten hat. Die Belegschaft nimmt es als Ordnung, nicht als Verlust.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-dead-exports-847.json"
     },
     {
       "contributionId": "determinism-computed-01",
