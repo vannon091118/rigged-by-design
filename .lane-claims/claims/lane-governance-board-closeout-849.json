@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/board-closeout-849",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/board-closeout-849",
+  "baseSha": "56313e2b20daee4cac2075c0d16602cffdc2f4c9",
+  "issue": 677,
+  "task": "Board finalisieren nach Merge #849: head auf 56313e2b, #776 mit Merge-Beleg geschlossen, 0 offene PRs, 73 offene Issues",
+  "goal": "Der Board-State (state:JSON) spiegelt den Merge-Beleg von #849 und den aktuellen Main-Kopf 56313e2b.",
+  "pathAllowlist": [
+    ".lane-claims/board-state.json",
+    ".lane-claims/claims/lane-governance-board-closeout-849.json",
+    ".lane-claims/tasks/governance-board-closeout-849.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "56313e2b20daee4cac2075c0d16602cffdc2f4c9"
+}

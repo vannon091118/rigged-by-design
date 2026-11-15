@@ -719,10 +719,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3269 |
-| Gelistete Dateien | 3269 |
+| Getrackte Dateien | 3271 |
+| Gelistete Dateien | 3271 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (196), artifacts (1), content (1168), docs (108), packages (27), public (571), scripts (129), src (1044) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (198), artifacts (1), content (1168), docs (108), packages (27), public (571), scripts (129), src (1044) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -735,8 +735,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 99 Datei(en)
-- `.lane-claims/tasks/` — 94 Datei(en)
+- `.lane-claims/claims/` — 100 Datei(en)
+- `.lane-claims/tasks/` — 95 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1164 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -867,7 +867,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 683 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 715 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -880,6 +880,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-agent-onboarding.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-board-closeout-849.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-board-final-consistency.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-board-issue-triage-closeout.json` — { — gelesen: 24 Zeilen
@@ -978,6 +979,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-board-closeout-849.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/tasks/governance-board-final-consistency.json` — { — gelesen: 49 Zeilen
 - `.lane-claims/tasks/governance-board-issue-triage-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-board-issue-triage.json` — { — gelesen: 42 Zeilen
