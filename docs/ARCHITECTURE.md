@@ -21,7 +21,7 @@
 
 ## CI-Eskalation
 
-- Aktivierung, Token-Varianten, Berechtigungen und der erste verifizierte Lauf stehen im [Runbook Auto-Resolve](RUNBOOK-AUTO-RESOLVE.md).
+- Auto-Resolve ist nicht mehr aktiv: die Workflows führen keine Tests und keine Reparaturen aus. `scripts/auto-resolve.mjs` und `scripts/lib/repair-plan.mjs` bleiben als Werkzeug, ihr Lauf ist manuell und braucht eine `RUN_ID`.
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.

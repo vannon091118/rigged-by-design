@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-886-board-contract",
+  "claimId": "lane/governance/issue-886-board-contract",
+  "branch": "lane/governance/issue-886-board-contract",
+  "baseSha": "936ea72257a4e56bbeec1ba51bca84ffc2e299f4",
+  "phase": "IMPLEMENTING",
+  "title": "Issue Board als einzige Steuerungswahrheit in AGENTS.md und README verankern (#886)",
+  "goal": "AGENTS.md neu, README-Issue-Board-Abschnitt, Board-Widersprueche ersetzen, ueberfluessige Doku entfernen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit und Push, dann RELEASE [A22] und Label review-waiting an #886.",
+  "revision": 1
+}

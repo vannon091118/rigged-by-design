@@ -25,7 +25,6 @@
 | [`DEPENDENCY-MATRIX.md`](DEPENDENCY-MATRIX.md) | Generierte Live-Dependency-Matrix; liegt bewusst ausserhalb der gesperrten Architektur. |
 | [`ROADMAP.md`](ROADMAP.md) | Jetzt, als Nächstes, später; offene Punkte und PARKED. |
 | [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Ausfuehrbare Task-Phasen R0–R12, Meilensteine M0–M4 und Preview-Sichtabnahme fuer sichtbare Slices. |
-| [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md) | Aktivierung, Token, Berechtigungen und erster verifizierter Auto-Resolve-Lauf. |
 
 ## Pflichtdokumente
 

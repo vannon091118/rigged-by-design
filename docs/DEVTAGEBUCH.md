@@ -2,6 +2,14 @@
 
 <!-- rbd-doc: managed -->
 
+## 2026-11-15 – Ein Board, eine Wahrheit (#886)
+
+**Befund.** Dieselbe Regel stand an drei Orten mit drei Wahrheiten: `AGENTS.md` nannte den Task-Vertrag „die Wahrheit für Phase, Befunde und nächste Aktion“, `docs/WORKFLOW.md` wiederholte das, und `.cron/maintainer-prompt.md` führte das gepinnte Issue #677 als State-Speicher, während `GOVERNANCE.md` den Snapshot `.lane-claims/board-state.json` beschrieb. Dazu kam ein `gate-failure`-Template, das Agenten zum Mergen und Schließen aufforderte — gegen die Rollenregel —, plus zwei Doku-Leichen: `LOCAL_CI.md` doppelte `CI.md`, `RUNBOOK-AUTO-RESOLVE.md` beschrieb einen Workflow, den es nicht mehr gibt.
+
+**Umsetzung.** `AGENTS.md` ist komplett neu: eine Quelle pro Datentyp (Issue, Labels, Claims, Identity-Board, PR, abgeleiteter Snapshot, lokale Sperre, `GOVERNANCE.md`), Rollen mit Rechtetrennung, Issue-Lebenszyklus, zehn Regeln, Prompt-Register, Zustand und Befehle. `README.md` bekommt am Ende den Abschnitt „Issue Board“. Task-Vertrag und `board-state.json` sind jetzt überall ausdrücklich Mechanik bzw. abgeleiteter Snapshot, #677 nirgends mehr State-Quelle. Das `gate-failure`-Template übergibt statt zu mergen. `LOCAL_CI.md` und `RUNBOOK-AUTO-RESOLVE.md` sind gelöscht, Verweise zeigen auf `CI.md`, `TESTING.md` und `ARCHITECTURE.md`.
+
+**Offen.** Pin-Set (#887), PR-Vertrag (#884) und die einzelnen Issue-Audits (#886 Phase E) bleiben offen; `RELEASE`/`review-waiting` setzt die Übergabe, geschlossen wird vom Maintainer.
+
 ## 2026-11-15 – Prompts sind Board-Tickets (#885)
 
 **Befund.** Vier Prompts im Repo und ein externer System-Reminder regelten Maintainer- und Agentenverhalten, ohne dass ein Issue auf sie zeigte. Eine Änderung an `.cron/maintainer-prompt.md`, `.cron/SECURITY.md`, `AGENTS.md` oder `docs/GOVERNANCE.md` war am Board unsichtbar; #883 nennt `AGENTS.md` außerdem unter `docs/AGENTS.md`, obwohl die kanonische Datei in der Wurzel liegt.

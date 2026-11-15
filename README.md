@@ -184,3 +184,24 @@ Falls Glücksspiel für dich oder jemanden in deinem Umfeld in der realen Welt z
   <em>Entwickelt von jemandem, der eh nichts mehr zu verlieren hat – außer seinem Lachen.<br>
   Also passen wir gut darauf auf.</em>
 </p>
+
+---
+
+## Issue Board: hier wird gearbeitet
+
+Das Repository hat **eine Steuerungswahrheit**: das [Issue-Board](https://github.com/vannon091118/rigged-by-design/issues). Auftrag, Priorität, Besitz, Review, Merge-Beleg und Historie stehen dort; lokale Dateien entscheiden nichts davon.
+
+| Datentyp | Autoritative Quelle |
+| --- | --- |
+| Auftrag, Akzeptanz, fachliche Entscheidung | GitHub Issue |
+| Reihenfolge und Priorität | Issue-Labels plus kanonische Priorität ([`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-prioritäten-kanonisch)) |
+| Besitz und Übergabe | `CLAIM`- und `RELEASE`-Kommentare am Issue |
+| Diff, Reviews, Checks, Merge | Pull Request |
+| Laufzeit-Snapshot | `.lane-claims/board-state.json`, abgeleitet und regenerierbar |
+| Pfad-Allowlist und Task-Phase | `.lane-claims/` — nur lokale Kollisionssperre |
+
+**Der Ablauf in fünf Sätzen.** Ein Agent claimt ein freies Issue mit einem `CLAIM`-Kommentar, bevor er Code liest. Er arbeitet auf seinem Lane-Branch, prüft lokal (`pnpm run ci:local`) und öffnet einen Pull Request gegen `main`. Die Übergabe ist `RELEASE done <sha>` plus Label `review-waiting`. Der Maintainer reviewt gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`), merged auf exaktem Kopf und schließt das Issue; Agenten mergen nicht und schließen nie.
+
+Ein Issue wird angelegt, wenn eine eigenständige Entscheidung, Korrektur, Umsetzung oder Abnahme nötig ist. Reine Referenzdokumente brauchen kein eigenes Ticket: sie stehen in [`docs/INVENTORY.md`](docs/INVENTORY.md) und verweisen auf den kanonischen Vertrag. Prompts, die Verhalten regeln, sind die Ausnahme — sie haben immer ein Issue und stehen in [`docs/PROMPTS.md`](docs/PROMPTS.md).
+
+Weiterlesen: [`AGENTS.md`](AGENTS.md) (Kurzvertrag), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) (Rollen und Prioritäten), [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) (die Schleife), [`docs/WORKFLOW.md`](docs/WORKFLOW.md) (Abschluss und Merge).

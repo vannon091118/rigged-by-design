@@ -33,12 +33,12 @@ Spalte ein. Die Roadmap führt nur Spiel und Präsentation; Governance steht in
 | **Lauf** | CI-Lauf (`docs/CI.md`) | Durchgespielter Abschnitt (`docs/CHANGELOG.md` 0.3.186 „Kiez-Lauf") | „CI-Lauf" gegen „Spieldurchlauf" |
 | **Registry / Register** | Claim-Register der Lanes (`docs/GOVERNANCE.md`, „Claims") | Content-Registry der Narrative Engine (`content/narrative/registry`) | „Claim-Register" gegen „Content-Registry" |
 | **Manifest** | Paket- und Asset-Manifest (`package.json`, `scripts/build-asset-manifest.mjs`) | Content-Charge der Narrative Engine (`registry.generated.ts` `turnId`) | „Asset-Manifest" gegen „Textcharge" |
-| **Betrieb / Betreiber** | Betriebsanleitung der CI-Migration (`docs/LOCAL_CI.md:3`) | Betreiberrolle auf dem Floor (`docs/CHANGELOG.md` 0.3.183 „BETREIBER", `src/core/sim/business-areas.ts`) | „CI-Betrieb" gegen „Betreiberrolle" |
+| **Betrieb / Betreiber** | Betriebsanleitung der CI-Migration (`docs/CI.md:5`) | Betreiberrolle auf dem Floor (`docs/CHANGELOG.md` 0.3.183 „BETREIBER", `src/core/sim/business-areas.ts`) | „CI-Betrieb" gegen „Betreiberrolle" |
 | **Eskalation** | Eskalationsleiter der Governance (`docs/GOVERNANCE.md`, „Eskalation") | Streit, der im Spiel eskaliert (`src/core/sim/__tests__/dispute-escalation.test.ts`) | „Eskalationsstufe" gegen „Konflikteskalation" |
 | **Phase** | Task-Phase einer Lane (`docs/WORKFLOW.md`, `READY` … `DONE`) | Tagesphase der Welt (`src/core/sim/day-phase.ts` `dayPhaseOf`) | „Task-Phase" gegen „Tagesphase" |
 | **Owner** | Roster-Owner eines Claims (`docs/GOVERNANCE.md`, „Rollen und Lanes") | Eigentümer einer Immobilie (`src/core/sim/property.ts`, `player.property`) | „Lane-Owner" gegen „Eigentümer" |
 | **Buch / BOOK** | Ledger-Buchung (`src/core/economy/ledger.ts`) | Buch-Symbol der Walzen (`src/core/games/engines/slot-models.ts`, Gewicht `BOOK`) | „Buchung" gegen „Buch-Symbol" |
-| **Release** | Release-APK und Tag (`docs/LOCAL_CI.md`) | Release-Horizont des Spiels (`docs/ROADMAP.md`, „Später") | „Release-Build" gegen „Spielrelease" |
+| **Release** | Release-APK und Tag (`docs/CI.md`) | Release-Horizont des Spiels (`docs/ROADMAP.md`, „Später") | „Release-Build" gegen „Spielrelease" |
 
 ## Governance-Sätze im Spieltext
 
