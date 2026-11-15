@@ -7,7 +7,9 @@
  * von Stat zu Entscheidung, keine nachtraegliche Behauptung.
  */
 import { chooseCityIntent, type CityChoice, type CityDecisionInput } from './city-life-score';
-import { bestFriend, presentAt } from './city-life-targets';
+import {
+  buildCityPeerIndex, bestFriend, EMPTY_CITY_PEER_INDEX, presentIn, type CityPeerIndex,
+} from './city-life-targets';
 import type {
   CityDecisionCounterfactual, CityDecisionFamily, CityLifeDecision,
   CityResidentState, NpcMemory,
@@ -60,12 +62,14 @@ function memoryUsed(resident: CityResidentState, target: CityResidentState | nul
   return [...resident.memories].reverse().find((entry) => entry.aboutNpcId === target.npcId) ?? null;
 }
 
-function targetFor(input: CityDecisionInput, intent: NpcIntentKind): CityResidentState | null {
+function targetFor(
+  input: CityDecisionInput, intent: NpcIntentKind, peerIndex: CityPeerIndex,
+): CityResidentState | null {
   const friend = bestFriend(input);
   if (intent === 'VISIT_FRIEND') return friend?.peer ?? null;
   if (intent !== 'PUB') return null;
-  const present = input.peers
-    .filter((peer) => peer.location === 'KIEZ' && peer.npcId !== input.resident.npcId)
+  const present = [...(peerIndex.byLocation.get('KIEZ') ?? [])]
+    .filter((peer) => peer.npcId !== input.resident.npcId)
     .sort((first, second) => (input.resident.relationships[second.npcId] ?? 0)
       - (input.resident.relationships[first.npcId] ?? 0) || first.npcId.localeCompare(second.npcId));
   return present[0] ?? null;
@@ -73,10 +77,16 @@ function targetFor(input: CityDecisionInput, intent: NpcIntentKind): CityResiden
 
 /** Waehlt den Intent und prueft jede Stat-Familie gegen einen neutralen Lauf. */
 export function decideCityLife(input: CityDecisionInput): CityDecisionPlan {
-  const choice = chooseCityIntent(input);
-  const target = targetFor(input, choice.intent);
+  const peerIndex = buildCityPeerIndex(input.peers);
+  const choice = chooseCityIntent(input, peerIndex);
+  const target = targetFor(input, choice.intent, peerIndex);
   const counterfactuals = FAMILIES.map((family): CityDecisionCounterfactual => {
-    const alternative = chooseCityIntent(neutralInput(input, family));
+    // Nur `environment` entfernt die Peers; alle anderen Gegenfaktlaeufe
+    // teilen denselben Ortsindex.
+    const alternative = chooseCityIntent(
+      neutralInput(input, family),
+      family === 'environment' ? EMPTY_CITY_PEER_INDEX : peerIndex,
+    );
     return {
       family,
       intent: alternative.intent,
@@ -93,7 +103,7 @@ export function decideCityLife(input: CityDecisionInput): CityDecisionPlan {
       ? { npcId: target.npcId, value: input.resident.relationships[target.npcId] ?? 0 }
       : null,
     socialTarget: target?.npcId ?? null,
-    present: presentAt(input.peers, choice.location, input.resident.npcId),
+    present: presentIn(peerIndex, choice.location, input.resident.npcId),
   };
 }
 
