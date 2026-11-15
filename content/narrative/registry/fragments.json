@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fef8c39db7f4e42fd125d391207dafc0e7e95ad0f7b80537952fc331809820e6",
+  "contentHash": "sha256:27e0321c8aee155561f5bd55d00f1257afb5a7a77254380f3e4aae14817cb22f",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8558,6 +8558,28 @@
       "text": "Rita lehnt sich über den Tresen, und das Gespräch beginnt nicht mit einer Frage, sondern mit einem Blick, der sagt: Setz dich, das dauert einen Moment. Wer jetzt zuhört, erfährt mehr, als jede Gästeliste je verraten würde.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-dialog-open-01.json"
+    },
+    {
+      "contributionId": "doc-anchors-860-01",
+      "turnId": "2026-11-15T05:45Z-doc-anchors-860",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Tafel im Flur hängt seit heute ein zweiter Aushang neben dem Dienstplan: eine Liste aller Verweise im Handbuch, jeder mit der Stelle, an der er landen soll. Wer einen Verweis schreibt, dessen Ziel es nicht gibt, sieht seinen Namen am nächsten Morgen in der Prüfliste — vor der Abnahme, nicht danach. Die Belegschaft nennt es die stille Kontrolle, weil sie nie laut wird, sondern nur den Weg sperrt, der ins Leere führt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-doc-anchors-860.json"
     },
     {
       "contributionId": "door-walk-01",

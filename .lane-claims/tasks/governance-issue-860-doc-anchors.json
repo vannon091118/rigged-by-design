@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-860-doc-anchors",
+  "claimId": "lane/governance/issue-860-doc-anchors",
+  "branch": "lane/governance/issue-860-doc-anchors",
+  "baseSha": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
+  "phase": "IMPLEMENTING",
+  "title": "#860: Anker-Gate fuer interne Markdown-Links",
+  "goal": "verify-docs loest alle internen Anker in AGENTS.md und docs/ gegen die Heading-Slugs auf; ein toter Link macht verify:light rot.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "doc-anchors prueft jetzt AGENTS.md, README.md und docs/**; zwei echte Befunde beim ersten Lauf: doppelte Bindestriche im Slug von 'Board-Status & Review-Status' (Slug-Logik korrigiert) und ein Link auf ../packages/gamescout/AGENTS.md, das es nicht gibt (Doku korrigiert)."
+    }
+  ],
+  "nextAction": "Tests, verify:light und ci:local gruen; Commit, Push, PR gegen main, RELEASE an #860.",
+  "revision": 1
+}
