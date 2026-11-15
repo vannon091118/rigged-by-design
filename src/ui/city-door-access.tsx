@@ -4,7 +4,7 @@ import { doorTap, type FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
 
-export interface CityDoorAccessEntry {
+interface CityDoorAccessEntry {
   readonly id: string;
   readonly label: string;
   readonly enabled: boolean;

@@ -8,7 +8,7 @@ type Apply = (next: FloorSelection | null) => void;
 type Execute = (action: FloorTap['actions'][number], anchor: FloorTap['anchor']) => void;
 
 /** Die Stadtfigur bleibt sichtbar, ihre Hauptaktion traegt den Sperrgrund. */
-export function cityActorSelection(resolution: FloorTap): FloorSelection {
+function cityActorSelection(resolution: FloorTap): FloorSelection {
   const action = resolution.actions[0];
   const blocked = !action?.enabled;
   return {

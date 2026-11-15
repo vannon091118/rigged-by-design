@@ -12,18 +12,18 @@ import { cityNav } from './city-scene';
 import { isWalkable } from './pathfinding';
 import type { Point } from './types-model';
 
-export interface OccupancyResident {
+interface OccupancyResident {
   readonly npcId: string;
   readonly position: Point;
 }
 
-export interface TileOccupancy {
+interface TileOccupancy {
   readonly occupants: Map<string, Set<string>>;
   readonly travelers: ReadonlySet<string>;
   readonly nextTiles: ReadonlyMap<string, Point>;
 }
 
-export const tileKey = (point: Point): string => `${point.x},${point.y}`;
+const tileKey = (point: Point): string => `${point.x},${point.y}`;
 
 /** Baut die Belegung aus den Positionen und den bereits berechneten Folgeschritten. */
 export function createOccupancy(
@@ -41,7 +41,7 @@ export function createOccupancy(
 }
 
 /** Alle Bewohner auf der Zielkachel; der eigene Eintrag zaehlt nicht. */
-export function blockersAt(
+function blockersAt(
   occupancy: TileOccupancy,
   residentId: string,
   point: Point,
@@ -50,11 +50,11 @@ export function blockersAt(
     .filter((npcId) => npcId !== residentId);
 }
 
-export function occupantCount(occupancy: TileOccupancy, point: Point): number {
+function occupantCount(occupancy: TileOccupancy, point: Point): number {
   return occupancy.occupants.get(tileKey(point))?.size ?? 0;
 }
 
-export interface StepResolution {
+interface StepResolution {
   readonly canMove: boolean;
   readonly push: { readonly npcId: string; readonly from: Point; readonly to: Point } | null;
 }
@@ -116,7 +116,7 @@ export function separatePositions(
  * Zwei Laufende duerfen tauschen, wenn jeder als naechstes die aktuelle Kachel
  * des anderen betritt. So loest sich eine Begegnung im engen Gang deterministisch.
  */
-export function isSwap(
+function isSwap(
   occupancy: TileOccupancy,
   from: Point,
   blockers: readonly string[],
@@ -125,10 +125,6 @@ export function isSwap(
     const next = occupancy.nextTiles.get(npcId);
     return next?.x === from.x && next.y === from.y;
   });
-}
-
-export function isOccupied(occupancy: TileOccupancy, point: Point): boolean {
-  return (occupancy.occupants.get(tileKey(point))?.size ?? 0) > 0;
 }
 
 /** Fuehrt den Ausweichschritt eines stehenden Blockers aus. */

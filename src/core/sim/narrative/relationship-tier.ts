@@ -18,7 +18,7 @@ import { actorRefOfVisitor, relationshipBetween } from './relationships';
 import type { ActorRef } from './types';
 import type { EncounterAction } from '../city-types';
 
-export type RelationshipTier = 'FREMDE' | 'KONTAKT' | 'VERTRAUT' | 'ANSPANNUNG';
+type RelationshipTier = 'FREMDE' | 'KONTAKT' | 'VERTRAUT' | 'ANSPANNUNG';
 
 const CONFLICT_AT = 3;
 const TRUST_AT = 3;
@@ -43,7 +43,7 @@ export const TIER_MEMORY_CLAUSE: Readonly<Record<RelationshipTier, string>> = {
   ANSPANNUNG: ' Zwischen euch liegt etwas.',
 };
 
-export interface PlayerContact {
+interface PlayerContact {
   /** Visitor-Kennung des NPC - derselbe Schluessel wie `lastEncounter`. */
   readonly npcVisitorId: number;
   /** Wie viele Begegnungen als Kontakte aufgezeichnet sind. */
