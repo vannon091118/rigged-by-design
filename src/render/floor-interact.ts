@@ -1,6 +1,14 @@
-/** Verarbeitet Radial-Menu-Aktionen vom Floor. */
+/** Verarbeitet MenuAction-Aktionen vom Floor. */
 import type { MenuAction } from './floor-actions';
 import { worldStore } from '../store/use-world-store';
+
+/**
+ * Eine ID ohne Pfad ist ein Vertragsbruch, kein stiller Klick ohne Wirkung.
+ * Dieselbe Meldung nutzt die Action-Registry in `ui/app-wiring`.
+ */
+export function unhandledMenuActionError(id: string): Error {
+    return new Error(`MenuAction ohne ausfuehrbaren Handler: ${id}`);
+}
 
 export function handleFloorInteract(action: MenuAction): void {
     const targetId = action.targetId;
@@ -25,5 +33,9 @@ export function handleFloorInteract(action: MenuAction): void {
         // Der Weg zum Platz laeuft ueber den normalen Approach; hier wird nur
         // bestaetigt, dass die Figur steht. Ein Sitzzustand existiert nicht.
         case 'FOREIGN_SIT': worldStore.interaction.notify('Du stehst an deinem Platz im fremden Haus.'); break;
+        // Hinweisaktionen im fremden Haus: sie nennen den Grund, statt zu verpuffen.
+        case 'FOREIGN_LOOK':
+        case 'FOREIGN_TALK': worldStore.interaction.notify(action.reason ?? action.label); break;
+        default: throw unhandledMenuActionError(action.id);
     }
 }

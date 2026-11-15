@@ -5,8 +5,29 @@ import type { GameView } from '../store/types';
 import { resolveFurnitureRole } from './decor-roles';
 import { buildForeignActions } from './foreign-floor-actions';
 
+/**
+ * Die vollstaendige Liste ausfuehrbarer Aktions-IDs. Sie ist der Vertrag
+ * zwischen Builder, Registry und Test: eine ID ohne Route faellt beim
+ * Typecheck und im Vertragstest auf, nicht erst als Klick ohne Wirkung.
+ */
+export type MenuActionId =
+  | 'MOVE_HERE' | 'CLEAN_STAIN' | 'CLEAN_ROOM' | 'PICKUP_MOP' | 'TALK'
+  | 'CALM' | 'FIGHT' | 'SERVE_DRINK' | 'OPEN_GUEST' | 'OPEN_MACHINE'
+  | 'TAKE_DRINK' | 'GET_MOP' | 'DROP_MOP' | 'GET_DRINKS' | 'GET_PARTS'
+  | 'SERVE_DESK' | 'SPIEGEL' | 'DRINK_AT_HOME' | 'EAT_AT_HOME' | 'PICKUP_CRATE'
+  | 'ENTER_DOOR' | 'CITY_MEET' | 'FOREIGN_SIT' | 'FOREIGN_LOOK' | 'FOREIGN_TALK';
+
+/** Laufzeitform desselben Vertrags; der Test prueft sie gegen die Registry. */
+export const MENU_ACTION_IDS: readonly MenuActionId[] = Object.freeze([
+  'MOVE_HERE', 'CLEAN_STAIN', 'CLEAN_ROOM', 'PICKUP_MOP', 'TALK',
+  'CALM', 'FIGHT', 'SERVE_DRINK', 'OPEN_GUEST', 'OPEN_MACHINE',
+  'TAKE_DRINK', 'GET_MOP', 'DROP_MOP', 'GET_DRINKS', 'GET_PARTS',
+  'SERVE_DESK', 'SPIEGEL', 'DRINK_AT_HOME', 'EAT_AT_HOME', 'PICKUP_CRATE',
+  'ENTER_DOOR', 'CITY_MEET', 'FOREIGN_SIT', 'FOREIGN_LOOK', 'FOREIGN_TALK',
+]);
+
 export type MenuAction = {
-  id: string;
+  id: MenuActionId;
   label: string;
   enabled: boolean;
   /** Argument fuer die Welt-Command (Gast, Streit, Objekt). */
