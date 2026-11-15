@@ -41,6 +41,19 @@ describe('Headless-Core-Importgrenze', () => {
     expect(classifySpecifier('../../test/random-seed', resolve(coreDir, 'sim', '__tests__', 'example.test.ts'), coreDir)).toBeNull();
   });
 
+  it('erkennt .spec-Dateien ohne __tests__-Ordner als Testdateien', () => {
+    // Die Fixture liegt im echten Baum; ohne die .spec-Regel in isTestFile
+    // meldet der Scanner hier eine Grenzverletzung und dieser Test ist rot.
+    const fixture = resolve(coreDir, 'governance', 'fixtures', 'spec-probe.spec.ts');
+    expect(classifySpecifier('../../../store/world-store', fixture, coreDir)).toBeNull();
+    // Gegenprobe: dieselbe Datei als Produktionsdatei waere ein Verstoss.
+    expect(classifySpecifier('../../../store/world-store', fixture.replace(/\.spec\.ts$/, '.ts'), coreDir)).toContain('verlaesst src/core');
+    // Alle Spec-Varianten, die das Repo zulaesst (.mts/.cts/.js/.jsx inklusive).
+    for (const name of ['probe.spec.mts', 'probe.spec.cts', 'probe.spec.js', 'probe.spec.jsx', 'probe.spec.tsx']) {
+      expect(classifySpecifier('../../test/random-seed', resolve(coreDir, 'sim', name), coreDir)).toBeNull();
+    }
+  });
+
   it('blockiert Test-Support nicht als Produktionspfad', () => {
     expect(classifySpecifier('../../test/random-seed', fromCore, coreDir)).toContain('verlaesst src/core');
   });
