@@ -46,6 +46,38 @@
   ],
   "openPullRequests": 0,
   "reviewWaitingPrs": 0,
+  "promptIssues": [
+    {
+      "issue": 889,
+      "prompt": "docs/GOVERNANCE.md",
+      "severity": "sev-1",
+      "kind": "datei"
+    },
+    {
+      "issue": 890,
+      "prompt": ".cron/SECURITY.md",
+      "severity": "sev-2",
+      "kind": "datei"
+    },
+    {
+      "issue": 891,
+      "prompt": "AGENTS.md",
+      "severity": "sev-2",
+      "kind": "datei"
+    },
+    {
+      "issue": 892,
+      "prompt": ".cron/maintainer-prompt.md",
+      "severity": "sev-1",
+      "kind": "datei"
+    },
+    {
+      "issue": 893,
+      "prompt": "scheduled/main-prompt",
+      "severity": "sev-1",
+      "kind": "external"
+    }
+  ],
   "blockedIssues": [
     {
       "issue": 684,

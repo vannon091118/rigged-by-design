@@ -259,6 +259,15 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 - `node .cron/check-in.mjs --owner <name> --claim-id <id>` reserviert (Exit 0 erlangt, 1 belegt, 2 API-Fehler). `node .cron/check-out.mjs '<state-json>' --owner <name> --claim-id <id>` prüft zuerst den Halter, schreibt dann die `state:JSON` und gibt erst danach frei; ein fremder Lock gibt nichts frei (Exit 1). Ein Schreibfehler bricht vor der Freigabe ab, damit die TTL greift.
 - 4xx ist eine Antwort, kein Netzfehler: der Client meldet den Status als Fehler (Exit 2) und wiederholt nur 5xx/429.
 
+## Prompt-Register
+
+Jeder Prompt, der Maintainer- oder Agentenverhalten regelt, ist am Board ein Incident und in [`PROMPTS.md`](PROMPTS.md) registriert. Die Datei ist die Belegliste; dieser Abschnitt ist die Regel.
+
+- Ein neuer oder geänderter Prompt braucht zuerst ein Issue mit `incident-sev-*`, `incident-open` und `causal-chain`; die Registerzeile nennt die Nummer. Ein Prompt ohne Issue ist eine ungetrackte Verhaltensänderung.
+- `pnpm run verify:docs` prüft die Abdeckung: `AGENTS.md`, dieses Dokument und jede `.cron/*.md` müssen mit Issue und Schweregrad registriert sein. Ein fehlender Eintrag ist rot, kein Hinweis.
+- `pnpm run board:sync -- --at <ISO>` übernimmt die Registereinträge als `promptIssues` in [`.lane-claims/board-state.json`](../.lane-claims/board-state.json); damit ist die Frage "welche Prompts gelten gerade und unter welchem Ticket?" aus dem Snapshot beantwortbar.
+- Ein Prompt außerhalb des Repos (`Art = external`, etwa der System-Reminder der geplanten Ausführung) hat dieselbe Issue-Pflicht. Seine kanonische Fassung verweist auf die Repo-Dateien, statt Regeln zu wiederholen.
+
 ## Referenzen
 
 - [`WORKFLOW.md`](WORKFLOW.md) — Pretask, Claim-Nutzung und Abschluss.

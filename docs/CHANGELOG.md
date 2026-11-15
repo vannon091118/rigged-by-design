@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **Prompts sind Board-Tickets.** Jeder Prompt mit Verhaltenswirkung (`.cron/maintainer-prompt.md`, `.cron/SECURITY.md`, `AGENTS.md`, `docs/GOVERNANCE.md` und der externe System-Reminder) hat ein Incident-Issue und eine Zeile in `docs/PROMPTS.md`; `verify:docs` und `board:sync` lesen das Register (#885).
 - **Testlinie vollstaendig lokal.** `pnpm run ci:local` ersetzt den frueheren CI-Job; GitHub-Workflows fuehren keine Tests, Gates, Builds oder APKs mehr aus. `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt.
 - **Mechanik getrennt.** Statistik, Soak, Langlauf und Benchmarks stehen in `src/Config/test-lanes.json` und laufen nur ueber `pnpm run test:mechanics`; der Katalog prueft die Liste auf Deckungsgleichheit.
 - **Schnellere Gates.** Keine Gate-Timeouts mehr, direkte Binaries statt pnpm-Start, Git-basierter Baumfingerabdruck, ein Git-Aufruf fuer den Kontext, ein Claim-Ladevorgang und kein zweiter Impact-Kindprozess in `pretask`.

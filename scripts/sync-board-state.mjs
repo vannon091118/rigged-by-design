@@ -17,6 +17,7 @@ import { join } from 'node:path';
 import {
   boardDrift, formatBoardState, nextBoardState, splitBoard,
 } from './lib/board-state.mjs';
+import { PROMPT_REGISTER_FILE, parsePromptRegister } from './lib/prompt-register.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const REPO = 'vannon091118/rigged-by-design';
@@ -81,6 +82,16 @@ if (!listing.ok || !Array.isArray(listing.data)) {
 }
 const { issues, pullRequests } = splitBoard(listing.data);
 
+// Prompt-Issues (#885): die Liste kommt aus docs/PROMPTS.md, nicht aus dem
+// Gedaechtnis des Laufs; ein fehlendes Register ist deshalb ein Befund.
+const registerFile = join(ROOT, PROMPT_REGISTER_FILE);
+if (!existsSync(registerFile)) {
+  console.error(`BOARD: ${PROMPT_REGISTER_FILE} fehlt; promptIssues bleiben leer`);
+}
+const promptIssues = existsSync(registerFile)
+  ? parsePromptRegister(readFileSync(registerFile, 'utf8'))
+  : [];
+
 let next;
 try {
   next = nextBoardState({
@@ -91,6 +102,7 @@ try {
     headMessage: git(['log', '-1', '--format=%s', head]) || null,
     at,
     worktree: git(['rev-parse', '--show-toplevel']) || null,
+    promptIssues,
   });
 } catch (error) {
   console.error(`BOARD: ${error instanceof Error ? error.message : String(error)}`);
@@ -113,5 +125,6 @@ console.log(JSON.stringify({
   openIssues: next.state.openIssuesCount,
   openPullRequests: next.state.openPullRequests,
   reviewWaitingPrs: next.state.reviewWaitingPrs,
+  promptIssues: next.state.promptIssues.length,
   droppedClaims: next.dropped.map((claim) => claim?.issue ?? null),
 }, null, 2));

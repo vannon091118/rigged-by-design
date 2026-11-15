@@ -20,6 +20,7 @@
 | --- | --- |
 | [`CI.md`](CI.md) | 15 lokale Required-Gates, optionale Audit-Stufe, Zustände, drei Repository-Workflows und Branch-Schutz ohne Required-Status. |
 | [`GOVERNANCE.md`](GOVERNANCE.md) | Rollen, Lanes, Claims, Register-Audit und Eskalation. |
+| [`PROMPTS.md`](PROMPTS.md) | Prompt-Register: jeder Prompt mit Verhaltenswirkung, sein Pfad, Schweregrad und Board-Issue. |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Zustandsbesitz, Schichten, Pipeline, Save, Narrative und Fehlerregister. |
 | [`DEPENDENCY-MATRIX.md`](DEPENDENCY-MATRIX.md) | Generierte Live-Dependency-Matrix; liegt bewusst ausserhalb der gesperrten Architektur. |
 | [`ROADMAP.md`](ROADMAP.md) | Jetzt, als Nächstes, später; offene Punkte und PARKED. |
@@ -63,4 +64,5 @@ Diese zwölf Dokumente tragen den `rbd-doc`-Marker und werden vom Pre-Commit-Hoo
 
 - Marker und Pflichtabschnitte prüft `pnpm run verify:docs`; die generierte Dateiliste in `INVENTORY.md` entsteht aus `git ls-files`.
 - Neue Referenzdokumente werden in diesem Index verlinkt und in `scripts/lib/doc-sync.mjs` registriert, sobald sie Pflichtabschnitte tragen.
+- Ein neuer Prompt mit Verhaltenswirkung bekommt eine Zeile in [`PROMPTS.md`](PROMPTS.md) mit Board-Issue; `verify:docs` prüft die Abdeckung.
 - Ein neuer Vertrag braucht einen Eintrag in [`contracts/README.md`](contracts/README.md), einen Writer und einen Vertragstest.

@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 420 Dateien — contract 222 · integration 117 · governance 68 · statistics 6 · performance 7.
+Summe: 421 Dateien — contract 222 · integration 117 · governance 69 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -208,6 +208,7 @@ Summe: 420 Dateien — contract 222 · integration 117 · governance 68 · stati
 | `src/core/governance/__tests__/promote-guard.test.ts` | pipeline | governance | ja | `scripts/lib/promote-guard.mjs` |
 | `src/core/governance/__tests__/promotion-state.test.ts` | pipeline | governance | ja | `scripts/lib/promotion-state.mjs` |
 | `src/core/governance/__tests__/promotion-workflows.test.ts` | ci | governance | ja | `.github/workflows/promote.yml` |
+| `src/core/governance/__tests__/prompt-register.test.ts` | pipeline | governance | ja | `scripts/lib/prompt-register.mjs` |
 | `src/core/governance/__tests__/readme-media.test.ts` | pipeline | governance | ja | `scripts/lib/readme-media.mjs` |
 | `src/core/governance/__tests__/red-team-gate-lane.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
@@ -877,7 +878,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 711 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 743 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
@@ -2269,13 +2270,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1746 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1189 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1190 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 116 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2595 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2603 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
-- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 267 Zeilen
-- `docs/INDEX.md` — Doku-Index — gelesen: 66 Zeilen
+- `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 276 Zeilen
+- `docs/INDEX.md` — Doku-Index — gelesen: 68 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
@@ -3009,7 +3010,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
 - `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 149 Zeilen
 - `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 162 Zeilen
-- `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 120 Zeilen
+- `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 129 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
@@ -3083,7 +3084,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 144 Zeilen
 - `scripts/run-selected-tests.mjs` — Testkommando der Gates: ohne Auswahl laeuft die Suite des Profils, mit — gelesen: 37 Zeilen
 - `scripts/sanitize-commit.mjs` — ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. — gelesen: 18 Zeilen
-- `scripts/sync-board-state.mjs` — board:sync — Board-State aus GitHub und Git nachziehen (#834). — gelesen: 117 Zeilen
+- `scripts/sync-board-state.mjs` — board:sync — Board-State aus GitHub und Git nachziehen (#834). — gelesen: 130 Zeilen
 - `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/DEPENDENCY-MATRIX.md aus — gelesen: 140 Zeilen
 - `scripts/sync-generated.mjs` — Der eine Regenerationspfad fuer generierte Artefakte. — gelesen: 137 Zeilen
 - `scripts/task-state.mjs` — Task-Zustand: nach dem Turn ist vor dem naechsten. — gelesen: 284 Zeilen
@@ -3094,7 +3095,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
-- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 48 Zeilen
+- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 79 Zeilen
 - `scripts/verify-impact-graph.mjs` — Impact-Graph-Gate: Der Impact-Pfad darf keinen TypeScript-Compiler laden. — gelesen: 26 Zeilen
 - `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 433 Zeilen
 - `scripts/verify-narrative-blocks.mjs` — Gate: Textbaustein-Pools und die Pflicht pro Commit. — gelesen: 178 Zeilen
