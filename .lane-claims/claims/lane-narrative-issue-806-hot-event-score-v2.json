@@ -1,8 +1,8 @@
 {
-  "id": "lane/narrative/issue-806-hot-event-score",
-  "owner": "Sim-/Domain-Owner",
-  "branch": "lane/narrative/issue-806-hot-event-score",
-  "baseSha": "e6bb06924ab7f435fdbeb3d1c476bb0d69b5a73d",
+  "id": "lane/narrative/issue-806-hot-event-score-v2",
+  "owner": "Architektur-Owner",
+  "branch": "lane/narrative/issue-806-hot-event-score-v2",
+  "baseSha": "562f1848301477233e85ff07ab3d246c29401fb0",
   "issue": 806,
   "task": "Issue #806: deterministischer Hot-Event-Score mit konfigurierbarer Virality-Schwelle aus echten Welt-Facts",
   "goal": "Facts werden auf einen erklaerbaren Score bewertet; ueberschreitet er die konfigurierte Schwelle, entsteht genau ein Hot-Event-Ausloeser mit stabiler Fact-Referenz, deterministisch und ohne zweite Eventliste.",
@@ -25,11 +25,12 @@
     "docs/INVENTORY.md",
     "docs/TEST-CATALOG.md",
     "docs/DEPENDENCY-MATRIX.md",
-    ".lane-claims/**"
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-narrative-issue-806-hot-event-score-v2.json"
   ],
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
   "status": "open",
-  "createdAt": "e6bb06924ab7f435fdbeb3d1c476bb0d69b5a73d"
+  "createdAt": "562f1848301477233e85ff07ab3d246c29401fb0"
 }

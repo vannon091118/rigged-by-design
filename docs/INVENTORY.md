@@ -970,7 +970,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-interaction-issue-771-menu-action-contract.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-narrative-issue-541-fact-reader.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-narrative-issue-806-hot-event-score.json` — { — gelesen: 35 Zeilen
+- `.lane-claims/claims/lane-narrative-issue-806-hot-event-score-v2.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-render-issue-731-city-actor-tests.json` — { — gelesen: 26 Zeilen
@@ -1090,7 +1090,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/narrative-issue-806-hot-event-score.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/narrative-issue-806-hot-event-score-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/render-issue-731-city-actor-tests.json` — { — gelesen: 23 Zeilen

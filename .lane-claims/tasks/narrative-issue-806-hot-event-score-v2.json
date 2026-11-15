@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "taskId": "narrative-issue-806-hot-event-score",
-  "claimId": "lane/narrative/issue-806-hot-event-score",
-  "branch": "lane/narrative/issue-806-hot-event-score",
-  "baseSha": "e6bb06924ab7f435fdbeb3d1c476bb0d69b5a73d",
+  "taskId": "narrative-issue-806-hot-event-score-v2",
+  "claimId": "lane/narrative/issue-806-hot-event-score-v2",
+  "branch": "lane/narrative/issue-806-hot-event-score-v2",
+  "baseSha": "562f1848301477233e85ff07ab3d246c29401fb0",
   "phase": "CI_PENDING",
   "title": "Issue #806: deterministischer Hot-Event-Score mit konfigurierbarer Virality-Schwelle aus echten Welt-Facts",
   "goal": "Facts werden auf einen erklaerbaren Score bewertet; ueberschreitet er die konfigurierte Schwelle, entsteht genau ein Hot-Event-Ausloeser mit stabiler Fact-Referenz, deterministisch und ohne zweite Eventliste.",
@@ -13,5 +13,5 @@
   "pr": null,
   "findings": [],
   "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 3
+  "revision": 2
 }
