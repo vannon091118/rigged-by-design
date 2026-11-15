@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9eeb39bb2a302fc991f281b82337729edade1cea26b89c306080271ac0d7d8d2",
+  "contentHash": "sha256:69ae86a2b513401efd1c7a99d837859ec97e69ac8e61e7bcfa77d3acfb0048d2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -4809,6 +4809,31 @@
       "text": "Der Heimweg führte zum Arbeitsplatz, die laufende Route überlebte jeden neuen Entschluss, und zwei Zonenkopien beschrieben dieselbe Straße. Jetzt folgt der Weg dem Plan, ein widersprechender Intent bricht ihn ab, und die Laufwege zeichnen neu, wenn sich die Zonen verschieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-issues-sweep.json"
+    },
+    {
+      "contributionId": "city-life-peer-index-01",
+      "turnId": "2026-11-15T00:44Z-city-life-peer-index",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zählte die Gäste nicht elfmal, nur um zu wissen, wer an welchem Ort steht. Sie ging einmal durch den Raum, notierte jede Position und las danach nur noch die Liste. Die Entscheidung blieb dieselbe; die Finger wurden schneller.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-life-peer-index.json"
     },
     {
       "contributionId": "city-network-01",
