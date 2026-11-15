@@ -8,6 +8,7 @@ import { type Perspective, type Popup } from './ui/app-model';
 import { useArmMusic, useDisputeSfx, useJournalSfx, useNarrativePause, useNoticeDismiss, usePointerHaptics, useSceneMusic, useWorkshopShortcut } from './ui/app-effects';
 import { closeEditorUrl, crateGhostId, isCarryingCrate, makeActionExecutor, openPopupWith, switchPerspective } from './ui/app-wiring';
 import { ConnectedBuildPanel } from './ui/build-panel-connected';
+import { CityDoorAccessLayer } from './ui/city-door-access';
 import { ConnectedHud } from './ui/connected-hud';
 import { Dock } from './ui/dock';
 import { FloorFeedback } from './ui/floor-feedback';
@@ -53,8 +54,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   useArmMusic();
   usePointerHaptics();
 
-  const carryingCrate = isCarryingCrate(view.player.carrying);
-  const ghostId = crateGhostId(view.player.carrying, view.crates);
+  const carryingCrate = isCarryingCrate(view.player.carrying), ghostId = crateGhostId(view.player.carrying, view.crates);
 
   // Kistenklick und Enter laufen ueber denselben Hook: Ziel setzen, Charakter laufen lassen, zugreifen.
   const crates = useCrateActions(view, {
@@ -91,8 +91,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
   useStageKeys({
     enabled: popup === null && !buildOpen && !editorOpen,
-    zoom: (factor) => stage.current?.zoom(factor),
-    fit: () => stage.current?.fit(),
+    zoom: (factor) => stage.current?.zoom(factor), fit: () => stage.current?.fit(),
     onEscape: () => { if (!closeInteraction()) setBuildOpen(false); },
   });
 
@@ -128,6 +127,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           }}
           onFirstFrame={onFirstFrame}
         />
+
+        <CityDoorAccessLayer view={view} interaction={interaction} perspective={perspective} popup={popup} buildOpen={buildOpen} editorOpen={editorOpen} />
 
         <FloorRoleBar perspective={perspective} />
 

@@ -4614,6 +4614,14 @@
       "contributionId": "city-actor-persona-mood-773"
     },
     {
+      "turnId": "2026-11-14T23:10Z-city-door-access",
+      "contributionId": "city-door-access-01"
+    },
+    {
+      "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
+      "contributionId": "city-tile-occupancy-01"
+    },
+    {
       "turnId": "2026-11-14T23:20Z-main-green",
       "contributionId": "main-green-01"
     },

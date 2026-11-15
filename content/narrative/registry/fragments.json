@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8918b8fa7712684560f3e6c0dec7a16d4a561c9b3b24df5deecdc8177ebab339",
+  "contentHash": "sha256:35ec48f68882ba0257d98bfce30b3651857987ff981faf2d9b64ee054d5dd208",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3315,6 +3315,28 @@
       "text": "Der Tag schließt mit Löhnen und Miete. Wer die Stunden zählt, zählt den Morgen nicht zweimal.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-city-day-closeout-01.json"
+    },
+    {
+      "contributionId": "city-door-access-01",
+      "turnId": "2026-11-14T23:10Z-city-door-access",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadttür ist nicht nur ein Bild im Fenster. Wer sie mit der Tastatur sucht, findet denselben Ort, denselben Namen und dieselbe Sperre wie mit der Maus. Der Weg ändert die Eingabe, nicht das Ziel: Ein Ort bleibt ein Ort, auch wenn ihn kein Finger trifft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-door-access.json"
     },
     {
       "contributionId": "city-encounter-body-01",
@@ -7669,6 +7691,28 @@
       "text": "Zum Schluss räumte ich die Theke ab. Sieben Krüge, sieben Kreidestriche, ein Tuch. Was gestern noch offen lag, stand jetzt an seinem Platz, und ich musste nichts zweimal nachsehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-77.json"
+    },
+    {
+      "contributionId": "city-tile-occupancy-01",
+      "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Wege können sich kreuzen, ohne dass zwei Menschen denselben Schritt machen. Wer zuerst geht, nimmt die Kachel; wer folgt, wartet einen Atemzug und geht dann. Am Ziel steht niemand im anderen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-tile-occupancy.json"
     },
     {
       "contributionId": "claim-closeout-535-01",

@@ -142,6 +142,63 @@ describe('Bewegung', () => {
     expect(broken.residents.find((entry) => entry.npcId === 'rita')!.travel).toBeNull();
   });
 
+  it('reserviert die nächste Kachel und lässt den zweiten Bewohner warten', () => {
+    const { world } = makeWorld();
+    const life = ensureCityLife(world);
+    const travel = startTravel(HOME, city, 'KIEZ').travel!;
+    world.cityLife = {
+      ...life,
+      residents: life.residents.map((entry) => entry.npcId === 'rita' || entry.npcId === 'boris'
+        ? { ...entry, location: 'HOME' as const, position: HOME, travel }
+        : entry),
+    };
+
+    tickCityMovement(world);
+    const after = ensureCityLife(world).residents;
+    const rita = after.find((entry) => entry.npcId === 'rita')!;
+    const boris = after.find((entry) => entry.npcId === 'boris')!;
+    const moved = [rita, boris].filter((entry) => entry.position.x !== HOME.x || entry.position.y !== HOME.y);
+    expect(moved).toHaveLength(1);
+    expect(moved[0]!.position).toEqual(travel.path[1]);
+
+    const waiting = [rita, boris].find((entry) => entry.position.x === HOME.x && entry.position.y === HOME.y);
+    expect(waiting).toBeDefined();
+    expect(waiting!.travel).toEqual(travel);
+
+    for (let guard = 0; guard < 100; guard += 1) {
+      const current = ensureCityLife(world).residents
+        .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
+      if (current.every((entry) => entry.travel === null)) break;
+      tickCityMovement(world);
+    }
+    const arrived = ensureCityLife(world).residents
+      .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris');
+    expect(arrived.every((entry) => entry.location === 'KIEZ')).toBe(true);
+    expect(new Set(arrived.map((entry) => `${entry.position.x},${entry.position.y}`)).size).toBe(2);
+  });
+
+  it('erhält die Kachelbelegung über Save/Load', () => {
+    const { world } = makeWorld();
+    const life = ensureCityLife(world);
+    const travel = startTravel(HOME, city, 'KIEZ').travel!;
+    world.cityLife = {
+      ...life,
+      residents: life.residents.map((entry) => entry.npcId === 'rita' || entry.npcId === 'boris'
+        ? { ...entry, location: 'HOME' as const, position: HOME, travel }
+        : entry),
+    };
+    tickCityMovement(world);
+
+    const saved = JSON.parse(JSON.stringify(world.cityLife));
+    world.cityLife = normalizeCityLife(saved);
+    tickCityMovement(world);
+
+    const positions = ensureCityLife(world).residents
+      .filter((entry) => entry.npcId === 'rita' || entry.npcId === 'boris')
+      .map((entry) => `${entry.position.x},${entry.position.y}`);
+    expect(new Set(positions).size).toBe(2);
+  });
+
   it('lässt einen Bewohner ohne Weg stehen', () => {
     const { world, ledger, prng } = makeWorld();
     tickCityMovement(world);

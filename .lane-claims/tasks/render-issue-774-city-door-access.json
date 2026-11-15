@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-issue-774-city-door-access",
+  "claimId": "lane/render/issue-774-city-door-access",
+  "branch": "lane/render/issue-774-city-door-access",
+  "baseSha": "9a2d7bf1b28cc39432d3aa235d7db96f0f839c10",
+  "phase": "CI_PENDING",
+  "title": "Issue #774: Stadttueren und Ortsziele per DOM und Tastatur zugaenglich machen",
+  "goal": "Dieselben buildDoorActions als fokussierbare Ortsziele anbieten; Enter/Space und Klick nutzen den bestehenden Command-Pfad.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
