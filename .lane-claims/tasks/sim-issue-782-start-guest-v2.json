@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-782-start-guest-v2",
+  "claimId": "sim-issue-782-start-guest-v2",
+  "branch": "lane/sim/issue-782-start-guest-v2",
+  "baseSha": "3f5643ca52a8cb0a360669f44129a9ed453cb068",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #782: Startpfad 0-vor-1-nach im View abnehmen",
+  "goal": "Regressionstest belegt: vor dem Aufstellen kein Gast, danach genau der Demand-Gast; keine Produktionsaenderung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit und PR pushen; Maintainer-Review und Merge.",
+  "revision": 1
+}

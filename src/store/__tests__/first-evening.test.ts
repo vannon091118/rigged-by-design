@@ -17,6 +17,7 @@ import { Prng } from '../../core/rng/prng';
 import { randomSeed } from '../../test/random-seed';
 import { createNewGame } from '../new-game';
 import { SceneCommands } from '../scene-commands';
+import { buildView } from '../snapshot';
 
 function start(): { world: WorldState; ledger: ReturnType<typeof createNewGame>['ledger']; prng: Prng; scene: SceneCommands } {
   const game = createNewGame('SMALL');
@@ -107,5 +108,39 @@ describe('Der erste Abend als Kette', () => {
     }
     expect(world.day).toBeGreaterThanOrEqual(2);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
+  });
+
+  it('zeigt den ersten Gast erst nach dem Aufstellen des Geräts im View', () => {
+    const { world, ledger, prng, scene } = start();
+
+    // Vor dem Casino ist die Kiste noch nicht sichtbar und niemand wartet.
+    const startView = buildView(world, ledger, '');
+    expect(startView.scene.kind).toBe('APARTMENT');
+    expect(startView.crates).toHaveLength(0);
+    expect(startView.guests).toHaveLength(0);
+
+    scene.finishOpening();
+    scene.enterCity();
+    scene.enterCasino();
+    const casinoView = buildView(world, ledger, '');
+    expect(casinoView.scene.kind).toBe('OWN');
+    expect(casinoView.crates).toHaveLength(1);
+    expect(casinoView.guests).toHaveLength(0);
+    expect(casinoView.furniture.some((item) => item.gameId)).toBe(false);
+
+    // Aufstellen allein spawnt keinen Gast; erst der Demand-Tick nach dem Gerät.
+    deployStarter(world);
+    const placedView = buildView(world, ledger, '');
+    expect(placedView.furniture.some((item) => item.gameId === 'SLOT')).toBe(true);
+    expect(placedView.guests).toHaveLength(0);
+
+    let waited = 0;
+    while (world.guests.length === 0 && waited < FIRST_ARRIVAL_TICK * 4) {
+      tickWorld(world, ledger, prng);
+      waited += 1;
+    }
+    const arrivedView = buildView(world, ledger, '');
+    expect(arrivedView.guests.length).toBeGreaterThan(0);
+    expect(arrivedView.furniture.some((item) => item.gameId === 'SLOT')).toBe(true);
   });
 });
