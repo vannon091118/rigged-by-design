@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5a2dff2960b42de72037b7da7d822d52948abc5625cc86161a0b61db6c627fe4",
+  "contentHash": "sha256:dc9b20234c1873632a08dbc2c577e05c3e322d7608d4b06c8a135ff24b32fb30",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10315,6 +10315,28 @@
       "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
+    },
+    {
+      "contributionId": "liilith-787-esport-roles",
+      "turnId": "2026-11-16T00:12Z-787-esport-roles",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Turnierabend kennt jetzt drei Plätze. Wer zusieht, setzt und hofft. Wer teilnimmt, zahlt seinen Einsatz an der Tür und steht danach selbst am Tisch - die Quote interessiert ihn nicht mehr, nur das Ergebnis. Und wer den Abend ausrichtet, entscheidet vorher, wer gegen wen antritt. Dieselbe Ankündigung, dieselbe Halle, dieselbe Uhr: nur die Rolle entscheidet, was man tun darf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json"
     },
     {
       "contributionId": "living-world-foundation-1",
