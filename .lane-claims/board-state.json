@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-15T04:26:00Z",
+  "generatedAt": "2026-11-15T05:50:00Z",
   "generatedBy": "maintainer",
-  "head": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
-  "headMessage": "fix(#597): Foreign Floors mit eigener Belegung und belegten Sitzplaetzen (#851)",
-  "base": "origin/main @ ac38b39ae6d46a28b93686b954aea047e0bd23ab",
-  "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
+  "head": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
+  "headMessage": "docs(#857): Maintainer-Pflichten als globales Mission-Profil (#858)",
+  "base": "origin/main @ 4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
+  "worktree": "/workspace/chats/195d7664885329f26a8e750f",
   "status": "READY",
   "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
   "lastActions": [
@@ -579,7 +579,7 @@
     "newGovernanceIssuesThisRun": 0,
     "openIssues": 27
   },
-  "openIssuesCount": 75,
+  "openIssuesCount": 69,
   "mergedPrsThisRun": [
     739,
     849
