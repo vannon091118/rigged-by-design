@@ -89,6 +89,16 @@ describe('evaluateBoardUsage', () => {
     expect(result.failures).toEqual([]);
   });
 
+  it('verlangt fuer eine gemergte Lane keinen zweiten Board-Beleg', () => {
+    const result = evaluateBoardUsage({
+      branch: 'lane/x',
+      claim: { ...CLAIM, status: 'merged' },
+      issueClaim: { checked: false, status: 'unknown', number: 12, error: 'gh fehlt' } as IssueClaim,
+    });
+    expect(result.ok).toBe(true);
+    expect(result.skipped).toBe(true);
+  });
+
   it('verlangt fuer die Uebergabe Label und RELEASE-Kommentar', () => {
     const withoutHandover = evaluateBoardUsage({
       branch: 'lane/x',

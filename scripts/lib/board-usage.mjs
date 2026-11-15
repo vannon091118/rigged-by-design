@@ -76,6 +76,17 @@ export function evaluateBoardUsage({
     failures.push('kein Lane-Claim: ohne Claim gibt es keinen Board-Auftrag');
     return result();
   }
+  // Eine gemergte Lane ist abgeschlossen: ihr Board-Beleg wurde beim Merge
+  // erbracht. Closeout-Pushes (Claim auf merged, Task DONE) brauchen keinen
+  // zweiten Claim am Issue und wuerden sonst dauerhaft blockieren.
+  if (claim.status === 'merged') {
+    return {
+      ok: true,
+      skipped: true,
+      failures,
+      facts: [['Claim', `${claim.id} · merged`], ['Board', 'abgeschlossen, kein neuer Beleg noetig']],
+    };
+  }
   facts.push(['Claim', claim.id]);
   facts.push(['Issue', claim.issue ? `#${claim.issue}` : 'fehlt']);
   if (!claim.issue) {

@@ -193,11 +193,17 @@ if (branch !== 'main') {
   } else if (issueClaim.status === 'unknown') {
     // Fail-closed: ohne lesbaren Verlauf ist der Claim nicht belegt. Frueher war
     // das nur eine Warnung - damit konnte eine Lane mit selbst geschriebener
-    // Claim-Datei starten, ohne das Issue je zu benutzen.
-    blockers.push(
-      `[ERR-4019] ${describeIssueClaim(issueClaim)}; 'gh auth login' oder GH_TOKEN einrichten, ` +
-        'danach pnpm run verify:board-usage gruen stellen',
-    );
+    // Claim-Datei starten, ohne das Issue je zu benutzen. Eine gemergte Lane
+    // ist davon ausgenommen: ihr Beleg wurde beim Merge erbracht, Closeout
+    // braucht keinen zweiten Claim.
+    if (claim?.status === 'merged') {
+      notes.push(`${describeIssueClaim(issueClaim)}; Lane ist gemergt, Closeout ohne neuen Board-Beleg`);
+    } else {
+      blockers.push(
+        `[ERR-4019] ${describeIssueClaim(issueClaim)}; 'gh auth login' oder GH_TOKEN einrichten, ` +
+          'danach pnpm run verify:board-usage gruen stellen',
+      );
+    }
   }
 }
 if (branch !== 'main' && !claim) {
