@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-877-generated-merge-driver",
+  "claimId": "lane/governance/issue-877-generated-merge-driver",
+  "branch": "lane/infra/generated-merge-driver",
+  "baseSha": "a4ec01add56c73de3d439441e52b452945c1e343",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #877: Merge-Driver für generierte Artefakte grün auf main abschließen",
+  "goal": "Der Merge-Driver und der post-merge-Hook bleiben fail-closed; Testkatalog, Inventur und Narrative-Registry sind aus den gemischten Quellen regeneriert; alle Gates sind grün.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 917,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/917",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "Regenerierte Artefakte committen, Precommit und alle lokalen Gates prüfen, dann PR #917 auf exaktem Head mergen.",
+  "revision": 1
+}

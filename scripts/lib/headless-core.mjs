@@ -30,8 +30,14 @@ export function packageNameOf(specifier) {
   return specifier.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
 }
 
+/**
+ * Testdateien sind keine Produktionspfade — unabhaengig davon, ob sie im
+ * `__tests__`-Ordner liegen oder per `.test./.spec./.bench.` benannt sind.
+ * Beide Konventionen decken `.mts/.cts/.js/.jsx` mit ab: sonst wuerde eine
+ * `.spec.ts`-Datei den Import eines Store-Helfers als Grenzverletzung melden.
+ */
 const isTestFile = (file) =>
-  /(?:^|[/\\])__tests__[/\\]/.test(file) || /\.(?:test|bench)\.[cm]?[jt]sx?$/.test(file);
+  /(?:^|[/\\])__tests__[/\\]/.test(file) || /\.(?:test|spec|bench)\.[cm]?[jt]sx?$/.test(file);
 
 const isInside = (parent, child) => {
   const rel = relative(parent, child);

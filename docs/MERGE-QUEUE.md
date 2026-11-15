@@ -22,7 +22,7 @@ gelten als Zitat und werden ignoriert.
 | --- | --- | --- |
 | `MERGE_SESSION_JOIN` | `role=maintainer\|worker agent=<id> session=<id>` | Session nimmt teil (optional `claim=<id>`) |
 | `MERGE_SESSION_LEAVE` | `session=<id>` | Session verlaesst die Teilnehmermenge ausdruecklich; Timeout entfernt niemanden |
-| `MERGE_PLAN` | `rev=<n> main=<sha> prs=<nr>@<head>:<base>,…` | Maintainer veroeffentlicht eine vollstaendige Revision; die Reihenfolge der PRs ist die Queue |
+| `MERGE_PLAN` | `rev=<n> main=<sha> prs=<nr>@<head>:<base>,… session=<id>` | Veroeffentlicht eine vollstaendige Revision; **nur eine aktive Maintainer-Session** |
 | `MERGE_ACK` | `rev=<n> hash=<plan-hash> main=<sha> session=<id>` | Bestaetigung genau dieser Revision |
 | `MERGE_STARTED` | `pr=<nr> head=<sha>` | Beginn des Merges |
 | `MERGE_COMPLETED` | `pr=<nr> merge=<sha> main=<sha>` | Merge-Beleg; erzwingt eine neue Revision |
@@ -33,11 +33,19 @@ Form `{rev, main, prs:[{number, head, base}]}`. Zwei Geraete, die denselben
 Verlauf lesen, erhalten denselben Hash — unabhaengig von der Schreibreihenfolge
 im Kommentar.
 
+**Plan-Autoritaet:** `MERGE_PLAN` muss die `session` einer aktiven
+Maintainer-Session nennen. Ein Plan ohne Session, mit unbekannter Session, mit
+verlassener Session oder von einer Worker-Session wird verworfen und ist HOLD.
+Sonst koennte ein Worker eine Revision veroeffentlichen und selbst bestaetigen —
+die Reihenfolge waere koordiniert, die Autoritaet nicht.
+
 ## HOLD statt Zustimmung
 
 `buildMergeState()` liefert `ready: false` und Gruende in `hold`, wenn:
 
+- der externe Kettenkopf fehlt (die Kette ist dann nur erkennend),
 - kein `MERGE_PLAN` existiert oder die Queue leer ist,
+- ein `PLAN` keine aktive Maintainer-Session nennt,
 - eine aktive Session kein ACK zur aktuellen Revision hat,
 - ein ACK vor dem Plan entstand, zu einer anderen Revision gehoert oder eine
   unbekannte Session nennt,
@@ -55,15 +63,16 @@ Base und `main` exakt gegen den bestaetigten Plan.
 
 ```sh
 # Kommentarverlauf des Issues als JSON (gh oder REST-Fallback)
-node scripts/merge-queue.mjs --comments comments.json
+node scripts/merge-queue.mjs --comments comments.json --expected-chain <sha256>
 # Exit 0 = READY, Exit 1 = HOLD, Exit 2 = Eingabe nicht lesbar
 
-# Optional: erwarteter Kettenkopf aus einem geschuetzten Ref
-node scripts/merge-queue.mjs --comments comments.json --expected-chain <sha256>
-
 # Abgeleiteten Snapshot schreiben (Cache, nie Quelle)
-node scripts/merge-queue.mjs --comments comments.json --write .lane-claims/merge-queue.json
+node scripts/merge-queue.mjs --comments comments.json --expected-chain <sha256> \
+  --write .lane-claims/merge-queue.json
 ```
+
+Ohne `--expected-chain` bleibt die Queue HOLD und der Snapshot traegt
+`chainVerified: false`. Ein Snapshot ohne geprueften Anker ist kein Anker.
 
 ## Integritaet
 
@@ -72,7 +81,11 @@ macht jede Aenderung sichtbar: ein editierter Kommentar aendert seinen Payload,
 damit seinen Hash und alle folgenden `prev`-Verweise. Der erwartete Kettenkopf
 muss deshalb **ausserhalb** des Kommentarverlaufs liegen (geschuetzter Git-Ref
 oder GitHub-App-Speicher). Fehlt er, ist die Kette nur manipulationserkennend,
-nicht manipulationsresistent — dieser Unterschied wird nicht verdeckt.
+nicht manipulationsresistent — dieser Unterschied wird nicht verdeckt: das Feld
+`chainVerified` und der HOLD-Grund nennen ihn ausdruecklich.
+
+Zeitvergleiche laufen ueber `Date.parse`, nicht ueber den String: `createdAt`
+darf einen Offset tragen, ohne dass die Reihenfolge kippt.
 
 ## Offener Teil: serverseitige Erzwingung
 
@@ -92,5 +105,6 @@ Konkreter naechster Schritt fuer den Maintainer mit Admin-Rechten:
    fuer Merge/Close; Merge nur ueber die Maintainer-App.
 4. Erwarteten Kettenkopf in einen geschuetzten Ref schreiben (App-only).
 
-Bis dahin bleibt der Koordinator ein lokaler Nachweis plus HOLD-Regel; er
-behauptet keine serverseitige Sperre.
+Session-IDs sind selbst deklariert. Die Plan-Autorisierung prueft die Rolle der
+genannten Session, nicht die kryptografische Identitaet ihres Autors — erst der
+App-Check unter 1. bindet beides an einen echten Principal.
