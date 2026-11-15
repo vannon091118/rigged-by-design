@@ -1,0 +1,28 @@
+{
+  "id": "lane/interaction/issue-771-menu-action-contract",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/interaction/issue-771-menu-action-contract",
+  "baseSha": "e6bb06924ab7f435fdbeb3d1c476bb0d69b5a73d",
+  "issue": 771,
+  "task": "Issue #771: MenuAction-IDs exhaustiv an genau eine ausfuehrbare Action-Registry binden",
+  "goal": "Jede MenuAction-ID hat genau einen Executor; unbekannte IDs werfen statt still zu verpuffen; Builder->Executor ist maschinell geprueft.",
+  "pathAllowlist": [
+    "src/core/contracts/menu-action.ts",
+    "src/render/floor-actions.ts",
+    "src/render/floor-interact.ts",
+    "src/ui/app-wiring.ts",
+    "src/render/__tests__/**",
+    "src/ui/__tests__/**",
+    "src/core/sim/action-registry.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e6bb06924ab7f435fdbeb3d1c476bb0d69b5a73d"
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:09d8cea44c84352ecc91f3cf4b1bb7015219a9d252608185e14bfe107cacfc55",
+  "contentHash": "sha256:6b016e2f5621e44fd94c1e4c8a9c42b7de5fd19fce9644fb5d1289a5f555f8c7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10678,6 +10678,28 @@
       "text": "Rita strich die doppelte Zeile im alten Kassenbuch durch. Drei Namen, sagte sie, bleiben drei Namen, auch wenn man sie zweimal liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-narrative-facts.json"
+    },
+    {
+      "contributionId": "menu-action-contract-01",
+      "turnId": "2026-11-15T20:34Z-menu-action-contract",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer haengt eine Tafel mit allen Knoepfen des Hauses, und neben jedem Knopf steht genau eine Hand, die ihn druecken darf. Ein Lehrling fragte, was passiere, wenn jemand einen Knopf ohne Hand an die Tafel male. Der Hausmeister sagte nur: dann faellt es auf, bevor ein Gast sich wundert. Seitdem ist die Tafel kuerzer als die Geruechte ueber sie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-menu-action-contract.json"
     },
     {
       "contributionId": "mod-engine-01",

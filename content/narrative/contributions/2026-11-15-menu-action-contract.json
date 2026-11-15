@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T20:34Z-menu-action-contract",
+  "contributionId": "menu-action-contract-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Hinterzimmer haengt eine Tafel mit allen Knoepfen des Hauses, und neben jedem Knopf steht genau eine Hand, die ihn druecken darf. Ein Lehrling fragte, was passiere, wenn jemand einen Knopf ohne Hand an die Tafel male. Der Hausmeister sagte nur: dann faellt es auf, bevor ein Gast sich wundert. Seitdem ist die Tafel kuerzer als die Geruechte ueber sie.",
+  "directives": []
+}
