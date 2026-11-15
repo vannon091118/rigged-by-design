@@ -11,7 +11,8 @@ export type { KnowledgeEntry, KnowledgeSourceKind, Observation } from './knowled
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
   | 'HOUSE_BALANCE' | 'SLOT_DISCHARGE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
-  | 'RIVAL_ACTION' | 'COMMAND_REJECTED' | 'EVENT_RESOLVED';
+  | 'RIVAL_ACTION' | 'COMMAND_REJECTED' | 'EVENT_RESOLVED'
+  | 'DEVICE_FAULT' | 'STOCK_LOW';
 export type VisitorValence = 'GOOD' | 'NEUTRAL' | 'BAD';
 export type HouseBand = 'LOW' | 'OK';
 
@@ -19,6 +20,7 @@ export const NARRATIVE_FACT_KINDS: readonly NarrativeFactKind[] = [
   'START_POOL', 'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISIT_ENDED',
   'HOUSE_BALANCE', 'SLOT_DISCHARGE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
   'RIVAL_ACTION', 'COMMAND_REJECTED', 'EVENT_RESOLVED',
+  'DEVICE_FAULT', 'STOCK_LOW',
 ];
 export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', 'BAD'];
 export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
@@ -133,6 +135,22 @@ interface CommandRejectedFact extends NarrativeFactBase {
   readonly reason: string;
 }
 
+/** Ein Gerät ist defekt oder verstopft und kann nicht bespielt werden. */
+interface DeviceFaultFact extends NarrativeFactBase {
+  readonly kind: 'DEVICE_FAULT';
+  readonly furnitureId: number;
+  readonly kindLabel: 'SLOT' | 'TABLE' | 'BAR' | 'TOILET' | 'EXCHANGE' | 'DECOR' | 'STORAGE' | 'JOB_STATION';
+  readonly reason: 'DAMAGED' | 'CLOGGED';
+}
+
+/** Ein Bar- oder Lager-Gerät hat keinen Bestand mehr. */
+interface StockLowFact extends NarrativeFactBase {
+  readonly kind: 'STOCK_LOW';
+  readonly furnitureId: number;
+  readonly kindLabel: 'BAR' | 'STORAGE';
+  readonly stock: number;
+}
+
 /** Eine erfolgreich aufgeloeste Choice; schliesst den Command-Fact-Kreis. */
 interface EventResolvedFact extends NarrativeFactBase {
   readonly kind: 'EVENT_RESOLVED';
@@ -145,7 +163,8 @@ interface EventResolvedFact extends NarrativeFactBase {
 export type NarrativeFact =
   | StartPoolFact | VisitorFirstSeenFact | VisitorReturnedFact | VisitEndedFact
   | HouseBalanceFact | SlotDischargeFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
-  | RivalActionFact | CommandRejectedFact | EventResolvedFact;
+  | RivalActionFact | CommandRejectedFact | EventResolvedFact
+  | DeviceFaultFact | StockLowFact;
 
 /** Strukturierte Erinnerung, keine kopierte Journal-Zeile. */
 export interface VisitorMemory {

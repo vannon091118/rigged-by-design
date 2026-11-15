@@ -3,6 +3,7 @@ import type { Ledger } from '../../economy/ledger';
 import type { WorldState } from '../types';
 import { drainFacts, pushRecent } from './facts';
 import { processLedgerFacts } from './ledger-facts';
+import { emitDeviceFaults, emitStockLows } from './device-stock-facts';
 import { applyMemories } from './memory';
 import { ageKnowledge } from './knowledge-query';
 import { applyRelationshipFacts } from './relationship-apply';
@@ -23,6 +24,9 @@ interface NarrativeBoundaryResult {
  */
 export function processNarrativeBoundaryDetailed(world: WorldState, ledger: Ledger): NarrativeBoundaryResult {
   processLedgerFacts(world, ledger);
+  // Geräte- und Lager-Facts aus dem aktuellen World-Zustand komponieren.
+  emitDeviceFaults(world);
+  emitStockLows(world);
   // Fristen und verwaiste Teilnehmer werden auch ohne neue Facts begrenzt aufgeraeumt.
   const { expired } = maintainEvents(world);
   // Wissen altert mit der Spielzeit, auch wenn gerade kein neuer Fact anliegt.
