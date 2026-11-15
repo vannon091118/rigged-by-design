@@ -25,6 +25,7 @@
     "worker:init": "node scripts/worker-init.mjs",
     "run:budget": "node scripts/run-budget.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",
+    "verify:board": "node scripts/verify-board-usage.mjs",
     "verify:scope": "node scripts/verify-scope.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",

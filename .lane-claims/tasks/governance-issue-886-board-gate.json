@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-886-board-gate",
+  "claimId": "lane/governance/issue-886-board-gate",
+  "branch": "lane/governance/issue-886-board-gate",
+  "baseSha": "99695923348823b101e8e3fffae7eee769460d2b",
+  "phase": "REVIEW_PENDING",
+  "title": "Board-Nutzung mechanisch belegen (#886)",
+  "goal": "Das Board-Gate prueft den verifizierten Issue-Verlauf statt der lokalen Claim-Datei: Pretask, Pre-Push und turn:finish blockieren ohne Beleg; closeout verlangt RELEASE und review-waiting.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates gruen stellen, pushen, PR und Merge durch den Maintainer.",
+  "revision": 1
+}

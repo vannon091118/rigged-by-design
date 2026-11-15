@@ -532,6 +532,15 @@ if (rueck > 0) {
     process.exit(1);
   }
 }
+// Board-Gate vor dem Push: ein Claim ohne Issue-Verlauf ist kein Beleg.
+const boardGate = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'verify-board-usage.mjs')], {
+  cwd: ROOT,
+  stdio: 'inherit',
+});
+if (boardGate.status !== 0) {
+  fail(1, 'ERR-4019', 'turn:finish', 'Issue-Board nicht belegt; kein Push. Erst CLAIM/RELEASE am Issue setzen.');
+  process.exit(1);
+}
 const push = gitRun(['push', '-u', 'origin', 'HEAD']);
 if (push.status !== 0) {
   fail(1, 'ERR-4008', 'turn:finish', `Push auf ${currentBranch} fehlgeschlagen; kein Force-Push, der Commit bleibt lokal`);
