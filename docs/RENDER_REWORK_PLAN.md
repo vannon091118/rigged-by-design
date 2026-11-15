@@ -1557,7 +1557,7 @@ ihre eigenen Belege vorliegen.
 - [`TESTING.md`](TESTING.md) — lokale Testline und Mechanik-Tests.
 - [`CI.md`](CI.md) — lokale Required-Gates; dieser Plan fügt kein Cloud-Gate
   hinzu.
-- [`packages/gamescout/AGENTS.md`](../packages/gamescout/AGENTS.md) — lokaler
-  Browser-/Screenshot-Pfad und Sichtwahrheit.
+- `packages/gamescout/AGENTS.md` — lokaler Browser-/Screenshot-Pfad und
+  Sichtwahrheit; der Pfad liegt ausserhalb dieses Repos.
 - [`screenshots/current/`](screenshots/current/) — kanonischer Satz für die
   Sichtabnahmen; Vergleichsbilder liegen unter `screenshots/comparison/`.
