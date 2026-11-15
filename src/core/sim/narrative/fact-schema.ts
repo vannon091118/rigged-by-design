@@ -76,12 +76,7 @@ export function isFact(raw: unknown): raw is NarrativeFact {
       && typeof raw.evidence === 'boolean'
       && (raw.machineId === null || safeInteger(raw.machineId, 1));
   }
-  if (!safeInteger(raw.visitorId, 1)) return false;
-  if (kind === 'START_POOL') return safeInteger(raw.capital, 0);
-  if (kind === 'VISITOR_FIRST_SEEN') {
-    return typeof raw.persona === 'string' && ['LUMPEN', 'STREET', 'BUSINESS', 'HIGH_ROLLER', 'STAMMGAST'].includes(raw.persona);
-  }
-  if (kind === 'VISITOR_RETURNED') return safeInteger(raw.visits, 1);
+  // Zustands-Facts tragen keine Besucherreferenz; sie werden vor dem Guard geprueft.
   if (kind === 'DEVICE_FAULT') {
     return safeInteger(raw.furnitureId, 1)
       && (raw.kindLabel === 'SLOT' || raw.kindLabel === 'TABLE' || raw.kindLabel === 'BAR'
@@ -94,6 +89,12 @@ export function isFact(raw: unknown): raw is NarrativeFact {
       && (raw.kindLabel === 'BAR' || raw.kindLabel === 'STORAGE')
       && Number.isSafeInteger(Number(raw.stock)) && Number(raw.stock) >= 0;
   }
+  if (!safeInteger(raw.visitorId, 1)) return false;
+  if (kind === 'START_POOL') return safeInteger(raw.capital, 0);
+  if (kind === 'VISITOR_FIRST_SEEN') {
+    return typeof raw.persona === 'string' && ['LUMPEN', 'STREET', 'BUSINESS', 'HIGH_ROLLER', 'STAMMGAST'].includes(raw.persona);
+  }
+  if (kind === 'VISITOR_RETURNED') return safeInteger(raw.visits, 1);
   return safeInteger(raw.guestId, 1) && VISITOR_VALENCES.includes(raw.valence as VisitorValence)
     && typeof raw.score === 'number' && Number.isFinite(raw.score) && raw.score >= 0 && raw.score <= 100;
 }
