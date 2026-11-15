@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 432 Dateien — contract 224 · integration 119 · governance 76 · statistics 6 · performance 7.
+Summe: 433 Dateien — contract 225 · integration 119 · governance 76 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -416,6 +416,7 @@ Summe: 432 Dateien — contract 224 · integration 119 · governance 76 · stati
 | `src/core/sim/narrative/__tests__/composition-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/composition-context.ts` |
 | `src/core/sim/narrative/__tests__/device-stock-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/device-stock-facts.ts` |
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
+| `src/core/sim/narrative/__tests__/hot-event-score.test.ts` | sim | contract | ja | `src/core/sim/narrative/hot-event-score.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
 | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/narrative/composer/__tests__/image-diff-gate.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/image-diff-gate.ts` |
@@ -738,10 +739,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3384 |
-| Gelistete Dateien | 3384 |
+| Getrackte Dateien | 3393 |
+| Gelistete Dateien | 3393 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (8), .lane-claims (244), .lanes (1), artifacts (1), content (1182), docs (108), packages (27), public (571), scripts (147), src (1075) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (8), .lane-claims (247), .lanes (1), artifacts (1), content (1184), docs (108), packages (27), public (571), scripts (147), src (1079) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -755,11 +756,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 125 Datei(en)
-- `.lane-claims/tasks/` — 115 Datei(en)
+- `.lane-claims/claims/` — 127 Datei(en)
+- `.lane-claims/tasks/` — 116 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1178 Datei(en)
+- `content/narrative/contributions/` — 1180 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -837,8 +838,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/__tests__/` — 4 Datei(en)
 - `src/core/sim/` — 191 Datei(en)
 - `src/core/sim/__tests__/` — 173 Datei(en)
-- `src/core/sim/narrative/` — 41 Datei(en)
-- `src/core/sim/narrative/__tests__/` — 6 Datei(en)
+- `src/core/sim/narrative/` — 44 Datei(en)
+- `src/core/sim/narrative/__tests__/` — 7 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
@@ -969,6 +970,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-interaction-issue-771-menu-action-contract.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-narrative-issue-541-fact-reader.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-narrative-issue-806-hot-event-score.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-render-issue-731-city-actor-tests.json` — { — gelesen: 26 Zeilen
@@ -981,6 +983,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-render-residence-role.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-render-staff-actor-state.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-527-self-exclusion-scope-v2.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
@@ -1087,6 +1090,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
+- `.lane-claims/tasks/narrative-issue-806-hot-event-score.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/render-issue-731-city-actor-tests.json` — { — gelesen: 23 Zeilen
@@ -1140,7 +1144,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 105 Zeilen
-- `README.md` — Markdown-Dokument — gelesen: 207 Zeilen
+- `README.md` — Markdown-Dokument — gelesen: 216 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -2309,8 +2313,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-doc-anchors-860.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-foreign-floor-guests.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-integrator-862-merged-index.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-15-liilith-806-hot-event-score.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-menu-action-contract.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-15-self-exclusion-scope-dok.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-shinon-541-fact-reader.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-15-shinon-782-first-guest.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json` — { — gelesen: 21 Zeilen
@@ -2320,8 +2326,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-sim-player-skills-learn-by-doing.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26465 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4717 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26511 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4725 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3505,7 +3511,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-multi-beat.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 175 Zeilen
 - `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 191 Zeilen
 - `src/core/sim/__tests__/narrative-rival-context.test.ts` — Phase 5: Rivalen-Karten leiten sich rein aus Minds, Indizien und — gelesen: 88 Zeilen
-- `src/core/sim/__tests__/narrative-rival-trigger.test.ts` — C2: Der `rival-action`-Trigger oeffnet nur fuer Handlungen mit Folgen ein — gelesen: 57 Zeilen
+- `src/core/sim/__tests__/narrative-rival-trigger.test.ts` — C2: Der `rival-action`-Trigger oeffnet nur fuer Handlungen mit Folgen ein — gelesen: 59 Zeilen
 - `src/core/sim/__tests__/narrative-runtime.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/narrative-staff-source.test.ts` — Die Kasse ist die reale Besucher-Personal-Begegnung: nur ein anwesender — gelesen: 59 Zeilen
 - `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
@@ -3695,6 +3701,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/__tests__/composition-context.test.ts` — Der Helper liest ausschliesslich Welt, Fact, Event und Template; er mutiert — gelesen: 171 Zeilen
 - `src/core/sim/narrative/__tests__/device-stock-facts.test.ts` — Geräte- und Lager-Facts werden nur erzeugt, wenn der betreffende — gelesen: 123 Zeilen
 - `src/core/sim/narrative/__tests__/dialogue.test.ts` — Dialoge sind Daten plus ein reiner Ablauf: gleicher Klick, gleiche Folgeseite. — gelesen: 60 Zeilen
+- `src/core/sim/narrative/__tests__/hot-event-score.test.ts` — Der Hot-Event-Score ist eine reine Ableitung: Alltag bleibt unter der — gelesen: 101 Zeilen
 - `src/core/sim/narrative/__tests__/narrative-view.test.ts` — Das View-Modell leitet Szenen, Choices und Profile rein aus Welt, Ledger und — gelesen: 198 Zeilen
 - `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` — Der Slot-Drucklader wird erst nach der echten Ledger-Buchung narrativ: — gelesen: 53 Zeilen
 - `src/core/sim/narrative/belief.ts` — Glaubwuerdigkeit als Mechanik: Wer teilt (Charisma, Intelligenz, Traits) und — gelesen: 200 Zeilen
@@ -3769,6 +3776,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 110 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 106 Zeilen
 - `src/core/sim/narrative/guest-voice.ts` — Ruf hoert man: Der Gaeste-Ton folgt dem Ruf des Hauses, nicht dem Zufall. — gelesen: 56 Zeilen
+- `src/core/sim/narrative/hot-event-config.ts` — Konfiguration fuer den Hot-Event-Score (#806). — gelesen: 121 Zeilen
+- `src/core/sim/narrative/hot-event-factors.ts` — Faktor-Leser des Hot-Event-Scores (#806). — gelesen: 119 Zeilen
+- `src/core/sim/narrative/hot-event-score.ts` — Hot-Event-Score (#806): Wie gesellschaftlich tragweite ein belegter Fact ist. — gelesen: 121 Zeilen
 - `src/core/sim/narrative/knowledge-config.ts` — Wissens-Config: Quellengewichte, Beziehungsbonus und Distanzkurve. — gelesen: 129 Zeilen
 - `src/core/sim/narrative/knowledge-gossip.ts` — Geruechtquelle: Ein zurueckkehrender Gast hoert nicht einfach den neuesten — gelesen: 79 Zeilen
 - `src/core/sim/narrative/knowledge-observation.ts` — Beobachtungsschicht: Eine Sicht oder ein Geraeusch setzt echte Anwesenheit — gelesen: 79 Zeilen
@@ -3786,7 +3796,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/relationship-tier.ts` — Deterministische Beziehungstier, abgeleitet aus den kanonischen Kanten. — gelesen: 72 Zeilen
 - `src/core/sim/narrative/relationships.ts` — Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. — gelesen: 154 Zeilen
 - `src/core/sim/narrative/rival-context.ts` — Phase 5: Rivalen-Karten als reine Ableitung aus den persistenten Minds. — gelesen: 41 Zeilen
-- `src/core/sim/narrative/runtime.ts` — Duenne Ablaufkoordination: Fact drainieren, Trigger auswerten, Kandidaten begrenzt planen. — gelesen: 116 Zeilen
+- `src/core/sim/narrative/runtime.ts` — Duenne Ablaufkoordination: Fact drainieren, Trigger auswerten, Kandidaten begrenzt planen. — gelesen: 119 Zeilen
 - `src/core/sim/narrative/scheduler.ts` — Oeffentliche Fassade fuer Event-Scheduler, Templates, Choices und Narrativ-RNG. — gelesen: 30 Zeilen
 - `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 118 Zeilen
 - `src/core/sim/narrative/trigger-context.ts` — Baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Trigger-Context. — gelesen: 41 Zeilen
@@ -3837,7 +3847,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rivals.ts` — Fremde Casinos: eigene Betreiber, eigene Maschinen, eigene Regeln. — gelesen: 181 Zeilen
 - `src/core/sim/room-plan.ts` — Raumplan aus dem Layout: Zonen sind Raeume, Kanten sind ihre Zugaenge. — gelesen: 134 Zeilen
 - `src/core/sim/room-transition.ts` — Nahtlose Raum- und Gebäudeübergänge für Akteure (Spieler und NPCs). — gelesen: 192 Zeilen
-- `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 100 Zeilen
+- `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 110 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 18 Zeilen
 - `src/core/sim/smartphone-views.ts` — Smartphone-Sichten: Inbox, Vitter-Feed und ImmoLuck. — gelesen: 168 Zeilen
 - `src/core/sim/social-encounter.ts` — Eine Begegnung entsteht nur am gemeinsamen Ort in Reichweite; die Auswahl — gelesen: 172 Zeilen

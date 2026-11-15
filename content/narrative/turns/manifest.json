@@ -4716,6 +4716,10 @@
     {
       "turnId": "2026-11-15T22:00Z-self-exclusion-scope-dok",
       "contributionId": "self-exclusion-scope-dok-01"
+    },
+    {
+      "turnId": "2026-11-15T22:55Z-806-hot-event-score",
+      "contributionId": "liilith-806-hot-event-score"
     }
   ]
 }

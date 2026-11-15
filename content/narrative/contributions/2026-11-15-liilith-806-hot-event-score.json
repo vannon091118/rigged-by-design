@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T22:55Z-806-hot-event-score",
+  "contributionId": "liilith-806-hot-event-score",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Lärm im Haus hat jetzt ein Maß. Ein Streit zählt nach seiner Schwere, eine Sabotage nach ihrem Indiz, eine Auszahlung nach ihrem Betrag - und was gestern noch Aufregung war, wird heute Routine, weil die Neuigkeit mit der Wiederholung sinkt. Unter der Schwelle bleibt der Alltag, was er ist: kein Ereignis.",
+  "directives": []
+}

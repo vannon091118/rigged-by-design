@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a745bb0b991cc0dc097e055f3ec9b90404996810fc175acf961d5b82badb9e2d",
+  "contentHash": "sha256:0219005085b7c6d6a879958d67fc21320f496fac894663e0f3af9370d0b81175",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10267,6 +10267,28 @@
       "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
+    },
+    {
+      "contributionId": "liilith-806-hot-event-score",
+      "turnId": "2026-11-15T22:55Z-806-hot-event-score",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lärm im Haus hat jetzt ein Maß. Ein Streit zählt nach seiner Schwere, eine Sabotage nach ihrem Indiz, eine Auszahlung nach ihrem Betrag - und was gestern noch Aufregung war, wird heute Routine, weil die Neuigkeit mit der Wiederholung sinkt. Unter der Schwelle bleibt der Alltag, was er ist: kein Ereignis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-liilith-806-hot-event-score.json"
     },
     {
       "contributionId": "living-world-foundation-1",
