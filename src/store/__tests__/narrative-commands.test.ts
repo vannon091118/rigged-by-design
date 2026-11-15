@@ -13,8 +13,16 @@ import { createWorld } from '../../core/sim/templates';
 import { recordVisitor } from '../../core/sim/visitors';
 import { chooseNarrativeCmd, flushNarrativeCmd } from '../narrative-commands';
 
+/** Bestueckt die Startwelt, damit der Boundary keine Lager-Facts komponiert. */
+function bestuecke(world: ReturnType<typeof createWorld>): void {
+  for (const item of world.furniture) {
+    if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+  }
+}
+
 function setup() {
   const world = createWorld('SMALL');
+  bestuecke(world);
   const ledger = new Ledger();
   const visitor = recordVisitor(world, { name: 'Rita Test', persona: 'STAMMGAST', tick: 0 });
   emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });

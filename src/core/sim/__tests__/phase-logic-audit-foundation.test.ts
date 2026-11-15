@@ -77,6 +77,10 @@ describe('Phase 1 - eine autoritative Weltzeit', () => {
 describe('Phase 2 - Identitaet und Ereignisfluss', () => {
   it('verarbeitet einen Fact genau einmal und schliesst den Kreis Fact-Event-Choice-Fact', () => {
     const world = createWorld('SMALL');
+    // Bestueckt, damit nur der Besucher-Fact und kein Lager-Fact anfaellt.
+    for (const item of world.furniture) {
+      if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+    }
     const ledger = new Ledger({ [HAUSKONTO]: fromVC(100) });
     const visitor = recordVisitor(world, { name: 'Kreis Test', persona: 'STAMMGAST', tick: 0 });
     emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });

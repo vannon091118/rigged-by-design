@@ -31,6 +31,10 @@ describe('Start-Pool der Narrative-Domaene', () => {
 
   it('zaehlt den Pool auch nach der Fact-Verarbeitung nur einmal', () => {
     const world = createWorld('SMALL');
+    // Bestueckt, damit nur Start-Pool-Facts und kein Lager-Fact anfallen.
+    for (const item of world.furniture) {
+      if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+    }
     seedStartPool(world, fromVC(150));
     processNarrativeBoundary(world, new Ledger());
     processNarrativeBoundary(world, new Ledger());
