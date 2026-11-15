@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e530165ebcb4229d8f77bb4a9f2c8f20bea313cb048d9640c6c697e17e6609b1",
+  "contentHash": "sha256:b2fc0c4e1a553672d7b935534be9f2530ba49c25294d6d0bdbcc6df197ff3d1a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25274,6 +25274,28 @@
       "text": "Der Kern bleibt headless. Kein Pixi, kein React, kein DOM und kein Weg in Renderer, UI oder Store: Wer die Grenze einmal zieht, sieht den Unterschied zwischen einem Zustand und seinem Bild. Das Gate macht aus dieser Regel einen täglichen Nachweis, nicht eine Absicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json"
+    },
+    {
+      "contributionId": "shinon-861-claim-hygiene",
+      "turnId": "2026-11-15T19:40Z-claim-hygiene",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Claim, dessen Issue längst geschlossen ist, sieht nur solange nach Arbeit aus, bis jemand den Status danebenlegt. Der neue Hygiene-Audit tut genau das: Er nennt jeden offenen Claim mit dem belegten Issue-Status, meldet den Widerspruch vor dem Commit und lässt unbekannte Status ausdrücklich unbekannt. Wer aufräumt, muss nicht raten, welcher Eintrag noch jemandem gehört.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-861-claim-hygiene.json"
     },
     {
       "contributionId": "shinon-877-generated-merge-driver",

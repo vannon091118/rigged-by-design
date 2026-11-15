@@ -152,6 +152,8 @@ Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanu
 
 Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- und Retention-Logik aus. `claim:register prune` zeigt die Kandidaten ohne `--apply` nur an; `doctor` meldet mehr als zehn geschlossene Tasks als Befund.
 
+Danach prüft `node scripts/claim-hygiene.mjs --check` alle Claims gegen den Board-Snapshot: Ein offener Claim auf einem belegten geschlossenen Issue ist ein Closeout-Verstoss (Exit 1), ein unbekannter Status bleibt sichtbar und wird nicht geraten. Der Precommit ruft denselben Audit auf; der Maintainer zieht den Claim anschließend mit `node scripts/reconcile-claims.mjs --apply` nach.
+
 ### After-Task
 
 - Belege dokumentieren: welcher Befehl, welches Ergebnis, was nicht geprüft werden konnte.
