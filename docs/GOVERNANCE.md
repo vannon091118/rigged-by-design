@@ -361,6 +361,30 @@ Jede eingehende Nachricht bzw. jedes handlungsrelevante Ereignis muss enthalten 
 - Bei fehlender Identität, fehlendem Empfänger, unklarem Zustandsübergang, nicht lesbarem Board oder fehlendem Closeout-Beleg gilt fail-closed: Issue bleibt offen bzw. Nachricht bleibt sichtbar WAITING/BLOCKED.
 - Keine zweite Cloud-Test-/Build-Pipeline. Die vorhandene lokale-first-Teststrategie bleibt bestehen; ergänzt werden nur die minimal erforderlichen Autorisierungs-/Integritätschecks an den tatsächlichen Zustandsübergängen.
 
+## Verbindlicher Pin- und State-Vertrag (Issue #887, P1)
+
+Drei angeheftete Issues wurden entwirrt (#561, #563, #677). Es gilt ein bewusst kleines, eindeutiges Pin-Set:
+
+| Issue | Titel | Pin-Status | Zweck |
+|-------|-------|------------|-------|
+| #677 | Persistent Maintainer-State-Board | **aktiv gepinnt** | Zentraler Maintainer-/Board-Vertrag mit Badge-Matrix und state:JSON-Protokoll |
+| #561 | Review-Log | entpinnt | Historisches Log ohne aktuellen Inhalt (leerer Tabellenheader) |
+| #563 | Backlog-Order | entpinnt | Historischer Backlog-Snapshot mit veralteten SHA-Referenzen |
+
+**Regeln:**
+
+1. **Ein einziger aktiver Pin.** Zu jedem Zeitpunkt trägt genau ein Issue das GitHub-Pin-Label. #677 ist der zentrale Maintainer-/Board-Vertrag; alle anderen Issues sind operative Einstiegspunkte ohne Pin.
+
+2. **Historische Logs bleiben auffindbar.** #561 und #563 werden nicht gelöscht oder geschlossen, sondern entpinnt. Ihre Inhalte bleiben als Referenz lesbar, sind aber keine aktive Steuerungsquelle mehr.
+
+3. **Badge-Matrix und Pin-Status in #677.** #677 enthält die verbindliche Badge-Matrix (Priorität, Zustand, Bereich, Einzelauftrag, Triage, Maintainer-Prüfung, Sonderfälle) und ist der kanonische Board-Vertrag. Der Pin-Status in #677 wird als technisch bestätigt behandelt.
+
+4. **Snapshot-/Cursor-Datei ist abgeleitet.** `.lane-claims/board-state.json` und alle state:JSON-Dateien sind abgeleitete Datenquellen, nicht der Ersatz für Issue-Ereignisse. Bei Abweichung gewinnt das GitHub-Issue.
+
+5. **Alle Prompts und Docs verlinken denselben Vertrag.** `AGENTS.md`, `WORKFLOW.md`, `GOVERNANCE.md` und `PROMPTS.md` verweisen alle auf #677 als den kanonischen Board-Vertrag. Es entsteht keine zweite Board-, Identity-, Cursor- oder Inbox-Wahrheit.
+
+6. **Pin-Änderungen erst nach dokumentierter Entscheidung.** Änderungen am Pin-Set erfolgen nur nach dokumentierter Entscheidung im entsprechenden Issue und mit aktualisierter Dokumentation.
+
 ## Referenzen
 
 - [`WORKFLOW.md`](WORKFLOW.md) — Pretask, Claim-Nutzung und Abschluss.

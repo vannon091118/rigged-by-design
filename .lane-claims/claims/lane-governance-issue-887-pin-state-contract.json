@@ -1,0 +1,18 @@
+{
+  "id": "lane-governance-issue-887-pin-state-contract",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-887-pin-state-contract",
+  "baseSha": "562f1848301477233e85ff07ab3d246c29401fb0",
+  "issue": 887,
+  "task": "Angeheftete Issues #561, #563, #677 entwirren: Pin- und State-Vertrag festlegen",
+  "pathAllowlist": [
+    "docs/GOVERNANCE.md",
+    "docs/AGENTS.md",
+    ".lane-claims/claims/lane-governance-issue-887-pin-state-contract.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "562f1848301477233e85ff07ab3d246c29401fb0"
+}
