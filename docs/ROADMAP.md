@@ -156,7 +156,7 @@ Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 | S5-05 | Smartphone als echte Gerätefläche | offen | `src/ui/smartphone.tsx` | Alle vier Fensterzustände sind verglichen |
 | S5-06 | Wand-Occlusion visuell belegen | offen | `src/ui/__tests__/world-first-ui.test.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Depth-Tests plus Browserbeleg |
 | S5-07 | First Frame unter 3 s bei Slow 4G | offen | `src/ui/__tests__/phase34-acceptance.test.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Baseline 22 Requests / 2,42 MB wird unterboten oder begründet |
-| S5-08 | Touch, Hülle und APK-Installation | zurueckgestellt | `scripts/prepare-android.mjs`, `docs/LOCAL_CI.md` | Erst nach vollständiger Desktop-Abnahme |
+| S5-08 | Touch, Hülle und APK-Installation | zurueckgestellt | `scripts/prepare-android.mjs`, `docs/CI.md` | Erst nach vollständiger Desktop-Abnahme |
 | S5-09 | Release-Horizont: bespielbare Stadt | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Mehrere Orte, Wege und Figuren mit Tagesablauf spielbar |
 
 ### Phase 7 — Präsentation für den Release (P2)

@@ -43,7 +43,7 @@ Eine Feature-Session nutzt genau einen Branch und einen Claim. Innerhalb der Ses
 
 ### Task-Vertrag
 
-Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache. Er liegt unter `.lane-claims/tasks/<taskId>.json` und nennt Phase, offene Befunde, PR-Zustand und die nächste Aktion. Er ist Lane-Werkzeug wie Claim und Freigabe: keine Allowlist-Erweiterung, kein PIN, aber an Claim und Branch gebunden. Phasen:
+Der Task-Vertrag ist das **mechanische Protokoll des Laufs**, nicht der Chat und nicht der Cache. Er liegt unter `.lane-claims/tasks/<taskId>.json` und nennt Phase, offene Befunde, PR-Zustand und die nächste Aktion. Über Auftrag, Besitz, Priorität und Status entscheidet er nie: das steht am Issue-Board. Er ist Lane-Werkzeug wie Claim und Freigabe: keine Allowlist-Erweiterung, kein PIN, aber an Claim und Branch gebunden. Phasen:
 
 | Phase | Bedeutung |
 | --- | --- |
@@ -147,7 +147,7 @@ Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- 
 ### After-Task
 
 - Belege dokumentieren: welcher Befehl, welches Ergebnis, was nicht geprüft werden konnte.
-- Task-Vertrag und PR-Kommentar als Übergabe nutzen; der Cache ist keine Wahrheit.
+- Task-Vertrag und PR-Kommentar als Übergabe nutzen; der Cache ist keine Wahrheit, und das Issue bleibt die Steuerungswahrheit.
 - PR oder Issue als Übergabe nutzen, nicht einen Statusbericht im Chat.
 - Gemergte Wegwerf-Branches nur über den dafür vorgesehenen Cleanup entfernen; fremde Branches bleiben stehen.
 - Ein geschlossener, nicht gemergter PR wird nur gelöscht, wenn er nachweislich ersetzt und alle einzigartigen Commits gesichert sind.

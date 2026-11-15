@@ -2,7 +2,7 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die eine Wahrheit für den lokalen Abschluss. Es gibt keinen Cloud-Testlauf; alle Gates, Tests, Builds und APKs laufen lokal. `AGENTS.md` nennt nur die Kurzfassung; die Ausführungskategorien stehen in [`LOCAL_CI.md`](LOCAL_CI.md).
+**Zweck:** Die eine Wahrheit für den lokalen Abschluss. Es gibt keinen Cloud-Testlauf; alle Gates, Tests, Builds und APKs laufen lokal. `AGENTS.md` nennt nur die Kurzfassung; die Testlinie steht in [`TESTING.md`](TESTING.md).
 
 ## Required Gates
 
@@ -109,7 +109,7 @@ Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check 
 
 ## Referenzen
 
-- [`LOCAL_CI.md`](LOCAL_CI.md) — Ausführungskategorien, lokale Befehle und APK-Ablauf.
+- [`TESTING.md`](TESTING.md) — die eine Testlinie und die Zusatzregressionen.
 - [`WORKFLOW.md`](WORKFLOW.md) — Pretask, Abschluss und manueller Merge.
 - [`GOVERNANCE.md`](GOVERNANCE.md) — Claims, Register und Eskalation.
 - [`TESTING.md`](TESTING.md) — Testlinie und Testmatrix.

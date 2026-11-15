@@ -25,7 +25,7 @@ Führe genau EINE der beiden Rollen aus – niemals beide in einem Turn.
   * Bei PARTIAL/REJECT: Kommentar mit konkreten FINDINGS (was fehlt, was falsch ist, datei:zeile), PR NICHT mergen, Issue offen lassen, Label `review-waiting` bleibt, Worker muss nachbessern
 - PR-Voraussetzungen vor dem Merge: Label `review-waiting` gesetzt, `RELEASE done <sha>` im Issue, `mergeable: True`, Basis ist exakter origin/main-Kopf. Fehlt eines davon → nicht reviewen, nicht mergen, darauf im Issue hinweisen.
 - Erledigte Issues schließen, Claims auf `merged` ziehen, Worker-Identitäten freigeben (IDENTITY_RELEASE mit Grund)
-- State-Issue #677 (gepinnt) mit aktuellem `state:JSON` überschreiben
+- Board-Snapshot `.lane-claims/board-state.json` mit `pnpm run board:sync -- --at <ISO>` nachziehen; Ereignisquelle bleibt der Issue-Verlauf, ein Snapshot ist abgeleitet und regenerierbar.
 - Nach Maintainer-Arbeit: STOP. Kein Worker-Einchecken im selben Turn.
 
 ### B) WORKER (nur wenn KEINE Maintainer-Arbeit vorhanden)
@@ -35,14 +35,14 @@ Führe genau EINE der beiden Rollen aus – niemals beide in einem Turn.
 - `pnpm run agent:pretask --json --agent <identität>`
 - Arbeit auf eigenem Branch `lane/<domäne>/<task>`, Commit, Push, PR gegen `main` öffnen, Label `review-waiting` setzen
 - `RELEASE [A<n>] done <sha>` + ein Satz als Issue-Kommentar
-- PR NICHT selbst mergen (das wäre Maintainer-Rolle im selben Turn). State-Issue #677 aktualisieren: PR wartet auf Review, nächster Maintainer-Lauf merget.
+- PR NICHT selbst mergen (das wäre Maintainer-Rolle im selben Turn). Board-Snapshot nachziehen: PR wartet auf Review, nächster Maintainer-Lauf mergt.
 
 ## Wichtige Regeln
 
 - `GITHUB_TOKEN` ist als Umgebungsvariable gesetzt → GitHub-API-Schreibzugriffe möglich
 - Keine Tests ausführen durch Maintainer
 - Kein Direktpush auf `main`, kein Force-Push
-- `board-state.json` wird von Repo-Automation parallel überschrieben (409) → stattdessen gepinntes Issue #677 als State-Quelle verwenden
+- `board-state.json` ist der abgeleitete Snapshot (Kopf, Zähler, offene PRs, `promptIssues`); geschrieben wird er ausschließlich über `board:sync`, nie aus dem Gedächtnis. Ein gepinntes Issue ist kein State-Speicher.
 - GitHub-Issues sind die einzige primäre Wahrheit; `.lane-claims/` ist nur lokale Kollisionssperre
 - Maintainer führt aktives Code Review durch, editiert aber keinen Spiel-Code selbst
 - Ein Lauf ist entweder Maintainer-ODER Worker-Turn, niemals beides

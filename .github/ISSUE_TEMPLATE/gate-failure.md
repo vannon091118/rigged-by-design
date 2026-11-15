@@ -48,7 +48,7 @@ assignees: []
 
 5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
 
-6. **Wenn alle Gates grün:** PR zu `main` erstellen und mergen (siehe AGENTS.md § PR+Merge-Pflicht).
+6. **Übergabe statt Merge:** PR offen lassen, `RELEASE [A<n>] done <sha>` am Issue kommentieren und Label `review-waiting` setzen. Mergen, schließen und taggen tut ausschließlich der Maintainer.
 
 ## 🔍 Gate-Details
 
@@ -65,9 +65,9 @@ assignees: []
 
 - **Vor Beginn jeder Arbeit:** GitHub Issues prüfen. Offene `gate-failure`-Issues haben höchste Priorität.
 - **Issue vollständig lösen:** Nicht halbherzig beheben, alle Gates müssen grün sein.
-- **Nach jedem Turn/Phase/Slice-Abschluss:** Aufgezwungene PR+Merge-Pflicht.
+- **Kein Merge und kein Close durch den Agenten.** Die Übergabe ist `RELEASE [A<n>] done <sha>` plus Label `review-waiting`; das Issue bleibt offen, bis der Maintainer oder der User es schließt.
 - **Commit-Body muss** die drei Pflichtsektionen enthalten (`### Changes`, `### Technische Basis & Kausalität`, `### Ausblick`).
 
-## ✅ Issue schließen
+## ✅ Abschluss
 
-Sobald alle Gates grün sind und der PR gemergt wurde, dieses Issue als `completed` schließen.
+Alles grün und gepusht: `RELEASE [A<n>] done <sha>` kommentieren, `review-waiting` setzen, Issue offen lassen. Schließen ist Maintainer- oder User-Sache.

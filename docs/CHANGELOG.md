@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- **Issue-Board als Steuerungswahrheit.** `AGENTS.md` ist neu geschrieben: eine Quelle pro Datentyp, Rollen, Issue-Lebenszyklus und Prompt-Register statt dreier konkurrierender State-Erzählungen. `README.md` erklärt das Board am Ende, `.cron/maintainer-prompt.md` und das `gate-failure`-Template nennen keinen Merge- oder Close-Auftrag für Agenten mehr (#886).
+- **Weniger Doku.** `docs/LOCAL_CI.md` (Dopplung zu `CI.md`/`TESTING.md`) und `docs/RUNBOOK-AUTO-RESOLVE.md` (Workflow existiert nicht mehr) sind entfernt; die Verweise zeigen auf die kanonischen Stellen.
 - **Prompts sind Board-Tickets.** Jeder Prompt mit Verhaltenswirkung (`.cron/maintainer-prompt.md`, `.cron/SECURITY.md`, `AGENTS.md`, `docs/GOVERNANCE.md` und der externe System-Reminder) hat ein Incident-Issue und eine Zeile in `docs/PROMPTS.md`; `verify:docs` und `board:sync` lesen das Register (#885).
 - **Testlinie vollstaendig lokal.** `pnpm run ci:local` ersetzt den frueheren CI-Job; GitHub-Workflows fuehren keine Tests, Gates, Builds oder APKs mehr aus. `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt.
 - **Mechanik getrennt.** Statistik, Soak, Langlauf und Benchmarks stehen in `src/Config/test-lanes.json` und laufen nur ueber `pnpm run test:mechanics`; der Katalog prueft die Liste auf Deckungsgleichheit.
