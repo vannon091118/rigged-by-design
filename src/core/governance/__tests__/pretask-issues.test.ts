@@ -46,6 +46,7 @@ const writeClaim = (dir: string, branch: string, dependencies: readonly string[]
       id: 'lane/test/fixture',
       owner: 'Governance-Owner',
       branch,
+      issue: 765,
       baseSha: '0'.repeat(40),
       task: 'Fixture-Aufgabe',
       pathAllowlist: ['README.md'],
@@ -55,6 +56,10 @@ const writeClaim = (dir: string, branch: string, dependencies: readonly string[]
       status: 'open',
       createdAt: '0'.repeat(40),
     }], null, 2)}\n`,
+  );
+  writeFileSync(
+    join(dir, '.lane-claims', 'actors.json'),
+    `${JSON.stringify({ version: 1, maintainers: ['Governance-Owner', 'maintainer-fixture'], users: ['user-fixture'], workers: ['worker-fixture'] })}\n`,
   );
 };
 
@@ -75,8 +80,12 @@ const writeFakeGh = (
   mkdirSync(bin, { recursive: true });
   const script = join(bin, 'gh.mjs');
   writeFileSync(script, `const args = process.argv.slice(2);
-const issue = process.env.FAKE_GH_OPEN === '1' && args.includes('gate-failure');
-console.log(JSON.stringify(issue ? [{ number: 99, title: 'fixture gate', url: 'https://example.invalid/99', body: ${JSON.stringify(body)}, labels: ${JSON.stringify(labels.map((name) => ({ name })))} }] : []));
+if (args[1] === 'view') {
+  console.log(JSON.stringify({ number: 765, state: 'OPEN', labels: [{ name: 'zustand-OPEN' }], comments: [{ body: 'CLAIM [A1] worker-fixture 2026-11-14T00:00:00Z scope=README.md plan=Fixture-Lane', author: { login: 'worker-fixture' } }] }));
+} else {
+  const issue = process.env.FAKE_GH_OPEN === '1' && args.includes('gate-failure');
+  console.log(JSON.stringify(issue ? [{ number: 99, title: 'fixture gate', url: 'https://example.invalid/99', body: ${JSON.stringify(body)}, labels: ${JSON.stringify(labels.map((name) => ({ name })))} }] : []));
+}
 `);
   return script;
 };
@@ -93,7 +102,7 @@ const linkedRepo = (parent: string, name: string, branch: string, dependencies: 
   git(repo, ['checkout', '-q', '-b', branch]);
   writeClaim(repo, branch, dependencies);
   writeContext(repo);
-  git(repo, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
+  git(repo, ['add', '.lane-claims/claims.json', '.lane-claims/actors.json', 'scripts/agent-context.mjs']);
   git(repo, ['commit', '-q', '-m', 'claim']);
   git(repo, ['checkout', '-q', '-']);
   const worktree = join(parent, `${name}-worktree`);

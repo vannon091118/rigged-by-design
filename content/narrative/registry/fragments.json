@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8112f8022e710d0aa76422b40bb6fe4d15b10247c28ce764ed8f4f37da431fd5",
+  "contentHash": "sha256:c049ea429bca61142e0bea2c564206c175ebc95f5a1b19422fb084d14a701bb2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -4789,6 +4789,28 @@
       "source": "content/narrative/contributions/2026-11-13-city-growth-observability.json"
     },
     {
+      "contributionId": "city-growth-population-01",
+      "turnId": "2026-11-15T01:05Z-city-growth-population",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Norden stehen jetzt Wohnhaeuser, und am Morgen stehen neue Namen an der Tuer. Die Stadt baut nicht mehr ins Leere: Wer einzieht, hat eine Adresse, einen Haushalt und einen Platz in der Schicht. Die alten Gesichter bleiben, die neuen kommen aus derselben Besetzung — kein Zufall, nur ein volles Treppenhaus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-growth-population.json"
+    },
+    {
       "contributionId": "city-issues-sweep-01",
       "turnId": "2026-11-13T23:10Z-issues-sweep",
       "agentId": "buffy",
@@ -4809,6 +4831,31 @@
       "text": "Der Heimweg führte zum Arbeitsplatz, die laufende Route überlebte jeden neuen Entschluss, und zwei Zonenkopien beschrieben dieselbe Straße. Jetzt folgt der Weg dem Plan, ein widersprechender Intent bricht ihn ab, und die Laufwege zeichnen neu, wenn sich die Zonen verschieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-issues-sweep.json"
+    },
+    {
+      "contributionId": "city-life-peer-index-01",
+      "turnId": "2026-11-15T00:44Z-city-life-peer-index",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zählte die Gäste nicht elfmal, nur um zu wissen, wer an welchem Ort steht. Sie ging einmal durch den Raum, notierte jede Position und las danach nur noch die Liste. Die Entscheidung blieb dieselbe; die Finger wurden schneller.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-life-peer-index.json"
     },
     {
       "contributionId": "city-network-01",
@@ -10355,6 +10402,56 @@
       "text": "Am Tisch wird die Stimme leiser, dann schaerfer; die anderen merken es, bevor jemand etwas sagt. Ein Blick genuegt, und die Szene bleibt in der Schwebe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-main-event-pool-03.json"
+    },
+    {
+      "contributionId": "main-green-01",
+      "turnId": "2026-11-14T23:20Z-main-green",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita strich die offenen Prüfungen von der Tafel, nachdem die sieben stillen Ausgänge und fünf unklaren Prüfungen benannt waren. Der Hauptlauf stand wieder auf festem Grund.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-main-green.json"
+    },
+    {
+      "contributionId": "main-green-02",
+      "turnId": "2026-11-14T23:55Z-main-green-02",
+      "agentId": "jenova",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess die beiden langsamen Pruefungen laenger laufen, ohne ihre Aussage zu veraendern. Was unter Last wartete, musste nicht als Fehler gelten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-main-green-02.json"
     },
     {
       "contributionId": "memory-53",

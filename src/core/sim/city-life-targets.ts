@@ -18,6 +18,42 @@ interface CityFriend {
   readonly memory: NpcMemory | null;
 }
 
+/**
+ * Ortsindex einer Bewohnerliste. Er wird einmal pro Entscheidung gebaut,
+ * damit `presentAt()` nicht in jeder Intent-Alternative erneut die gesamte
+ * Liste nach `peer.location` filtern muss.
+ */
+export interface CityPeerIndex {
+  readonly byLocation: ReadonlyMap<CityLifePlace, readonly CityResidentState[]>;
+  readonly idsByLocation: ReadonlyMap<CityLifePlace, readonly string[]>;
+}
+
+export const EMPTY_CITY_PEER_INDEX: CityPeerIndex = {
+  byLocation: new Map(),
+  idsByLocation: new Map(),
+};
+
+export function buildCityPeerIndex(peers: readonly CityResidentState[]): CityPeerIndex {
+  const byLocation = new Map<CityLifePlace, CityResidentState[]>();
+  for (const peer of peers) {
+    const list = byLocation.get(peer.location);
+    if (list) list.push(peer);
+    else byLocation.set(peer.location, [peer]);
+  }
+  const idsByLocation = new Map<CityLifePlace, readonly string[]>();
+  for (const [location, list] of byLocation) {
+    idsByLocation.set(location, list.map((peer) => peer.npcId).sort());
+  }
+  return { byLocation, idsByLocation };
+}
+
+export function presentIn(
+  index: CityPeerIndex, location: CityLifePlace, excludeId?: string,
+): readonly string[] {
+  const ids = index.idsByLocation.get(location) ?? [];
+  return excludeId ? ids.filter((id) => id !== excludeId) : ids;
+}
+
 export function bestFriend(input: CityTargetInput): CityFriend | null {
   let best: CityFriend | null = null;
   for (const peer of input.peers) {
@@ -57,6 +93,5 @@ export function locationForIntent(
 export function presentAt(
   peers: readonly CityResidentState[], location: CityLifePlace, excludeId?: string,
 ): readonly string[] {
-  return peers.filter((peer) => peer.location === location && peer.npcId !== excludeId)
-    .map((peer) => peer.npcId).sort();
+  return presentIn(buildCityPeerIndex(peers), location, excludeId);
 }
