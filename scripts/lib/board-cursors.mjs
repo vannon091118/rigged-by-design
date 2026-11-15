@@ -153,10 +153,16 @@ export function applySnapshot(state, { head = null, openPullRequests = null, rev
   };
 }
 
-/** Eingaenge eines Laufs als stabile, sortierte P0-Liste. */
+/**
+ * Eingaenge eines Laufs als stabile, sortierte Liste.
+ *
+ * Der Eintrag ist ein Ereignis, keine Prioritaet: die Reihenfolge ist der
+ * Kommentar-Cursor, die Prioritaet kommt aus der Ereignisklassifizierung in
+ * `docs/GOVERNANCE.md`. Deshalb traegt das Label keinen P0-Anspruch.
+ */
 export function pendingEntries(entries) {
   return [...entries].sort((a, b) => (a.commentId - b.commentId)).map((entry) => ({
     ...entry,
-    label: `P0 ${entry.kind === 'pullRequests' ? 'PR' : 'Issue'} #${entry.number} (Kommentar ${entry.commentId})`,
+    label: `Eingang ${entry.kind === 'pullRequests' ? 'PR' : 'Issue'} #${entry.number} (Kommentar ${entry.commentId})`,
   }));
 }

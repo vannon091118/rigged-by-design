@@ -197,7 +197,7 @@ describe('Board-Cursor', () => {
     expect(pr.state.issues['671'].lastCommentId).toBe(2);
   });
 
-  it('uebernimmt nur Kopfdaten und liefert Eingaenge als sortierte P0-Liste', () => {
+  it('uebernimmt nur Kopfdaten und liefert Eingaenge als sortierte Liste', () => {
     const snapshot = applySnapshot(first.state, { head: 'b2', openPullRequests: 3 });
     expect(snapshot.head).toBe('b2');
     expect(snapshot.issues['671'].lastCommentId).toBe(2);
@@ -205,6 +205,6 @@ describe('Board-Cursor', () => {
       { kind: 'issues', number: 671, commentId: 3 },
       { kind: 'pullRequests', number: 12, commentId: 1 },
     ]).map((entry: { label: string }) => entry.label);
-    expect(labels).toEqual(['P0 PR #12 (Kommentar 1)', 'P0 Issue #671 (Kommentar 3)']);
+    expect(labels).toEqual(['Eingang PR #12 (Kommentar 1)', 'Eingang Issue #671 (Kommentar 3)']);
   });
 });

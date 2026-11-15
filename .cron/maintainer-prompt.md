@@ -15,7 +15,7 @@ Führe genau EINE der beiden Rollen aus – niemals beide in einem Turn.
 
 ### A) MAINTAINER (hat Vorrang, wenn vorhanden)
 - `git fetch origin && git merge --ff-only origin/main` (main muss origin/main spiegeln)
-- P0: ALLE neuen Kommentare auf offenen Issues scannen (User UND Agenten). Jeder Kommentar ist ein Ticket-Update oder Blocker. Sofortige Bearbeitung und Statusanpassung.
+- Eingang: alle neuen Kommentare auf offenen Issues scannen und klassifizieren (Anforderung, Entscheidung, CLAIM, Fortschritt, Finding, Blocker, Abnahme). P0 nur bei echtem Notfall (Sicherheit, Datenintegritaet, Save/RNG/Ledger, Boot, Kernschleife) oder ausdruecklicher User-Richtungsentscheidung; Routinekommentare aendern die Reihenfolge nicht.
 - P1: PRs mit Label `review-waiting` → kritisches Peer-Review:
   * Temporären Review-Worktree anlegen (`git worktree add --detach <pfad> <sha>`)
   * Vollständigen Diff lesen (Intention vs. Umsetzung, kausale Folgen über Module, AGENTS.md-Regeln)
