@@ -6,6 +6,10 @@
  * Bewohner blockieren eine Kachel; stehende Bewohner sind kein Dauerhindernis
  * mitten auf dem Weg, werden aber beim Ankommen als Belegung erkannt.
  */
+import type { CityResidentState } from './city-life-types';
+import type { CitySceneState } from './city-scene';
+import { cityNav } from './city-scene';
+import { isWalkable } from './pathfinding';
 import type { Point } from './types-model';
 
 export interface OccupancyResident {
@@ -19,7 +23,7 @@ export interface TileOccupancy {
   readonly nextTiles: ReadonlyMap<string, Point>;
 }
 
-const tileKey = (point: Point): string => `${point.x},${point.y}`;
+export const tileKey = (point: Point): string => `${point.x},${point.y}`;
 
 /** Baut die Belegung aus den Positionen und den bereits berechneten Folgeschritten. */
 export function createOccupancy(
@@ -36,14 +40,76 @@ export function createOccupancy(
   return { occupants, travelers: new Set(nextTiles.keys()), nextTiles };
 }
 
-/** Laufende Bewohner auf der Zielkachel; der eigene Eintrag zaehlt nicht. */
+/** Alle Bewohner auf der Zielkachel; der eigene Eintrag zaehlt nicht. */
 export function blockersAt(
   occupancy: TileOccupancy,
   residentId: string,
   point: Point,
 ): readonly string[] {
   return [...(occupancy.occupants.get(tileKey(point)) ?? [])]
-    .filter((npcId) => npcId !== residentId && occupancy.travelers.has(npcId));
+    .filter((npcId) => npcId !== residentId);
+}
+
+export function occupantCount(occupancy: TileOccupancy, point: Point): number {
+  return occupancy.occupants.get(tileKey(point))?.size ?? 0;
+}
+
+export interface StepResolution {
+  readonly canMove: boolean;
+  readonly push: { readonly npcId: string; readonly from: Point; readonly to: Point } | null;
+}
+
+/** Entscheidet einen Schritt gegen die Belegung; ein stehender Blocker weicht aus. */
+export function resolveStep(
+  occupancy: TileOccupancy, residentId: string, from: Point, to: Point, arrived: boolean,
+): StepResolution {
+  const blockers = blockersAt(occupancy, residentId, to);
+  if (blockers.length === 0) return { canMove: true, push: null };
+  const only = blockers.length === 1 ? blockers[0]! : null;
+  if (only && !occupancy.travelers.has(only) && occupantCount(occupancy, from) === 1) {
+    return { canMove: true, push: { npcId: only, from: to, to: from } };
+  }
+  if (!arrived && isSwap(occupancy, from, blockers)) return { canMove: true, push: null };
+  return { canMove: false, push: null };
+}
+
+/**
+ * Zwei stehende Bewohner duerfen nicht dieselbe Kachel halten. Der stabile
+ * Listenplatz bleibt; nur Nachruecker ohne Weg weichen auf eine freie
+ * Nachbarkachel aus. Laufende Bewohner bleiben unangetastet, ihre Kollision
+ * loest der Tick selbst auf.
+ */
+export function separatePositions(
+  residents: readonly CityResidentState[], city: CitySceneState, nextTiles: ReadonlyMap<string, Point>,
+): CityResidentState[] {
+  const nav = cityNav(city);
+  const occupied = new Set(residents.map((resident) => tileKey(resident.position)));
+  const placed = new Set<string>();
+  const reservedNext = new Set([...nextTiles.values()].map(tileKey));
+  return residents.map((resident) => {
+    const key = tileKey(resident.position);
+    if (!placed.has(key)) {
+      placed.add(key);
+      return resident;
+    }
+    if (resident.travel) {
+      placed.add(key);
+      return resident;
+    }
+    const free = [
+      { x: resident.position.x + 1, y: resident.position.y },
+      { x: resident.position.x, y: resident.position.y + 1 },
+      { x: resident.position.x, y: resident.position.y - 1 },
+      { x: resident.position.x - 1, y: resident.position.y },
+    ].find((point) => {
+      const target = tileKey(point);
+      return isWalkable(nav, point.x, point.y) && !occupied.has(target) && !reservedNext.has(target);
+    });
+    if (!free) return resident;
+    occupied.add(tileKey(free));
+    placed.add(tileKey(free));
+    return { ...resident, position: free };
+  });
 }
 
 /**
@@ -63,6 +129,17 @@ export function isSwap(
 
 export function isOccupied(occupancy: TileOccupancy, point: Point): boolean {
   return (occupancy.occupants.get(tileKey(point))?.size ?? 0) > 0;
+}
+
+/** Fuehrt den Ausweichschritt eines stehenden Blockers aus. */
+export function applyPush(
+  occupancy: TileOccupancy,
+  push: { readonly npcId: string; readonly from: Point; readonly to: Point },
+  residents: Map<string, CityResidentState>,
+): void {
+  const other = residents.get(push.npcId)!;
+  moveOccupant(occupancy, push.from, push.to, other.npcId);
+  residents.set(other.npcId, { ...other, position: push.to });
 }
 
 /** Schreibt einen Schritt fort; der alte Eintrag wird freigegeben. */

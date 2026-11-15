@@ -4642,6 +4642,10 @@
       "contributionId": "city-growth-population-01"
     },
     {
+      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
+      "contributionId": "city-tile-occupancy-02"
+    },
+    {
       "turnId": "2026-11-15T02:45Z-player-npc-kontakte",
       "contributionId": "player-npc-kontakte-01"
     }

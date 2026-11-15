@@ -26,7 +26,7 @@ import { applyIntentEffects } from './city-life-effects';
 import { addMemory, socialMemory } from './city-life-memory';
 import { clampInt } from './num';
 import { createCityScene } from './city-scene';
-import { blockersAt, createOccupancy, isOccupied, isSwap, moveOccupant } from './city-tile-occupancy';
+import { applyPush, createOccupancy, moveOccupant, resolveStep, separatePositions } from './city-tile-occupancy';
 import type { WorldState } from './types';
 
 /** Kacheln pro Tick: bei 25 Ticks je Stunde sind das 25 Kacheln je Stunde. */
@@ -181,35 +181,34 @@ function settleArrival(
 
 export function tickCityMovement(world: WorldState): void {
   const life = ensureCityLife(world);
-  if (!life.residents.some((resident) => resident.travel !== null)) return;
+  const unique = new Set(life.residents.map((resident) => `${resident.position.x},${resident.position.y}`));
+  if (unique.size === life.residents.length && !life.residents.some((resident) => resident.travel !== null)) return;
   let memorySeq = life.memorySeq ?? 1;
-  const nextTiles = new Map<string, Point>();
-  for (const resident of life.residents) if (resident.travel) nextTiles.set(resident.npcId, advanceTravel(resident.travel).position);
-  const occupancy = createOccupancy(life.residents, nextTiles);
-  const residents = life.residents.map((resident) => {
-    if (!resident.travel) return resident;
+  const nextTiles = new Map(life.residents.filter((resident) => resident.travel)
+    .map((resident) => [resident.npcId, advanceTravel(resident.travel!).position] as const));
+  const ordered = separatePositions(life.residents, cityMap(world), nextTiles);
+  const residentsById = new Map(ordered.map((resident) => [resident.npcId, resident]));
+  const occupancy = createOccupancy([...residentsById.values()], nextTiles);
+  for (const id of ordered.map((resident) => resident.npcId)) {
+    const resident = residentsById.get(id)!;
+    if (!resident.travel) continue;
     const step = advanceTravel(resident.travel);
     // Bleibt der Schritt auf der eigenen Kachel (degenerierter Ein-Kachel-Weg),
     // wird keine neue Kachel beansprucht.
     const stays = step.position.x === resident.position.x && step.position.y === resident.position.y;
-    const blockers = stays ? [] : blockersAt(occupancy, resident.npcId, step.position);
-    if (blockers.length > 0 && !isSwap(occupancy, resident.position, blockers)) return resident;
-    const targetOccupied = !stays && isOccupied(occupancy, step.position);
-    const arrivalPosition = step.arrived && targetOccupied ? resident.position : step.position;
-    if (!stays && !(step.arrived && targetOccupied)) moveOccupant(occupancy, resident.position, step.position, resident.npcId);
+    const blocked = stays ? null : resolveStep(occupancy, id, resident.position, step.position, step.arrived);
+    if (blocked && !blocked.canMove) continue;
+    if (blocked?.push) applyPush(occupancy, blocked.push, residentsById);
+    if (!stays) moveOccupant(occupancy, resident.position, step.position, id);
     if (!step.arrived) {
-      return { ...resident, position: step.position, travel: step.travel };
+      residentsById.set(id, { ...resident, position: step.position, travel: step.travel });
+      continue;
     }
     const fatigue = driftNeed(resident.needs.fatigue, travelFatigue(resident.travel.path.length));
-    const arrived = settleArrival(
-      { ...resident, position: arrivalPosition, travel: null, location: resident.travel.to },
-      life.residents, world.tick, memorySeq,
-    );
+    const arrived = settleArrival({ ...resident, position: step.position, travel: null, location: resident.travel.to },
+      life.residents, world.tick, memorySeq);
     memorySeq = arrived.nextMemoryId;
-    return {
-      ...arrived.resident,
-      needs: { ...arrived.resident.needs, fatigue },
-    };
-  });
-  world.cityLife = { ...life, residents, memorySeq };
+    residentsById.set(id, { ...arrived.resident, needs: { ...arrived.resident.needs, fatigue } });
+  }
+  world.cityLife = { ...life, residents: ordered.map((resident) => residentsById.get(resident.npcId)!), memorySeq };
 }
