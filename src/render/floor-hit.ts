@@ -36,6 +36,14 @@ interface FloorHit {
   readonly at: HitCell;
 }
 
+/** Ein Stadtbewohner traegt eine stabile String-Kennung, keine Guest-ID. */
+export interface CityActorHit {
+  readonly kind: 'cityActor';
+  readonly id: string;
+  readonly depth: number;
+  readonly at: HitCell;
+}
+
 interface WallEdge {
   readonly axis: 'H' | 'V';
   readonly x: number;
@@ -62,6 +70,8 @@ export interface HitView {
   readonly size: number;
   readonly furniture: readonly { readonly id: number; readonly x: number; readonly y: number; readonly w: number; readonly h: number }[];
   readonly guests: readonly { readonly id: number; readonly position: HitCell }[];
+  /** Strassenbewohner aus `GameView.cityActors`; Kennung ist die npcId. */
+  readonly cityActors?: readonly { readonly npcId: string; readonly x: number; readonly y: number }[];
   readonly crates?: readonly { readonly id: number; readonly x: number; readonly y: number }[];
   readonly stains: readonly { readonly id: number; readonly x: number; readonly y: number }[];
   readonly mops?: readonly { readonly id: number; readonly x: number; readonly y: number; readonly carriedBy: 'player' | null }[];
@@ -133,7 +143,7 @@ export function resolveHit(
   cell: HitCell,
   from: HitCell,
   doors: readonly DoorEdge[] = [],
-): FloorHit | DoorHit | null {
+): FloorHit | CityActorHit | DoorHit | null {
   if (cell.x < 0 || cell.y < 0 || cell.x >= view.size || cell.y >= view.size) return null;
   const candidates: Candidate[] = [];
   for (const stain of view.stains) {
@@ -177,6 +187,22 @@ export function resolveHit(
       });
     }
   }
+  // Bewohner sind Figuren, keine Casino-Gaeste: ihre Identitaet ist die
+  // npcId, und ein Klick auf die sichtbare Figur darf nicht am Moebel darunter
+  // oder an einer fremden Guest-ID haengen bleiben (#768).
+  let cityHit: CityActorHit | null = null;
+  for (const actor of view.cityActors ?? []) {
+    if (Math.abs(actor.x - cell.x) + Math.abs(actor.y - cell.y) > 1) continue;
+    const at = { x: actor.x + 0.5, y: actor.y + 0.8 };
+    if (sightBlocked(view, from, at)) continue;
+    const candidate: CityActorHit = { kind: 'cityActor', id: actor.npcId, depth: actor.y + 0.8, at };
+    if (!cityHit || candidate.depth > cityHit.depth
+      || (candidate.depth === cityHit.depth && candidate.id < cityHit.id)) cityHit = candidate;
+  }
+  // Die sichtbare Figur ist das gemeinte Ziel, auch wenn ein Moebel auf
+  // derselben Kachel eine tiefere Fusslinie hat. Ein Stadtbewohner ist keine
+  // Casino-Kulisse und darf nicht hinter dem Moebel verschwinden.
+  if (cityHit) return cityHit;
   const hit = pickHit(candidates.filter((candidate) => !sightBlocked(view, from, candidate.at)));
   if (hit) return hit;
   // Die Schwelle gehoert der Besitzer-Kachel; ein Objekt auf derselben Kachel

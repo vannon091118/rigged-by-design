@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:88b08dde17e1a411ea567eca49af86986dc1e09815bc49ee372565a0f7436a11",
+  "contentHash": "sha256:9424e64a99782c481a3030a2e4dc71e5419b40361aae1affa6fceab995c9f4eb",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3246,6 +3246,31 @@
       "text": "Im Lager stapeln sich Kisten mit Etiketten, die niemand mehr liest. Die oberste ist leer und wiegt trotzdem.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
+    },
+    {
+      "contributionId": "city-actor-floor-target-01",
+      "turnId": "2026-11-15T00:22Z-city-actor-floor-target",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita steht zwischen zwei Türen und sieht aus wie Kulisse. Erst ihre npcId macht aus dem Pixel einen Menschen: Wer sie anspricht, meint sie – nicht den Tisch, nicht den Gast, nicht die Nummer daneben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-actor-floor-target.json"
     },
     {
       "contributionId": "city-actor-persona-mood-773",

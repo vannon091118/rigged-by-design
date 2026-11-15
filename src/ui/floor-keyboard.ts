@@ -1,4 +1,5 @@
 /** Tastaturpfad des Floors: E waehlt das naechste Ziel oder die Hauptaktion. */
+import { buildCityActorActions } from '../render/city-actor-actions';
 import { buildActions, type MenuAction } from '../render/floor-actions';
 import type { FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
@@ -35,6 +36,21 @@ export function handleFloorKey(event: KeyboardEvent, state: FloorKeyboardState):
       return;
     }
     state.pick(main);
+    return;
+  }
+  // In der Stadt ist die naechste sichtbare Figur dasselbe Ziel wie Maus und
+  // Touch; E darf keinen zweiten, rein numerischen Guest-Pfad oeffnen.
+  const cityActor = state.view.cityActors
+    .filter((actor) => Math.abs(state.view.player.position.x - actor.x)
+      + Math.abs(state.view.player.position.y - actor.y) <= 2)
+    .sort((first, second) => first.npcId.localeCompare(second.npcId))[0];
+  if (cityActor) {
+    state.tap({
+      target: { kind: 'cityActor', id: cityActor.npcId },
+      actions: buildCityActorActions(state.view, cityActor.npcId),
+      at: { x: 0, y: 0 },
+      anchor: null,
+    });
     return;
   }
   const focus = worldStore.interaction.nearest(4);

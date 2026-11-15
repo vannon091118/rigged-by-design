@@ -4648,6 +4648,10 @@
     {
       "turnId": "2026-11-15T02:45Z-player-npc-kontakte",
       "contributionId": "player-npc-kontakte-01"
+    },
+    {
+      "turnId": "2026-11-15T00:22Z-city-actor-floor-target",
+      "contributionId": "city-actor-floor-target-01"
     }
   ]
 }
