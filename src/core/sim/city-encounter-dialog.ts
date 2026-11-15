@@ -49,7 +49,7 @@ export function encounterNpc(
 }
 
 /** Die letzte Begegnung mit genau diesem NPC; die Quelle der Erinnerung. */
-export function lastEncounter(world: WorldState, npcId: number): CityEncounterRecord | null {
+function lastEncounter(world: WorldState, npcId: number): CityEncounterRecord | null {
   const records = cityOf(world).encounters ?? [];
   for (let index = records.length - 1; index >= 0; index -= 1) {
     if (records[index]!.npcId === npcId) return records[index]!;

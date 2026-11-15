@@ -36,7 +36,8 @@ describe('Belegung fremder Floors', () => {
     for (const guest of guests) {
       expect(guest.id).toBeGreaterThanOrEqual(FOREIGN_GUEST_ID_BASE);
       const seat = seats.find((item) => item.id === guest.targetFurniture);
-      expect(seat).toBeDefined();
+      expect(seat?.id).toBe(guest.targetFurniture);
+      expect(seat?.seats).toBeGreaterThan(0);
       expect(foreignSeatOccupancy(floor, guest.targetFurniture)).toBeLessThanOrEqual(seat!.seats);
     }
   });

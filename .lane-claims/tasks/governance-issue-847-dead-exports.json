@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-847-dead-exports",
+  "claimId": "lane/governance/issue-847-dead-exports",
+  "branch": "lane/governance/issue-847-dead-exports",
+  "baseSha": "de0e480ac623bebc1fbfc335fb0ec870394f5031",
+  "phase": "IMPLEMENTING",
+  "title": "#847: 19 tote Exporte entfernen und zwei schwache Assertions ersetzen",
+  "goal": "verify-dead-code und verify-test-quality ohne Befund und ci:local rc=0, ohne Verhaltensaenderung: modulinterne Exporte ohne Verbraucher entfallen, schwache Assertions pruefen das Ziel statt blosser Existenz.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 856,
+    "headSha": "f66d8c213bc774a98e479cf7efe3fe2495b1eb23",
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/856",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "PR #856 steht mergeable:clean gegen main@de0e480a; Maintainer merged auf dem exakten Kopf f66d8c21, danach Closeout.",
+  "revision": 2
+}
