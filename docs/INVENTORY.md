@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 412 Dateien — contract 219 · integration 115 · governance 65 · statistics 6 · performance 7.
+Summe: 413 Dateien — contract 220 · integration 115 · governance 65 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -274,6 +274,7 @@ Summe: 412 Dateien — contract 219 · integration 115 · governance 65 · stati
 | `src/core/sim/__tests__/drink-menu.test.ts` | sim | contract | ja | `src/core/sim/drink-menu.ts` |
 | `src/core/sim/__tests__/duel.test.ts` | sim | contract | ja | `src/core/sim/duel.ts` |
 | `src/core/sim/__tests__/economy-losses.test.ts` | sim | contract | ja | `src/core/sim/economics.ts` |
+| `src/core/sim/__tests__/encounter-location.test.ts` | sim | contract | ja | `src/core/sim/social-encounter.ts` |
 | `src/core/sim/__tests__/esport-event.test.ts` | sim | contract | ja | `src/core/sim/esport-event.ts` |
 | `src/core/sim/__tests__/esport.test.ts` | sim | contract | ja | `src/core/sim/esport.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
@@ -718,10 +719,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3265 |
-| Gelistete Dateien | 3265 |
+| Getrackte Dateien | 3269 |
+| Gelistete Dateien | 3269 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (194), artifacts (1), content (1167), docs (108), packages (27), public (571), scripts (129), src (1043) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (196), artifacts (1), content (1168), docs (108), packages (27), public (571), scripts (129), src (1044) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -734,10 +735,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 98 Datei(en)
-- `.lane-claims/tasks/` — 93 Datei(en)
+- `.lane-claims/claims/` — 99 Datei(en)
+- `.lane-claims/tasks/` — 94 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1163 Datei(en)
+- `content/narrative/contributions/` — 1164 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -813,7 +814,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
 - `src/core/sim/` — 187 Datei(en)
-- `src/core/sim/__tests__/` — 169 Datei(en)
+- `src/core/sim/__tests__/` — 170 Datei(en)
 - `src/core/sim/narrative/` — 40 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -952,6 +953,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-762-factor-contract.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-764-money-counterfactual.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-776-city-encounter-proximity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-issue-788-staff-assignment-view.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
@@ -1047,6 +1049,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-762-factor-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-764-money-counterfactual.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/sim-issue-775-city-tile-occupancy.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-776-city-encounter-proximity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-788-staff-assignment-view.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 21 Zeilen
@@ -2223,13 +2226,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-worker-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-workspace-home-drive.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-15-city-actor-floor-target.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-15-city-encounter-place.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-city-growth-population.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-city-life-peer-index.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-15-city-tile-occupancy-dedupe.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26134 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4657 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26156 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4661 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3307,6 +3311,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/drink-menu.test.ts` — Die Karte ist eine Sicht auf Grundpreis und Barstufe. Geprueft werden die — gelesen: 140 Zeilen
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
+- `src/core/sim/__tests__/encounter-location.test.ts` — Eine Stadtbegegnung ist ein Treffen am selben Ort in physischer Reichweite, — gelesen: 143 Zeilen
 - `src/core/sim/__tests__/esport-event.test.ts` — Der E-Sport-Abend ist keine zweite Veranstaltung: Er hängt am vorhandenen — gelesen: 102 Zeilen
 - `src/core/sim/__tests__/esport.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
@@ -3339,10 +3344,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/layout-history.test.ts` — Verlauf: 30 Schritte, ein Pinselstrich ist ein Schritt, Redo endet bei neuer Arbeit. — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/layout-json.test.ts` — Layout-Export/-Import: runde Reise, feste Bytes, fail-closed bei fremden Daten. — gelesen: 51 Zeilen
 - `src/core/sim/__tests__/ledger-account-split.test.ts` — Bauträger und Pakt teilen sich kein Konto mehr (#532): Ein Bau bucht in den — gelesen: 75 Zeilen
-- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 170 Zeilen
+- `src/core/sim/__tests__/living-world-causal-trace.test.ts` — Headless-Langlauf: Drei benannte NPCs leben mehrere Sim-Tage im echten — gelesen: 173 Zeilen
 - `src/core/sim/__tests__/living-world-continuity.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/living-world-longturn.test.ts` — Ereignisketten-Evidenz: Ein langer Turn verbindet Umgebung, Erfahrung und — gelesen: 213 Zeilen
-- `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 26 Zeilen
+- `src/core/sim/__tests__/living-world-multiseed.test.ts` — Mehrseed-Evidenz: Derselbe Seed reproduziert exakt, verschiedene Seeds — gelesen: 28 Zeilen
 - `src/core/sim/__tests__/living-world-social-economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 113 Zeilen
 - `src/core/sim/__tests__/living-world-vertical-slice.test.ts` — Bundle 6: End-to-End Vertical Slice der Living World Engine. — gelesen: 171 Zeilen
 - `src/core/sim/__tests__/logistics.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
@@ -3704,7 +3709,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 100 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 18 Zeilen
 - `src/core/sim/smartphone-views.ts` — Smartphone-Sichten: Inbox, Vitter-Feed und ImmoLuck. — gelesen: 168 Zeilen
-- `src/core/sim/social-encounter.ts` — import type { ActorContinuityRecord } from './actor-continuity'; — gelesen: 112 Zeilen
+- `src/core/sim/social-encounter.ts` — Eine Begegnung entsteht nur am gemeinsamen Ort in Reichweite; die Auswahl — gelesen: 172 Zeilen
 - `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 104 Zeilen
 - `src/core/sim/staff-cashier.ts` — Kassierer: Fiat wechseln, Service quittieren und die Warteschlange weiterziehen. — gelesen: 35 Zeilen
 - `src/core/sim/staff-porter.ts` — Lagerpersonal: Kisten aufnehmen, zur passenden Bar oder ins Lager bringen. — gelesen: 63 Zeilen
