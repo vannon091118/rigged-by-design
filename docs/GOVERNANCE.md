@@ -20,22 +20,16 @@ Der Maintainer ist Issue-Reviewer, Integrator und **einziger Orchestrator**:
 
 ### Mission-Profil `maintainer` (global)
 
-Ein Satz genügt: **`goal=maintainer`**. Das Profil ist die vollständige Aufgabenliste des Maintainer-Laufs; die Rollen-Constraints stehen global hier und werden nicht pro Turn, pro Mission oder pro Gerät neu gesetzt. Jeder Schritt endet mit einem Beleg (Befehl, Exit-Code oder Kommentar); kein Schritt ohne Befehl.
+Ein Satz genügt: **`goal=maintainer`**. Er löst die Reihenfolge des Laufs auf; die Regeln selbst stehen in ihren kanonischen Abschnitten und werden hier nicht wiederholt. Die Rollen-Constraints gelten global, nicht pro Turn, pro Mission oder pro Gerät.
 
-| # | Schritt | Beleg | Done |
-| --- | --- | --- | --- |
-| 1 | Laufbudget und Stop-Vertrag | `pnpm run run:budget --check` | Exit 0; `BUDGET_EXHAUSTED`/`KILL_SWITCH` beendet den Lauf |
-| 2 | Startzustand | `pnpm run agent:pretask --json`, `pnpm run board:sync -- --check --at <ISO>` | Board-Drift bekannt, fremde Claims unberührt |
-| 3 | P0-Eingang | offene Issues und PRs seit der letzten `state:JSON` | jeder neue User-/Agenten-Kommentar triagiert |
-| 4 | Review-Queue (P1) | `review-waiting`-PRs: Diff, Intention gegen Umsetzung, `pnpm run ci:local` auf exaktem Kopf | Verdikt `ACCEPT`/`PARTIAL`/`REJECT` im PR |
-| 5 | Integration | Merge auf exaktem Kopf, Push auf `main` | Merge-SHA liegt auf `origin/main` |
-| 6 | Closeout | `pnpm run reconcile:claims --apply`, Issue mit Merge-Beleg schließen, Branch entfernen | Claim/Task `DONE`, Board aktuell |
-| 7 | Zuweisung | freie Issues nach [Prioritäten](#maintainer-prioritäten-kanonisch) an freie Identitäten | Claim im Issue sichtbar |
-| 8 | Konflikte | Claim-, Scope- oder Reihenfolge-Kollision | einmalig im Issue entschieden und kommentiert |
-| 9 | Drift-Bremse | mehr als zwei Läufe primär Governance | `[GOVERNANCE-DRIFT]` P2 existiert, neue Governance-Issues pausiert |
-| 10 | Abschluss | `state:JSON` schreiben, Lock freigeben | Lock frei, Board-Snapshot aktuell |
+| Abschnitt des Laufs | Kanonische Quelle |
+| --- | --- |
+| Laufbudget und Stop | [Laufbudget und Stop-Vertrag](#laufbudget-und-stop-vertrag) — `pnpm run run:budget --check` |
+| Eingang, Reihenfolge, Zuweisung, Konflikte | [Maintainer-Prioritäten](#maintainer-prioritäten-kanonisch) |
+| Review, Integration, Merge, Drift-Bremse | [Maintainer-Protokoll](#maintainer-protokoll) |
+| Board, Closeout, Lock, `state:JSON` | [Board-Status](#board-status--review-status-pflicht) — `pnpm run agent:pretask --json`, `pnpm run board:sync -- --check --at <ISO>` |
 
-Protokoll, Board-Pflichten und Prioritäten bleiben in ihren Abschnitten; dieses Profil ordnet sie nur und wiederholt sie nicht.
+Damit ist dieses Profil kein zweites Regelwerk: es nennt nur den Einstieg und die Reihenfolge, die dort bereits definiert sind.
 
 **Turn-Abschluss (Pflicht).** Jeder Turn endet mit dem Identitätsblock. Die Constraints stehen global oben; pro Turn wird nur der Zustand genannt:
 
