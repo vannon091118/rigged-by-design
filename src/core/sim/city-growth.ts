@@ -23,6 +23,7 @@ import { fromVC, subVC, toVCString, ZERO_VC, type VaCoinMicro } from '../economy
 import { CITY_PRESET_BUILDINGS, createBuilding } from './building';
 import type { BuildingState } from './building-types';
 import { cityJobMarket, JOB_CAPACITY, type CityJobMarket, type EmploymentCandidate } from './city-employment';
+import { cityPopulationTarget } from './city-life-state';
 import { cityBuildingWalls } from './city-exterior';
 import { CITY_PLOTS, plotAtRect, type CityPlot } from './city-plots';
 import { recordJournal } from './journal';
@@ -68,11 +69,14 @@ export function jobMarket(
   return cityJobMarket(buildings, residents);
 }
 
-/** Der nächste freie Platz: erst Gewerbe, denn Arbeit ist das Signal. */
-function freePlot(buildings: readonly BuildingState[]): CityPlot | null {
+/** Der nächste freie Platz: Arbeit vor Wohnraum, ausser die Stadt braucht Wohnungen. */
+function freePlot(buildings: readonly BuildingState[], preferHome: boolean): CityPlot | null {
   const free = CITY_PLOTS.filter((plot) =>
     !buildings.some((building) => plotAtRect(building.footprint)?.id === plot.id));
-  return free.find((plot) => plot.zoning !== 'HOME') ?? free[0] ?? null;
+  const preferred = preferHome
+    ? free.find((plot) => plot.zoning === 'HOME')
+    : free.find((plot) => plot.zoning !== 'HOME');
+  return preferred ?? free[0] ?? null;
 }
 
 /** Wohnfläche bleibt Wohnung, alles andere Geschäft; jeder Bau startet als Rohbau. */
@@ -112,14 +116,18 @@ function buildingLabel(plot: CityPlot): string {
   return plot.zoning === 'HOME' ? 'Wohnhaus' : 'Gewerbebau';
 }
 
-/** Höchstens ein Bau pro Tag, nur bei Joblosen, nur mit Platz und Kapital. */
+/** Höchstens ein Bau pro Tag, bei Joblosen oder vollem Wohnraum, mit Platz und Kapital. */
 export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildReport | null {
   const growth = ensureCityGrowth(world);
   if (!world.cityScene || world.day <= growth.lastBuildDay) return null;
   const buildings = cityBuildings(world);
   const market = jobMarket(buildings, world.cityLife?.residents ?? []);
-  if (market.jobless <= 0) return null;
-  const plot = freePlot(buildings);
+  const target = cityPopulationTarget(world);
+  const housingFull = (world.cityLife?.residents.length ?? 0) >= target;
+  if (market.jobless <= 0 && !housingFull) return null;
+  // Arbeitsplaetze gehen vor: erst wenn niemand mehr ohne Stelle ist, wird der
+  // naechste Bau ein Wohnhaus fuer die wachsende Bevoelkerung.
+  const plot = freePlot(buildings, housingFull && market.jobless <= 0);
   if (!plot) return null;
   // Startkapital gibt es genau einmal; danach traegt die Stadtfoerderung den
   // naechsten Bau, sobald Arbeit und Platz dafuer da sind (#525). Die Foerderung
@@ -143,7 +151,7 @@ export function advanceCityGrowth(world: WorldState, ledger: Ledger): BuildRepor
   recordJournal(world, {
     kind: 'SYSTEM',
     subject: `Neubau: ${building.name}`,
-    cause: `${market.jobless} Joblose vor dem Bau; Grundstück ${plot.label}.`,
+    cause: `${market.jobless} Joblose, ${world.cityLife?.residents.length ?? 0}/${target} Bewohner vor dem Bau; Grundstück ${plot.label}.`,
     effect: `${toVCString(BUILD_COST)} Baukosten gebucht; ${slots} Stellen nach Fertigstellung.`,
     amount: BUILD_COST,
     refs: { buildingId: building.id },

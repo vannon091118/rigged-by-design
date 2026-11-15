@@ -13,8 +13,9 @@ import type { CityLifeState } from './city-life-types';
 import { createCityLifeState, growCityPopulation } from './city-life-create';
 import { normalizeCityLife } from './city-life-restore';
 import { bindCityIdentities } from './city-identity';
-import { ensureHouseholds } from './city-households';
+import { ensureHouseholds, HOUSEHOLD_CAPACITY, npcHomeBuildings } from './city-households';
 import { CITY_POPULATION_STREET } from './city-npc-roster';
+import { CITY_PRESET_BUILDINGS } from './building';
 import type { WorldState } from './types';
 
 export { createCityLifeState, normalizeCityLife, growCityPopulation };
@@ -51,10 +52,22 @@ export function ensureCityPopulation(world: WorldState, target: number): number 
 }
 
 /**
+ * Zielgroesse der Stadt: die Strassenbesetzung plus die belegte Kapazitaet der
+ * fertiggestellten NPC-Wohnungen. Rohbauten zaehlen nicht, weil sie noch keine
+ * Adresse sind; die Spielerwohnung bleibt der geteilte Ausweichort.
+ */
+export function cityPopulationTarget(world: WorldState): number {
+  const buildings = world.cityScene?.exterior.buildings ?? CITY_PRESET_BUILDINGS;
+  const completedHomes = npcHomeBuildings(buildings)
+    .filter((building) => building.construction !== 'SHELL').length;
+  return CITY_POPULATION_STREET + completedHomes * HOUSEHOLD_CAPACITY;
+}
+
+/**
  * Wer in der Stadt steht, sieht die Strassenbesetzung. Der Szenenwert ist die
  * eine Regel fuer Neustart, Laden und erneutes Betreten; ausserhalb der Stadt
  * bleibt die Bewohnerschaft unangetastet.
  */
 export function ensureCityPopulationForScene(world: WorldState): number {
-  return world.scene.kind === 'CITY' ? ensureCityPopulation(world, CITY_POPULATION_STREET) : 0;
+  return world.scene.kind === 'CITY' ? ensureCityPopulation(world, cityPopulationTarget(world)) : 0;
 }

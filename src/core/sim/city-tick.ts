@@ -9,6 +9,7 @@
 import type { Ledger } from '../economy/ledger';
 import { completeCityConstruction } from './city-construction';
 import { advanceCityGrowth } from './city-growth';
+import { ensureCityPopulationForScene } from './city-life-state';
 import { tickCityLife } from './city-life';
 import { tickCityMovement } from './city-life-movement';
 import type { WorldState } from './types';
@@ -23,4 +24,7 @@ export function tickCity(world: WorldState, ledger: Ledger): void {
   advanceCityGrowth(world, ledger);
   // Der Vortag wird zuerst fertig: Rohbau oeffnen, dann erst weiterbauen (#524).
   completeCityConstruction(world);
+  // Fertige Wohnungen sind die Ursache fuer neue Bewohner; der bestehende
+  // ensure-Pfad erzeugt sie deterministisch, ohne zweiten Bevoelkerungszustand.
+  ensureCityPopulationForScene(world);
 }

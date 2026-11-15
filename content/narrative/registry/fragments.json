@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e91a720115ee42a65e6592a0ac3d71447f7f20557a532e4efd2b7f47da70e878",
+  "contentHash": "sha256:1c059ea4a433189c5317dccff3651e9ddfb138cf9b42d400d498e7497b5e76c7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -4787,6 +4787,28 @@
       "text": "Ein Rohbau ohne Zeile im Protokoll ist nur ein Gerücht mit Wänden. Jetzt steht jeder Neubau im Buch: wie viele Joblose ihn ausgelöst haben, welches Grundstück belegt wurde, was er gekostet hat und wie viele Stellen er bringt. Im Stadtfenster steht derselbe Stand, und wenn gerade nichts wächst, nennt es den Grund — fehlende Arbeit, fehlender Platz, kein stilles Schulterzucken.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-growth-observability.json"
+    },
+    {
+      "contributionId": "city-growth-population-01",
+      "turnId": "2026-11-15T01:05Z-city-growth-population",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Norden stehen jetzt Wohnhaeuser, und am Morgen stehen neue Namen an der Tuer. Die Stadt baut nicht mehr ins Leere: Wer einzieht, hat eine Adresse, einen Haushalt und einen Platz in der Schicht. Die alten Gesichter bleiben, die neuen kommen aus derselben Besetzung — kein Zufall, nur ein volles Treppenhaus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-city-growth-population.json"
     },
     {
       "contributionId": "city-issues-sweep-01",
