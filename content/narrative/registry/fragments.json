@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6870ebb05465842f42d9e926d2679c59187c19930fd38a0abb044e405b687fd7",
+  "contentHash": "sha256:b9ecd53b3dece4eadaaefc0f7736e814bee10b89a39201d14a1529950377554d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25252,6 +25252,50 @@
       "text": "Der erste Gast kommt nicht mit dem Spielstart. Er kommt, wenn der Automat steht: erst die Kiste auf den Floor, dann der Weg zur Kasse. Wer die Reihenfolge im Blick behält, sieht den Anfang des Abends als Kette und nicht als Sprung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-782-first-guest.json"
+    },
+    {
+      "contributionId": "shinon-839-headless-imports",
+      "turnId": "2026-11-15T09:45Z-shinon-839-headless-imports",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kern bleibt headless. Kein Pixi, kein React, kein DOM und kein Weg in Renderer, UI oder Store: Wer die Grenze einmal zieht, sieht den Unterschied zwischen einem Zustand und seinem Bild. Das Gate macht aus dieser Regel einen täglichen Nachweis, nicht eine Absicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json"
+    },
+    {
+      "contributionId": "shinon-913-merge-queue-green",
+      "turnId": "2026-11-15T09:59Z-shinon-913-merge-queue-green",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Reihenfolge ist erst dann eine Reihenfolge, wenn alle Beteiligten dieselbe Revision sehen. Der grüne Stand bringt die Queue auf den aktuellen Main-Pfad, ohne die fremden Commits zu überschreiben; die Zustimmung bleibt ein sichtbarer Schritt, kein stiller Default.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-913-merge-queue-green.json"
     },
     {
       "contributionId": "sim-player-skills-learn-by-doing",

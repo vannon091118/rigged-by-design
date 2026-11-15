@@ -27,7 +27,7 @@ if (!token) {
 function repoSlug() {
   if (params.repo) return params.repo;
   if (process.env.RBD_REPO) return process.env.RBD_REPO;
-  let url = '';
+  let url;
   try {
     url = execFileSync('git', ['config', '--get', 'remote.origin.url'], { encoding: 'utf8' }).trim();
   } catch {

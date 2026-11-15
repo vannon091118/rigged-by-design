@@ -1,0 +1,24 @@
+{
+  "id": "sim-issue-782-start-guest-v2",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-782-start-guest-v2",
+  "baseSha": "3f5643ca52a8cb0a360669f44129a9ed453cb068",
+  "issue": 782,
+  "task": "Regressionstest 0-vor-1-nach im View gegen Doppel-Spawn",
+  "goal": "Startpfad bleibt ohne Gast vor dem Geraet und zeigt den ersten Gast danach",
+  "pathAllowlist": [
+    "src/store/__tests__/first-evening.test.ts",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/",
+    ".lane-claims/claims/sim-issue-782-start-guest-v2.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3f5643ca52a8cb0a360669f44129a9ed453cb068"
+}

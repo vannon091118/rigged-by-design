@@ -4686,6 +4686,14 @@
       "contributionId": "shinon-782-first-guest"
     },
     {
+      "turnId": "2026-11-15T09:45Z-shinon-839-headless-imports",
+      "contributionId": "shinon-839-headless-imports"
+    },
+    {
+      "turnId": "2026-11-15T09:59Z-shinon-913-merge-queue-green",
+      "contributionId": "shinon-913-merge-queue-green"
+    },
+    {
       "turnId": "2026-11-15T10:00Z-sim-player-skills",
       "contributionId": "sim-player-skills-learn-by-doing"
     }

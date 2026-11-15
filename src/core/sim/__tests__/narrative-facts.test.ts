@@ -8,8 +8,16 @@ import { drainFacts, emitFact, recentFacts } from '../narrative/facts';
 import { NARRATIVE_LIMITS } from '../narrative/types';
 import { normalizeNarrativeState } from '../narrative/state';
 
+/** Bestueckt die Startwelt, damit der Boundary keine Lager-Facts komponiert. */
+const bestuecke = (world: ReturnType<typeof createWorld>): void => {
+  for (const item of world.furniture) {
+    if (item.kind === 'BAR' || item.kind === 'STORAGE') item.stock = 10;
+  }
+};
+
 const setup = () => {
   const world = createWorld('SMALL');
+  bestuecke(world);
   const visitor = recordVisitor(world, { name: 'Test Gast', persona: 'STREET', tick: 0 });
   return { world, visitor };
 };
