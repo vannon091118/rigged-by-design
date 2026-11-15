@@ -9,6 +9,7 @@ import { createShellRound } from '../core/games/shell-round';
 import { additionalBet, dealCardOutcome, riskRivalWin, settleCardOutcome, visitRivalWithJournal, type CardDeal } from './foreign-play';
 import type { WorldState } from '../core/sim/types';
 import { takeHomeToWallet } from './player-tools';
+import { grantSkillXp } from '../core/sim/player-skills';
 
 export function riskCardCmd(
   world: WorldState,
@@ -30,7 +31,9 @@ export function dealCardCmd(
   stakeVC: number,
 ): CardDeal | null {
   try {
-    return dealCardOutcome(world, ledger, prng, rivalId, machineIndex, stakeVC).result;
+    const result = dealCardOutcome(world, ledger, prng, rivalId, machineIndex, stakeVC).result;
+    grantSkillXp(world.player.skills, 'cardDealing', 15);
+    return result;
   } catch {
     return null;
   }

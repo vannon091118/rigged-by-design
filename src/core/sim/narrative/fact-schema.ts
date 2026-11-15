@@ -82,6 +82,18 @@ export function isFact(raw: unknown): raw is NarrativeFact {
     return typeof raw.persona === 'string' && ['LUMPEN', 'STREET', 'BUSINESS', 'HIGH_ROLLER', 'STAMMGAST'].includes(raw.persona);
   }
   if (kind === 'VISITOR_RETURNED') return safeInteger(raw.visits, 1);
+  if (kind === 'DEVICE_FAULT') {
+    return safeInteger(raw.furnitureId, 1)
+      && (raw.kindLabel === 'SLOT' || raw.kindLabel === 'TABLE' || raw.kindLabel === 'BAR'
+        || raw.kindLabel === 'TOILET' || raw.kindLabel === 'EXCHANGE' || raw.kindLabel === 'DECOR'
+        || raw.kindLabel === 'STORAGE' || raw.kindLabel === 'JOB_STATION')
+      && (raw.reason === 'DAMAGED' || raw.reason === 'CLOGGED');
+  }
+  if (kind === 'STOCK_LOW') {
+    return safeInteger(raw.furnitureId, 1)
+      && (raw.kindLabel === 'BAR' || raw.kindLabel === 'STORAGE')
+      && Number.isSafeInteger(Number(raw.stock)) && Number(raw.stock) >= 0;
+  }
   return safeInteger(raw.guestId, 1) && VISITOR_VALENCES.includes(raw.valence as VisitorValence)
     && typeof raw.score === 'number' && Number.isFinite(raw.score) && raw.score >= 0 && raw.score <= 100;
 }

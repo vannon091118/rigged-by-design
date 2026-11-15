@@ -2,6 +2,7 @@
 import type { Visitor, WorldState } from '../types';
 import { scoreMemories, type MemoryScore } from './disposition';
 import { recordFirstHand } from './knowledge';
+import { recordJournal } from '../journal';
 import { NARRATIVE_LIMITS, type NarrativeFact, type VisitEndedFact, type VisitorValence } from './types';
 
 /** Dieselbe Schwelle wie die Zufriedenheitsnotiz: 65+ ist ein guter Besuch, 35- ein schlechter. */
@@ -38,6 +39,24 @@ export function applyMemories(world: WorldState, fresh: readonly NarrativeFact[]
     }
     if (fact.kind === 'VISITOR_RETURNED') world.narrative.flags.rueckkehrer = (world.narrative.flags.rueckkehrer ?? 0) + 1;
     if (fact.kind === 'VISITOR_FIRST_SEEN') world.narrative.flags.neue_gaeste = (world.narrative.flags.neue_gaeste ?? 0) + 1;
+    if (fact.kind === 'DEVICE_FAULT') {
+      recordJournal(world, {
+        kind: 'SYSTEM',
+        subject: `Gerät ${fact.furnitureId} (${fact.kindLabel})`,
+        cause: fact.reason === 'DAMAGED' ? 'Defekt festgestellt' : 'Verstopfung festgestellt',
+        effect: `Gerät ${fact.kindLabel} #${fact.furnitureId} ist außer Betrieb.`,
+      });
+      applied += 1;
+    }
+    if (fact.kind === 'STOCK_LOW') {
+      recordJournal(world, {
+        kind: 'STOCK',
+        subject: `Bestand ${fact.kindLabel} #${fact.furnitureId}`,
+        cause: 'Bestand auf Null',
+        effect: `Bestand von ${fact.kindLabel} #${fact.furnitureId} ist aufgebraucht (${fact.stock}).`,
+      });
+      applied += 1;
+    }
   }
   return applied;
 }

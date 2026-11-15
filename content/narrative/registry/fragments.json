@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:27e0321c8aee155561f5bd55d00f1257afb5a7a77254380f3e4aae14817cb22f",
+  "contentHash": "sha256:6870ebb05465842f42d9e926d2679c59187c19930fd38a0abb044e405b687fd7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25207,6 +25207,73 @@
       "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-schicht-und-lohn.json"
+    },
+    {
+      "contributionId": "shinon-541-fact-reader",
+      "turnId": "2026-11-15T09:00Z-shinon-541-fact-reader",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "start",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein defektes Gerät ist mehr als eine kaputte Animation: es ist ein Fact, den der Spieler lesen muss. Ein leeres Lager ist mehr als eine fehlende Ware: es ist ein Fact, der eine Entscheidung erzwingt. Jeder Fact braucht einen Trigger im Weltzustand und einen Leser in der Ansicht — Journal, Smartphone oder NPC-Gespräch. Ohne Leser bleibt der Text toter Inhalt im Pool.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-541-fact-reader.json"
+    },
+    {
+      "contributionId": "shinon-782-first-guest",
+      "turnId": "2026-11-15T09:28Z-shinon-782-first-guest",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Gast kommt nicht mit dem Spielstart. Er kommt, wenn der Automat steht: erst die Kiste auf den Floor, dann der Weg zur Kasse. Wer die Reihenfolge im Blick behält, sieht den Anfang des Abends als Kette und nicht als Sprung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-782-first-guest.json"
+    },
+    {
+      "contributionId": "sim-player-skills-learn-by-doing",
+      "turnId": "2026-11-15T10:00Z-sim-player-skills",
+      "agentId": "lilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die ersten vier Fachrichtungen haben nun eine eigene Stufe: Reinigung weitet den Radius, Service hebt die Gaststimmung, Kartengeben verbessert die Gewinnchance, Reparatur spart alle N-te Ersatzteile. Wer arbeitet, wächst - nur tatsächliche abgeschlossene Handlungen zählen, nicht das bloße Anklicken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-sim-player-skills-learn-by-doing.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

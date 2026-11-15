@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-801-player-skills",
+  "claimId": "lane/sim/issue-801-player-skills",
+  "branch": "lane/sim/issue-801-player-skills",
+  "baseSha": "d6f90a99fa9ba4777a61ec083bf3a4ad6c9be9a5",
+  "phase": "READY",
+  "title": "Issue #801: Spieler-Skills als Learn-by-Doing-Fortschritt aus echten Handlungen aufbauen",
+  "goal": "Vier Spieler-Fach-Skills (Reinigung, Service/Bar, Kartengeben, Reparieren) mit XP-Katalog, Levelkurve und konkreter In-Spiel-Wirkung pro Stufe",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 1
+}

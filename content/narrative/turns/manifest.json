@@ -4676,6 +4676,18 @@
     {
       "turnId": "2026-11-15T05:45Z-doc-anchors-860",
       "contributionId": "doc-anchors-860-01"
+    },
+    {
+      "turnId": "2026-11-15T09:00Z-shinon-541-fact-reader",
+      "contributionId": "shinon-541-fact-reader"
+    },
+    {
+      "turnId": "2026-11-15T09:28Z-shinon-782-first-guest",
+      "contributionId": "shinon-782-first-guest"
+    },
+    {
+      "turnId": "2026-11-15T10:00Z-sim-player-skills",
+      "contributionId": "sim-player-skills-learn-by-doing"
     }
   ]
 }

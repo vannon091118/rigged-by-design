@@ -1,0 +1,17 @@
+{
+  "agentId": "lilith",
+  "turnId": "2026-11-15T10:00Z-sim-player-skills",
+  "contributionId": "sim-player-skills-learn-by-doing",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die ersten vier Fachrichtungen haben nun eine eigene Stufe: Reinigung weitet den Radius, Service hebt die Gaststimmung, Kartengeben verbessert die Gewinnchance, Reparatur spart alle N-te Ersatzteile. Wer arbeitet, wächst - nur tatsächliche abgeschlossene Handlungen zählen, nicht das bloße Anklicken.",
+  "directives": []
+}

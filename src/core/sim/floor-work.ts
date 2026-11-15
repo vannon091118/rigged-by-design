@@ -64,10 +64,12 @@ export function workQuality(rpg: PlayerRpgState, attr: RpgAttribute): number {
   return Math.max(0, Math.min(100, QUALITY_BASE + levelOf(rpg, attr) * QUALITY_PER_LEVEL));
 }
 
-/** Wahrnehmung weitet die Reinigung; ohne Stufe bleibt es bei der eigenen Kachel. */
+/** Wahrnehmung weitet die Reinigung; ohne Stufe bleibt es bei der eigenen Kachel.
+ *  Der Reinigungs-Fach-Skill addiert seinen Stufenbonus auf den Radius. */
 export function cleaningReach(world: WorldState): number {
   const perception = Math.max(0, world.player.rpg.perceptionLevel);
-  return Math.max(1, Math.min(REACH_MAX, 1 + Math.floor(perception / REACH_PERCEPTION)));
+  const cleaningBonus = Math.max(0, world.player.skills.cleaning.level - 1);
+  return Math.max(1, Math.min(REACH_MAX, 1 + Math.floor(perception / REACH_PERCEPTION) + cleaningBonus));
 }
 
 /** Technik hebt die Wartung; Agent 10 bucht weiter nur den Preis, nicht den Gewinn. */

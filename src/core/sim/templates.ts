@@ -4,6 +4,7 @@ import { FIRST_ARRIVAL_TICK } from './demand';
 import { defaultPlinkoConfig } from '../games/plinko-config';
 import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
+import { newPlayerSkills } from './player-skills';
 import { DEFAULT_LOOK } from './player-look';
 import { createNarrativeState } from './narrative/state';
 import { createRivalMinds } from './rival-ai/minds';
@@ -58,6 +59,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
       carrying: '',
       needs: createPlayerNeeds(),
       rpg: newPlayerRpg(),
+      skills: newPlayerSkills(),
       job: null,
       barPurchased: false,
       property: null,

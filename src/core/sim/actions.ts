@@ -12,6 +12,7 @@ import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import type { CarpetId, Furniture, GameId, ModId, WorldState } from './types';
 import { furnitureById } from './world';
 import { grantXp } from './player-rpg';
+import { grantSkillXp } from './player-skills';
 import { slotChances } from '../games/slot-profile';
 
 const XP_CLEAN_TILE = 10;
@@ -41,6 +42,7 @@ export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void
   ledger.transfer(HAUSKONTO, SHOP, (world.prices.cleaningCost * tiles.length) as VaCoinMicro, TX_REASON.CLEANING, world.tick);
   for (const entry of tiles) world.dirty.delete(entry);
   grantXp(world.player.rpg, XP_CLEAN_TILE * tiles.length);
+  grantSkillXp(world.player.skills, 'cleaning', XP_CLEAN_TILE * tiles.length);
 }
 
 export function cleanAll(world: WorldState, ledger: Ledger): number {
@@ -49,6 +51,7 @@ export function cleanAll(world: WorldState, ledger: Ledger): number {
   ledger.transfer(HAUSKONTO, SHOP, (world.prices.cleaningCost * count) as VaCoinMicro, TX_REASON.DEEP_CLEANING, world.tick);
   world.dirty.clear();
   grantXp(world.player.rpg, XP_CLEAN_TILE * count);
+  grantSkillXp(world.player.skills, 'cleaning', XP_CLEAN_TILE * count);
   return count;
 }
 
@@ -58,12 +61,18 @@ export function repair(world: WorldState, ledger: Ledger, itemId: number): void 
   if (!item || (item.condition >= 100 && !item.damaged && !item.clogged)) return;
   if (world.parts < 1) throw new Error('Keine Ersatzteile im Lager.');
   payOrBorrow(ledger, SHOP, world.prices.repairCost, TX_REASON.REPAIR, world.tick);
-  world.parts -= 1;
+  const repairSkill = world.player.skills.repair;
+  repairSkill.repairCount = (repairSkill.repairCount ?? 0) + 1;
+  const freeRepair = repairSkill.level > 1 && repairSkill.repairCount % repairSkill.level === 0;
+  if (!freeRepair) {
+    world.parts -= 1;
+  }
   item.condition = 100;
   item.damaged = false;
   item.clogged = false;
   item.clog = 0;
-  world.lastEvent = `${item.label} repariert; ein Ersatzteil verbraucht.`;
+  world.lastEvent = `${item.label} repariert${freeRepair ? ' (Fachkunde: kostenlos)' : '; ein Ersatzteil verbraucht.'}`;
+  grantSkillXp(world.player.skills, 'repair', 20);
 }
 
 export function setPrice(world: WorldState, key: 'drinkPrice' | 'slotMinBet', value: VaCoinMicro): void {
