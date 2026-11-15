@@ -52,6 +52,22 @@ Ein Issue darf nur geschlossen werden, wenn ein vollständiger Closeout-Beleg vo
 
 Worker dürfen den Abschluss vorbereiten (RELEASE + PR) und Nachweise liefern, aber nicht eigenmächtig schließen oder die Prüfung umgehen. Ein `RELEASE done <sha>` ohne PR und ohne Closeout-Beleg gilt als nicht erledigt.
 
+## Verbindlicher Pin- und State-Vertrag (Issue #887, P1)
+
+Drei angeheftete Issues wurden entwirrt (#561, #563, #677). Es gilt ein bewusst kleines, eindeutiges Pin-Set:
+
+- **#677 (aktiv gepinnt):** Zentraler Maintainer-/Board-Vertrag mit Badge-Matrix und state:JSON-Protokoll. Der Pin-Status ist technisch bestätigt.
+- **#561 (entpinnt):** Historisches Review-Log ohne aktuellen Inhalt (leerer Tabellenheader). Nicht als aktive Steuerungsquelle lesen.
+- **#563 (entpinnt):** Historischer Backlog-Snapshot mit veralteten SHA-Referenzen. Nicht als aktive Steuerungsquelle lesen.
+
+**Regeln:**
+
+1. **Ein einziger aktiver Pin.** Zu jedem Zeitpunkt trägt genau ein Issue das GitHub-Pin-Label. #677 ist der zentrale Maintainer-/Board-Vertrag.
+
+2. **Snapshot-/Cursor-Datei ist abgeleitet.** `.lane-claims/board-state.json` und alle state:JSON-Dateien sind abgeleitete Datenquellen, nicht der Ersatz für Issue-Ereignisse. Bei Abweichung gewinnt das GitHub-Issue.
+
+3. **Alle Docs verlinken denselben Vertrag.** `AGENTS.md`, `WORKFLOW.md`, `GOVERNANCE.md` und `PROMPTS.md` verweisen alle auf #677 als den kanonischen Board-Vertrag.
+
 ## Identitaetsgebundene ID-Postfache (Issue #920, P0)
 
 Jede handlungsrelevante Nachricht am Board muss eindeutig adressiert sein:
