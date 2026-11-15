@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0a8ed821b68eac722d778b123d567bc1e11f42cccc38361f08a871dfb7d04f37",
+  "contentHash": "sha256:83b1664d6324cac1495452db5d29a2609beea16ffcea84b208b37d74cf46bdd5",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26173,6 +26173,28 @@
       "text": "Rita zog die Werkzeugwahl aus dem Auftragslauf heraus, weil ein Wischer kein Schritt ist, sondern eine Voraussetzung. Die Inventur zaehlte danach wieder die Dateien, die wirklich im Baum lagen, und der laengere Testlauf wartete auf Git statt auf ein zu kurzes Zeitfenster.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json"
+    },
+    {
+      "contributionId": "world-test-soak-timeout-01",
+      "turnId": "2026-11-15T04:30Z-world-test-soak-timeout",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Prüfraum steht eine alte Uhr, die jeden Tag genau siebenhundert Schläge zählt. Wer sie laufen lässt, sieht erst nach dem Tageswechsel, ob die Kasse stillhält; wer sie zu früh anhält, hält nur ein Bild an. Die Uhr gehört nicht ins Spiel, aber sie erinnert daran: Ein voller Lauf braucht Zeit, nicht einen kürzeren Tag.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-world-test-soak-timeout.json"
     }
   ]
 }
