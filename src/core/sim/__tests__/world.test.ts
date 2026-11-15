@@ -1,34 +1,23 @@
-/** @test-target: src/core/sim/guests.ts | @error-code: ERR-2001 */
+/** @test-target: src/core/sim/world.ts | @error-code: ERR-2001 */
 import { describe, expect, it } from 'vitest';
-import { Ledger } from '../../economy/ledger';
 import { fromVC, toVCString } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { repair, settleGuests } from '../actions';
-import { serveDrink, takeDrink } from '../player';
 import { chooseActivity, payAndLeave } from '../guests';
-import { fiatAccount, guestAccount, HAUSKONTO, pendingAccount } from '../money';
+import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO } from '../money';
 import { attractionValue, MODS, offerScore } from '../offers';
+import { serveDrink, takeDrink } from '../player';
 import { spawnGuest } from '../spawn';
-import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import { makeGuest, randomPersona } from '../traits';
-import type { WorldState } from '../types';
-import {
-  canPlace, doorPoint, exchangePoint, freeSeat, interactionPoint, spawnPoint,
-} from '../world';
+import { canPlace, doorPoint, exchangePoint, freeSeat, interactionPoint, spawnPoint } from '../world';
 import { randomSeed } from '../../../test/random-seed';
-
-function setup(template: WorldState['template'] = 'SMALL') {
-  const world = createWorld(template);
-  const ledger = new Ledger();
-  return { world, ledger, prng: new Prng(randomSeed()) };
-}
+import { moveToExchange, setup, tickMany, tickUntilExchange } from './world-test-helpers';
 
 describe('Welt und Startzustand', () => {
   it('startet mit leerem Ledger und genau einem gratis Spielautomaten', () => {
     const { world, ledger } = setup();
-    expect(ledger.getBalance(HAUSKONTO)).toBe(0);
-    expect(ledger.circulating).toBe(0);
+    expect(ledger.getBalance(HAUSKONTO)).toBe(0); expect(ledger.circulating).toBe(0);
     const machines = world.furniture.filter((item) => item.gameId);
     expect(machines).toHaveLength(1);
     expect(machines[0]!.price).toBe(0);
@@ -54,29 +43,20 @@ describe('Welt und Startzustand', () => {
         expect(value).toBeLessThanOrEqual(100);
       }
       expect(guest.mood + guest.patience + guest.addiction).toBe(180);
-      expect(guest.sociability).toBeGreaterThanOrEqual(30);
-      expect(guest.sociability).toBeLessThanOrEqual(100);
+      expect(guest.sociability).toBeGreaterThanOrEqual(30); expect(guest.sociability).toBeLessThanOrEqual(100);
     }
   });
   it('spawnt vor der Tuer ausserhalb des Gebaeudes und wechselt nur an der Kasse Geld', () => {
     const { world, ledger, prng } = setup();
     const guest = spawnGuest(world, prng, ledger)!;
     const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE')!;
-    const door = doorPoint(world);
-    expect(guest.position).toEqual(door);
+    const door = doorPoint(world); expect(guest.position).toEqual(door);
     expect(door.x).toBeLessThan(entrance.x);
     expect(ledger.getBalance(guestAccount(guest.id))).toBe(0);
     expect(ledger.getBalance(fiatAccount(guest.id))).toBeGreaterThan(0);
     // Fokussiert auf den Wechsel am Schalter; die Weglaenge haengt von der
     // zufaelligen Persona ab und ist nicht Teil dieser Zusicherung.
-    guest.position = { ...exchangePoint(world)! };
-    guest.state = 'EXCHANGE';
-    guest.queueIndex = 0;
-    guest.stateTicks = 1;
-    guest.path = [];
-    for (let step = 0; step < 10 && ledger.getBalance(guestAccount(guest.id)) === 0; step += 1) {
-      tickWorld(world, ledger, prng);
-    }
+    moveToExchange(world, guest); tickUntilExchange(world, ledger, prng, guest);
     expect(ledger.getBalance(guestAccount(guest.id))).toBeGreaterThan(0);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
@@ -116,8 +96,7 @@ describe('Geld und Umbau', () => {
     slot.condition = 40;
     slot.damaged = true;
     repair(world, ledger, slot.id);
-    expect(slot.condition).toBe(100);
-    expect(slot.damaged).toBe(false);
+    expect(slot.condition).toBe(100); expect(slot.damaged).toBe(false);
     expect(ledger.getBalance(HAUSKONTO)).toBe(fromVC(100) - world.prices.repairCost);
   });
   it('laesst beim Umbau keine Gaeste-Guthaben in alten Konten haengen', () => {
@@ -190,9 +169,13 @@ describe('Geld und Umbau', () => {
     chooseActivity(world, guest, ledger, prng);
     expect(guest.targetFurniture).not.toBe(slot.id);
   });
-  it('simuliert viele Ticks ohne negatives Konto und ohne Ledger-Leck', () => {
+  // 700 volle Ticks sind ein bewusster Soak: isoliert ~1,5 s, unter maximaler
+  // Worker-Parallelitaet gemessen ~15 s. Das globale 15-s-Budget ist eine
+  // Haengerkennung, kein Laufzeitbudget fuer diesen einen Fall.
+  it('simuliert viele Ticks ohne negatives Konto und ohne Ledger-Leck', { timeout: 30_000 }, () => {
     const { world, ledger, prng } = setup('MEDIUM');
-    for (let step = 0; step < 700; step += 1) tickWorld(world, ledger, prng);
+    tickMany(world, ledger, prng, 700);
+    expect(world.tick).toBe(700);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
     expect(ledger.getBalance(HAUSKONTO)).toBeGreaterThanOrEqual(0);
     expect(toVCString(ledger.circulating)).toMatch(/VC$/);

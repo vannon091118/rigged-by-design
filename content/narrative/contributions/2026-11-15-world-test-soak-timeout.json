@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T04:30Z-world-test-soak-timeout",
+  "contributionId": "world-test-soak-timeout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Prüfraum steht eine alte Uhr, die jeden Tag genau siebenhundert Schläge zählt. Wer sie laufen lässt, sieht erst nach dem Tageswechsel, ob die Kasse stillhält; wer sie zu früh anhält, hält nur ein Bild an. Die Uhr gehört nicht ins Spiel, aber sie erinnert daran: Ein voller Lauf braucht Zeit, nicht einen kürzeren Tag.",
+  "directives": []
+}
