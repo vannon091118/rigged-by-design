@@ -718,10 +718,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3249 |
-| Gelistete Dateien | 3249 |
+| Getrackte Dateien | 3250 |
+| Gelistete Dateien | 3250 |
 | Getrackte Ordner | 118 |
-| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (186), artifacts (1), content (1161), docs (108), packages (27), public (571), scripts (129), src (1041) |
+| Bereiche | .cron (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (187), artifacts (1), content (1161), docs (108), packages (27), public (571), scripts (129), src (1041) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -735,7 +735,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
 - `.lane-claims/claims/` — 94 Datei(en)
-- `.lane-claims/tasks/` — 89 Datei(en)
+- `.lane-claims/tasks/` — 90 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1157 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -999,6 +999,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-750-run-budget-findings.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-752-pretask-budget-count.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-issue-766-main-green.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
