@@ -108,6 +108,15 @@ Die Menschen um dich herum sind keine Pappaufsteller:
 - **Räumliche Kontinuität:** Wer einem Nachbarn auf der Straße folgt, sieht ihn die Tür aufstoßen und drinnen an der Bar stehen. Niemand wird beim Raumwechsel gelöscht oder neu gewürfelt. (`src/store/scene-commands.ts`)
 - **Bedürfnisse:** Hunger, Durst, Müdigkeit und Frust steuern ihr Verhalten. Ein zufriedener Gast empfiehlt den Laden weiter; ein hungriger, betrogener Gast wirft Aschenbecher. (`src/core/sim/city-life-types.ts`)
 
+### 4. Selbstbeherrschungs-Pakt: Fremdspiel begrenzt, nicht global
+
+Der **Selbstbeherrschungs-Pakt** (Self-Exclusion) ist bewusst auf **Fremdspiel begrenzt**:
+
+- `recordExclusionPlay()` / `recordExclusionWin()` werden nur aus dem fremden Haus aufgerufen (`src/store/foreign-play.ts`): Fremd-Spins, Kartendeals und Zusatzwetten zählen in den Pakt und erhöhen den Suchtwert.
+- Eigenes Spiel im eigenen Casino (`src/store/own-play.ts`) läuft über einen separaten Geldpfad und ruft diese Funktionen nicht auf. Eigene Spins, Deals, Settlements und Risiko-Karten beeinflussen weder den Pakt-Verlustzähler noch den Suchtwert.
+- `EXCLUSION_PAUSE_TICKS = 8` (≈ 4,16 s bei `TICK_MS = 520`) ist die Pause nach Erreichen des Verlustlimits – eine Balance-Frage, kein Defekt.
+- Der Pakt wird im HUD (`src/ui/hud.tsx`), im Self-Exclusion-Panel (`src/ui/self-exclusion-panel.tsx`) und auf den Geräten (`src/ui/machine-play.tsx`) angezeigt, ohne den Scope zu missdeuten.
+
 ---
 
 ![Banner: FAQ – häufige Fragen](docs/banners/faq.svg)

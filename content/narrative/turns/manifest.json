@@ -4712,6 +4712,10 @@
     {
       "turnId": "2026-11-15T20:34Z-menu-action-contract",
       "contributionId": "menu-action-contract-01"
+    },
+    {
+      "turnId": "2026-11-15T22:00Z-self-exclusion-scope-dok",
+      "contributionId": "self-exclusion-scope-dok-01"
     }
   ]
 }

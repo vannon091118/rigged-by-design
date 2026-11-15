@@ -1,4 +1,14 @@
-/** Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. */
+/**
+ * Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich.
+ *
+ * Scope: bewusst auf Fremdspiel begrenzt.
+ * - recordExclusionPlay() / recordExclusionWin() werden nur aus src/store/foreign-play.ts
+ *   aufgerufen (Fremd-Spins, Kartendeals, Zusatzwetten im fremden Haus).
+ * - src/store/own-play.ts bucht eigenes Spiel ueber einen separaten Geldpfad und ruft
+ *   diese Funktionen NICHT auf. Eigene Spins, Deals, Settlements und Risiko-Karten
+ *   beeinflussen weder den Pakt-Verlustzähler noch den global benannten Suchtwert.
+ * EXCLUSION_PAUSE_TICKS = 8 (= 4,16 s bei TICK_MS = 520) ist eine Balance-Frage, kein Defekt.
+ */
 import type { Ledger } from '../economy/ledger';
 import { addVC, mulVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { EXTERNAL, PACT_RESERVE, PLAYER_CASH, PORTEMONNAIE } from './money';

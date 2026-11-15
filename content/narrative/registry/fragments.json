@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6b016e2f5621e44fd94c1e4c8a9c42b7de5fd19fce9644fb5d1289a5f555f8c7",
+  "contentHash": "sha256:a745bb0b991cc0dc097e055f3ec9b90404996810fc175acf961d5b82badb9e2d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25226,6 +25226,30 @@
       "text": "Der Tagesplan nennt jetzt für jede Absicht ein Ziel, nicht nur für den Weg: Wer zum Einkaufen geht, landet am Markt, wer zur Arbeit geht, an seinem Betrieb. Nur die geplante Absicht erbt dieses Ziel; ein dringendes Bedürfnis wählt weiter seinen eigenen Ort.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-scheduled-place-all-intents.json"
+    },
+    {
+      "contributionId": "self-exclusion-scope-dok-01",
+      "turnId": "2026-11-15T22:00Z-self-exclusion-scope-dok",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita legte die Pakt-Karten auf den Tresen und zählte: Fremde Spiele trinken den Suchtwert, eigene Runden bleiben unberührt. Wer das Limit bricht, tut es im fremden Haus – nicht im eigenen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-self-exclusion-scope-dok.json"
     },
     {
       "contributionId": "shift-pay-01",
