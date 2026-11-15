@@ -289,7 +289,77 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt, ist am Board ein Inc
 - Ein neuer oder geänderter Prompt braucht zuerst ein Issue mit `incident-sev-*`, `incident-open` und `causal-chain`; die Registerzeile nennt die Nummer. Ein Prompt ohne Issue ist eine ungetrackte Verhaltensänderung.
 - `pnpm run verify:docs` prüft die Abdeckung: `AGENTS.md`, dieses Dokument und jede `.cron/*.md` müssen mit Issue und Schweregrad registriert sein. Ein fehlender Eintrag ist rot, kein Hinweis.
 - `pnpm run board:sync -- --at <ISO>` übernimmt die Registereinträge als `promptIssues` in [`.lane-claims/board-state.json`](../.lane-claims/board-state.json); damit ist die Frage "welche Prompts gelten gerade und unter welchem Ticket?" aus dem Snapshot beantwortbar.
-- Ein Prompt außerhalb des Repos (`Art = external`, etwa der System-Reminder der geplanten Ausführung) hat dieselbe Issue-Pflicht. Seine kanonische Fassung verweist auf die Repo-Dateien, statt Regeln zu wiederholen.
+- Ein Prompt außerhalb des Repos (`Art = external`, etwa der System-Reminder der geplanten Ausfuehrung) hat dieselbe Issue-Pflicht. Seine kanonische Fassung verweist auf die Repo-Dateien, statt Regeln zu wiederholen.
+
+## Verbindlicher Issue-Lebenszyklus und Closeout (Issue #920, P0)
+
+Jedes Issue besitzt jederzeit einen nachvollziehbaren Lebenszyklus. Der Zustand wird durch genau ein `zustand-*`-Label gespiegelt:
+
+| Zustand | Label | Bedeutung |
+|---------|-------|-----------|
+| `OPEN_UNTRIAGED` | `zustand-UNTRIAGED` | Noch nicht triagiert, keine Priorität/Bereich/Owner |
+| `OPEN_READY` | `zustand-READY` | Triagiert, bereit zur Bearbeitung |
+| `OPEN_CLAIMED` | `zustand-CLAIMED` | CLAIM abgegeben, Arbeit läuft |
+| `OPEN_IN_PROGRESS` | `zustand-IN_PROGRESS` | Aktive Umsetzung auf dem Branch |
+| `OPEN_BLOCKED` | `zustand-BLOCKED` | Blocker mit Owner und nächstem Ereignis |
+| `OPEN_REVIEW` | `zustand-REVIEW` | PR offen, Review ausstehend |
+| `OPEN_WAITING` | `zustand-WAITING` | Warte auf externe Entscheidung (User/Maintainer) |
+| `CLOSED_COMPLETED` | `zustand-CLOSED` | Abgeschlossen mit Closeout-Beleg |
+| `CLOSED_NOT_PLANNED` | `zustand-CLOSED` | Abgeschlossen, nicht weiterverfolgt |
+| `CLOSED_DUPLICATE` | `zustand-CLOSED` | Doppelt, konsolidiert in anderes Issue |
+
+**Pflichtregeln:**
+
+1. **Kein stilles Offenbleiben.** Ein erledigter Auftrag muss geschlossen werden. "PR gemergt", "Code fertig", "RELEASE done" oder ein grüner Test allein schließen ein Issue nicht automatisch, solange der Issue-Closeout nicht geprüft wurde.
+
+2. **Closeout-Beleg.** Ein Closeout benötigt mindestens: Ergebnis, verknüpften PR/Commit oder begründeten Abschluss ohne Codeänderung, verifizierten Merge-/Abnahmebeleg soweit relevant, erfüllte Akzeptanzkriterien, verbleibende Restpunkte mit Folge-Issue und den autorisierten schließenden Akteur.
+
+3. **Nur Maintainer oder User schließen.** Ein Issue darf nur durch eine verifizierte, dazu berechtigte Maintainer-Capability oder den User geschlossen werden. Worker dürfen den Abschluss vorbereiten und Nachweise liefern (RELEASE + PR), aber nicht eigenmächtig schließen oder die Prüfung umgehen.
+
+4. **Label-Konsistenz.** CLOSED ist ein tatsächlicher GitHub-Issue-Zustand und muss mit genau einem `zustand-CLOSED`-Label synchron sein. OPEN muss genau ein `zustand-OPEN`-Label besitzen. Widerspruch, fehlender Beleg oder nicht autorisierter Close führt zu Incident/Drift und wird fail-closed behandelt.
+
+5. **Keine stille Wiederverwendung.** Geschlossene Issues werden nicht stillschweigend wiederverwendet. Neue Arbeit, neue Findings oder nachträgliche Restpunkte werden als neues verknüpftes Issue angelegt oder über einen ausdrücklich autorisierten Reopen-Vorgang behandelt.
+
+6. **Keine Automation ohne Vertrag.** Kein Issue darf durch Merge-Bot, PR-Automation, Worker-Skript oder GitHub-Auto-Close ohne den definierten Closeout-Vertrag geschlossen werden. Alle Schließpfade müssen denselben Check verwenden.
+
+## Identitaetsgebundene ID-Postfache (Issue #920, P0)
+
+Jede verifizierte Identität und jede aktive Agenten-Session benötigt ein persistentes, getrenntes Postfach. Dazu gehören mindestens User, Maintainer-Capability und alle registrierten Worker-Identitäten/Sessions.
+
+Jede eingehende Nachricht bzw. jedes handlungsrelevante Ereignis muss enthalten oder eindeutig referenzieren:
+
+- GitHub Issue-/PR-Nummer und Kommentar-/Review-/Event-ID,
+- authentifizierten Absender und verifizierte Rolle/Capability,
+- eindeutigen Empfänger bzw. Empfängerkreis,
+- Empfänger-Identitäts-ID und Session-ID, sofern sessiongebunden,
+- Nachrichtentyp und erwartete Aktion,
+- Zeitstempel und persistente Cursor-/Gelesen-Markierung,
+- Status NEW, ACKNOWLEDGED, IN_PROGRESS, WAITING, RESOLVED oder REJECTED,
+- nächsten Akteur sowie Verweis auf Antwort/Entscheidung/Closeout.
+
+**Verbindliche Regeln:**
+
+1. **Postfach-Trennung.** Ein Postfach darf nur Nachrichten anzeigen, die an diese Identität/Rolle/Session adressiert oder ausdrücklich als Broadcast markiert sind.
+
+2. **Kein globaler Kommentarstrom.** User-Eingänge, Maintainer-Aufgaben und Worker-Aufträge dürfen nicht zu einem ununterscheidbaren globalen Kommentarstrom zusammenfallen.
+
+3. **Broadcast-Regel.** Ein Broadcast wird in jedem betroffenen Postfach referenziert, aber nur einmal als ursprüngliches GitHub-Ereignis gespeichert. Keine mehrfachen, divergierenden Kopien.
+
+4. **Einmalige Verarbeitung.** Jede Nachricht wird genau einmal verarbeitet. Cursor werden erst nach vollständiger Pagination und persistierter Verarbeitung vorgeschoben. API-Ausfall, fehlende Rechte, unvollständige Pagination oder unbekannte Identität bedeuten UNKNOWN/HOLD, niemals "Postfach leer".
+
+5. **Klare Adressierung.** Jede neue handlungsrelevante Nachricht hat einen Empfänger, eine erwartete Aktion und einen nächsten Akteur. Unklare Adressierung geht in die Maintainer-Triage, nicht ins Leere.
+
+6. **Quittierung.** Jede Identität kann ihren eigenen Empfangs-/Bearbeitungsstatus quittieren. Ein ACK eines Workers ist keine Maintainer-Freigabe und umgekehrt.
+
+7. **Kein gemeinsamer Principal als Nachweis.** Gemeinsame GitHub-Logins sind kein ausreichender Identitätsnachweis. Wenn mehrere Agenten denselben Principal verwenden, müssen getrennte, nicht fälschbare Capability-/Session-Nachweise existieren. Freitext wie LIILITH, Shinon, Jenova oder MAINTAINER authentifiziert niemanden.
+
+8. **Kein lokales Löschen.** Ein Agent darf offene Nachrichten nicht durch Löschen lokaler Dateien, Sessionwechsel oder Worktree-Wechsel aus seinem Postfach entfernen. Aktive Empfänger und Claims werden aus persistenter Quelle rekonstruiert.
+
+## Technische Durchsetzung und Integrität (Issue #920, P0)
+
+- Close-, Reopen-, ACK- und Routing-Übergänge müssen server-/API-seitig autorisiert und gegen direkte REST/GraphQL-Aufrufe, GitHub UI, gh-Skripte, Actions und Automationspfade abgesichert werden.
+- Bei fehlender Identität, fehlendem Empfänger, unklarem Zustandsübergang, nicht lesbarem Board oder fehlendem Closeout-Beleg gilt fail-closed: Issue bleibt offen bzw. Nachricht bleibt sichtbar WAITING/BLOCKED.
+- Keine zweite Cloud-Test-/Build-Pipeline. Die vorhandene lokale-first-Teststrategie bleibt bestehen; ergänzt werden nur die minimal erforderlichen Autorisierungs-/Integritätschecks an den tatsächlichen Zustandsübergängen.
 
 ## Referenzen
 
