@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/issue-860-doc-anchors",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-860-doc-anchors",
+  "baseSha": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
+  "issue": 860,
+  "task": "Anker-Gate fuer interne Markdown-Links in AGENTS.md und docs/",
+  "goal": "Ein toter Anker scheitert in verify:light mit Datei und Zeile",
+  "pathAllowlist": [
+    "scripts/lib/doc-anchors.mjs",
+    "scripts/verify-docs.mjs",
+    "src/core/governance/__tests__/doc-anchors.test.ts",
+    "src/core/governance/__tests__/doc-anchors.d.ts",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "docs/CI.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/RENDER_REWORK_PLAN.md",
+    "content/narrative/contributions/2026-11-15-doc-anchors-860.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-860-doc-anchors.json",
+    ".lane-claims/tasks/governance-issue-860-doc-anchors.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b"
+}

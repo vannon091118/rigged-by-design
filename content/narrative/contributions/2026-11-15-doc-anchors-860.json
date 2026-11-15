@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-15T05:45Z-doc-anchors-860",
+  "contributionId": "doc-anchors-860-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "An der Tafel im Flur hängt seit heute ein zweiter Aushang neben dem Dienstplan: eine Liste aller Verweise im Handbuch, jeder mit der Stelle, an der er landen soll. Wer einen Verweis schreibt, dessen Ziel es nicht gibt, sieht seinen Namen am nächsten Morgen in der Prüfliste — vor der Abnahme, nicht danach. Die Belegschaft nennt es die stille Kontrolle, weil sie nie laut wird, sondern nur den Weg sperrt, der ins Leere führt.",
+  "directives": []
+}

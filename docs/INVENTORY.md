@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 419 Dateien — contract 222 · integration 117 · governance 67 · statistics 6 · performance 7.
+Summe: 420 Dateien — contract 222 · integration 117 · governance 68 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -180,6 +180,7 @@ Summe: 419 Dateien — contract 222 · integration 117 · governance 67 · stati
 | `src/core/governance/__tests__/cron-lock.test.ts` | other | contract | ja | `.cron/lib/lock.mjs` |
 | `src/core/governance/__tests__/dependency-governance.test.ts` | governance | contract | ja | `src/core/governance/error-codes.ts` |
 | `src/core/governance/__tests__/destructive-commands.test.ts` | pipeline | governance | ja | `scripts/` |
+| `src/core/governance/__tests__/doc-anchors.test.ts` | pipeline | governance | ja | `scripts/lib/doc-anchors.mjs` |
 | `src/core/governance/__tests__/gate-diagnostics.test.ts` | pipeline | governance | ja | `scripts/lib/gate-diagnostics.mjs` |
 | `src/core/governance/__tests__/gate-runner.test.ts` | pipeline | governance | ja | `scripts/lib/gate-runner.mjs` |
 | `src/core/governance/__tests__/impact-graph.test.ts` | pipeline | governance | ja | `scripts/lib/impact-graph.mjs` |
@@ -725,10 +726,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3299 |
-| Gelistete Dateien | 3299 |
+| Getrackte Dateien | 3305 |
+| Gelistete Dateien | 3305 |
 | Getrackte Ordner | 119 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (208), artifacts (1), content (1172), docs (108), packages (27), public (571), scripts (131), src (1054) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (210), artifacts (1), content (1173), docs (108), packages (27), public (571), scripts (132), src (1056) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -742,10 +743,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 105 Datei(en)
-- `.lane-claims/tasks/` — 100 Datei(en)
+- `.lane-claims/claims/` — 106 Datei(en)
+- `.lane-claims/tasks/` — 101 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1168 Datei(en)
+- `content/narrative/contributions/` — 1169 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -800,7 +801,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 67 Datei(en)
-- `scripts/lib/` — 64 Datei(en)
+- `scripts/lib/` — 65 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
 - `src/Config/__tests__/` — 1 Datei(en)
@@ -813,7 +814,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 82 Datei(en)
+- `src/core/governance/__tests__/` — 84 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -926,6 +927,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-834-835-693-694.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -1026,6 +1028,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-834-835-693-694.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -2253,12 +2256,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-city-life-peer-index.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-15-city-tile-occupancy-dedupe.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-15-dead-exports-847.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-15-doc-anchors-860.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-foreign-floor-guests.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26244 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4677 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26266 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4681 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3016,6 +3020,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/compact.mjs` — Kompakte Werkzeugausgabe: eine Bildschirmseite statt eines Logs. — gelesen: 81 Zeilen
 - `scripts/lib/dependency-change.mjs` — Eine Wahrheit fuer eine kleine, aber teure Frage: haben sich Abhaengigkeiten — gelesen: 68 Zeilen
 - `scripts/lib/dependency-fingerprint.mjs` — Dependency-Fingerprint: Installation nur, wenn sich wirklich etwas aendert. — gelesen: 82 Zeilen
+- `scripts/lib/doc-anchors.mjs` — Anker-Gate fuer interne Markdown-Links (#860). — gelesen: 145 Zeilen
 - `scripts/lib/doc-parity.mjs` — Doku-Paritaet: `AGENTS.md`, `docs/CI.md` und `docs/GOVERNANCE.md` gegen den — gelesen: 111 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 163 Zeilen
 - `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
@@ -3087,7 +3092,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
-- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 17 Zeilen
+- `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 48 Zeilen
 - `scripts/verify-impact-graph.mjs` — Impact-Graph-Gate: Der Impact-Pfad darf keinen TypeScript-Compiler laden. — gelesen: 26 Zeilen
 - `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 433 Zeilen
 - `scripts/verify-narrative-blocks.mjs` — Gate: Textbaustein-Pools und die Pflicht pro Commit. — gelesen: 178 Zeilen
@@ -3218,6 +3223,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/cron-lock.test.ts` — #835: Der Maintainer-Lock ist ein atomar angelegter Git-Ref. Ein freier Lock — gelesen: 116 Zeilen
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 91 Zeilen
 - `src/core/governance/__tests__/destructive-commands.test.ts` — Ein Resume ist kein Aufraeumen: kein Produktionsskript darf fremde Arbeit — gelesen: 60 Zeilen
+- `src/core/governance/__tests__/doc-anchors.d.ts` — Typen fuer das Anker-Gate (#860). Die Datei liegt bewusst neben ihrem Test: — gelesen: 19 Zeilen
+- `src/core/governance/__tests__/doc-anchors.test.ts` — #860: Interne Markdown-Anker muessen gegen die tatsaechlichen Heading-Slugs — gelesen: 92 Zeilen
 - `src/core/governance/__tests__/gate-diagnostics.test.ts` — Ein roter Lauf kann mehrere unabhaengige Fehler enthalten. Diese Grenzen — gelesen: 83 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact-graph.test.ts` — Der Impact-Pfad muss ohne `node_modules` laufen. Der Test belegt beide — gelesen: 57 Zeilen
@@ -3636,7 +3643,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 141 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 297 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 298 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
