@@ -86,18 +86,24 @@ export const META_FILES = Object.freeze([
 ]);
 
 /**
- * Pfade, die jede Lane mechanisch aktualisieren darf: Version, Inventur und
- * der aus der Narrative-Registry abgeleitete Roadmap-Fortschritt.
+ * Pfade, die jede Lane mechanisch aktualisieren darf: Version, Inventur, der
+ * aus der Narrative-Registry abgeleitete Roadmap-Fortschritt und die generierte
+ * Live-Dependency-Matrix.
  *
- * `docs/ROADMAP.md` bleibt inhaltlich Governance; nur die von
- * `sync-generated.mjs` geschriebene P-13-Zeile ist mechanisch und darf keine
- * Lane an der Scope-Pruefung scheitern lassen.
+ * Die Liste folgt der Eigentuemerliste in `docs/CI.md`: was ausschliesslich ein
+ * Generator schreibt, ist keine Schreibsperre zwischen Lanes (#897). Sonst
+ * blockierte jede offene Lane jede andere, sobald beide `sync-generated.mjs`
+ * laufen lassen. `docs/ROADMAP.md` bleibt inhaltlich Governance; mechanisch ist
+ * nur die dort geschriebene P-13-Zeile. Handgepflegte Dokumente - etwa
+ * `docs/GOVERNANCE.md` oder `docs/TESTING.md` - stehen bewusst nicht hier und
+ * bleiben gesperrt.
  */
 export const MECHANICAL_FILES = Object.freeze([
   'package.json',
   'pnpm-lock.yaml',
   'docs/INVENTORY.md',
   'docs/ROADMAP.md',
+  'docs/DEPENDENCY-MATRIX.md',
 ]);
 
 /** Diese Dateien fuehrt nur die Governance-Lane inhaltlich. */
