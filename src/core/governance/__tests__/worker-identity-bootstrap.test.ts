@@ -4,8 +4,7 @@
  *
  * Identitaet ist ein Betriebsmittel: drei Namen, exklusive Reservierung mit
  * Kommentar-ID, Freigabe nur mit derselben Claim-ID, Legacy-Namen als Historie.
- * Seit #693 reserviert nur ein autorisierter Autor; die lokale Datei liegt im
- * Workspace-Home und wird nur dort geschrieben.
+ * Die lokale Datei liegt im Workspace-Home und wird nur dort geschrieben.
  */
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -20,7 +19,6 @@ import {
   workspacePaths, writeIdentityFile,
 } from '../../../../scripts/lib/workspace-home.mjs';
 
-const ACTORS = { maintainers: ['maintainer'], users: ['owner'], workers: ['worker'] };
 const claimLine = (overrides = {}) => formatIdentityClaim({
   name: 'LIILITH', system: 'sys-1', workspace: 'ws-1',
   repo: 'vannon091118/rigged-by-design', session: 'sess-1', claimId: 'idc-1',
@@ -28,7 +26,7 @@ const claimLine = (overrides = {}) => formatIdentityClaim({
 });
 
 const commentsOf = (...bodies: readonly string[]) =>
-  bodies.map((body, index) => ({ id: String(index + 1), author: { login: 'worker' }, body }));
+  bodies.map((body, index) => ({ id: String(index + 1), body }));
 
 const cleanup: string[] = [];
 afterEach(() => {
@@ -51,7 +49,7 @@ describe('Worker-Identitaet', () => {
   it('reserviert exklusiv und meldet den zweiten Workspace als Konflikt', () => {
     const { reserved, conflicts } = resolveReservations(commentsOf(
       claimLine(), claimLine({ workspace: 'ws-2', claimId: 'idc-2' }),
-    ), { actors: ACTORS });
+    ));
     expect(reserved).toHaveLength(1);
     expect(reserved[0]!.workspace).toBe('ws-1');
     expect(conflicts.map((entry: { reason: string }) => entry.reason)).toContain('exclusive-claim');
@@ -60,13 +58,13 @@ describe('Worker-Identitaet', () => {
   it('gibt nur mit derselben Claim-ID frei', () => {
     const wrong = resolveReservations(commentsOf(claimLine(), formatIdentityRelease({
       name: 'LIILITH', system: 'sys-1', workspace: 'ws-1', session: 'sess-1', claimId: 'idc-x', reason: 'done',
-    })), { actors: ACTORS });
+    })));
     expect(wrong.reserved).toHaveLength(1);
     expect(wrong.conflicts.map((entry: { reason: string }) => entry.reason)).toContain('release-claim-mismatch');
 
     const right = resolveReservations(commentsOf(claimLine(), formatIdentityRelease({
       name: 'LIILITH', system: 'sys-1', workspace: 'ws-1', session: 'sess-1', claimId: 'idc-1', reason: 'done',
-    })), { actors: ACTORS });
+    })));
     expect(right.reserved).toHaveLength(0);
     expect(right.free).toContain('LIILITH');
   });
@@ -81,7 +79,7 @@ describe('Worker-Identitaet', () => {
     const { events, invalid } = parseIdentityEvents(comments);
     expect(invalid).toHaveLength(1);
     expect(events).toHaveLength(2);
-    const state = resolveReservations(comments, { actors: ACTORS });
+    const state = resolveReservations(comments);
     expect(state.conflicts.map((entry: { reason: string }) => entry.reason)).toContain('legacy-identity');
     expect(state.free).toEqual(['LIILITH', 'Shinon']);
   });
@@ -89,7 +87,7 @@ describe('Worker-Identitaet', () => {
   it('gibt die naechste freie Identitaet und keine vierte', () => {
     expect(nextFreeIdentity(commentsOf(
       claimLine(), claimLine({ name: 'Shinon', claimId: 'idc-2' }), claimLine({ name: 'Jenova', claimId: 'idc-3' }),
-    ), { actors: ACTORS })).toBeNull();
+    ))).toBeNull();
   });
 });
 

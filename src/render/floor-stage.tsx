@@ -60,6 +60,11 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       if (cancelled || !host.current) return;
       host.current.appendChild(instance.canvas);
       if (import.meta.env.DEV) (window as Window & { __pixiApp?: Application }).__pixiApp = instance;
+      // pixijs-mcp / live debugging: Application fuer CDP-basierte Inspektion global sichtbar machen.
+      if (import.meta.env.DEV) {
+        (globalThis as typeof globalThis & { __PIXI_APP__?: Application }).__PIXI_APP__ = instance;
+        (globalThis as typeof globalThis & { __PIXI_DEVTOOLS__?: { app: Application } }).__PIXI_DEVTOOLS__ = { app: instance };
+      }
       floor.current = new FloorView(instance, latest.current.view, {
         onTap: (tap) => latest.current.onTap(tap),
       });

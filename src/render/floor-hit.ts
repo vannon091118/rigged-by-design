@@ -37,7 +37,7 @@ interface FloorHit {
 }
 
 /** Ein Stadtbewohner traegt eine stabile String-Kennung, keine Guest-ID. */
-interface CityActorHit {
+export interface CityActorHit {
   readonly kind: 'cityActor';
   readonly id: string;
   readonly depth: number;

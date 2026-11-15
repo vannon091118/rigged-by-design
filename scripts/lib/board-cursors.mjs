@@ -70,7 +70,7 @@ export function normalizeCursorState(raw, fallback = {}) {
  * @param {object} input.state  aktueller State (wird nicht veraendert)
  * @param {'issues'|'pullRequests'} input.kind
  * @param {number} input.number Issue- oder PR-Nummer
- * @param {Array<{id:number|string, author?:string, createdAt?:string}>} input.comments
+ * @param {Array<{id:string|number, author?:string, createdAt?:string}>} input.comments
  * @param {boolean} input.complete  true nur bei vollstaendig gelesener Seite
  * @param {string|null} input.scannedAt
  * @returns {{state: object, entries: object[], status: string}}
@@ -92,19 +92,21 @@ export function ingestComments({ state, kind, number, comments = [], complete = 
     return { state: next, entries: [], status: CURSOR_STATUS.UNKNOWN };
   }
 
+  // Kommentar-IDs koennen numerisch oder als GraphQL-Node-ID (z.B. IC_...)
+  // vorliegen. Sie werden als String behandelt und nach createdAt sortiert.
   const ordered = [...comments]
-    .map((comment) => ({ ...comment, id: Number(comment.id) }))
-    .filter((comment) => Number.isFinite(comment.id))
-    .sort((a, b) => a.id - b.id);
+    .map((comment) => ({ ...comment, id: String(comment.id ?? '') }))
+    .filter((comment) => comment.id.length > 0)
+    .sort((a, b) => String(a.createdAt ?? '').localeCompare(String(b.createdAt ?? '')));
 
   const lastSeen = previous?.lastCommentId ?? null;
   const entries = ordered
-    .filter((comment) => (lastSeen === null ? true : comment.id > lastSeen))
+    .filter((comment) => (lastSeen === null ? true : String(comment.id) > String(lastSeen)))
     .filter((comment) => !triaged.has(triageKey(comment.id)))
     .map((comment) => ({
       kind,
       number: Number(number),
-      commentId: comment.id,
+      commentId: String(comment.id),
       author: comment.author ?? null,
       createdAt: comment.createdAt ?? null,
     }));
@@ -116,7 +118,7 @@ export function ingestComments({ state, kind, number, comments = [], complete = 
   }
 
   const newest = ordered.at(-1) ?? null;
-  const lastCommentId = newest ? Math.max(newest.id, lastSeen ?? 0) : lastSeen;
+  const lastCommentId = newest ? String(newest.id) : lastSeen;
   next[kind][key] = {
     ...(previous ?? {}),
     kind,

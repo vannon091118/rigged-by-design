@@ -47,4 +47,7 @@ if (import.meta.env.DEV) {
   void import('./debug/runtime-probe').catch((error) => {
     console.warn('[rbd-probe] Konnte Runtime Probe nicht laden:', error);
   });
+  // DEV-only: World Store fuer Debugging/Harness auf window exposen.
+  const { worldStore } = await import('./store/use-world-store');
+  (window as Window & { __rbdStore?: typeof worldStore }).__rbdStore = worldStore;
 }

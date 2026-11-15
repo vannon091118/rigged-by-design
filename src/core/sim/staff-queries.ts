@@ -14,7 +14,7 @@ import type { StaffQualification } from './staff-qualification';
  * Minimalflaeche der abgeleiteten Staff-Sicht: sie liest nur den Agentenbestand.
  * Welt und GameView erfuellen sie beide; eine zweite Wahrheit entsteht dadurch nicht.
  */
-interface StaffAgentSurface {
+export interface StaffAgentSurface {
   readonly agents: readonly StaffAgent[];
 }
 
@@ -108,10 +108,10 @@ export function staffPerformance(agents: readonly StaffAgent[]): StaffPerformanc
 }
 
 /** Feste Rollenreihenfolge der abgeleiteten Staff-Sicht; deterministisch. */
-const STAFF_VIEW_ROLES: readonly StaffRole[] = ['guard', 'cleaner', 'bartender', 'cashier', 'porter'];
+export const STAFF_VIEW_ROLES: readonly StaffRole[] = ['guard', 'cleaner', 'bartender', 'cashier', 'porter'];
 
 /** Ein Agent in der abgeleiteten Sicht: Auftrag, Blockadegrund und Stufe. */
-interface StaffAssignmentAgent {
+export interface StaffAssignmentAgent {
   readonly id: number;
   readonly task: StaffTask;
   readonly blockedReason: string;
@@ -120,7 +120,7 @@ interface StaffAssignmentAgent {
 }
 
 /** Eine Rolle in der abgeleiteten Sicht: Bestand, Einsatz, Leistung, Besetzung. */
-interface StaffAssignmentEntry {
+export interface StaffAssignmentEntry {
   readonly role: StaffRole;
   readonly availability: StaffAvailability;
   readonly performance: StaffPerformance;

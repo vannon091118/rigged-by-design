@@ -21,8 +21,6 @@ describe('Living World Mehrseed', () => {
     expect(new Set(runs.map((run) => run.metrics)).size).toBeGreaterThan(1);
     // Determinismus: derselbe Seed, dieselben Zahlen — auch nach einem Neustart.
     expect(runSeed(424242).metrics).toBe(runs[0]!.metrics);
-    // Die Summenmetrik kann bei zwei Seeds zufaellig gleich sein; der volle
-    // Entscheidungsstrom ist die belastbare Vielfaltsprobe (siehe oben).
-    expect(runs[1]!.flow).not.toBe(runs[0]!.flow);
+    expect(runs[1]!.metrics).not.toBe(runs[0]!.metrics);
   }, 120000);
 });

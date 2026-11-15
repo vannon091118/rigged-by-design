@@ -172,6 +172,6 @@ export function sendGuest(world: WorldState, guest: Guest, target: Point): boole
 }
 
 export function canPlace(world: WorldState, x: number, y: number, w: number, h: number, needsAccess = true): boolean {
-  const blockers = [world.player.position, ...world.guests.map((guest) => guest.position)];
+  const blockers = [...world.guests.map((guest) => guest.position)];
   return canPlaceAt(world.size, world.furniture, blockers, x, y, w, h, needsAccess, world.layout);
 }

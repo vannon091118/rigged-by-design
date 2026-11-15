@@ -25,11 +25,8 @@ const DAYS = 5;
 const ARTIFACT = 'artifacts/living-world/trace-424242-5d.json';
 const FAMILIES: readonly CityDecisionFamily[] = [
   'hunger', 'thirst', 'fatigue', 'routine', 'traits', 'attributes', 'skills',
-  'emotion', 'relationship', 'memory', 'social', 'environment',
+  'emotion', 'relationship', 'memory', 'social', 'money', 'environment',
 ];
-// Bargeld wird separat und kontrolliert ueber POOR_INPUT geprueft; der
-// 5-Tage-Flachlauf enthaelt nach der Naehungsregel keinen zufaelligen
-// Bargeld-Flip mehr, der diese Liste sonst nur aus Glueck erfuellen wuerde.
 
 const POOR_RESIDENT: CityResidentState = {
   npcId: 'rita', visitorId: null, name: 'Rita Kern', role: 'Wirtin', location: 'HOME', intent: 'PUB',

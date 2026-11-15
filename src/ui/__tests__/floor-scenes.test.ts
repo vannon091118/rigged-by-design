@@ -3,8 +3,8 @@
  * @error-code: ERR-3001
  *
  * Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder
- * Floor ist begehbar; der fremde Floor öffnet Boden, eigene Möbel und eigene
- * Gäste, aber keine Kisten, Flecken oder Wischer des eigenen Casinos.
+ * Floor ist begehbar; der fremde Floor öffnet seinen Boden, aber noch keine
+ * fremden Möbel- oder Gast-Commands.
  */
 import { describe, expect, it } from 'vitest';
 import type { GameView } from '../../store/types';
@@ -32,13 +32,10 @@ describe('Floor-Szenenregel', () => {
     expect(floorTapAllowed('OWN', 'cityActor' as never)).toBe(false);
   });
 
-  it('macht den fremden Floor begehbar und öffnet dort Boden, Möbel und Gäste', () => {
+  it('macht den fremden Floor begehbar und öffnet dort nur den Boden als Tap-Ziel', () => {
     expect(floorMovementAllowed('FOREIGN')).toBe(true);
-    for (const target of ['floor', 'guest', 'furniture'] as const) {
-      expect(floorTapAllowed('FOREIGN', target)).toBe(true);
-    }
-    // Kisten, Flecken und Wischer gehören dem eigenen Betrieb.
-    for (const target of ['door', 'crate', 'stain', 'mop'] as const) {
+    expect(floorTapAllowed('FOREIGN', 'floor')).toBe(true);
+    for (const target of ['door', 'guest', 'furniture', 'crate', 'stain', 'mop'] as const) {
       expect(floorTapAllowed('FOREIGN', target)).toBe(false);
     }
   });

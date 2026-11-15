@@ -143,11 +143,12 @@ export function useFloorInteraction(options: Options) {
   }, [options.view.player.position.x, options.view.player.position.y, options.view.player.pathIndex, options.view.player.path.length]);
 
   // Tastatur: derselbe Fokus wie Maus und Touch, aber ohne eigenen Zustand.
-  // Der fremde Floor traegt seine eigenen Gast-/Moebel-Aktionen im Fremd-Menue;
-  // E und Enter oeffnen dort dieselbe Karte wie ein Tap.
+  // Der fremde Floor hat noch keine eigenen Gast-/Moebel-Commands; Maus und
+  // Touch sperren dieselben Ziele, E bleibt deshalb dort ebenfalls still.
   useFloorKeyboard({
     view: options.view,
-    enabled: options.enabled && floorMovementAllowed(options.view.scene.kind),
+    enabled: options.enabled && floorMovementAllowed(options.view.scene.kind)
+      && options.view.scene.kind !== 'FOREIGN',
     blocked: options.blocked,
     selection,
     tap,

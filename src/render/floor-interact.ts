@@ -22,8 +22,5 @@ export function handleFloorInteract(action: MenuAction): void {
         case 'TALK': worldStore.talk(targetId!); break;
         case 'CALM': worldStore.calm(targetId!); break;
         case 'FIGHT': worldStore.fightBrawl(targetId!); break;
-        // Der Weg zum Platz laeuft ueber den normalen Approach; hier wird nur
-        // bestaetigt, dass die Figur steht. Ein Sitzzustand existiert nicht.
-        case 'FOREIGN_SIT': worldStore.interaction.notify('Du stehst an deinem Platz im fremden Haus.'); break;
     }
 }

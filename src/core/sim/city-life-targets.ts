@@ -90,3 +90,8 @@ export function locationForIntent(
   return 'HOME';
 }
 
+export function presentAt(
+  peers: readonly CityResidentState[], location: CityLifePlace, excludeId?: string,
+): readonly string[] {
+  return presentIn(buildCityPeerIndex(peers), location, excludeId);
+}

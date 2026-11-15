@@ -15,8 +15,6 @@ import { roleForAuthor } from './work-claim.mjs';
 
 /** Rollen, die einen Arbeits-Claim setzen, freigeben oder uebergeben duerfen. */
 const CLAIM_ROLES = Object.freeze(['WORKER', 'MAINTAINER', 'USER']);
-/** Nur diese Rollen duerfen fremde Claims freigeben, uebergeben oder verdraengen. */
-const OVERRIDE_ROLES = Object.freeze(['MAINTAINER', 'USER']);
 
 /** Ein Claim-Kommentar; Scope und Plan bleiben als Rohtext erhalten. */
 const CLAIM_LINE = /^CLAIM\s+\[([^\]]+)\]\s+(\S+)\s*(.*)$/i;
@@ -143,34 +141,12 @@ export function evaluateIssueClaim({ comments = [], agent = '', now = Date.now()
       });
       continue;
     }
-    const overrides = OVERRIDE_ROLES.includes(role);
     if (event.kind === 'claim') {
-      // Ein zweiter Claim bei laufendem Claim ist ein Konflikt, keine Uebernahme.
-      if (active && active.claimId !== event.claimId && !overrides) {
-        rejected.push({
-          kind: event.kind, claimId: event.claimId, author: event.author || null, role,
-          reason: 'claim-conflict', holder: active.agent, holderClaimId: active.claimId,
-        });
-        continue;
-      }
       active = event;
-    } else if (event.kind === 'release' || event.kind === 'handoff') {
-      if (!active) {
-        rejected.push({ kind: event.kind, claimId: event.claimId, author: event.author || null, role, reason: 'release-without-claim' });
-        continue;
-      }
-      if (active.claimId !== event.claimId) {
-        rejected.push({ kind: event.kind, claimId: event.claimId, author: event.author || null, role, reason: 'release-claim-mismatch' });
-        continue;
-      }
-      // #693: Ein Worker gibt nur den eigenen Claim frei oder weiter; fremde
-      // Claims bleiben unberuehrt. Maintainer und User duerfen entscheiden.
-      if (!overrides && active.author && event.author && active.author !== event.author) {
-        rejected.push({ kind: event.kind, claimId: event.claimId, author: event.author, role, reason: 'not-claim-holder' });
-        continue;
-      }
-      if (event.kind === 'release') active = null;
-      else active = { ...active, agent: event.agent, handoffAt: event.at };
+    } else if (event.kind === 'release') {
+      if (active && active.claimId === event.claimId) active = null;
+    } else if (event.kind === 'handoff') {
+      if (active && active.claimId === event.claimId) active = { ...active, agent: event.agent, handoffAt: event.at };
     }
   }
   if (!active) {

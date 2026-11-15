@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fef8c39db7f4e42fd125d391207dafc0e7e95ad0f7b80537952fc331809820e6",
+  "contentHash": "sha256:9424e64a99782c481a3030a2e4dc71e5419b40361aae1affa6fceab995c9f4eb",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -2972,28 +2972,6 @@
       "source": "content/narrative/contributions/2026-11-14-board-status-dokumentation.json"
     },
     {
-      "contributionId": "board-sync-authorization-01",
-      "turnId": "2026-11-15T04:45Z-board-sync-authorization",
-      "agentId": "jenova",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "rumor",
-      "function": "warn",
-      "contexts": [
-        "scheduler"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Kontor liegt jetzt nur noch ein Buch, und wer es aufschlaegt, schreibt zuerst seinen Namen hinein. Zwei Haende am selben Blatt gibt es nicht mehr; das Siegel bricht nur, wer es selbst gesetzt hat. Die Angestellten tuscheln, dass der alte Streit um die doppelte Abrechnung damit endlich ruht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-board-sync-authorization.json"
-    },
-    {
       "contributionId": "boundary-und-beziehungen-01",
       "turnId": "2026-11-02T23:20Z-boundary-und-beziehungen",
       "agentId": "buffy",
@@ -3618,28 +3596,6 @@
       "text": "Am Ende des Tresens wird ein Platz frei, als haette jemand darauf gewartet, dass du dich setzt. Zwischen zwei Gespraechen bleibt genug Zeit fuer eine Frage, die laenger haelt als der Abend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-city-encounter-opening.json"
-    },
-    {
-      "contributionId": "city-encounter-place-776",
-      "turnId": "2026-11-15T04:20Z-city-encounter-place",
-      "agentId": "jenova",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "city-scene",
-      "function": "describe",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Ein Gespraech beginnt nicht auf der Strasse, sondern an der Tuer: Wer im Kiez ankommt, findet nur die Leute, die auch dort stehen — naeher als einen Schritt, hoechstens zu dritt. Zieht einer weiter, bleibt das Gespraech zurueck, wo es angefangen hat. Naehe allein macht noch keinen Kontakt, ein gemeinsamer Ort schon.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-city-encounter-place.json"
     },
     {
       "contributionId": "city-encounter-roster-01",
@@ -8492,28 +8448,6 @@
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
     },
     {
-      "contributionId": "dead-exports-847-01",
-      "turnId": "2026-11-15T05:15Z-dead-exports-847",
-      "agentId": "jenova",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "rumor",
-      "function": "warn",
-      "contexts": [
-        "scheduler"
-      ],
-      "tone": "trocken",
-      "mood": "argwoehnisch",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Lagerraum haengen jetzt Zettel an neunzehn Werkzeugen, die niemand mehr in die Hand nimmt: kein Griff passt, keine Werkbank ruft danach. Der Verwalter hat sie stillgelegt statt weggeworfen, und an der Tafel steht nur eine Zeile darueber, wer sie zuletzt gehalten hat. Die Belegschaft nimmt es als Ordnung, nicht als Verlust.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-dead-exports-847.json"
-    },
-    {
       "contributionId": "determinism-computed-01",
       "turnId": "2026-11-14T06:35Z-determinism-computed-01",
       "agentId": "liilith",
@@ -9050,28 +8984,6 @@
       "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
-    },
-    {
-      "contributionId": "foreign-floor-guests-01",
-      "turnId": "2026-11-15T04:35Z-foreign-floor-guests",
-      "agentId": "jenova",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "city-scene",
-      "function": "describe",
-      "contexts": [
-        "start"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "distanz",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im fremden Saal sitzt niemand zufaellig: Wer am Tisch lehnt, hat seinen Platz von der ersten Tür an, und beim zweiten Besuch sind es dieselben Gesichter. Die Stühle sagen, wie viele noch frei sind; wer sich dazustellen will, liest die Zahl, bevor er den Mund aufmacht.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-foreign-floor-guests.json"
     },
     {
       "contributionId": "foreign-walkable-01",
@@ -26217,28 +26129,6 @@
       "text": "Rita zog die Werkzeugwahl aus dem Auftragslauf heraus, weil ein Wischer kein Schritt ist, sondern eine Voraussetzung. Die Inventur zaehlte danach wieder die Dateien, die wirklich im Baum lagen, und der laengere Testlauf wartete auf Git statt auf ein zu kurzes Zeitfenster.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json"
-    },
-    {
-      "contributionId": "world-test-soak-timeout-01",
-      "turnId": "2026-11-15T04:30Z-world-test-soak-timeout",
-      "agentId": "liilith",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "rumor",
-      "function": "warn",
-      "contexts": [
-        "scheduler"
-      ],
-      "tone": "trocken",
-      "mood": "neugierig",
-      "relationship": "neutral",
-      "personaRefs": [],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Im Prüfraum steht eine alte Uhr, die jeden Tag genau siebenhundert Schläge zählt. Wer sie laufen lässt, sieht erst nach dem Tageswechsel, ob die Kasse stillhält; wer sie zu früh anhält, hält nur ein Bild an. Die Uhr gehört nicht ins Spiel, aber sie erinnert daran: Ein voller Lauf braucht Zeit, nicht einen kürzeren Tag.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-world-test-soak-timeout.json"
     }
   ]
 }

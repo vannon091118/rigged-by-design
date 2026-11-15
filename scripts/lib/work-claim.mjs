@@ -98,25 +98,15 @@ export function normalizeActors(actors = {}) {
   });
 }
 
-/**
- * Alle Rollen eines verifizierten Kommentar-Autors. Mehr als eine Rolle heisst:
- * der Principal ist nicht getrennt und kann keine Maintainer-Entscheidung belegen
- * (#694). Die Reihenfolge ist stabil und deckt sich mit `roleForAuthor`.
- */
-export function rolesForAuthor(author, actors = {}) {
-  const policy = normalizeActors(actors);
-  const login = String(author ?? '').trim().toLowerCase();
-  if (!login) return [];
-  const roles = [];
-  if (policy.maintainers.includes(login)) roles.push('MAINTAINER');
-  if (policy.users.includes(login)) roles.push('USER');
-  if (policy.workers.includes(login)) roles.push('WORKER');
-  return roles;
-}
-
 /** Verifizierter Kommentar-Autor zu Rolle; Text im Body zaehlt nie. */
 export function roleForAuthor(author, actors = {}) {
-  return rolesForAuthor(author, actors)[0] ?? 'UNKNOWN';
+  const policy = normalizeActors(actors);
+  const login = String(author ?? '').trim().toLowerCase();
+  if (!login) return 'UNKNOWN';
+  if (policy.maintainers.includes(login)) return 'MAINTAINER';
+  if (policy.users.includes(login)) return 'USER';
+  if (policy.workers.includes(login)) return 'WORKER';
+  return 'UNKNOWN';
 }
 
 /**
@@ -132,10 +122,6 @@ export function describeActorPolicy(actors = {}) {
   );
   if (shared.length > 0) findings.push(`shared-principal:${shared.join(',')}`);
   if (policy.maintainers.length === 0) findings.push('no-maintainer-actor');
-  // #694: Ein Maintainer-Login, der zugleich Worker ist, trennt die Rollen nicht.
-  if (policy.maintainers.length > 0 && policy.maintainers.every((login) => policy.workers.includes(login))) {
-    findings.push('no-exclusive-maintainer-principal');
-  }
   if (policy.workers.length === 0) findings.push('no-worker-actor');
   return findings;
 }
@@ -207,15 +193,7 @@ export function evaluateWorkState(comments = [], { actors = {}, claimId = null }
       continue;
     }
     seen.add(replayKey);
-    const roles = rolesForAuthor(event.author, policy);
-    const role = roles[0] ?? 'UNKNOWN';
-    // #694: Ein Principal, der zugleich Worker ist, belegt keine
-    // Maintainer-Entscheidung. Getrennte Principals sind die Voraussetzung;
-    // solange sie fehlen, bleibt jedes Verdikt wirkungslos.
-    if (CONTROL_KINDS.includes(event.kind) && roles.length > 1) {
-      rejected.push(rejectionOf(event, role, 'shared-principal-not-authorized'));
-      continue;
-    }
+    const role = roleForAuthor(event.author, policy);
     if (!rolesFor(event.kind).includes(role)) {
       rejected.push(rejectionOf(event, role, role === 'UNKNOWN' ? 'unknown-author' : 'unauthorized-author'));
       continue;

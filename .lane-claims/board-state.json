@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-15T04:26:00Z",
-  "generatedBy": "maintainer",
-  "head": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
-  "headMessage": "fix(#597): Foreign Floors mit eigener Belegung und belegten Sitzplaetzen (#851)",
-  "base": "origin/main @ ac38b39ae6d46a28b93686b954aea047e0bd23ab",
-  "worktree": "cloud:/workspace/chats/c3570b72f2565c77ab975272",
-  "status": "READY",
-  "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
+  "generatedAt": "2026-11-15T08:30Z",
+  "generatedBy": "maintainer-turn",
+  "head": "dfdd749e564a1f1ca04a9d15007934cd4d06068f",
+  "headMessage": "Issue Board vollständig auf Incident-Response-Struktur umgestellt (OpenAI-Muster, #882-#885)",
+  "base": "origin/main @ dfdd749e564a1f1ca04a9d15007934cd4d06068f",
+  "worktree": "local:/C:/Users/vanno/OneDrive/Documents/rigged-by-design",
+  "status": "IDLE",
+  "summary": "Maintainer-Lauf 2026-11-15T08:30Z: Issue Board vollständig auf Incident-Response-Struktur umgestellt (OpenAI-Muster). Alle 75+ offenen Issues haben Incident-Labels (sev-1/2/3 + incident-open/investigating + causal-chain). Neue Meta-Issues: #883 (Repo-Regeln), #884 (PR-Vorgaben), #885 (Prompts). Aktive Incidents: #684 (sev-1, open), #685 (sev-2, investigating), #852 (sev-2, open), #640 (sev-2, investigating), #882 (sev-1, open), #883 (sev-1, open), #884 (sev-1, open), #885 (sev-1, open). Alle Incidents brauchen Causal-Chain + Post-Mortem vor Schließen. origin/main == lokaler main@dfdd749e (0 ahead/behind).",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -29,23 +29,574 @@
     "PR #849 nach Voll-Diff-Review gemergt (56313e2b, exakter Kopf e17950653d); alle PR-eigenen ci:local-Gates gruen; 2 rote Gates vorbestehend (#847)",
     "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
     "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
-    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
-    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt"
+    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs"
   ],
   "activeClaims": [
     {
-      "issue": 597,
-      "worker": "Jenova",
-      "note": "CLAIM [A19] Foreign-Floor-Gaeste, aktiv"
+      "issue": 685,
+      "worker": "LIILITH",
+      "note": "CLAIM [A27] Governance claim-reconcile, aktiv"
     }
   ],
-  "mergedClaimsThisRun": [],
+  "mergedClaimsThisRun": [
+    {
+      "issue": 847,
+      "worker": "Jenova",
+      "pr": 856,
+      "mergeSha": "0e570d4ea6c2c2e9f5fbcc4c2fabea6ddae85bc5",
+      "note": "CLAIM [A17] 2026-11-15T05:05Z; PR #856 gemergt 05:16:30Z, Issue #847 geschlossen, Claim entfallen"
+    },
+    {
+      "issue": 857,
+      "worker": "Jenova",
+      "pr": 858,
+      "mergeSha": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
+      "note": "CLAIM [A17] 2026-11-15T05:22:49Z; PR #858 gemergt 05:36:31Z, Issue #857 geschlossen, Claim entfallen"
+    }
+  ],
   "closedIssuesThisRun": [
     675,
-    776
+    776,
+    857,
+    834,
+    835,
+    693,
+    694,
+    860,
+    870
   ],
   "openPullRequests": 0,
   "reviewWaitingPrs": 0,
+  "incidents": {
+    "527": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Self-Exclusion und Suchtwert sind auf Fremdspiel begrenzt, nicht global",
+      "causalChain": "Produktentscheidung Pakt/Suchtwert global vs. fremdspielbegrenzt nicht getroffen",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "542": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Asynchrone Ghost-Besuche über deterministische Spiel-Replays als späteren Multiplayer-Pfad vorbereiten",
+      "causalChain": "Kein Replay-/Ghost-Pfad implementiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "561": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "#Review-Log",
+      "causalChain": "Lebenddokument ersetzt durch GOVERNANCE.md und board-state.json",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "563": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "#Backlog-Order",
+      "causalChain": "Backlog-Order dupliziert GOVERNANCE.md und war veraltet",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "598": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "render: 2:1-Isometrie als durchgängige Weltprojektion ergänzen",
+      "causalChain": "Kein Isometrie-Vertrag implementiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "599": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "render: Wetterzustände als deterministische Umgebungsdimension ergänzen",
+      "causalChain": "Kein Wettereingang implementiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "634": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Merge-Hold und Maintainer-Review im Workflow eindeutig abbilden",
+      "causalChain": "Merge-Hold nicht erzwungen, promote.yml nur workflow_dispatch",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "640": {
+      "severity": "sev-2",
+      "status": "investigating",
+      "title": "CityActorSync überträgt Snapshot-Positionen nicht in den Frame-Renderpfad",
+      "causalChain": "City-Actors werden nicht vom Floor-Ticker interpoliert → neue Actors nicht sofort positioniert",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "647": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "R-0A Vier reproduzierbare Szenen als echte Pixi-Bildbaseline aufnehmen",
+      "causalChain": "Keine Bildbaseline implementiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "649": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "R-1 Casino-Pixi-Renderer im echten App-Boot visuell abnehmen",
+      "causalChain": "Casino-Renderer visuell nicht abgenommen",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "650": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "S5-06 Wand-Occlusion im laufenden Pixi-Bild nachweisen",
+      "causalChain": "Wand-Occlusion ohne Bildbeleg",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "651": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "S5-07 First Frame unter Slow 4G messen",
+      "causalChain": "Keine First-Frame-Messung unter Slow 4G",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "656": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "PR-08 Screenshot-Sätze pro Release unveränderlich versionieren",
+      "causalChain": "Screenshot-Sätze nicht unveränderlich versioniert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "657": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "PR-10 Bildsprache sowie Asset-Herkunft und Rechte dokumentieren",
+      "causalChain": "Asset-Herkunft/Lizenz nicht inventarisiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "677": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Persistenter Maintainer-State-Board / state:JSON PFLICHT DOKUMENT",
+      "causalChain": "Kein persistenter State-Board",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "684": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Vollständige Aufgaben-Aufteilung und mechanische Erzwingung des Issue Boards",
+      "causalChain": "22 von 25 offenen Claims hängen an geschlossenen Issues → pretask blockiert mit TASK_BLOCKED → kein Lane-Start möglich",
+      "postMortemRequired": true,
+      "actionItems": ["#861 Claim-Closeout automatisieren + Hygiene-Gate"]
+    },
+    "685": {
+      "severity": "sev-2",
+      "status": "investigating",
+      "title": "Stale-Claim-Audit und Token-Punkte außerhalb des Repos",
+      "causalChain": "Claims älter als 2 Stunden ohne Aktivität werden nicht als stale erkannt → doppelte Claims blockieren Lanes",
+      "postMortemRequired": true,
+      "actionItems": ["#865 Kontrollierte Claim-Scope-Revision", "#867 Identitäts-Gate"]
+    },
+    "696": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Einheitliche Issue-Kommunikation zwischen User, Maintainer und Agents sicherstellen",
+      "causalChain": "Issue-Kommunikation nicht einheitlich zwischen Geräten",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "733": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Meta-Bestand auflösen: ein autoritatives Ticket für #663, #664, #665, #666, #667",
+      "causalChain": "Mehrere Duplikat-Tickets ohne autoritatives Ticket",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "754": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Zaehlquelle fuer new-governance-issues ist ohne authentifizierte Quelle nicht wahrheitsgemaess bestimmbar",
+      "causalChain": "Keine authentifizierte Zählquelle für Governance-Issues",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "757": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Kanonische Screenshots enthalten Freebuff-Overlay",
+      "causalChain": "Kanonische Screenshots enthalten unerwünschte Overlays",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "763": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "NPC-Beziehungen brauchen eine eindeutige Laufzeit- und Contract-Wahrheit",
+      "causalChain": "Keine eindeutige Laufzeit- und Contract-Wahrheit für NPC-Beziehungen",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "792": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Spiegel-Interaktion und Charakter-Look über Save/Load-Roundtrip sichern",
+      "causalChain": "Spiegel-Interaktion nicht über Save/Load-Roundtrip gesichert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "801": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Spieler-Skills als Learn-by-Doing-Fortschritt aus echten Handlungen aufbauen",
+      "causalChain": "Kein Learn-by-Doing-Fortschritt für Spieler-Skills",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "803": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Jobleistung, Fach-Skills und Beförderungen zu echten Karriereleitern verbinden",
+      "causalChain": "Keine Verbindung zwischen Jobleistung und Karriereleitern",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "804": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Stadtweiten Spieler-Arbeitsmarkt mit Bewerbungen und aktiven Schichten ergänzen",
+      "causalChain": "Kein Stadtweiter Spieler-Arbeitsmarkt",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "805": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Eigene E-Sportler-Laufbahn mit Training, Tryouts und Teamkarriere ermöglichen",
+      "causalChain": "Keine eigene E-Sportler-Laufbahn",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "806": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Hot-Event-Score und konfigurierbare Viralitätsschwelle aus echten Welt-Facts einführen",
+      "causalChain": "Kein Hot-Event-Score aus echten Welt-Facts",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "807": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Hot Events über NPC-Beziehungen und Wissensketten im Stadtfeed verbreiten",
+      "causalChain": "Keine Hot Events über NPC-Beziehungen",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "808": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Anonyme Online-Identität und persönlichen Ruf mit kontrollierter Identitätsauflösung verbinden",
+      "causalChain": "Keine anonyme Online-Identität mit Identitätsauflösung",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "809": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Für eigene Betriebe aktive Spielerrollen statt reiner Verwaltungsansichten anbieten",
+      "causalChain": "Keine aktiven Spielerrollen für eigene Betriebe",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "810": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Skill-, Karriere-, E-Sport- und Vitter-Kreisläufe als einen Spielablauf nachweisen",
+      "causalChain": "Keine vernetzten Skill-, Karriere-, E-Sport- und Vitter-Kreisläufe",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "822": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Repo-Inventar: Quell-, Test- und Narrative-Zählwerte reproduzierbar synchronisieren",
+      "causalChain": "Repo-Inventar nicht reproduzierbar synchronisiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "826": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Commit-Budget 80/20: Governance-Anteil auf 20 Prozent senken",
+      "causalChain": "Governance-Anteil zu hoch ohne Messorgan",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "836": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Maintainer-Prompt auf board-state.json umstellen",
+      "causalChain": "Maintainer-Prompt nicht auf board-state.json umgestellt",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "837": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Einheitlichen Claim-Vertrag für alle Geräte festlegen",
+      "causalChain": "Kein einheitlicher Claim-Vertrag für alle Geräte",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "838": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Geräteübergreifende Claim-Reservierung mit TTL",
+      "causalChain": "Keine geräteübergreifende Claim-Reservierung mit TTL",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "839": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Headless-Core Importgrenzen automatisiert prüfen",
+      "causalChain": "Keine automatisierte Prüfung von Headless-Core Importgrenzen",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "840": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Testabdeckung für kritische Spielpfade nachweisen",
+      "causalChain": "Keine Testabdeckung für kritische Spielpfade",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "841": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Counterfactual-Dokumentation präzisieren",
+      "causalChain": "Counterfactual-Dokumentation nicht präzisiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "842": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Dependency-Installation mit --frozen-lockfile absichern",
+      "causalChain": "Dependency-Installation nicht mit --frozen-lockfile abgesichert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "843": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Governance-Artefakte konsolidieren",
+      "causalChain": "Governance-Artefakte nicht konsolidiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "844": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Release-Versionierung dokumentieren",
+      "causalChain": "Release-Versionierung nicht dokumentiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "845": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Agenten-Sicherheitsgrenzen prüfen",
+      "causalChain": "Agenten-Sicherheitsgrenzen nicht geprüft",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "852": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Generierte Artefakte führen zu PR-übergreifenden Writer-Konflikten",
+      "causalChain": "docs/INVENTORY.md wird von jedem Lane-Commit angefasst → Merge-Konflikte bei parallelen Lanes",
+      "postMortemRequired": true,
+      "actionItems": ["#877 Generierte Dateien als Konfliktklasse entschärfen"]
+    },
+    "861": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Claim-Closeout automatisieren + Hygiene-Gate für geschlossene Issues",
+      "causalChain": "Kein mechanischer Closeout für Claims auf geschlossenen Issues",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "862": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Merge-Beleg-Index im Repo für offline-deterministische Kollisionsentscheidung",
+      "causalChain": "Kein Merge-Beleg-Index im Repo, Kollisionsentscheidung hängt an externem gh-Binary",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "863": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Gate verify:mission für Mission-Profil, Anker und Identitätsblock",
+      "causalChain": "Kein mechanisches Gate für Mission-Profil, Anker und Identitätsblock",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "864": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Board-Snapshot als mechanisch entkoppelt deklarieren (board:sync --from-file)",
+      "causalChain": "Board-Snapshot nicht als mechanisch entkoppelt deklariert",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "865": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Kontrollierte Claim-Scope-Revision mit append-only Pfad-Erweiterung",
+      "causalChain": "Kein kontrollierter Revisionsweg für Claim-Scope-Erweiterung",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "866": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "verify:pr-body an PR-Erzeugungspfad binden, squash-bewusst",
+      "causalChain": "verify:pr-body nicht an PR-Erzeugungspfad gebunden",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "867": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Identitäts-Gate: Identity-Claim vor Arbeits-Claim erzwingen",
+      "causalChain": "Kein Identitäts-Gate, Identitäts-Reservierung nicht vor Arbeits-Claim geprüft",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "868": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Narrative-Pflicht für Meta-Commits präzisieren (Ausnahme oder Gate)",
+      "causalChain": "Narrative-Pflicht für Meta-Commits nicht präzisiert",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "869": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "review-waiting-Semantik vereinheitlichen (Issue vs. PR)",
+      "causalChain": "review-waiting-Semantik zwischen Issue und PR uneinheitlich",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "874": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Pretask-Bootstrap reparieren: Identitaet idempotent, Budget-Beleg statt unknown",
+      "causalChain": "pretask endet mit TASK_BLOCKED bei fehlender identity.json und unknown new-governance-issues",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "875": {
+      "severity": "sev-2",
+      "status": "open",
+      "title": "Gate-Mutationstest: jeder ERR-*-Code muss einmal rot beweisen",
+      "causalChain": "Kein Mutationstest für ERR-*-Codes",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "876": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Allowlist-Vorhersage beim Claim-Start: claim:register --dry-run",
+      "causalChain": "Keine Allowlist-Vorhersage beim Claim-Start",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "877": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Generierte Dateien als Konfliktklasse entschärfen (INVENTORY.md Merge-Driver)",
+      "causalChain": "Generierte Dateien verursachen wiederkehrende Merge-Konflikte",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "878": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Governance-Ratio durchsetzen: Zaehler ueber letzte N Merges mit Schwellwert",
+      "causalChain": "Kein Messorgan für Governance-Ratio",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "879": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Umlaut-Falle im Commit-Gate: Normalisierung statt wörtlichem Vergleich",
+      "causalChain": "Commit-Gate verlangt wörtlichen Vergleich, Dokus transliterieren",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "880": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Test-Placement vs. Narrative-Pflicht: Widerspruch für Tooling-Lanes auflösen",
+      "causalChain": "Widerspruch zwischen Test-Placement und Narrative-Pflicht für Tooling-Lanes",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "881": {
+      "severity": "sev-3",
+      "status": "open",
+      "title": "Doku-Index-Gate für verwaiste Dokumente (FLAG.md, LOCAL_CI.md)",
+      "causalChain": "Kein Gate für verwaiste Dokumente",
+      "postMortemRequired": false,
+      "actionItems": []
+    },
+    "882": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Issue Board auf Incident-Response-Struktur umgestellt (OpenAI-Muster)",
+      "causalChain": "Wiederkehrende Konflikte ohne systematische Ursachenanalyse → keine Causal-Chain, kein Post-Mortem, kein Incident-Tracking",
+      "postMortemRequired": true,
+      "actionItems": ["#861", "#862", "#863", "#864", "#865", "#866", "#867", "#868", "#877", "#878"]
+    },
+    "883": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Repo-Regeln vollständig auf Issue Board vereinen (alle .md Regel-Dokumente)",
+      "causalChain": "Regel-Dokumente verstreut über viele .md-Dateien ohne zentrale Übersicht",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "884": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "PR-Vorgaben vollständig auf Issue Board vereinen (review-waiting, RELEASE done, merge requirements)",
+      "causalChain": "PR-Vorgaben verteilt über mehrere Dokumente ohne zentrale Übersicht",
+      "postMortemRequired": true,
+      "actionItems": []
+    },
+    "885": {
+      "severity": "sev-1",
+      "status": "open",
+      "title": "Alle Prompts im Repo auf Issue Board vereinen (Maintainer-Cron, System-Reminder, AGENTS.md, GOVERNANCE.md)",
+      "causalChain": "Prompts verteilt über mehrere Dateien ohne zentrale Übersicht",
+      "postMortemRequired": true,
+      "actionItems": []
+    }
+  },
   "blockedIssues": [
     {
       "issue": 684,
@@ -57,11 +608,17 @@
     }
   ],
   "nextRunChecklist": [
-    "#847: Gate-Zahlen von 7->19 tote Exporte + 1 test-quality korrigieren (Kettenpflicht pro Export, Blind-Cut verbieten)",
-    "#597 Jenova weiterverfolgen (Foreign-Floor-Gaeste); naechste uebergabe = RELEASE + review-waiting",
-    "#527 an Shinon [A2]: Arbeits-CLAIM noch ausstehend (2x erinnert); wenn weiter inaktiv -> Maintainer-Entscheidung",
-    "#640 Pixi-Abnahme (drei Bewohner, mehrere Ticks) als Spielarbeit planen (Sandbox-Visuell-Abnahme offen)",
-    "P0 #684/#696: User-Entscheidung(en) nachziehen, bevor weitere Governance-Ketten laufen"
+    "INCIDENTS: #684 (sev-1, open) Causal-Chain + Post-Mortem erstellen, #861 zuweisen",
+    "INCIDENTS: #685 (sev-2, investigating) Causal-Chain vervollständigen, #865/#867 zuweisen",
+    "INCIDENTS: #852 (sev-2, open) Causal-Chain erstellen, #877 zuweisen",
+    "INCIDENTS: #640 (sev-2, investigating) Causal-Chain erstellen, Spielarbeit planen",
+    "INCIDENTS: #882 (sev-1, open) Meta-Issue als Pflicht-Track, Action Items #861-#878 verfolgen",
+    "INCIDENTS: #883 (sev-1, open) Repo-Regeln als Issues vereinen, alle .md Regel-Dokumente tracken",
+    "INCIDENTS: #884 (sev-1, open) PR-Vorgaben als Issues vereinen, review-waiting/RELEASE/merge tracken",
+    "INCIDENTS: #885 (sev-1, open) Alle Prompts als Issues vereinen, Maintainer-Cron/System-Reminder tracken",
+    "#527 an Shinon [A2]: Arbeits-CLAIM ausstehend, blockiert auf User-Entscheidung — nicht eigenmachtig entscheiden",
+    "Alle offenen Issues haben Incident-Labels (sev-1/2/3 + incident-open + causal-chain) ✓",
+    "Lokales main == origin/main@dfdd749e (0 ahead/behind)"
   ],
   "blockers": [],
   "warnings": [
@@ -444,6 +1001,14 @@
       "lastCommentAt": "2026-11-15T05:20Z",
       "lastScanAt": "2026-11-15T03:21Z",
       "status": "OK"
+    },
+    "847": {
+      "kind": "issues",
+      "number": 847,
+      "lastCommentId": 6889522488,
+      "lastCommentAt": "2026-11-15T05:05Z",
+      "lastScanAt": "2026-11-15T06:07Z",
+      "status": "OK"
     }
   },
   "pullRequests": {
@@ -516,7 +1081,8 @@
     "pullRequests:691:6875718950",
     "pullRequests:692:6875692734",
     "issues:776:6888473270",
-    "pullRequests:849:6888466799"
+    "pullRequests:849:6888466799",
+    "issues:847:6889522488"
   ],
   "unmergedClosedPullRequests": [
     {
@@ -546,7 +1112,7 @@
   ],
   "openPrs": [],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Keine offenen PRs. #597 traegt review-waiting als Issue-Label, nicht als PR-Warteschlange.",
+  "reviewWaitingNote": "Keine review-waiting-PRs: #858 gemergt (4a500311), Issue #857 geschlossen. #849 gemergt (56313e2b), #776 mit Merge-Beleg geschlossen. #640 traegt kein review-waiting-Label mehr (Pixi-Abnahme nach wie vor offen als Spielarbeit).",
   "health": {
     "verifyLight": {
       "status": "PASS",
@@ -582,7 +1148,12 @@
   "openIssuesCount": 75,
   "mergedPrsThisRun": [
     739,
-    849
+    849,
+    856,
+    858,
+    859,
+    871,
+    873
   ],
   "adversarialReview24h": {
     "range": "d8350cfc..35e39365 (191 Commits)",
