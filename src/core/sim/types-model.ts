@@ -125,6 +125,11 @@ export interface PlayerJobState {
 
   lastWorkDay: number;
 
+  /** Aktuelle Karriere-Rangstufe (1 = Anfänger, 2+ = befördert). Teil des Save-Zustands. */
+  careerRank: number;
+
+  /** Leistungspunkte der letzten abgeschlossenen Schichten (0-100 je Schicht). */
+  performanceHistory: number[];
 }
 
 export interface PlayerJobTask {
