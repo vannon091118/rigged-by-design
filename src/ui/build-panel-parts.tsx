@@ -4,8 +4,8 @@ import { remodelRequirements } from '../core/sim/remodel';
 import type { StaffRole, TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
-import { PERFORMANCE_LABEL, ROLE_LABEL, TASK_LABEL } from './staff-labels';
-import { staffPerformance } from '../core/sim/staff-queries';
+import { AVAILABILITY_LABEL, PERFORMANCE_LABEL, ROLE_LABEL, TASK_LABEL } from './staff-labels';
+import { staffAssignmentView, staffPerformance } from '../core/sim/staff-queries';
 import { qualificationLabel } from '../core/sim/staff-qualification';
 
 interface StaffOffer {
@@ -98,9 +98,16 @@ export function DisputeList(props: { view: GameView; onCalm: (id: number) => voi
 }
 
 export function StaffStatus(props: { view: GameView }) {
-  if (props.view.agents.length === 0) return null;
+  const assignments = staffAssignmentView(props.view);
   return (
     <div className="staff-status-list">
+      {assignments.map((entry) => (
+        <div key={entry.role} className="staff-role-status">
+          <strong>{ROLE_LABEL[entry.role]}</strong>
+          <span>{AVAILABILITY_LABEL[entry.availability]}</span>
+          <small className="staff-review">Leistung: {PERFORMANCE_LABEL[entry.performance]}</small>
+        </div>
+      ))}
       {props.view.agents.map((agent) => (
         <div key={agent.id} className="staff-status">
           <strong>{ROLE_LABEL[agent.role]}</strong>
