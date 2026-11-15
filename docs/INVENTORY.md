@@ -735,10 +735,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3370 |
-| Gelistete Dateien | 3370 |
+| Getrackte Dateien | 3372 |
+| Gelistete Dateien | 3372 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (8), .lane-claims (237), .lanes (1), artifacts (1), content (1180), docs (108), packages (27), public (571), scripts (145), src (1072) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (8), .lane-claims (239), .lanes (1), artifacts (1), content (1180), docs (108), packages (27), public (571), scripts (145), src (1072) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -752,8 +752,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 122 Datei(en)
-- `.lane-claims/tasks/` — 112 Datei(en)
+- `.lane-claims/claims/` — 123 Datei(en)
+- `.lane-claims/tasks/` — 113 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1176 Datei(en)
@@ -942,7 +942,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-issue-861-claim-closeout.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/claims/lane-governance-issue-861-claim-closeout.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-governance-issue-877-generated-merge-driver.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-gate.json` — { — gelesen: 29 Zeilen
@@ -953,6 +953,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-897-generated-classification.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-913-merge-queue.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-922.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-prompts-unification.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -1059,7 +1060,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-issue-861-claim-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-861-claim-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-issue-877-generated-merge-driver.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-gate.json` — { — gelesen: 21 Zeilen
@@ -1067,6 +1068,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-897-generated-classification.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-issue-913-merge-queue.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-922.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
