@@ -1,0 +1,17 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-14T23:20Z-main-green",
+  "contributionId": "main-green-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita strich die offenen Prüfungen von der Tafel, nachdem die sieben stillen Ausgänge und fünf unklaren Prüfungen benannt waren. Der Hauptlauf stand wieder auf festem Grund.",
+  "directives": []
+}

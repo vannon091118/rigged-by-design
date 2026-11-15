@@ -8,15 +8,10 @@
  */
 import { traitEffect } from './city-traits';
 import { round2 } from './num';
-import { bestFriend, locationForIntent, memoryAbout, presentAt } from './city-life-targets';
-import {
-  CLOSED_PENALTY, URGENT_NEED_VETO, isClosedAt, urgentNeedVeto, vetoesIntent,
-} from './city-life-override';
+import { bestFriend, buildCityPeerIndex, locationForIntent, memoryAbout, presentIn, type CityPeerIndex } from './city-life-targets';
+import { CLOSED_PENALTY, URGENT_NEED_VETO, isClosedAt, urgentNeedVeto, vetoesIntent } from './city-life-override';
 import { seedTilt } from './city-life-tiebreak';
-import type {
-  CityDecisionAlternative, CityDecisionFactor, CityDecisionFamily, CityLifePlace,
-  CityResidentState,
-} from './city-life-types';
+import type { CityDecisionAlternative, CityDecisionFactor, CityDecisionFamily, CityLifePlace, CityResidentState } from './city-life-types';
 import type { NpcIntentKind } from './npc-types';
 import type { TraitState } from './city-types';
 
@@ -50,7 +45,7 @@ const ORDER: readonly NpcIntentKind[] = [
 
 
 /** Bewertet genau eine Alternative; jede Wirkung landet im Trace. */
-function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoice {
+function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind, peerIndex: CityPeerIndex): CityChoice {
   const { resident, scheduled, hour, seed, tick } = input;
   const { needs, attributes, skills } = resident;
   const share = traitEffect(input.traits, 'share');
@@ -61,7 +56,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
   // dringenden Beduerfnis darf nicht am Ziel der geplanten Absicht landen.
   const planPlace = intent === scheduled ? input.scheduledPlace ?? null : null;
   const location = locationForIntent(intent, input.workplace, target, planPlace);
-  const present = presentAt(input.peers, location, resident.npcId);
+  const present = presentIn(peerIndex, location, resident.npcId);
   const factors: CityDecisionFactor[] = [];
   let score = 0;
   const add = (family: CityDecisionFamily, detail: string, value: number | string, delta: number): void => {
@@ -154,8 +149,10 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
 }
 
 /** Waehlt die beste Alternative; die Reihenfolge ist bei Gleichstand stabil. */
-export function chooseCityIntent(input: CityDecisionInput): CityChoice {
-  const scored = ORDER.map((intent) => scoreIntent(input, intent));
+export function chooseCityIntent(
+  input: CityDecisionInput, peerIndex: CityPeerIndex = buildCityPeerIndex(input.peers),
+): CityChoice {
+  const scored = ORDER.map((intent) => scoreIntent(input, intent, peerIndex));
   const alternatives = [...scored]
     .sort((a, b) => b.score - a.score || ORDER.indexOf(a.intent) - ORDER.indexOf(b.intent))
     .slice(0, 5)

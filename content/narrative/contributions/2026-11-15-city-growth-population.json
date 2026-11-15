@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T01:05Z-city-growth-population",
+  "contributionId": "city-growth-population-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": ["scheduler"],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Norden stehen jetzt Wohnhaeuser, und am Morgen stehen neue Namen an der Tuer. Die Stadt baut nicht mehr ins Leere: Wer einzieht, hat eine Adresse, einen Haushalt und einen Platz in der Schicht. Die alten Gesichter bleiben, die neuen kommen aus derselben Besetzung — kein Zufall, nur ein volles Treppenhaus.",
+  "directives": []
+}

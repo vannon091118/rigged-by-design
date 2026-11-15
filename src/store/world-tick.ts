@@ -14,7 +14,7 @@ import { advanceWorld } from './narrative-clock';
 import { LedgerHalt } from './ledger-halt';
 import { TickScheduler } from './tick-scheduler';
 
-export interface WorldTickOptions {
+interface WorldTickOptions {
   readonly world: () => WorldState;
   readonly ledger: () => Ledger;
   readonly prng: () => Prng;

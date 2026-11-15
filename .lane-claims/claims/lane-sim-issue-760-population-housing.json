@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/issue-760-population-housing",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-760-population-housing",
+  "baseSha": "bd7dffab9e44c7e2d272650035520d32d16ebec3",
+  "issue": 760,
+  "task": "Issue #760: Stadtwachstum erzeugt Gebäude, aber keine neuen Bewohner",
+  "goal": "Fertiggestellte NPC-Wohnungen erhöhen das Bevölkerungsziel; der bestehende ensureCityPopulation-Pfad erzeugt deterministisch neue Bewohner, ohne neue Save-Wahrheit oder zweiten Zustand.",
+  "pathAllowlist": [
+    "src/core/sim/city-life-state.ts",
+    "src/core/sim/city-growth.ts",
+    "src/core/sim/city-tick.ts",
+    "src/core/sim/__tests__/city-growth.test.ts",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-issue-760-population-housing.json",
+    ".lane-claims/tasks/sim-issue-760-population-housing.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "bd7dffab9e44c7e2d272650035520d32d16ebec3"
+}

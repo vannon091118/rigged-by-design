@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
+  "contributionId": "city-tile-occupancy-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer auf demselben Fleck steht, tritt einen Schritt zur Seite, wenn ein anderer denselben Weg nimmt. So bleibt jede Kachel einem Namen zugeordnet, auch wenn der Tag noch so voll ist.",
+  "directives": []
+}

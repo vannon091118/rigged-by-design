@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-766-main-green",
+  "claimId": "lane/governance/issue-766-main-green",
+  "branch": "lane/governance/issue-766-main-green",
+  "baseSha": "74e4b27911115a1dc103743b0b1d3b7fa99feac1",
+  "phase": "CI_PENDING",
+  "title": "Issue #766: main und ci:local auf aktuellem Main gruen machen",
+  "goal": "Die 7 dead-code-Exporte und 5 test-quality-Verstoesse auf unveraendertem main belegen und beheben; alte #781/#800-Reparaturen verifizieren; Generatoren/Doku nachziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "warning",
+      "summary": "Baseline auf main@5572602f: verify-dead-code meldet 7 tote Exporte, verify-test-quality 5 Verstoesse; die alten #781/#800-Reparaturen (Konfliktmarker, Manifest, Claims) sind bereits auf main."
+    }
+  ],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

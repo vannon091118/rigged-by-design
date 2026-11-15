@@ -1,0 +1,27 @@
+{
+  "id": "lane/sim/issue-759-decision-peer-index",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-759-decision-peer-index",
+  "baseSha": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
+  "issue": 759,
+  "task": "Issue #759: Anwesendenindex einmal pro Stadtentscheidung statt pro Intent",
+  "goal": "presentAt nicht in jeder Intent-Bewertung und jedem Gegenfaktlauf neu ueber die Bewohnerliste filtern; Entscheidungen bleiben unveraendert, Zugriffszahl skaliert linear.",
+  "pathAllowlist": [
+    "src/core/sim/city-life-targets.ts",
+    "src/core/sim/city-life-score.ts",
+    "src/core/sim/city-life-decision.ts",
+    "src/core/sim/__tests__/living-world-causal-trace.test.ts",
+    "content/narrative/contributions/2026-11-15-city-life-peer-index.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-issue-759-decision-peer-index.json",
+    ".lane-claims/tasks/sim-issue-759-decision-peer-index.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5"
+}

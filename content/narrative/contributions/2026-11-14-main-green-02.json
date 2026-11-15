@@ -1,0 +1,17 @@
+{
+  "agentId": "jenova",
+  "turnId": "2026-11-14T23:55Z-main-green-02",
+  "contributionId": "main-green-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita liess die beiden langsamen Pruefungen laenger laufen, ohne ihre Aussage zu veraendern. Was unter Last wartete, musste nicht als Fehler gelten.",
+  "directives": []
+}
