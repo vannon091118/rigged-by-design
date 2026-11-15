@@ -4,11 +4,12 @@
  * Rot bei Abweichung, also auch dann, wenn ein Link auf einen Anker zeigt,
  * den keine Ueberschrift erzeugt (#860).
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkDocAnchors } from './lib/doc-anchors.mjs';
 import { verifyDocParity } from './lib/doc-parity.mjs';
 import { verifyDocs } from './lib/doc-sync.mjs';
+import { PROMPT_REGISTER_FILE, promptProblems } from './lib/prompt-register.mjs';
 import { describePlan, plan } from './lib/escalation.mjs';
 import { ROOT, fail } from './lib/report.mjs';
 
@@ -36,11 +37,41 @@ function loadDocuments() {
   return markdownFiles().map((path) => ({ path, text: readFileSync(join(ROOT, path), 'utf8') }));
 }
 
+/**
+ * Prompt-Register (#885): ein Prompt mit Verhaltenswirkung ohne Board-Issue ist
+ * ein roter Befund. Geprueft wird die Abdeckung, nicht der Inhalt des Prompts.
+ */
+function promptRegisterProblems() {
+  const register = join(ROOT, PROMPT_REGISTER_FILE);
+  const text = existsSync(register) ? readFileSync(register, 'utf8') : null;
+  const cronFiles = (() => {
+    try {
+      return readdirSync(join(ROOT, '.cron'))
+        .filter((name) => name.endsWith('.md'))
+        .sort()
+        .map((name) => `.cron/${name}`);
+    } catch {
+      // Ohne `.cron` gibt es keine Cron-Prompts; die Pflichtprompts gelten weiter.
+      return [];
+    }
+  })();
+  return promptProblems({
+    text,
+    cronFiles,
+    fileExists: (path) => existsSync(join(ROOT, path)),
+  });
+}
+
 // Struktur und Marker allein reichen nicht: die Zahlen und Rollen muessen zum
 // ausfuehrbaren Plan passen, sonst arbeitet ein Agent nach einer zweiten Wahrheit.
-const problems = [...verifyDocs(), ...verifyDocParity(), ...checkDocAnchors(loadDocuments())];
+const problems = [
+  ...verifyDocs(),
+  ...verifyDocParity(),
+  ...checkDocAnchors(loadDocuments()),
+  ...promptRegisterProblems(),
+];
 if (problems.length === 0) {
-  console.log('verify:docs: PASS (Struktur, Marker und interne Anker)');
+  console.log('verify:docs: PASS (Struktur, Marker, interne Anker und Prompt-Register)');
   process.exit(0);
 }
 problems.forEach((problem, index) => fail(index + 1, 'ERR-4017', 'verify:docs', problem));

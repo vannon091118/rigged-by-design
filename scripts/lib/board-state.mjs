@@ -1,12 +1,17 @@
 /**
  * Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg.
  *
+ * `promptIssues` kommt aus dem Prompt-Register (#885): der Snapshot listet die
+ * Issues, die Verhaltens-Prompts fuehren, in derselben Datei wie Kopf und
+ * Zaehler.
+ *
  * Der Snapshot wird aus dem Live-Board erzeugt, nicht aus dem Gedaechtnis eines
  * Laufs: offene Issues, offene Pull Requests und der main-Kopf kommen aus GitHub
  * und Git. Claims auf geschlossene Issues fallen heraus, weil sie keine Arbeit
  * mehr abbilden. Hier stehen nur reine Funktionen; Netz und Git liegen im
  * Skript `scripts/sync-board-state.mjs`.
  */
+import { summarizePromptIssues } from './prompt-register.mjs';
 
 /** Ein Eintrag der Issue-Liste ist ein Pull Request, kein Issue. */
 export function isPullRequest(entry = {}) {
@@ -64,6 +69,7 @@ export function nextBoardState({
   headMessage = null,
   at,
   worktree = null,
+  promptIssues = [],
   generatedBy = 'maintainer',
 } = {}) {
   if (!head) throw new Error('BOARD: main-Kopf fehlt');
@@ -87,6 +93,9 @@ export function nextBoardState({
     reviewWaitingPrs: openPrs.filter((entry) => entry.labels.includes('review-waiting')).length,
     openPrs,
     openIssuesCount: openNumbers.size,
+    promptIssues: summarizePromptIssues(
+      Array.isArray(promptIssues) && promptIssues.length > 0 ? promptIssues : previous.promptIssues ?? [],
+    ),
   };
   return { state, dropped };
 }

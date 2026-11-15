@@ -2,6 +2,14 @@
 
 <!-- rbd-doc: managed -->
 
+## 2026-11-15 – Prompts sind Board-Tickets (#885)
+
+**Befund.** Vier Prompts im Repo und ein externer System-Reminder regelten Maintainer- und Agentenverhalten, ohne dass ein Issue auf sie zeigte. Eine Änderung an `.cron/maintainer-prompt.md`, `.cron/SECURITY.md`, `AGENTS.md` oder `docs/GOVERNANCE.md` war am Board unsichtbar; #883 nennt `AGENTS.md` außerdem unter `docs/AGENTS.md`, obwohl die kanonische Datei in der Wurzel liegt.
+
+**Umsetzung.** `docs/PROMPTS.md` ist das Register: Pfad, Art, Schweregrad, Issue. Die fünf Prompts haben Incident-Issues #889 (GOVERNANCE), #890 (SECURITY), #891 (AGENTS.md), #892 (Maintainer-Cron-Prompt) und #893 (System-Reminder) mit `incident-sev-*`, `incident-open` und `causal-chain`. `verify:docs` prüft die Abdeckung (`AGENTS.md`, `docs/GOVERNANCE.md`, jede `.cron/*.md`); `board:sync` schreibt die Einträge als `promptIssues` in den Snapshot.
+
+**Offen.** Der System-Reminder lebt außerhalb des Repos (#893, `needs-human`): er muss auf die Repo-Dateien verweisen, statt Regeln zu wiederholen. Solange er das nicht tut, bleibt er eine zweite Quelle für dieselben Regeln.
+
 ## 2026-11-11 – Lokale Testlinie statt Cloud-Runner
 
 **Befund.** Die Suite brauchte 59,5 s Wandzeit fuer 1654 Tests; `verify:light` brauchte 21,6 s, davon 19,7 s Typecheck. Die Mechanik-Suiten waren doppelt gepflegt (Vitest-Ausschluss, Testkatalog-Regex, Workflow-Matrix). `pretask` startete `agent-context` als Kindprozess und rechnete den Impact zweimal; `contextSummary` las das Claim-Register dreimal. Jedes Gate trug ein willkuerliches Zeitlimit.
