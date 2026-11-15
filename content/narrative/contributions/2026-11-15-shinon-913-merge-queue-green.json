@@ -1,0 +1,21 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T09:59Z-shinon-913-merge-queue-green",
+  "contributionId": "shinon-913-merge-queue-green",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Reihenfolge ist erst dann eine Reihenfolge, wenn alle Beteiligten dieselbe Revision sehen. Der grüne Stand bringt die Queue auf den aktuellen Main-Pfad, ohne die fremden Commits zu überschreiben; die Zustimmung bleibt ein sichtbarer Schritt, kein stiller Default.",
+  "directives": []
+}

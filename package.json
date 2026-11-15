@@ -37,6 +37,7 @@
     "verify:tree": "node scripts/verify-tree.mjs",
     "verify:redundancy": "node scripts/verify-redundancy.mjs",
     "verify:capabilities": "node scripts/verify-capabilities.mjs",
+    "verify:headless": "node scripts/verify-headless-core.mjs",
     "docs:stub": "node scripts/doc-stub.mjs",
     "inventory:build": "node scripts/build-inventory.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",
