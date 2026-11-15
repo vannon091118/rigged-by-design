@@ -24,6 +24,7 @@ import { ensureCityLife } from './city-life-state';
 import { clampNeed, driftNeed } from './needs-core';
 import { applyIntentEffects } from './city-life-effects';
 import { addMemory, socialMemory } from './city-life-memory';
+import { selectSocialEncounter } from './social-encounter';
 import { clampInt } from './num';
 import { createCityScene } from './city-scene';
 import { applyPush, createOccupancy, moveOccupant, resolveStep, separatePositions } from './city-tile-occupancy';
@@ -135,50 +136,49 @@ export function remainingTiles(travel: CityTravel | null): number {
 }
 
 /**
- * Ein Tick für alle Bewohner. Der Ort wechselt erst bei Ankunft; bis dahin
- * bleibt der alte Ort stehen und die Sicht meldet „unterwegs nach X".
- */
-/**
  * Ankunft bucht die ortsgebundene Wirkung: Geld, Faehigkeit, Beduerfnisse und
- * — bei Kneipe oder Besuch — der Kontakt mit einer anwesenden Person. Vorher
- * lief nur die Zeitdauer; der Lohn kam nicht schon am Wohnungstisch (#504).
+ * — bei Kneipe oder Besuch — den Kontakt mit einer nahen Person am selben Ort.
+ * Der Kontakt kommt aus `selectSocialEncounter`; ohne nahen Partner am Ort wird
+ * nichts gebucht und keine Erinnerung geschrieben.
  */
 function settleArrival(
   resident: CityResidentState, peers: readonly CityResidentState[],
   tick: number, nextMemoryId: number,
 ): { readonly resident: CityResidentState; readonly nextMemoryId: number } {
-  const place = resident.location;
   const effects = applyIntentEffects(resident.needs, resident.intent, 1, resident.skills);
-  let memories = resident.memories;
-  let relationships = resident.relationships;
-  let memoryId = nextMemoryId;
-  if (resident.intent === 'PUB' || resident.intent === 'VISIT_FRIEND') {
-    const target = peers.find((peer) => peer.npcId !== resident.npcId && peer.location === place);
-    if (target) {
-      const delta = resident.intent === 'VISIT_FRIEND' ? 6 : 4;
-      const relation = clampInt((relationships[target.npcId] ?? 0) + delta, -100, 100);
-      relationships = { ...relationships, [target.npcId]: relation };
-      memories = addMemory(memories, socialMemory(target.npcId, tick, memoryId, relationships));
-      memoryId += 1;
-    }
-  }
+  const selection = resident.intent === 'PUB' || resident.intent === 'VISIT_FRIEND'
+    ? selectSocialEncounter(
+      { npcId: resident.npcId, place: resident.location, position: resident.position },
+      peers.map((peer) => ({ npcId: peer.npcId, place: peer.location, position: peer.position })),
+    )
+    : null;
+  const target = selection ? peers.find((peer) => peer.npcId === selection.partnerId) : undefined;
+  const delta = resident.intent === 'VISIT_FRIEND' ? 6 : 4;
+  const relationships = target
+    ? { ...resident.relationships, [target.npcId]: clampInt((resident.relationships[target.npcId] ?? 0) + delta, -100, 100) }
+    : resident.relationships;
+  const memories = target
+    ? addMemory(resident.memories, socialMemory(target.npcId, tick, nextMemoryId, relationships))
+    : resident.memories;
   return {
     resident: {
-      ...resident,
-      travel: null,
+      ...resident, travel: null,
       needs: {
         hunger: clampNeed(effects.hunger), thirst: clampNeed(effects.thirst),
         fatigue: clampNeed(effects.fatigue), social: clampNeed(effects.social),
         mood: clampNeed(effects.mood), money: Math.max(0, Math.round(effects.money)),
       },
       skills: { cooking: effects.cooking, work: effects.work, social: effects.socialSkill },
-      relationships,
-      memories,
+      relationships, memories,
     },
-    nextMemoryId: memoryId,
+    nextMemoryId: target ? nextMemoryId + 1 : nextMemoryId,
   };
 }
 
+/**
+ * Ein Tick für alle Bewohner. Der Ort wechselt erst bei Ankunft; bis dahin
+ * bleibt der alte Ort stehen und die Sicht meldet „unterwegs nach X".
+ */
 export function tickCityMovement(world: WorldState): void {
   const life = ensureCityLife(world);
   const unique = new Set(life.residents.map((resident) => `${resident.position.x},${resident.position.y}`));
