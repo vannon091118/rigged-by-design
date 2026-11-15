@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-597-foreign-floors",
+  "claimId": "lane/sim/issue-597-foreign-floors",
+  "branch": "lane/sim/issue-597-foreign-floors",
+  "baseSha": "4834714a84b4a1fbc8c6224df11c3e04f63406a3",
+  "phase": "CI_PENDING",
+  "title": "Issue #597: Foreign Floors mit eigener, deterministischer Gaestebelegung und belegten Sitzplaetzen vervollstaendigen",
+  "goal": "Besucher des fremden Floors sind Snapshot-Daten des Floors aus dem geseedeten Prng; belegte Sitzplaetze sperren den Menueeintrag mit Grund; Save/Load erhaelt die Belegung, der eigene Casinozustand bleibt unberuehrt.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

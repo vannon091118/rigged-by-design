@@ -22,7 +22,9 @@ export function floorTapAllowed(
   scene: GameView['scene']['kind'],
   target: FloorTargetKind,
 ): boolean {
-  if (scene === 'FOREIGN') return target === 'floor';
+  // Der fremde Floor zeigt seine eigenen Gaeste und Moebel; beide sind Ziele,
+  // ihre Aktionen kommen aber aus dem Fremd-Menue, nie aus den eigenen Commands.
+  if (scene === 'FOREIGN') return target === 'floor' || target === 'furniture' || target === 'guest';
   // Das eigene Casino hat keine Stadtfiguren; die numerischen Guest- und
   // Objektpfade bleiben dort unveraendert.
   if (scene === 'OWN') return target !== 'cityActor';
