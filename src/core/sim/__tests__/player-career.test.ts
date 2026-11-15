@@ -78,6 +78,7 @@ describe('Spieler-Karriere', () => {
     world.player.job = {
       jobId: 'CLEANER', rivalId: 'HAFENKLAUSE', stationId: 'x', currentTask: null,
       workDays: 4, lastPaidDay: 1, lastWorkDay: 2, careerRank: 1, performanceHistory: [],
+      appliedTo: null, offeredBy: null,
     };
     expect(career().job).toMatchObject({ label: 'Reinigungskraft', workDays: 4 });
     expect(career().job).toMatchObject({ wageVC: 3, lastWorkDay: 2 });

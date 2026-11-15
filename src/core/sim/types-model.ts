@@ -130,6 +130,12 @@ export interface PlayerJobState {
 
   /** Leistungspunkte der letzten abgeschlossenen Schichten (0-100 je Schicht). */
   performanceHistory: number[];
+
+  /** Gebäude-ID, auf die sich der Spieler beworben hat (null = keine Bewerbung offen). */
+  appliedTo: string | null;
+
+  /** Gebäude-ID, die dem Spieler ein Job-Angebot gemacht hat (null = kein Angebot). */
+  offeredBy: string | null;
 }
 
 export interface PlayerJobTask {

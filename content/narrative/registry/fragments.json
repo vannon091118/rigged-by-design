@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:add71700f603e04a057ed7bfad6c5e820545f1bcc4ef4a8908ec612a8adf9e82",
+  "contentHash": "sha256:5a2dff2960b42de72037b7da7d822d52948abc5625cc86161a0b61db6c627fe4",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9985,6 +9985,30 @@
       "text": "Auf der Karte stand Köder-Doppel, und gemeint war, dass zwei Aufkleber zusammen mehr ziehen als jeder allein. Der Betriebsplan darunter rechnete es vor: derselbe Zulauf, zwei Zehntel mehr Kosten je Tick. Rita strich die zweite Zeile nicht durch. Sie schrieb daneben, dass niemand die zweite Zeile liest, solange die erste leuchtet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-items-und-synergien.json"
+    },
+    {
+      "contributionId": "job-market-01",
+      "turnId": "2026-11-15T22:35Z-job-market-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita klopft an jede Tür im Kiez: Kneipe, Laden, Büro, Werkstatt. Jede hat ein Schild mit offenem Platz, aber nur wer hingeht und arbeitet, bekommt den Lohn. Keine Bewerbung ohne Gang zur Tür, keine Stelle ohne Gebäude.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-job-market-01.json"
     },
     {
       "contributionId": "job-market-bookable-01",
