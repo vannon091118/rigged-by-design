@@ -4,14 +4,18 @@
   "claimId": "lane/governance/issue-886-board-gate",
   "branch": "lane/governance/issue-886-board-gate",
   "baseSha": "99695923348823b101e8e3fffae7eee769460d2b",
-  "phase": "REVIEW_PENDING",
+  "phase": "DONE",
   "title": "Board-Nutzung mechanisch belegen (#886)",
   "goal": "Das Board-Gate prueft den verifizierten Issue-Verlauf statt der lokalen Claim-Datei: Pretask, Pre-Push und turn:finish blockieren ohne Beleg; closeout verlangt RELEASE und review-waiting.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 901,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/901",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Gates gruen stellen, pushen, PR und Merge durch den Maintainer.",
+  "nextAction": "",
   "revision": 1
 }
