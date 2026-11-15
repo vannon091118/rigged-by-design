@@ -251,6 +251,11 @@ Wenn ein Maintainer-Lauf hauptsächlich Governance-Issues über Governance produ
 
 Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem Ort aus einsehbar sein (Desktop, Termux, Remote-Node). Ein State-Snapshot sichert den Fortschritt über Gerätegrenzen hinweg.
 
+**Claim-Closeout-Hygiene (#861)**
+- `node scripts/claim-hygiene.mjs --check` vergleicht alle Claims mit einem Issue-Status-Snapshot. Standard ist der versionierte Board-Snapshot; `--from-file <json>` nimmt einen frischen `{issueStates}`-Auszug.
+- Ein offener Claim auf einem belegten geschlossenen Issue ist ein Closeout-Verstoss und Exit 1. Unbekannte Status werden als `unknown` ausgewiesen, nie als offen oder geschlossen geraten.
+- Der Befund läuft vor jedem Commit im Precommit. Der Maintainer zieht den Claim danach mit `node scripts/reconcile-claims.mjs --apply` nach; der Snapshot selbst wird nicht aus dem Gedächtnis geschrieben.
+
 **state:JSON — Laufnachweis**
 - Am Ende jedes Maintainer-Laufs wird eine `state:JSON` gepflegt (siehe `.verify-cache/agent-context.json` und die Lane-Claims unter `.lane-claims/`).
 - Der Board-Snapshot `.lane-claims/board-state.json` wird ausschließlich nachgezogen, nie aus dem Gedächtnis geschrieben: `pnpm run board:sync -- --at <ISO>` liest offene Issues, offene PRs und `origin/main` und aktualisiert Kopf, Zähler und `openPrs`; Claims auf geschlossene Issues fallen heraus. Die Zeit kommt aus `--at`/`RBD_NOW` (kein Uhrenlesen). `pnpm run board:sync -- --check --at <ISO>` schreibt nichts und meldet Drift mit Exit 1.

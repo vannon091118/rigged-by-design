@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-861-claim-closeout",
+  "claimId": "lane/governance/issue-861-claim-closeout",
+  "branch": "lane/governance/issue-861-claim-closeout",
+  "baseSha": "86ac74695ae2b56fd5f7430e159a9c0744a82e1a",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #861: Claim-Closeout und Hygiene-Gate für geschlossene Issues",
+  "goal": "Offene Claims gegen belegte Issue-Status auditieren, Closeout-Verstöße vor dem Commit melden und den Maintainer-Schritt dokumentieren.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Hygiene-Audit und Tests lokal grün fahren; danach Precommit, Light, Fast, Typecheck und Build auf dem finalen Head prüfen.",
+  "revision": 1
+}

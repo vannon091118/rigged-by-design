@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T19:40Z-claim-hygiene",
+  "contributionId": "shinon-861-claim-hygiene",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Ein Claim, dessen Issue längst geschlossen ist, sieht nur solange nach Arbeit aus, bis jemand den Status danebenlegt. Der neue Hygiene-Audit tut genau das: Er nennt jeden offenen Claim mit dem belegten Issue-Status, meldet den Widerspruch vor dem Commit und lässt unbekannte Status ausdrücklich unbekannt. Wer aufräumt, muss nicht raten, welcher Eintrag noch jemandem gehört.",
+  "directives": []
+}
