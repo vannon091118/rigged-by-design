@@ -12,11 +12,11 @@
   "status": "READY_FOR_MERGE",
   "pr": {
     "number": 858,
-    "headSha": "c6fbaf5a930edb6a93a8ce726283f6894a92c5a8",
+    "headSha": "1e526877c045d33a84ce00a9bb905e5cab2c214a",
     "url": "https://github.com/vannon091118/rigged-by-design/pull/858",
     "state": "open"
   },
   "findings": [],
-  "nextAction": "PR #858 steht review-fertig auf main@0e570d4e (0 hinter main, Dry-Run konfliktfrei); Board-Drift (75->70 Issues, #858 fehlt) gehoert der offenen Lane lane/governance/board-closeout-849.",
-  "revision": 2
+  "nextAction": "PR #858 (Kopf 1e526877) ist mergeable:clean gegen main@0e570d4e; Anker korrigiert, Tabelle auf Quellenverweise gekuerzt; Maintainer merged.",
+  "revision": 3
 }
