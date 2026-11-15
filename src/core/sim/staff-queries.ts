@@ -6,14 +6,23 @@
  * Wahrheit, die loegt, sobald beide auseinanderlaufen: eingestellt heisst, dass
  * ein Agent existiert, im Dienst heisst, dass er nicht steckt.
  */
-import type { Point, StaffAgent, StaffRole, WorldState } from './types';
+import type { Point, StaffAgent, StaffRole, StaffTask, WorldState } from './types';
 import { qualificationWorkBonus } from './staff-qualification';
+import type { StaffQualification } from './staff-qualification';
+
+/**
+ * Minimalflaeche der abgeleiteten Staff-Sicht: sie liest nur den Agentenbestand.
+ * Welt und GameView erfuellen sie beide; eine zweite Wahrheit entsteht dadurch nicht.
+ */
+export interface StaffAgentSurface {
+  readonly agents: readonly StaffAgent[];
+}
 
 const distance = (ax: number, ay: number, bx: number, by: number): number =>
   Math.abs(ax - bx) + Math.abs(ay - by);
 
 /** Alle Angestellten einer Rolle. */
-export function staffAgents(world: WorldState, role: StaffRole): StaffAgent[] {
+export function staffAgents(world: StaffAgentSurface, role: StaffRole): StaffAgent[] {
   return world.agents.filter((agent) => agent.role === role);
 }
 
@@ -33,12 +42,14 @@ function onDutyStaff(world: WorldState, role: StaffRole): StaffAgent[] {
 
 /**
  * Bestand und Einsatz einer Rolle in einem Wert: abwesend (niemand eingestellt),
- * inaktiv (alle stecken), verfügbar (jemand könnte los) oder beschäftigt
+ * inaktiv (alle stecken), verfuegbar (jemand koennte los) oder beschaeftigt
  * (jemand arbeitet gerade einer Aufgabe nach).
  */
+export type StaffAvailability = 'ABWESEND' | 'INAKTIV' | 'VERFUEGBAR' | 'BESCHAEFTIGT';
+
 export function getStaffAvailability(
-  world: WorldState, role: StaffRole,
-): 'ABWESEND' | 'INAKTIV' | 'VERFUEGBAR' | 'BESCHAEFTIGT' {
+  world: StaffAgentSurface, role: StaffRole,
+): StaffAvailability {
   const agents = staffAgents(world, role);
   if (agents.length === 0) return 'ABWESEND';
   const duty = agents.filter(isOnDuty);
@@ -94,4 +105,47 @@ export function staffPerformance(agents: readonly StaffAgent[]): StaffPerformanc
   if (worked >= REVIEW_TICKS.stark) return 'STARK';
   if (worked >= REVIEW_TICKS.solid) return 'SOLIDE';
   return 'FRISCH';
+}
+
+/** Feste Rollenreihenfolge der abgeleiteten Staff-Sicht; deterministisch. */
+export const STAFF_VIEW_ROLES: readonly StaffRole[] = ['guard', 'cleaner', 'bartender', 'cashier', 'porter'];
+
+/** Ein Agent in der abgeleiteten Sicht: Auftrag, Blockadegrund und Stufe. */
+export interface StaffAssignmentAgent {
+  readonly id: number;
+  readonly task: StaffTask;
+  readonly blockedReason: string;
+  readonly qualification: StaffQualification;
+  readonly onDuty: boolean;
+}
+
+/** Eine Rolle in der abgeleiteten Sicht: Bestand, Einsatz, Leistung, Besetzung. */
+export interface StaffAssignmentEntry {
+  readonly role: StaffRole;
+  readonly availability: StaffAvailability;
+  readonly performance: StaffPerformance;
+  readonly agents: readonly StaffAssignmentAgent[];
+}
+
+/**
+ * Die eine abgeleitete Staff-Sicht: Auftrag, Blockadegrund und Leistung je Rolle
+ * aus denselben Agenten, die auch Einstellung, Lohn und Wirkung tragen.
+ * Panel, Diagnose und Journal lesen hier statt je eigene Ableitungen zu bauen.
+ */
+export function staffAssignmentView(world: StaffAgentSurface): readonly StaffAssignmentEntry[] {
+  return STAFF_VIEW_ROLES.map((role) => {
+    const agents = staffAgents(world, role);
+    return {
+      role,
+      availability: getStaffAvailability(world, role),
+      performance: staffPerformance(agents),
+      agents: agents.map((agent) => ({
+        id: agent.id,
+        task: agent.task,
+        blockedReason: agent.blockedReason,
+        qualification: agent.qualification,
+        onDuty: isOnDuty(agent),
+      })),
+    };
+  });
 }
