@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 424 Dateien — contract 223 · integration 117 · governance 71 · statistics 6 · performance 7.
+Summe: 425 Dateien — contract 223 · integration 117 · governance 72 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -185,6 +185,7 @@ Summe: 424 Dateien — contract 223 · integration 117 · governance 71 · stati
 | `src/core/governance/__tests__/gate-diagnostics.test.ts` | pipeline | governance | ja | `scripts/lib/gate-diagnostics.mjs` |
 | `src/core/governance/__tests__/gate-runner.test.ts` | pipeline | governance | ja | `scripts/lib/gate-runner.mjs` |
 | `src/core/governance/__tests__/github-rest.test.ts` | pipeline | governance | ja | `scripts/lib/github-rest.mjs` |
+| `src/core/governance/__tests__/headless-imports.test.ts` | pipeline | governance | ja | `scripts/lib/headless-core.mjs` |
 | `src/core/governance/__tests__/impact-graph.test.ts` | pipeline | governance | ja | `scripts/lib/impact-graph.mjs` |
 | `src/core/governance/__tests__/impact.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
 | `src/core/governance/__tests__/integration-controller.test.ts` | pipeline | governance | ja | `scripts/lib/integration.mjs` |
@@ -730,10 +731,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3335 |
-| Gelistete Dateien | 3335 |
+| Getrackte Dateien | 3342 |
+| Gelistete Dateien | 3342 |
 | Getrackte Ordner | 120 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (227), .lanes (1), artifacts (1), content (1175), docs (107), packages (27), public (571), scripts (138), src (1061) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (229), .lanes (1), artifacts (1), content (1176), docs (107), packages (27), public (571), scripts (140), src (1063) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -747,11 +748,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 3 Datei(en)
-- `.lane-claims/claims/` — 117 Datei(en)
-- `.lane-claims/tasks/` — 107 Datei(en)
+- `.lane-claims/claims/` — 118 Datei(en)
+- `.lane-claims/tasks/` — 108 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1171 Datei(en)
+- `content/narrative/contributions/` — 1172 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -805,8 +806,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 68 Datei(en)
-- `scripts/lib/` — 70 Datei(en)
+- `scripts/` — 69 Datei(en)
+- `scripts/lib/` — 71 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
 - `src/Config/__tests__/` — 1 Datei(en)
@@ -819,7 +820,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 87 Datei(en)
+- `src/core/governance/__tests__/` — 89 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -931,6 +932,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-766-main-green.json` — { — gelesen: 46 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-834-835-693-694.json` — { — gelesen: 45 Zeilen
+- `.lane-claims/claims/lane-governance-issue-839-headless-imports.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
@@ -1043,6 +1045,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-766-main-green.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-834-835-693-694.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-839-headless-imports.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
@@ -2284,16 +2287,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-shinon-541-fact-reader.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-15-shinon-782-first-guest.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-15-shinon-839-headless-imports.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26311 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4689 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26333 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4693 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1746 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1192 Zeilen
-- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 116 Zeilen
+- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 118 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2611 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
@@ -2303,7 +2307,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
-- `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 93 Zeilen
+- `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 94 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 162 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
@@ -2398,7 +2402,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
-- `package.json` — { — gelesen: 124 Zeilen
+- `package.json` — { — gelesen: 125 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
 - `packages/gamescout/README.md` — GameScout — gelesen: 74 Zeilen
 - `packages/gamescout/bin/gamescout` — GameScout CLI bin entry point. — gelesen: 20 Zeilen
@@ -3057,6 +3061,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/generated-files.mjs` — Generierte Artefakte: eine Liste, ein Eigentuemer, ein Regenerationspfad. — gelesen: 151 Zeilen
 - `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet). — gelesen: 133 Zeilen
 - `scripts/lib/github-rest.mjs` — Zwei Lesepfade fuer das Board: `gh` und Token-REST. — gelesen: 85 Zeilen
+- `scripts/lib/headless-core.mjs` — Headless-Core-Grenze: `src/core/` bleibt frei von UI, Renderer, Pixi, React — gelesen: 103 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
 - `scripts/lib/impact-graph.mjs` — Die Grenze des Impact-Pfads: Er laeuft in einem nackten Checkout ohne — gelesen: 61 Zeilen
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 140 Zeilen
@@ -3070,7 +3075,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
 - `scripts/lib/narrative-macros.mjs` — NAR-10 compile-time macro parser and validator. — gelesen: 271 Zeilen
 - `scripts/lib/pending-commit.mjs` — Resume delivery when a verified commit exists and the worktree is clean. — gelesen: 4 Zeilen
-- `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 203 Zeilen
+- `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 205 Zeilen
 - `scripts/lib/pipeline-stop.mjs` — Abbruchpfad der Pipeline: Signale beenden alle Gates und hinterlassen keine Waisen. — gelesen: 22 Zeilen
 - `scripts/lib/pr-body.mjs` — PR-Body: die drei Pflichtsektionen werden im Plan-Job geprueft, nicht als — gelesen: 33 Zeilen
 - `scripts/lib/process-sweep.mjs` — Verwaiste Gate-Prozesse: PID plus Startzeit, PID-genaues Beenden, nie nach Namensmuster. — gelesen: 188 Zeilen
@@ -3118,11 +3123,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 62 Zeilen
 - `scripts/turn-push.mjs` — Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein  — gelesen: 585 Zeilen
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 155 Zeilen
-- `scripts/verify-board-usage.mjs` — verify-board-usage: belegt, dass die Lane am Issue-Board gefuehrt wird. — gelesen: 98 Zeilen
+- `scripts/verify-board-usage.mjs` — verify-board-usage: belegt, dass die Lane am Issue-Board gefuehrt wird. — gelesen: 97 Zeilen
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 79 Zeilen
+- `scripts/verify-headless-core.mjs` — verify:headless - `src/core/` darf keine UI-, Renderer-, Pixi-, React- oder — gelesen: 20 Zeilen
 - `scripts/verify-impact-graph.mjs` — Impact-Graph-Gate: Der Impact-Pfad darf keinen TypeScript-Compiler laden. — gelesen: 26 Zeilen
 - `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 433 Zeilen
 - `scripts/verify-narrative-blocks.mjs` — Gate: Textbaustein-Pools und die Pflicht pro Commit. — gelesen: 178 Zeilen
@@ -3141,7 +3147,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/android-signing.json` — { — gelesen: 7 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 12 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
-- `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 162 Zeilen
+- `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 163 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/test-lanes.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
@@ -3259,6 +3265,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/gate-diagnostics.test.ts` — Ein roter Lauf kann mehrere unabhaengige Fehler enthalten. Diese Grenzen — gelesen: 83 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/github-rest.test.ts` — Das Board-Gate darf nicht an einer angemeldeten `gh`-CLI haengen: viele — gelesen: 112 Zeilen
+- `src/core/governance/__tests__/headless-core.d.ts` — declare module '*/headless-core.mjs' { — gelesen: 16 Zeilen
+- `src/core/governance/__tests__/headless-imports.test.ts` — Der Core bleibt headless: keine Pixi-/React-/DOM-Pakete und keine — gelesen: 47 Zeilen
 - `src/core/governance/__tests__/impact-graph.test.ts` — Der Impact-Pfad muss ohne `node_modules` laufen. Der Test belegt beide — gelesen: 57 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/core/governance/__tests__/integration-controller.test.ts` — Der Integrationscontroller muss die Ursache eines Konflikts erkennen, nicht — gelesen: 184 Zeilen
@@ -3287,7 +3295,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/promotion-workflows.test.ts` — Local-first: Es gibt keinen automatischen Merge aus einem CI-Lauf. Der — gelesen: 76 Zeilen
 - `src/core/governance/__tests__/prompt-register.test.ts` — #885: Jeder Prompt mit Verhaltenswirkung hat ein Board-Issue. Der Test — gelesen: 74 Zeilen
 - `src/core/governance/__tests__/readme-media.test.ts` — Die README ist die Praesentation des Projekts. Jedes Bild braucht einen — gelesen: 42 Zeilen
-- `src/core/governance/__tests__/red-team-gate-lane.test.ts` — Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate, — gelesen: 216 Zeilen
+- `src/core/governance/__tests__/red-team-gate-lane.test.ts` — Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate, — gelesen: 224 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/roadmap-register.test.ts` — Die Roadmap ist die einzige Liste offener Spiel- und Praesentationsarbeit. — gelesen: 162 Zeilen
 - `src/core/governance/__tests__/run-budget.test.ts` — Der Stop-Vertrag ist extern: Grenzen aus der Konfiguration, Ist-Werte aus — gelesen: 132 Zeilen
@@ -3424,12 +3432,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/logistics.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
 - `src/core/sim/__tests__/look.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/core/sim/__tests__/machine-hall.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
-- `src/core/sim/__tests__/main-event-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 126 Zeilen
+- `src/core/sim/__tests__/main-event-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 134 Zeilen
 - `src/core/sim/__tests__/mod-guards.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 34 Zeilen
 - `src/core/sim/__tests__/mod-resolver.test.ts` — Mod-Wirkungen entstehen an genau einer Stelle: der gemeinsame Resolver — gelesen: 58 Zeilen
 - `src/core/sim/__tests__/money-truth.test.ts` — Fiat ist vom Spawn an ein gebuchtes Konto; Auszahlungen werden nie still gekappt. — gelesen: 108 Zeilen
 - `src/core/sim/__tests__/mugging-cover.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 20 Zeilen
-- `src/core/sim/__tests__/narrative-boundary.test.ts` — Der Boundary ist der einzige Verbraucher der Fact-Queue: Ledger-Schwellen werden — gelesen: 85 Zeilen
+- `src/core/sim/__tests__/narrative-boundary.test.ts` — Der Boundary ist der einzige Verbraucher der Fact-Queue: Ledger-Schwellen werden — gelesen: 96 Zeilen
 - `src/core/sim/__tests__/narrative-chain-runtime.test.ts` — Die Kette darf nur aus aufgeloesten Events starten, je nach Matrixwerten — gelesen: 229 Zeilen
 - `src/core/sim/__tests__/narrative-chain-schema.test.ts` — Ereignisketten sind nur spielbar, wenn Start, Erreichbarkeit, Endknoten und — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/narrative-choice-contract.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 54 Zeilen
@@ -3446,7 +3454,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-event-templates.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 95 Zeilen
 - `src/core/sim/__tests__/narrative-events.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 107 Zeilen
 - `src/core/sim/__tests__/narrative-fact-schema.test.ts` — Neue Beziehungs-Facts tragen ActorRefs statt einer Pflicht-visitorId. — gelesen: 73 Zeilen
-- `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 104 Zeilen
+- `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 112 Zeilen
 - `src/core/sim/__tests__/narrative-followup-chain.test.ts` — D1: Eine aufgeloeste Choice mit `followUpEventId` erzeugt im naechsten Lauf — gelesen: 61 Zeilen
 - `src/core/sim/__tests__/narrative-longrun.test.ts` — NAR-16: Mehr-Tage-Betrieb mit Geschichten, Rivalen und Save/Replay. Der Lauf — gelesen: 133 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 78 Zeilen
@@ -3454,9 +3462,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 191 Zeilen
 - `src/core/sim/__tests__/narrative-rival-context.test.ts` — Phase 5: Rivalen-Karten leiten sich rein aus Minds, Indizien und — gelesen: 88 Zeilen
 - `src/core/sim/__tests__/narrative-rival-trigger.test.ts` — C2: Der `rival-action`-Trigger oeffnet nur fuer Handlungen mit Folgen ein — gelesen: 57 Zeilen
-- `src/core/sim/__tests__/narrative-runtime.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 111 Zeilen
+- `src/core/sim/__tests__/narrative-runtime.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/narrative-staff-source.test.ts` — Die Kasse ist die reale Besucher-Personal-Begegnung: nur ein anwesender — gelesen: 59 Zeilen
-- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 71 Zeilen
+- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
 - `src/core/sim/__tests__/narrative-trigger-schema.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 82 Zeilen
 - `src/core/sim/__tests__/narrative-trigger-template-contract.test.ts` — C1: Die Spec-Regel „nur triggern, wo ein Template mit Mehrwert existiert“ — gelesen: 45 Zeilen
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
@@ -3468,7 +3476,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/phase-logic-audit-beats.test.ts` — Phase 4 und 7 gegen die echten Pfade: Beat-Wechsel, Kosten, einmalige — gelesen: 137 Zeilen
-- `src/core/sim/__tests__/phase-logic-audit-foundation.test.ts` — Phase 0-2 gegen die echten Pfade: Geld, Determinismus, Akteurskanten, Weltzeit, — gelesen: 93 Zeilen
+- `src/core/sim/__tests__/phase-logic-audit-foundation.test.ts` — Phase 0-2 gegen die echten Pfade: Geld, Determinismus, Akteurskanten, Weltzeit, — gelesen: 97 Zeilen
 - `src/core/sim/__tests__/phase-logic-audit-relations.test.ts` — Phase 3, 5 und 6 gegen die echten Pfade: Akteurswahrheit im Preflight, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/player-career.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 96 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
@@ -3713,7 +3721,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/template-schema.ts` — Fail-closed Validierung fuer Event-Templates, Choices und ihre statischen Teile. — gelesen: 167 Zeilen
 - `src/core/sim/narrative/events/template-types.ts` — Deklarative Event-Templates und Choice-Vertraege; Darstellung bleibt ausserhalb. — gelesen: 125 Zeilen
 - `src/core/sim/narrative/events/trigger-definitions.ts` — Deklarative Trigger, die einen echten Fact in einen Event-Kandidaten uebersetzen. — gelesen: 31 Zeilen
-- `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 109 Zeilen
+- `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 110 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 106 Zeilen
 - `src/core/sim/narrative/guest-voice.ts` — Ruf hoert man: Der Gaeste-Ton folgt dem Ruf des Hauses, nicht dem Zufall. — gelesen: 56 Zeilen
 - `src/core/sim/narrative/knowledge-config.ts` — Wissens-Config: Quellengewichte, Beziehungsbonus und Distanzkurve. — gelesen: 129 Zeilen
@@ -3966,7 +3974,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/ledger-tick-balance.test.ts` — Die Bilanz ist eine Invariante des vollstaendigen Takts, nicht nur des — gelesen: 79 Zeilen
 - `src/store/__tests__/loaded-city-population.test.ts` — Die Kette Laden -> Sicht -> Begegnung: Ein Save, der bereits in der Stadt — gelesen: 86 Zeilen
 - `src/store/__tests__/mirror-roundtrip.test.ts` — Der Lager-Spiegel laeuft durch Kauf, Aufnehmen und Aufstellen und muss nach — gelesen: 76 Zeilen
-- `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
+- `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 100 Zeilen
 - `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 55 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 143 Zeilen
 - `src/store/__tests__/new-game.test.ts` — Ein neues Spiel beginnt in der Wohnung; die Haustür führt auf die Straße, und — gelesen: 69 Zeilen

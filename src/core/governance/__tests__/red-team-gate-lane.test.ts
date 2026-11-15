@@ -61,6 +61,7 @@ const PURPOSE = {
   typecheck: { command: 'node', script: 'node_modules/typescript/bin/tsc', code: 'ERR-1005', packageToken: '' },
   'test-quality': { command: 'node', script: 'scripts/verify-test-quality.mjs', code: 'ERR-4002', packageToken: '' },
   'dead-code': { command: 'node', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', packageToken: '' },
+  'headless-core': { command: 'node', script: 'scripts/verify-headless-core.mjs', code: 'ERR-4019', packageToken: '' },
   docs: { command: 'node', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', packageToken: '' },
   catalog: { command: 'node', script: 'scripts/test-catalog.mjs', code: 'ERR-4015', packageToken: '' },
   generated: { command: 'node', script: 'scripts/sync-generated.mjs', code: 'ERR-4028', packageToken: '' },
@@ -160,10 +161,17 @@ describe('Red-Team: Test- und Gate-Lane', () => {
       expect(planned.has(key), `${key} ist in keinem Profil geplant`).toBe(true);
     }
 
-    // `test-placement` ist bewusst ein Light-/Pre-Commit-Gate und kein
-    // zusaetzlicher Required-Gate-Status im vollen CI-Set.
+    // `test-placement` und `headless-core` sind bewusst Light-/Pre-Commit-Gates
+    // und keine zusaetzlichen Required-Gate-Status im vollen CI-Set.
     const required = Object.keys(gates)
-      .filter((key) => key !== 'affected' && key !== 'audit' && key !== 'test-placement' && key !== 'mechanics')
+      .filter(
+        (key) =>
+          key !== 'affected' &&
+          key !== 'audit' &&
+          key !== 'test-placement' &&
+          key !== 'headless-core' &&
+          key !== 'mechanics',
+      )
       .sort();
     expect([...REQUIRED_CI_GATES].sort()).toEqual(required);
     expect(planGates('quick')).toEqual([...QUICK_GATES]);

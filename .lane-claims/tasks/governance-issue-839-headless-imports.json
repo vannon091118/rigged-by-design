@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-839-headless-imports",
+  "claimId": "lane/governance/issue-839-headless-imports",
+  "branch": "lane/governance/issue-839-headless-imports",
+  "baseSha": "d6f90a99fa9ba4777a61ec083bf3a4ad6c9be9a5",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #839: Headless-Core-Importgrenzen absichern",
+  "goal": "src/core importiert weder Pixi/React/DOM noch UI-, Render- oder Store-Pfade; Verstoesse brechen das lokale Gate.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit und PR pushen; Maintainer-Review und Merge.",
+  "revision": 1
+}
