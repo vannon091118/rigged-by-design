@@ -15,9 +15,9 @@
 export const GAMEPLAY_RNG_ENTRY_POINTS_VERSION = 1;
 
 /** Weltgrenzen bewegen den gespeicherten Zustand, Spielgrenzen eine Runde. */
-export type GameplayRngBoundary = 'world' | 'game';
+type GameplayRngBoundary = 'world' | 'game';
 
-export interface GameplayRngEntryPoint {
+interface GameplayRngEntryPoint {
   /** Stabiler Schluessel fuer Befunde und Kommentare. */
   readonly id: string;
   /** Repo-relativer Pfad des Grenzmoduls. */
