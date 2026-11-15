@@ -7,13 +7,21 @@
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../../economy/ledger';
+import { fromVC } from '../../../economy/vacoin';
 import { Prng } from '../../../rng/prng';
 import { randomSeed } from '../../../../test/random-seed';
+import { replaySave, toSavedGame } from '../../../../store/save';
+import { cityOf } from '../../city-model';
+import type { CityEncounterRecord, EncounterAction } from '../../city-types';
+import { encounterMemory } from '../../city-encounter-dialog';
 import { spawnGuest } from '../../spawn';
-import { createWorld } from '../../templates';
+import { createWorld, ensureStarter } from '../../templates';
+import type { WorldState } from '../../types';
 import { recordVisitor } from '../../visitors';
 import { transitionEvent } from '../event-lifecycle';
 import { emitFact } from '../facts';
+import { actorRefOfVisitor, shift } from '../relationships';
+import { playerContact, relationshipTier, TIER_MEMORY_CLAUSE } from '../relationship-tier';
 import { processNarrativeRuntime } from '../runtime';
 import { buildNarrativeView } from '../view';
 
@@ -112,5 +120,79 @@ describe('Narrative View (NAR-14)', () => {
     const { world, ledger } = scene();
 
     expect(buildNarrativeView(world, ledger)).toEqual(buildNarrativeView(world, ledger));
+  });
+});
+
+describe('Beziehungstier und Kontakt-Registry (Kontakte aus Begegnungen, #802)', () => {
+  const worldOf = (): WorldState => {
+    const world = createWorld('SMALL');
+    ensureStarter(world);
+    return world;
+  };
+  const encounter = (npcId: number, day: number, action: EncounterAction): CityEncounterRecord => ({
+    npcId, name: `Figur ${npcId}`, location: 'KIEZ', day, tick: day * 24, action, amount: fromVC(1), trust: 0,
+  });
+  const withEncounters = (world: WorldState, ...records: CityEncounterRecord[]): WorldState => {
+    world.city = { ...cityOf(world), encounters: records };
+    return world;
+  };
+
+  it('liest ohne Kante FREMDE - ohne Schreiber und ohne Zufall', () => {
+    const world = worldOf();
+    const first = relationshipTier(world, actorRefOfVisitor(1), 'player');
+    const second = relationshipTier(world, actorRefOfVisitor(1), 'player');
+    expect(first).toBe('FREMDE');
+    expect(second).toBe('FREMDE');
+    expect(TIER_MEMORY_CLAUSE.FREMDE).toBe('');
+  });
+
+  it('ordnet schwache Kanten KONTAKT und warme Kanten VERTRAUT zu', () => {
+    const world = worldOf();
+    shift(world, actorRefOfVisitor(1), 'player', { trust: 2, sympathy: 1 }, 5);
+    expect(relationshipTier(world, actorRefOfVisitor(1), 'player')).toBe('KONTAKT');
+    shift(world, actorRefOfVisitor(1), 'player', { trust: 2 }, 6);
+    expect(relationshipTier(world, actorRefOfVisitor(1), 'player')).toBe('VERTRAUT');
+  });
+
+  it('gibt aktiver Anspannung Vorrang vor warmen Zahlen', () => {
+    const world = worldOf();
+    shift(world, actorRefOfVisitor(1), 'player', { trust: 6, sympathy: 4 }, 5);
+    expect(relationshipTier(world, actorRefOfVisitor(1), 'player')).toBe('VERTRAUT');
+    shift(world, actorRefOfVisitor(1), 'player', { conflict: 3 }, 6);
+    expect(relationshipTier(world, actorRefOfVisitor(1), 'player')).toBe('ANSPANNUNG');
+  });
+
+  it('zaehlt aufgezeichnete Begegnungen als Kontakte mit aktuellem Tier', () => {
+    const world = withEncounters(
+      worldOf(),
+      encounter(1, 2, 'GEBEN'),
+      encounter(1, 5, 'HELFEN'),
+      encounter(2, 3, 'ABLEHNEN'),
+    );
+    expect(playerContact(world, 1)).toMatchObject({ met: 2, lastDay: 5, lastAction: 'HELFEN', tier: 'FREMDE' });
+    const nobody = playerContact(world, 9);
+    expect(nobody).toMatchObject({ met: 0, lastDay: null, lastAction: null, tier: 'FREMDE' });
+  });
+
+  it('antwortet im Dialog tierbewusst aus einer Quelle', () => {
+    const world = worldOf();
+    expect(encounterMemory(world, 1, 'Ada')).toBe('Ada sieht dich zum ersten Mal.');
+    shift(world, actorRefOfVisitor(1), 'player', { trust: 4, sympathy: 2 }, 5);
+    withEncounters(world, encounter(1, 4, 'GEBEN'));
+    expect(encounterMemory(world, 1, 'Ada')).toBe(
+      `Ada erinnert sich an Tag 4: eine Runde ausgegeben.${TIER_MEMORY_CLAUSE.VERTRAUT}`,
+    );
+    shift(world, actorRefOfVisitor(1), 'player', { conflict: 3 }, 6);
+    expect(encounterMemory(world, 1, 'Ada')).toBe(
+      `Ada erinnert sich an Tag 4: eine Runde ausgegeben.${TIER_MEMORY_CLAUSE.ANSPANNUNG}`,
+    );
+  });
+
+  it('bleibt ueber Save/Load stabil, weil das Tier kein zweiter Zustand ist', () => {
+    const world = withEncounters(worldOf(), encounter(1, 4, 'HELFEN'));
+    shift(world, actorRefOfVisitor(1), 'player', { trust: 4, sympathy: 2 }, 5);
+    const before = playerContact(world, 1);
+    const loaded = replaySave(toSavedGame(world, new Ledger(), 42))!;
+    expect(playerContact(loaded.world, 1)).toEqual(before);
   });
 });
