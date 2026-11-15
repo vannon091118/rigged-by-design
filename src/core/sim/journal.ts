@@ -14,6 +14,12 @@ interface JournalRefs {
   readonly buildingId?: string;
   /** Veranstaltung, zu der ein Abend-Ereignis gehört (z. B. E-Sport-Abend). */
   readonly eventId?: number;
+  /** Rolle und Team am E-Sport-Abend; die Wahl ist damit Teil des Saves. */
+  readonly esportSide?: 'HOME' | 'AWAY';
+  readonly esportTeamId?: string;
+  /** Vom Veranstalter gesetzte Paarung desselben Abends. */
+  readonly esportHomeId?: string;
+  readonly esportAwayId?: string;
 }
 
 export interface JournalEvent {

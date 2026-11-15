@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T00:12Z-787-esport-roles",
+  "contributionId": "liilith-787-esport-roles",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Turnierabend kennt jetzt drei Plätze. Wer zusieht, setzt und hofft. Wer teilnimmt, zahlt seinen Einsatz an der Tür und steht danach selbst am Tisch - die Quote interessiert ihn nicht mehr, nur das Ergebnis. Und wer den Abend ausrichtet, entscheidet vorher, wer gegen wen antritt. Dieselbe Ankündigung, dieselbe Halle, dieselbe Uhr: nur die Rolle entscheidet, was man tun darf.",
+  "directives": []
+}
