@@ -15,7 +15,7 @@ import { cityOf } from './city-model';
 import { ensureCityVisitor, locationName, type CityNpcDef } from './city-npcs';
 import { ensureCityLife } from './city-life-state';
 import { rosterDefById, rosterDefs } from './city-npc-roster';
-import { ACTION_LABEL, lastEncounter, visitorRef } from './city-encounter-dialog';
+import { encounterMemory, visitorRef } from './city-encounter-dialog';
 import type { CityLocationId } from './city-types';
 import type { NarrativeEventInstance } from './narrative/event-types';
 import { scheduleEvent } from './narrative/event-scheduler';
@@ -92,10 +92,7 @@ export function meetNpc(
     step: 'START',
   });
   if (!event) throw new Error(`Die Begegnung mit ${npc.name} konnte nicht geoeffnet werden.`);
-  const seen = lastEncounter(world, visitor.id);
-  const memory = seen
-    ? `${npc.name} erinnert sich an Tag ${seen.day}: ${ACTION_LABEL[seen.action]}.`
-    : `${npc.name} sieht dich zum ersten Mal.`;
+  const memory = encounterMemory(world, visitor.id, npc.name);
   const text = `${npc.name} (${npc.role}, ${locationName(npc.location)}): ${memory}`;
   world.city = { ...cityOf(world), lastText: text, lastResult: text };
   world.lastEvent = text;

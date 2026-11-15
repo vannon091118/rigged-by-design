@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:14b1c3f5da6b446c3c07087df52ca7dac8f75bc27d31ea85b87b3b4192f175e6",
+  "contentHash": "sha256:88b08dde17e1a411ea567eca49af86986dc1e09815bc49ee372565a0f7436a11",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -13557,6 +13557,28 @@
       "text": "Der Magen entscheidet mit, bevor der erste Satz faellt: Wer den Tag ohne Essen und Wasser durchziehen will, hoert im Kiez seine eigene Stimme leiser werden und sieht den Ruf langsamer wachsen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-12-player-needs.json"
+    },
+    {
+      "contributionId": "player-npc-kontakte-01",
+      "turnId": "2026-11-15T02:45Z-player-npc-kontakte",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "encounter"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Runde geht herum, und die Distanz wird leiser, wie Nebel vor Mittag. Wer sich daran erinnert, spricht anders: kurzer, direkt, ohne das Umstands-Vokabular.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-player-npc-kontakte.json"
     },
     {
       "contributionId": "plinko-board-raster-01",

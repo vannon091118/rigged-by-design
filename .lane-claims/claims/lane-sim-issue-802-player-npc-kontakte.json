@@ -1,0 +1,22 @@
+{
+  "id": "lane-sim-issue-802-player-npc-kontakte",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-802-player-npc-kontakte",
+  "baseSha": "bd7dffab9e44c7e2d272650035520d32d16ebec3",
+  "issue": 802,
+  "task": "Spieler-NPC-Kontakte: Begegnungen registrieren, Beziehungswerte ueber Wiederholung entwickeln, Tier-Reader und NPC-Reaktion (AC #802)",
+  "pathAllowlist": [
+    "src/core/sim/narrative/**",
+    "src/core/sim/city-encounter.ts",
+    "src/core/sim/city-encounter-action.ts",
+    "src/core/sim/city-encounter-dialog.ts",
+    "src/core/sim/__tests__/city-encounter-loop.test.ts",
+    "content/narrative/**",
+    ".lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "bd7dffab9e44c7e2d272650035520d32d16ebec3"
+}

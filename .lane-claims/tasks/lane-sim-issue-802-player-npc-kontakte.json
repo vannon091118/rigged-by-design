@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "lane-sim-issue-802-player-npc-kontakte",
+  "claimId": "lane-sim-issue-802-player-npc-kontakte",
+  "branch": "lane/sim/issue-802-player-npc-kontakte",
+  "baseSha": "bd7dffab9e44c7e2d272650035520d32d16ebec3",
+  "phase": "CI_PENDING",
+  "title": "Spieler-NPC-Kontakte: Begegnungen registrieren, Beziehungswerte ueber Wiederholung entwickeln, Tier-Reader und NPC-Reaktion (AC #802)",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

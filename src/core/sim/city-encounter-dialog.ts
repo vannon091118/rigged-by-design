@@ -7,7 +7,8 @@ import { rosterDefById } from './city-npc-roster';
 import type { NarrativeEventInstance } from './narrative/event-types';
 import type { NarrativeEventView } from './narrative/view-types';
 import { buildNarrativeView } from './narrative/view';
-import { relationshipBetween } from './narrative/relationships';
+import { actorRefOfVisitor, relationshipBetween } from './narrative/relationships';
+import { relationshipTier, TIER_MEMORY_CLAUSE } from './narrative/relationship-tier';
 import type { CityEncounterRecord, EncounterAction } from './city-types';
 import type { Visitor, WorldState } from './types';
 
@@ -56,6 +57,18 @@ export function lastEncounter(world: WorldState, npcId: number): CityEncounterRe
   return null;
 }
 
+/**
+ * Die tierbewusste Erinnerungszeile aus einer Quelle: Was der NPC merkt,
+ * und wie der Kontakt jetzt steht. Tier-Satz aus `TIER_MEMORY_CLAUSE`,
+ * damit Dialog und Szene keine zweite Wahrheit bauen (#802).
+ */
+export function encounterMemory(world: WorldState, npcVisitorId: number, npcName: string): string {
+  const seen = lastEncounter(world, npcVisitorId);
+  if (!seen) return `${npcName} sieht dich zum ersten Mal.`;
+  const clause = TIER_MEMORY_CLAUSE[relationshipTier(world, actorRefOfVisitor(npcVisitorId), 'player')];
+  return `${npcName} erinnert sich an Tag ${seen.day}: ${ACTION_LABEL[seen.action]}.${clause}`;
+}
+
 export interface EncounterDialog {
   readonly eventId: number;
   readonly event: string;
@@ -85,7 +98,7 @@ export function encounterDialog(world: WorldState, ledger: Ledger, eventId: numb
   const seen = lastEncounter(world, visitorId);
   const edge = relationshipBetween(world, visitorRef(visitorId), 'player');
   const memory = seen
-    ? `${name} erinnert sich an Tag ${seen.day}: ${ACTION_LABEL[seen.action]}; Vertrauen ${edge?.trust ?? 0}.`
+    ? `${encounterMemory(world, visitorId, name)} Vertrauen ${edge?.trust ?? 0}.`
     : `${name} hat dich hier noch nicht gesehen.`;
   return {
     eventId,

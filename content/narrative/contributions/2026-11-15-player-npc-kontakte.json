@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T02:45Z-player-npc-kontakte",
+  "contributionId": "player-npc-kontakte-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["encounter"],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Runde geht herum, und die Distanz wird leiser, wie Nebel vor Mittag. Wer sich daran erinnert, spricht anders: kurzer, direkt, ohne das Umstands-Vokabular.",
+  "directives": []
+}
