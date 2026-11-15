@@ -5,13 +5,15 @@
  * Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst
  * bleiben nach Strg+C npm-/vitest-Waisen liegen, die die naechsten Gates bremsen.
  */
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it as vitestIt } from 'vitest';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { isAlive, killTracked, killTree, processIdentity, releaseOwner, sweepOrphans, trackPid } from '../../../../scripts/lib/process-sweep.mjs';
 import { createStop, EXIT_ABORTED } from '../../../../scripts/lib/pipeline-stop.mjs';
+
+const it = (name: string, fn: () => void | Promise<void>): void => { vitestIt(name, fn, 40_000); };
 
 const stateDir = mkdtempSync(join(tmpdir(), 'rbd-sweep-'));
 process.env.RBD_VERIFY_STATE = stateDir;

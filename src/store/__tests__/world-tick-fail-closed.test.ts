@@ -13,6 +13,7 @@ import { fromVC } from '../../core/economy/vacoin';
 import { HAUSKONTO } from '../../core/sim/money';
 import { createWorld, ensureStarter } from '../../core/sim/templates';
 import { Prng } from '../../core/rng/prng';
+import { randomSeed } from '../../test/random-seed';
 import { advanceWorld } from '../narrative-clock';
 import { LedgerHalt } from '../ledger-halt';
 import { TickScheduler } from '../tick-scheduler';
@@ -22,7 +23,7 @@ function setup() {
   ensureStarter(world);
   const ledger = new Ledger();
   ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(10_000), 'takt-kapital', 0);
-  const prng = new Prng(424242);
+  const prng = new Prng(randomSeed());
   const broken = new Proxy(ledger, {
     get(target, property) {
       if (property === 'verifyIncremental') return () => false;

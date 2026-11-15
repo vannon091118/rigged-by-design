@@ -6,12 +6,12 @@
  * fremder WIP. Die Fixtures laufen gegen echte Git-Worktrees.
  */
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
 import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
-import { workerEnv } from './test-worker-home';
+import { cleanRepo, git, workerEnv, writeFakeGh } from './test-worker-home';
 
 interface Payload {
   readonly ok: boolean;
@@ -28,60 +28,6 @@ interface Payload {
 
 const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 40_000); };
 
-const git = (cwd: string, args: readonly string[]): string => {
-  const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
-  if (result.status !== 0) throw new Error(`git ${args.join(' ')}: ${result.stderr}`);
-  return result.stdout.trim();
-};
-
-const fixture = (parent: string, name: string): string => {
-  const dir = join(parent, name);
-  mkdirSync(dir, { recursive: true });
-  git(dir, ['init', '-q']);
-  git(dir, ['config', 'user.name', 'Test Agent']);
-  git(dir, ['config', 'user.email', 'test@example.invalid']);
-  writeFileSync(join(dir, 'README.md'), '# fixture\n');
-  git(dir, ['add', 'README.md']);
-  git(dir, ['commit', '-q', '-m', 'fixture']);
-  return dir;
-};
-
-const writeClaim = (dir: string, branch: string): void => {
-  mkdirSync(join(dir, '.lane-claims'), { recursive: true });
-  writeFileSync(
-    join(dir, '.lane-claims', 'claims.json'),
-    `${JSON.stringify([{
-      id: 'lane/test/fixture',
-      owner: 'Governance-Owner',
-      branch,
-      baseSha: '0'.repeat(40),
-      task: 'Fixture-Aufgabe',
-      pathAllowlist: ['README.md'],
-      contracts: [],
-      dependencies: [],
-      gateProfile: 'light',
-      status: 'open',
-      createdAt: '0'.repeat(40),
-    }], null, 2)}\n`,
-  );
-};
-
-const writeContext = (dir: string): void => {
-  mkdirSync(join(dir, 'scripts'), { recursive: true });
-  writeFileSync(
-    join(dir, 'scripts', 'agent-context.mjs'),
-    "console.log(JSON.stringify({ systems: [], tests: { runAll: false, selected: [], fast: [], long: [] }, gates: [] }));\n",
-  );
-};
-
-const writeEmptyGh = (parent: string): string => {
-  const bin = join(parent, 'bin');
-  mkdirSync(bin, { recursive: true });
-  const script = join(bin, 'gh.mjs');
-  writeFileSync(script, "console.log('[]');\n");
-  return script;
-};
-
 const run = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv = {}) =>
   spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'pretask.mjs'), ...args], {
     cwd,
@@ -89,29 +35,19 @@ const run = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv = {}) 
     env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, ...env },
   });
 
-const claimRepo = (parent: string, name: string, branch: string): string => {
-  const repo = fixture(parent, name);
-  git(repo, ['checkout', '-q', '-b', branch]);
-  writeClaim(repo, branch);
-  writeContext(repo);
-  git(repo, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
-  git(repo, ['commit', '-q', '-m', 'claim']);
-  return repo;
-};
+const payload = (stdout: string): Payload => JSON.parse(stdout) as Payload;
+const ghEnv = (parent: string): NodeJS.ProcessEnv => ({
+  RBD_GH_BIN: process.execPath,
+  RBD_GH_SCRIPT: writeFakeGh(parent).script,
+});
 
 const linkedRepo = (parent: string, name: string, branch: string): string => {
-  const repo = claimRepo(parent, name, branch);
+  const repo = cleanRepo(parent, name, branch);
   git(repo, ['checkout', '-q', '-']);
   const worktree = join(parent, `${name}-worktree`);
   git(repo, ['worktree', 'add', '-q', worktree, branch]);
   return worktree;
 };
-
-const payload = (stdout: string): Payload => JSON.parse(stdout) as Payload;
-const ghEnv = (parent: string): NodeJS.ProcessEnv => ({
-  RBD_GH_BIN: process.execPath,
-  RBD_GH_SCRIPT: writeEmptyGh(parent),
-});
 
 describe('pretask modes', () => {
   it('startet NEW im sauberen verknuepften Worktree', () => {
@@ -176,7 +112,7 @@ describe('pretask modes', () => {
   it('meldet HEAD == Basis als NOOP statt als Startblocker', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-noop-'));
     try {
-      const repo = claimRepo(parent, 'repo', 'lane/test/noop');
+      const repo = cleanRepo(parent, 'repo', 'lane/test/noop');
       git(repo, ['update-ref', 'refs/remotes/origin/main', 'HEAD']);
       git(repo, ['checkout', '-q', '--detach', 'HEAD']);
       const worktree = join(parent, 'noop-worktree');

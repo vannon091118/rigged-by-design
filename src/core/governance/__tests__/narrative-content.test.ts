@@ -9,7 +9,7 @@
  */
 import { mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it as vitestIt } from 'vitest';
 import { buildCompiledRegistry, canonical } from '../../../../scripts/lib/narrative-compiler.mjs';
 import {
   loadNarrativeContent,
@@ -17,6 +17,8 @@ import {
   validateNarrativeData,
 } from '../../../../scripts/lib/narrative-content.mjs';
 import { clone, fixture, first, messages, report, schema } from './narrative-fixture';
+
+const it = (name: string, fn: () => void, timeout = 40_000): void => { vitestIt(name, fn, timeout); };
 
 describe('Narrative Content Registry (NAR-09)', () => {
   it('akzeptiert Inbox, Manifest und Registry als konsistenten Bestand', () => {

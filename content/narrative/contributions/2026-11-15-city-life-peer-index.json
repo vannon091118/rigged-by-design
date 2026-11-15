@@ -1,0 +1,24 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T00:44Z-city-life-peer-index",
+  "contributionId": "city-life-peer-index-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita zählte die Gäste nicht elfmal, nur um zu wissen, wer an welchem Ort steht. Sie ging einmal durch den Raum, notierte jede Position und las danach nur noch die Liste. Die Entscheidung blieb dieselbe; die Finger wurden schneller.",
+  "directives": []
+}

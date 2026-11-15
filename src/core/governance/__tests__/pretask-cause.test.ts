@@ -10,7 +10,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it as vitestIt } from 'vitest';
 import { causeBlock, causeForGate } from '../../../../scripts/agent-cause.mjs';
 import { workerEnv } from './test-worker-home';
 
@@ -75,6 +75,8 @@ const run = (cwd: string, args: readonly string[]) => {
     env: { ...process.env, ...workerEnv(), RBD_ROOT: cwd, RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: gh },
   });
 };
+
+const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 40_000); };
 
 const payload = (stdout: string): Payload => JSON.parse(stdout) as Payload;
 

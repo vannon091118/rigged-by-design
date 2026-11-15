@@ -42,7 +42,7 @@ export function workerEnv(): NodeJS.ProcessEnv {
   return { RBD_WORKSPACE_HOME: home() };
 }
 
-export interface PretaskPayload {
+interface PretaskPayload {
   readonly ok: boolean;
   readonly context: string | null;
   readonly isolation: { readonly required: boolean; readonly code: string; readonly isWorktree: boolean; readonly reasons: readonly string[] };

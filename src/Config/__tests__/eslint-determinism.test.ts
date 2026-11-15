@@ -11,6 +11,7 @@
 import { join } from 'node:path';
 import { ESLint } from 'eslint';
 import { describe, expect, it } from 'vitest';
+import eslintConfig from '../eslint.config.mjs';
 
 const root = process.cwd();
 const eslint = new ESLint({
@@ -28,6 +29,11 @@ async function lintGameplay(code: string, file = 'src/core/lint-probe.ts'): Prom
 }
 
 describe('Determinismus-Sperre gegen computed Property Access', { timeout: 30_000 }, () => {
+  it('laedt die gehaertete Konfiguration als nicht-leeres Array', () => {
+    expect(Array.isArray(eslintConfig)).toBe(true);
+    expect(eslintConfig.length).toBeGreaterThan(0);
+  });
+
   const forbidden: readonly [string, string][] = [
     ['Math computed', "const draw = Math['random']();"],
     ['globalThis computed namespace', "const draw = globalThis['Math']['random']();"],
