@@ -3341,7 +3341,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/workspace-home-drive.test.ts` — Das Workspace-Home liegt ausserhalb des Repositories. Ueber Laufwerksgrenzen — gelesen: 40 Zeilen
 - `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 194 Zeilen
 - `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 69 Zeilen
-- `src/core/governance/fixtures/spec-probe.spec.ts` — Fixture fuer die Testdatei-Erkennung des Headless-Core-Scanners (#916/#921). — gelesen: 10 Zeilen
+- `src/core/governance/fixtures/spec-probe.spec.ts` — Fixture fuer die Testdatei-Erkennung des Headless-Core-Scanners (#916/#921). — gelesen: 8 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
 - `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
 - `src/core/io/envelope.ts` — Umschlag fuer Spielstand-Exporte: Art, Format, Pruefsumme, Nutzlast. — gelesen: 66 Zeilen
