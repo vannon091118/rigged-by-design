@@ -1,0 +1,21 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T10:10Z-shinon-877-generated-merge-driver",
+  "contributionId": "shinon-877-generated-merge-driver",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Konflikt in einer abgeleiteten Datei ist kein Streit über Inhalt, sondern ein Zeichen, dass die Quellen noch nicht vollständig gemischt sind. Der Merge-Driver hält den Konflikt bei Handdateien offen und regeneriert erst nach dem Merge; so bleibt die Wahrheit bei den Quellen.",
+  "directives": []
+}
