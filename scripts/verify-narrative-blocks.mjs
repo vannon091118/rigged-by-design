@@ -31,6 +31,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import {
   gapIssues,
   isMaintenanceOnly,
@@ -45,7 +46,7 @@ import {
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
 import { ROOT } from './lib/report.mjs';
 
-const USAGE = `verify-narrative-blocks: Pools, doppelte Texte und die Pflicht pro Commit pruefen.
+export const USAGE = `verify-narrative-blocks: Pools, doppelte Texte und die Pflicht pro Commit pruefen.
 
 Nutzung: node scripts/verify-narrative-blocks.mjs [--commit | --pr]
 
@@ -55,103 +56,123 @@ Nutzung: node scripts/verify-narrative-blocks.mjs [--commit | --pr]
 
 Exit: 0 PASS, 1 Verstoss, 2 unbekannte Option.`;
 
-const args = process.argv.slice(2);
-if (args.includes('--help') || args.includes('-h')) {
-  console.log(USAGE);
-  process.exit(0);
-}
-const unknownOptions = args.filter((arg) => !['--commit', '--pr'].includes(arg));
-if (unknownOptions.length > 0) {
-  console.error(`[narrative-blocks] Unbekannte Option: ${unknownOptions.join(', ')}`);
-  console.error(USAGE);
-  process.exit(2);
-}
-
-const commitMode = args.includes('--commit');
-const content = loadNarrativeContent(ROOT);
-if (!content.ok) {
-  for (const problem of content.issues.slice(0, 12)) console.error(`[narrative-blocks] ${problem.path}: ${problem.message}`);
-  console.error(`[narrative-blocks] Narrative-Content ungueltig (${content.issues.length} Befunde)`);
-  process.exit(1);
-}
-
-const fragments = content.compiled.fragments;
-const report = poolReport(fragments);
-const slots = poolSlots(content.vocabulary);
-const issues = poolIssues({ ...report, slots });
-
-if (commitMode) {
-  const gitPaths = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' })
-    .trim().split('\n').filter(Boolean);
-  // `-m` liefert bei einem Merge die Vereinigung der Pfade gegen alle Eltern;
-  // ohne HEAD (erster Commit) bleibt die Liste leer und die Pflicht greift.
-  const commitPaths = (extra = []) => {
-    try {
-      return gitPaths(['diff-tree', '-r', '-m', '--no-commit-id', '--name-only', ...extra, 'HEAD']);
-    } catch {
-      return [];
-    }
+/** Parst die CLI-Optionen ohne Seiteneffekte; der Test importiert diese Funktion. */
+export function parseCliArgs(argv) {
+  if (argv.includes('--help') || argv.includes('-h')) {
+    return { help: true, unknown: [], commit: false, pr: false };
+  }
+  const unknown = argv.filter((arg) => !['--commit', '--pr'].includes(arg));
+  return {
+    help: false,
+    unknown,
+    commit: argv.includes('--commit'),
+    pr: argv.includes('--pr'),
   };
-  const staged = gitPaths(['diff', '--cached', '--name-only']);
-  const prMode = args.includes('--pr');
-  const base = process.env.BASE_REF ?? 'origin/main';
-  let changed;
-  let deletedPaths;
-  let addedPaths;
-  let source;
-  if (prMode) {
-    try {
-      changed = gitPaths(['diff', '--cached', '--name-only', base]);
-      deletedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D', base])
-        .filter((path) => path.startsWith('content/narrative/contributions/'));
-      addedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', base])
-        .filter((path) => path.startsWith('content/narrative/contributions/'));
-      source = `Branch-Diff ${base}..Index`;
-    } catch {
-      console.error(`[narrative-blocks] Basis '${base}' nicht lesbar; --pr braucht einen Basis-Ref`);
-      process.exit(1);
-    }
-  } else {
-    const fromCommit = staged.length === 0;
-    changed = fromCommit ? commitPaths() : staged;
-    deletedPaths = (fromCommit
-      ? commitPaths(['--diff-filter=D'])
-      : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D']))
-      .filter((path) => path.startsWith('content/narrative/contributions/'));
-    addedPaths = fromCommit
-      ? commitPaths(['--diff-filter=A']).filter((path) => path.startsWith('content/narrative/contributions/'))
-      : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', '--', 'content/narrative/contributions']);
-    source = fromCommit ? 'Dateiliste aus HEAD, nichts gestagt' : 'nur Doku/Inventur/Tooling';
-  }
-  const deletedReport = poolReport(fragments);
-  issues.push(...shrinkIssues({ deleted: deletedPaths, before: deletedReport.counts, after: report.counts }));
-  if (isMaintenanceOnly(changed)) {
-    console.log(`[narrative-blocks] Pflege-Commit (${source}): Baustein-Pflicht entfaellt, Pool-Regeln gelten weiter`);
-  } else {
-    const added = [];
-    for (const path of addedPaths) {
-      const data = JSON.parse(readFileSync(join(ROOT, path), 'utf8'));
-      const registered = (content.manifest?.turns ?? []).some((entry) => entry.contributionId === data.contributionId);
-      if (!registered) issues.push(`Neuer Beitrag ${data.contributionId} ist nicht im Turn-Manifest registriert`);
-      const wired = fragments.some((fragment) => fragment.contributionId === data.contributionId);
-      if (!wired) issues.push(`Neuer Beitrag ${data.contributionId} ist nicht in der Registry verdrahtet`);
-      added.push({ contributionId: data.contributionId, slot: data.slot });
-    }
-    // `--pr` prueft den gesamten Branch-Diff; normale Commits pruefen weiterhin
-    // nur den gestagten Inhalt. Ein Amend mit gestagten Aenderungen findet
-    // seinen bereits vorhandenen Baustein damit wieder.
-    const before = { ...report.counts };
-    for (const entry of added) before[entry.slot] = Math.max(0, (before[entry.slot] ?? 0) - 1);
-    issues.push(...gapIssues({ before, added }));
-  }
 }
 
-const smallest = slots.map((slot) => `${slot} ${report.counts[slot] ?? 0}`).join(', ');
-const counted = quotaTotal(report.counts, report.total);
-console.log(`[narrative-blocks] ${counted}/${POOL_TARGET} gewertete Bausteine (${report.total} gesamt); Minimum ${POOL_MINIMUM}; ${smallest}`);
-if (issues.length > 0) {
-  for (const problem of issues) console.error(`[narrative-blocks] ${problem}`);
-  console.error(`[narrative-blocks] ${issues.length} Verstoss/Verstoesse`);
-  process.exit(1);
+/** Fuehrt den Prueflauf aus und liefert den Exit-Code; kein `process.exit` im Modul. */
+export function runNarrativeBlocks(argv = process.argv.slice(2)) {
+  const parsed = parseCliArgs(argv);
+  if (parsed.help) {
+    console.log(USAGE);
+    return 0;
+  }
+  if (parsed.unknown.length > 0) {
+    console.error(`[narrative-blocks] Unbekannte Option: ${parsed.unknown.join(', ')}`);
+    console.error(USAGE);
+    return 2;
+  }
+
+  const commitMode = parsed.commit;
+  const prMode = parsed.pr;
+  const content = loadNarrativeContent(ROOT);
+  if (!content.ok) {
+    for (const problem of content.issues.slice(0, 12)) console.error(`[narrative-blocks] ${problem.path}: ${problem.message}`);
+    console.error(`[narrative-blocks] Narrative-Content ungueltig (${content.issues.length} Befunde)`);
+    return 1;
+  }
+
+  const fragments = content.compiled.fragments;
+  const report = poolReport(fragments);
+  const slots = poolSlots(content.vocabulary);
+  const issues = poolIssues({ ...report, slots });
+
+  if (commitMode) {
+    const gitPaths = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' })
+      .trim().split('\n').filter(Boolean);
+    // `-m` liefert bei einem Merge die Vereinigung der Pfade gegen alle Eltern;
+    // ohne HEAD (erster Commit) bleibt die Liste leer und die Pflicht greift.
+    const commitPaths = (extra = []) => {
+      try {
+        return gitPaths(['diff-tree', '-r', '-m', '--no-commit-id', '--name-only', ...extra, 'HEAD']);
+      } catch {
+        return [];
+      }
+    };
+    const staged = gitPaths(['diff', '--cached', '--name-only']);
+    const base = process.env.BASE_REF ?? 'origin/main';
+    let changed;
+    let deletedPaths;
+    let addedPaths;
+    let source;
+    if (prMode) {
+      try {
+        changed = gitPaths(['diff', '--cached', '--name-only', base]);
+        deletedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D', base])
+          .filter((path) => path.startsWith('content/narrative/contributions/'));
+        addedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', base])
+          .filter((path) => path.startsWith('content/narrative/contributions/'));
+        source = `Branch-Diff ${base}..Index`;
+      } catch {
+        console.error(`[narrative-blocks] Basis '${base}' nicht lesbar; --pr braucht einen Basis-Ref`);
+        return 1;
+      }
+    } else {
+      const fromCommit = staged.length === 0;
+      changed = fromCommit ? commitPaths() : staged;
+      deletedPaths = (fromCommit
+        ? commitPaths(['--diff-filter=D'])
+        : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D']))
+        .filter((path) => path.startsWith('content/narrative/contributions/'));
+      addedPaths = fromCommit
+        ? commitPaths(['--diff-filter=A']).filter((path) => path.startsWith('content/narrative/contributions/'))
+        : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', '--', 'content/narrative/contributions']);
+      source = fromCommit ? 'Dateiliste aus HEAD, nichts gestagt' : 'nur Doku/Inventur/Tooling';
+    }
+    const deletedReport = poolReport(fragments);
+    issues.push(...shrinkIssues({ deleted: deletedPaths, before: deletedReport.counts, after: report.counts }));
+    if (isMaintenanceOnly(changed)) {
+      console.log(`[narrative-blocks] Pflege-Commit (${source}): Baustein-Pflicht entfaellt, Pool-Regeln gelten weiter`);
+    } else {
+      const added = [];
+      for (const path of addedPaths) {
+        const data = JSON.parse(readFileSync(join(ROOT, path), 'utf8'));
+        const registered = (content.manifest?.turns ?? []).some((entry) => entry.contributionId === data.contributionId);
+        if (!registered) issues.push(`Neuer Beitrag ${data.contributionId} ist nicht im Turn-Manifest registriert`);
+        const wired = fragments.some((fragment) => fragment.contributionId === data.contributionId);
+        if (!wired) issues.push(`Neuer Beitrag ${data.contributionId} ist nicht in der Registry verdrahtet`);
+        added.push({ contributionId: data.contributionId, slot: data.slot });
+      }
+      // `--pr` prueft den gesamten Branch-Diff; normale Commits pruefen weiterhin
+      // nur den gestagten Inhalt. Ein Amend mit gestagten Aenderungen findet
+      // seinen bereits vorhandenen Baustein damit wieder.
+      const before = { ...report.counts };
+      for (const entry of added) before[entry.slot] = Math.max(0, (before[entry.slot] ?? 0) - 1);
+      issues.push(...gapIssues({ before, added }));
+    }
+  }
+
+  const smallest = slots.map((slot) => `${slot} ${report.counts[slot] ?? 0}`).join(', ');
+  const counted = quotaTotal(report.counts, report.total);
+  console.log(`[narrative-blocks] ${counted}/${POOL_TARGET} gewertete Bausteine (${report.total} gesamt); Minimum ${POOL_MINIMUM}; ${smallest}`);
+  if (issues.length > 0) {
+    for (const problem of issues) console.error(`[narrative-blocks] ${problem}`);
+    console.error(`[narrative-blocks] ${issues.length} Verstoss/Verstoesse`);
+    return 1;
+  }
+  console.log('[narrative-blocks] PASS');
+  return 0;
 }
-console.log('[narrative-blocks] PASS');
+
+const isMain = Boolean(process.argv[1]) && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) process.exit(runNarrativeBlocks());

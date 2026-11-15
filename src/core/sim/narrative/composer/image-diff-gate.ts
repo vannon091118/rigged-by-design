@@ -6,7 +6,7 @@
  * keine Netzwerkzugriffe, deterministisch.
  */
 
-export interface ImageDiffResult {
+interface ImageDiffResult {
   readonly equal: boolean;           // true wenn innerhalb der Toleranz
   readonly diffPixelCount: number;   // Anzahl geaenderter Pixel
   readonly totalPixelCount: number;  // Gesamtanzahl verglichener Pixel
