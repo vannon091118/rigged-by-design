@@ -1,123 +1,76 @@
 #!/usr/bin/env node
-// .cron/check-out.mjs
-// Entfernt den LOCK vom gepinnten State-Issue #677 und schreibt den aktuellen state:JSON.
-// Aufruf: node .cron/check-out.mjs '<state-json>'
-// Exit 0 = erfolgreich.
-// Exit 2 = Fehler.
-import { request } from 'node:https';
+/**
+ * check-out — State schreiben und Lock freigeben (#835).
+ *
+ * Reihenfolge: Halterpruefung, `state:JSON` am State-Issue #677 schreiben,
+ * danach den Ref loeschen. Ein fremder oder fehlender Lock gibt nichts frei;
+ * ein Schreibfehler bricht vor der Freigabe ab, damit der TTL eingesammelt wird.
+ *
+ * Aufruf: node .cron/check-out.mjs '<state-json>' [--owner X --claim-id Y]
+ *         node .cron/check-out.mjs --state-file state.json --owner X --claim-id Y
+ * Exit 0 = State geschrieben und Lock frei, 1 = nicht Halter, 2 = Fehler.
+ */
+import { readFileSync } from 'node:fs';
+import { createClient } from './lib/github.mjs';
+import { readLock, releaseLock } from './lib/lock.mjs';
 
-const API = 'https://api.github.com/repos/vannon091118/rigged-by-design';
-const TOKEN = process.env.GITHUB_TOKEN;
 const ISSUE_NUMBER = 677;
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 2000;
-
-function apiGet(path, attempt = 1) {
-  return new Promise((resolve, reject) => {
-    const req = request(`${API}${path}`, {
-      headers: {
-        'Authorization': `Bearer ${TOKEN}`,
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'rbd-maintainer-cron'
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 500 || res.statusCode === 429) {
-          if (attempt < MAX_RETRIES) {
-            setTimeout(() => resolve(apiGet(path, attempt + 1)), RETRY_DELAY_MS * attempt);
-            return;
-          }
-        }
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(e); }
-      });
-    });
-    req.on('error', err => {
-      if (attempt < MAX_RETRIES) {
-        setTimeout(() => resolve(apiGet(path, attempt + 1)), RETRY_DELAY_MS * attempt);
-        return;
-      }
-      reject(err);
-    });
-    req.end();
-  });
+const argv = process.argv.slice(2);
+const args = { _: [] };
+for (let index = 0; index < argv.length; index += 1) {
+  const token = argv[index];
+  if (token.startsWith('--')) {
+    const next = argv[index + 1];
+    if (next && !next.startsWith('--')) {
+      args[token.slice(2)] = next;
+      index += 1;
+    } else args[token.slice(2)] = true;
+  } else args._.push(token);
 }
 
-function apiPatch(path, body, attempt = 1) {
-  return new Promise((resolve, reject) => {
-    const data = JSON.stringify(body);
-    const req = request(`${API}${path}`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${TOKEN}`,
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'rbd-maintainer-cron',
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(data)
-      }
-    }, (res) => {
-      let d = '';
-      res.on('data', chunk => d += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 500 || res.statusCode === 429) {
-          if (attempt < MAX_RETRIES) {
-            setTimeout(() => resolve(apiPatch(path, body, attempt + 1)), RETRY_DELAY_MS * attempt);
-            return;
-          }
-        }
-        resolve(d);
-      });
-    });
-    req.on('error', err => {
-      if (attempt < MAX_RETRIES) {
-        setTimeout(() => resolve(apiPatch(path, body, attempt + 1)), RETRY_DELAY_MS * attempt);
-        return;
-      }
-      reject(err);
-    });
-    req.write(data);
-    req.end();
-  });
+/** `LOCKED_AT` entfernen und den state:JSON-Block ersetzen oder anfuegen. */
+function mergeState(body, json) {
+  const marker = '```json\n';
+  const endMarker = '\n```';
+  const clean = String(body ?? '').split('\n').filter((line) => !line.trim().startsWith('LOCKED_AT:')).join('\n');
+  if (clean.includes(marker)) {
+    const before = clean.split(marker)[0];
+    const rest = clean.split(endMarker).slice(1).join(endMarker);
+    return before + marker + json + endMarker + rest;
+  }
+  return `${clean}\n\n## state:JSON\n\n${marker}${json}${endMarker}`;
 }
 
-async function main() {
-  if (!TOKEN) {
-    console.error('ERROR: GITHUB_TOKEN nicht gesetzt');
-    process.exit(2);
-  }
-  const newStateJson = process.argv[2];
-  if (!newStateJson) {
-    console.error('Usage: node .cron/check-out.mjs <state-json>');
-    process.exit(2);
-  }
-  try {
-    const issue = await apiGet(`/issues/${ISSUE_NUMBER}`);
-    let body = issue.body || '';
-
-    // LOCKED_AT entfernen
-    body = body.split('\n').filter(l => !l.trim().startsWith('LOCKED_AT:')).join('\n');
-
-    // state:JSON Block ersetzen oder anfügen
-    const marker = '```json\n';
-    const endMarker = '\n```';
-
-    if (body.includes(marker)) {
-      const before = body.split(marker)[0];
-      const rest = body.split(endMarker).slice(1).join(endMarker);
-      body = before + marker + newStateJson + endMarker + rest;
-    } else {
-      body += '\n\n## state:JSON\n\n' + marker + newStateJson + endMarker;
-    }
-
-    await apiPatch(`/issues/${ISSUE_NUMBER}`, { body });
-    console.log('UNLOCKED: State geschrieben');
-    process.exit(0);
-  } catch (e) {
-    console.error('ERROR: ' + e.message);
-    process.exit(2);
-  }
+const owner = String(args.owner ?? process.env.RBD_LOCK_OWNER ?? 'maintainer');
+const claimId = String(args['claim-id'] ?? process.env.RBD_LOCK_CLAIM_ID ?? '');
+let stateJson = args.state ?? args._[0];
+if (args['state-file']) stateJson = readFileSync(String(args['state-file']), 'utf8');
+if (!stateJson) {
+  console.error("Usage: node .cron/check-out.mjs '<state-json>' [--owner X --claim-id Y]");
+  process.exit(2);
+}
+if (!claimId) {
+  console.error('ERROR: --claim-id/RBD_LOCK_CLAIM_ID fehlt; ohne Claim-ID wird nichts freigegeben');
+  process.exit(2);
 }
 
-main();
+try {
+  const api = createClient({ token: process.env.GITHUB_TOKEN });
+  const current = await readLock({ api });
+  if (!current) {
+    console.error('NOT_LOCKED: kein Lock vorhanden; State wird nicht geschrieben');
+    process.exit(1);
+  }
+  if (current.record.owner !== owner || current.record.claimId !== claimId) {
+    console.error(`NOT_HOLDER: Lock gehoert ${current.record.owner}/${current.record.claimId}`);
+    process.exit(1);
+  }
+  const issue = await api.getIssue(ISSUE_NUMBER);
+  await api.patchIssue(ISSUE_NUMBER, mergeState(issue?.body, stateJson));
+  const released = await releaseLock({ api, owner, claimId });
+  console.log(JSON.stringify({ written: ISSUE_NUMBER, ...released }, null, 2));
+  process.exit(released.status === 'released' ? 0 : 1);
+} catch (error) {
+  console.error(`ERROR: ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(2);
+}

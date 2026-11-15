@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-834-835-693-694",
+  "claimId": "lane/governance/issue-834-835-693-694",
+  "branch": "lane/governance/issue-834-835-693-694",
+  "baseSha": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
+  "phase": "IMPLEMENTING",
+  "title": "P1-Batch #834/#835/#693/#694: Board-Sync, atomarer Lock, Kommentar-Autorisierung",
+  "goal": "Der Board-Snapshot kommt aus dem Live-Board, der Maintainer-Lock ist atomar, und kein Kommentar autorisiert sich selbst: Identitaetsereignisse und Claim-Freigaben sind an den verifizierten Autor und Halter gebunden, Verdikte brauchen einen exklusiven Maintainer-Principal.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR gegen main erzeugen; danach Uebergabe-Kommentare mit RELEASE und review-waiting an #834, #835, #693 und #694.",
+  "revision": 1
+}
