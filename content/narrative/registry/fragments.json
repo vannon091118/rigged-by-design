@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a745bb0b991cc0dc097e055f3ec9b90404996810fc175acf961d5b82badb9e2d",
+  "contentHash": "sha256:add71700f603e04a057ed7bfad6c5e820545f1bcc4ef4a8908ec612a8adf9e82",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3088,6 +3088,30 @@
       "text": "Am Türrahmen hängt eine Tafel, mit Kreide geschrieben und oft nachgezogen: erst das, was heute nicht warten kann, dann das, was jemand vor die Tür gestellt hat, zuletzt die eigene Liste. Wer sie umstellt, muss sie neu schreiben; zwei Tafeln im Haus hat noch niemand gelesen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-canonical-priorities.json"
+    },
+    {
+      "contributionId": "career-ladders-01",
+      "turnId": "2026-11-15T22:30Z-career-ladders-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita streicht die Beförderungsliste mit dem Lineal durch: Wer sauber putzt, schnell serviert und nie fehlt, steigt auf. Wer schlampt, bleibt Reinigungskraft. Kein Geschenk, keine Automatik - nur Leistung zählt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-career-ladders-01.json"
     },
     {
       "contributionId": "chain-echo-body-01",
