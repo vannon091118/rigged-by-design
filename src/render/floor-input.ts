@@ -3,6 +3,7 @@ import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { InteractionTarget } from '../core/sim/interaction';
 import type { GameView } from '../store/types';
+import { buildCityActorActions } from './city-actor-actions';
 import { buildActions, buildDoorActions, buildFloorActions, type MenuAction } from './floor-actions';
 import { resolveHit, type DoorEdge, type ScreenAnchor } from './floor-hit';
 
@@ -10,7 +11,9 @@ export type { ScreenAnchor } from './floor-hit';
 
 type DoorTarget = { readonly kind: 'door'; readonly id: string };
 
-type FloorTarget = InteractionTarget | DoorTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
+type CityActorTarget = { readonly kind: 'cityActor'; readonly id: string };
+
+type FloorTarget = InteractionTarget | DoorTarget | CityActorTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
 
 interface TapResolution {
   readonly target: FloorTarget;
@@ -55,6 +58,13 @@ export function handleTap(
       target: { kind: 'floor', x, y },
       actions: buildFloorActions({ x, y }),
       at: { x: (x + 0.5) * TILE, y: (y + 1) * TILE },
+    };
+  }
+  if (hit.kind === 'cityActor') {
+    return {
+      target: { kind: 'cityActor', id: hit.id },
+      actions: buildCityActorActions(view, hit.id),
+      at: { x: hit.at.x * TILE, y: hit.at.y * TILE },
     };
   }
   if (hit.kind === 'door') {

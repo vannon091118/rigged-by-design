@@ -62,6 +62,24 @@ describe('Floor-Tastatur', () => {
     expect(typed.pick).not.toHaveBeenCalled();
   });
 
+  it('waehlt in der Stadt dieselbe sichtbare Figur wie Maus und Touch', () => {
+    const tap = vi.fn();
+    const current = state({
+      view: {
+        player: { position: { x: 4, y: 4 } },
+        cityActors: [{ npcId: 'rita', name: 'Rita', x: 4, y: 5 }],
+      } as unknown as GameView,
+      selection: null,
+      tap,
+    });
+    handleFloorKey(key(), current);
+    expect(tap).toHaveBeenCalledWith(expect.objectContaining({
+      target: { kind: 'cityActor', id: 'rita' },
+      actions: [expect.objectContaining({ id: 'CITY_MEET', npcId: 'rita', enabled: true })],
+    }));
+    expect(current.pick).not.toHaveBeenCalled();
+  });
+
   it('meldet eine gesperrte Hauptaktion statt sie auszufuehren', () => {
     const current = state({
       selection: {

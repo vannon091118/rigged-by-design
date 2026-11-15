@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-issue-768-city-actor-floor-target",
+  "claimId": "lane/render/issue-768-city-actor-floor-target",
+  "branch": "lane/render/issue-768-city-actor-floor-target",
+  "baseSha": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
+  "phase": "CI_PENDING",
+  "title": "Issue #768: Stadtbewohner als stabile Floor-Ziele auswaehlen",
+  "goal": "Gerenderte City-Actors als stabilen npcId-Treffer in den gemeinsamen Floor-Eingabepfad aufnehmen; keine Casino-Gast-Commands, kein neuer Sim-/Save-Zustand.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

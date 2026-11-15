@@ -1,7 +1,7 @@
 /** Eine Regel fuer alle Floor-Eingaenge: Maus, Touch und Tastatur lesen dieselbe Szene. */
 import type { GameView } from '../store/types';
 
-type FloorTargetKind = 'floor' | 'door' | 'guest' | 'furniture' | 'crate' | 'stain' | 'mop';
+type FloorTargetKind = 'floor' | 'door' | 'guest' | 'furniture' | 'crate' | 'stain' | 'mop' | 'cityActor';
 
 /**
  * Begehbar ist jeder Floor, auf dem die Figur steht. Eigentumsrechte regeln
@@ -23,7 +23,10 @@ export function floorTapAllowed(
   target: FloorTargetKind,
 ): boolean {
   if (scene === 'FOREIGN') return target === 'floor';
-  if (scene === 'OWN') return true;
+  // Das eigene Casino hat keine Stadtfiguren; die numerischen Guest- und
+  // Objektpfade bleiben dort unveraendert.
+  if (scene === 'OWN') return target !== 'cityActor';
   if (scene === 'APARTMENT') return target === 'floor' || target === 'door' || target === 'furniture';
+  if (scene === 'CITY') return target === 'floor' || target === 'door' || target === 'cityActor';
   return target === 'floor' || target === 'door';
 }

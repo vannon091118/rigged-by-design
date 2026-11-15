@@ -49,6 +49,13 @@ export function makeActionExecutor(
       open({ kind: 'guests', guestId: action.targetId });
       return;
     }
+    if (action.id === 'CITY_MEET' && action.npcId) {
+      // Die sichtbare Stadtfigur oeffnet dieselbe Begegnung wie die Liste;
+      // kein Casino-Gast-Command und keine zweite soziale Wahrheit.
+      worldStore.city({ kind: 'meet', npcId: action.npcId });
+      open({ kind: 'city' });
+      return;
+    }
     if (action.id === 'SPIEGEL') { open({ kind: 'look' }); return; }
     handleFloorInteract(action);
   };

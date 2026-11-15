@@ -6,7 +6,8 @@ import type { ScreenAnchor } from '../render/floor-hit';
 import type { FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
-import { floorMovementAllowed, floorTapAllowed } from './floor-scenes';
+import { floorMovementAllowed } from './floor-scenes';
+import { applyFloorTap } from './floor-tap';
 import { useFloorKeyboard } from './use-floor-keyboard';
 import { useFloorSelectionLifecycle } from './use-floor-selection-lifecycle';
 
@@ -60,53 +61,29 @@ export function useFloorInteraction(options: Options) {
 
   const tap = useCallback((resolution: FloorTap): void => {
     if (latest.current.blocked) return;
-    // Dieselbe Szenenregel wie fuer WASD/E: der Fremd-Floor ist Menue, in
-    // Wohnung und Stadt sind Boden und Tueren klickbar. Nur das eigene Casino
-    // bietet zusaetzlich Gast-, Moebel- und Kistenziele.
-    if (!floorTapAllowed(latest.current.view.scene.kind, resolution.target.kind)) return;
-    const door = resolution.target.kind === 'door';
     pendingRef.current = null;
-    if (door) {
-      const action = resolution.actions.find((entry) => entry.enabled);
-      if (action) {
-        selectionRef.current = null;
-        setSelection(null);
-        latest.current.onExecute(action, resolution.anchor);
-        return;
-      }
-      const blocked: FloorSelection = {
-        target: resolution.target,
-        actions: resolution.actions,
-        anchor: resolution.anchor,
-        status: resolution.actions[0]?.reason ?? 'Kein Zugang.',
-        blocked: true,
-      };
-      selectionRef.current = blocked;
-      setSelection(blocked);
-      return;
-    }
-    if (resolution.target.kind === 'floor') {
-      // Laufen ist auch im Gastmodus erlaubt: sonst waere WASD ein
-      // Tastatur-exklusiver Weg, den Maus und Touch nicht erreichen.
-      const next = { target: resolution.target, actions: resolution.actions, anchor: resolution.anchor, status: '', blocked: false };
+    const apply = (next: FloorSelection | null): void => {
       selectionRef.current = next;
       setSelection(next);
-      return;
-    }
+    };
+    // Dieselbe Szenenregel wie fuer WASD/E; direkte Ziele werden hier
+    // abgeschlossen, numerische Casino-Ziele gehen in den Approach.
+    if (applyFloorTap(latest.current.view.scene.kind, resolution, apply,
+      (action, anchor) => latest.current.onExecute(action, anchor))) return;
+    if (resolution.target.kind === 'door' || resolution.target.kind === 'cityActor'
+      || resolution.target.kind === 'floor') return;
     const plan = worldStore.interaction.approach(resolution.target);
     if (!latest.current.enabled) {
-      setSelection(null);
+      apply(null);
       return;
     }
-    const next: FloorSelection = {
+    apply({
       target: resolution.target,
       actions: resolution.actions,
       anchor: resolution.anchor,
       status: plan.reachable ? (plan.inRange ? '' : 'Läuft hin …') : plan.reason,
       blocked: !plan.reachable,
-    };
-    selectionRef.current = next;
-    setSelection(next);
+    });
   }, []);
 
   const pick = useCallback((action: MenuAction): void => {
@@ -115,6 +92,13 @@ export function useFloorInteraction(options: Options) {
       return;
     }
     const anchor = selectionRef.current?.anchor ?? null;
+    // Stadtfiguren laufen nicht ueber die Casino-Interaction; die Aktion
+    // oeffnet die vorhandene Begegnung direkt.
+    if (action.id === 'CITY_MEET') {
+      latest.current.onExecute(action, anchor);
+      setSelection(null);
+      return;
+    }
     // Queue-Auftraege naehern sich selbst; ein zweiter Approach wuerde den Pfad ueberschreiben.
     if (action.queued || action.id === 'MOVE_HERE') {
       latest.current.onExecute(action, anchor);

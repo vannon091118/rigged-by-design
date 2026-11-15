@@ -27,6 +27,9 @@ describe('Floor-Szenenregel', () => {
     }
     expect(floorTapAllowed('APARTMENT', 'furniture')).toBe(true);
     expect(floorTapAllowed('CITY', 'furniture')).toBe(false);
+    expect(floorTapAllowed('CITY', 'cityActor' as never)).toBe(true);
+    expect(floorTapAllowed('APARTMENT', 'cityActor' as never)).toBe(false);
+    expect(floorTapAllowed('OWN', 'cityActor' as never)).toBe(false);
   });
 
   it('macht den fremden Floor begehbar und öffnet dort nur den Boden als Tap-Ziel', () => {

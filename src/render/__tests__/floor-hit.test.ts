@@ -57,6 +57,17 @@ describe('Floor-Treffer', () => {
     expect(resolveHit(view(), { x: 12, y: 0 }, { x: 0, y: 0 })).toBeNull();
   });
 
+  it('erkennt einen sichtbaren Stadtbewohner als stabiles npcId-Ziel', () => {
+    const cityActors = [{ npcId: 'rita', x: 4, y: 5 }];
+    const furniture = [{ id: 1, x: 4, y: 5, w: 1, h: 1 }];
+    const hit = resolveHit(
+      view({ cityActors, furniture } as unknown as Partial<HitView>),
+      { x: 4, y: 5 },
+      { x: 7, y: 7 },
+    );
+    expect(hit).toMatchObject({ kind: 'cityActor', id: 'rita' });
+  });
+
   it('nimmt die Kiste vor dem Gast und gibt ihren Fussanker zurueck', () => {
     const crates = [{ id: 8, x: 3, y: 3 }];
     const guests = [{ id: 9, position: { x: 3, y: 2 } }];

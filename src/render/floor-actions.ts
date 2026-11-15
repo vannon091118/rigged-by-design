@@ -22,6 +22,8 @@ export type MenuAction = {
   queued?: boolean;
   /** Stabile Tuer-ID einer Stadtschwelle. */
   doorId?: string;
+  /** Stabile NPC-Kennung einer Stadtfigur; nie eine Casino-Guest-ID. */
+  npcId?: string;
 };
 
 type ActionView = Pick<GameView, 'player'> & { readonly scene: Pick<GameView['scene'], 'kind'> };

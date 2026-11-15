@@ -4620,6 +4620,10 @@
     {
       "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
       "contributionId": "city-tile-occupancy-01"
+    },
+    {
+      "turnId": "2026-11-15T00:22Z-city-actor-floor-target",
+      "contributionId": "city-actor-floor-target-01"
     }
   ]
 }

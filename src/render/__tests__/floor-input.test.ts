@@ -48,6 +48,34 @@ describe('Ein Trefferpfad', () => {
     expect(result?.actions[0]).toMatchObject({ id: 'PICKUP_CRATE', enabled: true });
   });
 
+  it('gibt einer sichtbaren Stadtfigur eine npcId-Aktion statt eines Gast-Commands', () => {
+    const result = handleTap(0, at(4, 5), view({
+      player: { position: { x: 4, y: 4 }, path: [], pathIndex: 0, carrying: '' },
+      cityActors: [{ npcId: 'rita', name: 'Rita', x: 4, y: 5 }],
+    }), cues());
+
+    expect(result?.target).toEqual({ kind: 'cityActor', id: 'rita' });
+    expect(result?.actions).toEqual([
+      expect.objectContaining({ id: 'CITY_MEET', npcId: 'rita', enabled: true }),
+    ]);
+    expect(result?.actions[0]?.target).toBeUndefined();
+  });
+
+  it('sperrt eine gerenderte Figur, die laut Stadt gerade nicht hier ist', () => {
+    const result = handleTap(0, at(4, 5), view({
+      player: { position: { x: 4, y: 4 }, path: [], pathIndex: 0, carrying: '' },
+      cityActors: [{ npcId: 'rita', name: 'Rita', x: 4, y: 5, traveling: false }],
+      city: {
+        location: 'KIEZ',
+        residents: [{ npcId: 'rita', location: 'MARKT', travelTo: null }],
+      },
+    }), cues());
+
+    expect(result?.actions[0]).toMatchObject({
+      id: 'CITY_MEET', enabled: false, reason: 'Ist gerade nicht hier.',
+    });
+  });
+
   it('behandelt leeren Boden immer als Laufziel, unabhaengig von der Zoomstufe', () => {
     const result = handleTap(0, at(4, 4), view(), cues());
     expect(result?.target).toEqual({ kind: 'floor', x: 4, y: 4 });
