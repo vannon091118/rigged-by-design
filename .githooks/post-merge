@@ -12,10 +12,10 @@ set -e
 
 node scripts/sync-generated.mjs --all >/dev/null 2>&1 || exit 0
 
-changed="$(git status --porcelain -- docs content/narrative src/core/sim/narrative 2>/dev/null || true)"
+changed="$(git status --porcelain -- .lane-claims/merged-index.json docs content/narrative src/core/sim/narrative 2>/dev/null || true)"
 [ -n "$changed" ] || exit 0
 
-for file in docs/INVENTORY.md docs/ROADMAP.md \
+for file in .lane-claims/merged-index.json docs/INVENTORY.md docs/ROADMAP.md \
   content/narrative/registry/fragments.json \
   src/core/sim/narrative/composer/registry.generated.ts \
   src/core/sim/narrative/composer/slot-map.generated.ts; do

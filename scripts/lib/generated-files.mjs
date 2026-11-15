@@ -35,6 +35,7 @@ const EMPTY_DIFF = /^[+-]\s*$/;
  * - `marker`: nur eine mechanische Markerzeile
  */
 export const GENERATED_FILES = Object.freeze({
+  '.lane-claims/merged-index.json': Object.freeze({ owner: 'scripts/sync-merged-index.mjs', mode: 'whole' }),
   'docs/INVENTORY.md': Object.freeze({ owner: 'scripts/build-inventory.mjs', mode: 'whole' }),
   'docs/ROADMAP.md': Object.freeze({ owner: 'scripts/sync-generated.mjs', mode: 'progress' }),
   'content/narrative/registry/fragments.json': Object.freeze({

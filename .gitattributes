@@ -11,6 +11,7 @@ docs/ARCHITECTURE.md text eol=lf
 # Generierte Artefakte werden bei einem Konflikt nicht verhandelt, sondern aus
 # den Quellen neu erzeugt (#877). Der Driver ist repo-lokal registriert
 # (`pnpm run hooks:install`); fehlt er, bleibt es beim normalen Konflikt.
+.lane-claims/merged-index.json merge=generated-regenerate
 docs/INVENTORY.md merge=generated-regenerate
 docs/ROADMAP.md merge=generated-regenerate
 content/narrative/registry/fragments.json merge=generated-regenerate

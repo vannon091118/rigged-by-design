@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-862-merged-index",
+  "claimId": "lane/governance/issue-862-merged-index",
+  "branch": "lane/governance/issue-862-merged-index",
+  "baseSha": "f398eaf09ca9015f3287c1d53179ea933d527892",
+  "phase": "READY",
+  "title": "Issue #862: Offline-Merge-Beleg-Index aus der lokalen Git-Historie",
+  "goal": "Einen deterministischen Merge-Beleg-Index erzeugen und claim-evidence ohne gh auf diesen Index zurückfallen lassen, damit gemergte Lanes offline belegt werden können.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Index-Generator, Fallback, Tests und Doku implementieren; danach lokale Gates und PR.",
+  "revision": 1
+}
