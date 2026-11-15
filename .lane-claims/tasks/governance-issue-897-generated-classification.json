@@ -4,14 +4,18 @@
   "claimId": "lane/governance/issue-897-generated-classification",
   "branch": "lane/governance/issue-897-generated-classification",
   "baseSha": "5212b33a9cb0240c621c455ab4df772bad47b2b0",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Generierte Artefakte in MECHANICAL_FILES klassifizieren (#897)",
   "goal": "docs/DEPENDENCY-MATRIX.md als generiertes Artefakt aus der Claim-Kollision nehmen, damit Lanes ohne Handarbeit an der Datei nicht mehr mit ERR-4019 blockieren; handgepflegte Overlaps bleiben gesperrt.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 898,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/898",
+    "state": "open"
+  },
   "findings": [],
-  "nextAction": "verify:docs, verify:tree, sync-generated --all --check, Commit-Message-Gate und den Regressionstest gruen stellen, dann committen und pushen.",
-  "revision": 1
+  "nextAction": "Maintainer-Review und Merge auf exaktem Kopf 28b26ade; danach Claim merged und Task DONE.",
+  "revision": 2
 }
