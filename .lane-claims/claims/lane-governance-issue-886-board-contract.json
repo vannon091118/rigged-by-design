@@ -36,6 +36,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "936ea72257a4e56bbeec1ba51bca84ffc2e299f4"
+  "status": "archived",
+  "createdAt": "936ea72257a4e56bbeec1ba51bca84ffc2e299f4",
+  "releasedAt": "2026-11-15T08:03:18.286Z",
+  "releasedReason": "Arbeit ist als PR #896 auf main; Lane ohne aktiven Worker, ersetzt durch die #886-Board-Lanes"
 }

@@ -18,7 +18,8 @@ import { join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
 import { compact } from './lib/compact.mjs';
 import { loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
-import { issueNumberFor, readIssueClaim } from './lib/issue-claim.mjs';
+import { issueNumberFor } from './lib/issue-claim.mjs';
+import { readIssueClaimAny } from './lib/board-read.mjs';
 import { evaluateBoardUsage } from './lib/board-usage.mjs';
 import { normalizeActors } from './lib/work-claim.mjs';
 
@@ -62,7 +63,7 @@ if (existsSync(actorsFile)) {
 
 const number = claim ? issueNumberFor(claim) : issueNumberFor({ branch });
 const issueClaim = branch !== 'main' && number
-  ? readIssueClaim({ number, agent, cwd: ROOT, actors })
+  ? readIssueClaimAny({ number, agent, cwd: ROOT, actors })
   : { checked: false, status: 'not-linked', number: null };
 
 const evaluation = loadError

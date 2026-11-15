@@ -46,7 +46,9 @@ import { parseWorktrees, planCleanup } from './lib/branch-lifecycle.mjs';
 import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
-import { describeIssueClaim, issueNumberFor, readBoard, readIssueClaim } from './lib/issue-claim.mjs';
+import { rest } from './lib/github-rest.mjs';
+import { describeIssueClaim, issueNumberFor, readBoard } from './lib/issue-claim.mjs';
+import { readIssueClaimAny } from './lib/board-read.mjs';
 import { decideRunBudget, parseGovernanceFindingCount, readRunBudget } from './lib/run-budget.mjs';
 
 const argv = process.argv.slice(2);
@@ -153,6 +155,19 @@ const claims = allClaims.filter((claim) => claim.status === 'open');
 // selectClaim fuehrt auch einen gemergten Claim auf seinem Branch weiter.
 const laneClaim = selectClaim(allClaims, branch);
 const claim = laneClaim ?? botClaim(branch);
+// Ein Worker haelt genau einen Claim. Mehrere offene Claims desselben Owners
+// sind keine Parallelitaet, sondern ungefuehrte Arbeit - und blockieren die
+// naechste echte Zuweisung an denselben Dateien.
+if (claim && claim.status === 'open' && branch !== 'main') {
+  const parallelClaims = claims.filter((entry) => entry.owner === claim.owner && entry.branch !== branch);
+  if (parallelClaims.length > 0) {
+    blockers.push(
+      `[ERR-4019] ${claim.owner} haelt ${parallelClaims.length} weiteren offenen Claim(s) ` +
+        `(${parallelClaims.map((entry) => entry.id).join(', ')}); erst 'pnpm run claim:register release --id <id> --reason <text>' ` +
+        'oder den stale-Audit ausfuehren',
+    );
+  }
+}
 const botBranch = laneClaim === null && claim !== null;
 const base = mergeBase || claim?.baseSha || '';
 const claimInfo = claim
@@ -176,7 +191,7 @@ const claimInfo = claim
 // gueltigen Issue-Claim nicht: sie wird zur Warnung.
 const boardNumber = claim ? issueNumberFor(claim) : issueNumberFor({ branch });
 const issueClaim = branch !== 'main' && boardNumber
-  ? readIssueClaim({ number: boardNumber, agent: agentIdentity, cwd: ROOT, actors })
+  ? readIssueClaimAny({ number: boardNumber, agent: agentIdentity, cwd: ROOT, actors })
   : { checked: false, status: 'not-linked', number: null };
 // Dieselbe Regel wie validateNewClaim: eine offene Lane ohne Issue-Nummer hat
 // keinen Board-Auftrag und startet nicht (#635).
@@ -200,7 +215,7 @@ if (branch !== 'main') {
       notes.push(`${describeIssueClaim(issueClaim)}; Lane ist gemergt, Closeout ohne neuen Board-Beleg`);
     } else {
       blockers.push(
-        `[ERR-4019] ${describeIssueClaim(issueClaim)}; 'gh auth login' oder GH_TOKEN einrichten, ` +
+        `[ERR-4019] ${describeIssueClaim(issueClaim)}; 'gh auth login' oder Token (GH_TOKEN/GITHUB_TOKEN) einrichten, ` +
           'danach pnpm run verify:board-usage gruen stellen',
       );
     }
@@ -348,6 +363,12 @@ function readIssues() {
       } catch {
         output = null;
       }
+    }
+    if (output === null) {
+      // Zweiter Lesepfad: derselbe Aufruf ueber den Token-Connector, wenn keine
+      // angemeldete `gh`-CLI vorhanden ist.
+      const viaRest = rest('issue-list', { label, state: 'open', limit: 50 });
+      if (viaRest.ok) output = JSON.stringify(viaRest.data);
     }
     if (output === null) {
       errors.push(label);

@@ -1,0 +1,30 @@
+{
+  "id": "lane/governance/issue-886-board-tolerant",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-886-board-tolerant",
+  "baseSha": "8ee2337bfbf66146dd45ab71f952d16cfe7c9fff",
+  "issue": 886,
+  "task": "Claim-Verwaltung: ein Worker, ein Claim, zwei Lesepfade (#886)",
+  "goal": "Claims werden verwaltet statt angesammelt: stale-Audit mit Git-Beleg, release mit Grund, ein offener Claim pro Owner; Board-Gate liest ueber gh oder GH_TOKEN/GITHUB_TOKEN.",
+  "pathAllowlist": [
+    "scripts/claim-register.mjs",
+    "scripts/pretask.mjs",
+    "scripts/verify-board-usage.mjs",
+    "scripts/lib/board-read.mjs",
+    "scripts/lib/github-rest.mjs",
+    "scripts/lib/github-rest-fetch.mjs",
+    "scripts/lib/task-contract.mjs",
+    "scripts/lib/board-usage.mjs",
+    "scripts/lib/lane-claims.mjs",
+    "src/core/governance/__tests__/github-rest.test.ts",
+    "docs/AGENT-ONBOARDING.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/**",
+    ".lane-claims/claims/lane-governance-issue-886-board-tolerant.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8ee2337bfbf66146dd45ab71f952d16cfe7c9fff"
+}

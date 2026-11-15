@@ -26,6 +26,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "9a2d7bf1b28cc39432d3aa235d7db96f0f839c10"
+  "status": "archived",
+  "createdAt": "9a2d7bf1b28cc39432d3aa235d7db96f0f839c10",
+  "releasedAt": "2026-11-15T08:03:18.224Z",
+  "releasedReason": "stale-no-branch"
 }

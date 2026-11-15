@@ -9,7 +9,7 @@
  * Aktualisieren eines Legacy-Claims gelockt; Claim-Dateien werden atomar
  * ersetzt und bei `add` niemals ueberschrieben.
  */
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import {
   closeSync,
   existsSync,
@@ -41,7 +41,7 @@ const command = args[0] && !args[0].startsWith('--') ? args.shift() : 'add';
 
 function parseOptions(argv) {
   const options = { allow: [] };
-  const booleans = new Set(['json', 'help', 'apply']);
+  const booleans = new Set(['json', 'help', 'apply', 'parallel']);
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === '--') continue;
@@ -217,6 +217,16 @@ function addClaim() {
   const existing = loadForCommand();
   if (existing.some((claim) => claim.id === id)) fail(`Claim '${id}' ist bereits registriert`);
   if (existing.some((claim) => claim.branch === branch)) fail(`Branch '${branch}' hat bereits einen Claim`);
+  // Ein Worker haelt genau einen Claim. Ohne diese Regel sammelt ein Akteur
+  // offene Lanes an, die niemand mehr fuehrt - und blockiert die naechste
+  // echte Arbeit an denselben Dateien.
+  const parallel = existing.filter((claim) => claim.status === 'open' && claim.owner === owner);
+  if (parallel.length > 0 && !options.parallel) {
+    fail(
+      `${owner} haelt bereits ${parallel.length} offenen Claim(s): ${parallel.map((claim) => claim.id).join(', ')}; ` +
+        "erst 'claim:register release --id <id> --reason <text>' oder bewusst --parallel setzen",
+    );
+  }
 
   const file = claimFileFor(id);
   if (existsSync(file)) fail(`${file} existiert bereits; bestehende Claims werden nicht ueberschrieben`);
@@ -388,9 +398,99 @@ if (options.help) {
   console.log('claim:register [add|update|list|doctor|prune] --id <lane/id> --owner <owner> --task <text> [--goal <text>] [--issue <nr>] [--allow <pfad>]... [--keep 10] [--apply] [--json]');
   process.exit(0);
 }
+/**
+ * Eine Lane freigeben, ohne den Beleg zu loeschen.
+ *
+ * `archived` ist der ehrliche Zustand fuer einen Claim, dessen Arbeit nicht
+ * gemergt wurde: die Datei bleibt lesbar, der Grund steht dabei. Loeschen ist
+ * Retention und braucht eine eigene Entscheidung.
+ */
+function releaseClaim() {
+  const id = requireId();
+  if (!options.reason) fail('--reason fehlt: eine Freigabe braucht einen Grund');
+  const files = entryFiles();
+  const current = loadForCommand().find((claim) => claim.id === id);
+  if (!current) fail(`Claim '${id}' ist nicht registriert`);
+  if (current.status !== 'open') fail(`Claim '${id}' ist '${current.status}', nicht offen`);
+  const next = {
+    ...current.toJSON(),
+    status: 'archived',
+    releasedAt: new Date().toISOString(),
+    releasedReason: options.reason,
+  };
+  validateOrFail(next, { legacy: !files.has(id) });
+  writeAtomic(files.get(id), next);
+  printClaim(next);
+}
+
+/** Erste aufloesbare Ref eines Branches; `null`, wenn es ihn nicht mehr gibt. */
+function branchSha(branch) {
+  for (const ref of [`refs/heads/${branch}`, `refs/remotes/origin/${branch}`]) {
+    const result = spawnSync('git', ['rev-parse', '--verify', '--quiet', ref], { cwd: cwd, encoding: 'utf8' });
+    if (result.status === 0) return result.stdout.trim();
+  }
+  return null;
+}
+
+/** Liegt der Branch-Kopf bereits in `origin/main`? Dann ist der Claim belegt. */
+function mergedIntoMain(sha) {
+  const result = spawnSync('git', ['merge-base', '--is-ancestor', sha, 'origin/main'], { cwd: cwd });
+  return result.status === 0;
+}
+
+/**
+ * Offene Claims gegen die Wirklichkeit pruefen: Branch weg oder schon in main.
+ * Ohne `--apply` nur ein Bericht; mit `--apply` werden die belegten Faelle
+ * nachgezogen (`merged`) oder mit Grund freigegeben (`archived`).
+ */
+function staleClaims() {
+  const files = entryFiles();
+  const rows = [];
+  for (const claim of loadForCommand()) {
+    if (claim.status !== 'open') continue;
+    const sha = branchSha(claim.branch);
+    if (!sha) rows.push({ claim, next: 'archived', reason: 'stale-no-branch', sha: null });
+    else if (mergedIntoMain(sha)) rows.push({ claim, next: 'merged', reason: 'branch-in-main', sha });
+    else rows.push({ claim, next: 'open', reason: 'branch-active', sha });
+  }
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          ok: true,
+          applied: Boolean(options.apply),
+          items: rows.map((row) => ({ id: row.claim.id, owner: row.claim.owner, branch: row.claim.branch, next: row.next, reason: row.reason, sha: row.sha })),
+        },
+        null,
+        2,
+      ),
+    );
+  } else {
+    for (const row of rows) {
+      console.log(`${options.apply && row.next !== 'open' ? 'setze' : 'befund'}: ${row.claim.id} -> ${row.next} (${row.reason})`);
+    }
+  }
+  if (!options.apply) return;
+  let changed = 0;
+  for (const row of rows) {
+    if (row.next === 'open') continue;
+    const current = row.claim.toJSON();
+    const next =
+      row.next === 'merged'
+        ? { ...current, status: 'merged', mergedEvidence: 'branch-in-main', mergedSha: String(row.sha).slice(0, 8) }
+        : { ...current, status: 'archived', releasedAt: new Date().toISOString(), releasedReason: row.reason };
+    validateOrFail(next, { legacy: !files.has(row.claim.id) });
+    writeAtomic(files.get(row.claim.id), next);
+    changed += 1;
+  }
+  if (!options.json) console.log(`claim:register: ${changed} Claim(s) nachgezogen`);
+}
+
 if (command === 'add') addClaim();
 else if (command === 'update') updateClaim();
 else if (command === 'list') listClaims();
 else if (command === 'doctor') doctor();
 else if (command === 'prune') prune();
-else fail(`unbekannter Befehl '${command}'; erlaubt sind add, update, list, doctor und prune`);
+else if (command === 'release') releaseClaim();
+else if (command === 'stale') staleClaims();
+else fail(`unbekannter Befehl '${command}'; erlaubt sind add, update, list, doctor, prune, release und stale`);

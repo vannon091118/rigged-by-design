@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+/**
+ * REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet).
+ *
+ * Warum ein eigener Prozess: `pretask` und die Hooks sind synchron. Node hat
+ * kein synchrones `fetch`; deshalb erledigt dieser kleine Helfer die Anfrage
+ * und gibt JSON auf stdout aus. Aufruf:
+ *
+ *   node github-rest-fetch.mjs <kind> '<json-params>'
+ *
+ * Token: `GH_TOKEN` oder `GITHUB_TOKEN`. Repo: `RBD_REPO=owner/repo` oder das
+ * `origin`-Remote. Ausgabe ist auf die Form von `gh --json` normalisiert, damit
+ * die Aufrufer keinen zweiten Codepfad brauchen.
+ */
+import { execFileSync } from 'node:child_process';
+
+const [kind = '', raw = '{}'] = process.argv.slice(2);
+const params = JSON.parse(raw);
+const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '';
+
+if (!token) {
+  console.error('REST: kein Token (GH_TOKEN oder GITHUB_TOKEN setzen)');
+  process.exit(2);
+}
+
+/** `owner/repo` aus Env oder dem origin-Remote. */
+function repoSlug() {
+  if (params.repo) return params.repo;
+  if (process.env.RBD_REPO) return process.env.RBD_REPO;
+  let url = '';
+  try {
+    url = execFileSync('git', ['config', '--get', 'remote.origin.url'], { encoding: 'utf8' }).trim();
+  } catch {
+    url = '';
+  }
+  const match = /github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?$/.exec(url);
+  if (!match) {
+    console.error('REST: Repository nicht bestimmbar (RBD_REPO setzen)');
+    process.exit(3);
+  }
+  return `${match[1]}/${match[2]}`;
+}
+
+const slug = repoSlug();
+const base = `https://api.github.com/repos/${slug}`;
+
+async function api(path, { method = 'GET', body } = {}) {
+  const response = await fetch(`${base}${path}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+      'User-Agent': 'rbd-board-gate',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!response.ok) {
+    console.error(`REST ${method} ${path}: HTTP ${response.status}`);
+    process.exit(4);
+  }
+  return response.json();
+}
+
+const labels = (issue) => (issue.labels ?? []).map((label) => ({ name: typeof label === 'string' ? label : label.name }));
+const comment = (entry) => ({ body: entry.body ?? '', createdAt: entry.created_at ?? '', author: { login: entry.user?.login ?? '' } });
+
+/** Offene Issues inklusive PR-Datensaetze ausblenden; GitHub liefert beides. */
+function issueRow(issue) {
+  return {
+    number: issue.number,
+    title: issue.title ?? '',
+    url: issue.html_url ?? '',
+    body: issue.body ?? '',
+    labels: labels(issue),
+    createdAt: issue.created_at ?? '',
+  };
+}
+
+async function issues(query) {
+  const perPage = Math.min(Number(params.limit ?? 100), 100);
+  const rows = await api(`/issues?state=${query.state ?? 'open'}&per_page=${perPage}${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
+  return rows.filter((issue) => !issue.pull_request).map(issueRow);
+}
+
+async function pullForBranch() {
+  const branch = String(params.branch ?? '');
+  if (!branch) return null;
+  const open = await api(`/pulls?state=all&head=${encodeURIComponent(`${slug.split('/')[0]}:${branch}`)}&per_page=5`);
+  const pr = Array.isArray(open) ? open[0] : null;
+  if (!pr) return null;
+  return {
+    number: pr.number,
+    url: pr.html_url ?? '',
+    state: String(pr.merged_at ? 'MERGED' : pr.state ?? '').toUpperCase(),
+    isDraft: Boolean(pr.draft),
+    headRefOid: pr.head?.sha ?? '',
+    baseRefName: pr.base?.ref ?? '',
+    mergedAt: pr.merged_at ?? null,
+  };
+}
+
+async function prDetail({ withComments = false } = {}) {
+  const pr = await pullForBranch();
+  if (!pr) return null;
+  if (!withComments) return pr;
+  const comments = await api(`/issues/${pr.number}/comments?per_page=100`);
+  return { ...pr, comments: comments.map(comment), statusCheckRollup: [] };
+}
+
+let payload;
+if (kind === 'issue-view') {
+  const issue = await api(`/issues/${Number(params.number)}`);
+  const comments = await api(`/issues/${Number(params.number)}/comments?per_page=100`);
+  payload = {
+    number: issue.number,
+    state: String(issue.state ?? '').toUpperCase(),
+    labels: labels(issue),
+    comments: comments.map(comment),
+  };
+} else if (kind === 'issue-list') {
+  payload = await issues({ label: params.label, state: params.state });
+} else if (kind === 'pull-for-branch') {
+  payload = await pullForBranch();
+} else if (kind === 'ci-for-branch') {
+  payload = await prDetail({ withComments: true });
+} else {
+  console.error(`REST: unbekannte Abfrage '${kind}'`);
+  process.exit(5);
+}
+
+process.stdout.write(JSON.stringify(payload ?? {}));
