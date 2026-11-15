@@ -1,0 +1,21 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T09:28Z-shinon-782-first-guest",
+  "contributionId": "shinon-782-first-guest",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der erste Gast kommt nicht mit dem Spielstart. Er kommt, wenn der Automat steht: erst die Kiste auf den Floor, dann der Weg zur Kasse. Wer die Reihenfolge im Blick behält, sieht den Anfang des Abends als Kette und nicht als Sprung.",
+  "directives": []
+}

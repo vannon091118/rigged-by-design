@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7d6edbcfd026fb4fdcb72d8824cdf7a27ac58842750b94b53585d6b602feb0a0",
+  "contentHash": "sha256:d6f8bcbe26c15366761deaff6de5a9fcf8c0695466f1a1eb82d08a6b030414c2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25230,6 +25230,28 @@
       "text": "Ein defektes Gerät ist mehr als eine kaputte Animation: es ist ein Fact, den der Spieler lesen muss. Ein leeres Lager ist mehr als eine fehlende Ware: es ist ein Fact, der eine Entscheidung erzwingt. Jeder Fact braucht einen Trigger im Weltzustand und einen Leser in der Ansicht — Journal, Smartphone oder NPC-Gespräch. Ohne Leser bleibt der Text toter Inhalt im Pool.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-541-fact-reader.json"
+    },
+    {
+      "contributionId": "shinon-782-first-guest",
+      "turnId": "2026-11-15T09:28Z-shinon-782-first-guest",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Gast kommt nicht mit dem Spielstart. Er kommt, wenn der Automat steht: erst die Kiste auf den Floor, dann der Weg zur Kasse. Wer die Reihenfolge im Blick behält, sieht den Anfang des Abends als Kette und nicht als Sprung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-shinon-782-first-guest.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",
