@@ -14,6 +14,7 @@ import type { Furniture, Point, WorldState } from './types';
 import { guestById, worldNav } from './world';
 import { playerApartmentNav } from './player-apartment';
 import { grantGlobalXp } from './player-rpg';
+import { grantSkillXp } from './player-skills';
 import { INTERACTION_RADII, isInRange, planInteraction } from './interaction';
 
 const XP_SERVE_GUEST = 8;
@@ -58,13 +59,15 @@ export function serveDrink(
     ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, guestReason('DRINK', guest.id), world.tick);
   }
   const treat = applyTreatInfluence(world, guest, config);
-  guest.mood = driftNeed(guest.mood, 13, Math.round(treat * 30));
+  const serviceBonus = (world.player.skills.service.level - 1) * 5;
+  guest.mood = driftNeed(guest.mood, 13, Math.round(treat * 30) + serviceBonus);
   guest.patience = driftNeed(guest.patience, 12);
   guest.thirst = 0;
   // Nur wer schon gespielt hat, koppelt den Drink an den Kick; sonst wird niemand vom Zuschauen süchtig.
   if (guest.spins > 0) guest.addiction = driftNeed(guest.addiction, 2);
   world.player.carrying = '';
   grantGlobalXp(world.player.rpg, 'SERVE_DRINK', XP_SERVE_GUEST);
+  grantSkillXp(world.player.skills, 'service', XP_SERVE_GUEST);
   world.lastEvent = `${guest.name} hat einen Drink bekommen.`;
 }
 

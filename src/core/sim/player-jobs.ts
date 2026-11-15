@@ -4,6 +4,7 @@ import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { PORTEMONNAIE, EXTERNAL } from './money';
 import { getRival, type RivalId } from './rivals';
 import { grantGlobalXp, injuryDurationReduction, luckInjuryFactor } from './player-rpg';
+import { grantSkillXp } from './player-skills';
 import { normalizePlayerNeeds, playerCondition } from './player-needs';
 import { recordJournal } from './journal';
 import type { PlayerJobState, WorldState, PlayerJobId } from './types';
@@ -15,6 +16,10 @@ const DAILY_WAGE_VC = { CLEANER: 3, BARTENDER: 5, CARD_DEALER: 8, MECHANIC: 12 }
 const INJURY_CHANCE = { CLEANER: 0, BARTENDER: 0.05, CARD_DEALER: 0, MECHANIC: 0.1 } as const;
 const JOB_XP_SOURCE: Record<PlayerJobId, string> = {
   CLEANER: 'JOB_CLEANER', BARTENDER: 'JOB_BARTENDER', CARD_DEALER: 'JOB_CARD_DEALER', MECHANIC: 'JOB_MECHANIC',
+} as const;
+
+const JOB_TO_SKILL: Record<PlayerJobId, 'cleaning' | 'service' | 'cardDealing' | 'repair'> = {
+  CLEANER: 'cleaning', BARTENDER: 'service', CARD_DEALER: 'cardDealing', MECHANIC: 'repair',
 } as const;
 const INJURY_TICKS = 120;
 const BAR_PURCHASE_COST_VC = 50;
@@ -87,6 +92,7 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
   const def = JOB_DEFS[job.jobId];
   const condition = playerCondition(normalizePlayerNeeds(world.player.needs));
   grantGlobalXp(world.player.rpg, def.xpSourceKey, Math.max(1, Math.round(def.baseXpPerTask * condition.workXpFactor)));
+  grantSkillXp(world.player.skills, JOB_TO_SKILL[job.jobId], Math.max(1, Math.round(def.baseXpPerTask * condition.workXpFactor)));
   const injuryChance = def.injuryChance * luckInjuryFactor(world.player.rpg) * condition.injuryFactor;
   const injured = injuryChance > 0 && prng.nextFloat() < injuryChance;
   if (injured) {

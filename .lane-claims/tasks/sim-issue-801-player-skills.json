@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-801-player-skills",
+  "claimId": "lane/sim/issue-801-player-skills",
+  "branch": "lane/sim/issue-801-player-skills",
+  "baseSha": "d6f90a99fa9ba4777a61ec083bf3a4ad6c9be9a5",
+  "phase": "CI_PENDING",
+  "title": "Issue #801: Spieler-Skills als Learn-by-Doing-Fortschritt aus echten Handlungen aufbauen",
+  "goal": "Vier Spieler-Fach-Skills (Reinigung, Service/Bar, Kartengeben, Reparieren) mit XP-Katalog, Levelkurve und konkreter In-Spiel-Wirkung pro Stufe",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 919,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/919",
+    "state": "open",
+    "headSha": "65afec2fdbad0141a205799464589d5d29d086e2",
+    "baseSha": "055e0f6739177714ab9b6cdbfb35821328092432"
+  },
+  "findings": [],
+  "nextAction": "Lokaler Merge-Nachweis auf dem Konflikt-Merge; danach Review-Restpunkte (#801 UI und Kartengeben-Wirkung) als Folgearbeit führen.",
+  "revision": 2
+}

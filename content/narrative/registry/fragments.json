@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6eebef125579d7b1990dfe3176b8c12ef51e095e6f47ef53707f2322c676cb20",
+  "contentHash": "sha256:e530165ebcb4229d8f77bb4a9f2c8f20bea313cb048d9640c6c697e17e6609b1",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25318,6 +25318,28 @@
       "text": "Eine Reihenfolge ist erst dann eine Reihenfolge, wenn alle Beteiligten dieselbe Revision sehen. Der grüne Stand bringt die Queue auf den aktuellen Main-Pfad, ohne die fremden Commits zu überschreiben; die Zustimmung bleibt ein sichtbarer Schritt, kein stiller Default.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-913-merge-queue-green.json"
+    },
+    {
+      "contributionId": "sim-player-skills-learn-by-doing",
+      "turnId": "2026-11-15T10:00Z-sim-player-skills",
+      "agentId": "lilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die ersten vier Fachrichtungen haben nun eine eigene Stufe: Reinigung weitet den Radius, Service hebt die Gaststimmung, Kartengeben verbessert die Gewinnchance, Reparatur spart alle N-te Ersatzteile. Wer arbeitet, wächst - nur tatsächliche abgeschlossene Handlungen zählen, nicht das bloße Anklicken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-sim-player-skills-learn-by-doing.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

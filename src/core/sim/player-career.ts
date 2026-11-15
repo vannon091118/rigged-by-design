@@ -5,7 +5,10 @@
  * eigenes Save-Feld. Die Kampfbilanz kommt aus dem Ereignisarchiv, weil dort
  * jedes Duell schon mit Ursache und Wirkung steht; ein zweiter Zaehler waere
  * eine zweite Wahrheit.
+ *
+ * Attribute und Fach-Skills sind in eigene Module ausgelagert (Hot Zone Budget).
  */
+
 import type { VaCoinMicro } from '../economy/vacoin';
 import { arenaView, type ArenaView } from './arena';
 import { esportView, type EsportView } from './esport';
@@ -14,24 +17,23 @@ import { backyardView, type BackyardView } from './fight-career';
 import { fightEventView, type FightEventView } from './fight-event';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
-import { cleaningReach, maintenanceGain } from './floor-work';
 import { propertyView, type PlayerPropertyView } from './property';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
 import { normalizePlayerNeeds, playerNeedsView, type PlayerNeedsView } from './player-needs';
 import {
-  isInjured, playerHp, playerMaxHp, playerStepsPerTick, xpForNextLevel,
-  type PlayerRpgState, type RpgAttribute,
+  isInjured, playerHp, playerMaxHp, xpForNextLevel,
 } from './player-rpg';
+export { effectOf, ATTRIBUTE_LABELS } from './player-career-attributes';
+import type { CareerAttribute } from './player-career-attributes';
+export type { CareerAttribute } from './player-career-attributes';
+import type { CareerSkill } from './player-career-skills';
+export type { CareerSkill } from './player-career-skills';
+export { SKILL_XP_SOURCES, skillIdForSource } from './player-skills';
+export type { SkillProgression, PlayerSkillState } from './player-skills';
+import { careerAttributes } from './player-career-attributes';
+import { careerSkills } from './player-career-skills';
 import type { WorldState } from './types';
-
-interface CareerAttribute {
-  readonly id: RpgAttribute;
-  readonly label: string;
-  readonly level: number;
-  /** Was diese Stufe im Spiel tatsaechlich bewirkt. */
-  readonly effect: string;
-}
 
 interface CareerJob {
   readonly label: string;
@@ -61,6 +63,7 @@ export interface PlayerCareer {
   readonly wallet: VaCoinMicro;
   readonly playerCash: VaCoinMicro;
   readonly attributes: readonly CareerAttribute[];
+  readonly skills: readonly CareerSkill[];
   readonly job: CareerJob | null;
   readonly record: FightRecord;
   readonly achievements: readonly CareerAchievement[];
@@ -81,62 +84,10 @@ export interface PlayerCareer {
 }
 
 const INJURY_HP_PENALTY = 5;
-const ACHIEVEMENT_LEVEL = 5;
-const ACHIEVEMENT_WINS = 5;
 
-/** Wirkung einer Stufe in Klartext; jede der sieben Stufen hat einen Leser im Spiel. */
-function effectOf(world: WorldState, attr: RpgAttribute): string {
-  const rpg = world.player.rpg;
-  if (attr === 'speed') return `${playerStepsPerTick(rpg)} Schritte pro Tick`;
-  // Agent 11: Wahrnehmung und Technik haben jetzt je einen Leser auf dem Floor.
-  if (attr === 'perception') return `Reinigung im Radius ${cleaningReach(world)}`;
-  if (attr === 'technique') return `Wartung +${maintenanceGain(world)} Zustandspunkte`;
-  if (attr === 'charisma') return `${40 + rpg.charismaLevel * 10} % Ansprech-Chance`;
-  if (attr === 'brawl') return `${6 + rpg.brawlLevel * 2} Schaden · ${playerMaxHp(rpg)} LP`;
-  if (attr === 'endurance') return `Regeneration alle ${Math.max(2, 4 - Math.floor(rpg.enduranceLevel / 5))} Ticks`;
-  return `Unfallrisiko -${Math.min(75, rpg.luckLevel * 5)} %`;
-}
-
-const ATTRIBUTE_LABELS: readonly (readonly [RpgAttribute, string])[] = [
-  ['speed', 'Speed'],
-  ['charisma', 'Charisma'],
-  ['brawl', 'Brawl'],
-  ['perception', 'Wahrnehmung'],
-  ['technique', 'Technik'],
-  ['endurance', 'Ausdauer'],
-  ['luck', 'Glück'],
-];
-
-function levelOf(rpg: PlayerRpgState, attr: RpgAttribute): number {
-  if (attr === 'speed') return rpg.speedLevel;
-  if (attr === 'charisma') return rpg.charismaLevel;
-  if (attr === 'brawl') return rpg.brawlLevel;
-  if (attr === 'perception') return rpg.perceptionLevel;
-  if (attr === 'technique') return rpg.techniqueLevel;
-  if (attr === 'endurance') return rpg.enduranceLevel;
-  return rpg.luckLevel;
-}
-
-/**
- * Ein Kampf im Archiv nennt Sieg oder Niederlage im Effekt; mehr braucht die
- * Bilanz nicht. Gastduell und Hinterhof zaehlen ueber denselben Parser.
- */
+/** Ein Kampf im Archiv nennt Sieg oder Niederlage im Effekt; mehr braucht die Bilanz nicht. */
 export function fightRecordOf(events: readonly JournalEvent[]): FightRecord {
   return fightRecordOfAll(events);
-}
-
-function achievementsOf(world: WorldState, record: FightRecord): readonly CareerAchievement[] {
-  const rpg = world.player.rpg;
-  const job = world.player.job;
-  return [
-    { id: 'ERSTE_SCHICHT', label: 'Erste Schicht gearbeitet', unlocked: (job?.workDays ?? 0) >= 1 },
-    { id: 'ERSTER_SIEG', label: 'Erstes Duell gewonnen', unlocked: record.wins >= 1 },
-    { id: 'DUELL_SERIE', label: `${ACHIEVEMENT_WINS} Duelle gewonnen`, unlocked: record.wins >= ACHIEVEMENT_WINS },
-    { id: 'AUFSTEIGER', label: `Level ${ACHIEVEMENT_LEVEL} erreicht`, unlocked: rpg.level >= ACHIEVEMENT_LEVEL },
-    { id: 'EIGENE_BUDE', label: 'Eigene Bude gekauft', unlocked: world.player.barPurchased },
-    { id: 'ERSTE_IMMOBILIE', label: 'Erste Immobilie gekauft', unlocked: world.player.property !== null },
-    { id: 'ERSTE_VERLETZUNG', label: 'Erste Verletzung überstanden', unlocked: rpg.injuryTicks > 0 || rpg.hp < playerMaxHp(rpg) },
-  ];
 }
 
 export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash: VaCoinMicro): PlayerCareer {
@@ -156,9 +107,8 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     injuryTicks: rpg.injuryTicks,
     wallet,
     playerCash,
-    attributes: ATTRIBUTE_LABELS.map(([id, label]) => ({
-      id, label, level: levelOf(rpg, id), effect: effectOf(world, id),
-    })),
+    attributes: careerAttributes(world),
+    skills: careerSkills(world),
     job: job === null ? null : {
       label: JOB_DEFS[job.jobId].label,
       rivalId: job.rivalId,
@@ -182,4 +132,19 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
 export function hpNotice(career: PlayerCareer): string {
   if (career.injured) return `Verletzt · noch ${career.injuryTicks} Ticks · ${career.hp}/${career.maxHp} LP - ${INJURY_HP_PENALTY} LP Risiko bei Arbeit`;
   return `${career.hp}/${career.maxHp} LP · kampfbereit`;
+}
+
+/** Erfolgsabzeichen aus Spielzustand und Kampfbilanz. */
+function achievementsOf(world: WorldState, record: FightRecord): readonly CareerAchievement[] {
+  const rpg = world.player.rpg;
+  const job = world.player.job;
+  return [
+    { id: 'ERSTE_SCHICHT', label: 'Erste Schicht gearbeitet', unlocked: (job?.workDays ?? 0) >= 1 },
+    { id: 'ERSTER_SIEG', label: 'Erstes Duell gewonnen', unlocked: record.wins >= 1 },
+    { id: 'DUELL_SERIE', label: `5 Duelle gewonnen`, unlocked: record.wins >= 5 },
+    { id: 'AUFSTEIGER', label: 'Level 5 erreicht', unlocked: rpg.level >= 5 },
+    { id: 'EIGENE_BUDE', label: 'Eigene Bude gekauft', unlocked: world.player.barPurchased },
+    { id: 'ERSTE_IMMOBILIE', label: 'Erste Immobilie gekauft', unlocked: world.player.property !== null },
+    { id: 'ERSTE_VERLETZUNG', label: 'Erste Verletzung ueberstanden', unlocked: rpg.injuryTicks > 0 || rpg.hp < playerMaxHp(rpg) },
+  ];
 }

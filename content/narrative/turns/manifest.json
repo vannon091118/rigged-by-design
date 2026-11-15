@@ -4594,6 +4594,10 @@
       "contributionId": "rumor-26"
     },
     {
+      "turnId": "2026-11-14T22:45Z-furniture-action-roles",
+      "contributionId": "furniture-action-roles-01"
+    },
+    {
       "turnId": "2026-11-14T22:55Z-claim-stale-01",
       "contributionId": "claim-stale-01"
     },
@@ -4602,24 +4606,36 @@
       "contributionId": "pretask-fixture-01"
     },
     {
-      "turnId": "2026-11-14T23:10Z-rumor-27",
-      "contributionId": "rumor-27"
+      "turnId": "2026-11-14T23:10Z-city-door-access",
+      "contributionId": "city-door-access-01"
     },
     {
-      "turnId": "2026-11-14T22:45Z-furniture-action-roles",
-      "contributionId": "furniture-action-roles-01"
+      "turnId": "2026-11-14T23:10Z-rumor-27",
+      "contributionId": "rumor-27"
     },
     {
       "turnId": "2026-11-14T23:15Z-city-actor-persona-mood",
       "contributionId": "city-actor-persona-mood-773"
     },
     {
-      "turnId": "2026-11-14T23:10Z-city-door-access",
-      "contributionId": "city-door-access-01"
+      "turnId": "2026-11-14T23:20Z-main-green",
+      "contributionId": "main-green-01"
     },
     {
       "turnId": "2026-11-14T23:45Z-city-tile-occupancy",
       "contributionId": "city-tile-occupancy-01"
+    },
+    {
+      "turnId": "2026-11-14T23:55Z-main-green-02",
+      "contributionId": "main-green-02"
+    },
+    {
+      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
+      "contributionId": "city-tile-occupancy-02"
+    },
+    {
+      "turnId": "2026-11-15T00:22Z-city-actor-floor-target",
+      "contributionId": "city-actor-floor-target-01"
     },
     {
       "turnId": "2026-11-15T00:44Z-city-life-peer-index",
@@ -4630,40 +4646,24 @@
       "contributionId": "staff-assignment-01"
     },
     {
-      "turnId": "2026-11-14T23:20Z-main-green",
-      "contributionId": "main-green-01"
-    },
-    {
-      "turnId": "2026-11-14T23:55Z-main-green-02",
-      "contributionId": "main-green-02"
-    },
-    {
       "turnId": "2026-11-15T01:05Z-city-growth-population",
       "contributionId": "city-growth-population-01"
-    },
-    {
-      "turnId": "2026-11-15T00:06Z-city-tile-occupancy-dedupe",
-      "contributionId": "city-tile-occupancy-02"
     },
     {
       "turnId": "2026-11-15T02:45Z-player-npc-kontakte",
       "contributionId": "player-npc-kontakte-01"
     },
     {
-      "turnId": "2026-11-15T00:22Z-city-actor-floor-target",
-      "contributionId": "city-actor-floor-target-01"
-    },
-    {
       "turnId": "2026-11-15T04:20Z-city-encounter-place",
       "contributionId": "city-encounter-place-776"
     },
     {
-      "turnId": "2026-11-15T04:35Z-foreign-floor-guests",
-      "contributionId": "foreign-floor-guests-01"
-    },
-    {
       "turnId": "2026-11-15T04:30Z-world-test-soak-timeout",
       "contributionId": "world-test-soak-timeout-01"
+    },
+    {
+      "turnId": "2026-11-15T04:35Z-foreign-floor-guests",
+      "contributionId": "foreign-floor-guests-01"
     },
     {
       "turnId": "2026-11-15T04:45Z-board-sync-authorization",
@@ -4692,6 +4692,10 @@
     {
       "turnId": "2026-11-15T09:59Z-shinon-913-merge-queue-green",
       "contributionId": "shinon-913-merge-queue-green"
+    },
+    {
+      "turnId": "2026-11-15T10:00Z-sim-player-skills",
+      "contributionId": "sim-player-skills-learn-by-doing"
     },
     {
       "turnId": "2026-11-15T10:10Z-shinon-877-generated-merge-driver",
