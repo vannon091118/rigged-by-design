@@ -14,7 +14,7 @@ import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { createWorld, ensureStarter } from '../templates';
 import { createCityScene } from '../city-scene';
-import { ensureCityLife, ensureCityPopulation } from '../city-life-state';
+import { cityPopulationTarget, ensureCityLife, ensureCityPopulation } from '../city-life-state';
 import {
   cityBuildings, jobMarket, advanceCityGrowth,
   BUILD_COST, BUILDER_ACCOUNT, BUILDER_START_CAPITAL,
@@ -24,6 +24,8 @@ import type { JournalEvent } from '../journal';
 import { CITY_PLOTS } from '../city-plots';
 import { BUILDER_ESCROW, EXTERNAL, PACT_RESERVE } from '../money';
 import { replaySave, toSavedGame } from '../../../store/save';
+import { tickCity } from '../city-tick';
+import { completeCityConstruction } from '../city-construction';
 
 const start = (residents = 12) => {
   const world = createWorld('SMALL');
@@ -38,11 +40,61 @@ const buildEvents = (world: { journal: readonly JournalEvent[] }): JournalEvent[
   world.journal.filter((event) => event.subject.startsWith('Neubau: '));
 
 describe('Bauträger und Wachstum', () => {
-  it('baut ohne Joblose nicht und schreibt kein Ereignis', () => {
+  it('lässt die Bevölkerung mit fertiggestellten Wohnhäusern über zwölf wachsen', () => {
     const { world, ledger } = start(12);
+    world.scene = { kind: 'CITY' };
+    const sizes: number[] = [];
+    for (let day = 1; day <= 6; day += 1) {
+      world.day = day;
+      world.tick = day * 600;
+      tickCity(world, ledger);
+      sizes.push(world.cityLife!.residents.length);
+    }
+    // Ohne Joblose baut die Stadt trotzdem Wohnraum, sobald die Bevölkerung
+    // ihre vorhandene Kapazität ausgeschöpft hat; erst der fertige Bau zählt.
+    expect(sizes[0]).toBe(12);
+    expect(sizes.at(-1)).toBeGreaterThan(12);
+    expect(sizes.at(-1)).toBeLessThanOrEqual(27);
+    expect(world.cityLife!.residents.map((resident) => resident.npcId).length)
+      .toBe(world.cityLife!.residents.length);
+  });
+
+  it('behält die aus Wohnungen gewachsene Bevölkerung über Save/Load', () => {
+    const { world, ledger, prng } = start(12);
+    world.scene = { kind: 'CITY' };
+    for (let day = 1; day <= 6; day += 1) {
+      world.day = day;
+      world.tick = day * 600;
+      tickCity(world, ledger);
+    }
+    const ids = world.cityLife!.residents.map((resident) => resident.npcId);
+    const target = cityPopulationTarget(world);
+    expect(ids.length).toBeGreaterThan(12);
+    expect(ids.length).toBe(target);
+    const loaded = replaySave(JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState()))))!;
+    const restored = ensureCityLife(loaded.world);
+    expect(restored.residents.map((resident) => resident.npcId)).toEqual(ids);
+    expect(cityPopulationTarget(loaded.world)).toBe(target);
+  });
+
+  it('baut ohne Joblose ein Wohnhaus, wenn die Bevölkerung ihre Kapazität ausgeschöpft hat', () => {
+    const { world, ledger } = start(12);
+    const report = advanceCityGrowth(world, ledger);
+    expect(report).not.toBeNull();
+    expect(report!.building.kind).toBe('RESIDENCE');
+    expect(world.cityGrowth?.built).toEqual([report!.building.id]);
+    expect(buildEvents(world)).toHaveLength(1);
+  });
+
+  it('baut ohne Joblose nicht weiter, solange der fertige Wohnraum reicht', () => {
+    const { world, ledger } = start(12);
+    const report = advanceCityGrowth(world, ledger)!;
+    world.day = 2;
+    world.tick = 1200;
+    completeCityConstruction(world);
+    expect(world.cityLife!.residents.length).toBe(12);
     expect(advanceCityGrowth(world, ledger)).toBeNull();
-    expect(ledger.getBalance(BUILDER_ACCOUNT)).toBe(0);
-    expect(buildEvents(world)).toHaveLength(0);
+    expect(world.cityGrowth?.built).toEqual([report.building.id]);
   });
 
   it('baut mit Joblosen auf einem festen Platz, bucht den Bau und protokolliert ihn', () => {
