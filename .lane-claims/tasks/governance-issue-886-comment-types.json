@@ -4,14 +4,18 @@
   "claimId": "lane/governance/issue-886-comment-types",
   "branch": "lane/governance/issue-886-comment-types",
   "baseSha": "99695923348823b101e8e3fffae7eee769460d2b",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Ereignisklassifizierung statt P0 fuer jeden Kommentar (#886)",
   "goal": "Jeder Kommentar wird als Ereignis klassifiziert statt automatisch P0; echte Notfaelle, aktive Lane-Blocker und Spielarbeit bleiben getrennt. Kanonische Quelle, Cron-Prompt und Board-Cursor-Label folgen derselben Regel.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 902,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/902",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Gates und Tests gruen stellen, committen und pushen.",
+  "nextAction": "",
   "revision": 1
 }

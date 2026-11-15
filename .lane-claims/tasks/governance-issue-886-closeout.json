@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-886-closeout",
+  "claimId": "lane/governance/issue-886-closeout",
+  "branch": "lane/governance/issue-886-closeout",
+  "baseSha": "785fc44236367ce2f85b8765b0ddd5f8f19aeb93",
+  "phase": "REVIEW_PENDING",
+  "title": "Closeout #886: Board-Gate und Ereignisklassifizierung verbuchen",
+  "goal": "Beide gemergten Lanes unter #886 auf merged/DONE setzen und die Inventur nachziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates gruen stellen, pushen, PR und Merge.",
+  "revision": 1
+}
