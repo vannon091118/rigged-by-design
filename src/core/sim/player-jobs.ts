@@ -110,7 +110,7 @@ export function acceptJob(world: WorldState, rivalId: RivalId, jobId: PlayerJobI
   const rival = getRival(rivalId);
   const station = rival.jobStations.find((s) => s.jobId === jobId);
   if (!station) throw new Error(`Keine Arbeitsstation für ${jobId} im ${rival.name} gefunden.`);
-  world.player.job = { jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day, lastWorkDay: 0, careerRank: 1, performanceHistory: [] };
+  world.player.job = { jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day, lastWorkDay: 0, careerRank: 1, performanceHistory: [], appliedTo: null, offeredBy: null };
   world.lastEvent = `Job angenommen: ${def.label} in ${rival.name}.`;
 }
 

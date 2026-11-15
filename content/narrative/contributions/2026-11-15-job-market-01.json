@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-15T22:35Z-job-market-01",
+  "contributionId": "job-market-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita klopft an jede Tür im Kiez: Kneipe, Laden, Büro, Werkstatt. Jede hat ein Schild mit offenem Platz, aber nur wer hingeht und arbeitet, bekommt den Lohn. Keine Bewerbung ohne Gang zur Tür, keine Stelle ohne Gebäude.",
+  "directives": []
+}

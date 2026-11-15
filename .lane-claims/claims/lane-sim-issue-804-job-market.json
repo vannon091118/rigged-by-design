@@ -1,0 +1,27 @@
+{
+  "id": "lane-sim-issue-804-job-market",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-804-job-market",
+  "baseSha": "095a431c5ae9c411e9c238bf500f40f594c9f798",
+  "issue": 804,
+  "task": "Stadtweiten Spieler-Arbeitsmarkt mit Bewerbungen, aktiven Schichten und ortsgebundenem Jobzustand",
+  "pathAllowlist": [
+    "src/core/sim/city-employment.ts",
+    "src/core/sim/player-jobs.ts",
+    "src/core/sim/types-model.ts",
+    "src/store/world-store.ts",
+    "src/core/sim/__tests__",
+    ".lane-claims/claims/lane-sim-issue-804-job-market.json",
+    "src/core/sim/player-job-market.ts",
+    "src/core/sim/__tests__/player-job-market.test.ts",
+    "content/narrative/contributions/2026-11-15-job-market-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "095a431c5ae9c411e9c238bf500f40f594c9f798"
+}
