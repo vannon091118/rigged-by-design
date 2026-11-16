@@ -14,6 +14,7 @@
     "test": "vitest run --config src/Config/vite.config.ts",
     "test:ci": "node scripts/run-selected-tests.mjs",
     "test:affected": "node scripts/test-affected.mjs",
+    "agent:start": "node scripts/agent-start.mjs",
     "agent:context": "node scripts/agent-context.mjs",
     "agent:feedback": "node scripts/agent-feedback.mjs",
     "agent:new": "node scripts/agent-new.mjs",

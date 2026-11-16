@@ -1033,7 +1033,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/sim-issue-782-start-guest-v2.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/merged-index.json` — { — gelesen: 216 Zeilen
+- `.lane-claims/merged-index.json` — { — gelesen: 5 Zeilen
 - `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/board-pr-triage.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
@@ -1156,7 +1156,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 149 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 151 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 216 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -2356,7 +2356,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2611 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 393 Zeilen
-- `docs/INDEX.md` — Doku-Index — gelesen: 67 Zeilen
+- `docs/INDEX.md` — Doku-Index — gelesen: 68 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MERGE-QUEUE.md` — Merge-Queue (#913) — gelesen: 110 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
@@ -2457,7 +2457,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
-- `package.json` — { — gelesen: 128 Zeilen
+- `package.json` — { — gelesen: 129 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
 - `packages/gamescout/README.md` — GameScout — gelesen: 74 Zeilen
 - `packages/gamescout/bin/gamescout` — GameScout CLI bin entry point. — gelesen: 20 Zeilen
@@ -3118,7 +3118,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/gate-diagnostics.mjs` — Mehrfach-Diagnose eines roten CI-Laufs. — gelesen: 120 Zeilen
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 257 Zeilen
 - `scripts/lib/generated-files.mjs` — Generierte Artefakte: eine Liste, ein Eigentuemer, ein Regenerationspfad. — gelesen: 152 Zeilen
-- `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet). — gelesen: 133 Zeilen
+- `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet). — gelesen: 173 Zeilen
 - `scripts/lib/github-rest.mjs` — Zwei Lesepfade fuer das Board: `gh` und Token-REST. — gelesen: 85 Zeilen
 - `scripts/lib/headless-core.mjs` — Headless-Core-Grenze: `src/core/` bleibt frei von UI, Renderer, Pixi, React — gelesen: 109 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen

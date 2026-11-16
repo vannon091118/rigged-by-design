@@ -101,6 +101,42 @@ async function pullForBranch() {
   };
 }
 
+/** Offene Pull Requests; der Agenteneinstieg braucht PR-Bezug je Issue. */
+async function pullList() {
+  const rows = await api('/pulls?state=open&per_page=' + Math.min(Number(params.limit ?? 50), 100));
+  return rows.map((pr) => ({
+    number: pr.number,
+    title: pr.title ?? '',
+    headRefName: pr.head?.ref ?? '',
+    headRefOid: pr.head?.sha ?? '',
+    baseRefName: pr.base?.ref ?? '',
+    isDraft: Boolean(pr.draft),
+    body: pr.body ?? '',
+    updatedAt: pr.updated_at ?? '',
+    labels: labels(pr),
+  }));
+}
+
+/** Ereignis-Einstieg: loest den Board-Overview-Workflow ohne Server aus. */
+async function dispatch() {
+  const response = await fetch(`${base}/dispatches`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+      'User-Agent': 'rbd-board-gate',
+    },
+    body: JSON.stringify({ event_type: String(params.event_type ?? 'board-refresh') }),
+  });
+  if (!response.ok) {
+    console.error(`REST POST /dispatches: HTTP ${response.status}`);
+    process.exit(4);
+  }
+  return { dispatched: true, event_type: String(params.event_type ?? 'board-refresh') };
+}
+
 async function prDetail({ withComments = false } = {}) {
   const pr = await pullForBranch();
   if (!pr) return null;
@@ -121,6 +157,10 @@ if (kind === 'issue-view') {
   };
 } else if (kind === 'issue-list') {
   payload = await issues({ label: params.label, state: params.state });
+} else if (kind === 'pr-list') {
+  payload = await pullList();
+} else if (kind === 'dispatch') {
+  payload = await dispatch();
 } else if (kind === 'pull-for-branch') {
   payload = await pullForBranch();
 } else if (kind === 'ci-for-branch') {
