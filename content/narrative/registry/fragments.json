@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f646a503e2bec69af69f391fa253e3ba9c249445e1889f0a2129cad8f0bca8e3",
+  "contentHash": "sha256:f2d88bcc8e50df9b41d8e6e69bad9bfbd1d999ca65536f60915face26df10c70",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26178,6 +26178,28 @@
       "text": "Rita liess den Satz im Regal und oeffnete nur die Karte daneben: Sprache, Kontext, Flag und Persona mussten zusammenpassen, bevor ein Fragment in die Szene durfte. Fuer den leeren Rest lagen kurze neutrale Zeilen bereit; keine davon nannte eine Choice, einen Preis oder eine Wirkung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-11-runtime-composer.json"
+    },
+    {
+      "contributionId": "save-cadence-01",
+      "turnId": "2026-11-16T18:40Z-save-cadence",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der passive Takt schreibt nicht mehr bei jedem Schritt: Er sammelt dreißig Schritte, bevor er den ganzen Stand sichert. Wer den Tab verlässt, verliert diesen Vorlauf nicht, weil der Wechsel in den Hintergrund den ausstehenden Stand sofort schreibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-save-cadence.json"
     },
     {
       "contributionId": "scene-frame-doors-01",
