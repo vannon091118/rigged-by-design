@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-864-board-artifact-reconcile",
+  "claimId": "lane/governance/issue-864-board-artifact-reconcile",
+  "branch": "lane/governance/issue-864-board-artifact-reconcile",
+  "baseSha": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e",
+  "phase": "CI_PENDING",
+  "title": "Board-Artefakte mechanisch nachziehen: Claim-Ledger reconcile, merged-index, board-state, Audit-Stand fortschreiben",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
