@@ -31,6 +31,15 @@ function stubHelper(parent: string, payload: unknown): string {
   return script;
 }
 
+/** Ein Stub, der wie der echte Helfer mit Zustand auf stderr abbricht. */
+function stubFailure(parent: string, state: string): string {
+  const dir = join(parent, 'bin-fail');
+  mkdirSync(dir, { recursive: true });
+  const script = join(dir, 'rest-fail.mjs');
+  writeFileSync(script, `process.stderr.write('${state}: Rate-Limit erreicht\\n'); process.exit(4);\n`);
+  return script;
+}
+
 const savedEnv = { ...process.env };
 
 beforeEach(() => {
@@ -68,10 +77,29 @@ describe('github-rest', () => {
     expect(restForGhArgs(['issue', 'comment', '1', '--body', 'x'])).toBeNull();
   });
 
-  it('liefert ohne Token einen Fehler statt zu raten', () => {
-    const result = rest('issue-view', { number: 886 });
-    expect(result.ok).toBe(false);
-    expect(String(result.error)).toContain('Token');
+  it('liest oeffentliche Daten ohne Token, statt den Start zu sperren', () => {
+    // FREEZE-0 (#684): kein Pflicht-Token. Der anonyme Pfad ist erlaubt; nur
+    // ein echter Lesefehler wird zum Zustand UNKNOWN und nie zu einer leeren Liste.
+    const parent = mkdtempSync(join(tmpdir(), 'rbd-rest-anon-'));
+    const savedToken = process.env.GH_TOKEN;
+    const savedScript = process.env.RBD_REST_SCRIPT;
+    try {
+      delete process.env.GH_TOKEN;
+      process.env.RBD_REST_SCRIPT = stubFailure(parent, 'UNKNOWN_RATE_LIMIT');
+      const limited = rest('issue-view', { number: 886 });
+      if (limited.ok) throw new Error('anonyme Anfrage haette als Zustand enden muessen');
+      expect(limited.state).toBe('UNKNOWN_RATE_LIMIT');
+      expect(limited.error).toContain('UNKNOWN_RATE_LIMIT');
+
+      process.env.RBD_REST_SCRIPT = stubHelper(parent, ISSUE_VIEW);
+      const ok = rest('issue-view', { number: 886 });
+      expect(ok.ok).toBe(true);
+      expect(ok.data.number).toBe(886);
+    } finally {
+      if (savedToken === undefined) delete process.env.GH_TOKEN; else process.env.GH_TOKEN = savedToken;
+      if (savedScript === undefined) delete process.env.RBD_REST_SCRIPT; else process.env.RBD_REST_SCRIPT = savedScript;
+      rmSync(parent, { recursive: true, force: true });
+    }
   });
 
   it('liest ueber den Stub-Helfer dieselbe Form wie gh', () => {

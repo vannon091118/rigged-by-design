@@ -55,6 +55,6 @@ Welche Capabilities aus dem Capability-Manifest werden berührt?
 - [ ] Contract-Writer-Claims eintragen
 - [ ] Implementierung
 - [ ] `pnpm run verify:quick` grün
-- [ ] PR gegen `main` erstellen und über `promote.yml` fördern
+- [ ] PR gegen `main` erstellen; der Maintainer reviewed und merged auf dem exakten Kopf
 
 ---\nLabel: lane\nPhase: 0\nPriorität: P0

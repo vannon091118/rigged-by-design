@@ -15,8 +15,9 @@
  *   node scripts/install-webhook.mjs --url https://example.test/rbd-hook --secret-file .secrets/hook.txt
  *   node scripts/install-webhook.mjs --remove
  *
- * Ohne Empfaenger ist der richtige Weg `repository_dispatch`:
- *   POST /repos/<owner>/<repo>/dispatches  {"event_type":"board-refresh"}
+ * Ohne Empfaenger bleibt die lokale Board-Pflege (`pnpm run board:overview`):
+ * einen Ereignis-Workflow als `repository_dispatch`-Empfaenger gibt es seit
+ * FREEZE-0 nicht mehr.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -82,7 +83,7 @@ if (CHECK && !URL_FLAG && !REMOVE) {
       active: hook.active,
     })),
     verdict: existing.length === 0
-      ? 'kein_webhook_registriert (richtig: ohne Empfaenger bleibt repository_dispatch der Weg)'
+      ? 'kein_webhook_registriert (richtig: ohne Empfaenger bleibt board:overview)'
       : 'webhook_vorhanden',
   };
   console.log(JSON_OUT ? JSON.stringify(report, null, 2) : JSON.stringify(report, null, 2));

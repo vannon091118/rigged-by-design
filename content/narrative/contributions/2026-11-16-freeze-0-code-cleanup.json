@@ -1,0 +1,17 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T04:30Z-freeze-0-code-cleanup",
+  "contributionId": "maintainer-684-freeze-0-code-cleanup",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Werkstatt hat jetzt einen ehrlichen Zettel an der Tür: kein Häkchen für eine Prüfung, die niemand ausführt, und kein Werkzeug, das sich selbst aus dem Netz nachlädt, ohne dass jemand nachsieht, was da ankommt. Und wenn das Brett nicht lesbar ist, sagt der Aushang »unbekannt« statt »leer«.",
+  "directives": []
+}

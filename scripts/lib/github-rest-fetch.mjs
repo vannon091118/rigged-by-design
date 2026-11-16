@@ -217,14 +217,6 @@ async function pullList() {
   }));
 }
 
-async function dispatch() {
-  await request('/dispatches', {
-    method: 'POST',
-    body: { event_type: String(params.event_type ?? 'board-refresh') },
-  });
-  return { dispatched: true, event_type: String(params.event_type ?? 'board-refresh') };
-}
-
 async function prDetail({ withComments = false } = {}) {
   const pr = await pullForBranch();
   if (!pr) return null;
@@ -261,8 +253,6 @@ if (kind === 'issue-view') {
     config: { url: hook?.config?.url ?? '' },
     last_response: { status: hook?.last_response?.status ?? null },
   }));
-} else if (kind === 'dispatch') {
-  payload = await dispatch();
 } else if (kind === 'pull-for-branch') {
   payload = await pullForBranch();
 } else if (kind === 'ci-for-branch') {

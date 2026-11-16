@@ -51,7 +51,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |
 | Stadt-Ruhetag und verzögerte Folge überstehen Save/Load ohne Tick dazwischen: Tag, Ledger, Beziehung, Chain-Frist und PRNG bleiben identisch, Miete und Echo laufen genau einmal | `city-day-closeout.test.ts`, `city-encounter-loop.test.ts` |
-| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; kein Cloud-Check, keine Merge-Bedingung |
+| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | es gibt keinen Workflow mehr (FREEZE-0); kein Cloud-Check, keine Merge-Bedingung |
 | Mechanik-Liste und Testkatalog sind deckungsgleich; kein Regelprofil enthält Mechanik | `test-catalog.test.ts`, `pipeline-modes.test.ts` |
 | Headless-Core bleibt frei von Pixi/React/DOM und UI-/Render-/Store-Importen | `headless-imports.test.ts`, `pnpm run verify:headless` |
 

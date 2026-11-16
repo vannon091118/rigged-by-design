@@ -266,12 +266,12 @@ ausdrueckliche Ausnahme.
 
 ## Promotion und Phasen-Hold
 
-**Status: manuell.** `promote.yml` ist kein Merge-Akteur und reagiert nur auf `workflow_dispatch`. Es zeigt den PR-Status oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an. Der Merge erfolgt durch den Maintainer nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; es gibt keinen Cloud-Check. Kein Auto-Merge, kein Merge auf einem alten Kopf.
+**Status: entfernt.** Es gibt keinen Promote-Workflow mehr (FREEZE-0, #684). Der Maintainer merged nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; es gibt keinen Cloud-Check, keinen Auto-Merge und keinen Merge auf einem alten Kopf.
 
 Der folgende Abschnitt beschreibt den historischen Integrationspfad; er ist kein Normalweg mehr.
 
-Der Weg von einem Branch nach `main` ist ein Zustandsautomat mit genau einer
-Quelle: `.github/workflows/promote.yml` liest das Ergebnis von `CI Verify`.
+Der historische Weg von einem Branch nach `main` las das Ergebnis eines CI-Laufs;
+diesen Pfad gibt es nicht mehr (FREEZE-0).
 Gruen legt den PR an und mergt ihn, rot legt den Stand auf die permanente
 Branch `integration`. Der Zustand liegt im Branch und im Label
 (`integration/rot`, `integration/konflikt`), nie in der Warteschlange — GitHub
@@ -1009,7 +1009,7 @@ keine Screenshot-Ordner mehr auf.
 ### Ebene A: Lokale Runner und Repository-Verwaltung
 
 - Die Testlinie laeuft lokal: `pnpm run ci:local` fuer den Vor-PR-Nachweis, `pnpm run verify:all` fuer den vollen Regellauf, `pnpm run test:mechanics` fuer Statistik, Soak, Langlauf und Benchmarks. Kein Workflow fuehrt Tests, Gates, Builds oder APKs aus.
-- Drei Workflows bleiben ausschliesslich fuer Repository-Verwaltung: `ensure-pr.yml` legt Lane-PRs an, `pr-cleanup.yml` loescht gemergte Wegwerf-Branches, `promote.yml` ist ein manueller Status-/Notausgang.
+- Es gibt **keinen** Workflow mehr: PR eroeffnet der Worker aus seinem Fork, Closeout und Branch-Pflege macht der Maintainer, `pnpm run branches:prune` bleibt lokal.
 - `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt. Ihre Arbeit ist lokal erreichbar; es gibt keinen zweiten Testpfad.
 
 ### Branch-Schutz fuer `main`
@@ -1055,9 +1055,9 @@ PR-Plan und keinen Wochenlauf.
 ### Promotion
 
 **Status: manuell.** Der Merge nach `main` erfolgt durch den Maintainer nach
-lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf. `promote.yml` ist ein
-manueller Status-/Notausgang (`workflow_dispatch`), kein Auto-Merge und kein
-Merge-Akteur. Es gibt keinen Cloud-Check; kein Merge wartet auf einen CI-Lauf. `integration` bleibt ein ausdruecklicher Notausgang.
+lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf. Es gibt keinen
+Workflow, keinen Auto-Merge und keinen Merge-Akteur ausser dem Maintainer.
+Kein Merge wartet auf einen CI-Lauf.
 
 ### Release- und APK-Kette
 
@@ -1088,7 +1088,7 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | Nur ein lokaler Vor-PR-Nachweis pro PR | `pnpm run ci:local`; kein Cloud-Job |
 | PR ohne Cloud-Check ist mergebar | Branch-Schutz ohne Required-Status; Merge durch Mensch/Agent nach lokalem Nachweis |
 | Verify veraendert keinen Arbeitsbaum | `pnpm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`); Berichte liegen im gitignorierten `.verify-cache/reports/` |
-| Wegwerf-Branches verschwinden nach dem Merge | `pr-cleanup.yml` (nur gemergt, nicht `main`, kein Fork, kein `keep-branch`); lokal `pnpm run branches:prune` |
+| Wegwerf-Branches verschwinden nach dem Merge | lokal `pnpm run branches:prune` (nur gemergt, nicht `main`, kein Fork, kein `keep-branch`); kein Workflow |
 | Mechanik laeuft nur gezielt | `pnpm run test:mechanics`; `test:affected` ueberspringt die sechs Mechanik-Dateien aus `src/Config/test-lanes.json` und nennt sie |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `pnpm run fix` |
 | Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Git-Fingerabdruck (`HEAD` + Diff + unversionierte Dateien); Fix-Lauf meldet „keine Aenderung“ |

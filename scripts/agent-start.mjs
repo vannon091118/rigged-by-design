@@ -26,7 +26,6 @@
  * Aufruf:
  *   pnpm run agent:start -- --brief
  *   pnpm run agent:start -- --json --issue 874
- *   pnpm run agent:start -- --dispatch        # Board-Overview-Ereignis ausloesen
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -66,7 +65,6 @@ function sessionIdentity() {
 const agent = value('agent', sessionIdentity());
 const issueFlag = value('issue');
 const wantedIssue = issueFlag === null ? null : Number(issueFlag);
-const wantDispatch = flag('dispatch');
 // Wanduhr nur fuer den Laufzeitstempel des Berichts; die Arbeit selbst bleibt
 // deterministisch, weil Reihenfolge und Alter aus Issue-Daten kommen.
 const at = value('at', process.env.RBD_NOW ?? new Date().toISOString());
@@ -369,7 +367,7 @@ const FLOW_ENTRIES = [
   { id: 'actor-policy', rule: 'nur verifizierte Autoren aendern Board-Zustand', artifact: '.lane-claims/actors.json' },
 ];
 const CONDITIONAL = new Map([
-  ['install-webhook.mjs', 'klassischer Webhook braucht eine erreichbare Empfaenger-URL; ohne Empfaenger ist repository_dispatch der aktive Weg'],
+  ['install-webhook.mjs', 'klassischer Webhook braucht eine erreichbare Empfaenger-URL; ohne Empfaenger erzeugt pnpm run board:overview die Uebersicht lokal'],
 ]);
 const IGNORE = new Set(['github-rest-fetch.mjs', 'agent-start.mjs']);
 
@@ -490,15 +488,6 @@ function apkRelevance() {
 }
 const apk = apkRelevance();
 
-// --- 5. Ereignis-Hook ausloesen ------------------------------------------
-let dispatch = null;
-if (wantDispatch) {
-  dispatch = rest('dispatch', { event_type: 'board-refresh', repo });
-  if (!dispatch.ok) {
-    blockers.push(`[ERR-4019] repository_dispatch fehlgeschlagen (${dispatch.error}); Actions-Recht auf ${repo} noetig`);
-  } else notes.push('Board-Overview-Ereignis ausgeloest: der Workflow aktualisiert die Uebersicht an #677');
-}
-
 // --- 6. Naechste Schritte -------------------------------------------------
 const claimBody = () =>
   `CLAIM [A1] ${agent} ${at} scope=<pfade> plan=<ein Satz, was dieses Issue erledigt>`;
@@ -546,7 +535,6 @@ if (asJson) {
       step: webhook.step,
       error: webhook.error ?? '',
     },
-    dispatch: dispatch ? { ok: dispatch.ok } : null,
     apkRelevance: apk,
     blockers,
     warnings,

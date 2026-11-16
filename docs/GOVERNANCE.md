@@ -217,7 +217,7 @@ Issue-Scopes:
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch den **Maintainer** nach Review und auf dem exakten Kopf, Agenten pushen nur ihren Lane-Branch. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
+Eine Stimme pro SHA: der Worker oeffnet den PR aus seinem Fork, der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch den **Maintainer** nach Review und auf dem exakten Kopf. Es gibt keinen Workflow und keinen Promote-Pfad mehr (FREEZE-0, #684); Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
 
 ## Maintainer-Protokoll
 
