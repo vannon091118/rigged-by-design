@@ -187,3 +187,65 @@ git diff --name-only <base> <tag>              # eigener Umfang
 git diff --quiet <tag> main -- <datei>         # Byte-Vergleich
 git checkout <tag> && npx tsc --noEmit -p src/Config/tsconfig.json
 ```
+
+## Nachtrag: Vollprüfung aller Tags (2026-11-16, abends)
+
+Gemessen mit `git rev-list --count <tag> ^main` über alle 216 Tags: **177** enthalten
+keine Commits außerhalb von `main`, **39** schon. Für die 39 wurde je Tag der Inhalt
+gegen `main` geprüft (`git diff --quiet <tag> main -- <datei>`):
+
+| Tag | Datum | Commits nicht auf main | Codedateien | Beleg |
+| --- | --- | --- | --- | --- |
+| `archiv-2026-11-09/backup-agents-rule-pending` | 2026-11-08 | 2 | 1 | 0/1 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-gameplay-npc-encounter-loop` | 2026-11-09 | 2 | 20 | 6/20 identisch; `src/core/sim/__tests__/city-encounter-loop.test.ts` auf main weiterentwickelt (b1ee312f 2026-11-13) |
+| `archiv-2026-11-09/lane-governance-agents-wartezeiten-regel` | 2026-11-08 | 3 | 1 | 0/1 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-governance-blocks-gate-final` | 2026-11-08 | 1 | 5 | 0/5 identisch; `.githooks/commit-msg` auf main weiterentwickelt (b82b1208 2026-11-14) |
+| `archiv-2026-11-09/lane-governance-claim-tooling` | 2026-11-08 | 1 | 4 | 0/4 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-governance-influence-matrix` | 2026-11-08 | 3 | 4 | 0/4 identisch; `src/core/sim/__tests__/influence.test.ts` auf main weiterentwickelt (59b26860 2026-11-09) |
+| `archiv-2026-11-09/lane-governance-main-repair` | 2026-11-08 | 1 | 1 | 0/1 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-governance-narrative-chain-graph` | 2026-11-08 | 1 | 0 | nur Claim-/Doku-Zeilen; kein Code |
+| `archiv-2026-11-09/lane-governance-npc-encounter-loop` | 2026-11-09 | 3 | 20 | 6/20 identisch; `src/core/sim/__tests__/city-encounter-loop.test.ts` auf main weiterentwickelt (b1ee312f 2026-11-13) |
+| `archiv-2026-11-09/lane-governance-player-cash-closeout` | 2026-11-08 | 3 | 0 | nur Claim-/Doku-Zeilen; kein Code |
+| `archiv-2026-11-09/lane-governance-slot-discharge-fact` | 2026-11-09 | 3 | 14 | 3/14 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-governance-slot-discharge-fact-lane2` | 2026-11-09 | 3 | 14 | 3/14 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-integrity-audit-findings` | 2026-11-09 | 1 | 6 | 1/6 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archiv-2026-11-09/lane-sim-factor-matrix-config` | 2026-11-08 | 4 | 0 | nur Claim-/Doku-Zeilen; kein Code |
+| `archiv-2026-11-09/lane-sim-logic-safety` | 2026-11-09 | 2 | 10 | 6/10 identisch; `src/core/sim/__tests__/player-jobs.test.ts` auf main weiterentwickelt (7f8c2119 2026-11-16) |
+| `archiv-2026-11-09/lane-sim-player-cash-payout` | 2026-11-08 | 3 | 0 | nur Claim-/Doku-Zeilen; kein Code |
+| `archive/2026-11-07/archive-integration` | 2026-11-07 | 11 | 25 | 10/25 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/2026-11-07/archive-p0-branches` | 2026-11-07 | 31 | 14 | 6/14 identisch; `.github/workflows/ci-verify.yml` auf main weiterentwickelt (c4d0c465 2026-11-12) |
+| `archive/2026-11-07/integration` | 2026-11-07 | 11 | 25 | 10/25 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/2026-11-07/lane-governance-ci-stabilization` | 2026-11-07 | 1 | 1 | 0/1 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/2026-11-07/lane-interaction-foreign-map-pickup` | 2026-11-07 | 1 | 8 | 0/8 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/2026-11-07/lane-interaction-opening-rita` | 2026-11-07 | 2 | 8 | 0/8 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/2026-11-07/lane-narrative-multi-beat-events` | 2026-11-07 | 1 | 8 | 1/8 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/alt-tip-gameplay` | 2026-11-02 | 11 | 12 | 3/12 identisch; `AGENTS.md` auf main weiterentwickelt (c8dbce86 2026-11-16) |
+| `archive/alt-tip-pnpm` | 2026-11-01 | 1 | 31 | 3/31 identisch; `.githooks/pre-commit` auf main weiterentwickelt (927e59d9 2026-11-11) |
+| `archive/governance-gate-repair-after-merges-2026-11-16` | 2026-11-15 | 1 | 12 | 8/12 identisch; `src/core/sim/__tests__/city-life-movement.test.ts` auf main weiterentwickelt (2ad9efb5 2026-11-15) |
+| `archive/governance-issue-555-balance-run-2026-11-16` | 2026-11-14 | 2 | 4 | 3/4 identisch; `src/core/sim/narrative/composer/registry.generated.ts` auf main weiterentwickelt (0d4f92e8 2026-11-16) |
+| `archive/governance-issue-684-issue-board-2026-11-16` | 2026-11-15 | 2 | 53 | 0/53 identisch; `.cron/check-in.mjs` auf main weiterentwickelt (ae3e872b 2026-11-15) |
+| `archive/governance-issue-750-run-budget-findings-2026-11-16` | 2026-11-14 | 2 | 3 | 0/3 identisch; `scripts/lib/run-budget.mjs` auf main weiterentwickelt (056663eb 2026-11-14) |
+| `archive/governance-issue-752-pretask-budget-count-2026-11-16` | 2026-11-14 | 2 | 4 | 0/4 identisch; `scripts/lib/run-budget.mjs` auf main weiterentwickelt (056663eb 2026-11-14) |
+| `archive/governance-main-gates-repair-2026-11-16` | 2026-11-14 | 1 | 7 | 4/7 identisch; `src/core/sim/__tests__/image-diff-gate.test.ts` auf main weiterentwickelt (neuere Fassung) |
+| `archive/narrative-issue-664-dev-process-remove-2026-11-16` | 2026-11-14 | 1 | 1 | 0/1 identisch; `src/core/sim/narrative/composer/registry.generated.ts` auf main weiterentwickelt (0d4f92e8 2026-11-16) |
+| `archive/narrative-issue-667-technical-system-events-2026-11-16` | 2026-11-14 | 5 | 1 | 0/1 identisch; `src/core/sim/narrative/composer/registry.generated.ts` auf main weiterentwickelt (0d4f92e8 2026-11-16) |
+| `archive/sim-issue-782-start-guest-crate-2026-11-16` | 2026-11-15 | 2 | 4 | 2/4 identisch; `src/render/__tests__/start-guest-crate-visible.test.ts` auf main weiterentwickelt (neuere Fassung) |
+| `archive/sim-issue-803-job-career-ladder-2026-11-16` | 2026-11-15 | 1 | 13 | 0/13 identisch; `src/core/sim/__tests__/job-career.test.ts` auf main weiterentwickelt (neuere Fassung) |
+| `archive/wip-uncommitted-538-2026-11-16` | 2026-11-16 | 2 | 2 | 0/2 identisch; `src/core/sim/narrative/composer/registry.generated.ts` auf main weiterentwickelt (0d4f92e8 2026-11-16) |
+| `archive/wip-uncommitted-540-2026-11-16` | 2026-11-16 | 2 | 6 | 0/6 identisch; `src/core/sim/business-areas.ts` auf main weiterentwickelt (9870fcf0 2026-11-11) |
+| `archive/wip-uncommitted-788-2026-11-16` | 2026-11-16 | 2 | 0 | nur Claim-/Doku-Zeilen; kein Code |
+| `archive/wip-uncommitted-809-2026-11-16` | 2026-11-16 | 3 | 29 | 6/29 identisch; `src/Config/eslint.config.mjs` auf main weiterentwickelt (53552542 2026-11-16) |
+
+**Entscheidung:** alle 39 sind überholt — entweder liegt ihr Code byte-identisch auf `main`,
+oder `main` hat die betroffene Datei danach weiterentwickelt (Beleg in der Spalte rechts),
+oder der Tag enthält nur Claim-/Doku-Zeilen. Für die 2026-11-16-Tags gilt zusätzlich die
+Abrechnung oben (7 integriert, 6 überholt, 5 verworfen). Commits, die nicht Vorfahren von
+`main` sind, tragen damit **keine eigene Arbeit** mehr. Die Tags werden nach diesem Nachweis
+entfernt; die Belege bleiben hier und über die SHAs der Merge-Commits erhalten.
+
+**Reproduktion:**
+
+```bash
+git tag | while read t; do echo "$(git rev-list --count $t ^main) $t"; done | awk "\$1 > 0"
+git ls-remote --tags origin | wc -l
+```

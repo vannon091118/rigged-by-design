@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { signPayload } from '../../../../scripts/lib/webhook-signature.mjs';
+import { decide } from '../../../../scripts/webhook-receiver.mjs';
 import { OPEN_PULLS, PLAN_DELIVERY } from './webhook-fixture';
 
 const ROOT = join(__dirname, '..', '..', '..', '..');
@@ -27,6 +28,28 @@ writeFileSync(PULLS, JSON.stringify(OPEN_PULLS, null, 2));
 const receiver = (args: string[], env: Record<string, string> = {}) => spawnSync(process.execPath, [SCRIPT, ...args], {
   encoding: 'utf8',
   env: { ...process.env, RBD_WEBHOOK_SECRET: SECRET, ...env },
+});
+
+describe('webhook-receiver (Modul)', () => {
+  // Der Import muss die Signaturpruefung selbst erreichen, nicht nur den Prozess.
+  it('entscheidet ohne Secret fail-closed und nennt keinen Zustand', () => {
+    const body = readFileSync(PAYLOAD);
+    const result = decide({
+      event: 'issue_comment',
+      payload: PLAN_DELIVERY,
+      signature: signPayload(body, SECRET),
+      body,
+      context: () => ({ comments: [], pulls: OPEN_PULLS, mainSha: '0'.repeat(40) }),
+    });
+    if (process.env.RBD_WEBHOOK_SECRET) {
+      expect(result.status).toBe(202);
+      expect(result.check.ok).toBe(true);
+    } else {
+      expect(result.status).toBe(503);
+      expect(result.check.ok).toBe(false);
+      expect(result.action).toBeNull();
+    }
+  });
 });
 
 describe('webhook-receiver (offline)', () => {

@@ -23,6 +23,8 @@
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { rest } from './lib/github-rest.mjs';
 import { deliverySubject, deliveryPlanned } from './lib/webhook-action.mjs';
 import { SIGNATURE_HEADER, signPayload, verifySignature, webhookSecret } from './lib/webhook-signature.mjs';
@@ -175,8 +177,17 @@ function serve() {
   return 0;
 }
 
-if (flag('serve')) {
-  serve();
-} else {
-  process.exit(runOnce());
+// Die Entscheidung ist ohne Prozessstart pruefbar: `decide` ist rein bis auf
+// Secret und Kontext-Reader, der Test importiert sie direkt.
+export { decide };
+
+// Nur ein direkter Aufruf startet den Empfaenger; ein Import darf keinen Server
+// oeffnen und keinen Prozess beenden.
+const invokedDirectly = Boolean(process.argv[1]) && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (invokedDirectly) {
+  if (flag('serve')) {
+    serve();
+  } else {
+    process.exit(runOnce());
+  }
 }

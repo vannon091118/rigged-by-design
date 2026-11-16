@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/test-quality-and-tags",
+  "owner": "Monitor",
+  "branch": "lane/governance/test-quality-and-tags",
+  "baseSha": "e61e422100dc7ddf8052ae7e4ec51f72d2da69ed",
+  "issue": 960,
+  "task": "Testqualitaets-Gate gruen und Tag-Vollpruefung",
+  "pathAllowlist": [
+    "src/**",
+    "scripts/**",
+    "docs/**",
+    "content/narrative/**",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e61e422100dc7ddf8052ae7e4ec51f72d2da69ed"
+}

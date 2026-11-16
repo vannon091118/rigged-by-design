@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T05:00Z-governance-tag-vollpruefung",
+  "contributionId": "governance-tag-vollpruefung",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Zweihundertsechzehn Etiketten hängen an der Wand, die meisten mit demselben Datum. Jemand zählt nach, welche noch an etwas hängen, das nicht im Regal steht: neununddreißig. Jede bekommt eine Zeile, dann fällt das Etikett.",
+  "directives": []
+}
