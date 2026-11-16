@@ -13,7 +13,7 @@ import type { Ledger } from '../economy/ledger';
 import { fromVC, toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { recordJournal } from './journal';
 import { HAUSKONTO, SHOP } from './money';
-import { propertyArea, propertyWorld } from './property';
+import { propertyWorld } from './property';
 import { TX_PREFIX } from './tx-reasons';
 import type { WorldState } from './types';
 
@@ -87,7 +87,7 @@ export interface RenovationView {
 
 /** Eine Sicht fuer UI und Tests; sie rechnet nichts nach und speichert nichts. */
 export function renovationView(world: WorldState, ledger: Ledger): RenovationView {
-  const owned = world.player.property !== null;
+  const owned = world.player.properties.length > 0;
   const stage = renovationStage(world);
   const step = nextRenovationStep(stage);
   const house = ledger.getBalance(HAUSKONTO);
@@ -121,12 +121,12 @@ export function renovationView(world: WorldState, ledger: Ledger): RenovationVie
  * des Rufs. 0 ohne Eigentum, weil die Stufe dann UNRENOVIERT ist.
  */
 export function renovationReputationBonus(world: WorldState): number {
-  return world.player.property === null ? 0 : RENOVATION_STAGES.indexOf(renovationStage(world)) * 2;
+  return world.player.properties.length === 0 ? 0 : RENOVATION_STAGES.indexOf(renovationStage(world)) * 2;
 }
 
 /** Gaeste merken den Zustand beim ersten Schritt: ein Launebonus je Stufe. */
 export function renovationMoodBonus(world: WorldState): number {
-  return world.player.property === null ? 0 : RENOVATION_STAGES.indexOf(renovationStage(world));
+  return world.player.properties.length === 0 ? 0 : RENOVATION_STAGES.indexOf(renovationStage(world));
 }
 
 /**
@@ -135,11 +135,11 @@ export function renovationMoodBonus(world: WorldState): number {
  * Zustand und keine Buchung.
  */
 export function renovate(world: WorldState, ledger: Ledger, tick: number = world.tick): RenovationStage {
-  if (world.player.property === null) throw new Error('Ohne Immobilie gibt es nichts zu renovieren.');
+  if (world.player.properties.length === 0) throw new Error('Ohne Immobilie gibt es nichts zu renovieren.');
   const stage = renovationStage(world);
   const step = nextRenovationStep(stage);
   if (step === null) throw new Error('Die Immobilie ist bereits aufgewertet.');
-  const area = propertyArea(world);
+  const area = propertyWorld(world)?.area ?? null;
   if (area === null) throw new Error('Die Immobilie hat keinen Boden im WorldState.');
   if (world.parts < step.parts) {
     throw new Error(`Material fehlt: ${step.parts} Ersatzteile aus dem Lager, vorhanden ${world.parts}.`);

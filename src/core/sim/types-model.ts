@@ -8,21 +8,17 @@ import type { SlotProfile } from '../games/slot-profile';
 
 import type { BuildId } from './offers';
 
-import type { PlayerRpgState } from './player-rpg';
 
 import type { VisitorMemory } from './narrative/types';
 
 import type { TraitState } from './city-types';
 
-import type { LayoutState, LayoutZone, ZoneKind } from './layout-types';
+import type { LayoutZone, ZoneKind } from './layout-types';
 import type { StaffQualification } from './staff-qualification';
-
-
 
 /** Spielbedeutung einer Zone; der Layout-Vertrag ist ihre einzige Definition. */
 
 export type { ZoneKind };
-
 
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
@@ -42,7 +38,6 @@ export type PlayerJobId = 'CLEANER' | 'BARTENDER' | 'CARD_DEALER' | 'MECHANIC';
 export type JobTaskType = 'CLEAN' | 'SERVE' | 'DEAL' | 'REPAIR';
 
 
-
 export interface DemandSource { readonly id: string; readonly label: string; readonly perDay: number; }
 
 export interface DemandSnapshot {
@@ -56,7 +51,6 @@ export interface DemandSnapshot {
 }
 
 
-
 export type GameId = 'SLOT' | 'BLACKJACK' | 'POKER' | 'VIDEO_POKER' | 'ROULETTE' | 'PLINKO' | 'SHELL' | 'DICE';
 
 type GuestState = 'ENTER' | 'EXCHANGE' | 'CHOOSE' | 'WAIT' | 'PLAY' | 'DRINK' | 'TOILET' | 'CASHOUT' | 'LEAVE' | 'ANGRY';
@@ -68,7 +62,6 @@ export type PersonaId = 'LUMPEN' | 'STREET' | 'BUSINESS' | 'HIGH_ROLLER' | 'STAM
 export type CarpetId = 'VIOLET' | 'CRIMSON' | 'JADE' | 'GOLD';
 
 export type ModId = 'NEON' | 'NEAR_MISS' | 'CHERRY' | 'FREE_DRINK' | 'EXTRA_REEL' | 'VELVET';
-
 
 
 export interface Point { readonly x: number; readonly y: number; }
@@ -115,99 +108,23 @@ export interface Guest {
 
 }
 
-export interface PlayerJobState {
-
-  readonly jobId: PlayerJobId; readonly rivalId: RivalId; readonly stationId: string;
-
-  currentTask: PlayerJobTask | null; workDays: number; lastPaidDay: number;
-
-  /** Tag der zuletzt abgeschlossenen Schicht; 0 heisst: noch nie gearbeitet. */
-
-  lastWorkDay: number;
-
-  /** Aktuelle Karriere-Rangstufe (1 = Anfänger, 2+ = befördert). Teil des Save-Zustands. */
-  careerRank: number;
-
-  /** Leistungspunkte der letzten abgeschlossenen Schichten (0-100 je Schicht). */
-  performanceHistory: number[];
-
-  /** Gebäude-ID, auf die sich der Spieler beworben hat (null = keine Bewerbung offen). */
-  appliedTo: string | null;
-
-  /** Gebäude-ID, die dem Spieler ein Job-Angebot gemacht hat (null = kein Angebot). */
-  offeredBy: string | null;
-}
-
-export interface PlayerJobTask {
-
-  readonly stationId: string; readonly taskType: JobTaskType;
-
-  ticksElapsed: number; readonly ticksTotal: number;
-
-}
-
-export interface JobStationDef {
-
-  readonly id: string; readonly jobId: PlayerJobId; readonly x: number; readonly y: number;
-
-  readonly w: number; readonly h: number; readonly label: string; readonly description: string;
-
-}
-
-export interface ForeignFloorState {
-
-  readonly id: number; readonly rivalId: RivalId; readonly size: number;
-
-  zones: Zone[]; furniture: Furniture[];
-
-  readonly jobStations: readonly JobStationDef[];
-
-  /** Der fremde Floor traegt seinen eigenen Plan, nicht nur seine Groesse. */
-
-  layout?: LayoutState; template?: TemplateId; guests?: Guest[];
-
-  playerPosition: Point | null; playerPath: Point[]; playerPathIndex: number;
-
-  playerCarrying: string; day: number; lastPaidDay: number;
-
-}
-
 export type PropertyId = 'GEWERBERAUM' | 'KNEIPE' | 'SPIELSALON';
 
-/** Eigentum als Datensatz: welche Immobilie, zu welchem Preis, an welchem Tag. */
-
-export interface OwnedProperty {
-
-  readonly id: PropertyId;
-
-  readonly priceVC: VaCoinMicro;
-
-  readonly day: number;
-
-}
+export type { SiteId, SiteStatus, OwnedSite } from './sites';
+export type { PlayerJobState, PlayerJobTask, JobStationDef } from './job-types';
+export type { ForeignFloorState } from './floor-types';
+export type { Player } from './player-state';
 
 export interface PlayerNeeds {
 
   /** 0 = satt, 100 = dringend; der Tick hebt den Wert, Essen senkt ihn. */
-
   hunger: number;
 
   /** 0 = satt, 100 = dringend; Trinken senkt den Wert. */
-
   thirst: number;
 
 }
 
-export interface Player {
-  position: Point; path: Point[]; pathIndex: number; carrying: string; rpg: PlayerRpgState;
-  /** Persistente Spielerbeduerfnisse; Teil desselben Zustands wie Position und RPG. */
-  needs: PlayerNeeds;
-  job: PlayerJobState | null; barPurchased: boolean;
-  /** Erste Gewerbeimmobilie; null heisst: noch kein Eigentum. */
-  property: OwnedProperty | null;
-  /** Spieler-Fach-Skills (Learn-by-Doing); separat von den RPG-Attributen. */
-  skills: import('./player-skills').PlayerSkillState;
-}
 export interface ActivePenalty {
 
   readonly kind: 'UNSAFE_REPUTATION' | 'MOOD_SHOCK'; daysLeft: number;
@@ -330,7 +247,6 @@ export interface MailboxMessage {
 }
 
 export interface Visitor {
-
   readonly id: number; readonly name: string; readonly persona: PersonaId;
 
     /**
@@ -340,24 +256,17 @@ export interface Visitor {
    * alten Saves ohne Kennung.
    */
   residentNpcId?: string;
-
   visits: number; lastSeenTick: number; experience?: number;
 
   /** Strukturierte Erinnerungen aus abgeschlossenen Besuchen; begrenzt. */
-
   memories?: VisitorMemory[];
 
   /** Charisma und Intelligenz steuern Redseligkeit und Gewinnfilter. */
-
   charisma?: number; intellect?: number;
 
   /** Laster verstaerken Trait-Entwicklung (0..10). */
-
   vice?: number;
 
   /** Entwickelbare Eigenschaften; nur benannte Stadt-NPCs tragen sie. */
-
   traits?: TraitState[];
-
 }
-

@@ -62,7 +62,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
       skills: newPlayerSkills(),
       job: null,
       barPurchased: false,
-      property: null,
+      properties: [],
     },
     dirty: new Set<number>(),
     prices: { ...PRICES },

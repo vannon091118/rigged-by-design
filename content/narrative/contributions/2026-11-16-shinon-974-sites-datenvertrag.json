@@ -1,0 +1,21 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
+  "contributionId": "shinon-974-sites-datenvertrag",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Immobilie war ein Eintrag, jetzt ist sie ein Verzeichnis: jeder eigene Standort traegt eine stabile Site-ID, seinen Typ, seine Ort-Bindung und den Tag des Kaufs. Alte Saves mit genau einer Immobilie waechsen in das neue Schema hinein, statt einen Versionssprung zu erzwingen; die Buchung bleibt eine einzige, auf dem Hauskonto. Es gibt keinen zweiten Ledger und keine zweite Geometrie - die Zonen bleiben die einzige raeumliche Wahrheit.",
+  "directives": []
+}

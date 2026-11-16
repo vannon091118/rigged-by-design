@@ -44,7 +44,7 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
       {owned !== null ? (
         <>
           <p className="career-next">
-            {property.offers.find((offer) => offer.id === owned.id)?.label ?? owned.id} - dein erstes Gewerbe.
+            {property.offers.find((offer) => offer.id === owned.propertyId)?.label ?? owned.propertyId} - dein erstes Gewerbe.
             Betrieb und Ausbau laufen ueber das Hauskonto.
           </p>
           <div className="career-grid" aria-label="Immobilienbetrieb">

@@ -144,7 +144,7 @@ function achievementsOf(world: WorldState, record: FightRecord): readonly Career
     { id: 'DUELL_SERIE', label: `5 Duelle gewonnen`, unlocked: record.wins >= 5 },
     { id: 'AUFSTEIGER', label: 'Level 5 erreicht', unlocked: rpg.level >= 5 },
     { id: 'EIGENE_BUDE', label: 'Eigene Bude gekauft', unlocked: world.player.barPurchased },
-    { id: 'ERSTE_IMMOBILIE', label: 'Erste Immobilie gekauft', unlocked: world.player.property !== null },
+    { id: 'ERSTE_IMMOBILIE', label: 'Erste Immobilie gekauft', unlocked: world.player.properties.length > 0 },
     { id: 'ERSTE_VERLETZUNG', label: 'Erste Verletzung ueberstanden', unlocked: rpg.injuryTicks > 0 || rpg.hp < playerMaxHp(rpg) },
   ];
 }
