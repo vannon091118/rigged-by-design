@@ -2676,3 +2676,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Entscheidung.** `hookStatus()` trennt `reachable` von `configured` und fuehrt `authenticated`/`tokenSource` mit; die Zeile verschweigt weder Anonymitaet noch fehlende Hooks.
 
+## 2026-11-16 — Logs nur fuer rote Laeufe (Buffy)
+
+**Befund.** `--log` galt, aber `captureConsole` schrieb die Datei auch fuer gruene Laeufe; `precommit` und `ci:local` legten je Schritt ein Log an, sobald es Ausgabe gab. Der Vertrag sagte „nur Fehlschlaege", der Code nicht.
+
+**Entscheidung.** Der Flush kennt jetzt den Exit-Code: geschrieben wird nur bei ungleich 0, und die erste Zeile traegt einen Error Code (`ERR-4019`, wenn der Lauf keinen nennt). `precommit` und `ci:local` schreiben erst im Fehlerzweig und setzen den Code vor die Ausgabe. `gate-runner` tat das schon, wird aber mitgeprueft.
+
+**Nachweis.** `node scripts/sync-dependency-matrix.mjs --log` endet mit Exit 0 und hinterlaesst null Dateien; der Kindprozess-Test erzeugt bei Exit 1 eine Datei mit `[ERR-…]` in Zeile 1 und verdoppelt vorhandene Codes nicht.
+

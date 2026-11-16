@@ -42,7 +42,6 @@ function git(args) {
 function run(name, args = [], env = {}) {
   const withLog = logsEnabled();
   const log = join(ROOT, '.verify-cache', 'output', `precommit-${name.replace(/\.mjs$/, '')}.log`);
-  if (withLog) mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [script(name), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -51,12 +50,17 @@ function run(name, args = [], env = {}) {
     env: { ...process.env, ...env },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
-  if (withLog && output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`precommit: ${name} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
   if (result.status !== 0) {
+    // Nur rote Schritte bekommen ein Log, und nur mit --log; der Error Code
+    // steht als erste Zeile, auch wenn der Schritt selbst keinen nennt.
+    if (withLog && output.trim() !== '') {
+      mkdirSync(dirname(log), { recursive: true });
+      writeFileSync(log, /ERR-\d{4}/.test(output) ? output : `[ERR-4019] precommit ${name}\n${output}`, 'utf8');
+    }
     const tail = output.trim().split('\n').slice(-8).join('\n');
     console.error(`precommit: ${name}: ROT${withLog ? ` (Log: ${log})` : ''}${tail ? `\n${tail}` : ''}`);
     process.exit(result.status ?? 1);

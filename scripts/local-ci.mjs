@@ -44,7 +44,6 @@ const node = process.execPath;
 const step = (label, script, args = [], env = {}) => {
   const withLog = logsEnabled();
   const log = join(ROOT, '.verify-cache', 'output', `ci-${label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.log`);
-  if (withLog) mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [join(ROOT, 'scripts', script), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -53,12 +52,17 @@ const step = (label, script, args = [], env = {}) => {
     env: { ...process.env, ...env },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
-  if (withLog && output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`ci:local: ${label} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
   if (result.status !== 0) {
+    // Nur rote Schritte bekommen ein Log, und nur mit --log; der Error Code
+    // steht als erste Zeile, auch wenn der Schritt selbst keinen nennt.
+    if (withLog && output.trim() !== '') {
+      mkdirSync(dirname(log), { recursive: true });
+      writeFileSync(log, /ERR-\d{4}/.test(output) ? output : `[ERR-4019] ci:local ${label}\n${output}`, 'utf8');
+    }
     const tail = output.trim().split('\n').slice(-8).join('\n');
     console.error(`ci:local: ${label}: ROT${withLog ? ` (Log: ${log})` : ''}${tail ? `\n${tail}` : ''}`);
     process.exit(result.status ?? 1);

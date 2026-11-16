@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-logs-failure-only",
+  "claimId": "lane/governance/logs-failure-only",
+  "branch": "lane/governance/logs-failure-only",
+  "baseSha": "dc6a96fb9707ec7a96381abf28f7dc5b4e0bfae2",
+  "phase": "IMPLEMENTING",
+  "title": "Logs nur mit --log und nur fuer Fehler",
+  "goal": "Nur fehlerhafte Laeufe schreiben ein Log mit Error Code; gruene Laeufe hinterlassen keine Datei. Issue #1006.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

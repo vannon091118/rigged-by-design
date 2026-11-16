@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/logs-failure-only",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/logs-failure-only",
+  "baseSha": "dc6a96fb9707ec7a96381abf28f7dc5b4e0bfae2",
+  "issue": 1006,
+  "task": "Logs nur mit --log und nur fuer Fehler",
+  "pathAllowlist": [
+    "scripts/",
+    "docs/MECHANICS.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "src/core/governance/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "dc6a96fb9707ec7a96381abf28f7dc5b4e0bfae2"
+}
