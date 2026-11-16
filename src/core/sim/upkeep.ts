@@ -14,6 +14,7 @@ import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
 import { driftNeed, satisfyNeed } from './needs-core';
 import { dailyHousingCost } from './upkeep-costs';
+import { runBillingCycle } from './billing';
 
 export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (tickInDay(world.tick) !== 0) return;
@@ -27,9 +28,10 @@ export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (wages > 0) payOrBorrow(ledger, STAFF, wages, 'personal', world.tick);
   payOrBorrow(ledger, UTILITIES, rent, 'miete und strom', world.tick);
   const repaid = repayDebt(ledger, world.tick);
-  world.lastEvent = ledger.getBalance(HAUSKONTO) > ZERO_VC
+  const bill = runBillingCycle(world, ledger);
+  world.lastEvent = bill ?? (ledger.getBalance(HAUSKONTO) > ZERO_VC
     ? `Tag ${world.day}. Löhne und Miete bezahlt${repaid > ZERO_VC ? ', Schulden getilgt' : ''}.`
-    : `Tag ${world.day}. Löhne und Miete über Kredit bezahlt.`;
+    : `Tag ${world.day}. Löhne und Miete über Kredit bezahlt.`);
   // Lohn für Spieler-Jobs auf fremden Floors
   processForeignFloorDaily(world, ledger, prng, world.tick);
 }

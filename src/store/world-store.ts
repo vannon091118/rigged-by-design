@@ -8,7 +8,7 @@ import type { LayoutCommand } from '../core/sim/layout-commands';
 import { LayoutEditor } from './layout-editing';
 import { LayoutTransfer } from './layout-transfer';
 import { OwnPlay } from './own-play';
-import { remodel } from '../core/sim/remodel';
+import { switchTemplate } from './template-switch';
 import type { BuildId } from '../core/sim/offers';
 import type { CarpetId, ModId, Point, StaffRole, TemplateId, WorldState, PlayerJobId, RivalId } from '../core/sim/types';
 import type { RpgAttribute } from '../core/sim/player-rpg';
@@ -21,6 +21,7 @@ import { createWorld } from '../core/sim/templates';
 import { WorldTick } from './world-tick';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { esportEveningView, type EsportEveningView } from '../core/sim/esport-event';
+import { businessActiveWorkView, workBusinessTask, type BusinessWorkTaskId, type BusinessWorkView } from '../core/sim/business-active-work';
 import { PORTEMONNAIE } from '../core/sim/money';
 import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
 import { flushNarrativeCmd } from './narrative-commands';
@@ -107,12 +108,8 @@ class WorldStore {
   }
   setTemplate(template: TemplateId): void {
     if (template === this.#world.template) return;
-    try {
-      this.#world = remodel(this.#world, this.#ledger, template, this.#world.tick);
-      this.#notice = this.#world.lastEvent;
-    } catch (error) {
-      this.#notice = error instanceof Error ? error.message : 'Umbau fehlgeschlagen.';
-    }
+    const next = switchTemplate(this.#world, this.#ledger, template, this.#world.tick);
+    this.#world = next.world; this.#notice = next.notice;
     this.#layoutEditor.reset();
     this.#emit();
   }
@@ -136,6 +133,8 @@ class WorldStore {
   additionalBet(amountVC: number): boolean { let booked = false; this.#guard(() => { additionalBetCmd(this.#world, this.#ledger, amountVC); this.#notice = 'Zusatz-Einsatz gebucht.'; booked = true; }); return booked; }
   /** Der E-Sport-Abend liest denselben Zustand; kein zweiter Speicher und kein Save-Feld. */
   esportEvening(): EsportEveningView { return esportEveningView(this.#world, this.#ledger.getBalance(PORTEMONNAIE)); }
+  businessWork(): BusinessWorkView { return businessActiveWorkView(this.#world); }
+  workBusiness(taskId: BusinessWorkTaskId): void { this.#event(() => { this.#notice = workBusinessTask(this.#world, this.#ledger, this.#prng, taskId); }); }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); } playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) { flushNarrativeCmd(this.#world, this.#ledger); this.#emit(false); } return result; }
   city(cmd: CityCommand): void { this.#guard(() => { this.#notice = cityCmd(this.#world, this.#ledger, this.#prng, cmd); }); } auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); } exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); } planImport(raw: string): TransferReport { return planImportData(raw).report; }
   importGame(raw: string): TransferReport {

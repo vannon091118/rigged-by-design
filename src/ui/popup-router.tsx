@@ -10,9 +10,9 @@ import { findDialogueScript } from '../core/sim/narrative/dialogue/select';
 import { DialoguePopup } from './dialogue-popup';
 import { NpcDialogue } from './npc-dialogue';
 import { dialogIdFromExecution } from './dialog-request';
-import { GuestContextPanel } from './guest-context-panel';
-import { GuestPopup } from './guest-popup';
+
 import { LookPopup } from './look-popup';
+import { GuestsRoute } from './popup-router-guests';
 import { NarrativePopup } from './narrative-popup';
 import { GamesRoute, MachineRoute } from './popup-router-activity';
 import { ForeignFloorRoute, ForeignMapRoute } from './popup-router-travel';
@@ -36,39 +36,9 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
   if (popup === null) return null;
 
   if (popup.kind === 'guests') {
-    // Ein NPC-Klick oeffnet das Objektpanel am Ziel. Die volle Liste bleibt
-    // eine bewusste Uebersicht und behaelt die Auswahl.
-    if (popup.guestId !== null && !popup.overview) {
-      return (
-        <GuestContextPanel
-          view={view}
-          guestId={popup.guestId}
-          anchor={anchor}
-          project={project}
-          onClose={onClose}
-          onOpenOverview={(id) => onOpen({ kind: 'guests', guestId: id, overview: true })}
-          onPay={(id) => worldStore.pay(id)}
-          onServe={(id) => worldStore.serveDrink(id)}
-          onCalm={(id) => worldStore.calm(id)}
-          onTalk={(id) => worldStore.talk(id)}
-          onFight={(id) => worldStore.fightBrawl(id)}
-          onProfile={(visitorId) => onOpen({ kind: 'narrative', visitorId })}
-          onDialogue={(id) => onOpen({ kind: 'dialogue', guestId: id })}
-        />
-      );
-    }
     return (
-      <GuestPopup
-        view={view}
-        selectedId={popup.guestId}
-        onClose={onClose}
-        onPay={(id) => worldStore.pay(id)}
-        onServe={(id) => worldStore.serveDrink(id)}
-        onCalm={(id) => worldStore.calm(id)}
-        onTalk={(id) => worldStore.talk(id)}
-        onFight={(id) => worldStore.fightBrawl(id)}
-        onProfile={(visitorId) => onOpen({ kind: 'narrative', visitorId })}
-      />
+      <GuestsRoute view={view} guestId={popup.guestId} overview={popup.overview}
+        anchor={anchor} project={project} onClose={onClose} onOpen={onOpen} />
     );
   }
 

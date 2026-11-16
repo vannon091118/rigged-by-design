@@ -26,6 +26,8 @@ export const EXTERNAL_WORK = 'EXTERNAL_WORK';
 export const PLAYER_CASH = 'PLAYER_CASH';
 /** Gebuchte Verbindlichkeit: offener Gewinn, den das Hauskonto gerade nicht deckt. */
 export const DEBT_ACCOUNT = 'HAUS_SCHULDEN';
+/** Bankkredit des Spielers als Verbindlichkeit; der Saldo ist der Kreditstand. */
+export const CREDIT_ACCOUNT = 'BANK_KREDIT';
 
 /** Betriebsreserve, die beim Abheben im Hauskonto bleibt. */
 export const HOUSE_FLOAT = fromVC(25);

@@ -4,6 +4,7 @@ import {
   type LookAccessory, type PlayerLook,
 } from '../core/sim/player-look';
 import type { PropertyId } from '../core/sim/types';
+import { worldStore } from '../store/use-world-store';
 import type { GameView } from '../store/types';
 import { CareerSection } from './career-section';
 import { PopupShell } from './popup-shell';
@@ -20,6 +21,7 @@ interface Props {
   readonly onRenovate?: () => void;
   /** Wartung eines Automaten der eigenen Flaeche. */
   readonly onMaintain?: (itemId: number) => void;
+
 }
 
 function Swatches(props: {
@@ -73,7 +75,7 @@ export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, o
       <div className="look-layout">
         <LookPreview look={view.look} />
         <div className="look-controls">
-          <p className="hint">Optik bleibt Optik. Deine Werte darunter kommen aus dem Spielzustand.</p>
+          <p className="hint">Farben bleiben Optik. Kleidung wirkt ueber Marke und Auftreten, nie als pauschaler Bonus.</p>
           <Swatches label="Haut" colors={LOOK_SKINS} active={view.look.skin} onPick={(skin) => onLook({ skin })} />
           <Swatches label="Haare" colors={LOOK_HAIRS} active={view.look.hair} onPick={(hair) => onLook({ hair })} />
           <Swatches label="Outfit" colors={LOOK_OUTFITS} active={view.look.outfit} onPick={(outfit) => onLook({ outfit })} />
@@ -91,6 +93,37 @@ export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, o
                   {entry.name}
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="look-row">
+            <span>Kleiderschrank</span>
+            <div className="look-options">
+              {view.clothing.items.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`btn small${item.worn ? ' primary' : ' ghost'}`}
+                  aria-pressed={item.worn}
+                  title={item.note}
+                  onClick={() => worldStore.city(item.owned
+                    ? { kind: 'wearClothing', clothingId: item.id }
+                    : { kind: 'buyClothing', clothingId: item.id })}
+                >
+                  {item.label} · {item.brand} · {item.owned ? (item.worn ? 'an' : 'tragen') : `Kaufen (${item.priceVC})`}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="hint">{view.clothing.hint}</p>
+          <div className="look-row">
+            <span>Bank</span>
+            <div className="look-options">
+              <button type="button" className="btn small ghost"
+                onClick={() => worldStore.city({ kind: 'takeCredit', amountVC: 50 })}>Kredit 50</button>
+              <button type="button" className="btn small ghost"
+                onClick={() => worldStore.city({ kind: 'repayCredit', amountVC: 50 })}>Tilgen 50</button>
+              <button type="button" className="btn small ghost"
+                onClick={() => worldStore.city({ kind: 'deferBill' })}>Rechnung stunden</button>
             </div>
           </div>
         </div>

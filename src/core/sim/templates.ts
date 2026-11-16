@@ -60,6 +60,8 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
       needs: createPlayerNeeds(),
       rpg: newPlayerRpg(),
       skills: newPlayerSkills(),
+      clothing: { owned: [], wornOutfit: null, wornAccessory: null },
+      billing: { lastBilledDay: 0, overdueWeeks: 0 },
       job: null,
       barPurchased: false,
       property: null,

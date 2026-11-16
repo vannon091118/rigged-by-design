@@ -14,6 +14,8 @@ import { settleFightBets } from '../core/sim/fight-bet-settle';
 import type { FightBetPick } from '../core/sim/fight-bet-slips';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
 import { buyProperty } from '../core/sim/property';
+import { buyClothing, wearClothing, type ClothingId } from '../core/sim/clothing';
+import { deferBill, repayCredit, takeCredit } from '../core/sim/billing';
 import { renovate } from '../core/sim/renovation';
 import { maintainMachine } from '../core/sim/machine-hall';
 import type { EncounterAction } from '../core/sim/city-types';
@@ -88,6 +90,11 @@ export type CityCommand =
   | { readonly kind: 'esportMatch'; readonly pick: EsportPick }
   | { readonly kind: 'esportJoin'; readonly side: EsportSide }
   | { readonly kind: 'esportPairing'; readonly homeId: string; readonly awayId: string }
+  | { readonly kind: 'buyClothing'; readonly clothingId: ClothingId }
+  | { readonly kind: 'wearClothing'; readonly clothingId: ClothingId }
+  | { readonly kind: 'takeCredit'; readonly amountVC: number }
+  | { readonly kind: 'repayCredit'; readonly amountVC: number }
+  | { readonly kind: 'deferBill' }
   | { readonly kind: 'esportParticipate' }
   | { readonly kind: 'arenaBuild' }
   | { readonly kind: 'fightBet'; readonly pick: FightBetPick; readonly stakeVC: number }
@@ -96,6 +103,11 @@ export type CityCommand =
   | { readonly kind: 'maintainMachine'; readonly itemId: number };
 
 export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: CityCommand): string {
+  if (cmd.kind === 'buyClothing') return buyClothing(world, ledger, cmd.clothingId, world.tick);
+  if (cmd.kind === 'wearClothing') return wearClothing(world, cmd.clothingId);
+  if (cmd.kind === 'takeCredit') return takeCredit(world, ledger, cmd.amountVC, world.tick);
+  if (cmd.kind === 'repayCredit') return repayCredit(world, ledger, cmd.amountVC, world.tick);
+  if (cmd.kind === 'deferBill') return deferBill(world, ledger, world.tick);
   // Jeder Stadt-Befehl raeumt zuerst faellige Scheine ab; der Aufruf ist idempotent.
   settleFightBets(world, ledger);
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);

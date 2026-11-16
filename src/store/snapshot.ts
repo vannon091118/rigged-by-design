@@ -1,13 +1,14 @@
 /** Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. */
 import type { Ledger } from '../core/economy/ledger';
-import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
-import { DEBT_ACCOUNT, fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
+import { PLAYER_CASH, PORTEMONNAIE } from '../core/sim/money';
 import { duelPreview, type DuelPreview } from '../core/sim/duel';
 import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
 import { playerCareer } from '../core/sim/player-career';
+import { clothingView } from '../core/sim/clothing';
+import { guestMoneyBlock, ledgerBlock } from './view-blocks';
 import { companyStatus } from '../core/sim/progression';
 import { renovationView } from '../core/sim/renovation';
 import { machineHallView } from '../core/sim/machine-hall';
@@ -103,6 +104,7 @@ function worldSnapshot(world: WorldState) {
     archive: archiveSnapshot(world.archive),
     fightFx: world.fightFx ? { ...world.fightFx } : null,
     look: world.look,
+    clothing: clothingView(world),
     plinko: world.plinko,
     plinkoMode: world.plinkoMode,
     totalPlinkoDrops: world.totalPlinkoDrops,
@@ -127,21 +129,12 @@ function worldSnapshot(world: WorldState) {
 }
 
 export function buildView(world: WorldState, ledger: Ledger, notice: string): GameView {
-  let pending: VaCoinMicro = ZERO_VC;
-  let mood = 0;
   const duels: Record<number, DuelPreview> = {};
   for (const dispute of world.disputes) {
     const preview = duelPreview(world, dispute);
     if (preview) duels[dispute.id] = preview;
   }
-  const guestMoney: Record<number, { wallet: VaCoinMicro; pending: VaCoinMicro; fiat: VaCoinMicro }> = {};
-  for (const guest of world.guests) {
-    const wallet = ledger.getBalance(guestAccount(guest.id));
-    const open = ledger.getBalance(pendingAccount(guest.id));
-    guestMoney[guest.id] = { wallet, pending: open, fiat: ledger.getBalance(fiatAccount(guest.id)) };
-    pending = addVC(pending, open);
-    mood += guest.mood;
-  }
+  const { guestMoney, pending, mood } = guestMoneyBlock(world, ledger);
   return {
     ...worldSnapshot(world),
     // Die Stadt ist abgeleitet: kein zweiter Zustand, keine Rechnung in React.
@@ -156,34 +149,25 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     // Nur ein Security vor Ort beendet den Streit; die UI folgt derselben Aussage.
     disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardHandling(world, dispute)])),
     duels,
-    house: ledger.getBalance(HAUSKONTO),
-    // Die Schuld ist der negative Saldo der Verbindlichkeit, nie ein zweiter Zaehler.
-    debt: Math.max(0, -ledger.getBalance(DEBT_ACCOUNT)) as VaCoinMicro,
+    ...ledgerBlock(ledger),
     // Agent 09: der Zustand der Immobilie kommt aus Belegen plus Material und Konto.
     renovation: renovationView(world, ledger),
     // Agent 10: die Halle ist die Summe der Automaten auf der eigenen Flaeche.
     machineHall: machineHallView(world, ledger),
     // Agent 11: Arbeitsqualitaet der Floor-Rollen aus den vorhandenen Skillstufen.
     floorWork: floorWorkView(world),
-    wallet: ledger.getBalance(PORTEMONNAIE),
-    playerCash: ledger.getBalance(PLAYER_CASH),
     // Agent 06: dieselbe Karriere-Sicht fuer Charakterfenster und Tests, kein zweiter Zaehler.
     career: playerCareer(world, ledger.getBalance(PORTEMONNAIE), ledger.getBalance(PLAYER_CASH)),
     // Agent 22: Phasen und Historie der einen Veranstaltungsinstanz, kein zweiter Kalender.
     venue: venueView(world),
     // Smartphone: reine Ableitungen aus Archiv, Erinnerungen und Katalog (Hot-Zone-neutral).
     ...smartphoneSnapshot(world, ledger.getBalance(PORTEMONNAIE)),
-    desk: ledger.getBalance(WECHSELKASSE),
     pending,
     guestMoney,
-    mood: world.guests.length ? Math.round(mood / world.guests.length) : 0,
+    mood,
     reputation: Math.round(reputation(world)),
     // Dieselbe Stufe wie Nachfrage und Kaufsperre: eine Wahrheit, eine Anzeige.
     company: companyStatus(world, ledger),
-    ledgerOk: ledger.verifyIncremental(),
-    ledgerEntries: ledger.entryCount,
-    ledgerLastSeq: ledger.entryCount - 1,
-    ledgerCirculating: ledger.circulating,
     notice,
   };
 }

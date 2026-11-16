@@ -7,6 +7,7 @@ import { maybeStartBrawl } from './disputes';
 import { becomeAngry } from './guest-service';
 import type { WorldState } from './types';
 import { guestById } from './world';
+import { styleBonus } from './clothing';
 import { INTERACTION_RADII, isInRange } from './interaction';
 
 const TALK_COOLDOWN = 60;
@@ -18,13 +19,16 @@ interface TalkResult {
   readonly chance: number;
 }
 
-/** Erfolgschance in Prozent-Punkten (0..100): Basis 40, +10 je Charisma-Stufe, Laune zaehlt mit. */
+/**
+ * Erfolgschance in Prozent-Punkten (0..100): Basis 40, +10 je Charisma-Stufe, Laune
+ * zaehlt mit, das getragene Auftreten hoechstens mit 10 Punkten (siehe `clothing`).
+ */
 export function talkChance(world: WorldState, guestId: number): number {
   const guest = guestById(world, guestId);
   if (!guest) return 0;
   const base = 40 + world.player.rpg.charismaLevel * 10;
   const moodBonus = Math.round((guest.mood - 50) / 5);
-  return Math.max(5, Math.min(95, base + moodBonus));
+  return Math.max(5, Math.min(95, base + moodBonus + styleBonus(world)));
 }
 
 /** Zieht den Ausgang aus einer Verteilung; die angezeigte Chance ist genau diese. */

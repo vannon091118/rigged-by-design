@@ -8,7 +8,6 @@ import type { SlotProfile } from '../games/slot-profile';
 
 import type { BuildId } from './offers';
 
-import type { PlayerRpgState } from './player-rpg';
 
 import type { VisitorMemory } from './narrative/types';
 
@@ -16,6 +15,9 @@ import type { TraitState } from './city-types';
 
 import type { LayoutState, LayoutZone, ZoneKind } from './layout-types';
 import type { StaffQualification } from './staff-qualification';
+import type { JobStationDef } from './player-state';
+
+export type { JobStationDef, OwnedProperty, Player, PlayerJobState, PlayerJobTask, PlayerNeeds } from './player-state';
 
 
 
@@ -115,45 +117,6 @@ export interface Guest {
 
 }
 
-export interface PlayerJobState {
-
-  readonly jobId: PlayerJobId; readonly rivalId: RivalId; readonly stationId: string;
-
-  currentTask: PlayerJobTask | null; workDays: number; lastPaidDay: number;
-
-  /** Tag der zuletzt abgeschlossenen Schicht; 0 heisst: noch nie gearbeitet. */
-
-  lastWorkDay: number;
-
-  /** Aktuelle Karriere-Rangstufe (1 = Anfänger, 2+ = befördert). Teil des Save-Zustands. */
-  careerRank: number;
-
-  /** Leistungspunkte der letzten abgeschlossenen Schichten (0-100 je Schicht). */
-  performanceHistory: number[];
-
-  /** Gebäude-ID, auf die sich der Spieler beworben hat (null = keine Bewerbung offen). */
-  appliedTo: string | null;
-
-  /** Gebäude-ID, die dem Spieler ein Job-Angebot gemacht hat (null = kein Angebot). */
-  offeredBy: string | null;
-}
-
-export interface PlayerJobTask {
-
-  readonly stationId: string; readonly taskType: JobTaskType;
-
-  ticksElapsed: number; readonly ticksTotal: number;
-
-}
-
-export interface JobStationDef {
-
-  readonly id: string; readonly jobId: PlayerJobId; readonly x: number; readonly y: number;
-
-  readonly w: number; readonly h: number; readonly label: string; readonly description: string;
-
-}
-
 export interface ForeignFloorState {
 
   readonly id: number; readonly rivalId: RivalId; readonly size: number;
@@ -176,38 +139,6 @@ export type PropertyId = 'GEWERBERAUM' | 'KNEIPE' | 'SPIELSALON';
 
 /** Eigentum als Datensatz: welche Immobilie, zu welchem Preis, an welchem Tag. */
 
-export interface OwnedProperty {
-
-  readonly id: PropertyId;
-
-  readonly priceVC: VaCoinMicro;
-
-  readonly day: number;
-
-}
-
-export interface PlayerNeeds {
-
-  /** 0 = satt, 100 = dringend; der Tick hebt den Wert, Essen senkt ihn. */
-
-  hunger: number;
-
-  /** 0 = satt, 100 = dringend; Trinken senkt den Wert. */
-
-  thirst: number;
-
-}
-
-export interface Player {
-  position: Point; path: Point[]; pathIndex: number; carrying: string; rpg: PlayerRpgState;
-  /** Persistente Spielerbeduerfnisse; Teil desselben Zustands wie Position und RPG. */
-  needs: PlayerNeeds;
-  job: PlayerJobState | null; barPurchased: boolean;
-  /** Erste Gewerbeimmobilie; null heisst: noch kein Eigentum. */
-  property: OwnedProperty | null;
-  /** Spieler-Fach-Skills (Learn-by-Doing); separat von den RPG-Attributen. */
-  skills: import('./player-skills').PlayerSkillState;
-}
 export interface ActivePenalty {
 
   readonly kind: 'UNSAFE_REPUTATION' | 'MOOD_SHOCK'; daysLeft: number;

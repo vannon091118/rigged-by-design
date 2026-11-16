@@ -4,6 +4,7 @@ import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Pla
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlayerCareer } from '../core/sim/player-career';
+import type { ClothingView } from '../core/sim/clothing';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
@@ -106,6 +107,10 @@ export interface GameView {
   /** Kurzlebige Kampf-Rueckmeldung fuer den Floor. */
   readonly fightFx: FightFx | null;
   readonly look: PlayerLook;
+  /** Kleiderschrank: Preis, Besitz, Trage-Slots und der gedeckelte Auftrittsbonus. */
+  readonly clothing: ClothingView;
+  /** Offener Bankkredit aus dem Kreditkonto. */
+  readonly credit: VaCoinMicro;
   readonly plinko: PlinkoConfig;
   readonly plinkoMode: PlinkoMode;
   readonly totalPlinkoDrops: number;

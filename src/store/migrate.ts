@@ -16,6 +16,8 @@ import { normalizeRivalMinds } from '../core/sim/rival-ai/minds';
 import type { ActivePenalty, CarpetId, Crate, DemandTier, Dispute, FightFx, Furniture, Guest, Mop, Player, PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import type { DemandEvent } from './legacy-demand';
 import { hydrateJobState } from '../core/sim/player-jobs';
+import { normalizeClothing } from '../core/sim/clothing';
+import { normalizeBilling } from '../core/sim/billing';
 import { hydrateProperty } from '../core/sim/property';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { interiorDef } from '../core/sim/interior-layouts';
@@ -111,7 +113,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   });
   const legacyFiat: { id: number; amount: VaCoinMicro }[] = [];
   world.guests = saved.guests.map((guest) => { const { fiat, ...rest } = guest; if (fiat && fiat > ZERO_VC) legacyFiat.push({ id: guest.id, amount: fiat }); return { ...rest, thirst: rest.thirst ?? 20, bladder: rest.bladder ?? 10, disputeId: rest.disputeId ?? null, path: [...(guest.path ?? [])] }; });
-  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], needs: normalizePlayerNeeds(saved.player?.needs), rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null, property: hydrateProperty(saved.player?.property) };
+  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], needs: normalizePlayerNeeds(saved.player?.needs), rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null, property: hydrateProperty(saved.player?.property), clothing: normalizeClothing(saved.player?.clothing), billing: normalizeBilling(saved.player?.billing) };
   world.dirty = new Set(saved.dirty ?? []); world.prices = { ...world.prices, ...(saved.prices ?? {}) };
   const legacyGuardHired = restoreStaff(world, saved.staff);
   world.tick = saved.tick ?? 0; world.day = saved.day ?? 1; world.nextGuestId = saved.nextGuestId ?? 1;
