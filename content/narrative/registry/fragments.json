@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4fb6c11bf8cd5b68a84baa62fb6e8bf0ddc92065b3e231d02cd13d157b30dff9",
+  "contentHash": "sha256:7dd00120b3530b7384786fafef837a04b553e136c951fc28b9a44ced5b724186",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9700,6 +9700,28 @@
       "text": "Der Schlüssel zum Hinterhof hängt am Haken, aber das Schloss wurde längst ausgetauscht. Der Haken ist die einzige Erinnerung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
+    },
+    {
+      "contributionId": "governance-freeze0-teardown",
+      "turnId": "2026-11-16T05:45Z-governance-freeze0-teardown",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Warteschlange an der Wand ist abgehängt, die vier Aushänge daneben auch. Wer vor der Tür steht, wird jetzt gefragt, was er gelesen hat, und nicht, welches Kürzel er trägt. Antwortet das Brett nicht, notiert der Beobachter „unbekannt“ statt einer Null.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-freeze0-teardown.json"
     },
     {
       "contributionId": "governance-image-diff-test",

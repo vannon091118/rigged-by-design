@@ -106,7 +106,7 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - **CI:** 16 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 11 Light-Gates, 12 mit `affected`. `verify:all` = 16 Required-Gates plus Audit (17 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** vier Dateien, ausschließlich Repository-Verwaltung: `Ensure PR`, `PR Cleanup`, `Promote` (manuell) und `Board Overview` (#943, pflegt die Übersicht an #677). Kein Workflow führt Tests, Gates, Builds oder APKs aus.
+- **Workflows:** keine. FREEZE-0 hat die vier Repository-Verwaltungs-Workflows entfernt; PR-Anlage, Branch-Cleanup, Board-Übersicht und Merge liegen beim Maintainer-Lauf auf der Maschine.
 - **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten.
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
@@ -116,7 +116,6 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 | --- | --- |
 | `pnpm run agent:start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
 | `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
-| `pnpm run merge:queue -- --check` | Merge-Queue (#913): Plan-Hash, Sessions, ACKs und Reihenfolge; Exit 1 sperrt den Merge und nennt den auflösenden Befehl. Leere Queue ist `IDLE` (Exit 0) und nennt den Board-Check, nie ein ACK. |
 | `pnpm run webhook:receive --payload <datei> --event <name>` | Prüft eine aufgezeichnete GitHub-Delivery per HMAC und liefert dieselbe nächste Aktion wie `agent:start`; `--serve` nimmt echtes `POST /webhook` an (202/401), `--live` liest Board und offene PRs. |
 | `pnpm run webhook:install --check` | Ist-Stand der Repo-Hooks (`active`, Events, Ziel-URL). Anlegen braucht `administration: write` (klassisch `admin:repo_hook`) und eine öffentliche HTTPS-URL; das Secret kommt aus `RBD_WEBHOOK_SECRET`. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |

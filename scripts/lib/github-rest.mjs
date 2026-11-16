@@ -8,7 +8,10 @@
  * Aufrufer dieselbe Form bekommen wie von `gh --json`.
  *
  * Bevorzugt wird immer `gh` (kennt Auth und Scopes selbst); REST ist der
- * Fallback. Ohne Token bleibt der Zustand `unknown` — fail-closed, kein Raten.
+ * Fallback. REST liest ohne Token anonym (60 Anfragen/Stunde); ein Token
+ * erhoeht nur das Limit. Ein Fehler ist nie eine leere Liste: der Zustand
+ * heisst dann `UNKNOWN_RATE_LIMIT`, `UNKNOWN_AUTH`, `UNKNOWN_NETWORK` oder
+ * `UNKNOWN_RESPONSE` — fail-closed, kein Raten.
  */
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -27,9 +30,11 @@ export function githubTokenSource(env = process.env) {
   return resolution.ok ? resolution.source : null;
 }
 
-/** Ein REST-Aufruf, synchron ueber den Helferprozess. */
+/**
+ * Ein REST-Aufruf, synchron ueber den Helferprozess. Ohne Token anonym.
+ * Ein Fehlschlag traegt einen expliziten `state` — nie eine stille Null-Liste.
+ */
 export function rest(kind, params = {}) {
-  if (!githubToken()) return { ok: false, error: 'kein Token (GH_TOKEN oder GITHUB_TOKEN)' };
   const helper = process.env.RBD_REST_SCRIPT || HELPER;
   try {
     const output = execFileSync(process.execPath, [helper, kind, JSON.stringify(params)], {
@@ -40,7 +45,12 @@ export function rest(kind, params = {}) {
     return { ok: true, data: JSON.parse(output) };
   } catch (error) {
     const stderr = String(error?.stderr ?? '').trim().split('\n')[0];
-    return { ok: false, error: stderr || (error instanceof Error ? error.message.split('\n')[0] : 'unbekannt') };
+    const known = /^(UNKNOWN_[A-Z_]+)/.exec(stderr)?.[1];
+    return {
+      ok: false,
+      state: known ?? 'UNKNOWN_NETWORK',
+      error: stderr || (error instanceof Error ? error.message.split('\n')[0] : 'unbekannt'),
+    };
   }
 }
 

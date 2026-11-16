@@ -61,48 +61,7 @@ Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein G
 
 ## Workflows
 
-Stand 2026-11-16 liegen vier Workflow-Dateien in `.github/workflows/`; keine führt Tests, Gates, Builds oder APKs aus:
-
-| Workflow | Status | Aufgabe |
-| --- | --- | --- |
-| `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
-| `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
-| `promote.yml` | **manuell** | Status anzeigen oder Notausgang `integration`; kein Auto-Merge |
-| `board-overview.yml` | aktiv | pflegt **einen** markierten Übersichtskommentar am Board-Issue #677 (#943) |
-
-### Board-Overview (#943)
-
-Der Workflow `board-overview.yml` läuft auf Board-Ereignissen (`issues`, `issue_comment`, `pull_request`), manuell und über `repository_dispatch: board-refresh`. Er checkt **nur `main`** aus — PR-Code läuft in diesem Job nie, weil er `issues: write` hält — erzeugt die Übersicht mit `scripts/board-overview.mjs` und aktualisiert genau einen Kommentar mit dem Marker `<!-- rbd:board-overview -->` an Issue #677.
-
-Die Übersicht nennt je Issue Priorität, Phase, Claim-Lage, offenen PR, nächsten Akteur und die Begründung. Sie ersetzt die **Board-Hälfte** von `pretask` (Issues lesen, Reihenfolge, Claims, PR-Lage) und ist deterministisch: die Zeit kommt aus `--at`/`RBD_NOW`, nie aus einer Uhr im Skript. Ein nicht lesbares Board endet mit Exit 2.
-
-Lokal, ohne Server:
-
-```bash
-pnpm run board:overview                        # Markdown für den Kommentar
-pnpm run board:overview -- --json --limit 20   # maschinenlesbar
-node scripts/install-webhook.mjs --check        # Ist-Stand der Repo-Webhooks
-```
-
-Ein echter Repo-Webhook braucht eine erreichbare Empfänger-URL (`scripts/install-webhook.mjs --url … --secret-file …`, idempotent per `config.url`). Ohne Empfänger bleibt `repository_dispatch` der Weg: ein POST auf `/repos/<owner>/<repo>/dispatches` mit `{"event_type":"board-refresh"}` löst denselben Lauf aus.
-
-**Nicht ersetzt** werden die lokalen Gates: Arbeitsbaum, Worktree-Isolation, Laufbudget, Scope gegen die Claim-Allowlist und der `origin/main`-Fetch bleiben bei `pnpm run agent:pretask --json`.
-
-Entfernt wurden `ci-verify.yml`, `long-checks.yml`, `auto-version-release.yml`, `build-apk.yml`, `pr-watcher.yml` und `auto-resolve.yml`: Ihre Arbeit ist vollständig lokal (`pnpm run ci:local`, `pnpm run test:mechanics`, `pnpm run android:apk`, `pnpm run turn:finish`). Ein zweiter Testpfad existiert nicht mehr.
-
-Mit den Workflows sind auch ihre Skripte entfernt: `ci-plan.mjs`, `gate-matrix.mjs`, `ci-long-checks.mjs`, `pr-watcher.mjs`, `auto-resolve.mjs` und der `merge-queue`-Client. Ihre Aufgaben sind jetzt erreichbar: lange Nachweise über `pnpm run test:mechanics`, APK-Relevanz über `pnpm run release:impact`, Tag und Release über `pnpm run release:tag`. `agent:start` meldet jede Mechanik ohne Ausführungspfad als Befund.
-
-### Lokal statt Cloud
-
-```bash
-pnpm run ci:local            # Struktur, Testqualität, betroffene Tests, Build
-pnpm run ci:local --profile=full
-pnpm run ci:local --profile=release
-pnpm run ci:local --profile=mechanics
-pnpm run ci:local --profile=apk
-pnpm run verify:all          # vollständiger Required-Nachweis ohne Mechanik
-pnpm run verify:long         # alias auf test:mechanics
-```
+Es gibt keine Workflows mehr (FREEZE-0, Abschnitt 7.2). PR-Eröffnung, Branch-Cleanup, Issue-Closeout, Board-Übersicht und Merge sind Aufgaben des Maintainer-Laufs und der Worker-Prozesse; die Übersicht erzeugt `node scripts/board-overview.mjs --markdown` bei Bedarf aus Live-Daten. Kein Cloud-Pfad führt Tests, Gates, Builds oder APKs aus.
 
 ## Branch-Schutz
 

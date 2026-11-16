@@ -38,15 +38,6 @@ import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
 import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
 import { hookStatus } from './lib/webhook-status.mjs';
-import {
-  MERGE_ISSUE,
-  activeSessions,
-  buildQueue,
-  latestPlan,
-  nextAction,
-  parseMergeEvents,
-  publishCommand,
-} from './lib/merge-queue.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -294,7 +285,7 @@ if (wantedIssue) {
   notes.push('Kein freies Issue in den gezeigten Zeilen; alle Kandidaten sind besetzt oder warten auf Review.');
 }
 
-// --- 3b. Pretask und Merge-Queue -----------------------------------------
+// --- 3b. Pretask ---------------------------------------------------------
 /**
  * Pretask gehoert in diesen Lauf: ein Befehl muss reichen. Der Aufruf liefert
  * denselben Vertrag wie `agent:pretask`; scheitert er, bleibt der Bericht
@@ -345,40 +336,11 @@ function pretaskVerdict() {
   }
 }
 
-const queueSteps = [];
 const pretask = board.ok ? pretaskVerdict() : { ran: false, reason: 'Board nicht lesbar: pretask uebersprungen' };
 if (pretask.ran) {
   for (const blocker of pretask.blockers ?? []) blockers.push(`${withResolution(blocker)} (aus agent:pretask)`);
 } else if (pretask.reason) {
   warnings.push(pretask.reason);
-}
-
-// Merge-Queue (#913): die Reihenfolge ist Teil des Starts, kein Extra-Befehl.
-let mergeQueue = null;
-if (board.ok) {
-  const thread = rest('issue-view', { number: MERGE_ISSUE, repo });
-  if (!thread.ok) {
-    mergeQueue = { ok: false, issue: MERGE_ISSUE, plan: null, sessions: [], queue: [], nextCommand: publishCommand(), error: thread.error };
-    warnings.push(`Merge-Queue #${MERGE_ISSUE} nicht lesbar (${thread.error}): Merge bleibt gesperrt (fail-closed)`);
-  } else {
-    const events = parseMergeEvents(thread.data?.comments ?? []);
-    const plan = latestPlan(events);
-    const mainSha = git(['rev-parse', 'origin/main']);
-    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha });
-    // Ein Zustand, ein Befehl: auch die leere Queue hat genau eine Aktion.
-    const action = nextAction({ plan, queue, events, session: agent, role: 'worker', mainSha });
-    mergeQueue = {
-      ok: queue.some((row) => row.status === 'READY'),
-      issue: MERGE_ISSUE,
-      plan: plan ? { revision: plan.revision, hash: plan.hash, mainSha: plan.mainSha, tampered: plan.tampered } : null,
-      sessions: activeSessions(events).map((entry) => entry.session),
-      queue,
-      state: action.state,
-      text: action.text,
-      nextCommand: action.command,
-    };
-    if (action.state !== 'READY') queueSteps.push(`Merge-Queue ${action.state}: ${action.text} — \`${action.command}\``);
-  }
 }
 
 // --- 3c. Webhook: derselbe Ablauf, ausgeloest von GitHub -----------------
@@ -541,7 +503,6 @@ if (wantDispatch) {
 const claimBody = () =>
   `CLAIM [A1] ${agent} ${at} scope=<pfade> plan=<ein Satz, was dieses Issue erledigt>`;
 const steps = [];
-steps.push(...queueSteps);
 if (next) {
   steps.push(`CLAIM im Issue setzen: gh issue comment ${next.number} --body "${claimBody()}"`);
   steps.push(`Lane-Branch: git switch -c fix/${next.number}-<slug> origin/main`);
@@ -576,7 +537,6 @@ if (asJson) {
       orphan: mechanics.orphan,
     },
     pretask,
-    mergeQueue,
     webhook: {
       ok: webhook.ok,
       active: webhook.active,
@@ -591,7 +551,7 @@ if (asJson) {
     blockers,
     warnings,
     notes,
-    nextSteps: brief ? [mergeQueue?.nextCommand].filter(Boolean) : steps,
+    nextSteps: brief ? steps.slice(0, 1) : steps,
     details: 'vollstaendig mit --json',
   };
   console.log(JSON.stringify(payload, null, 2));
@@ -624,13 +584,6 @@ if (asJson) {
     ? `  aktiv ${webhook.active} · Events ${webhook.events.join(',')} · Ziel ${webhook.url}`
     : `  ${webhook.step || `nicht lesbar (${webhook.error})`}`);
   console.log('');
-  console.log(`=== Merge-Queue (#${MERGE_ISSUE}) ===`);
-  console.log(mergeQueue
-    ? `  Plan ${mergeQueue.plan ? `${mergeQueue.plan.revision} (${mergeQueue.plan.hash})` : 'fehlt'} · Sessions ${mergeQueue.sessions.length} · READY ${mergeQueue.queue.filter((row) => row.status === 'READY').length}`
-    : '  nicht gelesen: Board nicht lesbar');
-  for (const row of mergeQueue?.queue ?? []) console.log(`  ${row.status} #${row.number} (${row.position || '—'}): ${cell(row.reasons.join(' · '))}`);
-  console.log(`  Naechster Befehl: ${mergeQueue?.nextCommand ?? publishCommand()}`);
-  console.log('');
   console.log('=== Mechaniken ===');
   for (const entry of mechanics.entries) console.log(`  FLOW   ${entry.id}: ${entry.rule}`);
   console.log(`  AUTO/WIRED: ${mechanics.wired.length} Skripte erreichbar · ohne Ablauf: ${mechanics.unused.length} · vergessen: ${mechanics.orphan.length}`);
@@ -644,7 +597,7 @@ if (asJson) {
   // `--brief` endet mit genau einer Aktion: der naechste Befehl, sonst der
   // erste Schritt. Alles weitere bleibt in `--json` vollstaendig erhalten.
   if (brief) {
-    const nextAction = mergeQueue?.nextCommand ?? steps[0] ?? null;
+    const nextAction = steps[0] ?? null;
     console.log('=== Naechste Aktion ===');
     console.log(`  -> ${nextAction ?? 'keine: Blockliste oben abarbeiten'}`);
   } else {
