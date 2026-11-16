@@ -11,7 +11,7 @@ Kopf sind laufabhaengig, alles andere ist stabil):
 
     git ls-remote origin refs/heads/main
     node scripts/verify-merge-gate.mjs
-    node scripts/sync-board-state.mjs --check --at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    node scripts/sync-board-state.mjs --check --at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"   # druckt den relativen Dateipfad
     node scripts/reconcile-claims.mjs --check
     node scripts/claim-hygiene.mjs --check
     gh api -X GET search/issues -f q='repo:vannon091118/rigged-by-design is:issue is:closed label:prio-P0' \
@@ -50,7 +50,7 @@ exit=0
 
 == 2. Board-Snapshot gegen Live ==
   "checked": true,
-  "file": "<clone>/.lane-claims/board-state.json",
+  "file": ".lane-claims/board-state.json",
   "head": "d6eb826be8b2858d6c21ff6205b53575bbb4bf2a",
   "drift": []
 }

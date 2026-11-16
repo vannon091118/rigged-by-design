@@ -2746,3 +2746,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** Merge-Gate `GRUEN`, `drift: []`, `keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, #987 CLOSED, kein alter Kopf-Hash, 0 offene PRs; `verify:light` im selben Klon 13 Gates gruen.
 
+## 2026-11-16 — Beleg ohne Pfad-Sonderfall (Buffy)
+
+**Befund.** `board:sync --check` druckte den absoluten Pfad des Snapshots. Der committete Beleg musste `<clone>/` ersetzen, damit der Vergleich aufging — eine Sonderbehandlung ausser Zeitstempel und SHAs.
+
+**Umsetzung.** Die Check-Ausgabe nennt jetzt den relativen Pfad `.lane-claims/board-state.json`; der Beleg enthaelt denselben Wert. Ein Diff gegen einen frischen Klon zeigt nur noch Zeitstempel und Clone-/Snapshot-SHA.
+
+**Nachweis.** `node --check`, `board:sync --check` mit `"file": ".lane-claims/board-state.json"`, `drift: []`; `verify:light` gruen.
+
