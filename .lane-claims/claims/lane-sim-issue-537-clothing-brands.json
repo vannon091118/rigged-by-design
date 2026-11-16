@@ -1,0 +1,17 @@
+{
+  "id": "lane-sim-issue-537-clothing-brands",
+  "owner": "Save-/Migrations-Owner",
+  "branch": "lane/sim/issue-537-clothing-brands",
+  "baseSha": "7c309c2d5e5877c6d803d2757fac37ff7b6f7ac9",
+  "issue": 537,
+  "task": "Look zu kaufbarem Kleidungs-/Marken-Inventar mit NPC- und Sozialwirkung ausbauen (Issue #537)",
+  "pathAllowlist": [
+    "src/render/__tests__/guest-sprite.test.ts",
+    "src/store/__tests__/save-roundtrip.test.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7c309c2d5e5877c6d803d2757fac37ff7b6f7ac9"
+}

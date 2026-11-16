@@ -22,10 +22,12 @@ import { WorldTick } from './world-tick';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { esportEveningView, type EsportEveningView } from '../core/sim/esport-event';
 import { PORTEMONNAIE } from '../core/sim/money';
+import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
 import { flushNarrativeCmd } from './narrative-commands';
 import { chooseNarrativeAction, dismissNarrativeAction } from './narrative-store-actions';
 import type { PlayerLook } from '../core/sim/player-look';
+import { findClothingItem, buyItem } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
 import type { CardDeal } from './foreign-play';
 import type { GameView } from './types';
@@ -155,7 +157,20 @@ class WorldStore {
     this.#emit();
     return report;
   }
-  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); } moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
+  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); }
+  buyClothing(itemId: string): void {
+    this.#guard(() => {
+      const item = findClothingItem(itemId);
+      if (!item) throw new Error('Kleidungsstück nicht im Katalog.');
+      if (this.#world.look.wardrobe.includes(itemId)) throw new Error('Bereits im Kleiderschrank.');
+      const balance = this.#ledger.getBalance(PORTEMONNAIE);
+      const check = buyItem(balance, itemId);
+      if (!check.ok) throw new Error(check.error ?? 'Kauf fehlgeschlagen.');
+      this.#ledger.transfer(PORTEMONNAIE, 'VENDOR_CLOTHING', item.priceVC as VaCoinMicro, 'Kleidungskauf: ' + item.name, this.#world.tick);
+      this.#world.look = { ...this.#world.look, wardrobe: [...this.#world.look.wardrobe, itemId] };
+      this.#notice = `Gekauft: ${item.name} (${item.brand}) für ${item.priceVC} VC.`;
+    }, false);
+  } moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
   spinTest(itemId: number): GameResult | null { const { result, notice } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = notice; this.#emit(); } return result; } deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); } setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); } exclusion(command: ExclusionCommand, limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }
   chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null { let result: ChoiceExecution | null = null; this.#guard(() => { const action = chooseNarrativeAction(this.#world, this.#ledger, eventId, choiceId); result = action.result; this.#notice = action.notice; }); return result; } dismissNarrative(eventId: number): void { this.#guard(() => { this.#notice = dismissNarrativeAction(this.#world, eventId); }); }
   dismiss(): void { this.#notice = ''; this.#emit(false); }

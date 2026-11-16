@@ -4718,8 +4718,28 @@
       "contributionId": "self-exclusion-scope-dok-01"
     },
     {
+      "turnId": "2026-11-15T22:30Z-career-ladders-01",
+      "contributionId": "career-ladders-01"
+    },
+    {
+      "turnId": "2026-11-15T22:35Z-job-market-01",
+      "contributionId": "job-market-01"
+    },
+    {
+      "turnId": "2026-11-15T22:40Z-meta-bestand-auflosen-01",
+      "contributionId": "meta-bestand-auflosen-01"
+    },
+    {
       "turnId": "2026-11-15T22:55Z-806-hot-event-score",
       "contributionId": "liilith-806-hot-event-score"
+    },
+    {
+      "turnId": "2026-11-16T00:12Z-787-esport-roles",
+      "contributionId": "liilith-787-esport-roles"
+    },
+    {
+      "turnId": "2026-11-16T01:00Z-nar-clothing-purchase-01",
+      "contributionId": "nar-clothing-purchase-01"
     }
   ]
 }
