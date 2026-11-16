@@ -26,6 +26,9 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
 import { boardRank, evaluateIssueClaim } from './lib/issue-claim.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'board-overview' });
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);

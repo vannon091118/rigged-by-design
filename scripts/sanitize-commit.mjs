@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /** ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. */
 import { readFileSync, writeFileSync } from 'node:fs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'sanitize-commit' });
 
 const FORBIDDEN = /Co-authored-by:|Generated with|\bFreebuff\b|\bCodebuff\b|\bClaude\b|\bAnthropic\b|\bOpenAI\b|\bCursor\b|Signed-off-by:|\[(?:Codebuff|Freebuff)\]/i;
 const file = process.argv[2];

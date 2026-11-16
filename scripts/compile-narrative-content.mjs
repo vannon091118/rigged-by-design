@@ -13,12 +13,16 @@ import {
   RUNTIME_REGISTRY_PATH, SLOT_MAP_PATH, renderRegistry, renderRuntimeRegistry, renderSlotMap,
   validateCompiledRegistry, validateRuntimeRegistry, validateSlotMap,
 } from './lib/narrative-compiler.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const TARGET = join(ROOT, 'content/narrative/registry/fragments.json');
 const RUNTIME_TARGET = join(ROOT, RUNTIME_REGISTRY_PATH);
 const SLOT_MAP_TARGET = join(ROOT, SLOT_MAP_PATH);
 const args = process.argv.slice(2);
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+const longRunning = args.includes('--serve') || args.includes('--watch');
+captureConsole({ label: 'compile-narrative-content', enabled: !longRunning });
 const write = args.includes('--write');
 const check = args.includes('--check');
 const unknown = args.filter((arg) => arg !== '--write' && arg !== '--check');

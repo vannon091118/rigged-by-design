@@ -21,8 +21,10 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fail } from './lib/report.mjs';
-import { isVerbose } from './lib/compact.mjs';
+import { captureConsole, isVerbose } from './lib/compact.mjs';
 import { budgetFor, LEGACY_LOC } from './loc-budgets.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'check-loc' });
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SRC_DIR = join(ROOT, 'src');

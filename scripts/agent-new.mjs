@@ -22,8 +22,12 @@ import { refreshBase } from './lib/base-refresh.mjs';
 import { ROOT } from './lib/report.mjs';
 import { parseAgentNewArgs } from './lib/agent-new-args.mjs';
 import { makeTaskContract, contractRelativePath, writeTaskContract } from './lib/task-contract.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const args = process.argv.slice(2);
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+const longRunning = args.includes('--serve') || args.includes('--watch');
+captureConsole({ label: 'agent-new', enabled: !longRunning });
 const { has, values, arg } = parseAgentNewArgs(args);
 
 const AS_JSON = has('json');

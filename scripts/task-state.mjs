@@ -17,6 +17,9 @@ import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { scopeChanges } from './lib/staging-scope.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'task-state' });
 
 export const AFTER_TASK_FILE = '.verify-cache/after-task.json';
 export const TASK_STATE_FILE = '.verify-cache/task-state.json';

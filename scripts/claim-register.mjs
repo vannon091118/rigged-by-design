@@ -34,6 +34,9 @@ import {
   loadClaimsStrict,
   validateNewClaim,
 } from './lib/lane-claims.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'claim-register' });
 
 const args = process.argv.slice(2);
 if (args[0] === '--') args.shift();

@@ -15,6 +15,9 @@ import { execFileSync } from 'node:child_process';
 import { appendFileSync } from 'node:fs';
 import { ROOT } from './lib/report.mjs';
 import { dependencyChangedBetween } from './lib/dependency-change.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'release-impact' });
 
 const arg = (name) => {
   const hit = process.argv.slice(2).find((value) => value.startsWith(`--${name}=`));

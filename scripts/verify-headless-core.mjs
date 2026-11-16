@@ -5,6 +5,9 @@
  * ein Gate-Fehler, kein Hinweis.
  */
 import { scanHeadlessCore } from './lib/headless-core.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-headless-core' });
 
 const result = scanHeadlessCore(process.cwd());
 if (result.violations.length === 0) {

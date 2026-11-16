@@ -31,6 +31,9 @@ import { claimEntryPath, planRetention, planTaskCloseout } from './lib/claim-lif
 import { loadClaimsStrict, saveClaims } from './lib/lane-claims.mjs';
 import { loadTaskContracts, writeTaskContract } from './lib/task-contract.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'reconcile-claims' });
 
 const argv = process.argv.slice(2);
 const apply = argv.includes('--apply');

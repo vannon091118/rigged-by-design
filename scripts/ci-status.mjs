@@ -7,9 +7,12 @@
  */
 import { execFileSync } from 'node:child_process';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
+// Sichtbare Antwort bleibt unter 500 Token; JSON bleibt Werkzeugformat.
+captureConsole({ label: 'ci-status', enabled: !asJson });
 const prAt = argv.indexOf('--pr');
 const prNumber = prAt >= 0 ? argv[prAt + 1] : null;
 

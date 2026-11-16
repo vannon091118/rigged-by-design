@@ -45,6 +45,9 @@ import {
 } from './lib/narrative-blocks.mjs';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'narrative-blocks' });
 
 export const USAGE = `verify-narrative-blocks: Pools, doppelte Texte und die Pflicht pro Commit pruefen.
 

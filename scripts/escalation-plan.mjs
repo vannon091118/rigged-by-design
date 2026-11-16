@@ -7,8 +7,12 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describePlan, LEVELS, plan } from './lib/escalation.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const args = process.argv.slice(2);
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+const longRunning = args.includes('--serve') || args.includes('--watch');
+captureConsole({ label: 'escalation-plan', enabled: !longRunning });
 const fileAt = args.indexOf('--file');
 const fileArg = fileAt >= 0 ? args[fileAt + 1] : null;
 const textArg = args.find((arg) => !arg.startsWith('--') && arg !== fileArg);

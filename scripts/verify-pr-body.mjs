@@ -4,6 +4,9 @@
  * interpolierte Shell-Zeile; der Check schreibt nichts und legt kein Issue an.
  */
 import { checkPrBody, PR_BODY_SECTIONS } from './lib/pr-body.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-pr-body' });
 
 const body = process.env.PR_BODY ?? '';
 const result = checkPrBody(body);

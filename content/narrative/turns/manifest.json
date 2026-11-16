@@ -4832,6 +4832,10 @@
     {
       "turnId": "2026-11-16T11:32Z-output-budget-closeout",
       "contributionId": "output-budget-closeout"
+    },
+    {
+      "turnId": "2026-11-16T12:40Z-output-budget-fullscan",
+      "contributionId": "output-budget-fullscan"
     }
   ]
 }

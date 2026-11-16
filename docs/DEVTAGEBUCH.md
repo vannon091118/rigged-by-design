@@ -2633,3 +2633,12 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 **Bewusst nicht getan.** Keine zweite Formatierung neben `compact.mjs`; kein Abschalten von Details ohne Log — die Kuerzung ist immer verlustfrei nachlesbar.
 
 **Pruefungen.** `verify:light` gruen, neuer Test `output-budget.test.ts` deckt Obergrenze, Statuserhalt und Logverweis ab.
+
+## 2026-11-16 — Jeder Pfad im Budget, jeder Befehl gleich gebaut (Buffy)
+
+**Befund.** Der Vertrag aus #994 deckte neun Werkzeuge, aber `package.json` nannte ueber sechzig. 43 Skripte schrieben weiter ungekapselt, mehrere davon mit Tabellen und Listen; wer sie aufrief, schnitt die Ausgabe mit Pipes ab. Gleichzeitig hatte jeder Befehl eine andere Form: mal `node scripts/…`, mal `pnpm run x:y -- --flag`, mal mit Pipe.
+
+**Entscheidung.** Die Pflichtliste wird nicht gepflegt, sondern hergeleitet: `scripts/lib/entry-points.mjs` nennt 25 Pflichtpfade, das Gate sweept zusaetzlich jedes Top-Level-Skript mit Ausgabe. `captureConsole` bleibt das einzige System; `--json` ist jetzt automatisch Werkzeugformat, und unter dem Budget bleiben stdout und stderr getrennt, damit Vertraege auf genau eine Zeile halten. Alle Governance-Befehle laufen als `rbd <gruppe> <aktion>` ueber `scripts/lib/command-surface.mjs`; eine Zeile aus `package.json` ohne Route macht den Test rot.
+
+**Nachweis.** 21 Einstiegspunkte mit echtem Lauf gemessen: ungekuerzt 9 bis 1220 Token, sichtbar 9 bis 494. `rbd help` 291 Token. Gate und Tests gruen; die sechs roten Tests im vollen Lauf (drei Store-, drei Governance-Tests) sind auf `01ddf030` vorbestehend und nicht Teil dieses Auftrags.
+

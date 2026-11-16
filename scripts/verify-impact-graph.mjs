@@ -9,6 +9,9 @@
  */
 import { auditImpactGraph } from './lib/impact-graph.mjs';
 import { fail } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-impact-graph' });
 
 const json = process.argv.includes('--json');
 const result = auditImpactGraph();

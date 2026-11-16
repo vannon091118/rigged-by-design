@@ -101,6 +101,7 @@ function verifyNarrativeStaged() {
 
 stageOwnClaim();
 run('verify-lane-claims.mjs');
+run('verify-output-budget.mjs');
 run('verify-task-contract.mjs', ['--staged']);
 // Closeout-Hygiene: offener Claim + belegtes geschlossenes Issue ist ein
 // Befund. Unbekannte Status bleiben sichtbar, blockieren aber nicht.

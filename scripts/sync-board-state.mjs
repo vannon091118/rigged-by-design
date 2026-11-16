@@ -19,6 +19,9 @@ import {
 } from './lib/board-state.mjs';
 import { PROMPT_REGISTER_FILE, parsePromptRegister } from './lib/prompt-register.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'board-sync' });
 
 const REPO = 'vannon091118/rigged-by-design';
 const STATE_FILE = join(ROOT, '.lane-claims/board-state.json');

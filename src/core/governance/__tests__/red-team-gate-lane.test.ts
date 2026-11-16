@@ -69,6 +69,7 @@ const PURPOSE = {
   tree: { command: 'node', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', packageToken: '' },
   'impact-graph': { command: 'node', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', packageToken: '' },
   redundancy: { command: 'node', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', packageToken: '' },
+  'output-budget': { command: 'node', script: 'scripts/verify-output-budget.mjs', code: 'ERR-4019', packageToken: 'verify:output-budget' },
   assets: { command: 'node', script: 'scripts/verify-assets.mjs', code: 'ERR-4016', packageToken: '' },
   capabilities: { command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', packageToken: '' },
   narrative: { command: 'node', script: 'scripts/verify-narrative-blocks.mjs', code: 'ERR-4022', packageToken: '' },

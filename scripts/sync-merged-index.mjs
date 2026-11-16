@@ -4,8 +4,12 @@
  * `--check` liest nur und endet bei Abweichung mit Exit 1.
  */
 import { syncMergedIndex } from './lib/merged-index.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const args = process.argv.slice(2);
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+const longRunning = args.includes('--serve') || args.includes('--watch');
+captureConsole({ label: 'sync-merged-index', enabled: !longRunning });
 const check = args.includes('--check');
 const unknown = args.filter((arg) => arg !== '--check');
 

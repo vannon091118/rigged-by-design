@@ -96,6 +96,9 @@ export function table(header, rows) {
 export const TOKEN_BUDGET = 500;
 export const FULL_ENV = 'RBD_OUTPUT_FULL';
 
+/** Token, die der Logverweis selbst braucht (Pfad + Label). */
+const POINTER_RESERVE = 60;
+
 /** Konservative Obergrenze: deutsche Prosa braucht ~4 Zeichen je Token. */
 export function estimateTokens(value) {
   return Math.ceil(Buffer.byteLength(String(value ?? ''), 'utf8') / 3);
@@ -137,7 +140,13 @@ export function budgetText(value, { label = 'output', logPath = null, limit = TO
     count += 1;
   }
   let out = render(selected, count);
-  if (estimateTokens(out) > limit) out = render(selected.filter((line) => HARD_LINE.test(line)).map((line) => clip(line, 90)), count).slice(0, limit * 3);
+  if (estimateTokens(out) > limit) {
+    // Letzte Stufe: nur harte Befunde, zeilenweise gekuerzt, von hinten
+    // verworfen, bis der Vertrag haelt. Nie mitten in einer Zeile schneiden.
+    const tight = selected.filter((line) => HARD_LINE.test(line)).map((line) => clip(line, 70));
+    while (tight.length > 0 && estimateTokens(render(tight, count)) > limit) tight.pop();
+    out = render(tight, count);
+  }
   return out;
 }
 
@@ -159,14 +168,19 @@ const CAPTURED = Symbol.for('rbd.outputBudget.capture');
  */
 export function captureConsole({ label, logPath = null, enabled = true } = {}) {
   if (!enabled || process.env[FULL_ENV] === '1' || process[CAPTURED]) return { flush() {} };
+  // Werkzeugformat bleibt vollstaendig: gilt fuer jeden Aufrufer, nicht nur
+  // fuer den, der --json ausdruecklich weiterreicht.
+  if (process.argv.includes('--json')) return { flush() {} };
   const stdout = process.stdout.write.bind(process.stdout);
   const stderr = process.stderr.write.bind(process.stderr);
-  const chunks = [];
-  process.stdout.write = (chunk) => {
-    chunks.push(typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf8'));
+  const outChunks = [];
+  const errChunks = [];
+  const collect = (list) => (chunk) => {
+    list.push(typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf8'));
     return true;
   };
-  process.stderr.write = process.stdout.write;
+  process.stdout.write = collect(outChunks);
+  process.stderr.write = collect(errChunks);
   const path = logPath ?? budgetLogPath(label);
   let done = false;
   const flush = () => {
@@ -174,7 +188,9 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
     done = true;
     process.stdout.write = stdout;
     process.stderr.write = stderr;
-    const full = chunks.join('');
+    const output = outChunks.join('');
+    const errors = errChunks.join('');
+    const full = `${output}${errors}`;
     if (full.trim() === '') return;
     try {
       mkdirSync(dirname(path), { recursive: true });
@@ -182,7 +198,14 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
     } catch {
       // Ein nicht schreibbares Log kippt keinen Lauf; der Bericht nennt den Pfad.
     }
-    const body = budgetText(full, { label, logPath: path });
+    // Passt alles ins Budget, bleiben die Strieme getrennt: stdout ist stdout,
+    // stderr ist stderr, und ein Vertrag auf genau eine Zeile haelt weiter.
+    if (estimateTokens(full) <= TOKEN_BUDGET - POINTER_RESERVE) {
+      if (output) stdout(output.endsWith('\n') ? output : `${output}\n`);
+      if (errors) stderr(errors.endsWith('\n') ? errors : `${errors}\n`);
+      return;
+    }
+    const body = budgetText(full, { label, logPath: path, limit: TOKEN_BUDGET - POINTER_RESERVE });
     stdout(body.endsWith('\n') ? body : `${body}\n`);
   };
   process.on('exit', flush);

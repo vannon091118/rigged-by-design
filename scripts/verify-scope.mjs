@@ -11,13 +11,15 @@
  */
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { compact } from './lib/compact.mjs';
+import { captureConsole, compact } from './lib/compact.mjs';
 import { loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 import { scopeChanges } from './lib/staging-scope.mjs';
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
+// Sichtbare Antwort bleibt unter 500 Token; JSON bleibt Werkzeugformat.
+captureConsole({ label: 'verify-scope', enabled: !asJson });
 const stagedOnly = args.includes('--staged');
 
 const git = (list) => {

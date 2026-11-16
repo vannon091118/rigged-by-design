@@ -12,6 +12,9 @@ import { verifyDocs } from './lib/doc-sync.mjs';
 import { PROMPT_REGISTER_FILE, promptProblems } from './lib/prompt-register.mjs';
 import { describePlan, plan } from './lib/escalation.mjs';
 import { ROOT, fail } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-docs' });
 
 /** Alle Dokumente, deren interne Links gelten: Wurzelvertrag und `docs/`. */
 function markdownFiles() {

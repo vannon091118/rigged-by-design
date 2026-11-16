@@ -6,6 +6,9 @@
  */
 import { spawnSync } from 'node:child_process';
 import os from 'node:os';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'bench-lowend' });
 
 const cpu = os.cpus()[0]?.model ?? 'unbekannte CPU';
 console.log(`Low-End-Profil: ${cpu} · ${os.cpus().length} logische Kerne`);

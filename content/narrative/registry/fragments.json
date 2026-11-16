@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8db627e1558b2f7b91fc84beb7d4c2705d8001347fc08fdc0a4390af0eb8d8a9",
+  "contentHash": "sha256:bc1340f431baa3fef6c5186b748c1c1253e25c10c3954429d9d77f27cbeff273",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -14018,6 +14018,28 @@
       "text": "Der Zettel am Tresen traegt jetzt unten eine Zeile: wann er aufgehaengt wurde und wer ihn abgezeichnet hat. Die eine Seite bleibt die Antwort; das Heft darunter bleibt das Gedaechtnis.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-output-budget-closeout.json"
+    },
+    {
+      "contributionId": "output-budget-fullscan",
+      "turnId": "2026-11-16T12:40Z-output-budget-fullscan",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tresen hing bisher an jeder Tuer ein Zettel mit anderem Aufbau, und wer schnell arbeitete, schnitt sich die Hälfte ab. Der Wirt vereinheitlichte die Schilder auf drei Teile: Haus, Zimmer, Handlung. Was nicht mehr auf das Schild passte, steht vollständig im Buch darunter; das Schild selbst nennt nur noch die Seite.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-output-budget-fullscan.json"
     },
     {
       "contributionId": "p20-dependency-matrix-01",

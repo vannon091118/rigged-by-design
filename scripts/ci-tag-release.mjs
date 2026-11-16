@@ -12,6 +12,9 @@ import { appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { blockedReason, classifyFailure, escalate, MAX_RETRIES, tokenFor } from './lib/release-escalation.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'ci-tag-release' });
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const git = (argv) => execFileSync('git', argv, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();

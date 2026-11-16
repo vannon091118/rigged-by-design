@@ -13,6 +13,9 @@
  */
 
 import { validateCapabilities, formatValidationResult } from './lib/capabilities.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-capabilities' });
 
 const result = validateCapabilities();
 console.log(formatValidationResult(result));

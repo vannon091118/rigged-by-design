@@ -13,6 +13,9 @@ import { join, resolve } from 'node:path';
 import { changedFiles, selectAffectedTests } from './lib/affected-tests.mjs';
 import { ROOT } from './lib/report.mjs';
 import { partitionByProof, proofClassOf } from './lib/test-catalog.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'test-affected' });
 
 const argv = process.argv.slice(2);
 const includeLong = argv.includes('--include-long');

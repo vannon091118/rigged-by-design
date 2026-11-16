@@ -10,6 +10,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 import { CATALOG_END, CATALOG_START, LONG_PROOF_CLASSES, catalogEntries, renderCatalog, testFiles, validateTestLanes } from './lib/test-catalog.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'test-catalog' });
 
 const docPath = join(ROOT, 'docs', 'INVENTORY.md');
 const checkOnly = process.argv.includes('--check');

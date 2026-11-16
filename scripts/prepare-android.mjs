@@ -28,6 +28,9 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync,
 import { spawnSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'prepare-android' });
 
 const release = process.argv.includes('--release');
 const stage = release ? 'release' : 'debug';

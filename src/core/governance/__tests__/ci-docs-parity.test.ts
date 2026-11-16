@@ -27,15 +27,15 @@ const documented = (): readonly string[] =>
 
 describe('docs/CI.md und der Gate-Plan', () => {
   it('dokumentiert jedes Required-Gate genau einmal', () => {
-    expect(REQUIRED_CI_GATES.length).toBe(16);
+    expect(REQUIRED_CI_GATES.length).toBe(17);
     expect(documented()).toEqual([...REQUIRED_CI_GATES]);
   });
 
   it('nennt dieselbe Zahl fuer Quick und Voll', () => {
-    expect(doc).toContain(`Der Required-Plan besteht aus sechzehn Gates`);
-    expect(doc).toContain(`\`verify:quick\` = fünfzehn Gates`);
-    expect(doc).toContain(`\`verify:all\` = sechzehn Required plus Audit (siebzehn Läufe)`);
-    expect(QUICK_GATES.length).toBe(15);
+    expect(doc).toContain(`Der Required-Plan besteht aus siebzehn Gates`);
+    expect(doc).toContain(`\`verify:quick\` = sechzehn Gates`);
+    expect(doc).toContain(`\`verify:all\` = siebzehn Required plus Audit (achtzehn Läufe)`);
+    expect(QUICK_GATES.length).toBe(16);
   });
 
   it('ist im echten Baum paritaetisch (AGENTS.md, CI.md, GOVERNANCE.md)', () => {
@@ -44,9 +44,9 @@ describe('docs/CI.md und der Gate-Plan', () => {
   });
 
   it('erkennt die alte AGENTS-Zahl als Fehler', () => {
-    const drifted = agents.replace('16 lokale Required-Gates', '15 lokale Required-Gates');
+    const drifted = agents.replace('17 lokale Required-Gates', '16 lokale Required-Gates');
     const problems = checkDocParity({ ciText: doc, agentsText: drifted, governanceText: governance });
-    expect(problems.join('\n')).toContain('15 lokale Required-Gates, der Plan 16');
+    expect(problems.join('\n')).toContain('16 lokale Required-Gates, der Plan 17');
   });
 
   it('erkennt eine fehlende Light-Gate-Nennung als Fehler', () => {

@@ -24,9 +24,12 @@ import {
   validateTaskContract,
 } from './lib/task-contract.mjs';
 import { fail, ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
+// Sichtbare Antwort bleibt unter 500 Token; JSON bleibt Werkzeugformat.
+captureConsole({ label: 'verify-task-contract', enabled: !asJson });
 const staged = argv.includes('--staged');
 const requireContract = argv.includes('--require');
 const fileArg = (() => {

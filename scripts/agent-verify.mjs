@@ -20,6 +20,9 @@ import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
 import { botClaim, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'agent-verify' });
 
 const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));
