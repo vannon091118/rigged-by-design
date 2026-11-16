@@ -27,6 +27,12 @@ Status-Zeile und hoechstens ein schreibender offener Claim je Contract. Das
 Gate haengt in Light, Quick und der Pre-Commit-Kette; eine neue Vertragsdatei
 ohne Tabellenzeile oder Test ist rot.
 
+Die Liste ist rekursiv: auch eine Datei in einem beliebig tiefen Unterordner
+ist ein Vertrag. Ihre ID ist der Pfad ohne `.md` (z. B. `teil/name`), und die
+Tabelle muss genau diese ID verlinken. Kein Ordner und kein Muster ist
+ausgenommen; `contracts-gate.test.ts` legt einen Wegwerf-Vertrag in
+`docs/contracts/__tmp_gate_probe__/` an und belegt, dass das Gate ihn meldet.
+
 ## Schreibregeln
 
 1. **Genau ein Writer pro Contract-ID.** Read-only-Konsumenten dürfen parallel arbeiten; der Claim trägt den Modus.

@@ -4856,6 +4856,10 @@
     {
       "turnId": "2026-11-16T16:10Z-logs-failure-only",
       "contributionId": "logs-failure-only"
+    },
+    {
+      "turnId": "2026-11-16T17:05Z-log-and-contract-closure",
+      "contributionId": "log-and-contract-closure"
     }
   ]
 }

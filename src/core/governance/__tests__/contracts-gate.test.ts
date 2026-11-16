@@ -8,7 +8,8 @@
  * schreibende Claims — wird als Befund erkannt.
  */
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
@@ -58,6 +59,31 @@ describe('Vertragseinhaltung', () => {
       { id: 'lane/b', status: 'open', contracts: [{ id, mode: 'write' }] },
     ];
     expect(checkContracts({ root: ROOT, ids: IDS, rows: ROWS, claims }).join('\n')).toContain('mehrere schreibende Claims');
+  });
+
+  it('erkennt einen Vertrag in einem verschachtelten Unterordner', () => {
+    const root = mkdtempSync(join(tmpdir(), 'rbd-contracts-'));
+    mkdirSync(join(root, 'docs', 'contracts', 'nested', 'tief'), { recursive: true });
+    writeFileSync(join(root, 'docs', 'contracts', 'nested', 'tief', 'tmp.md'), '# tmp\n', 'utf8');
+    expect(contractIds(root)).toEqual(['nested/tief/tmp']);
+    const findings = checkContracts({ root, ids: contractIds(root), rows: [] });
+    expect(findings.join('\n')).toContain('docs/contracts/nested/tief/tmp.md: keine Zeile');
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  it('meldet einen temporaeren Vertrag im echten Baum als Gate-Verstoss und raeumt ihn ab', () => {
+    const dir = join(ROOT, 'docs', 'contracts', '__tmp_gate_probe__');
+    try {
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(join(dir, 'wegwerf.md'), '# Wegwerf\n\n**Status:** aktiv\n', 'utf8');
+      const result = spawnSync(process.execPath, [join(ROOT, 'scripts', 'verify-contracts.mjs')], { cwd: ROOT, encoding: 'utf8' });
+      const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
+      expect(result.status).toBe(1);
+      expect(output).toContain('__tmp_gate_probe__/wegwerf.md');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+    expect(contractIds(ROOT).some((id) => id.includes('__tmp_gate_probe__'))).toBe(false);
   });
 
   it('laeuft als Gate gruen und bleibt im Budget', () => {

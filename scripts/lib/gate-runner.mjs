@@ -228,7 +228,7 @@ export async function runGates(steps) {
       const status = result.timedOut ? 'TIMEOUT' : result.status === 0 ? 'PASS' : 'FAIL';
       const logPath = saveLog(
         step.name,
-        `# ${step.name} ${status} (${seconds}s) · ${step.code}\n# ${step.command} ${[step.script, ...(step.args ?? [])].join(' ')}\n\n${result.output}`,
+        `[${step.code}] ${step.name} ${status} (${seconds}s)\n# ${step.command} ${[step.script, ...(step.args ?? [])].join(' ')}\n\n${result.output}`,
         status,
       );
       rows.push({ name: step.name, status, seconds, logPath });

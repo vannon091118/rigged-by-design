@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-log-and-contract-closure",
+  "claimId": "lane/governance/log-and-contract-closure",
+  "branch": "lane/governance/log-and-contract-closure",
+  "baseSha": "bfdef86ddbff4f490cf89535c904221fbe39325a",
+  "phase": "IMPLEMENTING",
+  "title": "Log-Regel und Vertragsliste lueckenlos",
+  "goal": "Kindprozess-Belege fuer alle drei Logfaelle; rekursive Vertragserkennung mit Wegwerf-Vertrag. Issue #1008.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

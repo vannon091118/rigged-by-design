@@ -88,7 +88,8 @@ geprueft. Gekuerzt wird nur Detail, nie Zustand — Status, Blocker, Befund und
 der naechste Befehl bleiben. Ein Log entsteht nur mit `--log` (oder `RBD_LOG=1`
 im Kindprozess) **und** nur fuer fehlerhafte Laeufe: ein gruener Lauf
 hinterlaesst keine Datei, auch nicht mit `--log`. Die erste Zeile traegt einen
-Error Code; nennt der Lauf keinen, setzt der Schreiber `ERR-4019`. Ohne `--log`
+Error Code als **Zeile 1**; nennt der Lauf keinen, setzt der Schreiber
+`ERR-4019`. `budgetText` nennt einen Logpfad nur, wenn die Datei existiert. Ohne `--log`
 schreibt kein Werkzeug eine Logdatei — eine gekuerzte Antwort sagt stattdessen
 `vollstaendig mit --log`. `logs-failure-only.test.ts` belegt beides mit echten
 Kindprozessen (Exit 0: keine Datei, Exit 1: Datei mit Code) und prueft die

@@ -2684,3 +2684,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** `node scripts/sync-dependency-matrix.mjs --log` endet mit Exit 0 und hinterlaesst null Dateien; der Kindprozess-Test erzeugt bei Exit 1 eine Datei mit `[ERR-…]` in Zeile 1 und verdoppelt vorhandene Codes nicht.
 
+## 2026-11-16 — Log-Regel und Vertragsliste lueckenlos (Buffy)
+
+**Befund.** Der Log-Test deckte nur „Flag gesetzt + Exit 0/1" ab; der Fehlschlag ohne Flag und der Verweis auf eine nicht existierende Datei waren ungeprueft. Die Vertragsliste las nur die oberste Ebene von `docs/contracts/` — ein Vertrag in einem Unterordner entkam dem Gate still.
+
+**Entscheidung.** `contractIds` laeuft rekursiv und bildet IDs mit Unterpfad; die Tabellenzeile muss dieselbe ID verlinken. `budgetText` prueft `existsSync`, bevor es einen Pfad nennt. Logschreiber setzen den Error Code in Zeile 1, auch wenn er im Body schon steht.
+
+**Nachweis.** Live: Wegwerf-Vertrag in `docs/contracts/__probe__/x.md` → `verify-contracts` Exit 1, ohne `--log` 0 Dateien, mit `--log` genau 1 Datei mit `[ERR-4019]` in Zeile 1; nach dem Entfernen wieder gruen. Kindprozess-Tests: 22/22 in `logs-failure-only`, `output-budget`, `contracts-gate`.
+

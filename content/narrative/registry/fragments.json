@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6ba20474e31fda0c09207d8a63d500b19d6a4d5bde9c1fa6fb84385a4deb07ac",
+  "contentHash": "sha256:a501ba0292ae37331fdec92ab1ff03e35fdb9dcdf7c0943447e2f23b932f6164",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10802,6 +10802,28 @@
       "text": "Rita stellte die Werkbank vor die Cloud: Die schnellen Prüfungen lagen griffbereit am Platz, der volle Nachweis wartete auf den bewussten Griff, und der Server behielt nur die Tür, die wirklich von außen geöffnet werden musste. Was schwer war, wurde nicht leichter gerechnet, nur seltener und am richtigen Ort geprüft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-local-first-ci.json"
+    },
+    {
+      "contributionId": "log-and-contract-closure",
+      "turnId": "2026-11-16T17:05Z-log-and-contract-closure",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt prüfte seine zwei Listen noch einmal: die eine zählte jeden Zettel im Haus, auch den im hintersten Verschlag, die andere schrieb nur dann mit, wenn wirklich etwas zerbrach — und die Bruchstelle stand ganz oben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-log-and-contract-closure.json"
     },
     {
       "contributionId": "log-flag",
