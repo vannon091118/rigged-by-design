@@ -6,22 +6,29 @@
  * Cache, kein Snapshot: wer synchronisiert, sieht den Stand, der bei GitHub
  * gerade gilt — oder den Grund, warum er nicht abfragbar ist.
  *
- * Die Zeile ist Ausgabe im 500-Token-Budget und ersetzt keine Entscheidung:
- * ein fehlender Hook ist ein Befund mit Anlegebefehl, kein stiller Fallback.
+ * Die Zeile nennt auch die Authentifizierung: `authentifiziert via GH_TOKEN`
+ * heisst, die Antwort kam mit Token (und damit mit dem Scope des Tokens);
+ * `anonym` heisst, GitHub hat ohne Token geantwortet. Der Tokenwert selbst
+ * wird nie ausgegeben.
  */
 import { hookStatus } from './webhook-status.mjs';
 
 /** Eine Zeile fuer den Sync-Lauf; `status` ist fuer Tests injizierbar. */
 export function liveHookLine({ status = null } = {}) {
   const state = status ?? hookStatus({});
+  const via = state.authenticated ? `authentifiziert via ${state.tokenSource ?? 'Token'}` : 'anonym';
   if (!state.ok && state.error) {
-    return `hooks: live nicht abfragbar (${state.error})${state.step ? ` · ${state.step}` : ''}`;
+    return `hooks: live nicht abfragbar (${state.error}, ${via})${state.step ? ` · ${state.step}` : ''}`;
   }
   const events = state.events.length > 0 ? state.events.join(',') : 'keine';
-  if (!state.ok) {
-    return `hooks: live ${state.active} aktiv, Events ${events}${state.step ? ` · ${state.step}` : ''}`;
+  if (!state.ok && state.active === 0) {
+    return `hooks: live 0 aktiv, ${via} · keine Hooks${state.step ? `; ${state.step}` : ''}`;
   }
-  return `hooks: live ${state.active} aktiv, Events ${events}${state.url ? ` · ${state.url}` : ''}`;
+  const url = state.url ? ` · ${state.url}` : '';
+  if (!state.ok) {
+    return `hooks: live ${state.active} aktiv, Events ${events}, ${via}${url}${state.step ? `; ${state.step}` : ''}`;
+  }
+  return `hooks: live ${state.active} aktiv, Events ${events}, ${via}${url}`;
 }
 
 /** Schreibt die Zeile und gibt sie zurueck (ein Aufruf, eine Wahrheit). */

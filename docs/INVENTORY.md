@@ -746,10 +746,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3280 |
-| Gelistete Dateien | 3280 |
+| Getrackte Dateien | 3284 |
+| Gelistete Dateien | 3284 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (103), .lanes (1), artifacts (1), bin (1), content (1216), docs (87), packages (27), public (571), scripts (155), src (1097) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (105), .lanes (1), artifacts (1), bin (1), content (1217), docs (88), packages (27), public (571), scripts (155), src (1097) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -761,19 +761,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 50 Datei(en)
-- `.lane-claims/tasks/` — 49 Datei(en)
+- `.lane-claims/claims/` — 51 Datei(en)
+- `.lane-claims/tasks/` — 50 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1212 Datei(en)
+- `content/narrative/contributions/` — 1213 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 23 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
-- `docs/evidence/` — 2 Datei(en)
+- `docs/evidence/` — 3 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 33 Datei(en)
 - `docs/superpowers/plans/` — 1 Datei(en)
@@ -889,7 +889,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 749 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 757 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
@@ -898,6 +898,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
+- `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -911,7 +912,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-output-budget.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -947,6 +948,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
@@ -2193,6 +2195,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-governance-loc-audit.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-queue-claim-rest.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-tag-vollpruefung.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-hook-live-proof.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-log-flag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json` — { — gelesen: 17 Zeilen
@@ -2211,24 +2214,24 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-repo-ballast-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27221 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4853 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27243 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4857 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1198 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1199 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 100 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2668 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2678 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
-- `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 192 Zeilen
+- `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 195 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
@@ -2254,6 +2257,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/save.md` — Contract: save v1.0 — gelesen: 58 Zeilen
 - `docs/contracts/world-time.md` — Contract: world-time v1.0 — gelesen: 56 Zeilen
+- `docs/evidence/github-hooks-pipelie-run-2026-11-16.json` — [ — gelesen: 29 Zeilen
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
@@ -2998,7 +3002,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/run-budget.mjs` — Externes Laufbudget: eine Wahrheit für Stop-Entscheidung und Finding-Gate. — gelesen: 167 Zeilen
 - `scripts/lib/staging-scope.mjs` — Staging-Umfang: `git add -A` ist nur zulaessig, wenn jede Aenderung im — gelesen: 75 Zeilen
 - `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
-- `scripts/lib/sync-hooks.mjs` — Jeder Sync-Befehl fragt den Hook-Stand live bei GitHub ab. — gelesen: 32 Zeilen
+- `scripts/lib/sync-hooks.mjs` — Jeder Sync-Befehl fragt den Hook-Stand live bei GitHub ab. — gelesen: 39 Zeilen
 - `scripts/lib/takeover.mjs` — WIP-Takeover: "fremdes WIP" existiert nicht. — gelesen: 73 Zeilen
 - `scripts/lib/task-contract.mjs` — Task-Vertrag: die eine Wahrheit eines Laufs. — gelesen: 428 Zeilen
 - `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 123 Zeilen
@@ -3006,7 +3010,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lib/webhook-action.mjs` — Eine Delivery, ein Subjekt. — gelesen: 33 Zeilen
 - `scripts/lib/webhook-signature.mjs` — Signaturpruefung fuer GitHub-Deliveries. — gelesen: 46 Zeilen
-- `scripts/lib/webhook-status.mjs` — Ist-Stand der Repo-Webhooks, ohne Secret. — gelesen: 59 Zeilen
+- `scripts/lib/webhook-status.mjs` — Ist-Stand der Repo-Webhooks, ohne Secret. — gelesen: 75 Zeilen
 - `scripts/lib/work-claim.mjs` — Arbeits-Claim am Issue: getrennt von der Identitaet. — gelesen: 277 Zeilen
 - `scripts/lib/worker-identity.mjs` — Worker-Identitaet: drei Namen, globale Reservierung, sonst nichts. — gelesen: 236 Zeilen
 - `scripts/lib/workspace-home.mjs` — Workspace-Home: der einzige Ort, der Worktree-Neuaufbauten ueberlebt. — gelesen: 153 Zeilen
@@ -3227,7 +3231,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/scripts-libs-verify-scope.d.ts` — Deklaration fuer `verify:scope`. — gelesen: 16 Zeilen
 - `src/core/governance/__tests__/scripts-libs.d.ts` — declare module '*/process-sweep.mjs' { — gelesen: 172 Zeilen
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 95 Zeilen
-- `src/core/governance/__tests__/sync-live-hooks.test.ts` — „Alle Sync-Befehle fragen live ab" ist mechanisch: der Test liest die — gelesen: 66 Zeilen
+- `src/core/governance/__tests__/sync-live-hooks.test.ts` — „Alle Sync-Befehle fragen live ab" ist mechanisch: der Test liest die — gelesen: 120 Zeilen
 - `src/core/governance/__tests__/task-claim-parity.test.ts` — Eine einzige Quelle fuer den Lane-Status: Der Task-Vertrag ist die Wahrheit — gelesen: 47 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/test-worker-home.ts` — Fixture-Identitaet und Pretask-Helfer fuer Tests, die `pretask` als — gelesen: 165 Zeilen
@@ -3620,7 +3624,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 144 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 308 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 309 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

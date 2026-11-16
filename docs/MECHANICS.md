@@ -138,9 +138,12 @@ Governance-Zeile aus `package.json` ohne Route rot.
 Hook-Stand bei GitHub, bevor sie schreiben: `scripts/lib/sync-hooks.mjs` macht
 aus `hookStatus()` genau eine Zeile — aktiv, Events, Ziel-URL oder den Grund,
 warum die Abfrage scheitert, samt Anlegebefehl. Kein Cache, kein Snapshot; ein
-fehlender Hook ist ein Befund, kein stiller Fallback. `sync-live-hooks.test.ts`
-liest die Sync-Routen aus der Befehlsoberflaeche und macht einen neuen
-Sync-Befehl ohne `reportLiveHooks` rot.
+fehlender Hook ist ein Befund, kein stiller Fallback. Die Zeile nennt auch die
+Authentifizierung (`authentifiziert via GH_TOKEN` oder `anonym`); der Tokenwert
+selbst wird nie ausgegeben. `sync-live-hooks.test.ts` liest die Sync-Routen aus
+der Befehlsoberflaeche, macht einen neuen Sync-Befehl ohne `reportLiveHooks`
+rot und prueft den Parser gegen eine echte, aufgezeichnete Hooks-Antwort
+(`docs/evidence/github-hooks-pipelie-run-2026-11-16.json`).
 
 ## Kein Workflow, kein Actions
 

@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **Hook-Abfrage authentifiziert und belegt.** `hookStatus()` nennt `reachable`, `authenticated` und die Token-Quelle (ohne Wert); die Sync-Zeile unterscheidet „erreichbar, aber keine Hooks" von „nicht abfragbar". Der Parser ist gegen eine echte, aufgezeichnete Hooks-Antwort getestet; live liefert das Repo `0 aktiv, authentifiziert via GH_TOKEN`.
 - **Sync-Befehle fragen live.** `board sync`, `docs sync`, `sync deps` und `sync generated` lesen den Repo-Hook-Stand ueber `hookStatus()` bei GitHub und geben genau eine Zeile aus: aktiv, Events, Ziel-URL oder Grund und Anlegebefehl. `sync-live-hooks.test.ts` erzwingt die Abfrage fuer jede Sync-Route (#1000).
 - **Vertragseinhaltung global und mechanisch.** `verify:contracts` leitet die Vertragsliste aus `docs/contracts/` ab und prueft jede Zeile gegen Roster, Lane-Writer, existierenden Vertragstest mit `@test-target`, Status-Zeile und Claim-Modus; zwei schreibende offene Claims auf denselben Vertrag sind rot. Das Gate ist Required-Gate 12, laeuft in Light/Quick und in der Pre-Commit-Kette (#1000).
 - **Logs nur auf Anforderung.** `captureConsole`, die Gate-Pipeline, `ci:local` und der Pre-Commit-Hook schreiben keine Logdatei mehr, solange `--log` (oder `RBD_LOG=1` im Kind) fehlt; mit `--log` entstehen Logs nur fuer rote Gates und tragen deren Error Code, waehrend gruene Laeufe keine Datei hinterlassen. Gekuerzte Antworten verweisen ohne `--log` auf den Schalter (#996).

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T15:20Z-hook-live-proof",
+  "contributionId": "hook-live-proof",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt ging zur Tür und kam mit leerem Zettel zurück: kein Bote angeschlossen. Statt das zu verschweigen, schrieb er „null Boten, geprüft mit Schlüssel“ auf die Tafel und hängte daneben den Zettel eines Nachbarhauses, auf dem einer verzeichnet war — damit niemand behaupten konnte, er habe das Lesen nur geübt.",
+  "directives": []
+}

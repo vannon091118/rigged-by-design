@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/hook-live-proof",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/hook-live-proof",
+  "baseSha": "51a1052e991bed0a75f2d2221d3e2739607cf2a2",
+  "issue": 1004,
+  "task": "Hook-Abfrage authentifiziert und belegt",
+  "pathAllowlist": [
+    "scripts/",
+    "docs/MECHANICS.md",
+    "docs/evidence/",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "src/core/governance/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "51a1052e991bed0a75f2d2221d3e2739607cf2a2"
+}

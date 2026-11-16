@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-16T09:45:00Z",
+  "generatedAt": "2026-11-16T15:00:00Z",
   "generatedBy": "maintainer",
-  "head": "d97e8a0e970592a624723512c26d55325c85f615",
-  "headMessage": "FREEZE-0: Dispatch-Reste entfernen und Claim-Register schliessen (#970)",
-  "base": "origin/main @ d97e8a0e970592a624723512c26d55325c85f615",
-  "worktree": "D:/Projekte/rigged-by-design",
+  "head": "51a1052e991bed0a75f2d2221d3e2739607cf2a2",
+  "headMessage": "Sync-Befehle fragen den GitHub-Hook-Stand live ab (#1003)",
+  "base": "origin/main @ 51a1052e991bed0a75f2d2221d3e2739607cf2a2",
+  "worktree": "/workspace/chats/75042cf7e12fd480f9251993",
   "status": "READY",
   "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
   "lastActions": [
@@ -45,7 +45,7 @@
     675,
     776
   ],
-  "openPullRequests": 0,
+  "openPullRequests": 1,
   "reviewWaitingPrs": 0,
   "promptIssues": [
     {
@@ -577,7 +577,15 @@
       "note": "superseded durch #733; Branch behaelt den Commit"
     }
   ],
-  "openPrs": [],
+  "openPrs": [
+    {
+      "number": 987,
+      "title": "chore(governance): Claim freeze-0-code archivieren (Issue #684 geschlossen)",
+      "branch": null,
+      "draft": false,
+      "labels": []
+    }
+  ],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
   "reviewWaitingNote": "Keine offenen PRs. #597 traegt review-waiting als Issue-Label, nicht als PR-Warteschlange.",
   "health": {
