@@ -2700,3 +2700,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** `reconcile-claims` (dry) und `--apply` nennen dieselben Aenderungen, `reconcile-claims --check` meldet `keine Abweichung`, `verify-lane-claims` bleibt auf `main` gruen.
 
+## 2026-11-16 — Merge-Gate statt Monitoring-Behauptung (Buffy)
+
+**Befund.** Der Tagesbericht meldete „keine nachgewiesene serverseitige Merge-Sperre" fuer `main`, weil die Branch-Protection-Abfrage mit 403 scheiterte. Mit `GH_TOKEN` ist sie lesbar: PR-Zwang, `enforce_admins: true`, Force-Push und Loeschen blockiert; Rulesets und Required-Checks: keine. Ein direkter Push auf `main` wurde live abgewiesen (`Changes must be made through a pull request`).
+
+**Entscheidung.** Der Zustand bekommt ein Gate statt einer Prosa-Behauptung: `scripts/lib/merge-gate.mjs` bewertet die echte Antwort, `verify:merge-gate` liest sie live und wird rot, wenn der Schutz fehlt oder abgeschwaecht ist. Fehlende Status-Checks sind ein dokumentierter Befund (FREEZE-0), kein Verstoss — ohne Actions gibt es keinen Job, der sie bedient.
+
+**Nachweis.** Gate live: `GRUEN · main ist serverseitig geschuetzt`, Reviews 0, Checks keine, Rulesets 0. Sieben Parser-Faelle in `merge-gate.test.ts`, darunter die echte Antwort aus `docs/evidence/github-branch-protection-main-2026-11-16.json`.
+

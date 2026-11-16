@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a5db5e0fd5f913c28dd14ce06ff9eb8dcf350fbb76b3b45bb8629b928314ab2e",
+  "contentHash": "sha256:b62bb3334d4476dad06f6ef9b2960fa0015f737dbd308f4d1dfef9a562576ad8",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -11320,6 +11320,28 @@
       "text": "Im Hinterzimmer haengt eine Tafel mit allen Knoepfen des Hauses, und neben jedem Knopf steht genau eine Hand, die ihn druecken darf. Ein Lehrling fragte, was passiere, wenn jemand einen Knopf ohne Hand an die Tafel male. Der Hausmeister sagte nur: dann faellt es auf, bevor ein Gast sich wundert. Seitdem ist die Tafel kuerzer als die Geruechte ueber sie.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-menu-action-contract.json"
+    },
+    {
+      "contributionId": "merge-gate",
+      "turnId": "2026-11-16T19:10Z-merge-gate",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt hatte die Kette am Tor nur beschrieben; jetzt hängte er ein Schild daneben, das jeden Morgen von selbst zeigt, ob sie noch hängt — und wer sie öffnen darf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-merge-gate.json"
     },
     {
       "contributionId": "meta-bestand-auflosen-01",

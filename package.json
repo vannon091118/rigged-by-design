@@ -99,7 +99,8 @@
     "webhook:receive": "node scripts/webhook-receiver.mjs",
     "rbd": "node bin/rbd.mjs",
     "verify:output-budget": "node scripts/verify-output-budget.mjs --probe",
-    "verify:contracts": "node scripts/verify-contracts.mjs"
+    "verify:contracts": "node scripts/verify-contracts.mjs",
+    "verify:merge-gate": "node scripts/verify-merge-gate.mjs"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",

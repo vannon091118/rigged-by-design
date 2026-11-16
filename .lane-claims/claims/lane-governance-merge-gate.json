@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/merge-gate",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/merge-gate",
+  "baseSha": "3ea4eae0ff79b712274923912fd5ee8762264cf7",
+  "issue": 1013,
+  "task": "Merge-Gate live pruefbar",
+  "pathAllowlist": [
+    "scripts/",
+    "docs/evidence/",
+    "docs/CI.md",
+    "docs/MECHANICS.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "src/core/governance/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3ea4eae0ff79b712274923912fd5ee8762264cf7"
+}

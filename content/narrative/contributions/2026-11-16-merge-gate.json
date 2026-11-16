@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T19:10Z-merge-gate",
+  "contributionId": "merge-gate",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt hatte die Kette am Tor nur beschrieben; jetzt hängte er ein Schild daneben, das jeden Morgen von selbst zeigt, ob sie noch hängt — und wer sie öffnen darf.",
+  "directives": []
+}
