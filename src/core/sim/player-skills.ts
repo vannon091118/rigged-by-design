@@ -69,7 +69,7 @@ export function skillEffect(skillId: PlayerSkillId, level: number): string {
     case 'service':
       return `Gaststimmung +${(level - 1) * 5} pro serviertem Drink`;
     case 'cardDealing':
-      return `Gewinnchance +${(level - 1) * 2} % beim Kartengeben`;
+      return `Gaststimmung +${level - 1}, Geduld +${Math.ceil((level - 1) / 2)} pro Tischrunde`;
     case 'repair':
       return `Ersatzteilersparnis: jede ${level}. Reparatur verbraucht kein Teil`;
     default:
