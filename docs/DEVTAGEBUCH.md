@@ -2609,3 +2609,13 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 **Bewusst nicht getan.** Kein Merge von `e35efc06`, kein Zurücksetzen von `pretask.mjs`, `AGENTS.md` oder `package.json` auf den WIP-Stand, kein Force-Push, kein Merge nach `main`. Remote-only Lane-Refs (z. B. `origin/lane/governance/ci-line-green`) bleiben außerhalb dieses lokalen Auftrags.
 
 **Prüfungen.** Branch-Inventur über `git rev-list --count` und `git merge-base --is-ancestor`; WIP-Vergleich über `git diff origin/main -- <pfad>`; Bundle-Verifikation; `pnpm run verify:docs`; `pnpm run verify:narrative-blocks` (Pflege-Commit mit Beitrag); `pnpm run turn:finish`.
+
+## 2026-11-16 — Repo-Ballast: Screenshots als WebP, alte Bildsätze entfernt (Buffy)
+
+**Ziel.** Der User benannte die Bildsammlung als GitHub-Ballast („30 mb ist zu viel“) und verlangte, sie zu entfernen.
+
+**Befund.** `docs/screenshots` belegte 14,89 MB in 68 PNG-Dateien: `current` 5,83 MB, `comparison` 3,92 MB, dazu die versionierten Sätze `v0.3.78` (1,10 MB), `v0.3.114` (1,62 MB) und `v0.3.132` (2,41 MB). Nur `README.md` (sechs Bilder) und `docs/RENDER_REWORK_PLAN.md` (elf Nennungen) verwiesen auf konkrete Dateipfade; alle übrigen Stellen sprechen über Ordner.
+
+**Umsetzung.** `current` und `comparison` liegen jetzt als WebP (q82, method=6): 9,76 MB → 1,84 MB, rund 17–19 % der PNG-Größe. Die 44 PNG-Originale und die drei alten Bildsätze sind entfernt, Roadmap PR-03 ist damit erledigt. README und Renderplan verweisen auf `.webp`, `.gitattributes` behandelt WebP als binär, die Inventur ist neu erzeugt. Eine Stichprobe der Stadtansicht bleibt lesbar.
+
+**Bewusst nicht getan.** Kein History-Rewrite: die alten PNG-Blobs bleiben in der Git-Historie, ein `filter-repo` mit Force-Push ist ein eigener, destruktiver Vorgang. Musik unter `public/assets/casino/music` (13,1 MB) ist Laufzeit-Asset und braucht für eine Neukodierung die WAV-Master; die 539 PNGs unter `public/` (1,5 MB) sind teils Atlas-Quellen.

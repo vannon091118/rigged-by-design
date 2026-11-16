@@ -11,7 +11,7 @@
   "holdMerge": false,
   "status": "DONE",
   "pr": null,
-  "note": "Status DONE aber phase war IMPLEMENTING — angleichen. pr: null weil kein PR erstellt (Teardown ohne Code-Merge)."
+  "note": "Status DONE aber phase war IMPLEMENTING — angleichen. pr: null weil kein PR erstellt (Teardown ohne Code-Merge).",
   "findings": [],
   "nextAction": "Issue schliessen.",
   "revision": 1

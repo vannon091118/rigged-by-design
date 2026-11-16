@@ -1471,17 +1471,17 @@ Abschlussbeleg des Slices, nicht ein zweiter Testpfad.
 
 | Phase | Preview-Zustand | Muss sichtbar sein | Beleg |
 | --- | --- | --- | --- |
-| R2 | Casino, unbekanntes Möbel | Gestrichelte Kontur, Rollen-/Assetname, kein `0x2dd4a0` | `docs/screenshots/current/16-r2-platzhalter.png` |
-| R3 | Casino, Gast nah und fern | Silhouette als Person, kein 6×6-Pin, LOD-Wechsel ohne Duplikat | `docs/screenshots/current/17-r3-silhouette.png` |
-| R4 | Casino, Raum mit Teppich | Sechs unterscheidbare Materialien, genau ein Bodenknoten | `docs/screenshots/current/18-r4-materialien.png` |
-| R5 | Casino, Lichtquellen | Lichtfläche und sichtbare Quelle, keine Ellipsen | `docs/screenshots/current/19-r5-licht.png` |
-| R6 | Casino, Zoom/Pan an der Weltgrenze | Weltgrenzen, Parallaxe, genau ein LOD-Wechsel | `docs/screenshots/current/20-r6-kamera.png` |
-| R7 | Stadt, Straße und Tür | Straßenraum, Türen, kein Teleport, kein zweiter Stadtgraph | `docs/screenshots/current/21-r7-stadt.png` |
-| R8 | Stadt, Assetpaket | Rollen, Welten und Skalierung sichtbar korrekt | `docs/screenshots/current/22-r8-stadtassets.png` |
-| R9 | Stadt, NPC-Weg, Tür, Begegnung | NPC von A nach B, stabile Actor-ID, ein Fact | `docs/screenshots/current/23-r9-stadtleben.png` |
-| R10 | Wohnung, vier Bereiche | S2-09–S2-11 sichtbar; Tür führt auf die Straße | `docs/screenshots/current/24-r10-wohnung.png` |
-| R11 | Casino/Stadt, Lauf und Stillstand | Beide Richtungen, deterministischer Frame, kein Duplikat | `docs/screenshots/current/25-r11-lauf.png` |
-| R12 | Stadt, Tag und Nacht | Ambient und reduced motion, keine Zustandsänderung | `docs/screenshots/current/26-r12-ambient.png` |
+| R2 | Casino, unbekanntes Möbel | Gestrichelte Kontur, Rollen-/Assetname, kein `0x2dd4a0` | `docs/screenshots/current/16-r2-platzhalter.webp` |
+| R3 | Casino, Gast nah und fern | Silhouette als Person, kein 6×6-Pin, LOD-Wechsel ohne Duplikat | `docs/screenshots/current/17-r3-silhouette.webp` |
+| R4 | Casino, Raum mit Teppich | Sechs unterscheidbare Materialien, genau ein Bodenknoten | `docs/screenshots/current/18-r4-materialien.webp` |
+| R5 | Casino, Lichtquellen | Lichtfläche und sichtbare Quelle, keine Ellipsen | `docs/screenshots/current/19-r5-licht.webp` |
+| R6 | Casino, Zoom/Pan an der Weltgrenze | Weltgrenzen, Parallaxe, genau ein LOD-Wechsel | `docs/screenshots/current/20-r6-kamera.webp` |
+| R7 | Stadt, Straße und Tür | Straßenraum, Türen, kein Teleport, kein zweiter Stadtgraph | `docs/screenshots/current/21-r7-stadt.webp` |
+| R8 | Stadt, Assetpaket | Rollen, Welten und Skalierung sichtbar korrekt | `docs/screenshots/current/22-r8-stadtassets.webp` |
+| R9 | Stadt, NPC-Weg, Tür, Begegnung | NPC von A nach B, stabile Actor-ID, ein Fact | `docs/screenshots/current/23-r9-stadtleben.webp` |
+| R10 | Wohnung, vier Bereiche | S2-09–S2-11 sichtbar; Tür führt auf die Straße | `docs/screenshots/current/24-r10-wohnung.webp` |
+| R11 | Casino/Stadt, Lauf und Stillstand | Beide Richtungen, deterministischer Frame, kein Duplikat | `docs/screenshots/current/25-r11-lauf.webp` |
+| R12 | Stadt, Tag und Nacht | Ambient und reduced motion, keine Zustandsänderung | `docs/screenshots/current/26-r12-ambient.webp` |
 
 Die Aufnahmen sind Belege für `PR-07` und `S2-08`, schließen sie aber erst,
 wenn der vollständige Screenshot-Satz bzw. der vertikale Pfad belegt ist. R10
