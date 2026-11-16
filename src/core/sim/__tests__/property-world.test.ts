@@ -4,7 +4,7 @@ import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { areaAt } from '../grid-zones';
 import { EXTERNAL, HAUSKONTO, PORTEMONNAIE } from '../money';
-import { PROPERTY_ACCOUNT, buyProperty, propertyArea, propertyView, propertyWorld } from '../property';
+import { PROPERTY_ACCOUNT, buyProperty, propertyAreaBinding, propertyView, propertyWorld } from '../property';
 import { createWorld } from '../templates';
 import type { TemplateId } from '../types';
 
@@ -25,8 +25,8 @@ describe('Immobilie: Zuordnung zum WorldState', () => {
   it('legt die Immobilie in den Rasterbereich ihres Eingangs', () => {
     const { world } = owned();
     const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE')!;
-    expect(propertyArea(world)).toEqual(areaAt(world.template, entrance.x, entrance.y));
-    expect(propertyWorld(world)!.area?.id).toBe(propertyArea(world)!.id);
+    expect(propertyAreaBinding(world)).toBe(areaAt(world.template, entrance.x, entrance.y)?.id ?? null);
+    expect(propertyWorld(world)!.area?.id).toBe(propertyAreaBinding(world));
   });
 
   it('zaehlt nur Zonen, Geraete und Gaeste der eigenen Flaeche', () => {
@@ -54,7 +54,7 @@ describe('Immobilie: Zuordnung zum WorldState', () => {
       const { world, ledger } = owned(template);
       const binding = propertyWorld(world)!;
       expect(binding.area).not.toBeNull();
-      expect(binding.owned.id).toBe('KNEIPE');
+      expect(binding.owned.propertyId).toBe('KNEIPE');
       expect(propertyView(world, ledger.getBalance(PORTEMONNAIE)).binding).toEqual(binding);
     }
   });

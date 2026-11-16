@@ -21,6 +21,10 @@ export const TX_REASON = {
   WC_UPGRADE: 'wc ausbauen',
   TAKE_HOME: 'betreiber entnahme',
   PROPERTY: 'immobilie kaufen',
+  /** Erloes, der einem konkreten Standort zugeordnet werden kann. */
+  SITE_REVENUE: 'standort erloes',
+  /** Laufende Kosten, die ein bestimmter Standort verursacht. */
+  SITE_COST: 'standort kosten',
   FOREIGN_STAKE: 'fremdes haus einsatz',
   FOREIGN_WIN: 'fremdes haus gewinn',
   BACKYARD_ENTRY: 'hinterhof startgeld',

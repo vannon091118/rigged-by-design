@@ -18,7 +18,7 @@ export function SmartphoneImmoluck({ view, onBack, onClose }: { view: GameView; 
       </p>
       <div className="smartphone-list">
         {property.owned !== null && (
-          <p className="hint">Im Besitz: {property.owned.id} seit Tag {property.owned.day}.</p>
+          <p className="hint">Im Besitz: {property.owned.propertyId} seit Tag {property.owned.day}.</p>
         )}
         {listings.map((listing) => (
           <div key={listing.id} className="smartphone-listing">

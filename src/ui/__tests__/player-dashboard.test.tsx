@@ -43,7 +43,10 @@ function renderPopup(options: Options = {}) {
   const world = createWorld('SMALL');
   grantXp(world.player.rpg, 450);
   world.player.barPurchased = true;
-  if (options.ownedProperty) world.player.property = { id: 'KNEIPE', priceVC: fromVC(120), day: 3 };
+  if (options.ownedProperty) world.player.properties = [{
+    siteId: 'KNEIPE-3', propertyId: 'KNEIPE', siteBinding: 'area-0',
+    priceVC: fromVC(120), day: 3, status: 'acquired',
+  }];
   if (options.injured) world.player.rpg.injuryTicks = 20;
   if (!options.emptyHistory) {
     recordJournal(world, {
@@ -162,7 +165,8 @@ describe('Charakterfenster: Immobilie', () => {
   it('zeigt nach dem Kauf Besitz, Tag und Preis statt des Katalogs', () => {
     const view = renderPopup({ ownedProperty: true });
     const section = screen.getByLabelText('Immobilie');
-    expect(view.career.property.owned).toEqual({ id: 'KNEIPE', priceVC: fromVC(120), day: 3 });
+    expect(view.career.property.owned).toMatchObject({ propertyId: 'KNEIPE', priceVC: fromVC(120), day: 3, status: 'acquired' });
+    expect(view.career.property.owned!.siteId).toContain('KNEIPE');
     expect(section.textContent).toContain('in deinem Besitz');
     expect(section.textContent).toContain('Tag 3');
     expect(section.textContent).toContain('Betriebskonto');

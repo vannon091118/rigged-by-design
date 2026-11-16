@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ce931940d096dcf57229476500512166e2123a907f4dafa3c4c6aa400d363d1a",
+  "contentHash": "sha256:345599f9902fe651864073c475b3b3b40641b8d5c1a3edcac139fb9bceab7552",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26272,6 +26272,28 @@
       "text": "Eine Reihenfolge ist erst dann eine Reihenfolge, wenn alle Beteiligten dieselbe Revision sehen. Der grüne Stand bringt die Queue auf den aktuellen Main-Pfad, ohne die fremden Commits zu überschreiben; die Zustimmung bleibt ein sichtbarer Schritt, kein stiller Default.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-shinon-913-merge-queue-green.json"
+    },
+    {
+      "contributionId": "shinon-974-sites-datenvertrag",
+      "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Immobilie war ein Eintrag, jetzt ist sie ein Verzeichnis: jeder eigene Standort traegt eine stabile Site-ID, seinen Typ, seine Ort-Bindung und den Tag des Kaufs. Alte Saves mit genau einer Immobilie waechsen in das neue Schema hinein, statt einen Versionssprung zu erzwingen; die Buchung bleibt eine einzige, auf dem Hauskonto. Es gibt keinen zweiten Ledger und keine zweite Geometrie - die Zonen bleiben die einzige raeumliche Wahrheit.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json"
     },
     {
       "contributionId": "sim-player-skills-learn-by-doing",

@@ -106,7 +106,7 @@ function hallMachine(world: WorldState, item: Furniture, house: VaCoinMicro): Ha
 
 /** Eine Sicht fuer UI und Tests; sie speichert nichts und rechnet nichts nach. */
 export function machineHallView(world: WorldState, ledger: Ledger): MachineHallView {
-  const owned = world.player.property !== null;
+  const owned = world.player.properties.length > 0;
   const house = ledger.getBalance(HAUSKONTO);
   const machines = hallFurniture(world).map((item) => hallMachine(world, item, house));
   const broken = machines.filter((machine) => machine.band === 'BROKEN').length;
@@ -151,7 +151,7 @@ export function maintainMachine(
   itemId: number,
   tick: number = world.tick,
 ): number {
-  if (world.player.property === null) throw new Error('Ohne Immobilie gibt es keine Spielhalle.');
+  if (world.player.properties.length === 0) throw new Error('Ohne Immobilie gibt es keine Spielhalle.');
   const item = hallFurniture(world).find((entry) => entry.id === itemId);
   if (!item) throw new Error('Kein Spielautomat auf der eigenen Flaeche.');
   if (item.damaged || item.condition < 45) throw new Error(`${item.label} ist defekt: erst reparieren.`);
