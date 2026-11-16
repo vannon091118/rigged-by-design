@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7dd00120b3530b7384786fafef837a04b553e136c951fc28b9a44ced5b724186",
+  "contentHash": "sha256:00f9a9bb7e3b8b2aaaf64a18250262336d082c2dc8e6abff5f369b8e6dae26de",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9815,6 +9815,28 @@
       "text": "Der Wirt sagt, der Laden trage sich selbst. Die Rechnungen auf dem Tisch sagen dasselbe, nur leiser.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-precommit-pipeline.json"
+    },
+    {
+      "contributionId": "governance-queue-claim-rest",
+      "turnId": "2026-11-16T06:10Z-governance-queue-claim-rest",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Abstellkammer hängen noch Zettel, die auf ein Regal zeigen, das längst ausgeräumt ist. Jemand streicht die Zeilen durch, statt sie stehen zu lassen, und lässt nur die Notizen stehen, die von wirklichen Türen erzählen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-queue-claim-rest.json"
     },
     {
       "contributionId": "governance-retry-path",
