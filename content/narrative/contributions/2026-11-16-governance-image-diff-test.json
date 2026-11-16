@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T03:20Z-governance-image-diff-test",
+  "contributionId": "governance-image-diff-test",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Hinterzimmer vergleicht jemand zwei Bilder Pixel für Pixel: gleiche Flächen, gleiche Farben, nur ein Schatten ist gewandert. Der Vergleich sagt nicht \"gut\" oder \"schlecht\", er sagt nur, wie weit sich etwas verändert hat.",
+  "directives": []
+}

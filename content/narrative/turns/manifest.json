@@ -4478,6 +4478,10 @@
       "contributionId": "city-scene-62"
     },
     {
+      "turnId": "2026-11-14T13:10Z-city-scene-63",
+      "contributionId": "city-scene-63"
+    },
+    {
       "turnId": "2026-11-14T13:12Z-city-scene-66",
       "contributionId": "city-scene-66"
     },
@@ -4718,10 +4722,6 @@
       "contributionId": "self-exclusion-scope-dok-01"
     },
     {
-      "turnId": "2026-11-15T22:55Z-806-hot-event-score",
-      "contributionId": "liilith-806-hot-event-score"
-    },
-    {
       "turnId": "2026-11-15T22:30Z-career-ladders-01",
       "contributionId": "career-ladders-01"
     },
@@ -4734,8 +4734,20 @@
       "contributionId": "meta-bestand-auflosen-01"
     },
     {
+      "turnId": "2026-11-15T22:55Z-806-hot-event-score",
+      "contributionId": "liilith-806-hot-event-score"
+    },
+    {
+      "turnId": "2026-11-15T23:10Z-active-business-work-01",
+      "contributionId": "active-business-work-01"
+    },
+    {
       "turnId": "2026-11-16T00:12Z-787-esport-roles",
       "contributionId": "liilith-787-esport-roles"
+    },
+    {
+      "turnId": "2026-11-16T01:00Z-nar-clothing-purchase-01",
+      "contributionId": "nar-clothing-purchase-01"
     },
     {
       "turnId": "2026-11-16T01:05Z-board-overview-01",
@@ -4764,6 +4776,14 @@
     {
       "turnId": "2026-11-16T03:05Z-one-command-identity",
       "contributionId": "maintainer-913-one-command-identity"
+    },
+    {
+      "turnId": "2026-11-16T03:20Z-governance-image-diff-test",
+      "contributionId": "governance-image-diff-test"
+    },
+    {
+      "turnId": "2026-11-16T03:40Z-governance-archive-ledger",
+      "contributionId": "governance-archive-ledger"
     }
   ]
 }

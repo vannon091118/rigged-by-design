@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:10fb8311f44e891c75e87c41b2a77a8da0decf47ef7b94ae445a89ee8e94f050",
+  "contentHash": "sha256:8a4283f5b578b89e227fdb939ebb78a9ea38f850af6056ad468be54a198baf39",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -52,6 +52,28 @@
       "text": "Rita legte die alten Baupläne nicht in den Müll, sondern in eine Kiste mit Frist: Was sich nachbauen lässt, verfällt nach zwei Wochen, was als Nachweis zählt, bleibt. Sie strich die Pläne aus dem Regal, nicht aus dem Verzeichnis. Wer später nachzählt, findet dieselbe Bilanz, nur weniger Staub.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-actions-storage-retention.json"
+    },
+    {
+      "contributionId": "active-business-work-01",
+      "turnId": "2026-11-15T23:10Z-active-business-work-01",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter dem Tresen steht kein Knopf, der Umsatz erzeugt. Wer die Schicht uebernimmt, stellt ein Glas hin, und der Gast zahlt dafuer; wer die Runde leitet, laesst den Gast setzen, und die Kasse sieht Einsatz und Auszahlung. Betreuung in der Lounge bucht nichts, sie hebt Laune und Geduld. Drei Aufgaben, drei Bereiche, ein Grundsatz: der Betrieb verdient nur an dem, was im Raum wirklich passiert, und wer dort steht, kann es besser als das Personal.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-15-liilith-809-active-business-work.json"
     },
     {
       "contributionId": "advance-anger-01",
@@ -7657,6 +7679,28 @@
       "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
     },
     {
+      "contributionId": "city-scene-63",
+      "turnId": "2026-11-14T13:10Z-city-scene-63",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Mann an der Ecke stand erst mitten auf der Kreuzung, dann endlich am Bordstein. Niemand hatte ihn zweimal gesetzt, nur einmal richtig.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-63.json"
+    },
+    {
       "contributionId": "city-scene-64",
       "turnId": "2026-11-14T13:24Z-city-scene-64",
       "agentId": "liilith",
@@ -9323,6 +9367,28 @@
       "source": "content/narrative/contributions/2026-11-14-goal-cost-truth.json"
     },
     {
+      "contributionId": "governance-archive-ledger",
+      "turnId": "2026-11-16T03:40Z-governance-archive-ledger",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Tisch liegt eine Liste mit achtzehn Zeilen. Neben jeder steht ein Datum, eine Nummer und ein Wort: übernommen, erledigt, liegengeblieben. Am Ende ist keine Zeile leer, und das ist der eigentliche Beweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-archive-ledger.json"
+    },
+    {
       "contributionId": "governance-ci-gates",
       "turnId": "2026-11-11T14:30Z-governance-ci-gates",
       "agentId": "codex",
@@ -9612,6 +9678,28 @@
       "text": "Der Schlüssel zum Hinterhof hängt am Haken, aber das Schloss wurde längst ausgetauscht. Der Haken ist die einzige Erinnerung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
+    },
+    {
+      "contributionId": "governance-image-diff-test",
+      "turnId": "2026-11-16T03:20Z-governance-image-diff-test",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer vergleicht jemand zwei Bilder Pixel für Pixel: gleiche Flächen, gleiche Farben, nur ein Schatten ist gewandert. Der Vergleich sagt nicht \"gut\" oder \"schlecht\", er sagt nur, wie weit sich etwas verändert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-image-diff-test.json"
     },
     {
       "contributionId": "governance-phase3-ci-state-01",
@@ -11582,6 +11670,28 @@
       "text": "Sie fragt nach dem Platz von damals, nicht nach dem Gewinn. Als du nickst, setzt sie sich, als wäre es abgemacht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-nar-body-warm-02.json"
+    },
+    {
+      "contributionId": "nar-clothing-purchase-01",
+      "turnId": "2026-11-16T01:00Z-nar-clothing-purchase-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kleiderschrank im Apartment füllt sich: ein Street-Tee von UrbanThreads, eine Basis-Cap von CapCo, eine Silberkette von BlingHouse. Jedes Stück hat einen Preis, eine Marke und eine Wirkung, wenn man auf der Straße gesehen wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json"
     },
     {
       "contributionId": "nar-echo-body-01",

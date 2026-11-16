@@ -88,7 +88,7 @@ const determinism = {
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'docs/Chats/**', 'plugins/**'],
+    ignores: ['dist/**', '.verify-cache/**', 'node_modules/**', 'coverage/**', 'docs/Chats/**', 'plugins/**'],
   },
   {
     // Kein Kommentar darf eine Regel abschalten: die Sperre ist nicht wegredbar.
