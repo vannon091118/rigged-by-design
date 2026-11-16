@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T13:20Z-log-flag",
+  "contributionId": "log-flag",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt hörte auf, von jedem Abend ein vollständiges Protokoll zu binden. Wer nachlesen wollte, sagte es vorher; dann legte er nur die Seiten ein, auf denen etwas schiefgegangen war, und schrieb die Nummer des Fehlers obenauf.",
+  "directives": []
+}

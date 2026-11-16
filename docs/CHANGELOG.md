@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **Logs nur auf Anforderung.** `captureConsole`, die Gate-Pipeline, `ci:local` und der Pre-Commit-Hook schreiben keine Logdatei mehr, solange `--log` (oder `RBD_LOG=1` im Kind) fehlt; mit `--log` entstehen Logs nur fuer rote Gates und tragen deren Error Code, waehrend gruene Laeufe keine Datei hinterlassen. Gekuerzte Antworten verweisen ohne `--log` auf den Schalter (#996).
 - **Vollscan des Ausgabe-Budgets und eine globale Befehlsoberflaeche.** Jeder Pflicht-Einstiegspunkt ist jetzt aus `package.json`, den Hooks und `AGENTS.md` hergeleitet, gemessen und gekapselt; auch die 43 zuvor ungekapselten Hilfsskripte laufen durch `captureConsole`, und ein Altpfad-Sweep im neuen Gate `verify:output-budget` macht jede neue Ausgabe ohne Vertrag rot. Alle Governance-Befehle haben dieselbe Form `rbd <gruppe> <aktion>` statt langer `node`-/`pnpm run`-Zeilen; `--json` und `RBD_OUTPUT_FULL=1` bleiben die einzigen Ausnahmen (#996).
 - **Issue-Board als Steuerungswahrheit.** `AGENTS.md` ist neu geschrieben: eine Quelle pro Datentyp, Rollen, Issue-Lebenszyklus und Prompt-Register statt dreier konkurrierender State-Erzählungen. `README.md` erklärt das Board am Ende, `.cron/maintainer-prompt.md` und das `gate-failure`-Template nennen keinen Merge- oder Close-Auftrag für Agenten mehr (#886).
 - **Weniger Doku.** `docs/LOCAL_CI.md` (Dopplung zu `CI.md`/`TESTING.md`) und `docs/RUNBOOK-AUTO-RESOLVE.md` (Workflow existiert nicht mehr) sind entfernt; die Verweise zeigen auf die kanonischen Stellen.

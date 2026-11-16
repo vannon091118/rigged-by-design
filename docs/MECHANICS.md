@@ -85,8 +85,10 @@ in `scripts/lib/entry-points.mjs`; 21 davon wurden mit echtem Lauf gemessen
 (ungekuerzt 9 bis 1220 Token, sichtbar 9 bis 494 Token), die vier uebrigen
 (Hooks und `turn:finish`) laufen durch dieselbe Funktion und werden statisch
 geprueft. Gekuerzt wird nur Detail, nie Zustand — Status, Blocker, Befund und
-der naechste Befehl bleiben, alles andere steht vollstaendig im Log unter
-`.verify-cache/output/`, das jede Antwort nennt. Die Schaetzung ist konservativ
+der naechste Befehl bleiben. Ein Log entsteht nur mit `--log` (oder `RBD_LOG=1`
+im Kindprozess) und nur fuer rote Gates; es traegt dann deren Error Code. Ohne
+`--log` schreibt kein Werkzeug eine Logdatei — eine gekuerzte Antwort sagt
+stattdessen `vollstaendig mit --log`. Die Schaetzung ist konservativ
 (Bytes / 3, ohne echten Tokenizer im Repo), damit die Grenze auch beim
 Tokenizer haelt.
 

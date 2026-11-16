@@ -2642,3 +2642,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** 21 Einstiegspunkte mit echtem Lauf gemessen: ungekuerzt 9 bis 1220 Token, sichtbar 9 bis 494. `rbd help` 291 Token. Gate und Tests gruen; die sechs roten Tests im vollen Lauf (drei Store-, drei Governance-Tests) sind auf `01ddf030` vorbestehend und nicht Teil dieses Auftrags.
 
+## 2026-11-16 — Logs nur mit `--log`, und dann nur die roten (Buffy)
+
+**Befund.** Jeder Lauf schrieb seine Ausgabe unter `.verify-cache/output/` und `.verify-cache/reports/`, auch wenn niemand sie lesen wollte. Ein gruener Gate-Lauf hinterliess dutzende Dateien; der Cache wuchs mit der Zahl der Aufrufe, nicht mit der Zahl der Befunde.
+
+**Entscheidung.** `logsEnabled()` in `scripts/lib/compact.mjs` ist die eine Regel: Logs nur mit `--log` am Befehl oder `RBD_LOG=1` im Kindprozess. Die Pipeline schreibt zusaetzlich nur Logs roter Gates, jeweils mit Error Code im Kopf; gruene Gates hinterlassen keine Datei. Ohne `--log` nennt eine gekuerzte Antwort `vollstaendig mit --log` statt eines Pfads.
+
+**Nachweis.** `verify-scope` ohne `--log`: keine neue Datei; mit `--log`: genau eine. `verify:light --gate=tree` ohne `--log`: null Reportdateien. Gate und Light-Profil gruen.
+

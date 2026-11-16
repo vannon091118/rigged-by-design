@@ -61,7 +61,7 @@ if (withProbe) {
     const tokens = estimateTokens(output);
     if (tokens > TOKEN_BUDGET) findings.push(`${entry.id}: ${tokens} Token (Budget ${TOKEN_BUDGET})`);
     const shortened = output.includes('gekuerzt') || output.includes('\u2026');
-    if (shortened && !output.includes('.verify-cache/output/')) findings.push(`${entry.id}: gekuerzte Ausgabe nennt ihr Log nicht`);
+    if (shortened && !/vollstaendig (im Log|mit --log)|vollstaendig: /.test(output)) findings.push(`${entry.id}: gekuerzte Ausgabe nennt ihr Log nicht`);
   }
 }
 

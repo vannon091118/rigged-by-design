@@ -744,10 +744,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3268 |
-| Gelistete Dateien | 3268 |
+| Getrackte Dateien | 3269 |
+| Gelistete Dateien | 3269 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (99), .lanes (1), artifacts (1), bin (1), content (1213), docs (87), packages (27), public (571), scripts (152), src (1095) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (99), .lanes (1), artifacts (1), bin (1), content (1214), docs (87), packages (27), public (571), scripts (152), src (1095) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -764,7 +764,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1209 Datei(en)
+- `content/narrative/contributions/` — 1210 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -2187,6 +2187,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-governance-queue-claim-rest.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-tag-vollpruefung.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-log-flag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json` — { — gelesen: 21 Zeilen
@@ -2202,24 +2203,24 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-output-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27155 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4841 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27177 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4845 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1195 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1196 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 99 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2644 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2652 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
-- `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 180 Zeilen
+- `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 182 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
@@ -2941,7 +2942,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/claim-hygiene.mjs` — Claim-Hygiene: offene Lane-Claims gegen den Issue-Status pruefen. — gelesen: 120 Zeilen
 - `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 154 Zeilen
 - `scripts/lib/command-surface.mjs` — Die globale Befehlsoberflaeche: `rbd <gruppe> <aktion> [flags]`. — gelesen: 120 Zeilen
-- `scripts/lib/compact.mjs` — import { mkdirSync, writeFileSync } from 'node:fs'; — gelesen: 214 Zeilen
+- `scripts/lib/compact.mjs` — import { mkdirSync, writeFileSync } from 'node:fs'; — gelesen: 224 Zeilen
 - `scripts/lib/credentials.mjs` — Eine Aufloesungsstelle fuer das GitHub-Token. — gelesen: 91 Zeilen
 - `scripts/lib/dependency-change.mjs` — Eine Wahrheit fuer eine kleine, aber teure Frage: haben sich Abhaengigkeiten — gelesen: 68 Zeilen
 - `scripts/lib/dependency-fingerprint.mjs` — Dependency-Fingerprint: Installation nur, wenn sich wirklich etwas aendert. — gelesen: 82 Zeilen
@@ -2953,7 +2954,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 79 Zeilen
 - `scripts/lib/gate-cache.mjs` — Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. — gelesen: 101 Zeilen
 - `scripts/lib/gate-diagnostics.mjs` — Mehrfach-Diagnose eines roten CI-Laufs. — gelesen: 120 Zeilen
-- `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 257 Zeilen
+- `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 265 Zeilen
 - `scripts/lib/generated-files.mjs` — Generierte Artefakte: eine Liste, ein Eigentuemer, ein Regenerationspfad. — gelesen: 152 Zeilen
 - `scripts/lib/gh-bootstrap.mjs` — `gh` nur feststellen, nie nachladen. — gelesen: 44 Zeilen
 - `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board (wird synchron von `github-rest.mjs` gestartet). — gelesen: 265 Zeilen
@@ -3003,10 +3004,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/worktree-lifecycle.mjs` — Worker-Worktree-Lifecycle: Neuaufbau nur mit belegtem Merge. — gelesen: 74 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt den vollstaendigen PR-Diff in einen abgegrenzten Automationsbereich. — gelesen: 145 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 36 Zeilen
-- `scripts/local-ci.mjs` — Der lokale CI-Runner. Er ersetzt die frueheren GitHub-Workflows fuer — gelesen: 88 Zeilen
+- `scripts/local-ci.mjs` — Der lokale CI-Runner. Er ersetzt die frueheren GitHub-Workflows fuer — gelesen: 89 Zeilen
 - `scripts/merge-driver-generated.mjs` — merge-driver-generated: git-Merge-Driver fuer generierte Artefakte (#877). — gelesen: 92 Zeilen
 - `scripts/post-merge-closeout.mjs` — Post-Merge-Closeout: nach einem Merge den Registerstand nachziehen. — gelesen: 252 Zeilen
-- `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 134 Zeilen
+- `scripts/precommit.mjs` — Zentraler Pre-Commit-Runner. — gelesen: 136 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 251 Zeilen
 - `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 912 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 675 Zeilen
@@ -3185,7 +3186,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/narrative-lane-integration.test.ts` — Zwei Lanes, zwei Beitraege, ein Main: dieser Lauf belegt den serialisierten — gelesen: 174 Zeilen
 - `src/core/governance/__tests__/narrative-world-text.test.ts` — Spieltexte duerfen ohne Kenntnis des Repos verstaendlich sein. Dieser Test — gelesen: 43 Zeilen
 - `src/core/governance/__tests__/output-budget-coverage.test.ts` — Der Vollscan als Test: die Pflichtliste muss Start, Board, Commit, Verify — gelesen: 80 Zeilen
-- `src/core/governance/__tests__/output-budget.test.ts` — Der Ausgabe-Vertrag der Agenten-Werkzeuge: sichtbar bleiben hoechstens 500 — gelesen: 53 Zeilen
+- `src/core/governance/__tests__/output-budget.test.ts` — Der Ausgabe-Vertrag der Agenten-Werkzeuge: sichtbar bleiben hoechstens 500 — gelesen: 66 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/pr-body.test.ts` — Der PR-Body wird im Plan geprueft. Die exakten Ueberschriften und echte — gelesen: 34 Zeilen
 - `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 196 Zeilen

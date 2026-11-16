@@ -99,6 +99,13 @@ export const FULL_ENV = 'RBD_OUTPUT_FULL';
 /** Token, die der Logverweis selbst braucht (Pfad + Label). */
 const POINTER_RESERVE = 60;
 
+/** Logs entstehen nur auf Anforderung: `--log` am Befehl oder RBD_LOG=1 im Kind. */
+export const LOG_FLAG = '--log';
+
+export function logsEnabled(argv = process.argv) {
+  return argv.includes(LOG_FLAG) || process.env.RBD_LOG === '1';
+}
+
 /** Konservative Obergrenze: deutsche Prosa braucht ~4 Zeichen je Token. */
 export function estimateTokens(value) {
   return Math.ceil(Buffer.byteLength(String(value ?? ''), 'utf8') / 3);
@@ -112,7 +119,7 @@ const HARD_LINE = /(ERR-\d|FAIL|ROT|BLOCKIERT)/;
 export function budgetText(value, { label = 'output', logPath = null, limit = TOKEN_BUDGET } = {}) {
   const raw = String(value ?? '').replace(/\r\n/g, '\n');
   const lines = raw.split('\n').filter((entry) => entry.trim() !== '');
-  const footer = logPath ? `vollstaendig: ${logPath}` : `vollstaendig: ${FULL_ENV}=1`;
+  const footer = logPath ? `vollstaendig: ${logPath}` : `vollstaendig mit ${LOG_FLAG}`;
   if (lines.length === 0) return `${label}: keine Ausgabe\n${footer}`;
   if (estimateTokens(raw) <= limit) return raw.replace(/\s+$/, '');
   const header = clip(lines[0], 160);
@@ -181,7 +188,8 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
   };
   process.stdout.write = collect(outChunks);
   process.stderr.write = collect(errChunks);
-  const path = logPath ?? budgetLogPath(label);
+  const withLog = logsEnabled();
+  const path = withLog ? (logPath ?? budgetLogPath(label)) : null;
   let done = false;
   const flush = () => {
     if (done) return;
@@ -192,11 +200,13 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
     const errors = errChunks.join('');
     const full = `${output}${errors}`;
     if (full.trim() === '') return;
-    try {
-      mkdirSync(dirname(path), { recursive: true });
-      writeFileSync(path, full, 'utf8');
-    } catch {
-      // Ein nicht schreibbares Log kippt keinen Lauf; der Bericht nennt den Pfad.
+    if (path) {
+      try {
+        mkdirSync(dirname(path), { recursive: true });
+        writeFileSync(path, full, 'utf8');
+      } catch {
+        // Ein nicht schreibbares Log kippt keinen Lauf; der Bericht nennt den Pfad.
+      }
     }
     // Passt alles ins Budget, bleiben die Strieme getrennt: stdout ist stdout,
     // stderr ist stderr, und ein Vertrag auf genau eine Zeile haelt weiter.
