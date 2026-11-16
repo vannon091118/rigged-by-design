@@ -189,9 +189,8 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
   process.stdout.write = collect(outChunks);
   process.stderr.write = collect(errChunks);
   const withLog = logsEnabled();
-  const path = withLog ? (logPath ?? budgetLogPath(label)) : null;
   let done = false;
-  const flush = () => {
+  const flush = (code = process.exitCode ?? 0) => {
     if (done) return;
     done = true;
     process.stdout.write = stdout;
@@ -200,14 +199,20 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
     const errors = errChunks.join('');
     const full = `${output}${errors}`;
     if (full.trim() === '') return;
+    // Logs nur fuer fehlerhafte Laeufe und nur mit Error Code: ein gruener
+    // Lauf hinterlaesst keine Datei, auch nicht mit --log.
+    const failed = code !== 0;
+    const path = withLog && failed ? (logPath ?? budgetLogPath(label)) : null;
+    const coded = failed && !/ERR-\d{4}/.test(full) ? `[ERR-4019] ${label} fehlgeschlagen\n${full}` : full;
     if (path) {
       try {
         mkdirSync(dirname(path), { recursive: true });
-        writeFileSync(path, full, 'utf8');
+        writeFileSync(path, coded, 'utf8');
       } catch {
         // Ein nicht schreibbares Log kippt keinen Lauf; der Bericht nennt den Pfad.
       }
     }
+    const written = path;
     // Passt alles ins Budget, bleiben die Strieme getrennt: stdout ist stdout,
     // stderr ist stderr, und ein Vertrag auf genau eine Zeile haelt weiter.
     if (estimateTokens(full) <= TOKEN_BUDGET - POINTER_RESERVE) {
@@ -215,10 +220,10 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
       if (errors) stderr(errors.endsWith('\n') ? errors : `${errors}\n`);
       return;
     }
-    const body = budgetText(full, { label, logPath: path, limit: TOKEN_BUDGET - POINTER_RESERVE });
+    const body = budgetText(full, { label, logPath: written, limit: TOKEN_BUDGET - POINTER_RESERVE });
     stdout(body.endsWith('\n') ? body : `${body}\n`);
   };
-  process.on('exit', flush);
+  process.on('exit', (code) => flush(code));
   process[CAPTURED] = true;
   return { flush };
 }

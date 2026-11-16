@@ -86,9 +86,13 @@ in `scripts/lib/entry-points.mjs`; 21 davon wurden mit echtem Lauf gemessen
 (Hooks und `turn:finish`) laufen durch dieselbe Funktion und werden statisch
 geprueft. Gekuerzt wird nur Detail, nie Zustand — Status, Blocker, Befund und
 der naechste Befehl bleiben. Ein Log entsteht nur mit `--log` (oder `RBD_LOG=1`
-im Kindprozess) und nur fuer rote Gates; es traegt dann deren Error Code. Ohne
-`--log` schreibt kein Werkzeug eine Logdatei — eine gekuerzte Antwort sagt
-stattdessen `vollstaendig mit --log`. Die Schaetzung ist konservativ
+im Kindprozess) **und** nur fuer fehlerhafte Laeufe: ein gruener Lauf
+hinterlaesst keine Datei, auch nicht mit `--log`. Die erste Zeile traegt einen
+Error Code; nennt der Lauf keinen, setzt der Schreiber `ERR-4019`. Ohne `--log`
+schreibt kein Werkzeug eine Logdatei — eine gekuerzte Antwort sagt stattdessen
+`vollstaendig mit --log`. `logs-failure-only.test.ts` belegt beides mit echten
+Kindprozessen (Exit 0: keine Datei, Exit 1: Datei mit Code) und prueft die
+Schreiber in `precommit`, `ci:local` und `gate-runner` statisch. Die Schaetzung ist konservativ
 (Bytes / 3, ohne echten Tokenizer im Repo), damit die Grenze auch beim
 Tokenizer haelt.
 
@@ -102,8 +106,8 @@ die Grenze von Hand nachrechnen muss.
 Zwei bewusste Ausnahmen: `--json` ist Werkzeugformat und bleibt vollstaendig,
 `RBD_OUTPUT_FULL=1` hebt die Kappung fuer eine Beweisfuehrung auf. Die Hooks
 geben je Schritt eine Zeile aus (`precommit: <name>: ok` oder `ROT` mit Log und
-den letzten Zeilen); Kindausgaben landen vollstaendig in
-`.verify-cache/output/`. Exit-Codes aendert das Budget nie: ein roter Lauf
+den letzten Zeilen); Kindausgaben landen nur im Fehlerfall
+vollstaendig in `.verify-cache/output/` bzw. `.verify-cache/reports/`. Exit-Codes aendert das Budget nie: ein roter Lauf
 bleibt rot.
 
 ## Eine Befehlsoberflaeche: `rbd <gruppe> <aktion>`

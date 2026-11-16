@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T16:10Z-logs-failure-only",
+  "contributionId": "logs-failure-only",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt hatte zuletzt jeden Gang mitschreiben lassen, auch die ruhigen. Jetzt legt er den Stift nur noch weg, wenn etwas zerbrochen ist — und schreibt die Nummer des Bruchstücks in die erste Zeile, damit niemand lange suchen muss.",
+  "directives": []
+}

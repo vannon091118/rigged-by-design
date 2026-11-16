@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:383cbf9602e3bf7b073bc19dd256f2636bc6de538eb40c8cb3860de4e8ae30cc",
+  "contentHash": "sha256:6ba20474e31fda0c09207d8a63d500b19d6a4d5bde9c1fa6fb84385a4deb07ac",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10846,6 +10846,28 @@
       "text": "Die Karten liegen offen, und die Summe stimmt: Was ausgezahlt wird, steht in einer Zeile, die niemand nachträglich verschiebt. Der Gast zählt nicht nach, er sieht nur, dass die Rechnung aufgeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-logic-safety-payout-01.json"
+    },
+    {
+      "contributionId": "logs-failure-only",
+      "turnId": "2026-11-16T16:10Z-logs-failure-only",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt hatte zuletzt jeden Gang mitschreiben lassen, auch die ruhigen. Jetzt legt er den Stift nur noch weg, wenn etwas zerbrochen ist — und schreibt die Nummer des Bruchstücks in die erste Zeile, damit niemand lange suchen muss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-logs-failure-only.json"
     },
     {
       "contributionId": "machine-hall-01",
