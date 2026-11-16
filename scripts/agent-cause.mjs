@@ -22,7 +22,7 @@
  *   RBD_VERBOSE=1 pnpm run agent:cause       # mit Rohbefund je Gate
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { captureConsole, compact, field, isVerbose } from './lib/compact.mjs';
@@ -32,6 +32,7 @@ import { loadClaims, selectClaim } from './lib/lane-claims.mjs';
 import { GATES } from './lib/pipeline-plan.mjs';
 import { gateOf } from './lib/repair-plan.mjs';
 import { ROOT } from './lib/report.mjs';
+import { readSection, reportsDir, setSection, stateStamp } from './lib/verify-state.mjs';
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -48,7 +49,7 @@ const fileArg = (() => {
   return next && !next.startsWith('--') ? next : '';
 })();
 
-const CACHE_FILE = join(ROOT, '.verify-cache', 'ci-cause.json');
+
 
 const git = (list) => {
   try {
@@ -118,7 +119,7 @@ function clip(value, max = 240) {
 
 /** Letzte Pipeline-Summary; `null`, wenn keine existiert. */
 function latestSummary() {
-  const base = join(ROOT, '.verify-cache', 'reports');
+  const base = reportsDir({ root: ROOT });
   if (!existsSync(base)) return null;
   const runs = readdirSync(base)
     .map((name) => join(base, name))
@@ -139,7 +140,7 @@ function latestSummary() {
 
 /** Lokale rote Gates aus `agent:verify` (bevorzugt) oder aus der Summary. */
 function localFindings() {
-  const agentFile = join(ROOT, '.verify-cache', 'reports', 'agent', 'agent-summary.json');
+  const agentFile = join(reportsDir({ root: ROOT }), 'agent', 'agent-summary.json');
   if (existsSync(agentFile)) {
     try {
       const report = JSON.parse(readFileSync(agentFile, 'utf8'));
@@ -253,21 +254,13 @@ function ciFindings(run, slug) {
 }
 
 function readCache(head) {
-  try {
-    const record = JSON.parse(readFileSync(CACHE_FILE, 'utf8'));
-    return record?.head === head ? record : null;
-  } catch {
-    return null;
-  }
+  const record = readSection('cause');
+  return record?.head === head ? record : null;
 }
 
 function writeCache(record) {
-  try {
-    mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-    writeFileSync(CACHE_FILE, `${JSON.stringify(record, null, 2)}\n`, 'utf8');
-  } catch {
-    // Der Cache ist Komfort; der Befund haengt nicht daran.
-  }
+  // Der Cache ist Komfort; der Befund haengt nicht daran.
+  setSection('cause', { ...record, at: stateStamp() });
 }
 
 /**
@@ -372,12 +365,8 @@ function build() {
   const head = git(['rev-parse', 'HEAD']);
   const claim = selectClaim(loadClaims(), branch);
   const blockers = [];
-  try {
-    const state = JSON.parse(readFileSync(join(ROOT, '.verify-cache', 'task-state.json'), 'utf8'));
-    for (const blocker of state.blockers ?? []) blockers.push(blocker);
-  } catch {
-    // Ohne Pretask-Zustand bleibt nur der Gate-Befund.
-  }
+  const state = readSection('task');
+  for (const blocker of state.blockers ?? []) blockers.push(blocker);
 
   const base = {
     branch,

@@ -4,8 +4,8 @@
  * Der Vertrag liegt als `.lane-claims/tasks/<taskId>.json` im Branch und
  * beschreibt Phase, offene Befunde, PR-Zustand und die naechste Aktion. Er ist
  * kein Cache: `pretask`, `turn:finish`, `ci-plan` und `promote` lesen und
- * validieren ihn ueber dieselbe Funktion. `.verify-cache/task-state.json`
- * bleibt eine fluechtige Kopie fuer den lokalen Ablauf.
+ * validieren ihn ueber dieselbe Funktion. Der Abschnitt `task` in
+ * `.verify-cache/state.json` bleibt eine fluechtige Kopie fuer den lokalen Ablauf.
  *
  * Phasen:
  *   READY          Task beschrieben, noch kein lokaler Turn

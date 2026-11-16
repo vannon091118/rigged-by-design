@@ -20,6 +20,7 @@ import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
 import { botClaim, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { reportsDir } from './lib/verify-state.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'agent-verify' });
@@ -110,7 +111,7 @@ const report = {
   ],
 };
 
-const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'reports', 'agent');
+const dir = reportsDir({ root: ROOT, stamp: 'agent' });
 mkdirSync(dir, { recursive: true });
 writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
 

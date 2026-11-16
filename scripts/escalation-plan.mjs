@@ -7,6 +7,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describePlan, LEVELS, plan } from './lib/escalation.mjs';
 import { ROOT } from './lib/report.mjs';
+import { reportsDir } from './lib/verify-state.mjs';
 import { captureConsole } from './lib/compact.mjs';
 
 const args = process.argv.slice(2);
@@ -18,7 +19,7 @@ const fileArg = fileAt >= 0 ? args[fileAt + 1] : null;
 const textArg = args.find((arg) => !arg.startsWith('--') && arg !== fileArg);
 
 function latestSummary() {
-  const base = join(ROOT, '.verify-cache', 'reports');
+  const base = reportsDir({ root: ROOT });
   if (!existsSync(base)) return '';
   const runs = readdirSync(base)
     .map((name) => join(base, name))

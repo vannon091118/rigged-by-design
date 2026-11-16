@@ -12,11 +12,9 @@
  * Bestandsaufnahme aus Git, Importgraph, Katalog und Doku.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join, relative } from 'node:path';
 import { impact, oneLineOf } from './lib/impact.mjs';
 import { captureConsole, compact } from './lib/compact.mjs';
-import { ROOT } from './lib/report.mjs';
+import { writeContextView } from './lib/verify-state.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'agent-context' });
 
@@ -32,15 +30,7 @@ const write = (text) => new Promise((resolve) => process.stdout.write(text, reso
  * Cache, nicht Teil des Commits und nur fuer Werkzeuge und Debugging gedacht.
  */
 function persistFull() {
-  const file = join(ROOT, '.verify-cache', 'agent-context.json');
-  try {
-    mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-    const text = `${JSON.stringify(result, null, 2)}\n`;
-    writeFileSync(file, text, 'utf8');
-    return { file: relative(ROOT, file).replaceAll('\\', '/'), bytes: Buffer.byteLength(text) };
-  } catch {
-    return { file: null, bytes: 0 };
-  }
+  return writeContextView(result);
 }
 
 /** Nur die Felder, aus denen ein Agent seinen naechsten Schritt ableitet. */

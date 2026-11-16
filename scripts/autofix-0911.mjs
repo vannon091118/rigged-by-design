@@ -12,6 +12,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { join, resolve } from 'node:path';
 import { autofixLine, ROOT } from './lib/report.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { stateDir } from './lib/verify-state.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'autofix-0911' });
 
@@ -26,7 +27,7 @@ const log = (message) => {
  * von node_modules, weil pnpm install --frozen-lockfile jedes Mal node_modules neu aufbaut, und wird verworfen, sobald
  * sich ESLint-Config oder Lockfile geaendert haben -- dann gilt alles als unveraendert.
  */
-const CACHE_DIR = resolve(ROOT, '.verify-cache');
+const CACHE_DIR = stateDir(ROOT);
 const SCOPE_FILES = ['src/Config/eslint.config.mjs', 'package-lock.json'];
 function lintScope() {
   const hash = createHash('sha256');

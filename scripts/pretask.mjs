@@ -3,7 +3,7 @@
  * Pretask: der Start jedes Laufs.
  *
  * Der Lauf liest Git, Claims, Issues und den Impact-Plan. Er veraendert keine
- * Git-Dateien und schreibt nur `.verify-cache/task-state.json`. Die Modi:
+ * Git-Dateien und schreibt nur `.verify-cache/state.json`. Die Modi:
  *
  * NEW     sauberer Start mit eigenem Claim
  * RESUME  adoptierbare WIP (eigene, fremde, unvollstaendige) im Claim-Scope
@@ -16,8 +16,9 @@
  * Arbeitsbaum ist der Normalfall; Isolation fordert nur `--require-worktree`.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { CONTEXT_VIEW, gcVerifyState, STATE_FILE, updateSection, writeContextView } from './lib/verify-state.mjs';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { filterMergedCollisions, mergedPullRequestIndex, planReconcile } from './lib/claim-evidence.mjs';
 import {
@@ -83,7 +84,7 @@ function reservedIdentity() {
 
 const agentIdentity = process.env.RBD_AGENT || (agentFlag >= 0 ? argv[agentFlag + 1] : '') || reservedIdentity() || 'agent-local';
 /** Der Impact-Block wird nicht zweimal in die Ausgabe gelegt. */
-const CONTEXT_FILE = '.verify-cache/agent-context.json';
+const CONTEXT_FILE = CONTEXT_VIEW;
 
 const blockers = [];
 const warnings = [];
@@ -287,10 +288,7 @@ if (!contextData || typeof contextData !== 'object') {
 // Die vollstaendige Fassung liegt neben dem Cache, damit Werkzeuge und
 // Debugging denselben Stand lesen wie pretask.
 const contextFile = CONTEXT_FILE;
-try {
-  mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-  writeFileSync(join(ROOT, CONTEXT_FILE), `${JSON.stringify(contextData, null, 2)}\n`, 'utf8');
-} catch {
+if (!writeContextView(contextData).file) {
   warnings.push(`Kontextdatei ${CONTEXT_FILE} konnte nicht geschrieben werden`);
 }
 
@@ -780,13 +778,14 @@ const checks = {
   takeover: takeover.blocked === 0,
   mode,
 };
-const taskStatePath = join(ROOT, '.verify-cache', 'task-state.json');
-mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-writeFileSync(
-  taskStatePath,
-  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, automation, pr: prState, ci: ciState, baseRefresh, contract, blockers, warnings }, null, 2)}\n`,
-  'utf8',
-);
+updateSection('task', {
+  version: 1, mode, state, claimState, branch, head, base, worktree,
+  taskStatus: taskState.status, taskInfo: contract.taskState, automation,
+  pr: prState, ci: ciState, baseRefresh, contract, blockers, warnings,
+});
+// Ein Aufraeumpfad fuer den ganzen Cache, nicht einer je Artefakt.
+const cleaned = gcVerifyState({ root: ROOT });
+if (cleaned.removed.length > 0) notes.push(`Cache aufgeraeumt: ${cleaned.removed.length} Eintrag/Eintraege (TTL)`);
 
 if (asJson) {
   if (brief) {
@@ -845,7 +844,7 @@ if (asJson) {
     cleanup,
     worktreePrune,
     contract,
-    taskState: '.verify-cache/task-state.json',
+    taskState: STATE_FILE,
     blockers,
     causes,
     warnings,
