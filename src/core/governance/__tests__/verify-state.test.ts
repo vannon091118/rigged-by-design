@@ -158,6 +158,48 @@ describe('verify-state', () => {
     expect(delegated['d-19']).toBe(19);
   }, 30_000);
 
+  it('migriert Altdateien und raeumt im selben Lauf, ohne die Migration zu verlieren', () => {
+    const { root, dir } = tempRoot();
+    writeFileSync(join(dir, 'delegated.json'), JSON.stringify({ tests: ['src/x.test.ts'], proof: ['p'] }));
+    writeFileSync(statePath(root), JSON.stringify({
+      version: 1,
+      updatedAt: null,
+      meta: { gates: NOW },
+      task: {},
+      base: null,
+      delegated: null,
+      cause: null,
+      gates: { alt: { key: 'k', at: NOW - 40 * 86_400_000 } },
+    }));
+    mkdirSync(join(dir, 'output'), { recursive: true });
+    const oldLog = join(dir, 'output', 'alt.log');
+    writeFileSync(oldLog, 'x');
+    utimesSync(oldLog, 0, 0);
+
+    const gc = gcVerifyState({ root, ttlDays: 1, now: NOW });
+    const after = readState({ root });
+
+    // Die Migration darf nicht durch den Aufraeum-Schreibvorgang verloren gehen.
+    expect((after.delegated as { tests?: string[] }).tests).toEqual(['src/x.test.ts']);
+    expect(existsSync(join(dir, 'delegated.json'))).toBe(false);
+    expect(gc.removed).toContain('delegated.json');
+    expect(after.gates.alt).toBeUndefined();
+  });
+
+  it('behaelt einen frischen Gate-Eintrag ueber den TTL-Pfad', () => {
+    const { root } = tempRoot();
+    // Der Gate-Cache schrieb sein Alter frueher als ISO-String.
+    writeGate('lint', { key: 'k', at: new Date(NOW).toISOString() }, { root });
+    writeGate('typecheck', { key: 'k', at: NOW }, { root });
+
+    const gc = gcVerifyState({ root, ttlDays: 1, now: NOW });
+    const gates = readGates({ root });
+
+    expect(gc.removed).toEqual([]);
+    expect(gates.lint?.key).toBe('k');
+    expect(gates.typecheck?.key).toBe('k');
+  });
+
   it('migriert idempotent und laesst Unbekanntes liegen', () => {
     const { root, dir } = tempRoot();
     writeFileSync(join(dir, 'fremd.json'), JSON.stringify({ hello: 'world' }));

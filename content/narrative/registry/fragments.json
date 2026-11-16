@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:92de943ac8115ad7ade8f496ff3009a0a3441359edb259678ab46664b9842cfb",
+  "contentHash": "sha256:c98d0d5935218fb649471857c112edb4ffb89af0fee63b10f6c25bd5fb185a2d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27065,6 +27065,28 @@
       "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-verify-state.json"
+    },
+    {
+      "contributionId": "verify-state-cache-01",
+      "turnId": "2026-11-17T23:42Z-verify-state-cache-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Archivar raeumt die Kammer auf und traegt dabei die alten Zettel in das grosse Buch ein, das er eben erst geschlossen hat. Diesmal legt er den Stapel zuerst um, bevor er die Fristen streicht - sonst haette er mit dem Loeschen begonnen, was er gerade gerettet hat. Neben dem Buch haengt eine Uhr mit Zahlen statt Ziffern, damit niemand einen frischen Eintrag fuer alt haelt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-verify-state-cache.json"
     },
     {
       "contributionId": "verify-state-concurrency-01",

@@ -11,7 +11,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
-import { dropGate, readGates, writeGate } from './verify-state.mjs';
+import { dropGate, readGates, stateStamp, writeGate } from './verify-state.mjs';
 
 // Der Cache liegt ausserhalb von node_modules: pnpm install --frozen-lockfile
 // zerstoert jedes Mal node_modules und damit jeden Gate-Cache, bevor die
@@ -88,7 +88,9 @@ export function isCached(name, key) {
 }
 
 export function markCached(name, key) {
-  writeGate(name, { key, at: new Date().toISOString() });
+  // Numerische Infrastrukturzeit: der TTL-Pfad rechnet damit. Ein ISO-String
+  // galt dort als unendlich alt und loeschte den Eintrag beim naechsten Lauf.
+  writeGate(name, { key, at: stateStamp() });
 }
 
 export function dropCached(name) {

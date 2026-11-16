@@ -366,8 +366,11 @@ export function writeContextView(value, { root = ROOT } = {}) {
 }
 
 function ageDays(at, now) {
-  if (!Number.isFinite(at)) return Number.POSITIVE_INFINITY;
-  return (now - at) / DAY_MS;
+  // Gate-Eintraege vor #1039 trugen einen ISO-Zeitstempel; der ist nicht
+  // "unendlich alt", sondern ein lesbares Datum.
+  const ms = typeof at === 'string' ? Date.parse(at) : at;
+  if (!Number.isFinite(ms)) return Number.POSITIVE_INFINITY;
+  return (now - ms) / DAY_MS;
 }
 
 function removeOldEntries(dir, days, now) {
@@ -403,8 +406,12 @@ function gcVerifyStateLocked({
   reportDays = Number(process.env.RBD_VERIFY_REPORT_TTL_DAYS || DEFAULT_REPORT_DAYS),
 } = {}) {
   const ttl = Number.isFinite(ttlDays) && ttlDays >= 0 ? ttlDays : DEFAULT_TTL_DAYS;
+  // Erst migrieren, dann aufraeumen: Die Altdateien gehoeren in denselben
+  // Zustand, der gleich geschrieben wird. Wuerde der vor der Migration
+  // gelesene Stand am Ende zurueckgeschrieben, waeren sie wieder verloren.
+  const legacy = migrateLegacy({ root });
   const state = readRaw(root);
-  const removed = [];
+  const removed = [...legacy.removed];
   for (const section of TTL_SECTIONS) {
     if (ageDays(state.meta?.[section], now) <= ttl) continue;
     const previous = state[section];
@@ -423,8 +430,6 @@ function gcVerifyStateLocked({
   }
   removed.push(...removeOldEntries(logsDir(root), ttl, now));
   removed.push(...removeOldEntries(reportsDir({ root }), reportDays, now));
-  const legacy = migrateLegacy({ root });
-  for (const name of legacy.removed) removed.push(name);
   if (removed.length > 0) {
     touch(state, 'gc');
     delete state.meta.gc;

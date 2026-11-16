@@ -1,0 +1,32 @@
+{
+  "id": "lane/governance/issue-1049-verify-state-cache",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1049-verify-state-cache",
+  "baseSha": "407f3ccc1065e301a5de58ada8a8209f0189ebf6",
+  "issue": 1049,
+  "task": "Verify-State: Migration und Gate-TTL nachpruefen",
+  "goal": "Migration und Aufraeumen verlieren keinen Abschnitt; gate-cache-Eintraege ueberleben die TTL.",
+  "pathAllowlist": [
+    "scripts/lib/verify-state.mjs",
+    "scripts/lib/gate-cache.mjs",
+    "src/core/governance/__tests__/verify-state.test.ts",
+    "src/core/governance/__tests__/scripts-libs-verify-state.d.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-17-verify-state-cache.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json",
+    ".lane-claims/tasks/governance-issue-1049-verify-state-cache.json",
+    ".lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json",
+    ".lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json",
+    ".lane-claims/claims/lane-governance-issue-1047-verify-state-concurrency.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "407f3ccc1065e301a5de58ada8a8209f0189ebf6"
+}
