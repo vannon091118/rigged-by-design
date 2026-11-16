@@ -2280,7 +2280,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/github-hooks-pipelie-run-2026-11-16.json` — [ — gelesen: 29 Zeilen
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
-- `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 87 Zeilen
+- `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 92 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.webp` — Binaerdatei — geprueft: Signatur, 27200 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.webp` — Binaerdatei — geprueft: Signatur, 41550 B
