@@ -3,18 +3,14 @@
   "taskId": "governance-webhook-delivery",
   "claimId": "lane/governance/webhook-delivery",
   "branch": "lane/governance/webhook-delivery",
-  "baseSha": "b10706c28436a83472ae2ce7ba0cdc2fabf89274",
-  "phase": "CI_PENDING",
-  "title": "Webhook speist denselben Ablauf: Empfaenger, HMAC, gleiche Entscheidung",
-  "goal": "Eine verifizierte Delivery liefert exakt die Aktion, die auch merge:queue --check nennt; ungueltige Signaturen werden abgewiesen.",
+  "baseSha": "dc6836fc8ea33476e15185c70ed049d8c9c3c202",
+  "phase": "IMPLEMENTING",
+  "title": "Webhook ordnet ein, entscheidet nicht",
+  "goal": "Eine verifizierte Delivery nennt ihr Subjekt; ungueltige Signaturen werden abgewiesen; es gibt keine Queue-Aktion mehr.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": {
-    "number": 955,
-    "url": "https://github.com/vannon091118/rigged-by-design/pull/955",
-    "state": "open"
-  },
+  "pr": null,
   "findings": [
     {
       "id": "F-1",
@@ -35,6 +31,6 @@
       "summary": "Keine oeffentlich erreichbare Empfaenger-URL im Runner; Empfaenger laeuft lokal, HMAC und Entscheidung sind getestet."
     }
   ],
-  "nextAction": "PR #955 reviewen; Hook-Anlage braucht Token mit administration:write und oeffentliche HTTPS-URL.",
-  "revision": 2
+  "nextAction": "Bereinigung committen, PR oeffnen, mergen, Issue schliessen.",
+  "revision": 3
 }

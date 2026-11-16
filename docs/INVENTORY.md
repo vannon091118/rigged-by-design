@@ -39,7 +39,6 @@
 | `src/App.tsx` + `main.tsx` + `vite-env.d.ts` | 3 | 246 | App-Verdrahtung |
 | **Summe src** | **814** | **76.038** | |
 | `scripts` | 115 (.mjs) | — | Pipeline, Gates, Release, Android, Audio |
-| `.github/workflows` | 9 | — | auto-resolve, auto-version-release, build-apk, ci-verify, ensure-pr, long-checks, pr-cleanup, pr-watcher, promote |
 | `docs` | 84 Dateien: 12 Flachdokumente, 8 Verträge, 51 Screenshots, 9 Banner und 4 weitere | — | 12 Doku-Dateien flach unter `docs/`, Hauptbanner `banner.svg`; Belege in `screenshots/{current,v0.3.78,v0.3.114,v0.3.132,comparison}` |
 | `public/assets/casino` | 554 Dateien: 24 Symbole, 6 Tonspuren, 2 Atlas-Seiten, 7 FX-JSON | 17 MB | kuratierter Asset-Ausschnitt |
 
@@ -100,6 +99,11 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 `.github/workflows/` ist leer (FREEZE-0, #684). Die vier Repository-Verwaltungs-Workflows `ensure-pr.yml`, `pr-cleanup.yml`, `promote.yml` und `board-overview.yml` sind entfernt; ihre Aufgaben liegen bei Worker und Maintainer: PR anlegen/aktualisieren im Push-Turn, Closeout in `scripts/post-merge-closeout.mjs`, Board-Übersicht über `pnpm run board:overview`, manueller Notausgang über `scripts/promote.mjs`. Kein GitHub-Lauf führt Tests, Gates, Builds oder APKs aus.
 
 Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-Status-Checks**, `strict: false`, 0 Reviews, `enforce_admins: true`, kein Force-Push, keine Löschung. Der Merge nach lokalem `pnpm run ci:local` und Review erfolgt durch Mensch/Agent; es gibt keinen Cloud-Testlauf. Details in `docs/CI.md`.
+
+Es gibt keine Workflows (FREEZE-0): PR-Anlage, Branch-Cleanup, Board-Übersicht und Merge liegen beim Maintainer-Lauf. Der Abschnitt bleibt als Beleg, dass kein Cloud-Pfad existiert.
+
+
+Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein Cloud-Testlauf. Der Merge erfolgt lokal nach `pnpm run ci:local` und Review; es gibt keinen Workflow, der Tests ausführt oder mergt. Details in `docs/CI.md`.
 
 ## 11. Tests & Katalog
 
@@ -741,6 +745,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 | Gelistete Dateien | 3288 |
 | Getrackte Ordner | 119 |
 | Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (107), .lanes (1), artifacts (1), content (1208), docs (111), packages (27), public (571), scripts (149), src (1092) |
+| Getrackte Dateien | 3282 |
+| Gelistete Dateien | 3282 |
+| Getrackte Ordner | 119 |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (103), .lanes (1), artifacts (1), content (1207), docs (111), packages (27), public (571), scripts (149), src (1091) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -754,6 +762,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 4 Datei(en)
 - `.lane-claims/claims/` — 53 Datei(en)
 - `.lane-claims/tasks/` — 50 Datei(en)
+- `.lane-claims/claims/` — 51 Datei(en)
+- `.lane-claims/tasks/` — 48 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1204 Datei(en)
@@ -895,7 +905,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-782-integration.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-issue-834-835-693-694.json` — { — gelesen: 45 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
@@ -947,7 +956,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-782-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-834-835-693-694.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
@@ -959,7 +967,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-session-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-test-quality-and-tags.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
+- `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
