@@ -66,7 +66,16 @@ async function api(path, { method = 'GET', body } = {}) {
 }
 
 const labels = (issue) => (issue.labels ?? []).map((label) => ({ name: typeof label === 'string' ? label : label.name }));
-const comment = (entry) => ({ body: entry.body ?? '', createdAt: entry.created_at ?? '', author: { login: entry.user?.login ?? '' } });
+const comment = (entry) => ({
+  // `id` ist die einzige monotone Ordnung im Verlauf: daran entscheidet die
+  // Merge-Queue, ob ein ACK NACH dem Plan liegt. Ohne die Zahl kollabieren
+  // alle Ereignisse auf 0 und jede Bestaetigung wirkt "zu alt".
+  id: Number(entry.id ?? 0),
+  body: entry.body ?? '',
+  createdAt: entry.created_at ?? '',
+  author: { login: entry.user?.login ?? '' },
+  user: { login: entry.user?.login ?? '' },
+});
 
 /** Offene Issues inklusive PR-Datensaetze ausblenden; GitHub liefert beides. */
 function issueRow(issue) {
@@ -161,6 +170,14 @@ if (kind === 'issue-view') {
   payload = await issues({ label: params.label, state: params.state });
 } else if (kind === 'pr-list') {
   payload = await pullList();
+} else if (kind === 'issue-comment') {
+  // Schreibender Zugang fuer die Merge-Queue (#913): derselbe Token-Pfad,
+  // dieselbe Fehlerbehandlung - kein zweiter Weg an GitHub vorbei.
+  const posted = await api(`/issues/${Number(params.number)}/comments`, {
+    method: 'POST',
+    body: { body: String(params.body ?? '') },
+  });
+  payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
 } else if (kind === 'dispatch') {
   payload = await dispatch();
 } else if (kind === 'pull-for-branch') {

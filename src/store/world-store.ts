@@ -66,7 +66,7 @@ class WorldStore {
   readonly own = new OwnPlay({ world: () => this.#world, ledger: () => this.#ledger, prng: () => this.#prng, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   readonly interaction = new InteractionStore({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   readonly queue = new QueueCommands({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
-  readonly scene = new SceneCommands({ world: () => this.#world, emit: () => this.#emit(), notice: (text) => { this.#notice = text; } });
+  readonly scene = new SceneCommands({ world: () => this.#world, emit: () => this.#emit(), notice: (text) => { this.#notice = text; }, prng: this.#prng, ledger: this.#ledger });
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();

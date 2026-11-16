@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ae3a5821d0828a83ae24288d19bbc89230fa876c6d68fa569bffb53f8bc61ccd",
+  "contentHash": "sha256:10fb8311f44e891c75e87c41b2a77a8da0decf47ef7b94ae445a89ee8e94f050",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10725,6 +10725,28 @@
       "source": "content/narrative/contributions/2026-11-14-main-green-02.json"
     },
     {
+      "contributionId": "maintainer-782-start-guest-integration",
+      "turnId": "2026-11-16T02:15Z-lane-782-01",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am ersten Abend steht jetzt jemand am Empfang. Ein Gast, der hereinkommt, bevor der Spieler etwas aufgebaut hat, und eine Kiste, die noch auf dem Boden steht. Beides ist keine Ankündigung mehr, sondern Zustand: Wer den Raum betritt, findet ihn bewohnt vor.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json"
+    },
+    {
       "contributionId": "maintainer-864-claim-ledger",
       "turnId": "2026-11-16T01:35Z-claim-ledger-01",
       "agentId": "maintainer",
@@ -10745,6 +10767,72 @@
       "text": "Im Hinterzimmer wird aufgeräumt. Zettel, auf denen längst erledigte Arbeiten stehen, wandern in den Papierkorb, und die Liste daneben stimmt wieder mit dem überein, was wirklich noch offen ist. Niemand hat etwas weggeworfen, das noch jemand hält: Was belegt war, ist belegt; was offen war, bleibt offen und ist jetzt wieder auffindbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json"
+    },
+    {
+      "contributionId": "maintainer-913-credential-queue-id",
+      "turnId": "2026-11-16T02:52Z-credential-queue-id",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schlüssel lag die ganze Zeit im Raum, nur nicht an dem Haken, den die Liste nannte. Jetzt wird jeder Name geprüft, der einen Schlüssel tragen darf, und der Aushang verlangt keinen Gang mehr zum Schalter. Dazu tragen die Zettel in der Abstellkammer endlich ihre Nummer: ohne sie war jede Bestätigung so alt wie der Plan selbst und zählte nie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
+    },
+    {
+      "contributionId": "maintainer-913-merge-queue",
+      "turnId": "2026-11-16T02:35Z-merge-queue-913-01",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Abstellkammer haengt jetzt eine Reihenfolge, die niemand mehr aus dem Kopf aendert. Jede Zeile traegt eine Nummer, einen Stempel und die Namen derer, die sie bestaetigt haben. Wer vorne steht, kommt durch; wer fehlt, wartet. Und wenn die Liste nicht lesbar ist, wird nicht gemergt, sondern geschwiegen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-merge-queue.json"
+    },
+    {
+      "contributionId": "maintainer-913-one-command-identity",
+      "turnId": "2026-11-16T03:05Z-one-command-identity",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
     },
     {
       "contributionId": "maintainer-937-audit-evidence",

@@ -24,6 +24,7 @@ import {
 } from './lib/body-sync.mjs';
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
 import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
+import { MERGE_ISSUE, authorizeMerge, buildQueue, latestPlan, parseMergeEvents } from './lib/merge-queue.mjs';
 import { buildCiState, isSupersededRun, parseCiState, serializeCiState } from './lib/ci-state.mjs';
 import { blockedIssuesFrom } from './lib/issue-scope.mjs';
 import {
@@ -86,6 +87,29 @@ function listAll(path) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Merge-Freigabe nach #913: Queue, Plan-Hash und ACKs werden am Merge-Punkt
+ * selbst geprueft. Ein nicht lesbares Board ist HOLD, nie Erfolg.
+ */
+function mergeAuthorization(number) {
+  const comments = listAll(`repos/${repo}/issues/${MERGE_ISSUE}/comments?per_page=100`);
+  if (!comments) return { ok: false, reason: `[ERR-4029] Merge-Queue #${MERGE_ISSUE} nicht lesbar: Merge gesperrt (fail-closed)` };
+  const pulls = listAll(`repos/${repo}/pulls?state=open&per_page=100`);
+  if (!pulls) return { ok: false, reason: '[ERR-4029] offene PRs nicht lesbar: Merge gesperrt (fail-closed)' };
+  const events = parseMergeEvents(comments);
+  const plan = latestPlan(events);
+  const queue = buildQueue({
+    plan,
+    pulls: pulls.map((entry) => ({ number: entry.number, headRefOid: entry.head?.sha ?? '' })),
+    events,
+    mainSha: git(['rev-parse', 'origin/main']) ?? '',
+  });
+  const decision = authorizeMerge({ plan, pulls: pulls.map((entry) => ({ number: entry.number, headRefOid: entry.head?.sha ?? '' })), events, mainSha: git(['rev-parse', 'origin/main']) ?? '', prNumber: number });
+  if (!decision.ok) return { ok: false, reason: decision.reason };
+  if (queue.length === 0) return { ok: false, reason: '[ERR-4029] Queue leer: Merge gesperrt' };
+  return { ok: true };
 }
 
 function contractAtHead() {
@@ -461,6 +485,9 @@ function mergeGreen(number) {
   if (current === null) return holdPromotion(number, contract, 'PR-Body nicht lesbar');
   const composed = mergeText(current, ref);
   if (!composed.ok) return holdPromotion(number, contract, composed.reason);
+  const authorization = mergeAuthorization(number);
+  if (!authorization.ok) return holdPromotion(number, contract, authorization.reason);
+
   const bodyFile = writeBodyFile(composed.body, 'body.md');
 
   const merged =

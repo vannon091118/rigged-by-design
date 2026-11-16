@@ -8,11 +8,16 @@ import { clearActionQueue } from '../core/sim/action-queue';
 import { ensureCityPopulationForScene } from '../core/sim/city-life-state';
 import { CityDoorWalk } from './city-door-walk';
 import { enterInterior, leaveInterior, leaveInteriorAtDoor } from './interior-commands';
+import { spawnGuest } from '../core/sim/spawn';
+import type { Ledger } from '../core/economy/ledger';
+import type { Prng } from '../core/rng/prng';
 
 interface Deps {
   readonly world: () => WorldState;
   readonly emit: () => void;
   readonly notice: (text: string) => void;
+  readonly prng?: Prng;
+  readonly ledger?: Ledger;
 }
 
 /**
@@ -197,6 +202,9 @@ export class SceneCommands {
     world.player.path = [];
     world.player.pathIndex = 0;
     if (world.onboarding?.step === 'OPENING' || world.onboarding?.step === 'CITY') world.onboarding = { step: 'CASINO' };
+    // Der erste Gast erscheint, sobald der Spieler das Casino betritt: er ist
+    // Teil des Startpfads und wird ueber die bestehende Render-Pipeline sichtbar.
+    if (this.#deps.prng && this.#deps.ledger) spawnGuest(world, this.#deps.prng, this.#deps.ledger);
     this.#say('Dein Casino. Die erste Kiste steht bereit.');
   }
 

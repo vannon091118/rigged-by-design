@@ -1,5 +1,216 @@
 {
   "version": 1,
   "source": "git-merge-commits",
-  "entries": []
+  "entries": [
+    {
+      "branch": "freebuff/7d73360a6e7a20fd54d0eb4b",
+      "number": 1,
+      "headSha": "2cd2e7203c4e9e858c35fe0844c85703c915a845",
+      "mergeSha": "c272aae112e5b543d04f3b579d621772cc269d10"
+    },
+    {
+      "branch": "feat/living-casino",
+      "number": 3,
+      "headSha": "f5d1186b08a3ece5ec556f275696479da2bc2bb2",
+      "mergeSha": "a8e9993c9143b0dc91544be050efa1412d7c4d28"
+    },
+    {
+      "branch": "p0-test-structure",
+      "number": 16,
+      "headSha": "593673e2b48a0c83688256b026696a69bcd328c8",
+      "mergeSha": "8bba3b4f81e49a1cd94395d49dfa27cf8d181113"
+    },
+    {
+      "branch": "fix/balance-card-betting",
+      "number": 21,
+      "headSha": "a76e3bfc8de79ac5779fb8efc3f7480f85cd2885",
+      "mergeSha": "ed1f0077b3cb56bc08df7f6d85b2f3e4ab9da689"
+    },
+    {
+      "branch": "fix/card-games-v2",
+      "number": 24,
+      "headSha": "11b09dc94fc3764dfc98ee669923c79c1a6a1637",
+      "mergeSha": "708d31c744f8bb470d5a36ee923f60198248f057"
+    },
+    {
+      "branch": "optik-steuerung",
+      "number": 55,
+      "headSha": "417654c82cdba4c81da330efda20ecbd02708ec6",
+      "mergeSha": "f74664e92ea21a47ff620607257f652f48b1a369"
+    },
+    {
+      "branch": "d1-visitor-aftermath",
+      "number": 113,
+      "headSha": "45504f01f990e877f4f277a621d0f7155a4b3021",
+      "mergeSha": "731b44817e56481bab377584ed782eb9023f819d"
+    },
+    {
+      "branch": "fix/floor-input-player-movement",
+      "number": 121,
+      "headSha": "a7347a9148a1fc7c5abbd09a7c441ba59db1dc18",
+      "mergeSha": "63824e582902aea3b2ade8f4685713c83a550d0e"
+    },
+    {
+      "branch": "chore/branch-consolidation",
+      "number": 126,
+      "headSha": "32fa43ca1843f9dc30f96c134510a0a95e50a2d7",
+      "mergeSha": "e858b138a030258d9d2ecc96bbb54857dadbecef"
+    },
+    {
+      "branch": "freebuff/15a5daf4fe155ab8308cca39",
+      "number": 138,
+      "headSha": "9eed039cd6244182defa4871845f83ff085c8b59",
+      "mergeSha": "c460abb088c574e1c2c53ca5459e835f71514252"
+    },
+    {
+      "branch": "lane/governance/ci-stabilization",
+      "number": 244,
+      "headSha": "1145141880b965025100e4b6ff53a43c248854eb",
+      "mergeSha": "3d48d72350500151ffd60675e5f5f02eeb997126"
+    },
+    {
+      "branch": "lane/governance/roadmap-register",
+      "number": 275,
+      "headSha": "d4f976859efbf96f0b4e5948b3fd6b6f7ef13d11",
+      "mergeSha": "1b243540f6934eaec60f63732cd888e69b48c67a"
+    },
+    {
+      "branch": "lane/governance/relationships-coupling",
+      "number": 280,
+      "headSha": "d22e6c0e3cae6ee5b6fb62e2063fe2bad18bfe72",
+      "mergeSha": "31c6fe40438f140e79ce4f78d1f41daf05214df4"
+    },
+    {
+      "branch": "lane/governance/main-event-pool",
+      "number": 281,
+      "headSha": "ef8fc22e8e4a87147895062775108bf04a2ed067",
+      "mergeSha": "a2ceb6e28cc9e8ab106e118b17134e9f68c33654"
+    },
+    {
+      "branch": "lane/governance/main-event-pool",
+      "number": 282,
+      "headSha": "d3ff371ef1515531e13e33a88abf8c75c6cc7c25",
+      "mergeSha": "cad869cc7dbe27a77ecc87bf5456b768f8a18e16"
+    },
+    {
+      "branch": "lane/governance/narrative-chain-graph",
+      "number": 284,
+      "headSha": "d174ba5f5ebd038d868fc8d8c007bc0217d3fa54",
+      "mergeSha": "a18c3bbeed99d7974224b158c7f92cf7708ae7ae"
+    },
+    {
+      "branch": "lane/governance/apk-signing-v2",
+      "number": 302,
+      "headSha": "d8fa5e345bb92f655b2cc501ca87a27251ecb96f",
+      "mergeSha": "2400f755b2db8c2ec40ecb65ade4eec9cb39abfb"
+    },
+    {
+      "branch": "lane/sim/interaction-foundation",
+      "number": 324,
+      "headSha": "a0ea98895ef1e90e3b6e5dc328e1cb174edb98f6",
+      "mergeSha": "ef7e0f3a2661aa9d64ebbd364ebfbae9670bb420"
+    },
+    {
+      "branch": "lane/governance/issue-574-entrance-convention",
+      "number": 683,
+      "headSha": "ecbdd5cadbebbfce27992827bbcd51194142dee6",
+      "mergeSha": "6b3b7365dbda557f71ec55abf87616f0e753f6e9"
+    },
+    {
+      "branch": "lane/governance/issue-635-claim-requires-issue",
+      "number": 692,
+      "headSha": "44848c58690a61f130bb3c9a1bd11c3e0624c661",
+      "mergeSha": "95ad4214861ed859eadb6472ce622bb884c38c0d"
+    },
+    {
+      "branch": "lane/narrative/issue-669-worldly-mini-scenes",
+      "number": 697,
+      "headSha": "12681feb78cf8317e4f1b8a34555be3985c7e7bf",
+      "mergeSha": "751edc66291708f1a933b23ba6c5696f14e29e1d"
+    },
+    {
+      "branch": "lane/narrative/issue-668-repeat-meta-content-remove",
+      "number": 699,
+      "headSha": "ff9ba37a776e27e7f670174a802703b31aa8446b",
+      "mergeSha": "f9d5cae79d379c6e89a2a38ce1cfc83d0d09b682"
+    },
+    {
+      "branch": "lane/governance/main-gates-repair-v2",
+      "number": 704,
+      "headSha": "b82b12087b87d1f79eea6f9789223351014fb568",
+      "mergeSha": "680700c0f9f1a339cf716bbacbce70ab2101c9cf"
+    },
+    {
+      "branch": "lane/governance/issue-705-worldstore-fail-closed",
+      "number": 708,
+      "headSha": "ed56eee09c036a3ffd0434780f54f354e88af405",
+      "mergeSha": "c6af35d7f52e4ebd5240b4f2065bd0189176621d"
+    },
+    {
+      "branch": "lane/sim/issue-706-pathfinding-detour",
+      "number": 709,
+      "headSha": "c2d5f275088599cdc502add91762ad5de85291d7",
+      "mergeSha": "6562559b1c41c4c8b22a722fa7eecb25e27e01cd"
+    },
+    {
+      "branch": "lane/ci/issue-710-cron-sleep-lint",
+      "number": 711,
+      "headSha": "ca4afb54b44105c839111b3158093d3ba8730fef",
+      "mergeSha": "88b7fc8addee076ded553c710f83e1a450e853f2"
+    },
+    {
+      "branch": "lane/governance/issue-685-claim-reconcile",
+      "number": 712,
+      "headSha": "a4839d7470e5271d51fce4d28bc57cc6ab68c0f9",
+      "mergeSha": "21b3e9249be6f82ba1ab4019d1524594e01c61d0"
+    },
+    {
+      "branch": "lane/governance/issue-886-board-gate",
+      "number": 901,
+      "headSha": "a26351d52949b7694bc100dd1dc6ae6924edcd9d",
+      "mergeSha": "29d6078b8029ed3a7da8d08d0ded61141775f4d7"
+    },
+    {
+      "branch": "lane/governance/issue-886-comment-types",
+      "number": 902,
+      "headSha": "6e4f3446e950de0a3af36c10e23d5e0960be3b55",
+      "mergeSha": "785fc44236367ce2f85b8765b0ddd5f8f19aeb93"
+    },
+    {
+      "branch": "lane/governance/issue-886-closeout",
+      "number": 903,
+      "headSha": "f48903c19701533f6c8803e0a6c4a11e121b9c24",
+      "mergeSha": "a560cfadb1b9bd5e500ec94bf90e542c6090e736"
+    },
+    {
+      "branch": "lane/governance/issue-886-closeout",
+      "number": 904,
+      "headSha": "a947c4c6b629001ea00b0d034a7194c49ba2a034",
+      "mergeSha": "c5cd40928b720287001b746c2724c2fb842dccb6"
+    },
+    {
+      "branch": "lane/governance/issue-886-board-merged",
+      "number": 905,
+      "headSha": "06c175ede9f872c7fa0655751ce3b83b431dee44",
+      "mergeSha": "8ee2337bfbf66146dd45ab71f952d16cfe7c9fff"
+    },
+    {
+      "branch": "lane/governance/issue-886-board-tolerant",
+      "number": 906,
+      "headSha": "c35e422ee4c7dd2c43ee39519378e3a4412fba5a",
+      "mergeSha": "cfdf07f96cb95cbb61064556884eccf7e250adb6"
+    },
+    {
+      "branch": "lane/governance/issue-886-board-tolerant",
+      "number": 907,
+      "headSha": "202f417dd74a71c5995cf64b92e36cd5e05acda8",
+      "mergeSha": "3ee363079ec23ef929fcedc4b8b275cc0c09a76b"
+    },
+    {
+      "branch": "lane/governance/post-merge-922",
+      "number": 924,
+      "headSha": "1f4f93073582807a8cd34f2c78d46100758786fd",
+      "mergeSha": "f398eaf09ca9015f3287c1d53179ea933d527892"
+    }
+  ]
 }

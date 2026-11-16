@@ -18,7 +18,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "archived",
-  "createdAt": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e",
-  "releasedAt": "2026-11-16T01:45:33.184Z",
-  "releasedReason": "PR #947 gemergt (1e65e488)"
+  "createdAt": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e"
 }

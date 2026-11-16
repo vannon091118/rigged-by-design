@@ -4,25 +4,40 @@
  * Eine frische Umgebung soll ohne Nutzeraktion funktionieren. Deshalb wird das
  * Token in genau dieser Reihenfolge gesucht — und nirgends sonst:
  *
- *   1. `GH_TOKEN`                     Projekt-/Repository-Secret, Cloud-Agent
- *   2. `GITHUB_TOKEN`                 in CI-Umgebungen automatisch vorhanden
- *   3. `gh auth token`                lokal nach `gh auth login`
- *   4. `git credential fill`          vorhandener Git-Credential-Helper
+ *   1. Environment-Token            `GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`,
+ *                                   `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`
+ *   2. `gh auth token`              bereits angemeldete `gh`-CLI
+ *   3. `git credential fill`        vorhandener Git-Credential-Helper
  *
  * Es wird nichts geschrieben, nichts zwischengespeichert und nichts geloggt:
  * diese Datei gibt das Token nur an den Aufrufer zurueck, der es in einen
  * Authorization-Header legt. Kein zweiter Zustand, keine Config-Datei.
  *
- * Fehlt jede Quelle, bleibt `ok: false` — fail-closed, kein Raten.
+ * Fehlt jede Quelle, bleibt `ok: false` — fail-closed, kein Raten. Der
+ * Loesungsbefehl nennt dann die Variable, nicht einen interaktiven Login.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 
 /** Kurz halten: eine fehlende Quelle darf den Start nicht blockieren. */
 const PROBE_TIMEOUT_MS = 4000;
 
+/**
+ * Alle Environment-Namen, unter denen ein Connector- oder Session-Token
+ * ankommen kann. Die Reihenfolge ist Vertrag: `GH_TOKEN` gewinnt.
+ */
+export const ENV_TOKEN_NAMES = Object.freeze([
+  'GH_TOKEN',
+  'GITHUB_TOKEN',
+  'githubPAT',
+  'GITHUB_PAT',
+  'GH_PAT',
+  'RBD_GH_TOKEN',
+]);
+
 function fromEnvironment(env) {
-  if (env.GH_TOKEN) return { token: env.GH_TOKEN, source: 'GH_TOKEN' };
-  if (env.GITHUB_TOKEN) return { token: env.GITHUB_TOKEN, source: 'GITHUB_TOKEN' };
+  for (const name of ENV_TOKEN_NAMES) {
+    if (env[name]) return { token: env[name], source: name };
+  }
   return null;
 }
 
@@ -54,17 +69,23 @@ function fromCredentialHelper() {
 
 /** Die Reihenfolge ist Vertrag; `tried` macht einen Fehlschlag diagnostizierbar. */
 export function resolveGithubToken({ env = process.env } = {}) {
-  for (const probe of [env, null, null, null]) {
-    if (probe === null) break;
-    const found = fromEnvironment(probe);
-    if (found) return { ok: true, ...found };
-  }
+  const fromEnv = fromEnvironment(env);
+  if (fromEnv) return { ok: true, ...fromEnv };
   for (const [name, probe] of [['gh auth token', fromGhCli], ['git-credential-helper', fromCredentialHelper]]) {
     const found = probe();
     if (found) return { ok: true, ...found };
   }
-  return { ok: false, token: '', source: null, tried: ['GH_TOKEN', 'GITHUB_TOKEN', 'gh auth token', 'git-credential-helper'] };
+  return {
+    ok: false,
+    token: '',
+    source: null,
+    tried: [...ENV_TOKEN_NAMES, 'gh auth token', 'git-credential-helper'],
+  };
 }
 
-/** Der eine Befehl, der eine fehlende Quelle aufloest. */
-export const TOKEN_FIX_COMMAND = 'gh auth login';
+/**
+ * Der eine Befehl, der eine fehlende Quelle aufloest: die Variable nennen,
+ * nicht einen interaktiven Login verlangen. `gh auth login` ist kein
+ * Voraussetzungsschritt, weil derselbe Token-Pfad auch ohne CLI funktioniert.
+ */
+export const TOKEN_FIX_COMMAND = 'export GH_TOKEN=<token>';
