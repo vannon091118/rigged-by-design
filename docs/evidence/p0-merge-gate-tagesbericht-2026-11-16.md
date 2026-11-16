@@ -53,8 +53,8 @@ claim-hygiene: PASS (kein offener Claim auf einem belegten geschlossenen Issue)
 == 5. Geschlossene P0-Issues ohne zustand-CLOSED ==
 0
 
-== 6. #987 / 563292f in Doku/Snapshot ==
-987-als-offen=0 · 563292f-in-docs=0
+== 6. #987 / veralteter Kopf-Hash ==
+#987-als-offen=0 · veralteter-Kopf-Hash=0
 
 == 7. Offene PRs ==
 0
