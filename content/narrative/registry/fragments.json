@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f16cd1fe42348feadcc3e9068009a2ddbd64dc1627c224adf65aea25a13cd061",
+  "contentHash": "sha256:5812d659c4ce4fb7d5910495be86dc2bba91006ce15bf2dab3059e75df27e428",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26592,6 +26592,28 @@
       "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-starter-crate-guidance.json"
+    },
+    {
+      "contributionId": "store-guard-proof-01",
+      "turnId": "2026-11-16T19:11Z-store-guard-proof",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Beweis liegt auf dem Weg, den der Spieler selbst geht: Wer eine Einstellung abbricht, findet Kasse, Personal und Wuerfel unveraendert vor - nicht nur in der Transaktion, sondern im geladenen Spielstand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-store-guard-proof.json"
     },
     {
       "contributionId": "sync-live-hooks",

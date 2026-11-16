@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "taskId": "integrity-issue-1036-store-guard-proof",
+  "claimId": "lane/integrity/issue-1036-store-guard-proof",
+  "branch": "lane/integrity/issue-1036-store-guard-proof",
+  "baseSha": "d79fd6d5ca8f32910c505b1d94a64dfdb35b7e51",
+  "phase": "CI_PENDING",
+  "title": "Issue #1036: Rollback ueber den echten Store-Pfad absichern (Nachtrag #975)",
+  "goal": "Ein echter Multi-System-Command ueber worldStore scheitert nach vollzogener Teilmutation; danach sind Welt, Ledger, PRNG, Facts und Journal unveraendert.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Ursprungsbefund aus dem Closeout von #975: der gemergte Test deckte #guard nicht ab. Nachtrag, weil PR #1035 zum Arbeitsbeginn bereits gemergt war (d79fd6d5) und geschlossene Arbeit nicht wiederverwendet wird."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, RELEASE mit SHA melden, Maintainer-Review abwarten.",
+  "revision": 1
+}

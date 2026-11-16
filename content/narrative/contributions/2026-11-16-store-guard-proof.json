@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T19:11Z-store-guard-proof",
+  "contributionId": "store-guard-proof-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Beweis liegt auf dem Weg, den der Spieler selbst geht: Wer eine Einstellung abbricht, findet Kasse, Personal und Wuerfel unveraendert vor - nicht nur in der Transaktion, sondern im geladenen Spielstand.",
+  "directives": []
+}

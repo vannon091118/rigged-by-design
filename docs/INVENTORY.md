@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 443 Dateien — contract 229 · integration 121 · governance 80 · statistics 6 · performance 7.
+Summe: 444 Dateien — contract 229 · integration 122 · governance 80 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -512,6 +512,7 @@ Summe: 443 Dateien — contract 229 · integration 121 · governance 80 · stati
 | `src/store/__tests__/snapshot-purity.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
 | `src/store/__tests__/staff-view.test.ts` | store | integration | ja | `src/store/staff-view.ts` |
 | `src/store/__tests__/start-guest-crate-visible.test.ts` | store | integration | ja | `src/store/new-game.ts` |
+| `src/store/__tests__/store-command-guard.test.ts` | store | integration | ja | `src/store/world-store.ts` |
 | `src/store/__tests__/street-population.test.ts` | store | integration | ja | `src/store/scene-commands.ts` |
 | `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/__tests__/world-tick-fail-closed.test.ts` | store | integration | ja | `src/store/tick-scheduler.ts` |
@@ -749,10 +750,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3317 |
-| Gelistete Dateien | 3317 |
+| Getrackte Dateien | 3321 |
+| Gelistete Dateien | 3321 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (115), .lanes (1), artifacts (1), bin (1), content (1227), docs (90), packages (27), public (571), scripts (157), src (1106) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (117), .lanes (1), artifacts (1), bin (1), content (1228), docs (90), packages (27), public (571), scripts (157), src (1107) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -764,12 +765,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 56 Datei(en)
-- `.lane-claims/tasks/` — 55 Datei(en)
+- `.lane-claims/claims/` — 57 Datei(en)
+- `.lane-claims/tasks/` — 56 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1223 Datei(en)
+- `content/narrative/contributions/` — 1224 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -869,7 +870,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
 - `src/store/` — 46 Datei(en)
-- `src/store/__tests__/` — 40 Datei(en)
+- `src/store/__tests__/` — 41 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 106 Datei(en)
@@ -922,6 +923,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-integrity-issue-1036-store-guard-proof.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-integrity-issue-975-command-atomicity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
@@ -977,6 +979,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/integrity-issue-1036-store-guard-proof.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/integrity-issue-975-command-atomicity.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
@@ -2235,10 +2238,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-repo-ballast-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-16-store-guard-proof.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27463 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4897 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27485 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4901 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3981,6 +3985,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/snapshot-purity.test.ts` — Ein Snapshot ist eine Projektion: Er darf weder Bewohnerprofile anlegen noch — gelesen: 65 Zeilen
 - `src/store/__tests__/staff-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 15 Zeilen
 - `src/store/__tests__/start-guest-crate-visible.test.ts` — AC 1+2 von #782: Nach createNewGame existiert ein Starter-Gast und eine — gelesen: 46 Zeilen
+- `src/store/__tests__/store-command-guard.test.ts` — Der Rollback greift am echten Store-Pfad, nicht nur an der Transaktion: — gelesen: 80 Zeilen
 - `src/store/__tests__/street-population.test.ts` — Der erste Schritt vor die Tür füllt die Stadt: Die drei kuratierten Figuren — gelesen: 54 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/__tests__/world-tick-fail-closed.test.ts` — Ein Bilanzbruch ist terminal: Der produktive Takt haelt beim ersten Fehler — gelesen: 113 Zeilen
