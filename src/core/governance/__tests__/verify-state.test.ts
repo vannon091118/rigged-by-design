@@ -6,9 +6,11 @@
  * `.verify-cache/state.json`, ein kaputter Zustand blockiert nie, und der
  * TTL-Pfad raeumt alte Gates und Berichte auf.
  */
+import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   clearSection,
@@ -118,6 +120,43 @@ describe('verify-state', () => {
     expect(view.bytes).toBeGreaterThan(0);
     expect(JSON.parse(readFileSync(join(root, '.verify-cache', 'agent-context.json'), 'utf8')).systems).toEqual([]);
   });
+
+  /**
+   * Zwei Prozesse, die gleichzeitig verschiedene Abschnitte schreiben, duerfen
+   * sich nicht gegenseitig ueberschreiben: Der eine schreibt in `gates`,
+   * waehrend der andere `delegated` (den Platz von `task`/`base`) fortschreibt.
+   * Ohne Sperre liest jeder den Stand, den er zuletzt gesehen hat, und der
+   * Rename des zweiten loescht die Eintraege des ersten.
+   */
+  it('verliert keine Eintraege bei gleichzeitigen Schreibern auf verschiedene Abschnitte', async () => {
+    const { root } = tempRoot();
+    const moduleUrl = pathToFileURL(join(process.cwd(), 'scripts', 'lib', 'verify-state.mjs')).href;
+    const writer = `
+      const { writeGate, updateSection } = await import(process.argv[1]);
+      const [root, tag] = process.argv.slice(2);
+      for (let i = 0; i < 20; i += 1) {
+        writeGate('gate-' + tag + '-' + i, { key: 'k' + i, at: 1 }, { root });
+        updateSection('delegated', { [tag + '-' + i]: i }, { root });
+      }
+    `;
+    const tags = ['a', 'b', 'c', 'd'];
+    await Promise.all(tags.map((tag) => new Promise<void>((resolve, reject) => {
+      const child = spawn(process.execPath, ['--input-type=module', '-e', writer, moduleUrl, root, tag], { stdio: 'inherit' });
+      child.on('error', reject);
+      child.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`Schreiber ${tag} endete mit Code ${code}`))));
+    })));
+
+    const gates = readGates({ root });
+    const delegated = readSection('delegated', { root }) as Record<string, number>;
+    const missingGates = tags.flatMap((tag) => Array.from({ length: 20 }, (_, i) => `gate-${tag}-${i}`)).filter((name) => !(name in gates));
+    const missingDelegated = tags.flatMap((tag) => Array.from({ length: 20 }, (_, i) => `${tag}-${i}`)).filter((key) => !(key in delegated));
+
+    expect(missingGates).toEqual([]);
+    expect(missingDelegated).toEqual([]);
+    expect(Object.keys(gates)).toHaveLength(80);
+    expect(delegated['a-0']).toBe(0);
+    expect(delegated['d-19']).toBe(19);
+  }, 30_000);
 
   it('migriert idempotent und laesst Unbekanntes liegen', () => {
     const { root, dir } = tempRoot();

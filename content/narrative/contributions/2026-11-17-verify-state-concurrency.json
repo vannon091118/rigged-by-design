@@ -1,0 +1,21 @@
+{
+  "agentId": "governance",
+  "turnId": "2026-11-17T23:34Z-verify-state-concurrency-01",
+  "contributionId": "verify-state-concurrency-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Schreibtisch der Kanzlei liegt ein einziges Buch, in das alle gleichzeitig schreiben. Bisher strich der spaetere Schreiber durch, was der fruehere gerade eingetragen hatte. Seit heute liegt ein Schluessel daneben: Wer schreibt, haelt ihn, traegt seine Zeile ein und legt ihn zurueck. Wer ihn nicht bekommt, schreibt trotzdem weiter - das Buch darf nie einen Lauf aufhalten, aber es verliert auch keine Zeile mehr.",
+  "directives": []
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:aa9820fb8b0bb51b6259a424882afd0bf17aeea8eb7149e74287a44ab97fb6a7",
+  "contentHash": "sha256:92de943ac8115ad7ade8f496ff3009a0a3441359edb259678ab46664b9842cfb",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27065,6 +27065,28 @@
       "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-verify-state.json"
+    },
+    {
+      "contributionId": "verify-state-concurrency-01",
+      "turnId": "2026-11-17T23:34Z-verify-state-concurrency-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Schreibtisch der Kanzlei liegt ein einziges Buch, in das alle gleichzeitig schreiben. Bisher strich der spaetere Schreiber durch, was der fruehere gerade eingetragen hatte. Seit heute liegt ein Schluessel daneben: Wer schreibt, haelt ihn, traegt seine Zeile ein und legt ihn zurueck. Wer ihn nicht bekommt, schreibt trotzdem weiter - das Buch darf nie einen Lauf aufhalten, aber es verliert auch keine Zeile mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-verify-state-concurrency.json"
     },
     {
       "contributionId": "warm-return-body-01",
