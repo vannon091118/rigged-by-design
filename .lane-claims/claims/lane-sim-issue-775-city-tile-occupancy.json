@@ -19,7 +19,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "archived",
-  "createdAt": "a9b6418baf426306ecc5541b7344dcf150a3f995",
-  "releasedAt": "2026-11-15T08:03:18.225Z",
-  "releasedReason": "stale-no-branch"
+  "createdAt": "a9b6418baf426306ecc5541b7344dcf150a3f995"
 }

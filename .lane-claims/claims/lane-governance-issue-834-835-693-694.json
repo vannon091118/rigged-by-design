@@ -39,7 +39,7 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "ac38b39ae6d46a28b93686b954aea047e0bd23ab",
   "mergedEvidence": "on-main-commit",
-  "mergedSha": "f415cf26"
+  "mergedSha": "f415cf26",
+  "createdAt": "ac38b39ae6d46a28b93686b954aea047e0bd23ab"
 }

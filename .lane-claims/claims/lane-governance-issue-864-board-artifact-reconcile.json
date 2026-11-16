@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/issue-864-board-artifact-reconcile",
+  "owner": "Monitor",
+  "branch": "lane/governance/issue-864-board-artifact-reconcile",
+  "baseSha": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e",
+  "issue": 864,
+  "task": "Board-Artefakte mechanisch nachziehen: Claim-Ledger reconcile, merged-index, board-state, Audit-Stand fortschreiben",
+  "pathAllowlist": [
+    ".lane-claims/**",
+    "content/narrative/contributions/**",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/**",
+    "docs/AUDIT.md",
+    ".lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e"
+}
