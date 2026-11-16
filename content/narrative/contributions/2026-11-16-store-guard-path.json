@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T19:05Z-store-guard-path",
+  "contributionId": "store-guard-path-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Diesmal ging der Beweis durch die Tuer, die der Spieler selbst benutzt: Ein Befehl, der mitten in der Wirkung reisst, hinterlaesst keine Spur - keine Buchung, kein neues Personal, kein anderer Wuerfelstand, kein halber Eintrag im Journal. Nimmt man den Rueckgriff heraus, wird genau dieser Lauf rot; erst das macht ihn zu einem Beweis.",
+  "directives": []
+}

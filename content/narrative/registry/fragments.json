@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f2d88bcc8e50df9b41d8e6e69bad9bfbd1d999ca65536f60915face26df10c70",
+  "contentHash": "sha256:3d5a36730f02fb591a1d272a925c3c0d3eca32771c6afcd28b9c83b48c0f7ac1",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26702,6 +26702,28 @@
       "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-starter-crate-guidance.json"
+    },
+    {
+      "contributionId": "store-guard-path-01",
+      "turnId": "2026-11-16T19:05Z-store-guard-path",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Diesmal ging der Beweis durch die Tuer, die der Spieler selbst benutzt: Ein Befehl, der mitten in der Wirkung reisst, hinterlaesst keine Spur - keine Buchung, kein neues Personal, kein anderer Wuerfelstand, kein halber Eintrag im Journal. Nimmt man den Rueckgriff heraus, wird genau dieser Lauf rot; erst das macht ihn zu einem Beweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-store-guard-path.json"
     },
     {
       "contributionId": "store-guard-proof-01",

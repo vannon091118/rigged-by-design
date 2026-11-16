@@ -3,7 +3,7 @@
   "taskId": "integrity-issue-975-command-atomicity",
   "claimId": "lane/integrity/issue-975-command-atomicity",
   "branch": "lane/integrity/issue-975-command-atomicity",
-  "baseSha": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497",
+  "baseSha": "0eac60897fe67a14e491b425917451b72325eea4",
   "phase": "CI_PENDING",
   "title": "Issue #975: Fehlgeschlagene Commands duerfen keine Teilmutationen hinterlassen",
   "goal": "Welt, Ledger, PRNG, Fact-Queue und Journal bleiben nach einem fehlgeschlagenen Command unveraendert; der Streit-Fact entsteht erst nach einem tatsaechlich gefuehrten Kampf.",
