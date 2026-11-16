@@ -2730,5 +2730,5 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Umsetzung.** `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` haelt den vollstaendigen Lauf aus einem frischen Klon fest: Merge-Gate mit echten Protection-Fakten, Board-Drift, Claims-Register, Claim-Hygiene, Label-Abfrage und offene PRs. `docs/ROADMAP.md` nennt die drei verbleibenden Punkte als „Offene Entscheidungen (Owner)“ mit Belegort; kein Punkt wird als geloest behauptet.
 
-**Nachweis.** Merge-Gate `GRUEN` (PR-Zwang, Admins gebunden, Force-Push/Loeschen blockiert, Checks/Rulesets keine), `drift: []`, `reconcile-claims: keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, 0 offene PRs, `#987`/`563292f` nicht als offen bzw. HEAD.
+**Nachweis.** Merge-Gate `GRUEN` (PR-Zwang, Admins gebunden, Force-Push/Loeschen blockiert, Checks/Rulesets keine), `drift: []`, `reconcile-claims: keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, 0 offene PRs, keine offene #987 und kein veralteter Kopf-Hash.
 
