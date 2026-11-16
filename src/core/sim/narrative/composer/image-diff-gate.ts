@@ -8,6 +8,7 @@
 
 interface ImageDiffResult {
   readonly equal: boolean;           // true wenn innerhalb der Toleranz
+  readonly code: 'ERR-4031' | null;  // Fehlercode des Nachweises, null wenn innerhalb der Toleranz
   readonly diffPixelCount: number;   // Anzahl geaenderter Pixel
   readonly totalPixelCount: number;  // Gesamtanzahl verglichener Pixel
   readonly changedRatio: number;     // diffPixelCount / totalPixelCount (0..1)
@@ -72,6 +73,7 @@ export function imageDiffGate(
   if (a.length !== expectedLength || b.length !== expectedLength) {
     return {
       equal: false,
+      code: 'ERR-4031',
       diffPixelCount: totalPixels,
       totalPixelCount: totalPixels,
       changedRatio: 1,
@@ -117,6 +119,7 @@ export function imageDiffGate(
 
   return {
     equal,
+    code: equal ? null : 'ERR-4031',
     diffPixelCount,
     totalPixelCount: totalPixels,
     changedRatio,

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-test-quality-and-tags",
+  "claimId": "lane/governance/test-quality-and-tags",
+  "branch": "lane/governance/test-quality-and-tags",
+  "baseSha": "e61e422100dc7ddf8052ae7e4ec51f72d2da69ed",
+  "phase": "IMPLEMENTING",
+  "title": "Testqualitaet gruen, test-quality im Light-Gate, Tag-Vollpruefung",
+  "goal": "Alle Gates gruen; jeder Tag ohne Arbeit ausserhalb main, belegt im Audit.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge, Tags entfernen, Issue schliessen.",
+  "revision": 1
+}

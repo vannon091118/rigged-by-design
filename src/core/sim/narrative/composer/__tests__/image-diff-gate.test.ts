@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/sim/narrative/composer/image-diff-gate.ts
- * @error-code: none
+ * @error-code: ERR-4031
  *
  * Testet den lokalen Bild-Diff-Gate mit expliziten Toleranzen:
  * - Gleiche Bilder muessen als gleich erkannt werden
@@ -30,6 +30,7 @@ describe('imageDiffGate', () => {
     const result = imageDiffGate(a, b, 4, 4);
 
     expect(result.equal).toBe(true);
+    expect(result.code).toBeNull();
     expect(result.diffPixelCount).toBe(0);
     expect(result.changedRatio).toBe(0);
     expect(result.maxChannelDiff).toBe(0);
@@ -43,6 +44,7 @@ describe('imageDiffGate', () => {
     const result = imageDiffGate(a, b, 4, 4);
 
     expect(result.equal).toBe(false);
+    expect(result.code).toBe('ERR-4031');
     expect(result.diffPixelCount).toBe(16);
     expect(result.changedRatio).toBe(1);
   });

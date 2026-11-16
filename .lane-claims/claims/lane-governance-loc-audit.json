@@ -1,0 +1,14 @@
+{
+  "id": "lane/governance/loc-audit",
+  "owner": "Monitor",
+  "branch": "lane/governance/loc-audit",
+  "baseSha": "27abd7a5f54aac44bd1783602aa08ab2a5815321",
+  "issue": 958,
+  "task": "LOC-, Redundanz- und Sinnvolligkeits-Audit mit Rearchitecture-Plan",
+  "pathAllowlist": ["docs/**", "content/narrative/**", ".lane-claims/**"],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "27abd7a5f54aac44bd1783602aa08ab2a5815321"
+}
