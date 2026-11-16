@@ -1,0 +1,17 @@
+{
+  "id": "lane-sim-issue-538-billing-cycle",
+  "owner": "Save-/Migrations-Owner",
+  "branch": "lane/sim/issue-538-billing-cycle",
+  "baseSha": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e",
+  "issue": 538,
+  "task": "7-Tage-Abrechnungsrhythmus mit Rechnungen für Miete/Versorgung, Spieler-Entscheidungen (zahlen/stunden/finanzieren), alles über Ledger (Issue #538)",
+  "pathAllowlist": [
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "content/narrative/turns/manifest.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e"
+}

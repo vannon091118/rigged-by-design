@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-16T02:30Z-nar-billing-cycle-01",
+  "contributionId": "nar-billing-cycle-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Jede Woche flattern die Rechnungen ins Haus: Miete, Versorgung, Strom. Der Spieler entscheidet – sofort bezahlen, stunden gegen Gebühr oder finanzieren mit Zinsen. Jede Zahlung ist eine Ledger-Buchung, keine Ausnahme.",
+  "directives": []
+}

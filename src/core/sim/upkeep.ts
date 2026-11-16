@@ -14,6 +14,7 @@ import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
 import { driftNeed, satisfyNeed } from './needs-core';
 import { dailyHousingCost } from './upkeep-costs';
+import { isBillingDue, runBilling } from './billing';
 
 export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (tickInDay(world.tick) !== 0) return;
@@ -32,6 +33,12 @@ export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
     : `Tag ${world.day}. Löhne und Miete über Kredit bezahlt.`;
   // Lohn für Spieler-Jobs auf fremden Floors
   processForeignFloorDaily(world, ledger, prng, world.tick);
+
+  // 7-Tage-Abrechnungsrhythmus
+  if (isBillingDue(world)) {
+    const { notice: billingNotice } = runBilling(world, ledger, world.tick);
+    world.lastEvent = billingNotice;
+  }
 }
 
 /** Alte Saves und abgebrochene Gastpfade duerfen keinen Sitz dauerhaft blockieren. */

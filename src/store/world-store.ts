@@ -27,6 +27,7 @@ import { flushNarrativeCmd } from './narrative-commands';
 import { chooseNarrativeAction, dismissNarrativeAction } from './narrative-store-actions';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
+import { runBilling, payInvoice, staggerInvoice, financeInvoice, overdueInvoices, openInvoiceTotal } from '../core/sim/billing';
 import type { CardDeal } from './foreign-play';
 import type { GameView } from './types';
 import { acceptJobCmd, quitJobCmd, requestJobTaskCmd, buyBarCmd, visitForeignCmd, leaveForeignCmd } from './foreign-floor-commands';
@@ -155,7 +156,15 @@ class WorldStore {
     this.#emit();
     return report;
   }
-  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); } moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
+  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); }
+  runBillingCycle(): void { this.#guard(() => { const { notice } = runBilling(this.#world, this.#ledger, this.#world.tick); this.#notice = notice; }, false); }
+  payInvoiceCmd(invoiceId: string): void { this.#guard(() => { const { notice, remainingVC } = payInvoice(this.#world, this.#ledger, invoiceId, this.#world.tick); if (remainingVC > 0) this.#notice = notice + ` (noch offen: ${remainingVC} VC).`; else this.#notice = notice; }, false); }
+  staggerInvoiceCmd(invoiceId: string): void { this.#guard(() => { const { notice } = staggerInvoice(this.#world, this.#ledger, invoiceId, this.#world.tick); this.#notice = notice; }, false); }
+  financeInvoiceCmd(invoiceId: string): void { this.#guard(() => { const { notice } = financeInvoice(this.#world, this.#ledger, invoiceId, this.#world.tick); this.#notice = notice; }, false); }
+  openInvoicesView(): { totalVC: number; count: number; overdue: number } {
+    return { totalVC: Number(openInvoiceTotal(this.#world)), count: this.#world.invoices.filter((inv) => !inv.paid).length, overdue: overdueInvoices(this.#world).length };
+  }
+  moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
   spinTest(itemId: number): GameResult | null { const { result, notice } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = notice; this.#emit(); } return result; } deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); } setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); } exclusion(command: ExclusionCommand, limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }
   chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null { let result: ChoiceExecution | null = null; this.#guard(() => { const action = chooseNarrativeAction(this.#world, this.#ledger, eventId, choiceId); result = action.result; this.#notice = action.notice; }); return result; } dismissNarrative(eventId: number): void { this.#guard(() => { this.#notice = dismissNarrativeAction(this.#world, eventId); }); }
   dismiss(): void { this.#notice = ''; this.#emit(false); }

@@ -1,4 +1,5 @@
 /** Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. */
+import type { VaCoinMicro } from '../economy/vacoin';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../games/plinko-config';
 import type { NarrativeState } from './narrative/types';
 import type { JournalEvent } from './journal';
@@ -26,6 +27,18 @@ export type { Stain } from './stain';
 export type { CitySceneState } from './city-scene';
 
 /** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
+/** Eine offene Rechnung mit Frist und Zahlungsstatus. */
+export interface Invoice {
+  readonly id: string;
+  readonly day: number; // Tag der Erstellung
+  readonly dueDay: number; // Tag der Fälligkeit
+  readonly amountVC: VaCoinMicro; // Mikro-VaCoins
+  readonly reason: string; // z.B. 'miete woche 3'
+  readonly paid: boolean;
+  readonly stalled: boolean; // Stundung aktiv
+  readonly financeFeeVC: VaCoinMicro; // Finanzierungsgebühr
+}
+
 type SceneKind = 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT' | 'INTERIOR';
 /** Aktiver Stadt-Innenraum; der Grundriss wird deterministisch daraus erzeugt. */
 interface InteriorVisit { readonly buildingId: string; readonly layoutId: string; readonly name: string; }
@@ -102,6 +115,10 @@ export interface WorldState {
   /** Naechste Ledger-Seq, die bereits als MONEY-Event kopiert wurde. */
   journaledSeq: number;
   look: PlayerLook;
+  /** Letzter Abrechnungstag (Welt-Tag-Nummer) fuer den 7-Tage-Rhythmus. */
+  lastBillingDay: number;
+  /** Offene Rechnungen; jede ist eine gefuehrte Ledger-Verbindung. */
+  invoices: Invoice[];
   plinko: PlinkoConfig;
   plinkoMode: PlinkoMode;
   totalPlinkoDrops: number;

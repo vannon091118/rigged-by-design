@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c0bb396082f5f1ae8c13de13078658e5246cd993ac9fdf98dfcace6bc5850af8",
+  "contentHash": "sha256:09195477432141d9c4b3bfda478a850d4c79b7709faa1bf9623e2f7f843e705b",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -11206,6 +11206,28 @@
       "text": "Was nach dem Gespräch stehen bleibt",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-nar-aftermath-title-02.json"
+    },
+    {
+      "contributionId": "nar-billing-cycle-01",
+      "turnId": "2026-11-16T02:30Z-nar-billing-cycle-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jede Woche flattern die Rechnungen ins Haus: Miete, Versorgung, Strom. Der Spieler entscheidet – sofort bezahlen, stunden gegen Gebühr oder finanzieren mit Zinsen. Jede Zahlung ist eine Ledger-Buchung, keine Ausnahme.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-nar-billing-cycle-01.json"
     },
     {
       "contributionId": "nar-body-bar-01",

@@ -109,6 +109,8 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     nextJournalId: 1,
     journaledSeq: 0,
     look: DEFAULT_LOOK,
+    lastBillingDay: 1,
+    invoices: [],
     plinko: defaultPlinkoConfig(),
     plinkoMode: 'SINGLE',
     totalPlinkoDrops: 0,

@@ -26,6 +26,7 @@ export const EXTERNAL_WORK = 'EXTERNAL_WORK';
 export const PLAYER_CASH = 'PLAYER_CASH';
 /** Gebuchte Verbindlichkeit: offener Gewinn, den das Hauskonto gerade nicht deckt. */
 export const DEBT_ACCOUNT = 'HAUS_SCHULDEN';
+export const VENDOR_BILLING = 'VERSAMLER_ABRECHNUNG';
 
 /** Betriebsreserve, die beim Abheben im Hauskonto bleibt. */
 export const HOUSE_FLOAT = fromVC(25);

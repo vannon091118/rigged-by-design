@@ -13,7 +13,7 @@ import type { NarrativeState } from '../core/sim/narrative/types';
 import { hydrateNarrative, recordNarrativeMigration } from './migrate-narrative';
 import type { RivalMindState } from '../core/sim/rival-ai/types';
 import { normalizeRivalMinds } from '../core/sim/rival-ai/minds';
-import type { ActivePenalty, CarpetId, Crate, DemandTier, Dispute, FightFx, Furniture, Guest, Mop, Player, PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
+import type { ActivePenalty, CarpetId, Crate, DemandTier, Dispute, FightFx, Furniture, Guest, Invoice, Mop, Player, PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import type { DemandEvent } from './legacy-demand';
 import { hydrateJobState } from '../core/sim/player-jobs';
 import { hydrateProperty } from '../core/sim/property';
@@ -61,6 +61,7 @@ export interface SavedGame {
   readonly lastEvent: string; readonly journal?: JournalEvent[]; readonly archive?: JournalEvent[];
   readonly fightFx?: FightFx | null; readonly nextJournalId?: number; readonly journaledSeq?: number;
   readonly look?: PlayerLook; readonly plinko?: PlinkoConfig; readonly plinkoMode?: PlinkoMode;
+  readonly lastBillingDay?: number; readonly invoices?: Invoice[];
   readonly totalPlinkoDrops?: number; readonly addictionScore?: number; readonly lastPlinko?: PlinkoDrop | null;
   readonly exclusionPact?: ExclusionPact | null; readonly playerAddictionScore?: number;
   readonly brokenExclusionPacts?: number; readonly clarityBadge?: boolean;
@@ -175,6 +176,8 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.fightBets = normalizeFightBets(saved.fightBets, world.archive);
   recordNarrativeMigration(world, migration);
   world.fightFx = saved.fightFx ?? null; world.look = normalizeLook(saved.look);
+  world.lastBillingDay = Number.isSafeInteger(saved.lastBillingDay ?? 0) ? (saved.lastBillingDay ?? world.day) : world.day;
+  world.invoices = Array.isArray(saved.invoices) ? saved.invoices : [];
   try { world.plinko = normalizePlinkoConfig(saved.plinko); } catch { world.plinko = defaultPlinkoConfig(); }
   world.plinkoMode = saved.plinkoMode === 'TWIN' || saved.plinkoMode === 'TRIPLE' ? saved.plinkoMode : 'SINGLE';
   world.totalPlinkoDrops = Number.isSafeInteger(saved.totalPlinkoDrops) ? Math.max(0, saved.totalPlinkoDrops!) : 0;

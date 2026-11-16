@@ -38,6 +38,9 @@ export const TX_REASON = {
   RISK_CARD_LOST: 'risiko-karte verloren',
   PACT_RESERVE: 'disziplin-pakt reserve',
   PACT_BONUS: 'disziplin-bonus',
+  INVOICE: 'rechnung',
+  INVOICE_STAGGER: 'rechnung stundung',
+  INVOICE_FINANCE: 'rechnung finanzierung',
 } as const;
 
 /** Gründe mit variablem Anhang: das Praefix steht hier, der Rest kommt vom Aufrufer. */
