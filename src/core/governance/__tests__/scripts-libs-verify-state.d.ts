@@ -2,7 +2,8 @@
 declare module '*/verify-state.mjs' {
   export interface GateRecord {
     readonly key?: string;
-    readonly at?: number;
+    /** Numerische Infrastrukturzeit; Altbestand kann ISO-Strings tragen. */
+    readonly at?: number | string;
   }
   export interface VerifyState {
     readonly version: number;
@@ -24,6 +25,8 @@ declare module '*/verify-state.mjs' {
   export const SECTIONS: readonly string[];
   export function stateDir(root?: string): string;
   export function statePath(root?: string): string;
+  export function stateLockPath(root?: string): string;
+  export function withStateLock<T>(fn: () => T, options?: RootOptions): T;
   export function contextViewPath(root?: string): string;
   export function logsDir(root?: string): string;
   export function reportsDir(options?: { root?: string; stamp?: string | null }): string;

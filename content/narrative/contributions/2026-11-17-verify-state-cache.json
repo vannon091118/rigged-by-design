@@ -1,0 +1,21 @@
+{
+  "agentId": "governance",
+  "turnId": "2026-11-17T23:42Z-verify-state-cache-01",
+  "contributionId": "verify-state-cache-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Archivar raeumt die Kammer auf und traegt dabei die alten Zettel in das grosse Buch ein, das er eben erst geschlossen hat. Diesmal legt er den Stapel zuerst um, bevor er die Fristen streicht - sonst haette er mit dem Loeschen begonnen, was er gerade gerettet hat. Neben dem Buch haengt eine Uhr mit Zahlen statt Ziffern, damit niemand einen frischen Eintrag fuer alt haelt.",
+  "directives": []
+}
