@@ -1,10 +1,10 @@
 P0-Merge-Gate Tagesbericht — Beleg 2026-11-16
 ================================================
 
-Aus einem frischen Klon von `origin/main` gegen Live-GitHub erzeugt
-(Clone-HEAD == `git ls-remote origin refs/heads/main`, Arbeitsbaum vor dem
-Setup leer). Der Bericht ist die Verkettung der Repo-Pruefungen; es gibt keine
-zweite Berichtsquelle.
+Aus einem frischen Klon von `origin/main` gegen Live-GitHub erzeugt:
+Clone-HEAD == `git ls-remote origin refs/heads/main`, Arbeitsbaum vor dem Setup
+leer. Der Bericht ist die Verkettung der Repo-Pruefungen; es gibt keine zweite
+Berichtsquelle.
 
 Reproduktion (frischer Klon, GH_TOKEN gesetzt; Zeitstempel und Clone-SHA im
 Kopf sind laufabhaengig, alles andere ist stabil):
@@ -18,10 +18,15 @@ Kopf sind laufabhaengig, alles andere ist stabil):
       --jq '[.items[] | select([.labels[].name] | any(startswith("zustand")) and (index("zustand-CLOSED")|not))] | length'
     gh issue view 987 --repo vannon091118/rigged-by-design --json state --jq '#987=+.state'
     grep -rEn '#987.{0,40}(offen|open)' docs .lane-claims --include=*.md --include=*.json \
-      | grep -viE 'keine|nicht|geschlossen|als-offen' | wc -l
-    grep -rEn '563292f.{0,40}(HEAD|Kopf)|(HEAD|Kopf).{0,40}563292f' docs --include=*.md | wc -l
+      --exclude-dir=evidence | grep -viE 'keine|nicht|geschlossen|als-offen' | wc -l
+    grep -rEn '563292f.{0,40}(HEAD|Kopf)|(HEAD|Kopf).{0,40}563292f' docs --include=*.md \
+      --exclude-dir=evidence | wc -l
     gh pr list --repo vannon091118/rigged-by-design --state open --json number --jq 'length'
     sed -n '/## Offene Entscheidungen (Owner)/,/## Referenzen/p' docs/ROADMAP.md
+
+Die Beleg-Ausnahme (`--exclude-dir=evidence`) verhindert nur, dass der Bericht
+seinen eigenen Transcript als Zustandsdokument zaehlt; alle Zustandsquellen
+(`docs/` ohne Belege, `.lane-claims/`, Live-GitHub) werden geprueft.
 
 Erwartung: Merge-Gate exit 0 mit den echten Protection-Fakten, `drift: []`,
 `keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, #987 geschlossen,
@@ -33,8 +38,8 @@ Owner-Entscheidungen und stehen als solche in `docs/ROADMAP.md`
 ------------------------------------------------
 
 ```text
-P0-Merge-Gate Tagesbericht · 2026-11-16T17:52:15Z
-repo=vannon091118/rigged-by-design · clone=a1f9b275 · branch=main · dirty=0
+P0-Merge-Gate Tagesbericht · 2026-11-16T17:56:30Z
+repo=vannon091118/rigged-by-design · clone=d6eb826b · branch=main · dirty=0
 
 == 1. Serverseitige Merge-Sperre (live) ==
 GRUEN · main ist serverseitig geschuetzt
@@ -46,7 +51,7 @@ exit=0
 == 2. Board-Snapshot gegen Live ==
   "checked": true,
   "file": "<clone>/.lane-claims/board-state.json",
-  "head": "a1f9b27586ed1efdf1f017d2b105641d2acdb9da",
+  "head": "d6eb826be8b2858d6c21ff6205b53575bbb4bf2a",
   "drift": []
 }
 
