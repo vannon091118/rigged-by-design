@@ -7,6 +7,7 @@ import { demandDefinition, isDemandEventId } from './events/demand-definitions';
 import { EVENT_TEMPLATES, templateFor } from './events/definitions';
 import { createEventCandidate } from './events/template-candidate';
 import { EVENT_TRIGGER_DEFINITIONS } from './events/trigger-definitions';
+import { hotEventCandidates } from './hot-event-score';
 import { advanceChains } from './chains/chain-runtime';
 import { scheduleCandidates } from './event-scheduler';
 import { maybeScheduleMainEvent } from './main-event-pool';
@@ -98,6 +99,8 @@ export function processNarrativeRuntime(
     const followUp = followUpCandidate(world, fact);
     if (followUp) candidates.push(followUp);
   }
+  // Hitze ist ein Fakt-Kriterium, kein Sonderfall des Schedulers (#806).
+  candidates.push(...hotEventCandidates(world, boundary.facts));
   const scheduled = boundary.facts.length === 0 ? [] : scheduleCandidates(world, candidates, world.tick);
   const resolvedEventIds = new Set<number>();
   for (const fact of boundary.facts) {

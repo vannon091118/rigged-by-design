@@ -45,7 +45,9 @@ describe('Rivalen-Fact als Event-Trigger (C2)', () => {
     const acted = tickRivalMinds(world);
     const result = processNarrativeRuntime(world, new Ledger());
     expect(acted.map((entry) => entry.action)).toEqual(['SABOTAGE']);
-    expect(result.scheduled.map((event) => event.eventId)).toEqual(['RIVAL_MOVE']);
+    // SABOTAGE traegt ein Indiz und ist damit zusaetzlich ein belegter Hot-Event-Kandidat (#806).
+    expect(result.scheduled.map((event) => event.eventId).sort()).toEqual(['HOT_EVENT', 'RIVAL_MOVE']);
+    expect(result.scheduled.find((event) => event.eventId === 'HOT_EVENT')?.sourceFactId).toBeGreaterThan(0);
   });
 
   it('haelt die Aktionen des rival-action-Triggers auf vier fest', () => {
