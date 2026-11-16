@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T05:45Z-governance-freeze0-teardown",
+  "contributionId": "governance-freeze0-teardown",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Warteschlange an der Wand ist abgehängt, die vier Aushänge daneben auch. Wer vor der Tür steht, wird jetzt gefragt, was er gelesen hat, und nicht, welches Kürzel er trägt. Antwortet das Brett nicht, notiert der Beobachter „unbekannt“ statt einer Null.",
+  "directives": []
+}

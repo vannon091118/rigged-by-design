@@ -19,12 +19,6 @@ describe('Betroffene Tests', () => {
     expect(result.runAll).toBe(false);
   });
 
-  it('waehlt den Workflow-Test bei einer Workflow-Aenderung', () => {
-    const result = selectAffectedTests(['.github/workflows/ensure-pr.yml']);
-    expect(result.tests).toContain('src/core/governance/__tests__/ci-workflow-contracts.test.ts');
-    expect(result.runAll).toBe(false);
-  });
-
   it('waehlt den Prozess-Sweep-Test bei einer Skriptaenderung', () => {
     const result = selectAffectedTests(['scripts/lib/process-sweep.mjs']);
     expect(result.tests).toContain('src/core/governance/__tests__/process-sweep.test.ts');

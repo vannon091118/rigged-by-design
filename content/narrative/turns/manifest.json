@@ -4804,6 +4804,10 @@
     {
       "turnId": "2026-11-16T05:30Z-governance-freeze-reste",
       "contributionId": "governance-freeze-reste"
+    },
+    {
+      "turnId": "2026-11-16T05:45Z-governance-freeze0-teardown",
+      "contributionId": "governance-freeze0-teardown"
     }
   ]
 }

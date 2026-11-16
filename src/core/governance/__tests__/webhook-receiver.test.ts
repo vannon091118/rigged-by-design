@@ -4,7 +4,8 @@
  *
  * Der Empfaenger muss eine gueltig signierte Delivery annehmen und eine
  * falsch signierte abweisen — offline gegen ein aufgezeichnetes Payload und
- * online ueber echtes HTTP.
+ * online ueber echtes HTTP. Seit dem Queue-Rueckbau nennt er nur noch das
+ * eingeordnete Subjekt, keine lokale Reihenfolge.
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -13,17 +14,14 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { signPayload } from '../../../../scripts/lib/webhook-signature.mjs';
 import { decide } from '../../../../scripts/webhook-receiver.mjs';
-import { OPEN_PULLS, PLAN_DELIVERY } from './webhook-fixture';
+import { PLAN_DELIVERY } from './webhook-fixture';
 
 const ROOT = join(__dirname, '..', '..', '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'webhook-receiver.mjs');
 const SECRET = 'test-secret-mit-mindestens-16-zeichen';
 const DIR = mkdtempSync(join(tmpdir(), 'rbd-hook-fixture-'));
-const PAYLOAD = join(DIR, 'issue-comment-plan.json');
-const PULLS = join(DIR, 'pulls.json');
-const payloadText = JSON.stringify(PLAN_DELIVERY, null, 2);
-writeFileSync(PAYLOAD, payloadText);
-writeFileSync(PULLS, JSON.stringify(OPEN_PULLS, null, 2));
+const PAYLOAD = join(DIR, 'issue-comment.json');
+writeFileSync(PAYLOAD, JSON.stringify(PLAN_DELIVERY, null, 2));
 
 const receiver = (args: string[], env: Record<string, string> = {}) => spawnSync(process.execPath, [SCRIPT, ...args], {
   encoding: 'utf8',
@@ -32,37 +30,36 @@ const receiver = (args: string[], env: Record<string, string> = {}) => spawnSync
 
 describe('webhook-receiver (Modul)', () => {
   // Der Import muss die Signaturpruefung selbst erreichen, nicht nur den Prozess.
-  it('entscheidet ohne Secret fail-closed und nennt keinen Zustand', () => {
+  it('entscheidet ohne Secret fail-closed und nennt kein Subjekt', () => {
     const body = readFileSync(PAYLOAD);
     const result = decide({
       event: 'issue_comment',
       payload: PLAN_DELIVERY,
       signature: signPayload(body, SECRET),
       body,
-      context: () => ({ comments: [], pulls: OPEN_PULLS, mainSha: '0'.repeat(40) }),
     });
     if (process.env.RBD_WEBHOOK_SECRET) {
       expect(result.status).toBe(202);
       expect(result.check.ok).toBe(true);
+      expect(result.subject).toEqual(expect.objectContaining({ kind: 'issue-comment', number: 913 }));
     } else {
       expect(result.status).toBe(503);
       expect(result.check.ok).toBe(false);
-      expect(result.action).toBeNull();
+      expect(result.subject).toBeNull();
     }
   });
 });
 
 describe('webhook-receiver (offline)', () => {
-  it('nimmt eine korrekt signierte Delivery an und nennt eine Aktion', () => {
+  it('nimmt eine korrekt signierte Delivery an und ordnet das Subjekt ein', () => {
     const body = readFileSync(PAYLOAD);
-    const run = receiver(['--payload', PAYLOAD, '--event', 'issue_comment', '--pulls', PULLS, '--signature', signPayload(body, SECRET)]);
+    const run = receiver(['--payload', PAYLOAD, '--event', 'issue_comment', '--signature', signPayload(body, SECRET)]);
     expect(run.status).toBe(0);
     const out = JSON.parse(run.stdout);
     expect(out.verified).toBe(true);
-    expect(out.plan.hash).toMatch(/^[0-9a-f]{12}$/);
-    expect(out.plan.hash).toBe(payloadText.match(/hash=([0-9a-f]{12})/)?.[1]);
-    expect(out.action.state).toBe('ACK_MISSING');
-    expect(out.action.command).toContain('MERGE_SESSION_JOIN');
+    expect(out.subject).toEqual({ kind: 'issue-comment', number: 913, action: 'created', commentId: 6905796238 });
+    expect(out).not.toHaveProperty('queue');
+    expect(out).not.toHaveProperty('plan');
   });
 
   it('weist eine falsch signierte Delivery ab', () => {
@@ -75,7 +72,7 @@ describe('webhook-receiver (offline)', () => {
     const out = JSON.parse(run.stdout);
     expect(out.verified).toBe(false);
     expect(out.signature).toBe('Signatur ungueltig');
-    expect(out.action).toBeNull();
+    expect(out.subject).toBeNull();
   });
 
   it('ist ohne Secret fail-closed mit genau einer Zeile', () => {
@@ -94,7 +91,7 @@ describe('webhook-receiver (HTTP)', () => {
   it('antwortet 202 auf gueltige und 401 auf falsche Signatur', async () => {
     // Port aus der PID: kein Zufall, keine Kollision zwischen parallelen Laeufen.
     const port = 18000 + (process.pid % 1000);
-    const child = spawn(process.execPath, [SCRIPT, '--serve', '--offline', '--port', String(port), '--pulls', PULLS], {
+    const child = spawn(process.execPath, [SCRIPT, '--serve', '--port', String(port)], {
       env: { ...process.env, RBD_WEBHOOK_SECRET: SECRET },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
@@ -113,9 +110,9 @@ describe('webhook-receiver (HTTP)', () => {
         body,
       });
       expect(good.status).toBe(202);
-      const accepted = await good.json() as { ok: boolean; action: { state: string } };
+      const accepted = await good.json() as { ok: boolean; subject: { kind: string } };
       expect(accepted.ok).toBe(true);
-      expect(accepted.action.state).toBe('ACK_MISSING');
+      expect(accepted.subject.kind).toBe('issue-comment');
 
       const bad = await fetch(`http://127.0.0.1:${port}/webhook`, {
         method: 'POST',
