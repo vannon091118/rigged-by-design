@@ -6,6 +6,7 @@ import { openHouse } from '../core/sim/money';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { seedStartPool } from '../core/sim/narrative/state';
 import { createWorld } from '../core/sim/templates';
+import { spawnGuest } from '../core/sim/spawn';
 import { createCityLifeState, ensureCityLife } from '../core/sim/city-life-state';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import { flushNarrativeCmd } from './narrative-commands';
@@ -38,14 +39,18 @@ export function createNewGame(template: TemplateId): NewGameState {
   world.player.path = [];
   world.player.pathIndex = 0;
   world.scene = { kind: 'APARTMENT' };
-  // Start ist die Eroeffnung: erst ihr Ende gibt die Wohnung und danach die Stadt frei.
+  // Der Start ist die Eroeffnung: erst ihr Ende gibt die Wohnung und danach die Stadt frei.
   world.onboarding = { step: 'OPENING' };
   world.lastEvent = 'Der erste Abend beginnt. Schliess die Eroeffnung, dann stehst du in deiner Wohnung.';
   const ledger = new Ledger();
+  const prng = new Prng(seed);
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);
+  // Der erste Gast ist Teil des Startpfads: er erscheint auf dem Casino-Floor,
+  // sobald die Er-offnung abgeschlossen ist, und ist daruber sichtbar.
+  spawnGuest(world, prng, ledger);
   // Profile entstehen beim Anlegen, nicht beim ersten Snapshot. Nach dem
   // Start-Pool bleiben dessen Kennungen unveraendert.
   ensureCityLife(world);
-  return { world, ledger, prng: new Prng(seed), notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
+  return { world, ledger, prng, notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
 }

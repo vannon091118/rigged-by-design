@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ae3a5821d0828a83ae24288d19bbc89230fa876c6d68fa569bffb53f8bc61ccd",
+  "contentHash": "sha256:3877055cf886e86da0e984fa54a9a31371c3d2323ff9f1167e4c7b556d310f10",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10723,6 +10723,28 @@
       "text": "Rita liess die beiden langsamen Pruefungen laenger laufen, ohne ihre Aussage zu veraendern. Was unter Last wartete, musste nicht als Fehler gelten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-main-green-02.json"
+    },
+    {
+      "contributionId": "maintainer-782-start-guest-integration",
+      "turnId": "2026-11-16T02:15Z-lane-782-01",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am ersten Abend steht jetzt jemand am Empfang. Ein Gast, der hereinkommt, bevor der Spieler etwas aufgebaut hat, und eine Kiste, die noch auf dem Boden steht. Beides ist keine Ankündigung mehr, sondern Zustand: Wer den Raum betritt, findet ihn bewohnt vor.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json"
     },
     {
       "contributionId": "maintainer-864-claim-ledger",
