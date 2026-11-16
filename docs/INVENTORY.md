@@ -918,7 +918,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
