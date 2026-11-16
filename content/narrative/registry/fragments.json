@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7d59f5016f7e5f0f80a8413f8aa352aa5f7ca3022b51ddaf054e4eae191aca24",
+  "contentHash": "sha256:ae3a5821d0828a83ae24288d19bbc89230fa876c6d68fa569bffb53f8bc61ccd",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10745,6 +10745,28 @@
       "text": "Im Hinterzimmer wird aufgeräumt. Zettel, auf denen längst erledigte Arbeiten stehen, wandern in den Papierkorb, und die Liste daneben stimmt wieder mit dem überein, was wirklich noch offen ist. Niemand hat etwas weggeworfen, das noch jemand hält: Was belegt war, ist belegt; was offen war, bleibt offen und ist jetzt wieder auffindbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json"
+    },
+    {
+      "contributionId": "maintainer-937-audit-evidence",
+      "turnId": "2026-11-16T01:50Z-audit-evidence-01",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Gutachten lag bisher nur auf dem Tisch des Prüfers. Jetzt steht es im Regal: jede der hundert Fragen mit Befund, Beleg, Gegenprobe und dem Hinweis, wo die Lücke weiterverfolgt wird. Wer den Prüfer nicht mehr fragen kann, findet die Antwort trotzdem.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json"
     },
     {
       "contributionId": "maintainer-943-board-overview",
