@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/board-live-sync",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/board-live-sync",
+  "baseSha": "633dfdf60c42d404c480d384429af894726fc335",
+  "issue": 1016,
+  "task": "Board-State und Labels live angleichen",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "package.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "633dfdf60c42d404c480d384429af894726fc335"
+}

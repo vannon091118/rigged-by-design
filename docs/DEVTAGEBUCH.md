@@ -2708,3 +2708,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** Gate live: `GRUEN · main ist serverseitig geschuetzt`, Reviews 0, Checks keine, Rulesets 0. Sieben Parser-Faelle in `merge-gate.test.ts`, darunter die echte Antwort aus `docs/evidence/github-branch-protection-main-2026-11-16.json`.
 
+## 2026-11-16 — Board-State und Labels live angeglichen (Buffy)
+
+**Befund.** Der Snapshot stand auf `51a1052e`, fuehrte PR #987 als offen und behauptete 75 offene Issues bei 16 tatsaechlichen; Summary, Review-Notiz und Health-Liste waren aelter als der Repo-Stand. Sechs geschlossene P0-Issues trugen weiterhin `zustand-OPEN`/`zustand-BLOCK`.
+
+**Entscheidung.** Kein Handedit am Zustand: `sync-board-state.mjs` hat den Snapshot live neu erzeugt (head `633dfdf6`, 0 offene PRs), die Prosa-Felder wurden auf denselben Stand gebracht. Die Labels der geschlossenen P0-Issues stehen auf `zustand-CLOSED`; `zustand-CLOSED` existiert als Label und ist die dokumentierte Abschlussform.
+
+**Nachweis.** `sync-board-state --check` → `drift: []`, `reconcile-claims --check` → `keine Abweichung`, `claim-hygiene` → PASS, Suchabfrage nach geschlossenen P0-Issues ohne `zustand-CLOSED` → 0.
+
