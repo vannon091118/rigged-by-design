@@ -27,6 +27,7 @@ import {
 import { resolve } from 'node:path';
 import { causeBlock, causeForGate, localCauses } from './agent-cause.mjs';
 import { fail, ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 import { shouldResumePendingCommit } from './lib/pending-commit.mjs';
 
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
@@ -48,6 +49,8 @@ const TARGET_BRANCH = 'main';
 const args = process.argv.slice(2);
 const profileArg = args.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'light';
+// Turn-Bericht bleibt unter 500 Token; Kindlaeufe schreiben ihre Logs selbst.
+captureConsole({ label: 'turn-finish' });
 if (!['light', 'fast', 'dev', 'quick', 'integration', 'full'].includes(PROFILE)) {
   fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind light, fast, dev, quick, integration und full`);
   process.exit(1);

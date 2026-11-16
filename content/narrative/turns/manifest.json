@@ -4824,6 +4824,10 @@
     {
       "turnId": "2026-11-16T11:05Z-repo-ballast-closeout",
       "contributionId": "repo-ballast-closeout"
+    },
+    {
+      "turnId": "2026-11-16T11:20Z-output-budget",
+      "contributionId": "output-budget"
     }
   ]
 }

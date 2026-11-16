@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:455709273b0bcfffe70d11278a51e7dbb9b80e3ccd4476b0132483e80ad33c81",
+  "contentHash": "sha256:41f2c946038aecbd4165a9207d95ef1a45b508c64b7ba72e2aac2e29e62ffa6d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -13974,6 +13974,28 @@
       "text": "Eine Katze läuft zwischen den Automaten hindurch und bleibt vor dem warmen Gerät stehen. Sie ist die einzige, die den Laden verlässt, ohne zu spielen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-optional-pr-runner.json"
+    },
+    {
+      "contributionId": "output-budget",
+      "turnId": "2026-11-16T11:20Z-output-budget",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt hat einen Zettel ueber den Tresen gehaengt: auf eine Seite passen alle offenen Punkte, der Rest steht im Heft darunter. Wer den Zettel liest, weiss sofort, was klemmt und was als Naechstes zu tun ist; wer nachrechnen will, schlaegt hinten nach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-output-budget.json"
     },
     {
       "contributionId": "p20-dependency-matrix-01",

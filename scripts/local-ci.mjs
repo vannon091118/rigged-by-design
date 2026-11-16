@@ -16,9 +16,10 @@
  * Lauf waehrend einer Lane ohne offenen PR stattfinden darf.
  */
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const argv = process.argv.slice(2);
 const value = (name, fallback) => {
@@ -36,20 +37,32 @@ if (!allowed.has(profile)) {
 }
 const strict = argv.includes('--strict') || profile === 'release';
 const withApk = argv.includes('--apk');
+// Die lokale CI bleibt unter 500 Token; jeder Schritt hat sein Log.
+captureConsole({ label: 'ci-local' });
 
 const node = process.execPath;
 const step = (label, script, args = [], env = {}) => {
-  console.log(`ci:local: ${label}`);
+  const log = join(ROOT, '.verify-cache', 'output', `ci-${label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.log`);
+  mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [join(ROOT, 'scripts', script), ...args], {
     cwd: ROOT,
-    stdio: 'inherit',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    encoding: 'utf8',
+    maxBuffer: 32 * 1024 * 1024,
     env: { ...process.env, ...env },
   });
+  const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
+  if (output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`ci:local: ${label} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
-  if (result.status !== 0) process.exit(result.status ?? 1);
+  if (result.status !== 0) {
+    const tail = output.trim().split('\n').slice(-8).join('\n');
+    console.error(`ci:local: ${label}: ROT (Log: ${log})${tail ? `\n${tail}` : ''}`);
+    process.exit(result.status ?? 1);
+  }
+  console.log(`ci:local: ${label}: ok`);
 };
 
 // Strict-Preflight ist der fruehere Cloud-Kopf: Er prueft den vorhandenen

@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/output-budget",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/output-budget",
+  "baseSha": "0565c9954cc7ee0c2226ed66d2d7b500af74045c",
+  "issue": 993,
+  "task": "Festes 500-Token-Ausgabebudget fuer Agenten-Werkzeuge und Hooks",
+  "pathAllowlist": [
+    "scripts/",
+    "src/core/governance/__tests__/output-budget.test.ts",
+    "docs/MECHANICS.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/merged-index.json",
+    ".lane-claims/claims/lane-governance-output-budget.json",
+    ".lane-claims/tasks/governance-output-budget.json",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0565c9954cc7ee0c2226ed66d2d7b500af74045c"
+}

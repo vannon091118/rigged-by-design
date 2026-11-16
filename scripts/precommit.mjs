@@ -13,14 +13,17 @@
  * schritte weiter; nur die TypeScript-abhaengige Dependency-Matrix entfaellt.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { claimForBranch } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
 const node = process.execPath;
 const script = (name) => join(ROOT, 'scripts', name);
 const hasModules = existsSync(join(ROOT, 'node_modules'));
+// Der Hook bleibt unter 500 Token; jeder Schritt schreibt sein eigenes Log.
+captureConsole({ label: 'precommit' });
 
 function git(args) {
   try {
@@ -36,17 +39,27 @@ function git(args) {
 }
 
 function run(name, args = [], env = {}) {
-  console.log(`precommit: ${name}`);
+  const log = join(ROOT, '.verify-cache', 'output', `precommit-${name.replace(/\.mjs$/, '')}.log`);
+  mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [script(name), ...args], {
     cwd: ROOT,
-    stdio: 'inherit',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    encoding: 'utf8',
+    maxBuffer: 32 * 1024 * 1024,
     env: { ...process.env, ...env },
   });
+  const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
+  if (output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`precommit: ${name} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
-  if (result.status !== 0) process.exit(result.status ?? 1);
+  if (result.status !== 0) {
+    const tail = output.trim().split('\n').slice(-8).join('\n');
+    console.error(`precommit: ${name}: ROT (Log: ${log})${tail ? `\n${tail}` : ''}`);
+    process.exit(result.status ?? 1);
+  }
+  console.log(`precommit: ${name}: ok`);
 }
 
 function stageIfChanged(path) {

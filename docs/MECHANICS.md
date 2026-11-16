@@ -75,6 +75,22 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 | `ci-tag-release.mjs` | `pnpm run release:tag` | Tag und Release aus `package.json`, der dokumentierte lokale Release-Pfad |
 | `local-ci.mjs --profile=mechanics` | `pnpm run test:mechanics` | lange Nachweise; `agent:verify --ci` startet sie lokal |
 
+## Ausgabe-Budget: 500 Token, vollstaendig im Zustand
+
+Jedes Werkzeug, das ein Agent aufruft, antwortet in hoechstens 500 Token:
+`agent:start`, `agent:pretask`, die `verify`-Pipeline, `ci:local`,
+`turn:finish`, `verify:claims` und `verify:board`. Gekuerzt wird nur Detail,
+nie Zustand — Status, Blocker, Befund und der naechste Befehl bleiben, alles
+andere steht vollstaendig im Log unter `.verify-cache/output/`. Die Schaetzung
+ist konservativ (Bytes / 3), damit die Grenze auch beim Tokenizer haelt.
+
+Zwei bewusste Ausnahmen: `--json` ist Werkzeugformat und bleibt vollstaendig,
+`RBD_OUTPUT_FULL=1` hebt die Kappung fuer eine Beweisfuehrung auf. Die Hooks
+geben je Schritt eine Zeile aus (`precommit: <name>: ok` oder `ROT` mit Log und
+den letzten Zeilen); Kindausgaben landen vollstaendig in
+`.verify-cache/output/`. Exit-Codes aendert das Budget nie: ein roter Lauf
+bleibt rot.
+
 ## Kein Workflow, kein Actions
 
 Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der ihn ausfuehrt: es existiert kein Workflow mehr (FREEZE-0), und `docs/CI.md` sagt das ausdruecklich. Ein gesperrtes Actions-Konto kann den Start damit nicht mehr blockieren.

@@ -31,6 +31,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 import { evaluateIssueClaim, orderBoard } from './lib/issue-claim.mjs';
 import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
@@ -47,6 +48,8 @@ const value = (name, fallback = null) => {
 
 const asJson = flag('json');
 const brief = flag('brief');
+// Sichtbare Antwort bleibt unter 500 Token; `--json` ist Werkzeugformat und vollstaendig.
+captureConsole({ label: 'agent-start', enabled: !asJson });
 const limit = Math.max(1, Number(value('limit', '8')));
 /**
  * Die Session-Identitaet steht in `.lanes/identity.json` (global im

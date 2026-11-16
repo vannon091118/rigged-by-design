@@ -16,7 +16,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
-import { compact } from './lib/compact.mjs';
+import { captureConsole, compact } from './lib/compact.mjs';
 import { loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { issueNumberFor } from './lib/issue-claim.mjs';
 import { readIssueClaimAny } from './lib/board-read.mjs';
@@ -25,6 +25,7 @@ import { normalizeActors } from './lib/work-claim.mjs';
 
 const argv = process.argv.slice(2);
 const requireCloseout = argv.includes('--closeout');
+captureConsole({ label: 'verify-board' });
 const asJson = argv.includes('--json');
 
 function branchName() {
