@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:345599f9902fe651864073c475b3b3b40641b8d5c1a3edcac139fb9bceab7552",
+  "contentHash": "sha256:30f1ae75cf9f632d9ac4d46548bef090d784907b4c779168945c4161a4b4171a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8855,6 +8855,28 @@
       "text": "Rita sah zwei Türen, die sich fast glichen. Auf der einen stand ein Willkommen, auf der anderen eine Frage; hinter beiden lag dieselbe Mechanik. Das Haus konnte den Text ändern, ohne die Entscheidung zu verändern. Nur wer den gespeicherten Schlüssel besaß und die Bedingungen noch erfüllte, durfte die Klinke drücken. Alles andere blieb eine Beschreibung, kein Versprechen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-07-event-templates.json"
+    },
+    {
+      "contributionId": "evidence-final-main",
+      "turnId": "2026-11-16T21:10Z-evidence-final-main",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt strich die alte Tagesliste durch und schrieb eine neue darunter, mit Datum und dem Stand, den er selbst gesehen hatte — nicht den, an den er sich erinnerte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-evidence-final-main.json"
     },
     {
       "contributionId": "f-warm-return-01",
