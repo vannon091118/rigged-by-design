@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3ec8fbb1fc20bb1abaa21694a9cc64ea66afad071198aa1dad4a0f23527a8a0a",
+  "contentHash": "sha256:7c4e6da8777439b2723a6565d75786e47ae2e3cdaa760972b1e05afe4c914fc8",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8424,6 +8424,28 @@
       "text": "Im Archiv lagen die Beiträge nicht als Haufen, sondern als Karten mit Herkunft, Rolle und erlaubtem Ort. Rita zog eine Karte heraus, auf der nur ein Satz stand; daneben lagen leere Felder für Ton, Stimmung und Beziehung. Erst als jedes Feld ausgefüllt war, durfte der Satz in den Saal. Was fehlte, blieb draußen, auch wenn es schön klang.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-09-content-registry.json"
+    },
+    {
+      "contributionId": "contracts-gate",
+      "turnId": "2026-11-16T14:05Z-contracts-gate",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die sieben Aushänge an der Wand waren bisher nur Zettel. Der Wirt heftete neben jeden ein zweites Blatt: wer ihn schreiben darf, welcher Prüfer ihn abnimmt und wie viele Hände gleichzeitig daran schreiben dürfen. Wer einen neuen Aushang ohne Prüfer aufhängte, fand ihn am Morgen abgenommen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-contracts-gate.json"
     },
     {
       "contributionId": "d1-aftermath-body-01",

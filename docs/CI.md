@@ -6,7 +6,7 @@
 
 ## Required Gates
 
-Der Required-Plan besteht aus siebzehn Gates:
+Der Required-Plan besteht aus achtzehn Gates:
 
 | # | Gate | Skript | Fehlercode |
 | --- | --- | --- | --- |
@@ -21,14 +21,15 @@ Der Required-Plan besteht aus siebzehn Gates:
 | 9 | `impact-graph` | `scripts/verify-impact-graph.mjs` | `ERR-4019` |
 | 10 | `redundancy` | `scripts/verify-redundancy.mjs` | `ERR-4020` |
 | 11 | `output-budget` | `scripts/verify-output-budget.mjs --probe` | `ERR-4019` |
-| 12 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
-| 13 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
-| 14 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
-| 15 | `generated` | `node scripts/sync-generated.mjs --all --check` | `ERR-4028` |
-| 16 | `tests` | `pnpm run test:ci` | `ERR-4026` |
-| 17 | `build` | `pnpm run build` | `ERR-1005` |
+| 12 | `contracts` | `scripts/verify-contracts.mjs` | `ERR-4019` |
+| 13 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
+| 14 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
+| 15 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
+| 16 | `generated` | `node scripts/sync-generated.mjs --all --check` | `ERR-4028` |
+| 17 | `tests` | `pnpm run test:ci` | `ERR-4026` |
+| 18 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1` oder im Profil `full`/`release`: dann siebzehn Required plus Audit (achtzehn Läufe).
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1` oder im Profil `full`/`release`: dann achtzehn Required plus Audit (neunzehn Läufe).
 
 **Eigentümer der generierten Artefakte** (`content/narrative/registry/fragments.json`, `content/narrative/turns/manifest.json`, `src/core/sim/narrative/composer/registry.generated.ts`, `docs/INVENTORY.md`, `docs/ROADMAP.md`, `docs/DEPENDENCY-MATRIX.md`) ist ausschließlich `scripts/sync-generated.mjs` mit seinen Generatoren. Keine Lane schreibt sie von Hand: Konflikte werden regeneriert, nie aufgelöst. Das Gate `generated` prüft den Stand rein lesend (`--check`) und blockiert damit den lokalen Vor-PR-Nachweis, bevor ein Merge überhaupt ansteht.
 
@@ -36,12 +37,12 @@ Der Required-Plan besteht aus siebzehn Gates:
 
 Lokal gilt:
 
-- `verify:light` = zwölf Gates: `lint`, `check:loc`, `typecheck`, `headless-core`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`, `output-budget`.
+- `verify:light` = dreizehn Gates: `lint`, `check:loc`, `typecheck`, `headless-core`, `docs`, `catalog`, `generated`, `test-placement`, `tree`, `impact-graph`, `redundancy`, `output-budget`, `contracts`.
 - `verify:fast` = Light plus `dead-code`, `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
-- `verify:quick` = sechzehn Gates: Required ohne `build`.
-- `verify:integration` = sechzehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
-- `verify:all` = siebzehn Required plus Audit (achtzehn Läufe).
+- `verify:quick` = siebzehn Gates: Required ohne `build`.
+- `verify:integration` = siebzehn lokale Gates: Light plus `dead-code`, `test-quality`, `affected` und `build`.
+- `verify:all` = achtzehn Required plus Audit (neunzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
 - `test:mechanics` = ausschließlich Statistik, Soak, Langlauf und Benchmarks; nie Teil eines Regelprofils.
 

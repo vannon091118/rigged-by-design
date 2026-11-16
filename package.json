@@ -98,7 +98,8 @@
     "task:complete": "node scripts/task-state.mjs complete",
     "webhook:receive": "node scripts/webhook-receiver.mjs",
     "rbd": "node bin/rbd.mjs",
-    "verify:output-budget": "node scripts/verify-output-budget.mjs --probe"
+    "verify:output-budget": "node scripts/verify-output-budget.mjs --probe",
+    "verify:contracts": "node scripts/verify-contracts.mjs"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",

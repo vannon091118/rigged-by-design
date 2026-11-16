@@ -35,7 +35,7 @@ export function documentedOwners(governanceText) {
   return [...line.matchAll(/\*\*([^*]+)\*\*/g)].map((match) => match[1].trim());
 }
 
-const NUMBER_WORDS = Object.freeze({ 10: 'zehn', 15: 'fünfzehn', 16: 'sechzehn', 17: 'siebzehn', 18: 'achtzehn' });
+const NUMBER_WORDS = Object.freeze({ 10: 'zehn', 15: 'fünfzehn', 16: 'sechzehn', 17: 'siebzehn', 18: 'achtzehn', 19: 'neunzehn' });
 const numberWord = (value) => NUMBER_WORDS[value] ?? String(value);
 
 /**

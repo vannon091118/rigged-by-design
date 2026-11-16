@@ -2650,3 +2650,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** `verify-scope` ohne `--log`: keine neue Datei; mit `--log`: genau eine. `verify:light --gate=tree` ohne `--log`: null Reportdateien. Gate und Light-Profil gruen.
 
+## 2026-11-16 — Vertraege mechanisch statt auf Zuruf (Buffy)
+
+**Befund.** Die sieben Kernvertraege standen in einer Tabelle in `docs/contracts/README.md`; Owner, Writer und Vertragstest waren Prosa. Ein neuer Vertrag ohne Test, ein Owner ausserhalb des Rosters oder zwei schreibende Claims auf denselben Vertrag waeren niemandem aufgefallen, solange kein Mensch die Tabelle las.
+
+**Entscheidung.** Die Liste kommt jetzt aus dem Verzeichnis: jede Datei unter `docs/contracts/` ist ein Vertrag. `scripts/lib/contracts.mjs` prueft Tabellenzeile, Roster-Owner, Lane-Writer, existierenden Vertragstest mit `@test-target` und Contract-ID, Status-Zeile sowie hoechstens einen schreibenden offenen Claim je Contract. `verify:contracts` haengt als Required-Gate in Light, Quick und der Pre-Commit-Kette; der Test erzeugt jede Luecke synthetisch und macht sie rot.
+
+**Nachweis.** Gate gruen fuer sieben Vertraege; vier Negativfaelle (fehlende Zeile, fehlender Test, fremder Owner, zwei Writer) im Test abgedeckt; Light-Profil gruen.
+

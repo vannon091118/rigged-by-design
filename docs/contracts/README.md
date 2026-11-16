@@ -18,6 +18,15 @@
 
 Der Status steht in der jeweiligen Vertragsdatei. Die meisten Verträge sind dort als `draft` → `active` nach Merge geführt; der Index erfindet keinen Status.
 
+## Mechanik
+
+`pnpm rbd verify contracts` leitet die Vertragsliste aus diesem Verzeichnis ab
+und prueft jede Zeile: Vertragsdatei vorhanden, Owner im Roster, Writer als
+Lane, existierender Vertragstest mit `@test-target` und Contract-ID,
+Status-Zeile und hoechstens ein schreibender offener Claim je Contract. Das
+Gate haengt in Light, Quick und der Pre-Commit-Kette; eine neue Vertragsdatei
+ohne Tabellenzeile oder Test ist rot.
+
 ## Schreibregeln
 
 1. **Genau ein Writer pro Contract-ID.** Read-only-Konsumenten dürfen parallel arbeiten; der Claim trägt den Modus.

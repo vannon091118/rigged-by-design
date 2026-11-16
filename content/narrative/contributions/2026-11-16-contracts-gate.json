@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T14:05Z-contracts-gate",
+  "contributionId": "contracts-gate",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die sieben Aushänge an der Wand waren bisher nur Zettel. Der Wirt heftete neben jeden ein zweites Blatt: wer ihn schreiben darf, welcher Prüfer ihn abnimmt und wie viele Hände gleichzeitig daran schreiben dürfen. Wer einen neuen Aushang ohne Prüfer aufhängte, fand ihn am Morgen abgenommen.",
+  "directives": []
+}
