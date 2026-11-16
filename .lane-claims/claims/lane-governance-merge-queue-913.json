@@ -47,7 +47,9 @@
     "src/store/scene-commands.ts",
     "src/store/world-store.ts",
     "docs/AGENT-ONBOARDING.md",
-    "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
+    "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json",
+    "scripts/pretask.mjs",
+    "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
   ],
   "contracts": [],
   "dependencies": [],

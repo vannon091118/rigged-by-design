@@ -36,6 +36,7 @@ import { evaluateIssueClaim, orderBoard } from './lib/issue-claim.mjs';
 import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
+import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
 import {
   MERGE_ISSUE,
   ackCommand,
@@ -53,10 +54,24 @@ const value = (name, fallback = null) => {
   return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
 };
 
-const asJson = flag('json') || flag('brief');
+const asJson = flag('json');
 const brief = flag('brief');
 const limit = Math.max(1, Number(value('limit', '8')));
-const agent = value('agent', process.env.RBD_AGENT ?? 'agent-local');
+/**
+ * Die Session-Identitaet steht in `.lanes/identity.json` (global im
+ * Identity-Board reserviert). Ohne `RBD_AGENT` gilt sie, damit ein frischer
+ * Aufruf nicht als fremder `agent-local` an der eigenen Lane scheitert.
+ */
+function sessionIdentity() {
+  if (process.env.RBD_AGENT) return process.env.RBD_AGENT;
+  try {
+    return readIdentityFile(workspacePaths().identity)?.identity ?? 'agent-local';
+  } catch {
+    return 'agent-local';
+  }
+}
+
+const agent = value('agent', sessionIdentity());
 const issueFlag = value('issue');
 const wantedIssue = issueFlag === null ? null : Number(issueFlag);
 const wantDispatch = flag('dispatch');
@@ -299,9 +314,24 @@ function summarizePretask(parsed) {
   };
 }
 
+/**
+ * Ein pretask-Blocker nennt oft nur den Zustand ("geclaimt durch X"). Der
+ * Start nennt zusaetzlich den einen Befehl, der ihn aufloest: die eigene
+ * Session-Identitaet, wenn man dieser Halter ist.
+ */
+function withResolution(text) {
+  const holder = /durch ([A-Za-z0-9_.-]+) geclaimt/.exec(String(text))?.[1];
+  if (holder) return `${text}; wenn du diese Session bist: \`RBD_AGENT=${holder} pnpm run agent:start --brief\`, sonst RELEASE/HANDOFF abwarten`;
+  return text;
+}
+
 function pretaskVerdict() {
   if (flag('no-pretask')) return { ran: false, reason: '--no-pretask gesetzt' };
   const args = [join(ROOT, 'scripts', 'pretask.mjs'), '--json'];
+  // Laufbudget gehoert zum Aufruf, nicht zu einer zweiten Runde: derselbe
+  // Befehl nimmt die belegte Zahl aus Flag oder Umgebung mit.
+  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES);
+  if (budget !== null && budget !== undefined) args.push('--new-governance-issues', String(budget));
   const options = { cwd: ROOT, encoding: 'utf8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] };
   try {
     return { ran: true, ...summarizePretask(JSON.parse(execFileSync(process.execPath, args, options))) };
@@ -318,7 +348,7 @@ function pretaskVerdict() {
 const queueSteps = [];
 const pretask = board.ok ? pretaskVerdict() : { ran: false, reason: 'Board nicht lesbar: pretask uebersprungen' };
 if (pretask.ran) {
-  for (const blocker of pretask.blockers ?? []) blockers.push(`${blocker} (aus agent:pretask)`);
+  for (const blocker of pretask.blockers ?? []) blockers.push(`${withResolution(blocker)} (aus agent:pretask)`);
 } else if (pretask.reason) {
   warnings.push(pretask.reason);
 }
@@ -543,7 +573,7 @@ if (asJson) {
     blockers,
     warnings,
     notes,
-    nextSteps: brief ? steps.slice(0, 3) : steps,
+    nextSteps: brief ? [mergeQueue?.nextCommand].filter(Boolean) : steps,
     details: 'vollstaendig mit --json',
   };
   console.log(JSON.stringify(payload, null, 2));
@@ -588,8 +618,16 @@ if (asJson) {
   for (const warning of warnings) console.log(`  ! ${warning}`);
   for (const note of notes) console.log(`  - ${note}`);
   console.log('');
-  console.log('=== Naechste Schritte ===');
-  for (const step of steps) console.log(`  -> ${step}`);
+  // `--brief` endet mit genau einer Aktion: der naechste Befehl, sonst der
+  // erste Schritt. Alles weitere bleibt in `--json` vollstaendig erhalten.
+  if (brief) {
+    const nextAction = mergeQueue?.nextCommand ?? steps[0] ?? null;
+    console.log('=== Naechste Aktion ===');
+    console.log(`  -> ${nextAction ?? 'keine: Blockliste oben abarbeiten'}`);
+  } else {
+    console.log('=== Naechste Schritte ===');
+    for (const step of steps) console.log(`  -> ${step}`);
+  }
 }
 
 if (blockers.length > 0) {

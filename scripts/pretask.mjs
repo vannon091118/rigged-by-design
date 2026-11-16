@@ -65,7 +65,20 @@ const requireWorktree = argv.includes('--require-worktree') || process.env.RBD_R
 // (`local.agent(cloud).1`) bleiben als Alias zulaessig; mehrere duerfen
 // kommagetrennt in RBD_AGENT stehen.
 const agentFlag = argv.indexOf('--agent');
-const agentIdentity = process.env.RBD_AGENT || (agentFlag >= 0 ? argv[agentFlag + 1] : '') || 'agent-local';
+/**
+ * Dieselbe Identitaetsquelle wie `agent:start`: ohne `RBD_AGENT` gilt die
+ * global reservierte Identitaet aus `.lanes/identity.json`. Sonst bewertet
+ * pretask die eigene Lane als fremden Claim.
+ */
+function reservedIdentity() {
+  try {
+    return readIdentityFile(workspacePaths().identity)?.identity ?? '';
+  } catch {
+    return '';
+  }
+}
+
+const agentIdentity = process.env.RBD_AGENT || (agentFlag >= 0 ? argv[agentFlag + 1] : '') || reservedIdentity() || 'agent-local';
 /** Der Impact-Block wird nicht zweimal in die Ausgabe gelegt. */
 const CONTEXT_FILE = '.verify-cache/agent-context.json';
 
