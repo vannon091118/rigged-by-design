@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T17:45Z-register-closeout",
+  "contributionId": "register-closeout",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt strich die Namen von der Tafel, deren Arbeit längst im Regal stand, und schrieb hinter jeden verbliebenen den Beleg, statt ihn nur zu behaupten.",
+  "directives": []
+}
