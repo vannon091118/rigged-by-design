@@ -963,7 +963,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-merge-queue-913.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-merge-queue-empty-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen

@@ -4,23 +4,27 @@
   "claimId": "lane/governance/webhook-delivery",
   "branch": "lane/governance/webhook-delivery",
   "baseSha": "b10706c28436a83472ae2ce7ba0cdc2fabf89274",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Webhook speist denselben Ablauf: Empfaenger, HMAC, gleiche Entscheidung",
   "goal": "Eine verifizierte Delivery liefert exakt die Aktion, die auch merge:queue --check nennt; ungueltige Signaturen werden abgewiesen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 955,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/955",
+    "state": "open"
+  },
   "findings": [
     {
       "id": "F-1",
-      "status": "open",
+      "status": "accepted",
       "severity": "blocker",
       "summary": "Kein Repo-Hook vorhanden: GET /repos/vannon091118/rigged-by-design/hooks = [] (HTTP 200)."
     },
     {
       "id": "F-2",
-      "status": "open",
+      "status": "accepted",
       "severity": "blocker",
       "summary": "Anlage per API verweigert: POST /hooks = HTTP 403 {\"message\":\"Resource not accessible by personal access token\"}; dem Token fehlt administration:write (klassisch admin:repo_hook)."
     },
@@ -31,6 +35,6 @@
       "summary": "Keine oeffentlich erreichbare Empfaenger-URL im Runner; Empfaenger laeuft lokal, HMAC und Entscheidung sind getestet."
     }
   ],
-  "nextAction": "Commit, Push, PR gegen freebuff/52b2dd7351a47a0f446541cc; Hook-Anlage braucht Token mit Hook-Rechten plus oeffentliche HTTPS-URL.",
-  "revision": 1
+  "nextAction": "PR #955 reviewen; Hook-Anlage braucht Token mit administration:write und oeffentliche HTTPS-URL.",
+  "revision": 2
 }
