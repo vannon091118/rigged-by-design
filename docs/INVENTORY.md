@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 435 Dateien — contract 228 · integration 119 · governance 75 · statistics 6 · performance 7.
+Summe: 436 Dateien — contract 228 · integration 120 · governance 75 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -504,6 +504,7 @@ Summe: 435 Dateien — contract 228 · integration 119 · governance 75 · stati
 | `src/store/__tests__/save-wage-field.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/snapshot-purity.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
 | `src/store/__tests__/staff-view.test.ts` | store | integration | ja | `src/store/staff-view.ts` |
+| `src/store/__tests__/start-guest-crate-visible.test.ts` | store | integration | ja | `src/store/new-game.ts` |
 | `src/store/__tests__/street-population.test.ts` | store | integration | ja | `src/store/scene-commands.ts` |
 | `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/__tests__/world-tick-fail-closed.test.ts` | store | integration | ja | `src/store/tick-scheduler.ts` |
@@ -744,7 +745,7 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 | Getrackte Dateien | 3252 |
 | Gelistete Dateien | 3252 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (87), .lanes (1), artifacts (1), content (1193), docs (109), packages (27), public (571), scripts (147), src (1087) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (86), .lanes (1), artifacts (1), content (1193), docs (109), packages (27), public (571), scripts (147), src (1088) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -758,7 +759,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 4 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 43 Datei(en)
+- `.lane-claims/claims/` — 42 Datei(en)
 - `.lane-claims/tasks/` — 40 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
@@ -865,7 +866,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
 - `src/store/` — 44 Datei(en)
-- `src/store/__tests__/` — 38 Datei(en)
+- `src/store/__tests__/` — 39 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 105 Datei(en)
@@ -905,14 +906,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-782-integration.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-834-835-693-694.json` — { — gelesen: 45 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
-- `.lane-claims/claims/lane-governance-issue-937-audit-evidence.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-merge-queue-913.json` — { — gelesen: 37 Zeilen
+- `.lane-claims/claims/lane-governance-merge-queue-913.json` — { — gelesen: 55 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -925,7 +926,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-sim-issue-538-billing-cycle.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
@@ -947,13 +947,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-issue-782-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-834-835-693-694.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-merge-queue-913.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
@@ -3915,6 +3915,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/snapshot-purity.test.ts` — Ein Snapshot ist eine Projektion: Er darf weder Bewohnerprofile anlegen noch — gelesen: 65 Zeilen
 - `src/store/__tests__/staff-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 15 Zeilen
+- `src/store/__tests__/start-guest-crate-visible.test.ts` — AC 1+2 von #782: Nach createNewGame existiert ein Starter-Gast und eine — gelesen: 46 Zeilen
 - `src/store/__tests__/street-population.test.ts` — Der erste Schritt vor die Tür füllt die Stadt: Die drei kuratierten Figuren — gelesen: 54 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/__tests__/world-tick-fail-closed.test.ts` — Ein Bilanzbruch ist terminal: Der produktive Takt haelt beim ersten Fehler — gelesen: 113 Zeilen
@@ -3943,14 +3944,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/narrative-commands.ts` — Store-Naht fuer Narrative: Choice ausfuehren, Szene ablehnen und Facts flushen. — gelesen: 41 Zeilen
 - `src/store/narrative-store-actions.ts` — Narrative Store-Aktionen: Ausfuehrung und Meldung getrennt von der Facade. — gelesen: 21 Zeilen
 - `src/store/narrative.bench.ts` — NAR-16: Narrative Hotpath. Gemessen wird ein realistischer Tick nach einem — gelesen: 53 Zeilen
-- `src/store/new-game.ts` — Ein neuer Start: Wohnung first, leeres eigenes Casino und eine Starter-Kiste. — gelesen: 51 Zeilen
+- `src/store/new-game.ts` — Ein neuer Start: Wohnung first, leeres eigenes Casino und eine Starter-Kiste. — gelesen: 56 Zeilen
 - `src/store/own-play.ts` — Store-Fassade fuer eigene Spielrunden: Der Kern rechnet und bucht, die — gelesen: 105 Zeilen
 - `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 88 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 48 Zeilen
 - `src/store/queue-commands.ts` — Queue-Commands: die UI reiht Auftraege ein, der Store bleibt der Eigentuemer. — gelesen: 36 Zeilen
 - `src/store/rival-play-commands.ts` — Rival Play Commands (fremde Casinos). — gelesen: 92 Zeilen
 - `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 170 Zeilen
-- `src/store/scene-commands.ts` — Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. — gelesen: 214 Zeilen
+- `src/store/scene-commands.ts` — Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. — gelesen: 222 Zeilen
 - `src/store/scene-projection.ts` — Szenen-Kopf des Snapshots: eine Stelle, die alle Szenen benennt. — gelesen: 21 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
 - `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 189 Zeilen
