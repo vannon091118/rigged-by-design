@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { ROOT } from './report.mjs';
+import { dirname } from 'node:path';
+import { logFilePath } from './verify-state.mjs';
 
 /**
  * Kompakte Werkzeugausgabe: eine Bildschirmseite statt eines Logs.
@@ -164,8 +164,7 @@ export function budgetText(value, { label = 'output', logPath = null, limit = TO
 export function budgetLogPath(label) {
   // Keine Wanduhr (Determinismus-Regel): PID plus monotone Laufzeit reicht,
   // damit parallele Laeufe nicht dieselbe Logdatei ueberschreiben.
-  const stamp = `${process.pid}-${process.hrtime.bigint().toString(36)}`;
-  return join(ROOT, '.verify-cache', 'output', `${stamp}-${label}.log`);
+  return logFilePath(label);
 }
 
 const CAPTURED = Symbol.for('rbd.outputBudget.capture');

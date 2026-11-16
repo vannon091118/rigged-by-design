@@ -16,8 +16,8 @@ interface Deps {
   readonly world: () => WorldState;
   readonly emit: () => void;
   readonly notice: (text: string) => void;
-  readonly prng?: Prng;
-  readonly ledger?: Ledger;
+  readonly prng?: () => Prng;
+  readonly ledger?: () => Ledger;
 }
 
 /**
@@ -204,7 +204,7 @@ export class SceneCommands {
     if (world.onboarding?.step === 'OPENING' || world.onboarding?.step === 'CITY') world.onboarding = { step: 'CASINO' };
     // Der erste Gast erscheint, sobald der Spieler das Casino betritt: er ist
     // Teil des Startpfads und wird ueber die bestehende Render-Pipeline sichtbar.
-    if (this.#deps.prng && this.#deps.ledger) spawnGuest(world, this.#deps.prng, this.#deps.ledger);
+    if (this.#deps.prng && this.#deps.ledger) spawnGuest(world, this.#deps.prng(), this.#deps.ledger());
     this.#say('Dein Casino. Die erste Kiste steht bereit.');
   }
 

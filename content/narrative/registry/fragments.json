@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4bb61776b2d0c3bd6c22a297068a42288708f1cfa1c751cf5397703b12fe7a1c",
+  "contentHash": "sha256:457a1946a9659e3a7e6dea832aa2b80737d59d969bcae65cfc2e199b9e3c56bb",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8259,6 +8259,28 @@
       "source": "content/narrative/contributions/2026-11-10-collision-scope.json"
     },
     {
+      "contributionId": "command-atomicity-01",
+      "turnId": "2026-11-16T18:55Z-command-atomicity",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein abgebrochener Handgriff hinterlaesst keine halbe Buchung: Kasse, Welt und Wuerfel stehen danach genau dort, wo sie vor dem Versuch standen. Nur ein wirklich gefuehrter Kampf wird als Streit erzaehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-command-atomicity.json"
+    },
+    {
       "contributionId": "command-dsl-01",
       "turnId": "2026-11-03T01:20Z-nar-08-command-dsl",
       "agentId": "codebuff",
@@ -8855,6 +8877,28 @@
       "text": "Rita sah zwei Türen, die sich fast glichen. Auf der einen stand ein Willkommen, auf der anderen eine Frage; hinter beiden lag dieselbe Mechanik. Das Haus konnte den Text ändern, ohne die Entscheidung zu verändern. Nur wer den gespeicherten Schlüssel besaß und die Bedingungen noch erfüllte, durfte die Klinke drücken. Alles andere blieb eine Beschreibung, kein Versprechen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-07-event-templates.json"
+    },
+    {
+      "contributionId": "evidence-final-main",
+      "turnId": "2026-11-16T21:10Z-evidence-final-main",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt strich die alte Tagesliste durch und schrieb eine neue darunter, mit Datum und dem Stand, den er selbst gesehen hatte — nicht den, an den er sich erinnerte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-evidence-final-main.json"
     },
     {
       "contributionId": "f-warm-return-01",
@@ -26274,6 +26318,28 @@
       "source": "content/narrative/contributions/2026-11-15-shinon-913-merge-queue-green.json"
     },
     {
+      "contributionId": "shinon-974-sites-datenvertrag",
+      "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Immobilie war ein Eintrag, jetzt ist sie ein Verzeichnis: jeder eigene Standort traegt eine stabile Site-ID, seinen Typ, seine Ort-Bindung und den Tag des Kaufs. Alte Saves mit genau einer Immobilie waechsen in das neue Schema hinein, statt einen Versionssprung zu erzwingen; die Buchung bleibt eine einzige, auf dem Hauskonto. Es gibt keinen zweiten Ledger und keine zweite Geometrie - die Zonen bleiben die einzige raeumliche Wahrheit.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json"
+    },
+    {
       "contributionId": "sim-player-skills-learn-by-doing",
       "turnId": "2026-11-15T10:00Z-sim-player-skills",
       "agentId": "lilith",
@@ -26548,6 +26614,28 @@
       "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-starter-crate-guidance.json"
+    },
+    {
+      "contributionId": "store-guard-proof-01",
+      "turnId": "2026-11-16T19:11Z-store-guard-proof",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Beweis liegt auf dem Weg, den der Spieler selbst geht: Wer eine Einstellung abbricht, findet Kasse, Personal und Wuerfel unveraendert vor - nicht nur in der Transaktion, sondern im geladenen Spielstand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-store-guard-proof.json"
     },
     {
       "contributionId": "sync-live-hooks",
@@ -26933,6 +27021,28 @@
       "text": "Drei Türen, die lange klemmten, schließen jetzt leise: Das Geld stimmt, die Namen stimmen, und niemand muss mehr erklären, warum. Wer nachsieht, findet die Stadt genau so vor, wie sie beschrieben wurde.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-verify-gates.json"
+    },
+    {
+      "contributionId": "verify-state-01",
+      "turnId": "2026-11-16T22:58Z-verify-state",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-verify-state.json"
     },
     {
       "contributionId": "warm-return-body-01",

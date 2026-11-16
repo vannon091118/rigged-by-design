@@ -8,15 +8,15 @@
  */
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
+import { dropGate, readGates, writeGate } from './verify-state.mjs';
 
-// Ausserhalb von node_modules: pnpm install --frozen-lockfile zerstoert jedes Mal node_modules und damit
-// jeden Gate-Cache, bevor die Pipeline ueberhaupt laeuft.
-const CACHE_DIR = join(ROOT, '.verify-cache');
-// Windows verbietet ':' im Dateinamen; 'check:loc' wuerde sonst als ADS landen.
-const entry = (name) => join(CACHE_DIR, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.json`);
+// Der Cache liegt ausserhalb von node_modules: pnpm install --frozen-lockfile
+// zerstoert jedes Mal node_modules und damit jeden Gate-Cache, bevor die
+// Pipeline ueberhaupt laeuft. Seit #1039 ist er ein Abschnitt in
+// `.verify-cache/state.json`; den Pfad kennt nur `verify-state.mjs`.
 const MAX_BUFFER = 128 * 1024 * 1024;
 
 function git(args, options = {}) {
@@ -83,19 +83,14 @@ export function resetTreeKey() {
 }
 
 export function isCached(name, key) {
-  if (process.env.RBD_VERIFY_NO_CACHE === '1' || !existsSync(entry(name))) return false;
-  try {
-    return JSON.parse(readFileSync(entry(name), 'utf8')).key === key;
-  } catch {
-    return false;
-  }
+  if (process.env.RBD_VERIFY_NO_CACHE === '1') return false;
+  return readGates()[name]?.key === key;
 }
 
 export function markCached(name, key) {
-  mkdirSync(CACHE_DIR, { recursive: true });
-  writeFileSync(entry(name), JSON.stringify({ key, at: new Date().toISOString() }));
+  writeGate(name, { key, at: new Date().toISOString() });
 }
 
 export function dropCached(name) {
-  rmSync(entry(name), { force: true });
+  dropGate(name);
 }

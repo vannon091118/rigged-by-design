@@ -64,7 +64,7 @@ function zoneOf(world: WorldState, item: Furniture): Zone | null {
 
 /** Was an dieser Aufgabe gerade fehlt; dieselbe Reihenfolge der Gruende wie im Panel. */
 export function stationReadiness(world: WorldState, task: BusinessWorkTaskId): WorkStationReadiness {
-  if (world.player.property === null) return { ready: false, reason: 'Ohne eigene Immobilie fuehrst du keinen Betrieb.' };
+  if (world.player.properties.length === 0) return { ready: false, reason: 'Ohne eigene Immobilie fuehrst du keinen Betrieb.' };
   const binding = propertyWorld(world);
   if (binding === null || binding.area === null) return { ready: false, reason: 'Der Immobilie fehlt eine Flaeche im Raster.' };
   const barZone = zoneFor(binding.zones, 'BAR');

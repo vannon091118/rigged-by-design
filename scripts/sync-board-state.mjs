@@ -13,7 +13,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import {
   boardDrift, formatBoardState, nextBoardState, splitBoard,
 } from './lib/board-state.mjs';
@@ -125,7 +125,7 @@ if (check) {
   })();
   const drift = boardDrift({ previous, next: next.state, dropped: next.dropped, headParents: parents });
   console.log(JSON.stringify({
-    checked: true, file: STATE_FILE, head: next.state.head, drift,
+    checked: true, file: relative(ROOT, STATE_FILE), head: next.state.head, drift,
   }, null, 2));
   process.exit(drift.length === 0 ? 0 : 1);
 }
@@ -133,7 +133,7 @@ if (check) {
 writeFileSync(STATE_FILE, formatBoardState(next.state));
 console.log(JSON.stringify({
   written: true,
-  file: STATE_FILE,
+  file: relative(ROOT, STATE_FILE),
   head: next.state.head,
   openIssues: next.state.openIssuesCount,
   openPullRequests: next.state.openPullRequests,

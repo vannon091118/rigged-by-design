@@ -42,6 +42,7 @@ import { InteractionStore } from './interaction-store';
 import { QueueCommands } from './queue-commands';
 import { SceneCommands } from './scene-commands';
 import { createNewGame } from './new-game';
+import { captureCommandState } from './command-guard';
 import { drinkAtHome, eatAtHome } from '../core/sim/player-needs';
 
 class WorldStore {
@@ -68,7 +69,7 @@ class WorldStore {
   readonly own = new OwnPlay({ world: () => this.#world, ledger: () => this.#ledger, prng: () => this.#prng, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   readonly interaction = new InteractionStore({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   readonly queue = new QueueCommands({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
-  readonly scene = new SceneCommands({ world: () => this.#world, emit: () => this.#emit(), notice: (text) => { this.#notice = text; }, prng: this.#prng, ledger: this.#ledger });
+  readonly scene = new SceneCommands({ world: () => this.#world, emit: () => this.#emit(), notice: (text) => { this.#notice = text; }, prng: () => this.#prng, ledger: () => this.#ledger });
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();
@@ -94,14 +95,7 @@ class WorldStore {
     this.#notice = start.notice;
     this.#layoutEditor.reset();
   }
-  subscribe = (listener: () => void): (() => void) => {
-    this.#listeners.add(listener);
-    this.#tick.start();
-    return () => {
-      this.#listeners.delete(listener);
-      if (this.#listeners.size === 0) this.#tick.stop();
-    };
-  };
+  subscribe = (listener: () => void): (() => void) => { this.#listeners.add(listener); this.#tick.start(); return () => { this.#listeners.delete(listener); if (this.#listeners.size === 0) this.#tick.stop(); }; };
   getSnapshot = (): GameView => this.#view;
   newGame(template: TemplateId = 'SMALL'): void {
     this.#startNew(template);
@@ -164,7 +158,12 @@ class WorldStore {
   dismiss(): void { this.#notice = ''; this.#emit(false); }
 
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
-  #guard(action: () => void, flush = true): void { try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
+  /** Fehlgeschlagene Commands lassen keine Teilmutation stehen: Welt, Ledger und PRNG werden zurueckgenommen. */
+  #guard(action: () => void, flush = true): void {
+    const snapshot = captureCommandState(this.#world, this.#ledger, this.#prng);
+    try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); } catch (error) { this.#ledger = snapshot.restore(); this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); return; }
+    this.#emit();
+  }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }
 }
 export const worldStore = new WorldStore();

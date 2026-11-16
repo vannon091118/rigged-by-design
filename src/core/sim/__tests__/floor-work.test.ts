@@ -18,7 +18,7 @@ function setup() {
   ledger.transfer(EXTERNAL, PORTEMONNAIE, fromVC(200), 'test startgeld', 0);
   ledger.transfer(EXTERNAL, HAUSKONTO, fromVC(200), 'test hauskonto', 0);
   const machines = (() => {
-    if (world.player.property === null) buyProperty(world, ledger, 'KNEIPE', 0);
+    if (world.player.properties.length === 0) buyProperty(world, ledger, 'KNEIPE', 0);
     return propertyWorld(world)!.furniture.filter((item) => item.gameId !== null);
   })();
   return { world, ledger, machines };

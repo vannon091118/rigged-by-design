@@ -4882,8 +4882,24 @@
       "contributionId": "tagesbericht-evidence"
     },
     {
-      "turnId": "2026-11-16T16:15Z-skill-effekt-kartengeben",
-      "contributionId": "skill-effekt-kartengeben-01"
+      "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
+      "contributionId": "shinon-974-sites-datenvertrag"
+    },
+    {
+      "turnId": "2026-11-16T21:10Z-evidence-final-main",
+      "contributionId": "evidence-final-main"
+    },
+    {
+      "turnId": "2026-11-16T18:55Z-command-atomicity",
+      "contributionId": "command-atomicity-01"
+    },
+    {
+      "turnId": "2026-11-16T19:11Z-store-guard-proof",
+      "contributionId": "store-guard-proof-01"
+    },
+    {
+      "turnId": "2026-11-16T22:58Z-verify-state",
+      "contributionId": "verify-state-01"
     }
   ]
 }

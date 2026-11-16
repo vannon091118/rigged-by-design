@@ -14,10 +14,11 @@
  * `{ ref, sha, previous, fetched, moved, failed, reason }`.
  */
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { uptime } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
+import { readSection, setSection } from './verify-state.mjs';
 
 const DEFAULT_TTL_MS = 60_000;
 // Ein Fehlversuch wird nicht im Sekundentakt wiederholt: sonst haengt jeder
@@ -46,27 +47,10 @@ function shaOf(cwd, ref) {
   return result.status === 0 ? result.stdout.trim() : '';
 }
 
-function statePath(cwd) {
-  return join(cwd, '.verify-cache', 'base-refresh.json');
-}
-
-function readState(cwd) {
-  try {
-    const record = JSON.parse(readFileSync(statePath(cwd), 'utf8'));
-    return record && typeof record === 'object' ? record : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeState(cwd, record) {
-  try {
-    mkdirSync(join(cwd, '.verify-cache'), { recursive: true });
-    writeFileSync(statePath(cwd), `${JSON.stringify(record, null, 2)}\n`, 'utf8');
-  } catch {
-    // Der Cache ist Komfort; der Ref allein entscheidet.
-  }
-}
+// Der Basis-Zustand ist ein Abschnitt in `.verify-cache/state.json`; den Pfad
+// und die Migration alter `base-refresh.json` kennt nur `verify-state.mjs`.
+const readState = (cwd) => readSection('base', { root: cwd });
+const writeState = (cwd, record) => setSection('base', record, { root: cwd });
 
 /**
  * Aktualisiert `ref` (Default `origin/main`) und liefert den gueltigen Stand.

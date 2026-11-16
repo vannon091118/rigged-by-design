@@ -111,13 +111,13 @@ describe('Save-Migration v5 auf v6', () => {
 describe('Save-Migration: Immobilie', () => {
   it('laesst alte Saves ohne Eigentum ohne Immobilie', () => {
     const loaded = replaySave(legacyV5())!;
-    expect(loaded.world.player.property).toBeNull();
+    expect(loaded.world.player.properties).toEqual([]);
   });
 
   it('verwirft einen unvollstaendigen Eigentums-Datensatz beim Laden', () => {
     const saved = legacyV5();
     (saved.player as Record<string, unknown>).property = { id: 'BURG', priceVC: 1, day: 1 };
     const loaded = replaySave(saved)!;
-    expect(loaded.world.player.property).toBeNull();
+    expect(loaded.world.player.properties).toEqual([]);
   });
 });

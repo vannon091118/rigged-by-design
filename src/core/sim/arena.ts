@@ -64,7 +64,7 @@ export function arenaView(world: WorldState): ArenaView {
   const step = stepOf(stage);
   const next = nextArenaStep(stage);
   const binding = propertyWorld(world);
-  const owned = world.player.property !== null;
+  const owned = world.player.properties.length > 0;
   const barZones = binding?.zones.filter((zone) => zone.kind === 'BAR').length ?? 0;
   const note = !owned
     ? 'Arena braucht eine eigene Immobilie.'
@@ -85,7 +85,7 @@ export function arenaView(world: WorldState): ArenaView {
 
 /** Baut die naechste Stufe vom Betriebskonto; der Beleg traegt die Stufe. */
 export function buildArena(world: WorldState, ledger: Ledger): ArenaStage {
-  if (world.player.property === null) throw new Error('Arena braucht eine eigene Immobilie.');
+  if (world.player.properties.length === 0) throw new Error('Arena braucht eine eigene Immobilie.');
   const step = nextArenaStep(arenaStage(world));
   if (!step) throw new Error('Arena ist bereits vollstaendig ausgebaut.');
   const cost = fromVC(step.costVC);

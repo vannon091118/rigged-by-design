@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T18:55Z-command-atomicity",
+  "contributionId": "command-atomicity-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein abgebrochener Handgriff hinterlaesst keine halbe Buchung: Kasse, Welt und Wuerfel stehen danach genau dort, wo sie vor dem Versuch standen. Nur ein wirklich gefuehrter Kampf wird als Streit erzaehlt.",
+  "directives": []
+}

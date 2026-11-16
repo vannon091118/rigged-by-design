@@ -21,14 +21,27 @@ describe('Stadt-Einstieg: Immobilienkauf', () => {
     const notice = cityCmd(world, ledger, prng, { kind: 'buyProperty', propertyId: 'KNEIPE' });
     expect(notice).toBe(world.lastEvent);
     expect(notice).toContain('Kleine Kneipe');
-    expect(world.player.property?.id).toBe('KNEIPE');
+    expect(world.player.properties).toHaveLength(1);
+    expect(world.player.properties[0]!.propertyId).toBe('KNEIPE');
+    expect(world.player.properties[0]!.siteId).toContain('KNEIPE');
     expect(ledger.getBalance(PORTEMONNAIE)).toBe(fromVC(0));
+  });
+
+  it('erlaubt einen zweiten Standort und weist jedem eine eigene Site-ID zu', () => {
+    const { world, ledger, prng } = setup(200);
+    expect(cityCmd(world, ledger, prng, { kind: 'buyProperty', propertyId: 'KNEIPE' })).toBe(world.lastEvent);
+    expect(cityCmd(world, ledger, prng, { kind: 'buyProperty', propertyId: 'GEWERBERAUM' })).toBe(world.lastEvent);
+    expect(world.player.properties).toHaveLength(2);
+    expect(world.player.properties[0]!.siteId).not.toBe(world.player.properties[1]!.siteId);
+    expect(world.player.properties.map((site) => site.propertyId)).toEqual(['KNEIPE', 'GEWERBERAUM']);
+    expect(ledger.getBalance(PORTEMONNAIE)).toBe(fromVC(20));
   });
 
   it('reicht die Preispruefung unveraendert an den Aufrufer weiter', () => {
     const { world, ledger, prng } = setup(10);
     expect(() => cityCmd(world, ledger, prng, { kind: 'buyProperty', propertyId: 'GEWERBERAUM' }))
       .toThrow(/Nicht genug Bargeld/);
-    expect(world.player.property).toBeNull();
+    expect(world.player.properties).toHaveLength(0);
+    expect(ledger.getBalance(PORTEMONNAIE)).toBe(fromVC(10));
   });
 });

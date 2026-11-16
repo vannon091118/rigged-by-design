@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- **Board-Check druckt relativen Pfad.** `board:sync --check` nennt `.lane-claims/board-state.json` statt eines absoluten Clone-Pfads; der Tagesbericht-Beleg ist damit ohne Pfad-Sonderfall diffbar.
+- **Snapshot-Prosa nennt keinen alten Kopf-SHA mehr.** Summary und Health beschreiben die Closeout-Relation `head == main^`, statt einen main-Stand zu behaupten, der nach dem naechsten Merge veraltet waere.
 - **P0-Merge-Gate-Tagesbericht belegt.** Der vollstaendige Lauf aus einem frischen Klon steht in `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md`; `docs/ROADMAP.md` fuehrt Required Checks, Merge-Queue und getrennten Maintainer-Login als benannte Owner-Entscheidungen.
 - **Board-Drift kennt die Closeout-Relation.** `boardDrift` akzeptiert `head == main^` (erster Parent des Merge-Commits) als dokumentierte Selbstreferenz eines Snapshot-Commits; jeder andere Kopf-Drift bleibt rot. Test in `board-state-sync.test.ts`.
 - **Board-State live nachgezogen.** `.lane-claims/board-state.json` steht auf `633dfdf6`, 16 offene Issues, 0 offene PRs; #987 ist nicht mehr als offen gefuehrt, veraltete Summary-/Health-Notizen sind ersetzt. `sync-board-state --check` meldet `drift: []`, `reconcile-claims --check` `keine Abweichung`. Geschlossene P0-Issues (#634, #696, #909, #910, #913, #920) tragen jetzt `zustand-CLOSED` statt widerspruechlicher OPEN/BLOCK-Labels.

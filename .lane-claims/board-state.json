@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-16T12:37:43Z",
+  "generatedAt": "2026-11-16T18:01:37Z",
   "generatedBy": "maintainer",
-  "head": "027b15aa0f085d7df0104c26022bde6099d0460e",
-  "headMessage": "Tagesbericht-Beleg ohne Selbsttreffer beim Kopf-Hash (#1025)",
-  "base": "origin/main @ 027b15aa0f085d7df0104c26022bde6099d0460e",
+  "head": "2ab753a6b1273a9c05971e7c64916e21eaf9eeb7",
+  "headMessage": "Tagesbericht-Beleg von finalem main reproduzierbar machen (#1032)",
+  "base": "origin/main @ 2ab753a6b1273a9c05971e7c64916e21eaf9eeb7",
   "worktree": "/workspace/chats/75042cf7e12fd480f9251993",
   "status": "READY",
-  "summary": "Board-Sync (#834) live nachgezogen auf main 027b15aa: 16 offene Issues, 0 offene PRs. #987 ist geschlossen; keine offene PR-Warteschlange.",
+  "summary": "Board-Sync (#834) live nachgezogen: 16 offene Issues, 0 offene PRs. #987 ist geschlossen; keine offene PR-Warteschlange. Kopf: Closeout-Relation head == main^ (Snapshot-Commit kann seinen eigenen SHA nicht enthalten).",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -583,7 +583,7 @@
   "health": {
     "verifyLight": {
       "status": "PASS",
-      "note": "alle Gates gruen auf main 027b15aa"
+      "note": "alle Gates gruen; Kopf folgt der Closeout-Relation head == main^"
     },
     "fullSuite": {
       "status": "FAIL",
