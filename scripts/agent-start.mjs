@@ -36,15 +36,7 @@ import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
 import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
-import {
-  MERGE_ISSUE,
-  ackCommand,
-  activeSessions,
-  buildQueue,
-  latestPlan,
-  parseMergeEvents,
-  publishCommand,
-} from './lib/merge-queue.mjs';
+import { hookStatus } from './lib/webhook-status.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -112,13 +104,10 @@ const repo = repoSlug();
 const credentials = resolveGithubToken();
 const token = credentials.token;
 if (!token) {
-  // Kein Workflow, kein Actions: fehlt `gh`, laedt der Lauf die CLI jetzt
-  // aus dem offiziellen Release nach (~/.local/bin, ohne sudo). Danach fehlt
-  // nur noch `gh auth login`.
+  // Fehlt `gh`, wird nichts nachgeladen (FREEZE-0): der Lauf nennt den
+  // Installationsweg und bleibt sonst bei genau einem Blocker.
   const gh = ensureGh();
-  const ghNote = gh.present
-    ? (gh.attempted ? ` \`gh\` wurde nachgeladen (${gh.path ?? 'gh'}); PATH ergaenzen, falls noetig.` : '')
-    : ` \`gh\` fehlt (${gh.install?.reason ?? 'unbekannt'}); manuell: ${gh.install?.url ?? 'https://cli.github.com'}.`;
+  const ghNote = gh.present ? '' : ` \`gh\` fehlt; Installation: ${gh.install?.url ?? 'https://cli.github.com'}.`;
   // Genau ein Blocker: ohne Credential-Quelle ist alles andere zweitrangig,
   // und der Agent soll genau einen Befehl ausfuehren, nicht drei.
   blockers.push(
@@ -294,7 +283,7 @@ if (wantedIssue) {
   notes.push('Kein freies Issue in den gezeigten Zeilen; alle Kandidaten sind besetzt oder warten auf Review.');
 }
 
-// --- 3b. Pretask und Merge-Queue -----------------------------------------
+// --- 3b. Pretask ---------------------------------------------------------
 /**
  * Pretask gehoert in diesen Lauf: ein Befehl muss reichen. Der Aufruf liefert
  * denselben Vertrag wie `agent:pretask`; scheitert er, bleibt der Bericht
@@ -328,7 +317,9 @@ function pretaskVerdict() {
   const args = [join(ROOT, 'scripts', 'pretask.mjs'), '--json'];
   // Laufbudget gehoert zum Aufruf, nicht zu einer zweiten Runde: derselbe
   // Befehl nimmt die belegte Zahl aus Flag oder Umgebung mit.
-  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES);
+  // Beim Start sind in diesem Lauf noch keine Governance-Issues geoeffnet:
+  // die belegte Zahl ist 0. Wer eines oeffnet, wiederholt pretask mit der Zahl.
+  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES ?? '0');
   if (budget !== null && budget !== undefined) args.push('--new-governance-issues', String(budget));
   const options = { cwd: ROOT, encoding: 'utf8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] };
   try {
@@ -343,7 +334,6 @@ function pretaskVerdict() {
   }
 }
 
-const queueSteps = [];
 const pretask = board.ok ? pretaskVerdict() : { ran: false, reason: 'Board nicht lesbar: pretask uebersprungen' };
 if (pretask.ran) {
   for (const blocker of pretask.blockers ?? []) blockers.push(`${withResolution(blocker)} (aus agent:pretask)`);
@@ -351,32 +341,12 @@ if (pretask.ran) {
   warnings.push(pretask.reason);
 }
 
-// Merge-Queue (#913): die Reihenfolge ist Teil des Starts, kein Extra-Befehl.
-let mergeQueue = null;
-if (board.ok) {
-  const thread = rest('issue-view', { number: MERGE_ISSUE, repo });
-  if (!thread.ok) {
-    mergeQueue = { ok: false, issue: MERGE_ISSUE, plan: null, sessions: [], queue: [], nextCommand: publishCommand(), error: thread.error };
-    warnings.push(`Merge-Queue #${MERGE_ISSUE} nicht lesbar (${thread.error}): Merge bleibt gesperrt (fail-closed)`);
-  } else {
-    const events = parseMergeEvents(thread.data?.comments ?? []);
-    const plan = latestPlan(events);
-    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha: git(['rev-parse', 'origin/main']) });
-    const ready = queue.filter((row) => row.status === 'READY');
-    mergeQueue = {
-      ok: ready.length > 0,
-      issue: MERGE_ISSUE,
-      plan: plan ? { revision: plan.revision, hash: plan.hash, mainSha: plan.mainSha, tampered: plan.tampered } : null,
-      sessions: activeSessions(events).map((entry) => entry.session),
-      queue,
-      nextCommand: ready.length > 0
-        ? `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`
-        : plan ? ackCommand(agent, 'worker') : publishCommand(),
-    };
-    if (!plan) queueSteps.push(`Merge-Queue: keine bestaetigte Revision — \`${publishCommand()}\`, dann je Session \`${ackCommand(agent, 'worker')}\``);
-    else if (ready.length === 0) queueSteps.push(`Merge-Queue HOLD (Plan ${plan.hash}): fehlende ACKs, dann \`${mergeQueue.nextCommand}\``);
-  }
-}
+// --- 3c. Webhook: derselbe Ablauf, ausgeloest von GitHub -----------------
+// Der Hook ist kein Extra-Werkzeug: er speist dieselbe Entscheidung. Fehlt er,
+// nennt der Start den Befehl und die fehlende Berechtigung — nicht mehr.
+const webhook = board.ok
+  ? hookStatus({ repo })
+  : { ok: false, hooks: [], active: 0, events: [], url: '', error: 'Board nicht lesbar', step: '' };
 
 // --- 4. Mechaniken: was erzwungen wird, was niemand aufruft --------------
 /**
@@ -397,7 +367,7 @@ const FLOW_ENTRIES = [
   { id: 'actor-policy', rule: 'nur verifizierte Autoren aendern Board-Zustand', artifact: '.lane-claims/actors.json' },
 ];
 const CONDITIONAL = new Map([
-  ['install-webhook.mjs', 'klassischer Webhook braucht eine erreichbare Empfaenger-URL; seit FREEZE-0 gibt es keinen Ereignis-Workflow mehr, die Board-Pflege laeuft im Maintainer-Lauf'],
+  ['install-webhook.mjs', 'klassischer Webhook braucht eine erreichbare Empfaenger-URL; ohne Empfaenger erzeugt pnpm run board:overview die Uebersicht lokal'],
 ]);
 const IGNORE = new Set(['github-rest-fetch.mjs', 'agent-start.mjs']);
 
@@ -518,11 +488,10 @@ function apkRelevance() {
 }
 const apk = apkRelevance();
 
-// --- 5. Naechste Schritte -------------------------------------------------
+// --- 6. Naechste Schritte -------------------------------------------------
 const claimBody = () =>
   `CLAIM [A1] ${agent} ${at} scope=<pfade> plan=<ein Satz, was dieses Issue erledigt>`;
 const steps = [];
-steps.push(...queueSteps);
 if (next) {
   steps.push(`CLAIM im Issue setzen: gh issue comment ${next.number} --body "${claimBody()}"`);
   steps.push(`Lane-Branch: git switch -c fix/${next.number}-<slug> origin/main`);
@@ -531,6 +500,7 @@ if (next) {
 } else if (board.ok) {
   steps.push('Kein freies Issue: Review/Blocker beim Maintainer, keine neue Lane');
 }
+if (!webhook.ok && webhook.step) steps.push(`Webhook: ${webhook.step}`);
 if (mechanics.orphan.length > 0) steps.push('Vergessene Systeme einbinden oder entfernen (siehe Blocker)');
 if (mechanics.unused.length > 0) steps.push(`Ohne Ausfuehrungspfad: ${mechanics.unused.map((entry) => entry.file).join(', ')} — einbinden oder entfernen`);
 if (!policyMissing) steps.push('Nach dem Push: PR ueber `gh pr create` (oder Konnektor) oeffnen und Review anfordern; Board lokal nachziehen mit `pnpm run board:sync`');
@@ -556,12 +526,20 @@ if (asJson) {
       orphan: mechanics.orphan,
     },
     pretask,
-    mergeQueue,
+    webhook: {
+      ok: webhook.ok,
+      active: webhook.active,
+      events: webhook.events,
+      url: webhook.url,
+      hooks: webhook.hooks,
+      step: webhook.step,
+      error: webhook.error ?? '',
+    },
     apkRelevance: apk,
     blockers,
     warnings,
     notes,
-    nextSteps: brief ? [mergeQueue?.nextCommand].filter(Boolean) : steps,
+    nextSteps: brief ? steps.slice(0, 1) : steps,
     details: 'vollstaendig mit --json',
   };
   console.log(JSON.stringify(payload, null, 2));
@@ -589,12 +567,10 @@ if (asJson) {
     ? `  Modus ${pretask.mode ?? '?'} · Phase ${pretask.phase ?? '?'} · Claim ${pretask.claimState ?? '?'} · ${(pretask.blockers ?? []).length} Blocker`
     : `  nicht ausgewertet: ${pretask.reason}`);
   console.log('');
-  console.log(`=== Merge-Queue (#${MERGE_ISSUE}) ===`);
-  console.log(mergeQueue
-    ? `  Plan ${mergeQueue.plan ? `${mergeQueue.plan.revision} (${mergeQueue.plan.hash})` : 'fehlt'} · Sessions ${mergeQueue.sessions.length} · READY ${mergeQueue.queue.filter((row) => row.status === 'READY').length}`
-    : '  nicht gelesen: Board nicht lesbar');
-  for (const row of mergeQueue?.queue ?? []) console.log(`  ${row.status} #${row.number} (${row.position || '—'}): ${cell(row.reasons.join(' · '))}`);
-  console.log(`  Naechster Befehl: ${mergeQueue?.nextCommand ?? publishCommand()}`);
+  console.log('=== Webhook (speist denselben Ablauf) ===');
+  console.log(webhook.ok
+    ? `  aktiv ${webhook.active} · Events ${webhook.events.join(',')} · Ziel ${webhook.url}`
+    : `  ${webhook.step || `nicht lesbar (${webhook.error})`}`);
   console.log('');
   console.log('=== Mechaniken ===');
   for (const entry of mechanics.entries) console.log(`  FLOW   ${entry.id}: ${entry.rule}`);
@@ -609,7 +585,7 @@ if (asJson) {
   // `--brief` endet mit genau einer Aktion: der naechste Befehl, sonst der
   // erste Schritt. Alles weitere bleibt in `--json` vollstaendig erhalten.
   if (brief) {
-    const nextAction = mergeQueue?.nextCommand ?? steps[0] ?? null;
+    const nextAction = steps[0] ?? null;
     console.log('=== Naechste Aktion ===');
     console.log(`  -> ${nextAction ?? 'keine: Blockliste oben abarbeiten'}`);
   } else {

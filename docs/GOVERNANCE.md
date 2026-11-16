@@ -276,11 +276,9 @@ Der Issue-Board-Status ist fester Bestandteil des Workflows und muss von jedem O
 - P0-Notfälle und P1-PRs (`review-waiting`) sind als Board-Pflicht gelistet und werden zu Beginn jedes Laufs gescannt.
 - Kein neues Ticket entsteht ohne vorangegangene Prüfung des bestehenden Board-Zustands.
 
-**Cron-Lock — atomar statt gelesen-geschrieben (#835)**
-- Der Maintainer-Lock ist der Git-Ref `refs/heads/rbd-lock/maintainer-cron`, kein Feld in einem Issue-Body. `POST /git/refs` legt ihn genau einmal an; ein zweiter Lauf erhält 422 und verliert. Damit gibt es bei einem freien Lock genau einen Gewinner, auch geräteübergreifend.
-- Der Lock zeigt auf einen Commit mit `owner`, `claim_id` und Aufnahmezeit in der Nachricht. Nach Ablauf der TTL (Standard 15 Minuten) wird ein hängender Lock genau einmal eingesammelt und neu reserviert.
-- `node .cron/check-in.mjs --owner <name> --claim-id <id>` reserviert (Exit 0 erlangt, 1 belegt, 2 API-Fehler). `node .cron/check-out.mjs '<state-json>' --owner <name> --claim-id <id>` prüft zuerst den Halter, schreibt dann die `state:JSON` und gibt erst danach frei; ein fremder Lock gibt nichts frei (Exit 1). Ein Schreibfehler bricht vor der Freigabe ab, damit die TTL greift.
-- 4xx ist eine Antwort, kein Netzfehler: der Client meldet den Status als Fehler (Exit 2) und wiederholt nur 5xx/429.
+**Cron-Lock — entfernt (FREEZE-0)**
+
+- Es gibt keinen Git-Ref-Lock und keine Rollenwechsel-Maschinerie mehr. Der Scheduler startet den Maintainer-Lauf als Einzelinstanz; ein zweiter Lauf ist ein Scheduler-Problem, nie eine Merge-Autorisierung.
 
 ## Prompt-Register
 

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c3b29f505076e362fc0d794a2bc3e490f0bf1e1246ab96ea036cde6dac1d1ff7",
+  "contentHash": "sha256:a740777c7b46472f090aa171cee4692fb26b147c241c55381e6b672e7b0b5cfa",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9655,6 +9655,28 @@
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
     },
     {
+      "contributionId": "governance-freeze-reste",
+      "turnId": "2026-11-16T05:30Z-governance-freeze-reste",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Kontrollraum hängt ein Schild, das eine Prüfung meldet, die seit Wochen niemand mehr ausführt. Jemand nimmt es ab, statt es zu putzen. Neben der Tür bleibt nur, was den Weg wirklich verriegelt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-freeze-reste.json"
+    },
+    {
       "contributionId": "governance-freeze-task-path-01",
       "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
       "agentId": "buffy",
@@ -9680,6 +9702,28 @@
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
     },
     {
+      "contributionId": "governance-freeze0-teardown",
+      "turnId": "2026-11-16T05:45Z-governance-freeze0-teardown",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Warteschlange an der Wand ist abgehängt, die vier Aushänge daneben auch. Wer vor der Tür steht, wird jetzt gefragt, was er gelesen hat, und nicht, welches Kürzel er trägt. Antwortet das Brett nicht, notiert der Beobachter „unbekannt“ statt einer Null.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-freeze0-teardown.json"
+    },
+    {
       "contributionId": "governance-image-diff-test",
       "turnId": "2026-11-16T03:20Z-governance-image-diff-test",
       "agentId": "monitor",
@@ -9700,6 +9744,28 @@
       "text": "Im Hinterzimmer vergleicht jemand zwei Bilder Pixel für Pixel: gleiche Flächen, gleiche Farben, nur ein Schatten ist gewandert. Der Vergleich sagt nicht \"gut\" oder \"schlecht\", er sagt nur, wie weit sich etwas verändert hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-governance-image-diff-test.json"
+    },
+    {
+      "contributionId": "governance-loc-audit",
+      "turnId": "2026-11-16T04:20Z-governance-loc-audit",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer stapeln sich Zettel mit Zahlen: achtmal derselbe Handgriff, elf Aufgaben in einer Liste, die niemand mehr ganz liest. Jemand legt sie nebeneinander, streicht die Doppelungen und schreibt daneben, was zuerst weg muss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-loc-audit.json"
     },
     {
       "contributionId": "governance-phase3-ci-state-01",
@@ -9749,6 +9815,28 @@
       "text": "Der Wirt sagt, der Laden trage sich selbst. Die Rechnungen auf dem Tisch sagen dasselbe, nur leiser.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-precommit-pipeline.json"
+    },
+    {
+      "contributionId": "governance-queue-claim-rest",
+      "turnId": "2026-11-16T06:10Z-governance-queue-claim-rest",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Abstellkammer hängen noch Zettel, die auf ein Regal zeigen, das längst ausgeräumt ist. Jemand streicht die Zeilen durch, statt sie stehen zu lassen, und lässt nur die Notizen stehen, die von wirklichen Türen erzählen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-queue-claim-rest.json"
     },
     {
       "contributionId": "governance-retry-path",
@@ -9823,6 +9911,28 @@
       "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-stale-claim-closeout.json"
+    },
+    {
+      "contributionId": "governance-tag-vollpruefung",
+      "turnId": "2026-11-16T05:00Z-governance-tag-vollpruefung",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zweihundertsechzehn Etiketten hängen an der Wand, die meisten mit demselben Datum. Jemand zählt nach, welche noch an etwas hängen, das nicht im Regal steht: neununddreißig. Jede bekommt eine Zeile, dann fällt das Etikett.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-tag-vollpruefung.json"
     },
     {
       "contributionId": "governance-task-vertrag-01",
@@ -10901,6 +11011,28 @@
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
     },
     {
+      "contributionId": "maintainer-913-empty-queue-action",
+      "turnId": "2026-11-16T03:22Z-empty-queue-action",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Aushang schweigt nicht mehr, wenn der Flur leer ist. Statt einer Unterschrift unter nichts steht dort ein Handgriff, der immer passt: nachsehen, ob das Brett noch stimmt. Erst wenn jemand vor der Tür steht, wird wieder bestätigt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-empty-queue-action.json"
+    },
+    {
       "contributionId": "maintainer-913-merge-queue",
       "turnId": "2026-11-16T02:35Z-merge-queue-913-01",
       "agentId": "maintainer",
@@ -10943,6 +11075,28 @@
       "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
+    },
+    {
+      "contributionId": "maintainer-913-webhook-delivery",
+      "turnId": "2026-11-16T05:10Z-webhook-delivery",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Es klingelt jetzt an derselben Tür, an der bisher nur jemand von Hand geklopft hat. Wer läuten darf, weist sich aus; wer es nicht tut, bleibt draußen. Und wer die Klingel noch nicht anschließen durfte, findet am Griff den Zettel mit dem fehlenden Schlüssel statt einer stillen Ausrede.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-webhook-delivery.json"
     },
     {
       "contributionId": "maintainer-937-audit-evidence",

@@ -3,7 +3,7 @@
   "taskId": "governance-freeze-0-code",
   "claimId": "lane/governance/freeze-0-code",
   "branch": "lane/governance/freeze-0-code",
-  "baseSha": "85ed452d0ac74680e57fc3a585b8ecf2e7af94ef",
+  "baseSha": "dc6836fc8ea33476e15185c70ed049d8c9c3c202",
   "phase": "IMPLEMENTING",
   "title": "FREEZE-0 Code-Rueckbau (Boxen 13, 15-19)",
   "goal": "Code-Baum enthaelt keine Scheinmechanik mehr; REST-Leser unterscheidet UNKNOWN von leerer Liste.",

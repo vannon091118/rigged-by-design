@@ -1,13 +1,14 @@
-# Kontrollpfade des Freeze-Vertrags (FREEZE-0, #684). Nur diese Pfade und
-# .cron/ brauchen einen Owner-Review; Doku, Claims und Package-Dateien sind
-# normale Arbeit. Die Lane-Claims unter .lane-claims/claims/ sind Koordination,
-# keine ausfuehrbare Wahrheit und kein Recht.
-/.github/                  @vannon091118
-/.githooks/                @vannon091118
-/.cron/                    @vannon091118
-/AGENTS.md                 @vannon091118
-/scripts/                  @vannon091118
+# Owner je Kontrollpfad (FREEZE-0, Abschnitt 2.4). Nur Pfade, die den
+# Sicherheits- und Automatisierungsvertrag tragen, brauchen den Owner-Review;
+# Spielcode, Doku und Claims sind normale Mitarbeit. Die Rechte selbst kommen
+# aus den GitHub-Rulesets, nicht aus dieser Datei; sie macht sichtbar, wer
+# prueft.
+/.github/                 @vannon091118
+/.githooks/               @vannon091118
+/.cron/                   @vannon091118
+/AGENTS.md                @vannon091118
+/scripts/                 @vannon091118
 /src/core/governance/     @vannon091118
-/.lane-claims/actors.json  @vannon091118
-/docs/GOVERNANCE.md        @vannon091118
-/docs/CI.md                @vannon091118
+/.lane-claims/actors.json @vannon091118
+/docs/GOVERNANCE.md       @vannon091118
+/docs/CI.md               @vannon091118

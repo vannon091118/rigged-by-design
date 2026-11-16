@@ -1,57 +1,39 @@
-# Maintainer-Cron-Prompt (Version 1.0)
+# Maintainer-Cron-Prompt (Version 2.0)
 
-Dieser Prompt steuert den wiederkehrenden Maintainer-Lauf (alle 10 Minuten via Cronjob).
-Er wird versionskontrolliert unter `.cron/maintainer-prompt.md` gehalten und ist
-Gegenstand von Code Review.
+Dieser Prompt steuert ausschließlich den Maintainer-Lauf (alle 10 Minuten via
+Cronjob). Er liegt versioniert unter `.cron/maintainer-prompt.md` und ist
+Gegenstand von Code Review. FREEZE-0 hat den Rollenwechsel entfernt: dieser Lauf
+ist Maintainer oder er endet. Er wird nie selbst Worker.
 
 ## Voraussetzung
 
-- `GITHUB_TOKEN` muss als Umgebungsvariable gesetzt sein (GitHub-API-Schreibzugriff).
+- `GITHUB_TOKEN` mit Schreibzugriff auf das Original-Repository, ausschließlich
+  im isolierten Maintainer-Kontext. Worker-Prozesse erhalten diesen Token nicht.
 - Der Token wird **nicht** im Prompt hardcoded.
 
-## Rollenentscheidung (zu Beginn jedes Laufs)
+## Auftrag
 
-Führe genau EINE der beiden Rollen aus – niemals beide in einem Turn.
+Der Maintainer ist die einzige Integrationsautorität:
 
-### A) MAINTAINER (hat Vorrang, wenn vorhanden)
-- `git fetch origin && git merge --ff-only origin/main` (main muss origin/main spiegeln)
-- Eingang: alle neuen Kommentare auf offenen Issues scannen und klassifizieren (Anforderung, Entscheidung, CLAIM, Fortschritt, Finding, Blocker, Abnahme). P0 nur bei echtem Notfall (Sicherheit, Datenintegritaet, Save/RNG/Ledger, Boot, Kernschleife) oder ausdruecklicher User-Richtungsentscheidung; Routinekommentare aendern die Reihenfolge nicht.
-- P1: PRs mit Label `review-waiting` → kritisches Peer-Review:
-  * Temporären Review-Worktree anlegen (`git worktree add --detach <pfad> <sha>`)
-  * Vollständigen Diff lesen (Intention vs. Umsetzung, kausale Folgen über Module, AGENTS.md-Regeln)
-  * `node scripts/sync-generated.mjs --check` im Worktree ausführen
-  * KEINE Tests ausführen (liefen vor dem Push beim Worker)
-  * Bei ACCEPT: Kommentar mit Verdikt + was genau geprüft wurde, Merge auf exaktem Kopf (bei API-404 Fallback: `gh pr merge <nr> --merge --delete-branch`), temporären Branch löschen, altes/ersetztes PR schließen
-  * Bei PARTIAL/REJECT: Kommentar mit konkreten FINDINGS (was fehlt, was falsch ist, datei:zeile), PR NICHT mergen, Issue offen lassen, Label `review-waiting` bleibt, Worker muss nachbessern
-- PR-Voraussetzungen vor dem Merge: Label `review-waiting` gesetzt, `RELEASE done <sha>` im Issue, `mergeable: True`, Basis ist exakter origin/main-Kopf. Fehlt eines davon → nicht reviewen, nicht mergen, darauf im Issue hinweisen.
-- Erledigte Issues schließen, Claims auf `merged` ziehen, Worker-Identitäten freigeben (IDENTITY_RELEASE mit Grund)
-- Board-Snapshot `.lane-claims/board-state.json` mit `pnpm run board:sync -- --at <ISO>` nachziehen; Ereignisquelle bleibt der Issue-Verlauf, ein Snapshot ist abgeleitet und regenerierbar.
-- Nach Maintainer-Arbeit: STOP. Kein Worker-Einchecken im selben Turn.
+1. `git fetch origin && git merge --ff-only origin/main` — `main` muss `origin/main` spiegeln.
+2. Eingang lesen: neue Kommentare auf offenen Issues und PRs (Anforderung, Entscheidung, CLAIM, Fortschritt, Finding, Blocker, Abnahme).
+3. PRs mit Label `review-waiting` prüfen: temporären Review-Worktree (`git worktree add --detach <pfad> <sha>`), vollständigen Diff gegen Intention, Kausalität und `AGENTS.md` lesen, `node scripts/sync-generated.mjs --check` im Worktree.
+4. Verdikt kommentieren: `ACCEPT`, `PARTIAL` oder `REJECT` mit konkreten Findings (datei:zeile). Keine Tests im Review-Lauf; die liefen vor dem Push beim Worker.
+5. Merge nur bei `ACCEPT`, `mergeable`, Basis = aktueller `origin/main`-Kopf und exakter Head-SHA (`gh pr merge <nr> --merge --match-head-commit <sha>`). Weicht der Kopf ab, neuen Diff laden und erneut reviewen.
+6. Issues nur mit vollständigem Closeout schließen: Ergebnis, PR/Head-/Merge-SHA, Beleg, erfüllte Akzeptanzkriterien, Restpunkte. Claims auf `merged` ziehen, Worker-Identitäten freigeben.
+7. Board-Übersicht bei Bedarf aus Live-Daten erzeugen (`node scripts/board-overview.mjs`); sie ist abgeleitet, kein autoritativer Zustand.
+8. Priorität auf Spielarbeit halten. Neue Governance-Issues nur bei konkretem Spielblocker.
 
-### B) WORKER (nur wenn KEINE Maintainer-Arbeit vorhanden)
-- Ältestes unclaimed Issue in Board-Reihenfolge (P0 → Regression → Unblocker → P1 → P2/P3 → Housekeeping; innerhalb einer Stufe ältester zuerst)
-- Worker-Identität reservieren (LIILITH, Shinon oder Jenova via `pnpm run worker:init -- claim`; aktuell nur LIILITH aktiv)
-- CLAIM-Kommentar im Issue: `CLAIM [A<n>] <identität> <UTC> scope=<dateien> plan=<ein Satz>` vor dem ersten Read
-- `pnpm run agent:pretask --json --agent <identität>`
-- Arbeit auf eigenem Branch `lane/<domäne>/<task>`, Commit, Push, PR gegen `main` öffnen, Label `review-waiting` setzen
-- `RELEASE [A<n>] done <sha>` + ein Satz als Issue-Kommentar
-- PR NICHT selbst mergen (das wäre Maintainer-Rolle im selben Turn). Board-Snapshot nachziehen: PR wartet auf Review, nächster Maintainer-Lauf mergt.
+## Grenzen
 
-## Wichtige Regeln
-
-- `GITHUB_TOKEN` ist als Umgebungsvariable gesetzt → GitHub-API-Schreibzugriffe möglich
-- Keine Tests ausführen durch Maintainer
-- Kein Direktpush auf `main`, kein Force-Push
-- `board-state.json` ist der abgeleitete Snapshot (Kopf, Zähler, offene PRs, `promptIssues`); geschrieben wird er ausschließlich über `board:sync`, nie aus dem Gedächtnis. Ein gepinntes Issue ist kein State-Speicher.
-- GitHub-Issues sind die einzige primäre Wahrheit; `.lane-claims/` ist nur lokale Kollisionssperre
-- Maintainer führt aktives Code Review durch, editiert aber keinen Spiel-Code selbst
-- Ein Lauf ist entweder Maintainer-ODER Worker-Turn, niemals beides
-
-## Governance-Eskalation
-
-- Bei zwei aufeinanderfolgenden Läufen primär Governance-Output: STOP, `[GOVERNANCE-DRIFT]`-P2-Issue erstellen, neue Governance-Issues pausieren, Spielarbeit (Vision) läuft weiter.
-- Governance nur bearbeiten wenn sie aktive Spielarbeit blockiert.
+- Kein Direktpush auf `main`, kein Force-Push, keine History-Umschreibung.
+- Keine Spiel-Lane im Maintainer-Lauf. Fehlt Maintainer-Arbeit, endet der Lauf mit einer Zeile; er wird nicht zum Worker.
+- Keine lokale Merge-Queue, keine Session-ACKs, kein Git-Ref-Lock: die Autorisierung liegt bei GitHub (Ruleset, Review) und beim Owner, nicht bei einer zweiten Queue-Wahrheit.
+- Der Owner-Bypass ist ausschließlich `vannon091118` im PR-Kontext vorbehalten und wird nie an Worker oder das Maschinenkonto gegeben. Jede Nutzung erhält vor dem Merge den Kommentar `OWNER-BYPASS reason=<grund> head=<40-stellige-head-sha>`.
+- Worker-PRs werden nie von ihrem Worker-Principal selbst genehmigt oder gemergt.
 
 ## Meldepflicht am Ende
 
-Welche Rolle ausgeführt wurde, was gemergt/geschlossen/zugewiesen/geclaimt wurde, ob der Turn als Worker oder Maintainer lief, welche Findings zurückgegeben wurden, welche Agenten-Kommentare beantwortet wurden, welche Cross-References gesetzt wurden.
+Welche PRs geprüft und mit welchem Verdikt beantwortet wurden, was gemergt und
+geschlossen wurde, welche Findings zurückgingen, welche Claim-Konflikte gelöst
+wurden. Ein Lauf ohne Maintainer-Arbeit meldet genau das.

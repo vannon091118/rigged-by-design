@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet).
+ * REST-Helper fuer das Board (wird synchron von `github-rest.mjs` gestartet).
  *
  * Warum ein eigener Prozess: `pretask` und die Hooks sind synchron. Node hat
  * kein synchrones `fetch`; deshalb erledigt dieser kleine Helfer die Anfrage
@@ -8,31 +8,29 @@
  *
  *   node github-rest-fetch.mjs <kind> '<json-params>'
  *
- * Token: optional (`GH_READ_TOKEN`, sonst die Credential-Kette). Fuer
- * oeffentliche Daten genuegt der anonyme Zugriff; ein Token erhoeht nur das
- * Rate-Limit. Repo: `RBD_REPO=owner/repo` oder das `origin`-Remote.
+ * Auth: anonym ist der Normalfall. Ein Token (`GH_TOKEN`, `GITHUB_TOKEN`, `gh
+ * auth token`, Credential-Helper) erhoeht nur das Rate-Limit und ist nie
+ * Pflicht. Unauthentifizierte REST-Aufrufe sind auf 60 pro Stunde und IP
+ * begrenzt.
  *
- * Fehler sind Zustaende, keine leeren Listen: bei Rate-Limit, Netzfehler oder
- * abgeschnittener Pagination gibt der Helfer `{unknown:true,state,...}` aus.
- * Der Aufrufer darf das nie als "0 Treffer" weiterreichen.
+ * Listen werden vollstaendig paginiert. Ein Fehler ist nie eine leere Liste:
+ * der Helfer endet mit einem eigenen Exit-Code und schreibt den Zustand nach
+ * stderr — `github-rest.mjs` uebersetzt ihn in `UNKNOWN_*`.
+ *
+ *   2 = UNKNOWN_AUTH            (401, oder 403 mit Auth-Hinweis)
+ *   3 = Repository nicht bestimmbar
+ *   4 = UNKNOWN_RATE_LIMIT      (403/429 oder X-RateLimit-Remaining: 0)
+ *   5 = UNKNOWN_NETWORK         (Netz-/DNS-Fehler)
+ *   6 = UNKNOWN_RESPONSE        (unerwartete Antwort, kein JSON)
+ *   7 = unbekannte Abfrage
  */
 import { execFileSync } from 'node:child_process';
 import { resolveGithubToken } from './credentials.mjs';
 
 const [kind = '', raw = '{}'] = process.argv.slice(2);
 const params = JSON.parse(raw);
-// Dieselbe Aufloesungsstelle wie der Aufrufer; kein zweiter Token-Pfad.
-const token = String(process.env.GH_READ_TOKEN ?? '').trim() || resolveGithubToken().token;
-
-/** Zustand statt Ausnahme: der Aufrufer entscheidet, was UNKNOWN bedeutet. */
-class RestUnknown extends Error {
-  constructor(state, { status = 0, reset = null, detail = '' } = {}) {
-    super(detail || state);
-    this.state = state;
-    this.status = status;
-    this.reset = reset;
-  }
-}
+// Ein Token ist optional; ohne Token liest der Helfer anonym.
+const token = resolveGithubToken().token;
 
 /** `owner/repo` aus Env oder dem origin-Remote. */
 function repoSlug() {
@@ -46,14 +44,7 @@ function repoSlug() {
   }
   const match = /github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?$/.exec(url);
   if (!match) {
-    // Auch dieser Abbruch bleibt ein Zustand statt eines nackten Exit-Codes.
-    process.stdout.write(JSON.stringify({
-      unknown: true,
-      state: 'UNKNOWN_REPO',
-      status: 0,
-      reset: null,
-      detail: 'Repository nicht bestimmbar (RBD_REPO setzen)',
-    }));
+    console.error('UNKNOWN_REPO: Repository nicht bestimmbar (RBD_REPO setzen)');
     process.exit(3);
   }
   return `${match[1]}/${match[2]}`;
@@ -62,67 +53,108 @@ function repoSlug() {
 const slug = repoSlug();
 const base = `https://api.github.com/repos/${slug}`;
 
-function authHeaders() {
-  const headers = {
+function headers() {
+  const result = {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
     'Content-Type': 'application/json',
     'User-Agent': 'rbd-board-gate',
   };
-  if (token) headers.Authorization = `Bearer ${token}`;
-  return headers;
+  if (token) result.Authorization = `Bearer ${token}`;
+  return result;
 }
 
-/** Ein GET; Fehler werden zu genau einem Zustand, nie zu einer leeren Liste. */
-async function api(path, { method = 'GET', body } = {}) {
+/** Ein Fehler wird benannt, nie zu einer leeren Liste. */
+function fail(response, path) {
+  const status = response.status;
+  const remaining = response.headers.get('x-ratelimit-remaining');
+  const reset = response.headers.get('x-ratelimit-reset');
+  if (status === 403 || status === 429 || remaining === '0') {
+    console.error(`UNKNOWN_RATE_LIMIT: HTTP ${status} ${path}; reset=${reset ?? 'unbekannt'}`);
+    process.exit(4);
+  }
+  if (status === 401 || status === 403) {
+    console.error(`UNKNOWN_AUTH: HTTP ${status} ${path}`);
+    process.exit(2);
+  }
+  console.error(`UNKNOWN_RESPONSE: HTTP ${status} ${path}`);
+  process.exit(6);
+}
+
+async function request(path, { method = 'GET', body } = {}) {
   let response;
   try {
     response = await fetch(`${base}${path}`, {
       method,
-      headers: authHeaders(),
+      headers: headers(),
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch (error) {
-    throw new RestUnknown('UNKNOWN_NETWORK', { detail: String(error?.message ?? error).slice(0, 160) });
+    console.error(`UNKNOWN_NETWORK: ${String(error?.message ?? error).split('\n')[0].slice(0, 160)}`);
+    process.exit(5);
   }
-  if (!response.ok) {
-    const remaining = response.headers.get('x-ratelimit-remaining');
-    const reset = response.headers.get('x-ratelimit-reset');
-    // Reset als Epochen-Sekunden: kein Uhrzeit-Zugriff im Determinismus-Pfad.
-    const resetEpoch = reset ? Number(reset) : null;
-    if (response.status === 429 || (response.status === 403 && remaining === '0')) {
-      throw new RestUnknown('UNKNOWN_RATE_LIMIT', { status: response.status, reset: resetEpoch });
-    }
-    if (response.status === 401 || response.status === 403) {
-      throw new RestUnknown('UNKNOWN_AUTH', { status: response.status, reset: resetEpoch });
-    }
-    throw new RestUnknown('UNKNOWN_NETWORK', { status: response.status, reset: resetEpoch, detail: `HTTP ${response.status}` });
-  }
+  if (!response.ok) fail(response, path);
   return response;
 }
 
-/** Alle Seiten ueber den `Link: rel="next"`-Zeiger; Obergrenze statt Raten. */
-async function paged(path, { maxPages = 20 } = {}) {
-  const rows = [];
-  let next = path.includes('?') ? path : `${path}?per_page=100`;
-  for (let page = 0; page < maxPages; page += 1) {
-    const response = await api(next);
-    const chunk = await response.json();
-    if (!Array.isArray(chunk)) return chunk;
-    rows.push(...chunk);
-    const link = response.headers.get('link') ?? '';
-    const match = /<([^>]+)>;\s*rel="next"/.exec(link);
-    if (!match) return rows;
-    next = match[1].replace(base, '');
+async function json(path, options) {
+  const response = await request(path, options);
+  try {
+    return await response.json();
+  } catch {
+    console.error(`UNKNOWN_RESPONSE: kein JSON ${path}`);
+    process.exit(6);
   }
-  throw new RestUnknown('UNKNOWN_PAGINATION', { detail: `mehr als ${maxPages} Seiten` });
+}
+
+/** Naechste Seite aus dem Link-Header; `null` heisst: fertig. */
+function nextPage(response) {
+  const link = response.headers.get('link') ?? '';
+  const match = /<([^>]+)>;\s*rel="next"/.exec(link);
+  return match ? match[1] : null;
+}
+
+/**
+ * Vollstaendig paginierte Liste. `per_page=100` allein ist kein
+ * Vollstaendigkeitsbeleg; ohne Link-Header endet die Schleife nach Seite 1.
+ */
+async function paginate(path) {
+  const rows = [];
+  let url = `${base}${path}`;
+  let guard = 0;
+  while (url) {
+    guard += 1;
+    if (guard > 100) {
+      console.error(`UNKNOWN_RESPONSE: mehr als 100 Seiten ${path}`);
+      process.exit(6);
+    }
+    let response;
+    try {
+      response = await fetch(url, { headers: headers() });
+    } catch (error) {
+      console.error(`UNKNOWN_NETWORK: ${String(error?.message ?? error).split('\n')[0].slice(0, 160)}`);
+      process.exit(5);
+    }
+    if (!response.ok) fail(response, url.replace(base, ''));
+    let page;
+    try {
+      page = await response.json();
+    } catch {
+      console.error(`UNKNOWN_RESPONSE: kein JSON ${url}`);
+      process.exit(6);
+    }
+    if (!Array.isArray(page)) {
+      console.error(`UNKNOWN_RESPONSE: Liste erwartet ${url}`);
+      process.exit(6);
+    }
+    rows.push(...page);
+    url = nextPage(response);
+  }
+  return rows;
 }
 
 const labels = (issue) => (issue.labels ?? []).map((label) => ({ name: typeof label === 'string' ? label : label.name }));
 const comment = (entry) => ({
-  // `id` ist die einzige monotone Ordnung im Verlauf: daran entscheidet die
-  // Merge-Queue, ob ein ACK NACH dem Plan liegt. Ohne die Zahl kollabieren
-  // alle Ereignisse auf 0 und jede Bestaetigung wirkt "zu alt".
   id: Number(entry.id ?? 0),
   body: entry.body ?? '',
   createdAt: entry.created_at ?? '',
@@ -143,16 +175,19 @@ function issueRow(issue) {
 }
 
 async function issues(query) {
-  const rows = await paged(`/issues?state=${query.state ?? 'open'}${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
-  const mapped = rows.filter((issue) => !issue.pull_request).map(issueRow);
-  const limit = Number(query.limit ?? 0);
-  return limit > 0 ? mapped.slice(0, limit) : mapped;
+  const rows = await paginate(`/issues?state=${query.state ?? 'open'}&per_page=100${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
+  return rows.filter((issue) => !issue.pull_request).map(issueRow);
+}
+
+async function commentsOf(number) {
+  const rows = await paginate(`/issues/${Number(number)}/comments?per_page=100`);
+  return rows.map(comment);
 }
 
 async function pullForBranch() {
   const branch = String(params.branch ?? '');
   if (!branch) return null;
-  const open = await api(`/pulls?state=all&head=${encodeURIComponent(`${slug.split('/')[0]}:${branch}`)}&per_page=5`);
+  const open = await json(`/pulls?state=all&head=${encodeURIComponent(`${slug.split('/')[0]}:${branch}`)}&per_page=5`);
   const pr = Array.isArray(open) ? open[0] : null;
   if (!pr) return null;
   return {
@@ -168,9 +203,8 @@ async function pullForBranch() {
 
 /** Offene Pull Requests; der Agenteneinstieg braucht PR-Bezug je Issue. */
 async function pullList() {
-  const rows = await paged('/pulls?state=open');
-  const limited = rows.slice(0, Number(params.limit ?? 50));
-  return limited.map((pr) => ({
+  const rows = await paginate('/pulls?state=open&per_page=100');
+  return rows.map((pr) => ({
     number: pr.number,
     title: pr.title ?? '',
     headRefName: pr.head?.ref ?? '',
@@ -187,49 +221,45 @@ async function prDetail({ withComments = false } = {}) {
   const pr = await pullForBranch();
   if (!pr) return null;
   if (!withComments) return pr;
-  const comments = await paged(`/issues/${pr.number}/comments`);
-  return { ...pr, comments: comments.map(comment), statusCheckRollup: [] };
+  return { ...pr, comments: await commentsOf(pr.number), statusCheckRollup: [] };
 }
 
-async function run() {
 let payload;
 if (kind === 'issue-view') {
-  const issue = await api(`/issues/${Number(params.number)}`);
-  const comments = await paged(`/issues/${Number(params.number)}/comments`);
+  const issue = await json(`/issues/${Number(params.number)}`);
   payload = {
     number: issue.number,
     state: String(issue.state ?? '').toUpperCase(),
     labels: labels(issue),
-    comments: comments.map(comment),
+    comments: await commentsOf(issue.number),
   };
 } else if (kind === 'issue-list') {
-  payload = await issues({ label: params.label, state: params.state, limit: params.limit });
+  payload = await issues({ label: params.label, state: params.state });
 } else if (kind === 'pr-list') {
   payload = await pullList();
 } else if (kind === 'issue-comment') {
-  // Schreibender Zugang fuer die Merge-Queue (#913): derselbe Token-Pfad,
-  // dieselbe Fehlerbehandlung - kein zweiter Weg an GitHub vorbei.
-  const posted = await api(`/issues/${Number(params.number)}/comments`, {
+  const posted = await json(`/issues/${Number(params.number)}/comments`, {
     method: 'POST',
     body: { body: String(params.body ?? '') },
   });
   payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
+} else if (kind === 'hooks') {
+  // Nur lesbare Felder: das Secret legt GitHub nie offen.
+  const hooks = await json('/hooks?per_page=100');
+  payload = (Array.isArray(hooks) ? hooks : []).map((hook) => ({
+    id: hook.id,
+    active: Boolean(hook.active),
+    events: Array.isArray(hook.events) ? hook.events : [],
+    config: { url: hook?.config?.url ?? '' },
+    last_response: { status: hook?.last_response?.status ?? null },
+  }));
 } else if (kind === 'pull-for-branch') {
   payload = await pullForBranch();
 } else if (kind === 'ci-for-branch') {
   payload = await prDetail({ withComments: true });
 } else {
-  throw new RestUnknown('UNKNOWN_QUERY', { detail: `unbekannte Abfrage '${kind}'` });
-}
-return payload ?? {};
+  console.error(`UNKNOWN_QUERY: unbekannte Abfrage '${kind}'`);
+  process.exit(7);
 }
 
-try {
-  process.stdout.write(JSON.stringify(await run()));
-} catch (error) {
-  if (error instanceof RestUnknown) {
-    process.stdout.write(JSON.stringify({ unknown: true, state: error.state, status: error.status, reset: error.reset, detail: error.message }));
-  } else {
-    process.stdout.write(JSON.stringify({ unknown: true, state: 'UNKNOWN_NETWORK', status: 0, reset: null, detail: String(error?.message ?? error).slice(0, 160) }));
-  }
-}
+process.stdout.write(JSON.stringify(payload ?? {}));

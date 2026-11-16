@@ -2,7 +2,7 @@
   "id": "lane/governance/freeze-0-code",
   "owner": "Governance-Owner",
   "branch": "lane/governance/freeze-0-code",
-  "baseSha": "85ed452d0ac74680e57fc3a585b8ecf2e7af94ef",
+  "baseSha": "dc6836fc8ea33476e15185c70ed049d8c9c3c202",
   "issue": 684,
   "task": "FREEZE-0 Code-Rueckbau: ehrliche Gates, keine Workflows, UNKNOWN statt Null-Liste",
   "goal": "Kein toter Freeze-Aufruf, kein ungepruefter gh-Download, CODEOWNERS nur Kontrollpfade plus .cron/, vier Workflows entfernt, REST-Leser mit UNKNOWN-Zustaenden und anonymer Leseoption",

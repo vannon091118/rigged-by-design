@@ -116,7 +116,8 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 | --- | --- |
 | `pnpm run agent:start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
 | `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
-| `pnpm run merge:queue -- --check` | Merge-Queue (#913): Plan-Hash, Sessions, ACKs und Reihenfolge; Exit 1 sperrt den Merge und nennt den auflösenden Befehl. |
+| `pnpm run webhook:receive --payload <datei> --event <name>` | Prüft eine aufgezeichnete GitHub-Delivery per HMAC und liefert dieselbe nächste Aktion wie `agent:start`; `--serve` nimmt echtes `POST /webhook` an (202/401), `--live` liest Board und offene PRs. |
+| `pnpm run webhook:install --check` | Ist-Stand der Repo-Hooks (`active`, Events, Ziel-URL). Anlegen braucht `administration: write` (klassisch `admin:repo_hook`) und eine öffentliche HTTPS-URL; das Secret kommt aus `RBD_WEBHOOK_SECRET`. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
 | `pnpm run board:sync -- --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
 | `pnpm run claim:register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |

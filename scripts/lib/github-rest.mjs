@@ -8,10 +8,10 @@
  * Aufrufer dieselbe Form bekommen wie von `gh --json`.
  *
  * Bevorzugt wird immer `gh` (kennt Auth und Scopes selbst); REST ist der
- * Fallback. Oeffentliche Daten liest REST auch anonym; ein Token erhoeht nur
- * das Rate-Limit. Jeder Lesefehler kommt als `unknown` mit Zustand zurueck
- * (UNKNOWN_RATE_LIMIT, UNKNOWN_AUTH, UNKNOWN_NETWORK, UNKNOWN_PAGINATION) und
- * darf vom Aufrufer nie als leere Liste weitergereicht werden.
+ * Fallback. REST liest ohne Token anonym (60 Anfragen/Stunde); ein Token
+ * erhoeht nur das Limit. Ein Fehler ist nie eine leere Liste: der Zustand
+ * heisst dann `UNKNOWN_RATE_LIMIT`, `UNKNOWN_AUTH`, `UNKNOWN_NETWORK` oder
+ * `UNKNOWN_RESPONSE` — fail-closed, kein Raten.
  */
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +24,16 @@ export function githubToken(env = process.env) {
   return resolveGithubToken({ env }).token;
 }
 
-/** Ein REST-Aufruf, synchron ueber den Helferprozess. */
+/** Woher das Token kommt, ohne den Wert zu nennen. */
+export function githubTokenSource(env = process.env) {
+  const resolution = resolveGithubToken({ env });
+  return resolution.ok ? resolution.source : null;
+}
+
+/**
+ * Ein REST-Aufruf, synchron ueber den Helferprozess. Ohne Token anonym.
+ * Ein Fehlschlag traegt einen expliziten `state` — nie eine stille Null-Liste.
+ */
 export function rest(kind, params = {}) {
   const helper = process.env.RBD_REST_SCRIPT || HELPER;
   try {
@@ -33,16 +42,15 @@ export function rest(kind, params = {}) {
       timeout: 20000,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
-    const parsed = JSON.parse(output);
-    if (parsed && parsed.unknown === true) {
-      const when = parsed.reset ? ` bis ${parsed.reset} (UTC-Epoche)` : '';
-      const detail = parsed.detail ? ` (${parsed.detail})` : '';
-      return { ok: false, unknown: true, state: parsed.state, reset: parsed.reset, error: `${parsed.state}${when}${detail}` };
-    }
-    return { ok: true, data: parsed };
+    return { ok: true, data: JSON.parse(output) };
   } catch (error) {
     const stderr = String(error?.stderr ?? '').trim().split('\n')[0];
-    return { ok: false, error: stderr || (error instanceof Error ? error.message.split('\n')[0] : 'unbekannt') };
+    const known = /^(UNKNOWN_[A-Z_]+)/.exec(stderr)?.[1];
+    return {
+      ok: false,
+      state: known ?? 'UNKNOWN_NETWORK',
+      error: stderr || (error instanceof Error ? error.message.split('\n')[0] : 'unbekannt'),
+    };
   }
 }
 
@@ -81,3 +89,14 @@ export function restForGhArgs(args = []) {
   return null;
 }
 
+/** Ein REST-Aufruf fuer einen `gh`-Aufruf; `null` wenn nicht uebersetzbar. */
+export function restForGhCall(args, { attempts = 1 } = {}) {
+  const mapped = restForGhArgs(args);
+  if (!mapped) return null;
+  let last = null;
+  for (let attempt = 0; attempt < Math.max(1, attempts); attempt += 1) {
+    last = rest(mapped.kind, mapped.params);
+    if (last.ok) return last;
+  }
+  return last;
+}

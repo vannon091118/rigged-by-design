@@ -74,11 +74,10 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 | `release-impact.mjs` | `pnpm run release:impact` | APK-Relevanz eines Diffs; `agent:start` führt sie aus |
 | `ci-tag-release.mjs` | `pnpm run release:tag` | Tag und Release aus `package.json`, der dokumentierte lokale Release-Pfad |
 | `local-ci.mjs --profile=mechanics` | `pnpm run test:mechanics` | lange Nachweise; `agent:verify --ci` startet sie lokal |
-| `merge-queue.mjs` + `lib/merge-queue.mjs` | `pnpm run merge:queue -- --check` | Reihenfolge, Plan-Hash und ACK-Lage aus den Ereignissen an #913; `promote` fragt dieselbe Freigabe vor dem Merge |
 
 ## Kein Workflow, kein Actions
 
-Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der ihn ausfuehrt: ein solcher Workflow wurde entfernt, und `docs/CI.md` bleibt bei den vier Repository-Verwaltungs-Workflows. Ein gesperrtes Actions-Konto kann den Start damit nicht mehr blockieren.
+Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der ihn ausfuehrt: es existiert kein Workflow mehr (FREEZE-0), und `docs/CI.md` sagt das ausdruecklich. Ein gesperrtes Actions-Konto kann den Start damit nicht mehr blockieren.
 
 | Quelle | Weg | Wann |
 | --- | --- | --- |
@@ -86,38 +85,33 @@ Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der
 | `gh`-CLI | `gh auth token` als dritte Credential-Stufe | lokal und in der Cloud, wenn `gh` vorhanden ist |
 | Git-Credential-Helper | `git credential fill` | letzte Stufe, wenn `gh` fehlt |
 
-Fehlt `gh` ganz, laedt `scripts/lib/gh-bootstrap.mjs` die CLI aus dem offiziellen Release nach `~/.local/bin` (ohne sudo, kein Systempaket) und meldet den Pfad. Der Download ist nur fuer schreibende `gh`-Aufrufe noetig: Lesen und Kommentieren laufen ueber den Token-Pfad. Authentifiziert wird aus der Umgebung, nie interaktiv. Abschaltbar mit `RBD_NO_GH_INSTALL=1`, Zielverzeichnis ueber `RBD_GH_DIR`.
+Fehlt `gh` ganz, wird **nichts nachgeladen** (FREEZE-0): `scripts/lib/gh-bootstrap.mjs` stellt nur fest, ob die CLI da ist, und nennt den Installationsweg. Der Start scheitert daran nicht; Lesen und Kommentieren laufen ueber den Token-Pfad.
 
-Der Ereignis-Workflow `Board Overview` bleibt als reine Repository-Verwaltung bestehen (keine Tests, Gates, Builds). Er ist keine Voraussetzung fuer den Start.
+Es gibt keinen Workflow mehr: die Board-Übersicht erzeugt der Maintainer bei Bedarf mit `node scripts/board-overview.mjs --markdown` aus Live-Daten.
 
 ### Nachweisstand (2026-11-16)
 
 - **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker, der die Variable nennt — `export GH_TOKEN=<token>`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> githubPAT -> GITHUB_PAT -> GH_PAT -> RBD_GH_TOKEN -> gh auth token -> git-credential-helper`.
-- **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm run agent:start --brief` liest #913 und die offenen PRs, berechnet die Queue und nennt genau eine naechste Aktion. `pnpm run verify:board` ist gruen (`OPEN - claimed-self`), der Push auf `lane/governance/merge-queue-913` lief ohne Login durch.
-- **Queue regeneriert aus dem Verlauf:** Revision 1, Plan `c47e19487d12`, `main` `a07952f`; #948 READY auf Position 1, #952 HOLD auf Position 2. Quelle sind die Kommentare 6905795513 (`SESSION_JOIN`), 6905796238 (`PLAN`) und 6905800667 (`ACK`).
+- **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm run agent:start --brief` liest Board, Claims und offene PRs und nennt genau eine naechste Aktion; der Push auf einen Lane-Branch lief ohne Login durch.
 - **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
 - **Nicht herstellbar:** ein serverseitiger Merge-Schutz als Ruleset bzw. Required-Check — dafuer fehlen Admin-/App-Rechte, und ohne Actions gibt es keinen Job, der ihn setzt.
 
 ## Ein Befehl, dann Arbeit
 
-`pnpm run agent:start --brief` ist der einzige Start. Er liest Board, Claims und PRs aus GitHub, **fuehrt pretask im selben Lauf aus** und berechnet die Merge-Queue aus #913. Am Ende steht genau eine naechste Aktion mit Befehl.
+`pnpm run agent:start --brief` ist der einzige Start. Er liest Board, Claims und PRs aus GitHub, **fuehrt pretask im selben Lauf aus** und nennt am Ende genau eine naechste Aktion mit Befehl.
 
 | Was | Woher | Blockiert? |
 | --- | --- | --- |
 | Board, Besitz, Review-Lage | Issues, Labels, `CLAIM`/`RELEASE` | ja: fremder Claim oder fehlende Credentials |
 | Arbeitsbaum, Task-Vertrag, Impact, Budget | `scripts/pretask.mjs` (im selben Lauf) | ja: korruptes WIP, ungueltiger Vertrag |
-| Merge-Reihenfolge und ACKs | Ereignisse an #913 | ja: kein Merge ohne bestaetigte Revision |
 
-### Merge-Queue (#913)
+### Keine lokale Merge-Queue
 
-`pnpm run merge:queue -- --check` zeigt Position, Status und Grund je offenem PR. Die Queue ist abgeleitet: die Ereignis-Kommentare an #913 sind die Quelle, es gibt keine zweite Liste und keine lokale Queue-Datei.
+FREEZE-0 hat die Queue zurueckgebaut: keine Plan-Revision, keine Session-ACKs, kein Plan-Hash, kein eigener Lock. Die Integrationsautoritaet liegt bei GitHub (Ruleset, Review, exakter Head) und beim Maintainer, der einen PR nach dem anderen prueft. Ein Worker-ACK ist keine Merge-Berechtigung.
 
-Ereignisse: `MERGE_SESSION_JOIN role=worker session=s1` · `MERGE_PLAN rev=1 hash=<12> main=<sha>` mit `pr=<nr> head=<sha>`-Zeilen · `MERGE_ACK session=s1 role=worker plan=<12> main=<sha>` · `MERGE_SESSION_LEAVE session=s1`.
+### Webhook: eingeordnet, nicht entschieden
 
-- Nur **Position 1** mit ACK **aller** aktiven Sessions ist `READY`; alles andere ist `HOLD` oder `BLOCKED`.
-- Der Plan-Hash bindet Revision, `main`-SHA und die geordnete PR-Liste. Ein ACK gilt nur fuer genau diesen Hash, nur von einer registrierten Session und nur nach dem Plan.
-- `main`-Drift, ein geaenderter PR-Kopf, ein PR ausserhalb des Plans und ein manipulierter Plan blockieren. Ein nicht lesbares Board ist `HOLD`, nie Erfolg.
-- `scripts/promote.mjs` prueft dieselbe Freigabe am Merge-Punkt (`mergeAuthorization`); damit kann kein Skript an der Queue vorbei mergen.
+Der Empfaenger prueft die HMAC-Signatur und ordnet die Delivery ein (Art, Nummer, Aktion, Kopf). Er entscheidet nichts und nennt keine Queue-Aktion; Review und Merge bleiben beim Maintainer.
 
 ## Rollen
 
