@@ -51,6 +51,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "85ed452d0ac74680e57fc3a585b8ecf2e7af94ef"
+  "status": "archived",
+  "createdAt": "dc6836fc8ea33476e15185c70ed049d8c9c3c202",
+  "releasedAt": "2026-11-16T10:08:21.953Z",
+  "releasedReason": "Issue 684 geschlossen, kein aktiver Claim mehr nötig; Lane frei für Shinon #972"
 }

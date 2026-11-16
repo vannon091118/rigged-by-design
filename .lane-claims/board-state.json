@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-16T09:45:00Z",
+  "generatedAt": "2026-11-16T11:15:00Z",
   "generatedBy": "maintainer",
-  "head": "d97e8a0e970592a624723512c26d55325c85f615",
-  "headMessage": "FREEZE-0: Dispatch-Reste entfernen und Claim-Register schliessen (#970)",
-  "base": "origin/main @ d97e8a0e970592a624723512c26d55325c85f615",
+  "head": "fbad6d83001c7115f34f2167b0ea50d454c5595f",
+  "headMessage": "chore(governance): #968 Board-Etablierung — redundante Doku entfernen, board-state sync",
+  "base": "origin/main @ fbad6d83001c7115f34f2167b0ea50d454c5595f",
   "worktree": "D:/Projekte/rigged-by-design",
   "status": "READY",
   "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
@@ -616,7 +616,7 @@
       972
     ]
   },
-  "openIssuesCount": 16,
+  "openIssuesCount": 14,
   "note": "Live-Board hat 3 offene Issues (#684, #968, #972). Die 'issues'-Map listet alle gescannten Tickets (inkl. geschlossener/konsolidierter); board-state.json ist abgeleitet und wird durch board:sync regeneriert.",
   "mergedPrsThisRun": [
     739,
