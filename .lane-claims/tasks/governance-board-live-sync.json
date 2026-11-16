@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-board-live-sync",
+  "claimId": "lane/governance/board-live-sync",
+  "branch": "lane/governance/board-live-sync",
+  "baseSha": "633dfdf60c42d404c480d384429af894726fc335",
+  "phase": "IMPLEMENTING",
+  "title": "Board-State und Labels live angleichen",
+  "goal": "Snapshot auf Live-Stand; geschlossene P0-Issues ohne widerspruechliche Zustandslabels. Issue #1016.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

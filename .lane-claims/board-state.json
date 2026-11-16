@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-16T15:00:00Z",
+  "generatedAt": "2026-11-16T12:15:35Z",
   "generatedBy": "maintainer",
-  "head": "51a1052e991bed0a75f2d2221d3e2739607cf2a2",
-  "headMessage": "Sync-Befehle fragen den GitHub-Hook-Stand live ab (#1003)",
-  "base": "origin/main @ 51a1052e991bed0a75f2d2221d3e2739607cf2a2",
+  "head": "633dfdf60c42d404c480d384429af894726fc335",
+  "headMessage": "Merge-Gate-Claim nach Merge von #1014 belegen (#1015)",
+  "base": "origin/main @ 633dfdf60c42d404c480d384429af894726fc335",
   "worktree": "/workspace/chats/75042cf7e12fd480f9251993",
   "status": "READY",
-  "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
+  "summary": "Board-Sync (#834) live nachgezogen auf main 633dfdf6: 16 offene Issues, 0 offene PRs. #987 ist geschlossen; keine offene PR-Warteschlange.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -45,7 +45,7 @@
     675,
     776
   ],
-  "openPullRequests": 1,
+  "openPullRequests": 0,
   "reviewWaitingPrs": 0,
   "promptIssues": [
     {
@@ -577,21 +577,13 @@
       "note": "superseded durch #733; Branch behaelt den Commit"
     }
   ],
-  "openPrs": [
-    {
-      "number": 987,
-      "title": "chore(governance): Claim freeze-0-code archivieren (Issue #684 geschlossen)",
-      "branch": null,
-      "draft": false,
-      "labels": []
-    }
-  ],
+  "openPrs": [],
   "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
-  "reviewWaitingNote": "Keine offenen PRs. #597 traegt review-waiting als Issue-Label, nicht als PR-Warteschlange.",
+  "reviewWaitingNote": "Keine offenen PRs; #597 ist geschlossen und traegt kein review-waiting mehr.",
   "health": {
     "verifyLight": {
       "status": "PASS",
-      "note": "alle Gates gruen auf main a9bd146a"
+      "note": "alle Gates gruen auf main 633dfdf6"
     },
     "fullSuite": {
       "status": "FAIL",
@@ -619,9 +611,7 @@
     ],
     "newGovernanceIssuesThisRun": 0,
     "openIssues": [
-      684,
-      968,
-      972
+      684
     ]
   },
   "openIssuesCount": 16,

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T19:55Z-board-live-sync",
+  "contributionId": "board-live-sync",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt nahm die alte Tafel ab, zählte die Gäste neu und schrieb hinter die längst gegangenen den einen Vermerk, der sie als gegangen auswies.",
+  "directives": []
+}
