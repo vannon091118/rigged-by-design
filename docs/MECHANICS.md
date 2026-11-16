@@ -21,12 +21,14 @@ Eine Auflösungsstelle: `scripts/lib/credentials.mjs`. Kein zweiter Zustand, kei
 
 | Reihenfolge | Quelle | Greift in | Anmerkung |
 | --- | --- | --- | --- |
-| 1 | `GH_TOKEN` | Cloud-Agent, Projekt-Secret | Vorrang, wenn gesetzt |
-| 2 | `GITHUB_TOKEN` | GitHub Actions | automatisch injiziert, keine Einrichtung |
-| 3 | `gh auth token` | lokal | nach `gh auth login` |
-| 4 | `git credential fill` | lokal | vorhandener Credential-Helper |
+| 1 | `GH_TOKEN` | Projekt-Secret, Cloud-Agent | Vorrang, wenn gesetzt |
+| 2 | `GITHUB_TOKEN` | CI, Container | automatisch injiziert |
+| 3 | `githubPAT` | Cloud-Shell dieser Umgebung | Connector-Token, das die Shell stellt |
+| 4 | `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN` | Altzustände | dieselbe Prüfung, nur anderer Name |
+| 5 | `gh auth token` | lokal | bereits angemeldete CLI |
+| 6 | `git credential fill` | lokal | vorhandener Credential-Helper |
 
-Fehlt jede Quelle, endet der Lauf mit **genau einem** Befehl: `gh auth login`. Kein Stacktrace, kein stiller Fallback.
+Fehlt jede Quelle, endet der Lauf mit **genau einem** Befehl, der die Variable nennt: `export GH_TOKEN=<token>`. Kein Stacktrace, kein stiller Fallback, und **kein** interaktiver Login als Voraussetzung: alle Leser und Schreiber gehen über denselben Token-Pfad, `gh` ist Client, nicht Bedingung.
 
 Im Repo liegt kein Secret — auch nicht kodiert: ein Secret in der Datei wäre ein veröffentlichtes Secret. Board-Zustand, Claims und Phasen stammen ausschließlich aus Issues, Labels, Kommentaren und PRs; `GITHUB_TOKEN` mit `issues: read`, `pull-requests: read`, `contents: read` genügt. GitHub Projects v2 wird nicht verwendet.
 
@@ -35,7 +37,7 @@ Im Repo liegt kein Secret — auch nicht kodiert: ein Secret in der Datei wäre 
 | Reihenfolge | Prüfung | Blockiert | Auflösung, die der Blocker nennt |
 | --- | --- | --- | --- |
 | 1 | Repository bestimmbar (`origin`, `RBD_REPO`, `GITHUB_REPOSITORY`) | ja | `git remote add origin …` |
-| 2 | Credential-Quelle vorhanden | ja | `gh auth login` |
+| 2 | Credential-Quelle vorhanden | ja | `export GH_TOKEN=<token>` |
 | 3 | Board lesbar (Issues + offene PRs) | ja | Leserecht prüfen; kein Bericht aus Vermutungen |
 | 4 | Claim je Issue aus dem Kommentarverlauf | ja, bei fremdem Claim am gewählten Issue | `RELEASE`/`HANDOFF` abwarten oder freies Issue nehmen |
 | 5 | Actor-Policy lesbar (`.lane-claims/actors.json`) | nein, Warnung | Datei reparieren; ohne sie autorisiert kein Kommentar |
@@ -63,9 +65,8 @@ Im Lauf wird zusätzlich die APK-Relevanz über `release:impact` ausgeführt und
 | `ci-plan.mjs` (CLI) | Cloud-Plan ohne Cloud-Job; die Bibliothek bleibt für `promote` und Tests |
 | `gate-matrix.mjs` | Matrix für Actions-Jobs, die es nicht mehr gibt |
 | `ci-long-checks.mjs` | startete `long-checks.yml`, das entfernt ist |
-| `merge-queue.mjs` + `lib/merge-queue.mjs` | Merge-Reihenfolge leitet `agent:start` aus Issues, Claims und PRs ab |
 
-Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watcher.test.ts`, `merge-queue.test.ts`, `docs/MERGE-QUEUE.md`. Die Reparatur-Auswertung `lib/repair-plan.mjs` bleibt und wird von `repair-plan.test.ts` geprüft.
+Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watcher.test.ts`, `docs/MERGE-QUEUE.md`. Die Reparatur-Auswertung `lib/repair-plan.mjs` bleibt und wird von `repair-plan.test.ts` geprüft.
 
 ### Eingebunden
 
@@ -74,6 +75,7 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 | `release-impact.mjs` | `pnpm run release:impact` | APK-Relevanz eines Diffs; `agent:start` führt sie aus |
 | `ci-tag-release.mjs` | `pnpm run release:tag` | Tag und Release aus `package.json`, der dokumentierte lokale Release-Pfad |
 | `local-ci.mjs --profile=mechanics` | `pnpm run test:mechanics` | lange Nachweise; `agent:verify --ci` startet sie lokal |
+| `merge-queue.mjs` + `lib/merge-queue.mjs` | `pnpm run merge:queue -- --check` | Reihenfolge, Plan-Hash und ACK-Lage aus den Ereignissen an #913; `promote` fragt dieselbe Freigabe vor dem Merge |
 
 ## Kein Workflow, kein Actions
 
@@ -85,15 +87,17 @@ Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der
 | `gh`-CLI | `gh auth token` als dritte Credential-Stufe | lokal und in der Cloud, wenn `gh` vorhanden ist |
 | Git-Credential-Helper | `git credential fill` | letzte Stufe, wenn `gh` fehlt |
 
-Fehlt `gh` ganz, laedt `scripts/lib/gh-bootstrap.mjs` die CLI aus dem offiziellen Release nach `~/.local/bin` (ohne sudo, kein Systempaket) und meldet den Pfad; danach nennt der Lauf genau einen Befehl: `gh auth login`. Abschaltbar mit `RBD_NO_GH_INSTALL=1`, Zielverzeichnis ueber `RBD_GH_DIR`.
+Fehlt `gh` ganz, laedt `scripts/lib/gh-bootstrap.mjs` die CLI aus dem offiziellen Release nach `~/.local/bin` (ohne sudo, kein Systempaket) und meldet den Pfad. Der Download ist nur fuer schreibende `gh`-Aufrufe noetig: Lesen und Kommentieren laufen ueber den Token-Pfad. Authentifiziert wird aus der Umgebung, nie interaktiv. Abschaltbar mit `RBD_NO_GH_INSTALL=1`, Zielverzeichnis ueber `RBD_GH_DIR`.
 
 Der Ereignis-Workflow `Board Overview` bleibt als reine Repository-Verwaltung bestehen (keine Tests, Gates, Builds). Er ist keine Voraussetzung fuer den Start.
 
 ### Nachweisstand (2026-11-16)
 
-- **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker — `gh auth login`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> gh auth token -> git-credential-helper`.
+- **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker, der die Variable nennt — `export GH_TOKEN=<token>`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> githubPAT -> GITHUB_PAT -> GH_PAT -> RBD_GH_TOKEN -> gh auth token -> git-credential-helper`.
+- **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm run agent:start --brief` liest #913 und die offenen PRs, berechnet die Queue und nennt genau eine naechste Aktion. `pnpm run verify:board` ist gruen (`OPEN - claimed-self`), der Push auf `lane/governance/merge-queue-913` lief ohne Login durch.
+- **Queue regeneriert aus dem Verlauf:** Revision 1, Plan `c47e19487d12`, `main` `a07952f`; #948 READY auf Position 1, #952 HOLD auf Position 2. Quelle sind die Kommentare 6905795513 (`SESSION_JOIN`), 6905796238 (`PLAN`) und 6905800667 (`ACK`).
 - **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
-- **Nicht geprueft:** ein Live-Board-Lauf mit gueltigem Token in dieser Umgebung — hier gibt es keine Credential-Quelle, und `gh auth login` ist interaktiv.
+- **Nicht herstellbar:** ein serverseitiger Merge-Schutz als Ruleset bzw. Required-Check — dafuer fehlen Admin-/App-Rechte, und ohne Actions gibt es keinen Job, der ihn setzt.
 
 ## Ein Befehl, dann Arbeit
 

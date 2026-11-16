@@ -147,4 +147,24 @@ describe('merge-queue', () => {
     expect(one).toHaveLength(12);
     expect(new Set([one, reordered, otherMain]).size).toBe(3);
   });
+
+  it('verwirft ACKs ohne Kommentar-ID: der REST-Verlauf muss id mitliefern', () => {
+    const plan = planComment(0, [[948, HEAD_A]]);
+    const withoutId = (body: string) => ({ body, author: { login: 'vannon091118' } });
+    const events = parseMergeEvents([
+      withoutId('MERGE_SESSION_JOIN role=worker session=s1'),
+      plan.comment,
+      withoutId(`MERGE_ACK session=s1 role=worker plan=${plan.hash} main=${MAIN}`),
+    ]);
+    expect(events.every((event: { commentId: number }) => event.commentId === 0)).toBe(true);
+    expect(validAcks(events, latestPlan(events))).toHaveLength(0);
+  });
+
+  it('ordnet Ereignisse nach Kommentar-ID, nicht nach Listenposition', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([ack(9, 's1', plan.hash), join(1, 's1'), plan.comment, ack(11, 's1', plan.hash)]);
+    expect(validAcks(events, latestPlan(events)).map((event: { session: string }) => event.session)).toEqual(['s1']);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.READY);
+  });
 });

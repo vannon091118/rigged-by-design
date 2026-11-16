@@ -34,7 +34,7 @@ const value = (name, fallback = null) => {
 };
 const asJson = flag('json');
 const issue = Number(value('issue', String(MERGE_ISSUE)));
-const session = value('session', process.env.RBD_SESSION ?? `session-${process.env.HOSTNAME ?? 'local'}`);
+const session = value('session', process.env.RBD_SESSION ?? process.env.RBD_AGENT ?? `session-${process.env.HOSTNAME ?? 'local'}`);
 const role = value('role', 'worker');
 const agent = value('agent', process.env.RBD_AGENT ?? 'agent-local');
 const at = value('at', process.env.RBD_NOW ?? '');

@@ -53,7 +53,7 @@ export function parseMergeEvents(comments = []) {
       const base = {
         kind,
         commentId: Number(comment.id ?? 0),
-        actor: String(comment?.user?.login ?? comment?.author ?? ''),
+        actor: String(comment?.author?.login ?? comment?.user?.login ?? ''),
         session: fields.session ?? '',
         role: fields.role ?? '',
         at: fields.at ?? '',

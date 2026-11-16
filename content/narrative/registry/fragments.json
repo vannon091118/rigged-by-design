@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:521feb87986356aeca15491497200d91d656afb8fbb45e2f2048ac3bd88a4ba8",
+  "contentHash": "sha256:69eabdd6e4c24a6144af51797fb57c4f8dbcc44fa81ae9cc7109e917d3c302c0",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10767,6 +10767,28 @@
       "text": "Im Hinterzimmer wird aufgeräumt. Zettel, auf denen längst erledigte Arbeiten stehen, wandern in den Papierkorb, und die Liste daneben stimmt wieder mit dem überein, was wirklich noch offen ist. Niemand hat etwas weggeworfen, das noch jemand hält: Was belegt war, ist belegt; was offen war, bleibt offen und ist jetzt wieder auffindbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json"
+    },
+    {
+      "contributionId": "maintainer-913-credential-queue-id",
+      "turnId": "2026-11-16T02:52Z-credential-queue-id",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schlüssel lag die ganze Zeit im Raum, nur nicht an dem Haken, den die Liste nannte. Jetzt wird jeder Name geprüft, der einen Schlüssel tragen darf, und der Aushang verlangt keinen Gang mehr zum Schalter. Dazu tragen die Zettel in der Abstellkammer endlich ihre Nummer: ohne sie war jede Bestätigung so alt wie der Plan selbst und zählte nie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
     },
     {
       "contributionId": "maintainer-913-merge-queue",

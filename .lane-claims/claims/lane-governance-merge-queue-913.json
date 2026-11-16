@@ -45,7 +45,9 @@
     "src/store/__tests__/start-guest-crate-visible.test.ts",
     "src/store/new-game.ts",
     "src/store/scene-commands.ts",
-    "src/store/world-store.ts"
+    "src/store/world-store.ts",
+    "docs/AGENT-ONBOARDING.md",
+    "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
   ],
   "contracts": [],
   "dependencies": [],
