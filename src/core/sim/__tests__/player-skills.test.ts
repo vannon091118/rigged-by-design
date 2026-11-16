@@ -79,8 +79,10 @@ describe('Spieler-Fach-Skills: Learn-by-Doing', () => {
 
     const cardL1 = skillEffect('cardDealing', 1);
     const cardL5 = skillEffect('cardDealing', 5);
-    expect(cardL1).toContain('Gewinnchance');
-    expect(cardL5).toContain('+8 %');
+    expect(cardL1).not.toContain('Gewinnchance');
+    expect(cardL1).toContain('Gaststimmung');
+    expect(cardL5).toContain('Gaststimmung +4');
+    expect(cardL5).toContain('Geduld +2');
   });
 
   it('gibt für jede Fachrichtung eine korrekte Bezeichnung zurück', () => {

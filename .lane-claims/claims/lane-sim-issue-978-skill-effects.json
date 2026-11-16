@@ -1,0 +1,20 @@
+{
+  "id": "lane/sim/issue-978-skill-effects",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-978-skill-effects",
+  "baseSha": "02fb183a676aaa749d2e4cdf448c3a5e12b193e8",
+  "issue": 978,
+  "task": "Fach-Skill-Effekte mit den tatsaechlichen Produktionswirkungen abgleichen (#978)",
+  "goal": "Skill-Anzeige und Produktionsformel stimmen ueberein; cardDealing behauptet keinen Gewinnchance-Bonus ohne Engine-Wirkung; Skill-Fortschritt im Charakterfenster zeigt Level, XP und reale Wirkung; Tests pro Skill verbinden Levelanstieg mit Produktionswirkung",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/save.ts",
+    "content/narrative/**",
+    ".lane-claims/claims/lane-sim-issue-978-skill-effects.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2026-11-16T15:29:00Z"
+}
