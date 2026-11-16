@@ -17,6 +17,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { claimForBranch } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { logFilePath } from './lib/verify-state.mjs';
 import { logsEnabled } from './lib/compact.mjs';
 import { captureConsole } from './lib/compact.mjs';
 
@@ -41,7 +42,7 @@ function git(args) {
 
 function run(name, args = [], env = {}) {
   const withLog = logsEnabled();
-  const log = join(ROOT, '.verify-cache', 'output', `precommit-${name.replace(/\.mjs$/, '')}.log`);
+  const log = logFilePath(`precommit-${name.replace(/\.mjs$/, '')}`);
   const result = spawnSync(node, [script(name), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],

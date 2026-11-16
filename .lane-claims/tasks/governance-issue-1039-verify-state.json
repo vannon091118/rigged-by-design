@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1039-verify-state",
+  "claimId": "lane/governance/issue-1039-verify-state",
+  "branch": "lane/governance/issue-1039-verify-state",
+  "baseSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8",
+  "phase": "IMPLEMENTING",
+  "title": "Verify-State: Cache-Artefakte auf ein versioniertes state.json konsolidieren",
+  "goal": "Ein Besitzer-Modul fuer .verify-cache mit state.json, Migration der Leser und TTL-Pfad.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Umsetzung und lokaler Nachweis; danach turn:finish, PR gegen main.",
+  "revision": 1
+}
