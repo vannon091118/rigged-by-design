@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1966e58c3914c8b8dae96037c913ca2dd8081164449e20616c321d43277b3695",
+  "contentHash": "sha256:7a2912943e3159f1fb347c89d5b1db7c58052a7617a0b65e634f4d8c1e7377e2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9700,6 +9700,28 @@
       "text": "Im Hinterzimmer vergleicht jemand zwei Bilder Pixel für Pixel: gleiche Flächen, gleiche Farben, nur ein Schatten ist gewandert. Der Vergleich sagt nicht \"gut\" oder \"schlecht\", er sagt nur, wie weit sich etwas verändert hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-governance-image-diff-test.json"
+    },
+    {
+      "contributionId": "governance-loc-audit",
+      "turnId": "2026-11-16T04:20Z-governance-loc-audit",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer stapeln sich Zettel mit Zahlen: achtmal derselbe Handgriff, elf Aufgaben in einer Liste, die niemand mehr ganz liest. Jemand legt sie nebeneinander, streicht die Doppelungen und schreibt daneben, was zuerst weg muss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-loc-audit.json"
     },
     {
       "contributionId": "governance-phase3-ci-state-01",

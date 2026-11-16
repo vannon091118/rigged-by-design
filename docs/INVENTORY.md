@@ -747,10 +747,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3289 |
-| Gelistete Dateien | 3289 |
+| Getrackte Dateien | 3291 |
+| Gelistete Dateien | 3291 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (99), .lanes (1), artifacts (1), content (1202), docs (110), packages (27), public (571), scripts (151), src (1098) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (99), .lanes (1), artifacts (1), content (1203), docs (111), packages (27), public (571), scripts (151), src (1098) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -768,11 +768,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/` — 46 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1198 Datei(en)
+- `content/narrative/contributions/` — 1199 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 22 Datei(en)
+- `docs/` — 23 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 2 Datei(en)
@@ -2194,6 +2194,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-archive-ledger.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-image-diff-test.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-governance-loc-audit.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json` — { — gelesen: 17 Zeilen
@@ -2205,8 +2206,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26913 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4797 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26935 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4801 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2221,6 +2222,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 393 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
+- `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 162 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
