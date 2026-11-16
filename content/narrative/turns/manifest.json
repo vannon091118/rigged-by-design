@@ -4872,6 +4872,10 @@
     {
       "turnId": "2026-11-16T19:55Z-board-live-sync",
       "contributionId": "board-live-sync"
+    },
+    {
+      "turnId": "2026-11-16T20:40Z-board-closeout-relation",
+      "contributionId": "board-closeout-relation"
     }
   ]
 }

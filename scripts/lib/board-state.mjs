@@ -104,11 +104,17 @@ export function nextBoardState({
  * Drift zwischen Datei und Live-Board. Nur belegbare Fakten zaehlen; Zeitstempel
  * und Prosa sind kein Drift, sonst meldet jeder Lauf denselben Befund.
  */
-export function boardDrift({ previous = null, next = null, dropped = [] } = {}) {
+export function boardDrift({ previous = null, next = null, dropped = [], headParents = [] } = {}) {
   if (!previous) return ['board-state-missing'];
   if (!next) return ['board-state-missing'];
   const findings = [];
-  if (previous.head !== next.head) findings.push(`head:${previous.head ?? 'none'}->${next.head}`);
+  // Der Snapshot-Commit kann seinen eigenen SHA nicht enthalten: nach dem
+  // Closeout gilt dokumentiert head == main^, also der erste Parent des
+  // Merge-Commits. Nur diese eine Beziehung ist kein Drift.
+  const closeoutHead = headParents.filter(Boolean).includes(previous.head);
+  if (previous.head !== next.head && !closeoutHead) {
+    findings.push(`head:${previous.head ?? 'none'}->${next.head}`);
+  }
   if (Number(previous.openIssuesCount ?? -1) !== next.openIssuesCount) {
     findings.push(`open-issues:${previous.openIssuesCount ?? 'none'}->${next.openIssuesCount}`);
   }

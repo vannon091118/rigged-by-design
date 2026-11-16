@@ -748,10 +748,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3298 |
-| Gelistete Dateien | 3298 |
+| Getrackte Dateien | 3301 |
+| Gelistete Dateien | 3301 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (109), .lanes (1), artifacts (1), bin (1), content (1222), docs (89), packages (27), public (571), scripts (157), src (1099) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (111), .lanes (1), artifacts (1), bin (1), content (1223), docs (89), packages (27), public (571), scripts (157), src (1099) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -763,12 +763,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 53 Datei(en)
-- `.lane-claims/tasks/` — 52 Datei(en)
+- `.lane-claims/claims/` — 54 Datei(en)
+- `.lane-claims/tasks/` — 53 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1218 Datei(en)
+- `content/narrative/contributions/` — 1219 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -897,6 +897,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-archive-integration-2026-11-16.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-board-closeout-relation.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
@@ -949,6 +950,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/merged-index.json` — { — gelesen: 216 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
+- `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-live-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
@@ -2192,6 +2194,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-sim-player-skills-learn-by-doing.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-board-closeout-relation.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-board-live-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-contracts-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-freeze-0-code-cleanup.json` — { — gelesen: 17 Zeilen
@@ -2225,18 +2228,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-repo-ballast-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27353 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4877 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27375 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4881 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1205 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1206 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 107 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2718 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2726 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
@@ -2953,7 +2956,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 149 Zeilen
 - `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 168 Zeilen
 - `scripts/lib/board-read.mjs` — Board lesen mit zwei Wegen — ein Ergebnis. — gelesen: 51 Zeilen
-- `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 129 Zeilen
+- `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 135 Zeilen
 - `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 155 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
@@ -3044,7 +3047,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 147 Zeilen
 - `scripts/run-selected-tests.mjs` — Testkommando der Gates: ohne Auswahl laeuft die Suite des Profils, mit — gelesen: 40 Zeilen
 - `scripts/sanitize-commit.mjs` — ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. — gelesen: 21 Zeilen
-- `scripts/sync-board-state.mjs` — board:sync — Board-State aus GitHub und Git nachziehen (#834). — gelesen: 136 Zeilen
+- `scripts/sync-board-state.mjs` — board:sync — Board-State aus GitHub und Git nachziehen (#834). — gelesen: 143 Zeilen
 - `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/DEPENDENCY-MATRIX.md aus — gelesen: 146 Zeilen
 - `scripts/sync-generated.mjs` — Der eine Regenerationspfad fuer generierte Artefakte. — gelesen: 148 Zeilen
 - `scripts/sync-merged-index.mjs` — Schreibt `.lane-claims/merged-index.json` aus der lokalen Merge-Historie. — gelesen: 28 Zeilen
@@ -3173,7 +3176,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/agent-cause.test.ts` — agent:cause muss aus einem Gate-Log ohne Filter den Gate-Namen, den Fix, — gelesen: 176 Zeilen
 - `src/core/governance/__tests__/agent-new-args.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 17 Zeilen
 - `src/core/governance/__tests__/apk-signing.test.ts` — Installierbarkeit ist ein Vertrag, keine Annahme. Der Test haelt drei — gelesen: 71 Zeilen
-- `src/core/governance/__tests__/board-state-sync.test.ts` — #834: Der Board-Snapshot kommt aus dem Live-Board. Offene Issues und Pull — gelesen: 93 Zeilen
+- `src/core/governance/__tests__/board-state-sync.test.ts` — #834: Der Board-Snapshot kommt aus dem Live-Board. Offene Issues und Pull — gelesen: 100 Zeilen
 - `src/core/governance/__tests__/board-usage.test.ts` — Das Board ist die Steuerungswahrheit; die lokale Claim-Datei ist nur ein — gelesen: 136 Zeilen
 - `src/core/governance/__tests__/body-sync.test.ts` — Body-Synchronisation darf vorhandene Inhalte nie ersetzen. Genau diese — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/branch-lifecycle.test.ts` — Jede Branch ausser `main` ist temporaer. Geloescht wird nur mit Merge-Beleg; — gelesen: 72 Zeilen

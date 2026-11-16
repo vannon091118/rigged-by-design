@@ -90,4 +90,11 @@ describe('Board-State (#834)', () => {
     expect(formatted.endsWith('\n')).toBe(true);
     expect(JSON.parse(formatted).openIssuesCount).toBe(0);
   });
+
+  it('akzeptiert head == main^ als dokumentierte Closeout-Relation', () => {
+    const previous = { head: 'parent-sha', openIssuesCount: 16, openPullRequests: 0, openPrs: [] };
+    const next = { head: 'merge-sha', openIssuesCount: 16, openPullRequests: 0, openPrs: [] };
+    expect(boardDrift({ previous, next, headParents: ['parent-sha'] })).toEqual([]);
+    expect(boardDrift({ previous, next, headParents: ['andere-sha'] })).toEqual(['head:parent-sha->merge-sha']);
+  });
 });

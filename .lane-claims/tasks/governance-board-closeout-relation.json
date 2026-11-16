@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-board-closeout-relation",
+  "claimId": "lane/governance/board-closeout-relation",
+  "branch": "lane/governance/board-closeout-relation",
+  "baseSha": "581cef6255eaa657fb0b17ca2d630c0b553a14f1",
+  "phase": "IMPLEMENTING",
+  "title": "Closeout-Relation im Board-Drift",
+  "goal": "boardDrift akzeptiert head == main^ als einzige dokumentierte Ausnahme. Issue #1019.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}
