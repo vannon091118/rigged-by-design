@@ -1,6 +1,6 @@
 # Kontrollpfade des Freeze-Vertrags (FREEZE-0, #684). Nur diese Pfade und
 # .cron/ brauchen einen Owner-Review; Doku, Claims und Package-Dateien sind
-# normale Arbeit. Die Lane-Claims in .lane-claims/claims.json sind Koordination,
+# normale Arbeit. Die Lane-Claims unter .lane-claims/claims/ sind Koordination,
 # keine ausfuehrbare Wahrheit und kein Recht.
 /.github/                  @vannon091118
 /.githooks/                @vannon091118

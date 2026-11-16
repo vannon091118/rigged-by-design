@@ -46,7 +46,14 @@ function repoSlug() {
   }
   const match = /github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?$/.exec(url);
   if (!match) {
-    console.error('REST: Repository nicht bestimmbar (RBD_REPO setzen)');
+    // Auch dieser Abbruch bleibt ein Zustand statt eines nackten Exit-Codes.
+    process.stdout.write(JSON.stringify({
+      unknown: true,
+      state: 'UNKNOWN_REPO',
+      status: 0,
+      reset: null,
+      detail: 'Repository nicht bestimmbar (RBD_REPO setzen)',
+    }));
     process.exit(3);
   }
   return `${match[1]}/${match[2]}`;
@@ -138,7 +145,7 @@ function issueRow(issue) {
 async function issues(query) {
   const rows = await paged(`/issues?state=${query.state ?? 'open'}${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
   const mapped = rows.filter((issue) => !issue.pull_request).map(issueRow);
-  const limit = Number(params.limit ?? 0);
+  const limit = Number(query.limit ?? 0);
   return limit > 0 ? mapped.slice(0, limit) : mapped;
 }
 
@@ -217,7 +224,7 @@ if (kind === 'issue-view') {
     comments: comments.map(comment),
   };
 } else if (kind === 'issue-list') {
-  payload = await issues({ label: params.label, state: params.state });
+  payload = await issues({ label: params.label, state: params.state, limit: params.limit });
 } else if (kind === 'pr-list') {
   payload = await pullList();
 } else if (kind === 'issue-comment') {
@@ -235,8 +242,7 @@ if (kind === 'issue-view') {
 } else if (kind === 'ci-for-branch') {
   payload = await prDetail({ withComments: true });
 } else {
-  console.error(`REST: unbekannte Abfrage '${kind}'`);
-  process.exit(5);
+  throw new RestUnknown('UNKNOWN_QUERY', { detail: `unbekannte Abfrage '${kind}'` });
 }
 return payload ?? {};
 }

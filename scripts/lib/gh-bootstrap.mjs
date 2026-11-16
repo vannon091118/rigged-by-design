@@ -9,7 +9,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -68,14 +68,20 @@ export function installGh({ version = process.env.RBD_GH_VERSION || '2.63.2' } =
   if (process.platform !== 'linux') {
     return { ok: false, reason: `automatischer Download nur unter Linux (hier: ${process.platform})` };
   }
-  const arch = process.arch === 'arm64' ? 'arm64' : 'amd64';
+  // Nur die beiden veroeffentlichten Archive sind belegt; alles andere bricht
+  // ab, statt still ein fremdes Binary zu installieren.
+  const arch = { arm64: 'arm64', x64: 'amd64' }[process.arch];
+  if (!arch) {
+    return { ok: false, reason: `kein offizielles Release fuer ${process.arch}; Installation abgebrochen` };
+  }
   const file = `gh_${version}_linux_${arch}.tar.gz`;
   const url = `https://github.com/cli/cli/releases/download/v${version}/${file}`;
   const dir = ghTargetDir();
-  const work = join(tmpdir(), `rbd-gh-${process.pid}`);
+  // Eigener, nicht vorhersagbarer Arbeitsordner: kein fremder Prozess kann
+  // vorher einen Pfad oder Symlink unter demselben Namen anlegen.
+  const work = mkdtempSync(join(tmpdir(), 'rbd-gh-'));
   try {
     mkdirSync(dir, { recursive: true });
-    mkdirSync(work, { recursive: true });
     execFileSync('curl', ['-fsSL', '--max-time', '120', url, '-o', join(work, file)], {
       stdio: ['ignore', 'ignore', 'pipe'],
       timeout: 130000,

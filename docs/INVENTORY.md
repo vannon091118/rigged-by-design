@@ -95,15 +95,11 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 - Pipeline: `scripts/run-pipeline.mjs` + `lib/pipeline-plan.mjs` (vollständig). 19 Gates, davon 15 Required; Profile: light = 9, fast = 12, dev = 10, quick = 14, integration = 12, full/release = 16 (inkl. Audit), mechanics = 1 (nur Statistik, Soak, Langlauf). Kein Gate hat einen Default-Timeout; nur ein explizit gesetzter `timeoutMs` beendet es. Cache-Fingerabdruck aus Git (`HEAD` + Binär-Diff + unversionierte Dateien), rein lesend; nur `fix` schreibt (ESLint `--fix`, Matrix, Katalog, Doku-Marker).
 - LOC-Guard: `scripts/loc-budgets.mjs` (vollständig) — Rollen-Budgets, 6 Legacy-Einträge (350/200), keine neuen `@loc-exception`.
 
-## 10. CI/CD (alle 3 Workflows vollständig gelesen)
+## 10. CI/CD (keine Workflows)
 
-| Workflow | Trigger | Aufgabe |
-| --- | --- | --- |
-| `pr-cleanup.yml` | PR closed (merged) | meldet den gemergten Head-Branch (nicht main, nicht Fork, `keep-branch` schont), löscht nicht |
-| `promote.yml` | dispatch (`inspect`/`integrate`) | Statusanzeige oder manueller Notausgang; kein Auto-Merge |
-| `ensure-pr.yml` | push auf `lane/**` | legt oder aktualisiert den PR; führt bewusst keinen Branch-Code aus |
+`.github/workflows/` ist leer (FREEZE-0, #684). Die vier Repository-Verwaltungs-Workflows `ensure-pr.yml`, `pr-cleanup.yml`, `promote.yml` und `board-overview.yml` sind entfernt; ihre Aufgaben liegen bei Worker und Maintainer: PR anlegen/aktualisieren im Push-Turn, Closeout in `scripts/post-merge-closeout.mjs`, Board-Übersicht über `pnpm run board:overview`, manueller Notausgang über `scripts/promote.mjs`. Kein GitHub-Lauf führt Tests, Gates, Builds oder APKs aus.
 
-Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-Status-Checks**, `strict: false`, 0 Reviews, `enforce_admins: true`, kein Force-Push, keine Löschung. Der Merge nach lokalem `pnpm run ci:local` und Review erfolgt durch Mensch/Agent; es gibt keinen Cloud-Testlauf; `promote` ist manuell (nur Dispatch). Details in `docs/CI.md`.
+Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-Status-Checks**, `strict: false`, 0 Reviews, `enforce_admins: true`, kein Force-Push, keine Löschung. Der Merge nach lokalem `pnpm run ci:local` und Review erfolgt durch Mensch/Agent; es gibt keinen Cloud-Testlauf. Details in `docs/CI.md`.
 
 ## 11. Tests & Katalog
 
@@ -2963,9 +2959,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/gate-diagnostics.mjs` — Mehrfach-Diagnose eines roten CI-Laufs. — gelesen: 120 Zeilen
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 257 Zeilen
 - `scripts/lib/generated-files.mjs` — Generierte Artefakte: eine Liste, ein Eigentuemer, ein Regenerationspfad. — gelesen: 152 Zeilen
-- `scripts/lib/gh-bootstrap.mjs` — `gh` bereitstellen, ohne Workflow und ohne Nutzer-Eingriff. — gelesen: 122 Zeilen
-- `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet). — gelesen: 252 Zeilen
-- `scripts/lib/github-rest.mjs` — Zwei Lesepfade fuer das Board: `gh` und Token-REST. — gelesen: 100 Zeilen
+- `scripts/lib/gh-bootstrap.mjs` — `gh` bereitstellen, ohne Workflow und ohne Nutzer-Eingriff. — gelesen: 128 Zeilen
+- `scripts/lib/github-rest-fetch.mjs` — REST-Helper fuer das Board-Gate (wird synchron von `github-rest.mjs` gestartet). — gelesen: 258 Zeilen
+- `scripts/lib/github-rest.mjs` — Zwei Lesepfade fuer das Board: `gh` und Token-REST. — gelesen: 83 Zeilen
 - `scripts/lib/headless-core.mjs` — Headless-Core-Grenze: `src/core/` bleibt frei von UI, Renderer, Pixi, React — gelesen: 109 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
 - `scripts/lib/impact-graph.mjs` — Die Grenze des Impact-Pfads: Er laeuft in einem nackten Checkout ohne — gelesen: 61 Zeilen

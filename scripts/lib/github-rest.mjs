@@ -24,12 +24,6 @@ export function githubToken(env = process.env) {
   return resolveGithubToken({ env }).token;
 }
 
-/** Woher das Token kommt, ohne den Wert zu nennen. */
-export function githubTokenSource(env = process.env) {
-  const resolution = resolveGithubToken({ env });
-  return resolution.ok ? resolution.source : null;
-}
-
 /** Ein REST-Aufruf, synchron ueber den Helferprozess. */
 export function rest(kind, params = {}) {
   const helper = process.env.RBD_REST_SCRIPT || HELPER;
@@ -41,7 +35,7 @@ export function rest(kind, params = {}) {
     });
     const parsed = JSON.parse(output);
     if (parsed && parsed.unknown === true) {
-      const when = parsed.reset ? ` bis ${parsed.reset}` : '';
+      const when = parsed.reset ? ` bis ${parsed.reset} (UTC-Epoche)` : '';
       const detail = parsed.detail ? ` (${parsed.detail})` : '';
       return { ok: false, unknown: true, state: parsed.state, reset: parsed.reset, error: `${parsed.state}${when}${detail}` };
     }
@@ -87,14 +81,3 @@ export function restForGhArgs(args = []) {
   return null;
 }
 
-/** Ein REST-Aufruf fuer einen `gh`-Aufruf; `null` wenn nicht uebersetzbar. */
-export function restForGhCall(args, { attempts = 1 } = {}) {
-  const mapped = restForGhArgs(args);
-  if (!mapped) return null;
-  let last = null;
-  for (let attempt = 0; attempt < Math.max(1, attempts); attempt += 1) {
-    last = rest(mapped.kind, mapped.params);
-    if (last.ok) return last;
-  }
-  return last;
-}

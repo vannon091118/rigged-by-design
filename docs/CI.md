@@ -80,7 +80,7 @@ pnpm run board:overview -- --json --limit 20   # maschinenlesbar
 node scripts/install-webhook.mjs --check        # Ist-Stand der Repo-Webhooks
 ```
 
-Ein echter Repo-Webhook braucht eine erreichbare Empfänger-URL (`scripts/install-webhook.mjs --url … --secret-file …`, idempotent per `config.url`). Ohne Empfänger bleibt `repository_dispatch` der Weg: ein POST auf `/repos/<owner>/<repo>/dispatches` mit `{"event_type":"board-refresh"}` löst denselben Lauf aus.
+Ein echter Repo-Webhook braucht eine erreichbare Empfänger-URL (`scripts/install-webhook.mjs --url … --secret-file …`, idempotent per `config.url`). Einen Ereignis-Workflow gibt es seit FREEZE-0 nicht mehr (#684): `repository_dispatch` hätte keinen Empfänger. Die Übersicht an #677 pflegt der Maintainer-Lauf mit `pnpm run board:overview`.
 
 **Nicht ersetzt** werden die lokalen Gates: Arbeitsbaum, Worktree-Isolation, Laufbudget, Scope gegen die Claim-Allowlist und der `origin/main`-Fetch bleiben bei `pnpm run agent:pretask --json`.
 
