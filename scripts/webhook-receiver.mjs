@@ -25,6 +25,9 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deliverySubject } from './lib/webhook-action.mjs';
 import { SIGNATURE_HEADER, signPayload, verifySignature, webhookSecret } from './lib/webhook-signature.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'webhook-receiver', enabled: !process.argv.includes('--serve') });
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);

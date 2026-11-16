@@ -9,6 +9,9 @@ import { existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { catalogCodes, fail, ROOT, walk } from './lib/report.mjs';
 import { forEachNode, lineOf, moduleSpecifiers, parse, resolveSpecifier, ts } from './lib/ts-ast.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-test-quality' });
 
 const SRC = resolve(ROOT, 'src');
 const codes = catalogCodes();

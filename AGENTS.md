@@ -105,30 +105,36 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 16 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 11 Light-Gates, 12 mit `affected`. `verify:all` = 16 Required-Gates plus Audit (17 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
+- **CI:** 17 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 12 Light-Gates, 13 mit `affected`. `verify:all` = 17 Required-Gates plus Audit (18 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
 - **Workflows:** keine. `Ensure PR`, `PR Cleanup`, `Promote` und `Board Overview` sind entfernt (FREEZE-0, #684): PR-Anlage und Closeout liegen beim Worker bzw. Maintainer, die Board-Übersicht pflegt der Maintainer-Lauf mit `pnpm run board:overview`. Kein GitHub-Lauf führt Tests, Gates, Builds oder APKs aus.
 - **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten.
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
 ## Befehle
 
+Jeder Befehl hat dieselbe Form: `rbd <gruppe> <aktion> [flags]`. Global wird er
+mit `pnpm link --global`; ohne Installation genuegt `pnpm rbd …`. Die alten
+`pnpm run`-Namen bleiben als Kompatibilitaetsaliase bestehen, sind aber nicht
+mehr der dokumentierte Weg. `rbd help` nennt alle Gruppen, `rbd help <gruppe>`
+deren Aktionen.
+
 | Befehl | Zweck |
 | --- | --- |
-| `pnpm run agent:start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
-| `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
-| `pnpm run webhook:receive --payload <datei> --event <name>` | Prüft eine aufgezeichnete GitHub-Delivery per HMAC und liefert dieselbe nächste Aktion wie `agent:start`; `--serve` nimmt echtes `POST /webhook` an (202/401), `--live` liest Board und offene PRs. |
-| `pnpm run webhook:install --check` | Ist-Stand der Repo-Hooks (`active`, Events, Ziel-URL). Anlegen braucht `administration: write` (klassisch `admin:repo_hook`) und eine öffentliche HTTPS-URL; das Secret kommt aus `RBD_WEBHOOK_SECRET`. |
-| `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
-| `pnpm run board:sync -- --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
-| `pnpm run claim:register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |
-| `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree, Redundanz, Catalog, Generated. |
-| `pnpm run verify:scope` | Nur der Diff gegen die Claim-Allowlist. |
-| `pnpm run ci:local` | Lokaler Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build. |
-| `pnpm run verify:all` | Lokaler Vollnachweis: 16 Required-Gates plus Audit. |
-| `pnpm run test:mechanics` | Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie im Regelprofil. |
-| `pnpm run turn:finish` | Phasenwechsel, Commit, Vertrag und Branch-Push. |
-| `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap neu erzeugen. |
-| `pnpm run reconcile:claims [--apply]` | Belegte Merges prüfen bzw. Claim und Task nachziehen. |
+| `pnpm rbd agent start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
+| `pnpm rbd agent pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
+| `pnpm rbd webhook receive --payload <datei> --event <name>` | Prüft eine aufgezeichnete GitHub-Delivery per HMAC und liefert dieselbe nächste Aktion wie `agent:start`; `--serve` nimmt echtes `POST /webhook` an (202/401), `--live` liest Board und offene PRs. |
+| `pnpm rbd webhook install --check` | Ist-Stand der Repo-Hooks (`active`, Events, Ziel-URL). Anlegen braucht `administration: write` (klassisch `admin:repo_hook`) und eine öffentliche HTTPS-URL; das Secret kommt aus `RBD_WEBHOOK_SECRET`. |
+| `pnpm rbd agent context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
+| `pnpm rbd board sync --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
+| `pnpm rbd claim register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |
+| `pnpm rbd verify light` | Lint, LOC, Typecheck, Doku, Tree, Redundanz, Catalog, Generated. |
+| `pnpm rbd verify scope` | Nur der Diff gegen die Claim-Allowlist. |
+| `pnpm rbd ci local` | Lokaler Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build. |
+| `pnpm rbd verify all` | Lokaler Vollnachweis: 17 Required-Gates plus Audit. |
+| `pnpm rbd test mechanics` | Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie im Regelprofil. |
+| `pnpm rbd turn finish` | Phasenwechsel, Commit, Vertrag und Branch-Push. |
+| `pnpm rbd sync generated` | Inventur, Marker, Registry und Roadmap neu erzeugen. |
+| `pnpm rbd claim reconcile [--apply]` | Belegte Merges prüfen bzw. Claim und Task nachziehen. |
 
 ## Pflichtdoku
 

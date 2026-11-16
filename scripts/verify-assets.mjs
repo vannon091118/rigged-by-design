@@ -11,6 +11,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
 import { POOL_MINIMUM, POOL_TARGET, poolIssues, poolReport, poolSlots, quotaTotal } from './lib/narrative-blocks.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-assets' });
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MANIFEST = join(ROOT, 'src/render/assets/manifest.json');

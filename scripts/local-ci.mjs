@@ -19,7 +19,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
-import { captureConsole } from './lib/compact.mjs';
+import { captureConsole, logsEnabled } from './lib/compact.mjs';
 
 const argv = process.argv.slice(2);
 const value = (name, fallback) => {
@@ -42,8 +42,9 @@ captureConsole({ label: 'ci-local' });
 
 const node = process.execPath;
 const step = (label, script, args = [], env = {}) => {
+  const withLog = logsEnabled();
   const log = join(ROOT, '.verify-cache', 'output', `ci-${label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.log`);
-  mkdirSync(dirname(log), { recursive: true });
+  if (withLog) mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [join(ROOT, 'scripts', script), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -52,14 +53,14 @@ const step = (label, script, args = [], env = {}) => {
     env: { ...process.env, ...env },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
-  if (output.trim() !== '') writeFileSync(log, output, 'utf8');
+  if (withLog && output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`ci:local: ${label} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
   if (result.status !== 0) {
     const tail = output.trim().split('\n').slice(-8).join('\n');
-    console.error(`ci:local: ${label}: ROT (Log: ${log})${tail ? `\n${tail}` : ''}`);
+    console.error(`ci:local: ${label}: ROT${withLog ? ` (Log: ${log})` : ''}${tail ? `\n${tail}` : ''}`);
     process.exit(result.status ?? 1);
   }
   console.log(`ci:local: ${label}: ok`);

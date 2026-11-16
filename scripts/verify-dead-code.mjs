@@ -9,6 +9,9 @@ import { existsSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 import { forEachNode, lineOf, parse, resolveSpecifier, ts } from './lib/ts-ast.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-dead-code' });
 
 const norm = (file) => file.replaceAll('\\', '/');
 const SRC = resolve(ROOT, 'src');

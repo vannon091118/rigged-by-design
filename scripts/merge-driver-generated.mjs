@@ -22,6 +22,7 @@
  * Aufruf durch git: `<driver> %O %A %B %P` (Basis, unsere, ihre, Pfad).
  */
 import { readFileSync } from 'node:fs';
+import { captureConsole } from './lib/compact.mjs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GENERATED_FILES, isGeneratedPath } from './lib/generated-files.mjs';
@@ -78,6 +79,8 @@ export function resolveGeneratedConflict({ path, ours, read = readFileSync } = {
 
 const invokedDirectly = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (invokedDirectly) {
+  // Nur als git-Driver kapseln: als Modul (Tests) bleibt stdout unangetastet.
+  captureConsole({ label: 'merge-driver-generated' });
   const { path, ours } = parseDriverArgs(process.argv.slice(2));
   const result = resolveGeneratedConflict({ path, ours });
   if (!result.ok) {

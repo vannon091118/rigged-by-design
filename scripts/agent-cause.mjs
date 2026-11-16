@@ -25,7 +25,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { compact, field, isVerbose } from './lib/compact.mjs';
+import { captureConsole, compact, field, isVerbose } from './lib/compact.mjs';
 import { plan as escalationPlan } from './lib/escalation.mjs';
 import { diagnose } from './lib/gate-diagnostics.mjs';
 import { loadClaims, selectClaim } from './lib/lane-claims.mjs';
@@ -35,6 +35,8 @@ import { ROOT } from './lib/report.mjs';
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
+// Sichtbare Antwort bleibt unter 500 Token; JSON bleibt Werkzeugformat.
+captureConsole({ label: 'agent-cause', enabled: !asJson });
 const oneLine = args.includes('--line') || args.includes('--one-line');
 const forceCi = args.includes('--ci');
 const offline = args.includes('--offline');

@@ -33,6 +33,9 @@ import {
   staleBase,
   validatePlanArtifact,
 } from './lib/promotion-state.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'promote' });
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';

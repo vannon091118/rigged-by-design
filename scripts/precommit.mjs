@@ -17,6 +17,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { claimForBranch } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { logsEnabled } from './lib/compact.mjs';
 import { captureConsole } from './lib/compact.mjs';
 
 const node = process.execPath;
@@ -39,8 +40,9 @@ function git(args) {
 }
 
 function run(name, args = [], env = {}) {
+  const withLog = logsEnabled();
   const log = join(ROOT, '.verify-cache', 'output', `precommit-${name.replace(/\.mjs$/, '')}.log`);
-  mkdirSync(dirname(log), { recursive: true });
+  if (withLog) mkdirSync(dirname(log), { recursive: true });
   const result = spawnSync(node, [script(name), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -49,14 +51,14 @@ function run(name, args = [], env = {}) {
     env: { ...process.env, ...env },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
-  if (output.trim() !== '') writeFileSync(log, output, 'utf8');
+  if (withLog && output.trim() !== '') writeFileSync(log, output, 'utf8');
   if (result.error) {
     console.error(`precommit: ${name} konnte nicht gestartet werden: ${result.error.message}`);
     process.exit(1);
   }
   if (result.status !== 0) {
     const tail = output.trim().split('\n').slice(-8).join('\n');
-    console.error(`precommit: ${name}: ROT (Log: ${log})${tail ? `\n${tail}` : ''}`);
+    console.error(`precommit: ${name}: ROT${withLog ? ` (Log: ${log})` : ''}${tail ? `\n${tail}` : ''}`);
     process.exit(result.status ?? 1);
   }
   console.log(`precommit: ${name}: ok`);
@@ -101,6 +103,7 @@ function verifyNarrativeStaged() {
 
 stageOwnClaim();
 run('verify-lane-claims.mjs');
+run('verify-output-budget.mjs');
 run('verify-task-contract.mjs', ['--staged']);
 // Closeout-Hygiene: offener Claim + belegtes geschlossenes Issue ist ein
 // Befund. Unbekannte Status bleiben sichtbar, blockieren aber nicht.

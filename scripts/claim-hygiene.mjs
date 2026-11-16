@@ -12,6 +12,9 @@ import { join } from 'node:path';
 import { auditClaimHygiene, formatClaimHygiene, normalizeIssueStates } from './lib/claim-hygiene.mjs';
 import { loadClaimsStrict } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'claim-hygiene' });
 
 const argv = process.argv.slice(2);
 const json = argv.includes('--json');

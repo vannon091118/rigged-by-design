@@ -16,6 +16,9 @@ import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { plan } from './lib/escalation.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'build-inventory' });
 
 const START = '<!-- inventory:start -->';
 const END = '<!-- inventory:end -->';

@@ -10,6 +10,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { syncDocs } from './lib/doc-sync.mjs';
 import { fail, ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'doc-stub' });
 
 const title = (process.argv.slice(2).find((arg) => !arg.startsWith('--')) ?? '').trim();
 if (title.length < 8 || title.includes('\n')) {

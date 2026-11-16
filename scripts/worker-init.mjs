@@ -27,6 +27,9 @@ import {
   validateIdentityFile, workspaceHome, workspacePaths, writeIdentityFile,
 } from './lib/workspace-home.mjs';
 import { inventoryReport } from './lib/repo-inventory.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'worker-init' });
 
 const REPO = 'vannon091118/rigged-by-design';
 const IDENTITY_BOARD = Number(process.env.RBD_IDENTITY_BOARD ?? 0);

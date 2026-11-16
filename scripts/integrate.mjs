@@ -24,6 +24,9 @@ import { appendFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { EXIT, INTEGRATION, integrationStatus } from './lib/integration.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'integrate' });
 
 const args = process.argv.slice(2);
 const has = (name) => args.includes(`--${name}`);

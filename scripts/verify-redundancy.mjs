@@ -10,6 +10,9 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'verify-redundancy' });
 
 const CODE = /\.(ts|tsx|mjs|js|css|md)$/;
 /** Bewusste Aliasnamen: gleicher Aufruf, zwei Namen, keine zweite Wahrheit. */

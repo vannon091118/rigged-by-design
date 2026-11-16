@@ -65,6 +65,7 @@ export const GATES = Object.freeze({
   },
   'test-placement': { ...NODE, name: 'test-placement', script: 'scripts/verify-test-placement.mjs', code: 'ERR-4019', cache: true },
   tree: { ...NODE, name: 'tree', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', cache: true },
+  'output-budget': { ...NODE, name: 'output-budget', script: 'scripts/verify-output-budget.mjs', args: ['--probe'], code: 'ERR-4019', cache: true },
   // Der Impact-Pfad muss ohne `node_modules` laufen.
   'impact-graph': { ...NODE, name: 'impact-graph', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', cache: true },
   redundancy: { ...NODE, name: 'redundancy', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', cache: true },
@@ -115,7 +116,7 @@ export const GATES = Object.freeze({
 });
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit.
-const LIGHT = ['lint', 'check:loc', 'typecheck', 'headless-core', 'docs', 'catalog', 'generated', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'headless-core', 'docs', 'catalog', 'generated', 'test-placement', 'tree', 'impact-graph', 'redundancy', 'output-budget'];
 // Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
 // betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
 const FAST = [...LIGHT, 'dead-code', 'test-quality', 'affected', 'build'];
@@ -133,6 +134,7 @@ export const QUICK_GATES = Object.freeze([
   'tree',
   'impact-graph',
   'redundancy',
+  'output-budget',
   'assets',
   'capabilities',
   'narrative',

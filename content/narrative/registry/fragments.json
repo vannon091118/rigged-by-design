@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8db627e1558b2f7b91fc84beb7d4c2705d8001347fc08fdc0a4390af0eb8d8a9",
+  "contentHash": "sha256:3ec8fbb1fc20bb1abaa21694a9cc64ea66afad071198aa1dad4a0f23527a8a0a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10760,6 +10760,28 @@
       "source": "content/narrative/contributions/2026-11-11-local-first-ci.json"
     },
     {
+      "contributionId": "log-flag",
+      "turnId": "2026-11-16T13:20Z-log-flag",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt hörte auf, von jedem Abend ein vollständiges Protokoll zu binden. Wer nachlesen wollte, sagte es vorher; dann legte er nur die Seiten ein, auf denen etwas schiefgegangen war, und schrieb die Nummer des Fehlers obenauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-log-flag.json"
+    },
+    {
       "contributionId": "logic-safety-payout-01",
       "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
       "agentId": "buffy",
@@ -14018,6 +14040,28 @@
       "text": "Der Zettel am Tresen traegt jetzt unten eine Zeile: wann er aufgehaengt wurde und wer ihn abgezeichnet hat. Die eine Seite bleibt die Antwort; das Heft darunter bleibt das Gedaechtnis.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-output-budget-closeout.json"
+    },
+    {
+      "contributionId": "output-budget-fullscan",
+      "turnId": "2026-11-16T12:40Z-output-budget-fullscan",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tresen hing bisher an jeder Tuer ein Zettel mit anderem Aufbau, und wer schnell arbeitete, schnitt sich die Hälfte ab. Der Wirt vereinheitlichte die Schilder auf drei Teile: Haus, Zimmer, Handlung. Was nicht mehr auf das Schild passte, steht vollständig im Buch darunter; das Schild selbst nennt nur noch die Seite.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-output-budget-fullscan.json"
     },
     {
       "contributionId": "p20-dependency-matrix-01",

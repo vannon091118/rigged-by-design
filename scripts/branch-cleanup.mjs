@@ -10,6 +10,9 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { fail, ROOT } from './lib/report.mjs';
 import { parseBranches, prunable } from './lib/branch-prune.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'branch-cleanup' });
 
 const argv = process.argv.slice(2);
 const apply = argv.includes('--apply');

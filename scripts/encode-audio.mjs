@@ -13,6 +13,9 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import ffmpegPath from 'ffmpeg-static';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'encode-audio' });
 
 const ROOT = resolve(import.meta.dirname, '..');
 const SOURCE = process.env.RBD_AUDIO_SOURCE;

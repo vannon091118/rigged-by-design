@@ -19,6 +19,9 @@ import { claimEntryPath, planRetention, planTaskCloseout } from './lib/claim-lif
 import { loadClaimsStrict, LaneClaim, saveClaims } from './lib/lane-claims.mjs';
 import { loadTaskContracts, validateTaskContract, writeTaskContract } from './lib/task-contract.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'post-merge-closeout' });
 
 const repo = process.env.GITHUB_REPOSITORY ?? '';
 const number = Number(process.env.MERGED_PR_NUMBER ?? 0);

@@ -8,6 +8,9 @@ import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { buildAtlasPages } from './lib/atlas-png.mjs';
 import { encodeWebp } from './lib/atlas-webp.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'build-asset-manifest' });
 
 const ROOT = resolve(import.meta.dirname, '..');
 const ASSET_ROOT = join(ROOT, 'public/assets/casino');

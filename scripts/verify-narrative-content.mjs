@@ -8,6 +8,9 @@
  */
 import { resolve } from 'node:path';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'narrative-check' });
 
 const ROOT = resolve(import.meta.dirname, '..');
 const report = loadNarrativeContent(ROOT);

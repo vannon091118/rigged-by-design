@@ -16,6 +16,9 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { ROOT } from './lib/report.mjs';
 import { decideRunBudget, readRunBudget, validateFinding } from './lib/run-budget.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'run-budget' });
 
 function parseArgs(argv) {
   const args = {};

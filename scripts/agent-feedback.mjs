@@ -8,6 +8,9 @@
  * Schritt kennt, ohne Logs zu lesen. Ausgefuehrt wird hier nichts.
  */
 import { changedFiles, selectAffectedTests } from './lib/affected-tests.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'agent-feedback' });
 
 const json = process.argv.includes('--json');
 const changed = changedFiles();

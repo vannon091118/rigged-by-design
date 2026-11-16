@@ -15,8 +15,10 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { impact, oneLineOf } from './lib/impact.mjs';
-import { compact } from './lib/compact.mjs';
+import { captureConsole, compact } from './lib/compact.mjs';
 import { ROOT } from './lib/report.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'agent-context' });
 
 const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));

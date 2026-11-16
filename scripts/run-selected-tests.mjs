@@ -7,6 +7,9 @@
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
+// Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
+captureConsole({ label: 'run-selected-tests' });
 
 const files = (process.env.RBD_TEST_FILES ?? '')
   .split(',')

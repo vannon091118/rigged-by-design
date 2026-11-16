@@ -77,12 +77,27 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 
 ## Ausgabe-Budget: 500 Token, vollstaendig im Zustand
 
-Jedes Werkzeug, das ein Agent aufruft, antwortet in hoechstens 500 Token:
-`agent:start`, `agent:pretask`, die `verify`-Pipeline, `ci:local`,
-`turn:finish`, `verify:claims` und `verify:board`. Gekuerzt wird nur Detail,
-nie Zustand — Status, Blocker, Befund und der naechste Befehl bleiben, alles
-andere steht vollstaendig im Log unter `.verify-cache/output/`. Die Schaetzung
-ist konservativ (Bytes / 3), damit die Grenze auch beim Tokenizer haelt.
+Jedes Werkzeug, das ein Agent aufrufen muss, antwortet in hoechstens 500 Token.
+Der Vollscan (#996) hat die Pflichtliste nicht geschaetzt, sondern aus dem
+Vertrag hergeleitet: Befehlstabelle in `AGENTS.md`, `package.json`, die vier
+Hooks in `.githooks/` und die Mechanik-Inventur. Ergebnis sind 25 Pflichtpfade
+in `scripts/lib/entry-points.mjs`; 21 davon wurden mit echtem Lauf gemessen
+(ungekuerzt 9 bis 1220 Token, sichtbar 9 bis 494 Token), die vier uebrigen
+(Hooks und `turn:finish`) laufen durch dieselbe Funktion und werden statisch
+geprueft. Gekuerzt wird nur Detail, nie Zustand — Status, Blocker, Befund und
+der naechste Befehl bleiben. Ein Log entsteht nur mit `--log` (oder `RBD_LOG=1`
+im Kindprozess) und nur fuer rote Gates; es traegt dann deren Error Code. Ohne
+`--log` schreibt kein Werkzeug eine Logdatei — eine gekuerzte Antwort sagt
+stattdessen `vollstaendig mit --log`. Die Schaetzung ist konservativ
+(Bytes / 3, ohne echten Tokenizer im Repo), damit die Grenze auch beim
+Tokenizer haelt.
+
+Das Gate `verify:output-budget` haengt im Light- und im Quick-Profil und in der
+Pre-Commit-Kette: es prueft statisch jede registrierte Datei auf
+`captureConsole` und den Import des Vertrags, dynamisch sieben offline
+lauffaehige Einstiege auf Budget und Logverweis. `cli-surface.test.ts` und
+`output-budget-coverage.test.ts` machen einen Verstoss rot, ohne dass jemand
+die Grenze von Hand nachrechnen muss.
 
 Zwei bewusste Ausnahmen: `--json` ist Werkzeugformat und bleibt vollstaendig,
 `RBD_OUTPUT_FULL=1` hebt die Kappung fuer eine Beweisfuehrung auf. Die Hooks
@@ -90,6 +105,32 @@ geben je Schritt eine Zeile aus (`precommit: <name>: ok` oder `ROT` mit Log und
 den letzten Zeilen); Kindausgaben landen vollstaendig in
 `.verify-cache/output/`. Exit-Codes aendert das Budget nie: ein roter Lauf
 bleibt rot.
+
+## Eine Befehlsoberflaeche: `rbd <gruppe> <aktion>`
+
+Jeder Governance-Befehl hat dieselbe Form: Praefix `rbd`, Gruppe, Aktion.
+Damit braucht kein Agent mehr `node scripts/…`, kein `pnpm run x:y -- --flag`
+und keine Pipe. `rbd help` bleibt unter dem Budget; eine unbekannte Route endet
+mit Exit 2 und einem Vorschlag, eine Gruppe ohne Aktion zeigt ihre Aktionen.
+
+| Gruppe | Aktionen (Auszug) |
+| --- | --- |
+| `agent` | `start`, `pretask`, `context`, `cause`, `feedback`, `new`, `verify` |
+| `board` | `sync`, `overview`, `verify` |
+| `claim` | `register`, `hygiene`, `reconcile`, `verify` |
+| `verify` | `light`, `fast`, `quick`, `all`, `scope`, `budget`, `docs`, `tree`, `impact`, `quality`, `dead-code`, `assets` |
+| `ci` | `local`, `status`, `long` |
+| `turn` | `finish`, `fast`, `integration`, `full` |
+| `task` | `pause`, `status`, `complete` |
+| `narrative` | `check`, `blocks`, `compile` |
+
+Die Routen stehen einmal in `scripts/lib/command-surface.mjs`; `bin/rbd.mjs`
+fuehrt sie aus und gibt Argumente sowie Exit-Codes unveraendert weiter. Global
+verfuegbar wird der Befehl mit `pnpm link --global` (Feld `bin` in
+`package.json`); ohne Installation genuegt `pnpm rbd <gruppe> <aktion>`. Die
+alten `pnpm run`-Namen bleiben als Kompatibilitaetsaliase bestehen, sind aber
+nicht mehr der dokumentierte Weg. `cli-surface.test.ts` macht eine
+Governance-Zeile aus `package.json` ohne Route rot.
 
 ## Kein Workflow, kein Actions
 
@@ -108,13 +149,13 @@ Es gibt keinen Workflow mehr: die Board-Übersicht erzeugt der Maintainer bei Be
 ### Nachweisstand (2026-11-16)
 
 - **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker, der die Variable nennt — `export GH_TOKEN=<token>`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> githubPAT -> GITHUB_PAT -> GH_PAT -> RBD_GH_TOKEN -> gh auth token -> git-credential-helper`.
-- **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm run agent:start --brief` liest Board, Claims und offene PRs und nennt genau eine naechste Aktion; der Push auf einen Lane-Branch lief ohne Login durch.
+- **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm rbd agent start --brief` liest Board, Claims und offene PRs und nennt genau eine naechste Aktion; der Push auf einen Lane-Branch lief ohne Login durch.
 - **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
 - **Nicht herstellbar:** ein serverseitiger Merge-Schutz als Ruleset bzw. Required-Check — dafuer fehlen Admin-/App-Rechte, und ohne Actions gibt es keinen Job, der ihn setzt.
 
 ## Ein Befehl, dann Arbeit
 
-`pnpm run agent:start --brief` ist der einzige Start. Er liest Board, Claims und PRs aus GitHub, **fuehrt pretask im selben Lauf aus** und nennt am Ende genau eine naechste Aktion mit Befehl.
+`pnpm rbd agent start --brief` ist der einzige Start. Er liest Board, Claims und PRs aus GitHub, **fuehrt pretask im selben Lauf aus** und nennt am Ende genau eine naechste Aktion mit Befehl.
 
 | Was | Woher | Blockiert? |
 | --- | --- | --- |
