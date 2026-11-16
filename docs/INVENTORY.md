@@ -741,14 +741,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3288 |
-| Gelistete Dateien | 3288 |
-| Getrackte Ordner | 119 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (107), .lanes (1), artifacts (1), content (1208), docs (111), packages (27), public (571), scripts (149), src (1092) |
-| Getrackte Dateien | 3282 |
-| Gelistete Dateien | 3282 |
-| Getrackte Ordner | 119 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (103), .lanes (1), artifacts (1), content (1207), docs (111), packages (27), public (571), scripts (149), src (1091) |
+| Getrackte Dateien | 3254 |
+| Gelistete Dateien | 3254 |
+| Getrackte Ordner | 116 |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (96), .lanes (1), artifacts (1), content (1209), docs (87), packages (27), public (571), scripts (149), src (1092) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -760,13 +756,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 53 Datei(en)
-- `.lane-claims/tasks/` — 50 Datei(en)
-- `.lane-claims/claims/` — 51 Datei(en)
-- `.lane-claims/tasks/` — 48 Datei(en)
+- `.lane-claims/claims/` — 48 Datei(en)
+- `.lane-claims/tasks/` — 44 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1204 Datei(en)
+- `content/narrative/contributions/` — 1205 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -776,9 +770,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/` — 2 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 33 Datei(en)
-- `docs/screenshots/v0.3.114/` — 11 Datei(en)
-- `docs/screenshots/v0.3.132/` — 8 Datei(en)
-- `docs/screenshots/v0.3.78/` — 5 Datei(en)
 - `docs/superpowers/plans/` — 1 Datei(en)
 - `packages/gamescout/` — 5 Datei(en)
 - `packages/gamescout/bin/` — 1 Datei(en)
@@ -880,7 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 - `.cron/SECURITY.md` — Sicherheit: GITHUB_TOKEN für Maintainer-Cronjob — gelesen: 22 Zeilen
 - `.cron/maintainer-prompt.md` — Maintainer-Cron-Prompt (Version 2.0) — gelesen: 39 Zeilen
-- `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 19 Zeilen
+- `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 20 Zeilen
 - `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
 - `.githooks/post-merge` — Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877). — gelesen: 26 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
@@ -892,7 +883,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 743 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 749 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
@@ -904,18 +895,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-782-integration.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
-- `.lane-claims/claims/lane-governance-loc-audit.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-queue-claim-rest.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-remove-dead-freeze-mechanics.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-968-board-etablierung.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-repo-ballast.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-session-integration.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-test-quality-and-tags.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -951,22 +938,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-freeze0-teardown.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-freeze0-teardown.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-782-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-loc-audit.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-queue-claim-rest.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-remove-dead-freeze-mechanics.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-session-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-test-quality-and-tags.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
@@ -2207,18 +2189,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27045 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4821 Zeilen
+- `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27067 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4825 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1192 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1193 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 98 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2611 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2621 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
@@ -2253,74 +2236,50 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
-- `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
-- `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
-- `docs/screenshots/comparison/03-floor-v1-v2.png` — PNG-Textur — geprueft: PNG 2528x900, 311318 B
-- `docs/screenshots/comparison/04-asset-library-top-v2.png` — PNG-Textur — geprueft: PNG 1920x1326, 664563 B
-- `docs/screenshots/comparison/05-animations-emitter-sounds-v2.png` — PNG-Textur — geprueft: PNG 1920x1326, 190190 B
-- `docs/screenshots/comparison/16-floor-assets-ingame.png` — PNG-Textur — geprueft: PNG 2501x1175, 673139 B
-- `docs/screenshots/comparison/17-poker-assets-ingame.png` — PNG-Textur — geprueft: PNG 2501x1316, 454538 B
-- `docs/screenshots/comparison/18-roulette-assets-ingame.png` — PNG-Textur — geprueft: PNG 2501x1316, 559013 B
-- `docs/screenshots/comparison/19-plinko-assets-ingame.png` — PNG-Textur — geprueft: PNG 2501x1175, 341966 B
-- `docs/screenshots/comparison/20-slot-assets-ingame.png` — PNG-Textur — geprueft: PNG 2501x1175, 382890 B
-- `docs/screenshots/comparison/21-floor-v3-optik-steuerung.png` — PNG-Textur — geprueft: PNG 1500x940, 260077 B
-- `docs/screenshots/current/01-floor-uebersicht-frisch.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
-- `docs/screenshots/current/02-floor-detail-frisch.png` — PNG-Textur — geprueft: PNG 1248x900, 137852 B
-- `docs/screenshots/current/03-floor-uebersicht-mittel.png` — PNG-Textur — geprueft: PNG 1248x900, 103236 B
-- `docs/screenshots/current/04-floor-detail-mittel.png` — PNG-Textur — geprueft: PNG 1248x900, 146242 B
-- `docs/screenshots/current/05-floor-uebersicht-konzern.png` — PNG-Textur — geprueft: PNG 1248x900, 101476 B
-- `docs/screenshots/current/06-floor-detail-konzern.png` — PNG-Textur — geprueft: PNG 1248x900, 159858 B
-- `docs/screenshots/current/07-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1248x900, 124804 B
-- `docs/screenshots/current/08-bauen-panel.png` — PNG-Textur — geprueft: PNG 1248x900, 227848 B
-- `docs/screenshots/current/09-slot-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 219484 B
-- `docs/screenshots/current/10-huetchen-buehne.png` — PNG-Textur — geprueft: PNG 1248x900, 163039 B
-- `docs/screenshots/current/11-blackjack-buehne.png` — PNG-Textur — geprueft: PNG 1248x900, 175070 B
-- `docs/screenshots/current/12-poker-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 167502 B
-- `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
-- `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
-- `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
-- `docs/screenshots/current/18-r4-materialien.png` — PNG-Textur — geprueft: PNG 1024x768, 246329 B
-- `docs/screenshots/current/20-r6-kamera.png` — PNG-Textur — geprueft: PNG 1024x768, 246347 B
-- `docs/screenshots/current/21-r7-stadt.png` — PNG-Textur — geprueft: PNG 1006x942, 236403 B
-- `docs/screenshots/current/24-r10-wohnung.png` — PNG-Textur — geprueft: PNG 1006x942, 146914 B
-- `docs/screenshots/current/25-r12-strassenlicht.png` — PNG-Textur — geprueft: PNG 1024x768, 234139 B
-- `docs/screenshots/current/26-r12-nacht.png` — PNG-Textur — geprueft: PNG 1024x768, 168510 B
-- `docs/screenshots/current/28-r2-platzhalter.png` — PNG-Textur — geprueft: PNG 1006x942, 227752 B
-- `docs/screenshots/current/29-r2-platzhalter-detail.png` — PNG-Textur — geprueft: PNG 1006x942, 267517 B
-- `docs/screenshots/current/30-r9-stadtbewohner.png` — PNG-Textur — geprueft: PNG 1006x942, 162094 B
-- `docs/screenshots/current/31-r12-abend-stadt.png` — PNG-Textur — geprueft: PNG 546x942, 143680 B
-- `docs/screenshots/current/32-r12-nacht-uebergang.png` — PNG-Textur — geprueft: PNG 546x942, 138660 B
-- `docs/screenshots/current/33-r12-nacht-nach-uebergang.png` — PNG-Textur — geprueft: PNG 555x951, 208604 B
-- `docs/screenshots/current/34-r12-uebergang-beginn.png` — PNG-Textur — geprueft: PNG 555x951, 224131 B
-- `docs/screenshots/current/35-r12-uebergang-mitte.png` — PNG-Textur — geprueft: PNG 555x951, 221380 B
-- `docs/screenshots/current/36-r12-uebergang-ende.png` — PNG-Textur — geprueft: PNG 555x951, 223165 B
-- `docs/screenshots/current/37-stadtnetz-abnahme.png` — PNG-Textur — geprueft: PNG 549x951, 223474 B
-- `docs/screenshots/current/38-kiez-interior-abnahme.png` — PNG-Textur — geprueft: PNG 549x951, 149335 B
-- `docs/screenshots/current/39-stadtbewohner.png` — PNG-Textur — geprueft: PNG 549x951, 221752 B
-- `docs/screenshots/v0.3.114/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1264x569, 142621 B
-- `docs/screenshots/v0.3.114/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1264x569, 169522 B
-- `docs/screenshots/v0.3.114/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 151350 B
-- `docs/screenshots/v0.3.114/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 146616 B
-- `docs/screenshots/v0.3.114/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1264x569, 151325 B
-- `docs/screenshots/v0.3.114/06-smartphone.png` — PNG-Textur — geprueft: PNG 1264x569, 156049 B
-- `docs/screenshots/v0.3.114/07-dialog.png` — PNG-Textur — geprueft: PNG 1264x569, 112442 B
-- `docs/screenshots/v0.3.114/08-sound.png` — PNG-Textur — geprueft: PNG 1264x569, 118344 B
-- `docs/screenshots/v0.3.114/09-charakter.png` — PNG-Textur — geprueft: PNG 1264x569, 125982 B
-- `docs/screenshots/v0.3.114/10-asset-bibliothek.png` — PNG-Textur — geprueft: PNG 1264x569, 288272 B
-- `docs/screenshots/v0.3.114/11-protokoll.png` — PNG-Textur — geprueft: PNG 1264x569, 136394 B
-- `docs/screenshots/v0.3.132/01-floor-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 283994 B
-- `docs/screenshots/v0.3.132/02-floor-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 341862 B
-- `docs/screenshots/v0.3.132/03-slot-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 355254 B
-- `docs/screenshots/v0.3.132/04-slot-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 300937 B
-- `docs/screenshots/v0.3.132/05-guests-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 348561 B
-- `docs/screenshots/v0.3.132/06-build-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 410900 B
-- `docs/screenshots/v0.3.132/07-history-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 326500 B
-- `docs/screenshots/v0.3.132/08-mobile-guest.png` — PNG-Textur — geprueft: PNG 390x844, 163477 B
-- `docs/screenshots/v0.3.78/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1280x860, 215768 B
-- `docs/screenshots/v0.3.78/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1280x860, 300499 B
-- `docs/screenshots/v0.3.78/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 280808 B
-- `docs/screenshots/v0.3.78/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 166866 B
-- `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
+- `docs/screenshots/comparison/01-floor-v1-vorher.webp` — Binaerdatei — geprueft: Signatur, 27200 B
+- `docs/screenshots/comparison/02-floor-v2-nachher.webp` — Binaerdatei — geprueft: Signatur, 41550 B
+- `docs/screenshots/comparison/03-floor-v1-v2.webp` — Binaerdatei — geprueft: Signatur, 56988 B
+- `docs/screenshots/comparison/04-asset-library-top-v2.webp` — Binaerdatei — geprueft: Signatur, 204232 B
+- `docs/screenshots/comparison/05-animations-emitter-sounds-v2.webp` — Binaerdatei — geprueft: Signatur, 52242 B
+- `docs/screenshots/comparison/16-floor-assets-ingame.webp` — Binaerdatei — geprueft: Signatur, 51990 B
+- `docs/screenshots/comparison/17-poker-assets-ingame.webp` — Binaerdatei — geprueft: Signatur, 76564 B
+- `docs/screenshots/comparison/18-roulette-assets-ingame.webp` — Binaerdatei — geprueft: Signatur, 112348 B
+- `docs/screenshots/comparison/19-plinko-assets-ingame.webp` — Binaerdatei — geprueft: Signatur, 69306 B
+- `docs/screenshots/comparison/20-slot-assets-ingame.webp` — Binaerdatei — geprueft: Signatur, 74452 B
+- `docs/screenshots/comparison/21-floor-v3-optik-steuerung.webp` — Binaerdatei — geprueft: Signatur, 35314 B
+- `docs/screenshots/current/01-floor-uebersicht-frisch.webp` — Binaerdatei — geprueft: Signatur, 27200 B
+- `docs/screenshots/current/02-floor-detail-frisch.webp` — Binaerdatei — geprueft: Signatur, 34666 B
+- `docs/screenshots/current/03-floor-uebersicht-mittel.webp` — Binaerdatei — geprueft: Signatur, 28620 B
+- `docs/screenshots/current/04-floor-detail-mittel.webp` — Binaerdatei — geprueft: Signatur, 37604 B
+- `docs/screenshots/current/05-floor-uebersicht-konzern.webp` — Binaerdatei — geprueft: Signatur, 28868 B
+- `docs/screenshots/current/06-floor-detail-konzern.webp` — Binaerdatei — geprueft: Signatur, 42166 B
+- `docs/screenshots/current/07-gaeste-panel.webp` — Binaerdatei — geprueft: Signatur, 28836 B
+- `docs/screenshots/current/08-bauen-panel.webp` — Binaerdatei — geprueft: Signatur, 65690 B
+- `docs/screenshots/current/09-slot-buehne.webp` — Binaerdatei — geprueft: Signatur, 52700 B
+- `docs/screenshots/current/10-huetchen-buehne.webp` — Binaerdatei — geprueft: Signatur, 43322 B
+- `docs/screenshots/current/11-blackjack-buehne.webp` — Binaerdatei — geprueft: Signatur, 41014 B
+- `docs/screenshots/current/12-poker-buehne.webp` — Binaerdatei — geprueft: Signatur, 40222 B
+- `docs/screenshots/current/13-wuerfel-buehne.webp` — Binaerdatei — geprueft: Signatur, 49134 B
+- `docs/screenshots/current/14-roulette-buehne.webp` — Binaerdatei — geprueft: Signatur, 61988 B
+- `docs/screenshots/current/15-plinko-buehne.webp` — Binaerdatei — geprueft: Signatur, 45194 B
+- `docs/screenshots/current/18-r4-materialien.webp` — Binaerdatei — geprueft: Signatur, 27520 B
+- `docs/screenshots/current/20-r6-kamera.webp` — Binaerdatei — geprueft: Signatur, 27506 B
+- `docs/screenshots/current/21-r7-stadt.webp` — Binaerdatei — geprueft: Signatur, 35178 B
+- `docs/screenshots/current/24-r10-wohnung.webp` — Binaerdatei — geprueft: Signatur, 24832 B
+- `docs/screenshots/current/25-r12-strassenlicht.webp` — Binaerdatei — geprueft: Signatur, 35106 B
+- `docs/screenshots/current/26-r12-nacht.webp` — Binaerdatei — geprueft: Signatur, 28390 B
+- `docs/screenshots/current/28-r2-platzhalter.webp` — Binaerdatei — geprueft: Signatur, 27724 B
+- `docs/screenshots/current/29-r2-platzhalter-detail.webp` — Binaerdatei — geprueft: Signatur, 31376 B
+- `docs/screenshots/current/30-r9-stadtbewohner.webp` — Binaerdatei — geprueft: Signatur, 38598 B
+- `docs/screenshots/current/31-r12-abend-stadt.webp` — Binaerdatei — geprueft: Signatur, 20814 B
+- `docs/screenshots/current/32-r12-nacht-uebergang.webp` — Binaerdatei — geprueft: Signatur, 17934 B
+- `docs/screenshots/current/33-r12-nacht-nach-uebergang.webp` — Binaerdatei — geprueft: Signatur, 22122 B
+- `docs/screenshots/current/34-r12-uebergang-beginn.webp` — Binaerdatei — geprueft: Signatur, 28906 B
+- `docs/screenshots/current/35-r12-uebergang-mitte.webp` — Binaerdatei — geprueft: Signatur, 27606 B
+- `docs/screenshots/current/36-r12-uebergang-ende.webp` — Binaerdatei — geprueft: Signatur, 31160 B
+- `docs/screenshots/current/37-stadtnetz-abnahme.webp` — Binaerdatei — geprueft: Signatur, 25724 B
+- `docs/screenshots/current/38-kiez-interior-abnahme.webp` — Binaerdatei — geprueft: Signatur, 24524 B
+- `docs/screenshots/current/39-stadtbewohner.webp` — Binaerdatei — geprueft: Signatur, 24278 B
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 132 Zeilen
@@ -3629,7 +3588,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 144 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 306 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 307 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

@@ -10,6 +10,7 @@
 - **Testlinie vollstaendig lokal.** `pnpm run ci:local` ersetzt den frueheren CI-Job; GitHub-Workflows fuehren keine Tests, Gates, Builds oder APKs mehr aus. `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt.
 - **Mechanik getrennt.** Statistik, Soak, Langlauf und Benchmarks stehen in `src/Config/test-lanes.json` und laufen nur ueber `pnpm run test:mechanics`; der Katalog prueft die Liste auf Deckungsgleichheit.
 - **Schnellere Gates.** Keine Gate-Timeouts mehr, direkte Binaries statt pnpm-Start, Git-basierter Baumfingerabdruck, ein Git-Aufruf fuer den Kontext, ein Claim-Ladevorgang und kein zweiter Impact-Kindprozess in `pretask`.
+- **Weniger Ballast im Repo.** Die beiden gepflegten Bildsaetze (`current`, `comparison`) liegen als WebP vor, die drei alten versionierten Saetze sind entfernt: `docs/screenshots` schrumpft von 14,9 MB auf 1,8 MB. README und Renderplan verweisen auf `.webp`, `.gitattributes` behandelt WebP als binaer; Roadmap PR-03 ist erledigt (#990).
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.

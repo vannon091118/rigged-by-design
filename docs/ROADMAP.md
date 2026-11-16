@@ -54,16 +54,16 @@ Ziel: Wer die README öffnet, sieht den heutigen Stand und nicht den von `0.3.11
 | --- | --- | --- | --- | --- |
 | PR-01 | README-Aussagen gegen den laufenden Build prüfen | erledigt | `README.md`, `src/ui/use-floor-interaction.ts`, `src/core/sim/stain.ts`, `src/core/sim/charisma-talk.ts` | Jede Aussage nennt ihren Produktionspfad; Maja, Waschsalon, Dönerbude und Schuhverschleiß sind sichtbar als Fiktion markiert |
 | PR-02 | Screenshot-Satz auf `0.3.231` erneuern | offen | `docs/screenshots/current`, `README.md` | README bindet nur noch `current/`; im Satz fehlen weiterhin eigene Smartphone- und Charakter-Aufnahmen |
-| PR-03 | Veraltete Bildsätze entfernen | offen | `docs/screenshots/v0.3.78`, `docs/screenshots/v0.3.114`, `docs/screenshots/comparison` | Nur der aktuelle Satz und ein bewusster Vorher/Nachher-Beleg bleiben |
+| PR-03 | Veraltete Bildsätze entfernen | erledigt | `docs/screenshots/current`, `docs/screenshots/comparison` | Die Sätze `v0.3.78`, `v0.3.114` und `v0.3.132` sind entfernt; die beiden gepflegten Sätze liegen als WebP bei (1,8 MB statt 14,9 MB) |
 | PR-04 | Alt-Texte und Banner prüfen | offen | `README.md`, `docs/banner.svg`, `docs/banners` | Jedes Bild beschreibt seinen Zustand, nicht seine Datei |
 | PR-05 | Kleinste Viewports bleiben bedienbar | verifiziert | `src/ui/__tests__/small-screen-acceptance.test.tsx`, `src/ui/__tests__/small-screen-layout.test.ts` | 360×640 und 320 px sind belegt |
 | PR-06 | First-Frame-Budget der Atlasse | verifiziert | `src/ui/__tests__/phase34-acceptance.test.tsx` | Beide Atlasseiten bleiben unter dem gemeinsamen Budget |
 | PR-07 | Sichtprüfung im echten Browser | offen | `docs/screenshots/current`, `README.md`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Die Bilder in der README stammen aus dem Build, den der Tag nennt |
 
 **Ablageregel Screenshots:** `docs/screenshots/current/` ist der kanonische Satz;
-versionierte Sätze liegen in `docs/screenshots/v<version>/`; Vorher/Nachher-Belege in
-`docs/screenshots/comparison/` mit Version im Dateinamen. Nummerierung folgt dem Weg
-durch das Spiel, nicht dem Aufnahmezeitpunkt.
+Vorher/Nachher-Belege in `docs/screenshots/comparison/` mit Version im Dateinamen.
+Beide liegen als WebP vor (q82); ein versionierter Satz je Release ist nicht mehr
+vorgesehen. Nummerierung folgt dem Weg durch das Spiel, nicht dem Aufnahmezeitpunkt.
 
 ## Als Nächstes — Stadt, Wirtschaft und Inhalte
 

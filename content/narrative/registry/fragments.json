@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a740777c7b46472f090aa171cee4692fb26b147c241c55381e6b672e7b0b5cfa",
+  "contentHash": "sha256:e0f3fd785f0e47d1a8ce6692fc2cc2eeeabb5d60bc593ccf363b5152f8ef2b3d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25237,6 +25237,28 @@
       "text": "Rita strich den Boden nicht neu, sie trug ihn ab. Erst die Theke, dann die Kabel, dann das Licht - und nach jeder Schicht stand im Heft, was das Haus jetzt ist. Dass die Stufe nicht im Kopf entstand, sondern im Beleg, merkte sie, als sie den alten Eintrag aufschlug und der Zustand noch dastand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-renovation.json"
+    },
+    {
+      "contributionId": "repo-ballast",
+      "turnId": "2026-11-16T10:35Z-repo-ballast",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Archiv hingen die alten Aushänge noch in voller Größe an der Wand, jeder mit einem Rahmen aus Pappe. Der Wirt nahm sie ab, fotografierte sie schmaler und hängte nur die zwei auf, die noch etwas zeigen. Die Wand ist leerer geworden; was darauf steht, ist dasselbe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-repo-ballast.json"
     },
     {
       "contributionId": "returning-memory-01",

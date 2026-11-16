@@ -1,0 +1,30 @@
+{
+  "id": "lane/governance/repo-ballast",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/repo-ballast",
+  "baseSha": "fbad6d83001c7115f34f2167b0ea50d454c5595f",
+  "issue": 990,
+  "task": "Repo-Ballast entfernen: Screenshots als WebP, alte Bildsaetze loeschen",
+  "pathAllowlist": [
+    "docs/screenshots/",
+    "README.md",
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/ROADMAP.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    ".gitattributes",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/merged-index.json",
+    ".lane-claims/claims/lane-governance-repo-ballast.json",
+    ".lane-claims/tasks/governance-repo-ballast.json",
+    ".lane-claims/claims/lane-governance-issue-968-board-etablierung.json",
+    ".lane-claims/tasks/governance-freeze0-teardown.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "fbad6d83001c7115f34f2167b0ea50d454c5595f"
+}
