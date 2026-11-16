@@ -1,0 +1,14 @@
+{
+  "id": "lane/governance/queue-claim-rest",
+  "owner": "Monitor",
+  "branch": "lane/governance/queue-claim-rest",
+  "baseSha": "f0c9beeae29027bc9df6fcdb40730350fbdf968e",
+  "issue": 966,
+  "task": "FREEZE-0 Nachlauf",
+  "pathAllowlist": ["scripts/**", "src/**", ".lane-claims/**", "docs/**", "content/narrative/**", "AGENTS.md", "package.json"],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f0c9beeae29027bc9df6fcdb40730350fbdf968e"
+}

@@ -4808,6 +4808,10 @@
     {
       "turnId": "2026-11-16T05:45Z-governance-freeze0-teardown",
       "contributionId": "governance-freeze0-teardown"
+    },
+    {
+      "turnId": "2026-11-16T06:10Z-governance-queue-claim-rest",
+      "contributionId": "governance-queue-claim-rest"
     }
   ]
 }

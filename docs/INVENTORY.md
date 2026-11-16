@@ -740,10 +740,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3285 |
-| Gelistete Dateien | 3285 |
+| Getrackte Dateien | 3284 |
+| Gelistete Dateien | 3284 |
 | Getrackte Ordner | 119 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (107), .lanes (1), artifacts (1), content (1206), docs (111), packages (27), public (571), scripts (149), src (1091) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (105), .lanes (1), artifacts (1), content (1207), docs (111), packages (27), public (571), scripts (149), src (1091) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -755,11 +755,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 53 Datei(en)
-- `.lane-claims/tasks/` — 50 Datei(en)
+- `.lane-claims/claims/` — 52 Datei(en)
+- `.lane-claims/tasks/` — 49 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1202 Datei(en)
+- `content/narrative/contributions/` — 1203 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -904,8 +904,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-governance-loc-audit.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/claims/lane-governance-merge-queue-913.json` — { — gelesen: 59 Zeilen
-- `.lane-claims/claims/lane-governance-merge-queue-empty-state.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/claims/lane-governance-queue-claim-rest.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/claims/lane-governance-remove-dead-freeze-mechanics.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-session-integration.json` — { — gelesen: 20 Zeilen
@@ -956,8 +955,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-loc-audit.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-merge-queue-913.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-merge-queue-empty-state.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-queue-claim-rest.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-remove-dead-freeze-mechanics.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-session-integration.json` — { — gelesen: 17 Zeilen
@@ -2188,6 +2186,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-governance-freeze0-teardown.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-image-diff-test.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-loc-audit.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-governance-queue-claim-rest.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-tag-vollpruefung.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-782-start-guest.json` — { — gelesen: 17 Zeilen
@@ -2200,8 +2199,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27001 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4813 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27023 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4817 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-queue-claim-rest",
+  "claimId": "lane/governance/queue-claim-rest",
+  "branch": "lane/governance/queue-claim-rest",
+  "baseSha": "f0c9beeae29027bc9df6fcdb40730350fbdf968e",
+  "phase": "IMPLEMENTING",
+  "title": "FREEZE-0 Nachlauf",
+  "goal": "Keine Queue-Verweise mehr in Koordinationsdateien; Inventur aktuell.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gates, Commit, Push, PR, Merge, Issue schliessen.",
+  "revision": 1
+}
