@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1041-registry-boundary",
+  "claimId": "lane/governance/issue-1041-registry-boundary",
+  "branch": "lane/governance/issue-1041-registry-boundary",
+  "baseSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8",
+  "phase": "IMPLEMENTING",
+  "title": "Registry-Grenze: nur composer/index.ts importiert registry.generated",
+  "goal": "Produktion und Tests lesen die Registry nur ueber den Composer; Gate-Regel haelt die Grenze.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Umsetzung, Vorher/Nachher-Messung, lokaler Nachweis; danach PR gegen main.",
+  "revision": 1
+}

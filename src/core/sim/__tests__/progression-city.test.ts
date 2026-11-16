@@ -10,7 +10,7 @@ import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, cityView, marketUnlocked, restInCity, runCityAction, travel } from '../city';
-import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
+import { NARRATIVE_FRAGMENTS } from '../narrative/composer/index';
 import { createWorld, ensureStarter } from '../templates';
 
 function start() {
@@ -20,7 +20,7 @@ function start() {
 }
 
 describe('Stadt: Kiez und Markt als Progression', () => {
-  const texte = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === CITY_SLOT).map((fragment) => fragment.text);
+  const texte = NARRATIVE_FRAGMENTS.filter((fragment) => fragment.slot === CITY_SLOT).map((fragment) => fragment.text);
   const imKiez = () => {
     const stadt = start();
     stadt.world.day = 3;
@@ -51,7 +51,7 @@ describe('Stadt: Kiez und Markt als Progression', () => {
     restInCity(world, ledger, prng);
     expect(world.day).toBe(tag + 1);
     expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY);
-    const nacht = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === NIGHT_SLOT).map((fragment) => fragment.text);
+    const nacht = NARRATIVE_FRAGMENTS.filter((fragment) => fragment.slot === NIGHT_SLOT).map((fragment) => fragment.text);
     expect(nacht.length).toBeGreaterThanOrEqual(50);
     expect(nacht).toContain(cityOf(world).lastText);
     expect(cityNightText('rest|4|KIEZ')).toBe(cityNightText('rest|4|KIEZ'));

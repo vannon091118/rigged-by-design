@@ -1,0 +1,21 @@
+{
+  "agentId": "governance",
+  "turnId": "2026-11-16T23:06Z-registry-boundary-01",
+  "contributionId": "registry-boundary-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Archiv gibt es jetzt nur noch eine Tuer zur Regalwand. Wer einen Satz braucht, klopft dort an und bekommt ihn gereicht; wer an der Wand selbst zieht, wird an der Schwelle abgewiesen. Die Regale duerfen sich fuellen, ohne dass draussen jemand mit umzieht - und die Tuer merkt sich, wer sie benutzt hat.",
+  "directives": []
+}

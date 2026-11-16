@@ -1,10 +1,10 @@
 /** @test-target: src/core/sim/narrative/events/definitions/city-encounter.ts | @error-code: ERR-4022 */
 import { describe, expect, it } from 'vitest';
 import { composeNarrative } from '../../../composer';
-import { NARRATIVE_REGISTRY } from '../../../composer/registry.generated';
+import { NARRATIVE_FRAGMENTS } from '../../../composer/index';
 import { CITY_ENCOUNTER_TEMPLATE } from '../city-encounter';
 
-const cityEventFragments = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === 'city-event');
+const cityEventFragments = NARRATIVE_FRAGMENTS.filter((fragment) => fragment.slot === 'city-event');
 
 describe('city-event content pool', () => {
   it('traegt mindestens 50 Stadtbegegnungen mit beiden Pflichtkontexten', () => {

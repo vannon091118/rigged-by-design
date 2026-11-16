@@ -10,6 +10,14 @@ export type {
   ComposeRequest, ComposedNarrative, ComposedSlot, CompositionRejection, NarrativeFragment,
 } from './types';
 
+/**
+ * Die generierte Registry als oeffentliche Datenflaeche des Composers. Nur
+ * dieses Modul liest `registry.generated`; Produktion und Tests beziehen ihre
+ * Fragmente hierueber. Die Grenze prueft `verify:tree`.
+ */
+export const NARRATIVE_FRAGMENTS: readonly NarrativeFragment[] =
+  NARRATIVE_REGISTRY as readonly NarrativeFragment[];
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 

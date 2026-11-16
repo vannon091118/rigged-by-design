@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5812d659c4ce4fb7d5910495be86dc2bba91006ce15bf2dab3059e75df27e428",
+  "contentHash": "sha256:76fc8b17441a99cc5fc39d338cbd3d0181a916996706499c9778e15126fcde71",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25300,6 +25300,28 @@
       "text": "Der Wirt strich die Namen von der Tafel, deren Arbeit längst im Regal stand, und schrieb hinter jeden verbliebenen den Beleg, statt ihn nur zu behaupten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-register-closeout.json"
+    },
+    {
+      "contributionId": "registry-boundary-01",
+      "turnId": "2026-11-16T23:06Z-registry-boundary-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Archiv gibt es jetzt nur noch eine Tuer zur Regalwand. Wer einen Satz braucht, klopft dort an und bekommt ihn gereicht; wer an der Wand selbst zieht, wird an der Schwelle abgewiesen. Die Regale duerfen sich fuellen, ohne dass draussen jemand mit umzieht - und die Tuer merkt sich, wer sie benutzt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-registry-boundary.json"
     },
     {
       "contributionId": "relationship-standing-01",

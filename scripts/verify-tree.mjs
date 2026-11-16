@@ -9,6 +9,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 import { AREAS } from './lib/subsystems.mjs';
+import { auditRegistryBoundary, REGISTRY_FILE, REGISTRY_SURFACE } from './lib/import-boundary.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'verify-tree' });
@@ -80,6 +81,14 @@ for (const file of filesUnder('src/core')) {
   }
 }
 
+// Die generierte Registry ist Implementierungsdetail des Composers. Ein
+// direkter Import ausserhalb der Fassade haengt jedes Modul an die ganze
+// Registry und macht jede Narrativ-Aenderung zum Vollauf.
+const boundary = auditRegistryBoundary({ root: ROOT });
+for (const entry of boundary.violations) {
+  flag(entry.file, `${REGISTRY_FILE} darf nur ${REGISTRY_SURFACE} importieren (gefunden: "${entry.specifier}").`);
+}
+
 for (const file of filesUnder('.github/workflows')) {
   if (!/\.ya?ml$/.test(file)) flag(relative(ROOT, file), 'Workflow ist keine YAML-Datei.');
 }
@@ -105,4 +114,4 @@ if (violations.length > 0) {
   console.error(`verify-tree: ${violations.length} Verstoss/Verstoesse`);
   process.exit(1);
 }
-console.log('verify-tree: PASS (Ordner, Endungen und Importrichtung)');
+console.log(`verify-tree: PASS (Ordner, Endungen, Importrichtung und Registry-Grenze; ${boundary.scanned} Datei(en) geprueft)`);
