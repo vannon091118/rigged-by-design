@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1043-redundancy-budget",
+  "claimId": "lane/governance/issue-1043-redundancy-budget",
+  "branch": "lane/governance/issue-1043-redundancy-budget",
+  "baseSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8",
+  "phase": "IMPLEMENTING",
+  "title": "Redundanz-Budgets fuer Waisenquote, Fan-in, Entry-Points, Aliase und Doku-Bytes",
+  "goal": "Fuenf Kennzahlen als dauerhafte Obergrenzen in verify:redundancy, ohne neuen Befehl.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Kennzahlen-Lib, Gate-Anbindung und Test; danach Verify und Uebergabe.",
+  "revision": 1
+}

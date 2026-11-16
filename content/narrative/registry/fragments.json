@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:457a1946a9659e3a7e6dea832aa2b80737d59d969bcae65cfc2e199b9e3c56bb",
+  "contentHash": "sha256:aa9820fb8b0bb51b6259a424882afd0bf17aeea8eb7149e74287a44ab97fb6a7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25278,6 +25278,28 @@
       "text": "Wenn die Fassade glaenzt, weiss man wenigstens, wofuer das verlorene Geld draufgegangen ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-readme-visual-polish-1.json"
+    },
+    {
+      "contributionId": "redundancy-budget-01",
+      "turnId": "2026-11-17T23:18Z-redundancy-budget-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Kontor haengt seit heute eine Tafel mit fuenf Zahlen, und niemand darf sie still uebermalen. Wer ein Regal ohne Aufrufer baut, sieht die erste Zahl steigen; wer alles an einen einzigen Faden haengt, die zweite. Tueren, Namen und Papier haben eigene Zeilen. Keine Zahl ist ein Verbot, nur eine Schwelle, die man laut verschieben muss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-redundancy-budget.json"
     },
     {
       "contributionId": "register-closeout",
