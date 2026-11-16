@@ -117,9 +117,9 @@ writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2
 // Verify-Ergebnis, kein blosser Berichtsvermerk.
 if (CI || DISPATCH_LONG) {
   console.log(`agent:verify: starte Langlauf fuer ${report.tree.branch}@${report.tree.head} ohne verify:all`);
-  const run = spawnSync(process.execPath, ['scripts/ci-long-checks.mjs', '--no-verify'], { cwd: ROOT, stdio: 'inherit' });
+  const run = spawnSync(process.execPath, ['scripts/local-ci.mjs', '--profile=mechanics'], { cwd: ROOT, stdio: 'inherit' });
   report.ciLong = run.status === 0 ? 'success' : 'failed';
-  if (run.status !== 0) report.open.push('Langlauf auf dem aktuellen Commit ist rot; Details im ci-long-Lauf');
+  if (run.status !== 0) report.open.push('Lange Nachweise auf dem aktuellen Commit sind rot; Details in `pnpm run test:mechanics`');
   writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
 }
 

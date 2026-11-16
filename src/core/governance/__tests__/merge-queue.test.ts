@@ -1,213 +1,170 @@
 /**
  * @test-target: scripts/lib/merge-queue.mjs
- * @error-code: ERR-4019
+ * @error-code: ERR-4029
  *
- * Der Merge-Koordinator (#913) darf nie stillschweigend zustimmen: fehlende,
- * alte, doppelte oder gefaelschte ACKs, ein Plan ohne Maintainer-Session,
- * Head-Drift, parallele Plaene und ein Kettenbruch muessen HOLD ergeben. Ohne
- * externen Kettenkopf ist die Kette nur erkennend, also ebenfalls HOLD.
+ * Der Vertrag aus #913 ist die Queue selbst: ein Plan mit Hash, ein ACK je
+ * aktiver Session, nur Position 1 mergefaehig. Fehlt etwas, ist der Zustand
+ * HOLD - nie stillschweigend Zustimmung.
  */
 import { describe, expect, it } from 'vitest';
 import {
-  buildMergeState,
-  canonicalPlan,
-  evaluateMerge,
-  hashChain,
-  parseEvents,
-  planHash,
-  verifyChain,
+  MERGE_STATUS,
+  activeSessions,
+  authorizeMerge,
+  buildQueue,
+  latestPlan,
+  parseMergeEvents,
+  planBody,
+  planDigest,
+  validAcks,
 } from '../../../../scripts/lib/merge-queue.mjs';
 
+type Session = { session: string };
+type QueueRow = { number: number; status: string; reasons: string[] };
+
 const MAIN = 'a'.repeat(40);
-const HEAD_1 = 'b'.repeat(40);
-const HEAD_2 = 'c'.repeat(40);
-const BASE = 'd'.repeat(40);
-const MERGE = 'e'.repeat(40);
+const OTHER_MAIN = 'b'.repeat(40);
+const HEAD_A = '1'.repeat(40);
+const HEAD_B = '2'.repeat(40);
+const AT = '2026-11-16T03:00:00Z';
 
-interface Comment {
-  readonly id: number;
-  readonly createdAt: string;
-  readonly author: { readonly login: string };
-  readonly body: string;
+const comment = (id: number, body: string, login = 'vannon091118') => ({ id, body, user: { login } });
+const pullsOf = (entries: [number, string][]) => entries.map(([number, head]) => ({ number, headRefOid: head }));
+const join = (id: number, session: string, role = 'worker') =>
+  comment(id, `MERGE_SESSION_JOIN role=${role} session=${session} at=${AT}`);
+const ack = (id: number, session: string, hash: string, main = MAIN, role = 'worker') =>
+  comment(id, `MERGE_ACK session=${session} role=${role} plan=${hash} main=${main} at=${AT}`);
+const leave = (id: number, session: string) => comment(id, `MERGE_SESSION_LEAVE session=${session} at=${AT}`);
+
+/** Ein Plan-Kommentar, wie ihn `--publish` schreibt. */
+function planComment(id: number, pulls: [number, string][], mainSha = MAIN, revision = 1) {
+  const built = planBody({ revision, mainSha, pulls: pullsOf(pulls), at: AT });
+  return { id, hash: built.hash, comment: comment(id, built.body) };
 }
 
-const at = (minute: number): string => `2026-11-15T10:${String(minute).padStart(2, '0')}:00Z`;
-
-function comment(id: number, minute: number, body: string, login = 'vannon091118'): Comment {
-  return { id, createdAt: at(minute), author: { login }, body };
-}
-
-function prs(head = HEAD_1): string {
-  return `prs=912@${head}:${BASE}`;
-}
-
-function join(id: number, minute: number, session: string, role = 'worker'): Comment {
-  return comment(id, minute, `MERGE_SESSION_JOIN role=${role} agent=Jenova session=${session} claim=A24`);
-}
-
-function plan(id: number, minute: number, rev: number, head = HEAD_1, session = 's-main'): Comment {
-  const hash = planHash({ rev, main: MAIN, prs: [{ number: 912, head, base: BASE }] });
-  return comment(id, minute, `MERGE_PLAN rev=${rev} main=${MAIN} ${prs(head)} session=${session} hash=${hash}`);
-}
-
-function ack(id: number, minute: number, session: string, rev: number, head = HEAD_1): Comment {
-  const hash = planHash({ rev, main: MAIN, prs: [{ number: 912, head, base: BASE }] });
-  return comment(id, minute, `MERGE_ACK rev=${rev} hash=${hash} main=${MAIN} session=${session}`);
-}
-
-/** Prueft gegen den externen Anker desselben Verlaufs (der Normalfall). */
-function state(comments: Comment[], anchor = hashChain(parseEvents(comments)).head) {
-  return buildMergeState(comments, { expectedChainHead: anchor });
-}
-
-describe('Merge-Queue (#913)', () => {
-  it('hasht denselben Plan unabhaengig von der PR-Reihenfolge im Kommentar', () => {
-    const a = canonicalPlan({ rev: 2, main: MAIN.toUpperCase(), prs: [
-      { number: 912, head: HEAD_1, base: BASE }, { number: 913, head: HEAD_2, base: BASE },
-    ] });
-    const b = canonicalPlan({ rev: 2, main: MAIN, prs: [
-      { number: 913, head: HEAD_2.toUpperCase(), base: BASE }, { number: 912, head: HEAD_1, base: BASE },
-    ] });
-    expect(a).toBe(b);
+describe('merge-queue', () => {
+  it('sperrt jeden Merge ohne veroeffentlichte Revision', () => {
+    const events = parseMergeEvents([join(1, 's1')]);
+    const queue = buildQueue({ plan: null, pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.HOLD);
+    expect(queue[0].reasons.join(' ')).toContain('#913');
+    expect(authorizeMerge({ plan: null, pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN, prNumber: 948 }).ok).toBe(false);
   });
 
-  it('ist READY, wenn Maintainer und alle Worker dieselbe Revision bestaetigen', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'), join(3, 3, 's-b'),
-      plan(4, 4, 1),
-      ack(5, 5, 's-main', 1), ack(6, 6, 's-a', 1), ack(7, 7, 's-b', 1),
-    ];
-    const current = state(comments);
-    expect(current.hold).toEqual([]);
-    expect(current.ready).toBe(true);
-    expect(current.queue[0]).toMatchObject({ number: 912, status: 'READY' });
-    expect(evaluateMerge(current, { number: 912, head: HEAD_1, base: BASE, main: MAIN }).ok).toBe(true);
+  it('gibt nur Position 1 frei, wenn alle aktiven Sessions bestaetigt haben', () => {
+    const plan = planComment(10, [[948, HEAD_A], [949, HEAD_B]]);
+    const events = parseMergeEvents([
+      join(1, 's1'), join(2, 's2'),
+      plan.comment,
+      ack(11, 's1', plan.hash), ack(12, 's2', plan.hash),
+    ]);
+    const latest = latestPlan(events);
+    expect(activeSessions(events).map((entry: Session) => entry.session)).toEqual(['s1', 's2']);
+    expect(validAcks(events, latest)).toHaveLength(2);
+    const queue = buildQueue({ plan: latest, pulls: pullsOf([[949, HEAD_B], [948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue.find((row: QueueRow) => row.number === 948)?.status).toBe(MERGE_STATUS.READY);
+    const second = queue.find((row: QueueRow) => row.number === 949);
+    expect(second?.status).toBe(MERGE_STATUS.HOLD);
+    expect(second?.reasons.join(' ')).toContain('erst #948');
   });
 
-  it('akzeptiert einen Plan nur von einer aktiven Maintainer-Session', () => {
-    const workerPlan = [
-      join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'),
-      plan(3, 3, 1, HEAD_1, 's-a'),
-      ack(4, 4, 's-main', 1), ack(5, 5, 's-a', 1),
-    ];
-    const rejected = state(workerPlan);
-    expect(rejected.ready).toBe(false);
-    expect(rejected.plan).toBeNull();
-    expect(rejected.hold.join(' ')).toContain('PLAN ohne aktive Maintainer-Session');
-
-    const noSession = [join(1, 1, 's-main', 'maintainer'), comment(2, 2, `MERGE_PLAN rev=1 main=${MAIN} ${prs()}`)];
-    expect(state(noSession).hold.join(' ')).toContain('PLAN ohne aktive Maintainer-Session');
+  it('haelt bei fehlendem ACK', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([join(1, 's1'), join(2, 's2'), plan.comment, ack(11, 's1', plan.hash)]);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.HOLD);
+    expect(queue[0].reasons.join(' ')).toContain('ACKs fehlen: 1/2');
   });
 
-  it('blockiert ohne externen Kettenkopf (Kette nur erkennend)', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), ack(3, 3, 's-main', 1)];
-    const withoutAnchor = buildMergeState(comments);
-    expect(withoutAnchor.ready).toBe(false);
-    expect(withoutAnchor.hold.join(' ')).toContain('kein externer Kettenkopf');
-    expect(state(comments).ready).toBe(true);
+  it('ignoriert ACKs fuer eine alte Revision', () => {
+    const first = planComment(10, [[948, HEAD_A]], MAIN, 1);
+    const second = planComment(20, [[948, HEAD_B]], MAIN, 2);
+    const events = parseMergeEvents([
+      join(1, 's1'), first.comment, ack(11, 's1', first.hash),
+      second.comment, ack(21, 's1', first.hash),
+    ]);
+    const latest = latestPlan(events);
+    expect(latest?.revision).toBe(2);
+    expect(validAcks(events, latest)).toHaveLength(0);
   });
 
-  it('blockiert bei fehlendem ACK eines aktiven Workers', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'), plan(3, 3, 1), ack(4, 4, 's-main', 1)];
-    const current = state(comments);
-    expect(current.ready).toBe(false);
-    expect(current.hold).toContain('ACK fehlt: s-a');
-    expect(evaluateMerge(current, { number: 912, head: HEAD_1, base: BASE, main: MAIN }).ok).toBe(false);
+  it('haelt bei main-Drift', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([join(1, 's1'), plan.comment, ack(11, 's1', plan.hash)]);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: OTHER_MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.HOLD);
+    expect(queue[0].reasons.join(' ')).toContain('neue Revision');
   });
 
-  it('verwirft ein ACK, das vor dem Plan entstanden ist', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'), ack(3, 3, 's-a', 1), plan(4, 4, 1), ack(5, 5, 's-main', 1)];
-    expect(state(comments).hold.join(' ')).toContain('ACK vor jedem PLAN');
+  it('blockiert einen geaenderten PR-Kopf', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([join(1, 's1'), plan.comment, ack(11, 's1', plan.hash)]);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_B]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.BLOCKED);
+    expect(queue[0].reasons.join(' ')).toContain('Kopf');
   });
 
-  it('vergleicht Zeitstempel ueber die Zeit, nicht lexikographisch', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'),
-      { ...plan(2, 2, 1), createdAt: '2026-11-15T10:00:00+01:00' },
-      { ...ack(3, 3, 's-main', 1), createdAt: '2026-11-15T09:30:00Z' },
-    ];
-    expect(state(comments).ready).toBe(true);
+  it('blockiert einen PR, der im Plan fehlt', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([join(1, 's1'), plan.comment, ack(11, 's1', plan.hash)]);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A], [950, HEAD_B]]), events, mainSha: MAIN });
+    expect(queue.find((row: QueueRow) => row.number === 950)?.status).toBe(MERGE_STATUS.BLOCKED);
   });
 
-  it('invalidiert ACKs, wenn der PR-Head in einer neuen Revision wechselt', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'),
-      plan(3, 3, 1), ack(4, 4, 's-main', 1), ack(5, 5, 's-a', 1),
-      plan(6, 6, 2, HEAD_2), ack(7, 7, 's-main', 2, HEAD_2),
-    ];
-    const current = state(comments);
-    expect(current.plan?.rev).toBe(2);
-    expect(current.ready).toBe(false);
-    expect(current.hold).toContain('ACK fehlt: s-a');
-    expect(evaluateMerge(current, { number: 912, head: HEAD_1, base: BASE, main: MAIN }).ok).toBe(false);
+  it('zaehlt keine ACKs von nicht registrierten Sessions', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([join(1, 's1'), plan.comment, ack(11, 's1', plan.hash), ack(12, 'fremd', plan.hash)]);
+    expect(validAcks(events, latestPlan(events))).toHaveLength(1);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.READY);
   });
 
-  it('zaehlt doppelte ACKs nur einmal und meldet widerspruechliche', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), ack(3, 3, 's-main', 1), ack(4, 4, 's-main', 1)];
-    expect(state(comments).ready).toBe(true);
-    const conflicting = [...comments, ack(5, 5, 's-main', 1, HEAD_2)];
-    expect(state(conflicting).hold.join(' ')).toContain('widerspruechliche ACKs');
+  it('blockiert einen manipulierten Plan', () => {
+    const built = planBody({ revision: 1, mainSha: MAIN, pulls: pullsOf([[948, HEAD_A]]), at: AT });
+    const tampered = comment(10, built.body.replace(`hash=${built.hash}`, 'hash=deadbeefcafe'));
+    const events = parseMergeEvents([join(1, 's1'), tampered, ack(11, 's1', built.hash)]);
+    const plan = latestPlan(events);
+    expect(plan?.tampered).toBe(true);
+    const queue = buildQueue({ plan, pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.BLOCKED);
   });
 
-  it('nimmt eine ausdrueckliche LEAVE-Session aus der Teilnehmermenge', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'), join(2, 2, 's-a'),
-      comment(3, 3, 'MERGE_SESSION_LEAVE session=s-a'),
-      plan(4, 4, 1), ack(5, 5, 's-main', 1),
-    ];
-    const current = state(comments);
-    expect(current.participants.map((entry: { session: string }) => entry.session)).toEqual(['s-main']);
-    expect(current.ready).toBe(true);
+  it('nimmt eine Session erst nach LEAVE aus der Teilnehmermenge', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([
+      join(1, 's1'), join(2, 's2'), plan.comment,
+      ack(11, 's1', plan.hash), ack(12, 's2', plan.hash), leave(13, 's2'),
+    ]);
+    expect(activeSessions(events).map((entry: Session) => entry.session)).toEqual(['s1']);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.READY);
   });
 
-  it('lehnt ACKs unbekannter Sessions und ungueltiger Rollen ab', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'),
-      comment(2, 2, 'MERGE_SESSION_JOIN role=owner agent=Fake session=s-fake'),
-      plan(3, 3, 1), ack(4, 4, 's-main', 1), ack(5, 5, 's-none', 1),
-    ];
-    const current = state(comments);
-    expect(current.ready).toBe(false);
-    expect(current.hold.join(' ')).toContain('JOIN ohne gueltige Rolle');
-    expect(current.hold.join(' ')).toContain('ACK ohne aktive Session');
+  it('bindet den Plan-Hash an Reihenfolge und main-SHA', () => {
+    const one = planDigest({ revision: 1, mainSha: MAIN, entries: [{ number: 1, head: HEAD_A, base: '' }] });
+    const reordered = planDigest({ revision: 1, mainSha: MAIN, entries: [{ number: 2, head: HEAD_B, base: '' }] });
+    const otherMain = planDigest({ revision: 1, mainSha: OTHER_MAIN, entries: [{ number: 1, head: HEAD_A, base: '' }] });
+    expect(one).toHaveLength(12);
+    expect(new Set([one, reordered, otherMain]).size).toBe(3);
   });
 
-  it('behandelt konkurrierende Plaene deterministisch: nur die hoehere Revision gilt', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), plan(3, 3, 2), plan(4, 4, 2)];
-    const current = state(comments);
-    expect(current.plan?.rev).toBe(2);
-    expect(current.hold.join(' ')).toContain('ist nicht neuer als');
-    expect(current.ready).toBe(false);
+  it('verwirft ACKs ohne Kommentar-ID: der REST-Verlauf muss id mitliefern', () => {
+    const plan = planComment(0, [[948, HEAD_A]]);
+    const withoutId = (body: string) => ({ body, author: { login: 'vannon091118' } });
+    const events = parseMergeEvents([
+      withoutId('MERGE_SESSION_JOIN role=worker session=s1'),
+      plan.comment,
+      withoutId(`MERGE_ACK session=s1 role=worker plan=${plan.hash} main=${MAIN}`),
+    ]);
+    expect(events.every((event: { commentId: number }) => event.commentId === 0)).toBe(true);
+    expect(validAcks(events, latestPlan(events))).toHaveLength(0);
   });
 
-  it('meldet einen Kettenbruch und einen abweichenden erwarteten Kopf als HOLD', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), ack(3, 3, 's-main', 1)];
-    const head = hashChain(parseEvents(comments)).head;
-    expect(verifyChain(parseEvents(comments), head).ok).toBe(true);
-    expect(verifyChain(parseEvents(comments), head).verified).toBe(true);
-    expect(buildMergeState(comments, { expectedChainHead: 'f'.repeat(64) }).ready).toBe(false);
-    const tampered = [comments[0]!, { ...comments[1]!, body: `${comments[1]!.body} prs=912@${HEAD_2}:${BASE}` }, comments[2]!];
-    const broken = buildMergeState(tampered, { expectedChainHead: head });
-    expect(broken.ready).toBe(false);
-    expect(broken.hold).toContain('Ereignis-Kette weicht vom erwarteten Kopf ab');
-  });
-
-  it('laesst nur den ersten Eintrag zu und prueft Head, Base und main exakt', () => {
-    const comments = [join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), ack(3, 3, 's-main', 1)];
-    const current = state(comments);
-    expect(evaluateMerge(current, { number: 913, head: HEAD_1, base: BASE, main: MAIN }).ok).toBe(false);
-    expect(evaluateMerge(current, { number: 912, head: HEAD_2, base: BASE, main: MAIN }).ok).toBe(false);
-    expect(evaluateMerge(current, { number: 912, head: HEAD_1, base: HEAD_2, main: MAIN }).ok).toBe(false);
-    expect(evaluateMerge(current, { number: 912, head: HEAD_1, base: BASE, main: HEAD_2 }).ok).toBe(false);
-  });
-
-  it('verlangt nach einem Merge eine neue, erneut bestaetigte Revision', () => {
-    const comments = [
-      join(1, 1, 's-main', 'maintainer'), plan(2, 2, 1), ack(3, 3, 's-main', 1),
-      comment(4, 4, `MERGE_COMPLETED pr=912 merge=${MERGE} main=${MERGE}`),
-    ];
-    const current = state(comments);
-    expect(current.ready).toBe(false);
-    expect(current.hold).toContain('letzter PLAN ist bereits abgeschlossen; neue Revision noetig');
+  it('ordnet Ereignisse nach Kommentar-ID, nicht nach Listenposition', () => {
+    const plan = planComment(10, [[948, HEAD_A]]);
+    const events = parseMergeEvents([ack(9, 's1', plan.hash), join(1, 's1'), plan.comment, ack(11, 's1', plan.hash)]);
+    expect(validAcks(events, latestPlan(events)).map((event: { session: string }) => event.session)).toEqual(['s1']);
+    const queue = buildQueue({ plan: latestPlan(events), pulls: pullsOf([[948, HEAD_A]]), events, mainSha: MAIN });
+    expect(queue[0].status).toBe(MERGE_STATUS.READY);
   });
 });

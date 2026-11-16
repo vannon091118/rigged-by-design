@@ -1,239 +1,206 @@
 /**
- * Merge-Queue-Koordinator (#913): eine persistente Reihenfolge, bestaetigt von
- * allen aktiven Sessions, fail-closed.
+ * Merge-Queue nach dem P0-Vertrag (#913).
  *
- * GitHub-Kommentare sind editierbar und damit kein manipulationsresistentes
- * Log. Sie dienen als sichtbarer Ereignis-Eingang; die Integritaet liefert die
- * Hash-Kette plus ein erwarteter Kettenkopf ausserhalb des Kommentarverlaufs.
- * Queue-Revision, Plan-Hash und ACK-Pruefung sind reine Funktionen ueber den
- * Ereignissen: derselbe Verlauf ergibt auf jedem Geraet dieselbe Revision.
+ * Die Queue ist keine Datei und keine lokale Liste: sie wird bei jedem Lauf aus
+ * den Ereignis-Kommentaren an #913 und den offenen PRs neu berechnet. Ein Plan
+ * traegt Revision, Hash und den `main`-SHA, auf den er sich bezieht; ein ACK
+ * gilt nur fuer genau diesen Hash, von einer registrierten Session und nach
+ * dem Plan. Alles andere ist HOLD.
  *
- * Es gibt keinen stillen Default auf Zustimmung: fehlt ein ACK, ist eine
- * Session unbekannt, weicht ein Head ab oder bricht die Kette, ist das HOLD.
- * Auch die Plan-Autoritaet ist geprueft: nur eine aktive Maintainer-Session
- * darf eine Revision veroeffentlichen.
+ * Die Funktionen hier sind rein: kein Netz, keine Uhr, keine Datei. Der
+ * Aufrufer liefert Kommentare, PRs und den aktuellen `main`-SHA.
  */
 import { createHash } from 'node:crypto';
 
-const ROLES = new Set(['maintainer', 'worker']);
-const EVENT_LINE = /^\s*(MERGE_(?:SESSION_JOIN|SESSION_LEAVE|PLAN|ACK|STARTED|COMPLETED|BLOCKED))\b\s*(.*)$/;
-const SHA = /^[0-9a-f]{7,40}$/i;
+export const MERGE_ISSUE = 913;
+export const MERGE_STATUS = Object.freeze({
+  READY: 'READY',
+  HOLD: 'HOLD',
+  BLOCKED: 'BLOCKED',
+});
 
-const sha256 = (value) => createHash('sha256').update(value).digest('hex');
+const EVENT = /^MERGE_(SESSION_JOIN|SESSION_LEAVE|PLAN|ACK|BLOCKED|STARTED|COMPLETED)\b(.*)$/;
+const ENTRY = /^pr=(\d+)\s+head=([0-9a-f]{7,40})(?:\s+base=([0-9a-f]{7,40}))?/;
+const digest = (text) => createHash('sha256').update(text).digest('hex').slice(0, 12);
 
-/** Zeitvergleich ueber den Zeitstempel, nicht lexikographisch (Offsets sind erlaubt). */
-function isBefore(left, right) {
-  const a = Date.parse(String(left ?? ''));
-  const b = Date.parse(String(right ?? ''));
-  if (!Number.isFinite(a) || !Number.isFinite(b)) return Boolean(left && right && left < right);
-  return a < b;
-}
-
-/** `key=value`-Felder; Werte ohne Leerzeichen, damit ein Kommentar parsebar bleibt. */
-function fields(rest) {
-  const out = {};
-  for (const token of String(rest ?? '').trim().split(/\s+/).filter(Boolean)) {
+/** `key=value`-Paare einer Ereigniszeile; unbekannte Schluessel bleiben erhalten. */
+function fieldsOf(rest) {
+  const fields = {};
+  for (const token of String(rest).trim().split(/\s+/)) {
     const at = token.indexOf('=');
-    if (at <= 0) continue;
-    out[token.slice(0, at)] = token.slice(at + 1);
+    if (at > 0) fields[token.slice(0, at)] = token.slice(at + 1);
   }
-  return out;
+  return fields;
 }
 
-/** `prs=912@<head>:<base>,913@<head>:<base>` — Reihenfolge ist die Queue. */
-function parsePrs(raw) {
-  return String(raw ?? '').split(',').filter(Boolean).map((chunk) => {
-    const match = /^#?(\d+)@([0-9a-f]{7,40}):([0-9a-f]{7,40})$/i.exec(chunk.trim());
-    if (!match) return null;
-    return { number: Number(match[1]), head: match[2].toLowerCase(), base: match[3].toLowerCase() };
-  });
+/** Der Plan-Hash: Revision, `main`-SHA und die geordnete PR-Liste in einer Form. */
+export function planDigest({ revision, mainSha, entries = [] }) {
+  const canonical = [Number(revision), String(mainSha), ...entries.map((entry) => `${Number(entry.number)}:${entry.head}:${entry.base ?? ''}`)].join('|');
+  return digest(canonical);
 }
 
-/** Stabile, sortierte Form des Plans; nur sie geht in den Hash. */
-export function canonicalPlan(plan) {
-  return JSON.stringify({
-    rev: plan.rev,
-    main: String(plan.main).toLowerCase(),
-    prs: [...plan.prs]
-      .sort((a, b) => a.number - b.number)
-      .map((pr) => ({ number: pr.number, head: pr.head.toLowerCase(), base: pr.base.toLowerCase() })),
-  });
-}
-
-export function planHash(plan) {
-  return sha256(canonicalPlan(plan));
-}
-
-/** Liest ausschliesslich Zeilen der Form `MERGE_* key=value`; Zitate zaehlen nicht. */
-export function parseEvents(comments = []) {
+/** Ereignisse aus dem Kommentarverlauf, aufsteigend nach Kommentar-ID. */
+export function parseMergeEvents(comments = []) {
   const events = [];
-  for (const comment of Array.isArray(comments) ? comments : []) {
-    const commentId = Number(comment?.id ?? 0);
-    const at = String(comment?.createdAt ?? '');
-    const author = String(comment?.author?.login ?? '');
-    for (const raw of String(comment?.body ?? '').split(/\r?\n/)) {
-      if (/^\s*>/.test(raw)) continue;
-      const match = EVENT_LINE.exec(raw);
+  const ordered = [...comments].sort((a, b) => Number(a.id ?? 0) - Number(b.id ?? 0));
+  for (const comment of ordered) {
+    const lines = String(comment?.body ?? '').split(/\r?\n/);
+    for (let index = 0; index < lines.length; index += 1) {
+      const match = EVENT.exec(lines[index].trim());
       if (!match) continue;
-      events.push({ kind: match[1], fields: fields(match[2]), at, author, commentId });
-    }
-  }
-  return events.sort((a, b) => a.commentId - b.commentId || a.at.localeCompare(b.at));
-}
-
-/** Hash-Kette ueber den akzeptierten Verlauf; `prev` bindet jeden Eintrag an seinen Vorgaenger. */
-export function hashChain(events = []) {
-  let prev = 'genesis';
-  const entries = events.map((event, index) => {
-    const payload = sha256(JSON.stringify({
-      kind: event.kind, fields: event.fields, at: event.at, author: event.author, commentId: event.commentId,
-    }));
-    const hash = sha256(`${prev}:${payload}`);
-    const entry = { index, kind: event.kind, commentId: event.commentId, prev, hash };
-    prev = hash;
-    return entry;
-  });
-  return { entries, head: prev };
-}
-
-/**
- * Prueft die Kette; ein erwarteter Kopf muss exakt passen, sonst Drift.
- * `verified` sagt, ob ueberhaupt ein externer Anker geprueft wurde: ohne ihn
- * ist die Kette nur manipulationserkennend, nicht manipulationsresistent.
- */
-export function verifyChain(events = [], expectedHead = '') {
-  const { entries, head } = hashChain(events);
-  const breaks = [];
-  entries.forEach((entry, index) => {
-    const want = index === 0 ? 'genesis' : entries[index - 1].hash;
-    if (entry.prev !== want) breaks.push(index);
-  });
-  if (expectedHead && expectedHead !== head) breaks.push(-1);
-  return { ok: breaks.length === 0, head, breaks, verified: Boolean(expectedHead) };
-}
-
-/**
- * Rekonstruiert die Queue aus dem Ereignisverlauf.
- * @returns {{ready: boolean, hold: string[], plan: object|null, participants: object[],
- *            queue: object[], completed: object|null, chain: object, events: object[]}}
- */
-export function buildMergeState(comments = [], { expectedChainHead = '' } = {}) {
-  const events = parseEvents(comments);
-  const chain = verifyChain(events, expectedChainHead);
-  const problems = [];
-  const sessions = new Map();
-  const acks = new Map();
-  const ackHashes = new Map();
-  let plan = null;
-  let completed = null;
-
-  for (const event of events) {
-    const f = event.fields;
-    if (event.kind === 'MERGE_SESSION_JOIN') {
-      const role = String(f.role ?? '').toLowerCase();
-      if (!ROLES.has(role)) { problems.push(`JOIN ohne gueltige Rolle (${event.commentId})`); continue; }
-      if (!f.session || !f.agent) { problems.push(`JOIN ohne Session/Agent (${event.commentId})`); continue; }
-      sessions.set(f.session, { session: f.session, agent: f.agent, role, claim: f.claim ?? '', at: event.at, left: false });
-      continue;
-    }
-    if (event.kind === 'MERGE_SESSION_LEAVE') {
-      const session = sessions.get(f.session);
-      if (!session) { problems.push(`LEAVE fuer unbekannte Session (${event.commentId})`); continue; }
-      session.left = true;
-      continue;
-    }
-    if (event.kind === 'MERGE_PLAN') {
-      const rev = Number(f.rev);
-      const prs = parsePrs(f.prs);
-      if (!Number.isSafeInteger(rev) || rev < 1 || !SHA.test(String(f.main ?? '')) || prs.length === 0 || prs.some((pr) => !pr)) {
-        problems.push(`PLAN unvollstaendig (${event.commentId})`);
-        continue;
-      }
-      // Plan-Autoritaet: nur eine aktive Maintainer-Session darf eine Revision
-      // veroeffentlichen. Ohne diese Pruefung koennte ein Worker-Plan seine
-      // eigene Bestaetigung nachschieben (#909 bliebe sonst halb geloest).
-      const authorSession = sessions.get(f.session);
-      if (!authorSession || authorSession.left || authorSession.role !== 'maintainer') {
-        problems.push(`PLAN ohne aktive Maintainer-Session (${event.commentId})`);
-        continue;
-      }
-      const next = {
-        rev, main: String(f.main).toLowerCase(), prs, at: event.at, commentId: event.commentId, session: authorSession.session,
+      const kind = match[1];
+      const fields = fieldsOf(match[2]);
+      const base = {
+        kind,
+        commentId: Number(comment.id ?? 0),
+        actor: String(comment?.author?.login ?? comment?.user?.login ?? ''),
+        session: fields.session ?? '',
+        role: fields.role ?? '',
+        at: fields.at ?? '',
       };
-      next.hash = planHash(next);
-      if (plan && rev <= plan.rev) { problems.push(`PLAN rev ${rev} ist nicht neuer als ${plan.rev}`); continue; }
-      plan = next;
-      completed = null;
-      continue;
-    }
-    if (event.kind === 'MERGE_ACK') {
-      const session = sessions.get(f.session);
-      if (!session || session.left) { problems.push(`ACK ohne aktive Session (${event.commentId})`); continue; }
-      if (!plan) { problems.push(`ACK vor jedem PLAN (${event.commentId})`); continue; }
-      const wants = { rev: Number(f.rev), hash: String(f.hash ?? ''), main: String(f.main ?? '').toLowerCase() };
-      // Widerspruch zaehlt auch dann, wenn keiner der beiden Hashes zum
-      // aktuellen Plan passt: dieselbe Session darf eine Revision nicht mit
-      // zwei verschiedenen Plaenen bestaetigen.
-      const key = `${session.session}:${wants.rev}`;
-      const previous = ackHashes.get(key);
-      if (previous && previous !== wants.hash) {
-        problems.push(`widerspruechliche ACKs fuer ${session.session} (rev ${wants.rev})`);
+      if (kind === 'PLAN') {
+        const entries = [];
+        for (let next = index + 1; next < lines.length; next += 1) {
+          const entry = ENTRY.exec(lines[next].trim());
+          if (!entry) break;
+          entries.push({ number: Number(entry[1]), head: entry[2], base: entry[3] ?? '' });
+        }
+        const revision = Number(fields.rev ?? 0);
+        const mainSha = fields.main ?? '';
+        const hash = planDigest({ revision, mainSha, entries });
+        events.push({
+          ...base,
+          revision,
+          mainSha,
+          entries,
+          hash,
+          // Ein Kommentar, der einen anderen Hash behauptet als sein Inhalt
+          // ergibt, ist manipuliert: der Plan ist damit unbrauchbar.
+          tampered: Boolean(fields.hash) && fields.hash !== hash,
+        });
         continue;
       }
-      if (wants.rev !== plan.rev || wants.hash !== plan.hash || wants.main !== plan.main) {
-        problems.push(`ACK passt nicht zum aktuellen PLAN (${event.commentId})`);
-        continue;
-      }
-      if (isBefore(event.at, plan.at)) { problems.push(`ACK aelter als der PLAN (${event.commentId})`); continue; }
-      if (previous === wants.hash) continue;
-      ackHashes.set(key, wants.hash);
-      acks.set(`${plan.hash}:${session.session}`, {
-        session: session.session, role: session.role, agent: session.agent, at: event.at, hash: plan.hash,
-      });
-      continue;
-    }
-    if (event.kind === 'MERGE_COMPLETED') {
-      if (!plan) { problems.push(`COMPLETED ohne PLAN (${event.commentId})`); continue; }
-      completed = { pr: Number(f.pr), merge: String(f.merge ?? '').toLowerCase(), main: String(f.main ?? '').toLowerCase(), at: event.at };
-      continue;
+      events.push({ ...base, plan: fields.plan ?? '', main: fields.main ?? '', pr: fields.pr ?? '', reason: fields.reason ?? '' });
     }
   }
+  return events;
+}
 
-  const participants = [...sessions.values()].filter((session) => !session.left);
-  const hold = [...problems];
-  if (!chain.ok) hold.push(chain.breaks.includes(-1) ? 'Ereignis-Kette weicht vom erwarteten Kopf ab' : 'Ereignis-Kette ist gebrochen');
-  if (!chain.verified) hold.push('kein externer Kettenkopf gesetzt (Kette nur erkennend, nicht verhindernd)');
-  if (!plan) hold.push('kein MERGE_PLAN veroeffentlicht');
-  if (participants.length === 0) hold.push('keine aktive Session registriert');
-  if (plan) {
-    for (const participant of participants) {
-      if (!acks.has(`${plan.hash}:${participant.session}`)) hold.push(`ACK fehlt: ${participant.session}`);
+/** Der juengste Plan; `null` heisst: keine bestaetigte Reihenfolge. */
+export function latestPlan(events = []) {
+  return events.filter((event) => event.kind === 'PLAN').at(-1) ?? null;
+}
+
+/** Aktive Sessions: JOIN registriert, LEAVE entfernt - Timeout entfernt niemanden. */
+export function activeSessions(events = []) {
+  const sessions = new Map();
+  for (const event of events) {
+    if (event.kind === 'SESSION_JOIN' && event.session) {
+      sessions.set(event.session, { session: event.session, role: event.role, actor: event.actor, commentId: event.commentId });
     }
-    if (completed) hold.push('letzter PLAN ist bereits abgeschlossen; neue Revision noetig');
+    if (event.kind === 'SESSION_LEAVE' && event.session) sessions.delete(event.session);
   }
-
-  const uniqueHold = [...new Set(hold)];
-  const ready = uniqueHold.length === 0;
-  const queue = (plan?.prs ?? []).map((pr, index) => ({
-    ...pr,
-    position: index + 1,
-    status: ready && index === 0 ? 'READY' : ready ? 'WAITING' : 'HOLD',
-  }));
-  return { ready, hold: uniqueHold, plan, participants, queue, completed, chain, events };
+  return [...sessions.values()];
 }
 
 /**
- * Prueft einen konkreten Merge gegen den bestaetigten Plan. Nur der erste
- * Eintrag ist freigegeben, und nur auf exakt bestaetigtem Head/Base/main.
+ * Gueltige ACKs: registrierte Session, nach dem Plan, exakt dessen Hash.
+ * Mehrfach-ACKs derselben Session zaehlen einmal (der juengste).
  */
-export function evaluateMerge(state, { number, head, base, main } = {}) {
-  const reasons = [];
-  if (!state?.ready) reasons.push(...(state?.hold ?? ['Queue nicht READY']).map((reason) => `HOLD: ${reason}`));
-  const first = state?.queue?.[0];
-  if (!first) reasons.push('Queue ist leer');
-  else if (Number(number) !== first.number) reasons.push(`PR #${number} ist nicht der erste Eintrag (#${first.number})`);
-  if (first && String(head ?? '').toLowerCase() !== first.head) reasons.push('PR-Head weicht vom bestaetigten Head ab');
-  if (first && String(base ?? '').toLowerCase() !== first.base) reasons.push('PR-Base weicht von der bestaetigten Base ab');
-  if (state?.plan && String(main ?? '').toLowerCase() !== state.plan.main) reasons.push('main-SHA weicht vom bestaetigten main ab');
-  return { ok: reasons.length === 0, reasons };
+export function validAcks(events = [], plan = null) {
+  if (!plan) return [];
+  const active = new Set(activeSessions(events).map((entry) => entry.session));
+  const bySession = new Map();
+  for (const event of events) {
+    if (event.kind !== 'ACK') continue;
+    if (event.commentId <= plan.commentId) continue;
+    if (event.plan !== plan.hash) continue;
+    if (!active.has(event.session)) continue;
+    bySession.set(event.session, event);
+  }
+  return [...bySession.values()];
+}
+
+/**
+ * Queue je offenem PR: Position aus dem Plan, Zustand aus Hash, `main`-Drift,
+ * ACK-Lage und Kopf-SHA. Nur Position 1 mit vollstaendigen ACKs ist READY.
+ */
+export function buildQueue({ plan = null, pulls = [], events = [], mainSha = '' } = {}) {
+  const sessions = activeSessions(events);
+  const acks = validAcks(events, plan);
+  const allAcked = sessions.length > 0 && acks.length === sessions.length;
+  const drift = Boolean(plan) && Boolean(mainSha) && plan.mainSha !== mainSha;
+  const rows = pulls.map((pull) => {
+    const number = Number(pull.number);
+    const head = String(pull.headRefOid ?? pull.head?.sha ?? '');
+    const position = plan ? plan.entries.findIndex((entry) => entry.number === number) : -1;
+    const where = position >= 0 ? `Position ${position + 1}/${plan.entries.length}` : 'nicht im Plan';
+    const reasons = [];
+    let status = MERGE_STATUS.HOLD;
+    if (!plan) {
+      reasons.push(`kein MERGE_PLAN an #${MERGE_ISSUE}: Merge gesperrt (fail-closed)`);
+    } else if (plan.tampered) {
+      status = MERGE_STATUS.BLOCKED;
+      reasons.push('Plan-Hash im Kommentar passt nicht zum Inhalt: neue Revision veroeffentlichen');
+    } else if (drift) {
+      reasons.push(`main ist ${mainSha.slice(0, 7)}, Plan nennt ${plan.mainSha.slice(0, 7)}: neue Revision`);
+    } else if (position < 0) {
+      status = MERGE_STATUS.BLOCKED;
+      reasons.push(`${where}: erst Plan mit allen offenen PRs`);
+    } else if (head && plan.entries[position].head !== head) {
+      status = MERGE_STATUS.BLOCKED;
+      reasons.push(`Kopf ${head.slice(0, 7)} ist nicht der bestaetigte ${plan.entries[position].head.slice(0, 7)}`);
+    } else if (!allAcked) {
+      reasons.push(`ACKs fehlen: ${acks.length}/${sessions.length || 0} aktive Sessions`);
+    } else if (position > 0) {
+      reasons.push(`${where}: erst #${plan.entries[0].number}`);
+    } else {
+      status = MERGE_STATUS.READY;
+      reasons.push(`${where}, Plan ${plan.hash}, ${sessions.length} von ${sessions.length} Sessions bestaetigt`);
+    }
+    return { number, head, position: position + 1, status, reasons };
+  });
+  return rows;
+}
+
+/** Darf dieser PR jetzt gemergt werden? `ok:false` nennt den Grund. */
+export function authorizeMerge({ plan = null, pulls = [], events = [], mainSha = '', prNumber = 0 } = {}) {
+  const queue = buildQueue({ plan, pulls, events, mainSha });
+  const entry = queue.find((row) => row.number === Number(prNumber));
+  if (!entry) {
+    return { ok: false, status: MERGE_STATUS.BLOCKED, reason: `[ERR-4029] PR #${prNumber} ist nicht offen oder nicht lesbar: Merge gesperrt`, queue };
+  }
+  if (entry.status !== MERGE_STATUS.READY) {
+    return { ok: false, status: entry.status, reason: `[ERR-4029] ${entry.status}: ${entry.reasons.join('; ')}`, queue };
+  }
+  return { ok: true, status: entry.status, reason: entry.reasons.join('; '), queue };
+}
+
+/** Der naechste freie Befehl, wenn noch kein Plan existiert. */
+export function publishCommand() {
+  return 'pnpm run merge:queue -- --publish';
+}
+
+/** Der naechste freie Befehl fuer eine Session, die den Plan bestaetigt. */
+export function ackCommand(session = '<session>', role = 'worker') {
+  return `pnpm run merge:queue -- --ack --session ${session} --role ${role}`;
+}
+
+/** Plan-Body aus den offenen PRs; Reihenfolge ist PR-Nummer aufsteigend. */
+export function planBody({ revision, mainSha, pulls = [], at = '' }) {
+  const entries = [...pulls].sort((a, b) => Number(a.number) - Number(b.number)).map((pull) => ({
+    number: Number(pull.number),
+    head: String(pull.headRefOid ?? pull.head?.sha ?? ''),
+    base: '',
+  }));
+  const hash = planDigest({ revision, mainSha, entries });
+  const lines = [
+    `MERGE_PLAN rev=${revision} hash=${hash} main=${mainSha}${at ? ` at=${at}` : ''}`,
+    ...entries.map((entry) => `pr=${entry.number} head=${entry.head}`),
+    '',
+    `Queue-Revision ${revision}: ${entries.length} offene PRs, Basis \`${mainSha}\`.`,
+    'Bestaetigung je aktiver Session:',
+    `\`${ackCommand('<session>', '<worker|maintainer>')}\``,
+  ];
+  return { hash, entries, body: lines.join('\n') };
 }

@@ -21,10 +21,10 @@
 
 ## CI-Eskalation
 
-- Auto-Resolve ist nicht mehr aktiv: die Workflows führen keine Tests und keine Reparaturen aus. `scripts/auto-resolve.mjs` und `scripts/lib/repair-plan.mjs` bleiben als Werkzeug, ihr Lauf ist manuell und braucht eine `RUN_ID`.
+- Auto-Resolve ist entfernt: die Workflows führen keine Tests und keine Reparaturen aus, und der Reparatur-Lauf brauchte einen PAT mit Sonderrechten. `scripts/lib/repair-plan.mjs` bleibt als Auswertung für `agent:cause`.
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
-- `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
+- `scripts/pr-watcher.mjs` ist entfernt: ohne Cloud-Testlauf gibt es kein `workflow_run`, an dem er haengen koennte. Befunde ordnet `agent:cause` ein, `escalation:plan` nennt die Stufe; ein Issue entsteht aus dem Befund, nicht aus einem Watcher.
 - Direktpush auf `main` ist durch den klassischen Branch-Schutz gesperrt: Weg ist Arbeitsbranch, PR gegen `main`, lokaler Vor-PR-Nachweis und **manueller Merge durch den Maintainer**. Es gibt keinen Cloud-Check; `promote` ist nur ein Status-/Notausgang. `turn-push.mjs` meldet den Direktpush als ERR-4023.
 Lokal laufen `verify` (Quick), die betroffenen schnellen Tests und `verify:all`; Mechanik laeuft ausschliesslich gezielt ueber `test:mechanics`. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus. Es gibt keinen Cloud-Testlauf und keinen Remote-Status, auf den ein Merge wartet.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
@@ -260,8 +260,9 @@ das Profil vorsieht, und fuehrt ihn ueber `runGates` aus. Es gibt keine zweite
 Gate-Liste und keinen zweiten Importgraphen; die Auswahl betroffener Tests
 setzt nur `RBD_TEST_FILES`, das Testgate bleibt dabei ungecacht. Lange
 Nachweise werden nicht gedruckt, sondern uebergeben: `--ci` startet
-`ci-long-checks.mjs` fuer den aktuellen Branch und die exakte HEAD-SHA und
-wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
+`local-ci --profile=mechanics` fuer den aktuellen Branch (Statistik, Soak,
+Balance, Benchmarks) und wartet auf das Ergebnis; `--verify` ist die
+ausdrueckliche Ausnahme.
 
 ## Promotion und Phasen-Hold
 

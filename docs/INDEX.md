@@ -11,6 +11,7 @@
 | [`README.md`](../README.md) | Spiel, aktueller Stand, Setup und Entwicklerweg. |
 | [`AGENTS.md`](../AGENTS.md) | Erster Befehl, verbindlicher Agent-Workflow, zehn unverhandelbare Regeln, Zustand und Befehle. |
 | [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) | Verbindliche Agent-Schleife: Issue-Check, Claim per Issue-Kommentar, PR, Umsetzungs-Kommentar und Review-Antwort. |
+| [`MECHANICS.md`](MECHANICS.md) | Der eine Startbefehl (`agent:start`), Mechanik-Stand, Token-Vertrag und Ereignis-Hook. |
 | [`WORKFLOW.md`](WORKFLOW.md) | Pretask, Resume, Abschluss, PR und manueller Merge. |
 | [`TESTING.md`](TESTING.md) | Die eine Testlinie, Testmatrix 1–17 und Zusatzregressionen. |
 

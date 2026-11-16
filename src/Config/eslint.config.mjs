@@ -136,10 +136,10 @@ export default defineConfig(
   {
     // Werkzeuge, deren Aufgabe ein Zeitstempel oder CI-Polling ist. Kein Zufall, keine Spielzeit.
     files: [
+      'scripts/agent-start.mjs',
       'scripts/doc-sync.mjs',
       'scripts/doc-stub.mjs',
       'scripts/lib/doc-sync.mjs',
-      'scripts/ci-long-checks.mjs',
       'scripts/lib/gate-runner.mjs',
       'scripts/lib/gate-cache.mjs',
       'scripts/lib/process-sweep.mjs',

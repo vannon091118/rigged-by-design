@@ -2,7 +2,7 @@
 
 <!-- rbd-doc: managed -->
 
-> **Erster Befehl:** `pnpm run agent:pretask --json`
+> **Erster Befehl:** `pnpm run agent:start --brief`
 
 Dieser Kurzvertrag ist der Einstieg. Das **Issue-Board ist die Steuerungswahrheit**: Auftrag, Priorität, Besitz, Review und Merge-Beleg stehen dort. Dieses Dokument nennt Rollen, Grenzen und Befehle; Tiefenwissen steht in den verlinkten Dokumenten unter `docs/`.
 
@@ -85,7 +85,7 @@ Jede Nachricht wird genau einmal verarbeitet. Unklare Adressierung geht in die M
 
 ## Zehn unverhandelbare Regeln
 
-1. **Claim vor Read, Pretask vor dem Edit.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`); erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Danach `pnpm run agent:pretask --json`: der Lauf holt `origin/main` (ein Fetch pro Minute, nie blockierend), prüft den Issue-Claim als Startgate (`RBD_AGENT`/`--agent`: fremder Claim blockiert, fehlender Claim verlangt den Kommentar) und blockiert bei offenem `gate-failure`-Issue, fehlendem Impact-Plan oder Claim-Problem (`ERR-4019`). Ein nicht leerer Baum wird adoptiert (Regel 2). Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` protokolliert Phase, Befunde und nächste Aktion als **Mechanik**, nicht als Board-Wahrheit; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
+1. **Claim vor Read, Start mit `agent:start`.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`); erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Der Start ist `pnpm run agent:start --brief`: der Lauf liest Board, Claims und PRs live aus GitHub (Token aus `GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT` oder `RBD_GH_TOKEN` — kein lokaler Zustand, kein Login) und blockiert mit dem auflösenden Befehl. Die tiefe lokale Prüfung (Arbeitsbaum, Impact, Task-Vertrag, Laufbudget) bleibt `pnpm run agent:pretask --json`. Ein nicht leerer Baum wird adoptiert (Regel 2). Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` protokolliert Phase, Befunde und nächste Aktion als **Mechanik**, nicht als Board-Wahrheit.
 2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird nur, was der Claim deckt. `reset --hard`, `clean -xdf`, `stash`, `push --force` und `branch -D` sind für Agenten verboten; der Maintainer nutzt sie ausschließlich in seinem eigenen Review-Checkout, nie im geteilten Arbeitsbaum.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
@@ -114,7 +114,9 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 
 | Befehl | Zweck |
 | --- | --- |
-| `pnpm run agent:pretask --json` | Startblocker, Issue-Check, Impact, Claim und Worktree prüfen. |
+| `pnpm run agent:start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
+| `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
+| `pnpm run merge:queue -- --check` | Merge-Queue (#913): Plan-Hash, Sessions, ACKs und Reihenfolge; Exit 1 sperrt den Merge und nennt den auflösenden Befehl. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
 | `pnpm run board:sync -- --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
 | `pnpm run claim:register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |
@@ -142,6 +144,7 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 | [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | Pretask, Resume, Arbeitsweise, Abschluss und manueller Merge. |
 | [`docs/CI.md`](docs/CI.md) | Required-Gates, Zustände, Workflows und Branch-Schutz. |
 | [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) | **Kanonisch:** Rollen, Prioritäten, Claims, Review, Board-Status und Eskalation. |
+| [`docs/MECHANICS.md`](docs/MECHANICS.md) | Der eine Startbefehl, Mechanik-Stand, Token-Vertrag und Ereignis-Hook. |
 | [`docs/PROMPTS.md`](docs/PROMPTS.md) | Prompt-Register mit Pfad, Schweregrad und Board-Issue. |
 | [`docs/TESTING.md`](docs/TESTING.md) | Die eine Testlinie, Testmatrix und Zusatzregressionen. |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Zustandsbesitz, Pipeline, Verträge, Save und Narrative. |

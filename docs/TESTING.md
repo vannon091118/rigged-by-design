@@ -32,11 +32,11 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | 12 | Kein Cloud-Check wiederholt nur Light | `ci-gates.test.ts` (kein Test-/Build-Workflow, lokaler Runner), `pipeline-modes.test.ts` (Light ≠ Integration) |
 | 13 | Gemeinsame Claims und Pfade erkennen echte Überschneidungen | `lane-claims.test.ts` (Content-Pfad kollidiert, Meta/Claim nicht) |
 | 14 | Unabhängige Lane wird durch fremden Lane-Fehler nicht blockiert | `issue-scope.test.ts`; `pretask-issues.test.ts` (Dependency blockiert nur abhängige Lane) |
-| 15 | Autofix nur erlaubte Fälle, danach Gates erneut | `auto-resolve.test.ts` (`repair-plan`-Block: erlaubter Doku-Fix, verbotener Quellcode, max. 1 Versuch) |
-| 16 | Nicht behebbarer Fehler erzeugt dedupliziertes, korrekt zugeordnetes Issue | `pr-watcher.test.ts` (Fingerprint, Scope, Reopen, keine Duplikate); `issue-scope.test.ts` |
-| 17 | Cancel, Timeout, No-op und echter Gate-Fehler unterscheiden sich | `auto-resolve.test.ts` (`repair-plan`-Block: NOOP/kein Issue, Remote-Retry, echtes Issue) |
+| 15 | Reparatur nur für mechanische Befunde, nie auf `main` oder im Fork | `repair-plan.test.ts` (erlaubter Doku-Fix, verbotener Quellcode, max. 1 Versuch) |
+| 16 | Befund ohne Behebung wird genau einmal zum Issue | `issue-scope.test.ts` (Fingerprint, Scope, Reopen, keine Duplikate) |
+| 17 | Cancel, Timeout, No-op und echter Gate-Fehler unterscheiden sich | `repair-plan.test.ts`, `gate-diagnostics.test.ts` (NOOP/kein Issue, Remote-Retry, echtes Issue) |
 
-`repair-plan` liegt bewusst im `auto-resolve.test.ts`-Block; eine separate Datei würde denselben Zustand ein zweites Mal aufbauen. Die Matrix nennt den Block, nicht einen zweiten Testpfad.
+`repair-plan` wird von `agent:cause` ausgewertet; der fruehere Ausfuehrer `auto-resolve.mjs` ist entfernt (siehe [`ARCHITECTURE.md`](ARCHITECTURE.md#ci-eskalation)). Die Matrix nennt den Test, nicht einen zweiten Pfad.
 
 ## Zusatzregressionen
 
