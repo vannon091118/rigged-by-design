@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/issue-1045-claim-reconcile",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1045-claim-reconcile",
+  "baseSha": "9899c2375074d6b8d8669136f582ff557d4644d8",
+  "issue": 1045,
+  "task": "Claims der gemergten Lanes #1039 und #1041 schliessen",
+  "goal": "Gemergte Lanes stehen nicht mehr als offene Claims und blockieren keine Allowlist mehr.",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1039-verify-state.json",
+    ".lane-claims/claims/lane-governance-issue-1041-registry-boundary.json",
+    ".lane-claims/merged-index.json",
+    ".lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json",
+    ".lane-claims/tasks/governance-issue-1045-claim-reconcile.json",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9899c2375074d6b8d8669136f582ff557d4644d8"
+}
