@@ -2658,3 +2658,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** Gate gruen fuer sieben Vertraege; vier Negativfaelle (fehlende Zeile, fehlender Test, fremder Owner, zwei Writer) im Test abgedeckt; Light-Profil gruen.
 
+## 2026-11-16 — Sync fragt live, nicht im Cache (Buffy)
+
+**Befund.** Die Sync-Befehle schrieben Board, Doku, Matrix und generierte Artefakte, ohne den Hook-Stand anzusehen. Ob GitHub die Ereignisse ueberhaupt zustellt, war eine Annahme aus einem frueheren Lauf.
+
+**Entscheidung.** `scripts/lib/sync-hooks.mjs` macht aus `hookStatus()` eine Zeile und jeder Sync-Befehl ruft sie vor seiner Arbeit auf. Ist die Abfrage nicht moeglich, steht der Grund samt Anlegebefehl in der Antwort; ein fehlender Hook bleibt ein Befund, kein stiller Fallback. Der Test liest die Sync-Routen aus `command-surface.mjs` und verlangt den Aufruf in jeder Datei.
+
+**Nachweis.** `sync deps` gibt die Live-Zeile aus und bleibt gruen; fuenf Testfaelle decken aktive Hooks, fehlende Hooks und nicht abfragbare Hooks ohne Netz ab.
+

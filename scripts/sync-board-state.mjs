@@ -20,8 +20,11 @@ import {
 import { PROMPT_REGISTER_FILE, parsePromptRegister } from './lib/prompt-register.mjs';
 import { ROOT } from './lib/report.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { reportLiveHooks } from './lib/sync-hooks.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'board-sync' });
+// Jeder Sync-Befehl fragt den Hook-Stand live ab.
+reportLiveHooks();
 
 const REPO = 'vannon091118/rigged-by-design';
 const STATE_FILE = join(ROOT, '.lane-claims/board-state.json');

@@ -132,6 +132,16 @@ alten `pnpm run`-Namen bleiben als Kompatibilitaetsaliase bestehen, sind aber
 nicht mehr der dokumentierte Weg. `cli-surface.test.ts` macht eine
 Governance-Zeile aus `package.json` ohne Route rot.
 
+## Jeder Sync-Befehl fragt live
+
+`board sync`, `docs sync`, `sync deps` und `sync generated` lesen den
+Hook-Stand bei GitHub, bevor sie schreiben: `scripts/lib/sync-hooks.mjs` macht
+aus `hookStatus()` genau eine Zeile — aktiv, Events, Ziel-URL oder den Grund,
+warum die Abfrage scheitert, samt Anlegebefehl. Kein Cache, kein Snapshot; ein
+fehlender Hook ist ein Befund, kein stiller Fallback. `sync-live-hooks.test.ts`
+liest die Sync-Routen aus der Befehlsoberflaeche und macht einen neuen
+Sync-Befehl ohne `reportLiveHooks` rot.
+
 ## Kein Workflow, kein Actions
 
 Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der ihn ausfuehrt: es existiert kein Workflow mehr (FREEZE-0), und `docs/CI.md` sagt das ausdruecklich. Ein gesperrtes Actions-Konto kann den Start damit nicht mehr blockieren.

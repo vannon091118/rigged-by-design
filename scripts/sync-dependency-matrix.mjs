@@ -8,8 +8,11 @@ import { relative, resolve } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 import { moduleSpecifiers, parse } from './lib/ts-ast.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { reportLiveHooks } from './lib/sync-hooks.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'sync-dependency-matrix' });
+// Jeder Sync-Befehl fragt den Hook-Stand live ab.
+reportLiveHooks();
 
 const JUSTIFICATIONS = {
   'pixi.js': ['Runtime', 'WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld.'],
