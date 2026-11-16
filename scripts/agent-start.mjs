@@ -35,6 +35,7 @@ import { ROOT } from './lib/report.mjs';
 import { evaluateIssueClaim, orderBoard } from './lib/issue-claim.mjs';
 import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
+import { ensureGh } from './lib/gh-bootstrap.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -89,11 +90,18 @@ const repo = repoSlug();
 const credentials = resolveGithubToken();
 const token = credentials.token;
 if (!token) {
+  // Kein Workflow, kein Actions: fehlt `gh`, laedt der Lauf die CLI jetzt
+  // aus dem offiziellen Release nach (~/.local/bin, ohne sudo). Danach fehlt
+  // nur noch `gh auth login`.
+  const gh = ensureGh();
+  const ghNote = gh.present
+    ? (gh.attempted ? ` \`gh\` wurde nachgeladen (${gh.path ?? 'gh'}); PATH ergaenzen, falls noetig.` : '')
+    : ` \`gh\` fehlt (${gh.install?.reason ?? 'unbekannt'}); manuell: ${gh.install?.url ?? 'https://cli.github.com'}.`;
   // Genau ein Blocker: ohne Credential-Quelle ist alles andere zweitrangig,
   // und der Agent soll genau einen Befehl ausfuehren, nicht drei.
   blockers.push(
     `[ERR-4019] Keine Credential-Quelle: geprueft wurde ${credentials.tried.join(' -> ')}. ` +
-      `Aufloesen mit genau einem Befehl: \`${TOKEN_FIX_COMMAND}\``,
+      `Aufloesen mit genau einem Befehl: \`${TOKEN_FIX_COMMAND}\`${ghNote}`,
   );
   if (!repo) {
     warnings.push('Repository nicht bestimmbar (origin zeigt nicht auf GitHub): nach dem Login `RBD_REPO=owner/repo` setzen');
@@ -268,7 +276,7 @@ if (wantedIssue) {
 /**
  * Status:
  *   FLOW    dieser Lauf prueft und blockiert damit selbst
- *   AUTO    Hook oder Workflow fuehrt es ohne Agentenaktion aus
+ *   AUTO    Hook oder Skript fuehrt es ohne Agentenaktion aus
  *   WIRED   ueber ein manuelles Kommando erreichbar (package.json)
  *   UNUSED  nur aus Tests oder Doku bekannt: existiert, wird aber nie ausgefuehrt
  *   ORPHAN  niemand referenziert es: vergessenes System -> Blocker
@@ -427,7 +435,7 @@ if (next) {
 }
 if (mechanics.orphan.length > 0) steps.push('Vergessene Systeme einbinden oder entfernen (siehe Blocker)');
 if (mechanics.unused.length > 0) steps.push(`Ohne Ausfuehrungspfad: ${mechanics.unused.map((entry) => entry.file).join(', ')} — einbinden oder entfernen`);
-if (!policyMissing) steps.push('Nach dem Push: `git push` startet ensure-pr; Board-Uebersicht aktualisiert der Ereignis-Hook');
+if (!policyMissing) steps.push('Nach dem Push: PR ueber `gh pr create` (oder Konnektor) oeffnen und Review anfordern; Board lokal nachziehen mit `pnpm run board:sync`');
 
 // --- 7. Ausgabe -----------------------------------------------------------
 if (asJson) {

@@ -75,18 +75,25 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 | `ci-tag-release.mjs` | `pnpm run release:tag` | Tag und Release aus `package.json`, der dokumentierte lokale Release-Pfad |
 | `local-ci.mjs --profile=mechanics` | `pnpm run test:mechanics` | lange Nachweise; `agent:verify --ci` startet sie lokal |
 
-## Ereignis-Workflows
+## Kein Workflow, kein Actions
 
-- **`Agent Start`** (`.github/workflows/agent-start.yml`): läuft auf `push`, `pull_request` und `workflow_dispatch`, führt `pnpm run agent:start --brief` mit dem automatisch injizierten `secrets.GITHUB_TOKEN` gegen das echte Repo aus und schreibt das Ergebnis in die Job-Summary. Er führt keine Tests, Gates, Builds oder APKs aus.
-- **`Board Overview`** (`.github/workflows/board-overview.yml`): pflegt genau einen markierten Übersichtskommentar am Board-Issue #677 auf `issues`, `issue_comment`, `pull_request` und `repository_dispatch`.
-- **Dispatch:** `pnpm run agent:start -- --dispatch` sendet `repository_dispatch` mit `board-refresh` und braucht `contents: write`. Ein klassischer Repo-Webhook bleibt entfernt, solange keine erreichbare Empfänger-URL existiert (`pnpm run webhook:install -- --check` belegt den Stand).
+Der Start laeuft lokal ueber die GitHub-API. Es gibt **keinen** Actions-Job, der ihn ausfuehrt: ein solcher Workflow wurde entfernt, und `docs/CI.md` bleibt bei den vier Repository-Verwaltungs-Workflows. Ein gesperrtes Actions-Konto kann den Start damit nicht mehr blockieren.
+
+| Quelle | Weg | Wann |
+| --- | --- | --- |
+| GitHub-Konnektor / REST | `scripts/lib/github-rest.mjs` -> `github-rest-fetch.mjs` (fetch gegen `api.github.com`) | immer, sobald ein Token da ist |
+| `gh`-CLI | `gh auth token` als dritte Credential-Stufe | lokal und in der Cloud, wenn `gh` vorhanden ist |
+| Git-Credential-Helper | `git credential fill` | letzte Stufe, wenn `gh` fehlt |
+
+Fehlt `gh` ganz, laedt `scripts/lib/gh-bootstrap.mjs` die CLI aus dem offiziellen Release nach `~/.local/bin` (ohne sudo, kein Systempaket) und meldet den Pfad; danach nennt der Lauf genau einen Befehl: `gh auth login`. Abschaltbar mit `RBD_NO_GH_INSTALL=1`, Zielverzeichnis ueber `RBD_GH_DIR`.
+
+Der Ereignis-Workflow `Board Overview` bleibt als reine Repository-Verwaltung bestehen (keine Tests, Gates, Builds). Er ist keine Voraussetzung fuer den Start.
 
 ### Nachweisstand (2026-11-16)
 
-- **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker — `gh auth login`. Geprüfte Reihenfolge: `GH_TOKEN -> GITHUB_TOKEN -> gh auth token -> git-credential-helper`.
-- **GitHub Actions ist für dieses Konto gesperrt.** Der Ereignis-Lauf `Board Overview` (`issue_comment`, 2026-11-16T01:15Z) wurde angelegt, sein Job aber nicht gestartet; die Annotation lautet: „The job was not started because your account is locked due to a billing issue.“ Deshalb kann der Beweislauf `Agent Start` derzeit keinen gestarteten Job liefern — der Workflow selbst ist gültig und läuft ohne weitere Änderung, sobald die Abrechnung geklärt ist.
-- **Pushes aus dieser Umgebung erzeugen keine Läufe** (0 Runs für den Branch über zwei Pushes). Beobachtet; die dokumentierte Ursache ist, dass mit einem App- bzw. `GITHUB_TOKEN` erzeugte Ereignisse keine neuen Workflows auslösen.
-- **Nicht geprüft:** der Live-Lauf gegen das echte Board mit gültigem Token. Die Board-Abfragen sind lesend; ohne Credential-Quelle endet der Lauf fail-closed.
+- **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker — `gh auth login`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> gh auth token -> git-credential-helper`.
+- **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
+- **Nicht geprueft:** ein Live-Board-Lauf mit gueltigem Token in dieser Umgebung — hier gibt es keine Credential-Quelle, und `gh auth login` ist interaktiv.
 
 ## Rollen
 

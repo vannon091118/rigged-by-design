@@ -5,7 +5,7 @@
  * Token in genau dieser Reihenfolge gesucht — und nirgends sonst:
  *
  *   1. `GH_TOKEN`                     Projekt-/Repository-Secret, Cloud-Agent
- *   2. `GITHUB_TOKEN`                 in GitHub Actions automatisch vorhanden
+ *   2. `GITHUB_TOKEN`                 in CI-Umgebungen automatisch vorhanden
  *   3. `gh auth token`                lokal nach `gh auth login`
  *   4. `git credential fill`          vorhandener Git-Credential-Helper
  *
