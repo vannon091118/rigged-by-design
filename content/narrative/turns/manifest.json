@@ -4860,6 +4860,10 @@
     {
       "turnId": "2026-11-16T17:05Z-log-and-contract-closure",
       "contributionId": "log-and-contract-closure"
+    },
+    {
+      "turnId": "2026-11-16T17:45Z-register-closeout",
+      "contributionId": "register-closeout"
     }
   ]
 }

@@ -23,7 +23,7 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "51a1052e991bed0a75f2d2221d3e2739607cf2a2",
+  "mergedEvidence": "PR #1005 auf main; Statuskorrektur ohne Aftercare-Lauf",
   "mergedSha": "dc6a96fb",
-  "mergedEvidence": "PR #1005 auf main; Statuskorrektur ohne Aftercare-Lauf"
+  "createdAt": "51a1052e991bed0a75f2d2221d3e2739607cf2a2"
 }

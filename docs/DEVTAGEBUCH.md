@@ -2692,3 +2692,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** Live: Wegwerf-Vertrag in `docs/contracts/__probe__/x.md` → `verify-contracts` Exit 1, ohne `--log` 0 Dateien, mit `--log` genau 1 Datei mit `[ERR-4019]` in Zeile 1; nach dem Entfernen wieder gruen. Kindprozess-Tests: 22/22 in `logs-failure-only`, `output-budget`, `contracts-gate`.
 
+## 2026-11-16 — Register auf main geschlossen (Buffy)
+
+**Befund.** Nach den Merges standen Claims im Register, die ihr Merge-Beleg widerlegte; die letzten Laeufe trugen Statuskorrekturen von Hand. Gate und Register waren damit nur zufaellig einig.
+
+**Entscheidung.** Der dafuer vorgesehene Pfad `reconcile-claims --apply` hat das Register gezogen: belegte Claims `merged` mit PR- und Merge-SHA, Tasks `DONE`, Retention der geschlossenen Eintraege. Kein Eintrag wurde erfunden; jeder Status traegt seinen Beleg.
+
+**Nachweis.** `reconcile-claims` (dry) und `--apply` nennen dieselben Aenderungen, `reconcile-claims --check` meldet `keine Abweichung`, `verify-lane-claims` bleibt auf `main` gruen.
+

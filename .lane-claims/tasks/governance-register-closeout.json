@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-register-closeout",
+  "claimId": "lane/governance/register-closeout",
+  "branch": "lane/governance/register-closeout",
+  "baseSha": "a13fb7f5c2ea90334a34498cad4c700c10ad40f8",
+  "phase": "IMPLEMENTING",
+  "title": "Register auf main synchronisieren",
+  "goal": "Claims/Tasks belegt schliessen; Register und Gate stimmen ueberein. Issue #1010.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}
