@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c92342fb61f3c74859965962bf0bad930f00427ab1b90dd0667c83211f3ebb5d",
+  "contentHash": "sha256:25dcd16025a9f2f198c057fa25d5de6bbfb51e825c77aae6643eb85e8f4acf9d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10855,6 +10855,28 @@
       "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
+    },
+    {
+      "contributionId": "maintainer-913-webhook-delivery",
+      "turnId": "2026-11-16T05:10Z-webhook-delivery",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Es klingelt jetzt an derselben Tür, an der bisher nur jemand von Hand geklopft hat. Wer läuten darf, weist sich aus; wer es nicht tut, bleibt draußen. Und wer die Klingel noch nicht anschließen durfte, findet am Griff den Zettel mit dem fehlenden Schlüssel statt einer stillen Ausrede.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-webhook-delivery.json"
     },
     {
       "contributionId": "maintainer-937-audit-evidence",

@@ -145,6 +145,8 @@ export default defineConfig(
       'scripts/lib/process-sweep.mjs',
       'scripts/lib/issue-claim.mjs',
       'scripts/claim-register.mjs',
+      'scripts/webhook-receiver.mjs',
+      'scripts/lib/webhook-status.mjs',
     ],
     rules: {
       'no-restricted-properties': ['error', direct[0], direct[2]],

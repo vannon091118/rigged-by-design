@@ -37,6 +37,7 @@ import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
 import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
+import { hookStatus } from './lib/webhook-status.mjs';
 import {
   MERGE_ISSUE,
   activeSessions,
@@ -383,6 +384,13 @@ if (board.ok) {
   }
 }
 
+// --- 3c. Webhook: derselbe Ablauf, ausgeloest von GitHub -----------------
+// Der Hook ist kein Extra-Werkzeug: er speist dieselbe Entscheidung. Fehlt er,
+// nennt der Start den Befehl und die fehlende Berechtigung — nicht mehr.
+const webhook = board.ok
+  ? hookStatus({ repo })
+  : { ok: false, hooks: [], active: 0, events: [], url: '', error: 'Board nicht lesbar', step: '' };
+
 // --- 4. Mechaniken: was erzwungen wird, was niemand aufruft --------------
 /**
  * Status:
@@ -545,6 +553,7 @@ if (next) {
 } else if (board.ok) {
   steps.push('Kein freies Issue: Review/Blocker beim Maintainer, keine neue Lane');
 }
+if (!webhook.ok && webhook.step) steps.push(`Webhook: ${webhook.step}`);
 if (mechanics.orphan.length > 0) steps.push('Vergessene Systeme einbinden oder entfernen (siehe Blocker)');
 if (mechanics.unused.length > 0) steps.push(`Ohne Ausfuehrungspfad: ${mechanics.unused.map((entry) => entry.file).join(', ')} — einbinden oder entfernen`);
 if (!policyMissing) steps.push('Nach dem Push: PR ueber `gh pr create` (oder Konnektor) oeffnen und Review anfordern; Board lokal nachziehen mit `pnpm run board:sync`');
@@ -571,6 +580,15 @@ if (asJson) {
     },
     pretask,
     mergeQueue,
+    webhook: {
+      ok: webhook.ok,
+      active: webhook.active,
+      events: webhook.events,
+      url: webhook.url,
+      hooks: webhook.hooks,
+      step: webhook.step,
+      error: webhook.error ?? '',
+    },
     dispatch: dispatch ? { ok: dispatch.ok } : null,
     apkRelevance: apk,
     blockers,
@@ -603,6 +621,11 @@ if (asJson) {
   console.log(pretask.ran
     ? `  Modus ${pretask.mode ?? '?'} · Phase ${pretask.phase ?? '?'} · Claim ${pretask.claimState ?? '?'} · ${(pretask.blockers ?? []).length} Blocker`
     : `  nicht ausgewertet: ${pretask.reason}`);
+  console.log('');
+  console.log('=== Webhook (speist denselben Ablauf) ===');
+  console.log(webhook.ok
+    ? `  aktiv ${webhook.active} · Events ${webhook.events.join(',')} · Ziel ${webhook.url}`
+    : `  ${webhook.step || `nicht lesbar (${webhook.error})`}`);
   console.log('');
   console.log(`=== Merge-Queue (#${MERGE_ISSUE}) ===`);
   console.log(mergeQueue

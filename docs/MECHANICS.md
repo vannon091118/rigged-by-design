@@ -134,6 +134,22 @@ Die Queue endet nicht mit einem Vorschlag, sondern mit **genau einer** Aktion. W
 
 `nextAction()` in `scripts/lib/merge-queue.mjs` ist die einzige Stelle, die das entscheidet; CLI und `agent:start` lesen nur noch dieses Ergebnis. Fuenf Faelle sind in `merge-queue.test.ts` festgehalten, darunter „leere Queue bleibt `IDLE`, auch ohne Plan und ohne Session“.
 
+### Webhook: derselbe Ablauf, von GitHub ausgelöst
+
+Der Hook ist kein Werkzeug neben der Queue. Eine Delivery wird auf denselben Verlauf und dieselben offenen PRs abgebildet und endet in `nextAction()` — also in genau der Aktion aus der Tabelle oben. Es gibt keine zweite Entscheidungsstelle.
+
+| Teil | Datei | Wirkung |
+| --- | --- | --- |
+| Signatur | `scripts/lib/webhook-signature.mjs` | HMAC-SHA256 über den rohen Body, Vergleich zeitkonstant; ohne `RBD_WEBHOOK_SECRET` fail-closed |
+| Abbildung | `scripts/lib/webhook-action.mjs` | Ereignis + Verlauf + offene PRs → `nextAction()` |
+| Empfänger | `scripts/webhook-receiver.mjs` | `POST /webhook` → 202 / 401; `--payload` prüft eine aufgezeichnete Delivery offline |
+| Ist-Stand | `scripts/lib/webhook-status.mjs` | `GET /hooks`: `active`, Events, Ziel-URL; das Secret erscheint nie |
+| Anlegen | `scripts/install-webhook.mjs` | idempotent über `config.url`, Secret aus der Umgebung |
+
+Events: `issues`, `issue_comment`, `pull_request`, `pull_request_review`. `agent:start` zeigt den Stand im Abschnitt „Webhook (speist denselben Ablauf)“; fehlt der Hook, nennt der Start den Anlegebefehl und die fehlende Berechtigung (`administration: write`, klassisch `admin:repo_hook`).
+
+Beleg 2026-11-16: `GET /repos/vannon091118/rigged-by-design/hooks` → `[]`, `POST` derselben Route → HTTP 403 `Resource not accessible by personal access token`. Empfänger, Signaturprüfung und Tests sind fertig; der Hook selbst braucht einen Token mit Hook-Rechten und eine öffentlich erreichbare HTTPS-URL.
+
 ## Rollen
 
 - **Worker:** `agent:start --brief` → freies Issue claimen → Branch → `verify:fast` → Push + PR → `RELEASE`.
