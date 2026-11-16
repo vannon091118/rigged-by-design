@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T17:05Z-log-and-contract-closure",
+  "contributionId": "log-and-contract-closure",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt prüfte seine zwei Listen noch einmal: die eine zählte jeden Zettel im Haus, auch den im hintersten Verschlag, die andere schrieb nur dann mit, wenn wirklich etwas zerbrach — und die Bruchstelle stand ganz oben.",
+  "directives": []
+}

@@ -8,6 +8,9 @@
  * roter Befund und der naechste Befehl ueberleben, und der gekuerzte Bericht
  * nennt das vollstaendige Log.
  */
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { budgetText, logsEnabled, estimateTokens, TOKEN_BUDGET } from '../../../../scripts/lib/compact.mjs';
 
@@ -43,13 +46,21 @@ describe('Ausgabe-Budget der Agenten-Werkzeuge', () => {
   });
 
   it('haelt die Obergrenze und behaelt Status, Befund und naechsten Befehl', () => {
-    const out = budgetText(REPORT, { label: 'verify', logPath: '.verify-cache/output/verify.log' });
+    const logPath = join(mkdtempSync(join(tmpdir(), 'rbd-budget-')), 'verify.log');
+    writeFileSync(logPath, REPORT, 'utf8');
+    const out = budgetText(REPORT, { label: 'verify', logPath });
     expect(estimateTokens(out)).toBeLessThanOrEqual(TOKEN_BUDGET);
     expect(out).toContain('ERR-4028');
     expect(out).toContain('PASS');
     expect(out).toContain('pnpm run sync-generated');
     expect(out).toContain('Gate(s) rot');
-    expect(out).toContain('.verify-cache/output/verify.log');
+    expect(out).toContain(logPath);
+  });
+
+  it('verweist nicht auf einen Logpfad ohne Datei', () => {
+    const out = budgetText(REPORT, { label: 'verify', logPath: join(tmpdir(), 'rbd-gibt-es-nicht.log') });
+    expect(out).toContain('vollstaendig mit --log');
+    expect(out).not.toContain('rbd-gibt-es-nicht.log');
   });
 
   it('nennt die Zahl der ausgelassenen Zeilen', () => {

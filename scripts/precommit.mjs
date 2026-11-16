@@ -59,7 +59,8 @@ function run(name, args = [], env = {}) {
     // steht als erste Zeile, auch wenn der Schritt selbst keinen nennt.
     if (withLog && output.trim() !== '') {
       mkdirSync(dirname(log), { recursive: true });
-      writeFileSync(log, /ERR-\d{4}/.test(output) ? output : `[ERR-4019] precommit ${name}\n${output}`, 'utf8');
+      const code = /(ERR-\d{4})/.exec(output)?.[1] ?? 'ERR-4019';
+      writeFileSync(log, `[${code}] precommit ${name} fehlgeschlagen\n${output}`, 'utf8');
     }
     const tail = output.trim().split('\n').slice(-8).join('\n');
     console.error(`precommit: ${name}: ROT${withLog ? ` (Log: ${log})` : ''}${tail ? `\n${tail}` : ''}`);

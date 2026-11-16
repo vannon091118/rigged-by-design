@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- **Log-Regel lueckenlos belegt.** Fehlschlag ohne `--log` erzeugt 0 Dateien, Fehlschlag mit `--log` genau eine mit `[ERR-…]` in Zeile 1, Erfolg mit `--log` keine; `budgetText` verweist nur auf existierende Logs. Kindprozess-Tests decken alle drei Faelle ab.
+- **Vertraege rekursiv.** `contractIds` liest `docs/contracts/` rekursiv; ein Wegwerf-Vertrag in einem Unterordner wird ohne Tabellenzeile als Gate-Verstoss erkannt (Test plus manueller Lauf), danach entfernt.
 - **Logs nur fuer Fehlschlaege.** `captureConsole`, `precommit`, `ci:local` und `gate-runner` schreiben eine Logdatei nur mit `--log`/`RBD_LOG=1` und nur bei Exit ungleich 0; die erste Zeile traegt einen Error Code (`ERR-4019`, wenn keiner genannt ist). Ein gruener Lauf mit `--log` hinterlaesst keine Datei. `logs-failure-only.test.ts` belegt das mit echten Kindprozessen.
 - **Hook-Abfrage authentifiziert und belegt.** `hookStatus()` nennt `reachable`, `authenticated` und die Token-Quelle (ohne Wert); die Sync-Zeile unterscheidet „erreichbar, aber keine Hooks" von „nicht abfragbar". Der Parser ist gegen eine echte, aufgezeichnete Hooks-Antwort getestet; live liefert das Repo `0 aktiv, authentifiziert via GH_TOKEN`.
 - **Sync-Befehle fragen live.** `board sync`, `docs sync`, `sync deps` und `sync generated` lesen den Repo-Hook-Stand ueber `hookStatus()` bei GitHub und geben genau eine Zeile aus: aktiv, Events, Ziel-URL oder Grund und Anlegebefehl. `sync-live-hooks.test.ts` erzwingt die Abfrage fuer jede Sync-Route (#1000).

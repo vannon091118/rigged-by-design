@@ -13,12 +13,20 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { OWNERS } from './lane-claims.mjs';
 
-/** Alle Vertragsdateien; `README.md` ist der Index, kein Vertrag. */
+/**
+ * Alle Vertragsdateien, rekursiv; `README.md` ist der Index, kein Vertrag.
+ * Die ID ist der Pfad unter `docs/contracts/` ohne `.md` — ein Vertrag in
+ * einem Unterordner heisst `unterordner/name` und braucht dieselbe Zeile
+ * in der Tabelle. Kein Ordner ist ausgenommen.
+ */
 export function contractIds(root) {
-  return readdirSync(join(root, 'docs', 'contracts'))
-    .filter((name) => name.endsWith('.md') && name !== 'README.md')
-    .map((name) => name.slice(0, -'.md'.length))
-    .sort();
+  const base = join(root, 'docs', 'contracts');
+  const walk = (dir, prefix = '') => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.isDirectory()) return walk(join(dir, entry.name), `${prefix}${entry.name}/`);
+    if (!entry.name.endsWith('.md') || entry.name === 'README.md') return [];
+    return [`${prefix}${entry.name.slice(0, -'.md'.length)}`];
+  });
+  return walk(base).sort();
 }
 
 /** Die Zeilen der Vertragstabelle: id, owner, writer, test. */
@@ -28,7 +36,7 @@ export function parseIndex(markdown) {
   for (const line of String(markdown ?? '').split('\n')) {
     const cells = line.split('|').slice(1, -1).map((entry) => entry.trim());
     if (cells.length !== 5) continue;
-    const link = cells[0].match(/^\[`([a-z0-9-]+)`\]\(([a-z0-9-]+)\.md\)$/);
+    const link = cells[0].match(/^\[`([a-z0-9-/]+)`\]\(([a-z0-9-/]+)\.md\)$/);
     if (!link) continue;
     rows.push({ id: link[1], link: link[2], owner: cell(cells[2]), writer: cell(cells[3]), test: cell(cells[4]) });
   }

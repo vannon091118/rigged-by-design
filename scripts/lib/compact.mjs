@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { ROOT } from './report.mjs';
 
@@ -119,7 +119,10 @@ const HARD_LINE = /(ERR-\d|FAIL|ROT|BLOCKIERT)/;
 export function budgetText(value, { label = 'output', logPath = null, limit = TOKEN_BUDGET } = {}) {
   const raw = String(value ?? '').replace(/\r\n/g, '\n');
   const lines = raw.split('\n').filter((entry) => entry.trim() !== '');
-  const footer = logPath ? `vollstaendig: ${logPath}` : `vollstaendig mit ${LOG_FLAG}`;
+  // Ein Pfad ist nur dann ein Verweis, wenn die Datei existiert: sonst
+  // behauptet die Antwort ein Log, das niemand geschrieben hat.
+  const file = logPath && existsSync(logPath) ? logPath : null;
+  const footer = file ? `vollstaendig: ${file}` : `vollstaendig mit ${LOG_FLAG}`;
   if (lines.length === 0) return `${label}: keine Ausgabe\n${footer}`;
   if (estimateTokens(raw) <= limit) return raw.replace(/\s+$/, '');
   const header = clip(lines[0], 160);
@@ -203,7 +206,10 @@ export function captureConsole({ label, logPath = null, enabled = true } = {}) {
     // Lauf hinterlaesst keine Datei, auch nicht mit --log.
     const failed = code !== 0;
     const path = withLog && failed ? (logPath ?? budgetLogPath(label)) : null;
-    const coded = failed && !/ERR-\d{4}/.test(full) ? `[ERR-4019] ${label} fehlgeschlagen\n${full}` : full;
+    // Zeile 1 traegt den Code, auch wenn er im Body schon vorkommt: der
+    // erste Blick soll die Klassifikation zeigen, nicht die Stelle suchen.
+    const errCode = /(ERR-\d{4})/.exec(full)?.[1] ?? 'ERR-4019';
+    const coded = failed ? `[${errCode}] ${label} fehlgeschlagen\n${full}` : full;
     if (path) {
       try {
         mkdirSync(dirname(path), { recursive: true });
