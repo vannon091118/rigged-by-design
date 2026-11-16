@@ -4864,6 +4864,10 @@
     {
       "turnId": "2026-11-16T17:45Z-register-closeout",
       "contributionId": "register-closeout"
+    },
+    {
+      "turnId": "2026-11-16T19:10Z-merge-gate",
+      "contributionId": "merge-gate"
     }
   ]
 }

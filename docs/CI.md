@@ -76,6 +76,13 @@ Es gibt keine Workflows mehr (FREEZE-0, Abschnitt 7.2). PR-Eröffnung, Branch-Cl
 - Force-Push und Löschen verboten
 - keine Rulesets
 
+Der Schutz ist live nachpruefbar: `node scripts/verify-merge-gate.mjs`
+(`pnpm rbd verify merge-gate`) liest Branch-Protection und Rulesets ueber REST
+und ist gruen, wenn Pull-Request-Zwang, `enforce_admins` und blockierte
+Force-Pushes/Loeschungen belegt sind; fehlende Status-Checks nennt es als
+Befund (FREEZE-0), nicht als Verstoss. Beleg der Messung:
+`docs/evidence/github-branch-protection-main-2026-11-16.json`.
+
 Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, Review und anschließend ein bewusster Merge durch den Maintainer. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
 
 ## Nachweise

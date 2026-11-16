@@ -243,6 +243,18 @@ if (kind === 'issue-view') {
     body: { body: String(params.body ?? '') },
   });
   payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
+} else if (kind === 'protection') {
+  // Klassischer Branch-Schutz. Antwort enthaelt keine Geheimnisse.
+  const branch = String(params.branch ?? 'main');
+  try {
+    payload = await json(`/branches/${encodeURIComponent(branch)}/protection`);
+  } catch (error) {
+    const message = String(error?.message ?? error);
+    if (/404/.test(message)) payload = { present: false, branch, error: 'HTTP 404' };
+    else throw error;
+  }
+} else if (kind === 'rulesets') {
+  payload = await json('/rulesets');
 } else if (kind === 'hooks') {
   // Nur lesbare Felder: das Secret legt GitHub nie offen.
   const hooks = await json('/hooks?per_page=100');

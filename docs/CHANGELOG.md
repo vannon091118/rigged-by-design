@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **Merge-Gate live pruefbar.** `verify:merge-gate` liest Branch-Protection und Rulesets ueber REST: gruen nur mit Pull-Request-Zwang, `enforce_admins`, blockierten Force-Pushes und Loeschungen; fehlende Status-Checks erscheinen als Befund. Live gemessen: `GRUEN · main ist serverseitig geschuetzt` (Reviews 0, Checks keine, Rulesets 0), Beleg in `docs/evidence/`.
 - **Register auf main nachgezogen.** `reconcile-claims --apply` hat die nach den Merges #999/#1001/#1003/#1005/#1007/#1009 offenen bzw. veralteten Claims belegt geschlossen (`merged` mit PR-/SHA-Beleg, Tasks `DONE`) und die Retention ausgefuehrt; `reconcile-claims --check` meldet danach `keine Abweichung`.
 - **Log-Regel lueckenlos belegt.** Fehlschlag ohne `--log` erzeugt 0 Dateien, Fehlschlag mit `--log` genau eine mit `[ERR-…]` in Zeile 1, Erfolg mit `--log` keine; `budgetText` verweist nur auf existierende Logs. Kindprozess-Tests decken alle drei Faelle ab.
 - **Vertraege rekursiv.** `contractIds` liest `docs/contracts/` rekursiv; ein Wegwerf-Vertrag in einem Unterordner wird ohne Tabellenzeile als Gate-Verstoss erkannt (Test plus manueller Lauf), danach entfernt.

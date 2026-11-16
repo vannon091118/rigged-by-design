@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-merge-gate",
+  "claimId": "lane/governance/merge-gate",
+  "branch": "lane/governance/merge-gate",
+  "baseSha": "3ea4eae0ff79b712274923912fd5ee8762264cf7",
+  "phase": "IMPLEMENTING",
+  "title": "Merge-Gate serverseitig pruefbar",
+  "goal": "verify:merge-gate liest Branch-Protection/Rulesets live und ist gruen nur mit wirksamem Schutz. Issue #1013.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

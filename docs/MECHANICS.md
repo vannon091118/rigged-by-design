@@ -169,7 +169,7 @@ Es gibt keinen Workflow mehr: die Board-Übersicht erzeugt der Maintainer bei Be
 - **Frischer Klon ohne Env-Credentials:** endet mit **einem** Blocker, der die Variable nennt — `export GH_TOKEN=<token>`. Geprueft: `GH_TOKEN -> GITHUB_TOKEN -> githubPAT -> GITHUB_PAT -> GH_PAT -> RBD_GH_TOKEN -> gh auth token -> git-credential-helper`.
 - **Live-Board-Lauf mit Environment-Token (2026-11-16):** `pnpm rbd agent start --brief` liest Board, Claims und offene PRs und nennt genau eine naechste Aktion; der Push auf einen Lane-Branch lief ohne Login durch.
 - **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
-- **Nicht herstellbar:** ein serverseitiger Merge-Schutz als Ruleset bzw. Required-Check — dafuer fehlen Admin-/App-Rechte, und ohne Actions gibt es keinen Job, der ihn setzt.
+- **Serverseitiger Schutz, gemessen (2026-11-16):** die klassische Branch-Protection fuer `main` ist mit `GH_TOKEN` lesbar — Pull-Request-Zwang, `enforce_admins: true`, Force-Push und Loeschen blockiert; Rulesets: keine; Required-Checks: keine (FREEZE-0). Ein direkter Push auf `main` wurde live mit `Changes must be made through a pull request` abgewiesen. `verify:merge-gate` wiederholt die Messung und wird rot, wenn der Schutz fehlt. Ein Ruleset bzw. Required-Check bleibt nicht herstellbar: ohne Actions gibt es keinen Job, der ihn setzt.
 
 ## Ein Befehl, dann Arbeit
 
