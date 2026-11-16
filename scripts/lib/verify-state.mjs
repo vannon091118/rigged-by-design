@@ -13,8 +13,11 @@
  *   unbekanntes State-File blockiert nie einen Lauf; es wird ersetzt.
  * - `agent-context.json`, Logs und Berichte bleiben eigene Dateien: sie sind
  *   Ausgaben, kein Zustand. Nur ihr Pfad kommt aus diesem Modul.
- * - Schreiben ist atomar (temp + rename). Zwei Prozesse, die gleichzeitig
- *   schreiben, verlieren hoechstens einen Cache-Eintrag, nie die Datei.
+ * - Schreiben ist atomar (temp + rename) und wird von einer Sperrdatei
+ *   umschlossen: Zwei Prozesse, die gleichzeitig verschiedene Abschnitte
+ *   schreiben, verlieren keine Eintraege.
+ * - Die Sperre ist Komfort, kein Blocker: Wer sie nicht bekommt, schreibt
+ *   wie bisher, statt den Lauf anzuhalten.
  * - Zeit ist Infrastrukturzeit (TTL, Logs). Spielcode bleibt unberuehrt.
  */
 import {
@@ -45,6 +48,13 @@ const LEGACY = Object.freeze({
 
 export const stateDir = (root = ROOT) => join(root, STATE_DIR);
 export const statePath = (root = ROOT) => join(stateDir(root), 'state.json');
+export const stateLockPath = (root = ROOT) => join(stateDir(root), 'state.lock');
+/** Wartezeit auf die Sperre; danach schreibt der Aufrufer ohne sie weiter. */
+const LOCK_TIMEOUT_MS = 2_000;
+/** Eine Sperre ohne Fortschritt gilt nach dieser Zeit als verwaist. */
+const LOCK_STALE_MS = 10_000;
+const LOCK_POLL_MS = 2;
+let lockDepth = 0;
 export const contextViewPath = (root = ROOT) => join(stateDir(root), 'agent-context.json');
 export const logsDir = (root = ROOT) => join(stateDir(root), 'output');
 export const reportsDir = ({ root = ROOT, stamp = null } = {}) => {
@@ -65,6 +75,63 @@ export const logFilePath = (label, { root = ROOT, stamp = null } = {}) => {
  * Determinismus-Regel (wie `gate-cache.mjs`).
  */
 export const stateStamp = () => new Date().getTime();
+
+/** Synchrones Warten ohne Busy-Loop; die Sperre wird nur Millisekunden gehalten. */
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+/** Sperrverzeichnis atomar anlegen, verwaiste Sperren raeumen, sonst `null`. */
+function acquireLock(root) {
+  const lock = stateLockPath(root);
+  try {
+    mkdirSync(stateDir(root), { recursive: true });
+  } catch {
+    return null;
+  }
+  const deadline = Date.now() + LOCK_TIMEOUT_MS;
+  for (;;) {
+    try {
+      mkdirSync(lock);
+      return lock;
+    } catch (error) {
+      if (error?.code !== 'EEXIST') return null;
+      try {
+        if (Date.now() - statSync(lock).mtimeMs > LOCK_STALE_MS) {
+          rmSync(lock, { recursive: true, force: true });
+          continue;
+        }
+      } catch {
+        // Die Sperre ist gerade verschwunden; gleich nochmal versuchen.
+      }
+      if (Date.now() >= deadline) return null;
+      sleepSync(LOCK_POLL_MS);
+    }
+  }
+}
+
+/**
+ * Lese-Aendere-Schreibe-Zyklus serialisieren. Rekursiv aufrufbar: Ein bereits
+ * gesperrter Prozess (z. B. `gcVerifyState` -> `migrateLegacy`) tritt direkt ein.
+ * Ohne Sperre laeuft der Aufruf trotzdem; der Cache darf nie einen Lauf halten.
+ */
+export function withStateLock(fn, { root = ROOT } = {}) {
+  if (lockDepth > 0) return fn();
+  const lock = acquireLock(root);
+  if (!lock) return fn();
+  lockDepth += 1;
+  try {
+    return fn();
+  } finally {
+    lockDepth -= 1;
+    try {
+      rmSync(lock, { recursive: true, force: true });
+    } catch {
+      // Bleibt sie liegen, raeumt der naechste Schreiber sie nach der Frist.
+    }
+  }
+}
+
 const isObject = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
 function emptyState() {
@@ -155,6 +222,11 @@ export function migrateLegacy({ root = ROOT } = {}) {
   if (!existsSync(dir)) return { migrated: [], removed: [] };
   const names = readdirSync(dir).filter((name) => name.endsWith('.json'));
   if (names.length === 0) return { migrated: [], removed: [] };
+  // Die Altdateien und der eine neue Zustand muessen zusammen geschrieben werden.
+  return withStateLock(() => migrateLegacyLocked(dir, names, root), { root });
+}
+
+function migrateLegacyLocked(dir, names, root) {
   const state = readRaw(root);
   const migrated = [];
   const removed = [];
@@ -216,28 +288,34 @@ export function readSection(section, { root = ROOT } = {}) {
 
 /** Abschnitt vollstaendig ersetzen. */
 export function setSection(section, value, { root = ROOT } = {}) {
-  const state = touch(readRaw(root), section);
-  state[section] = value ?? null;
-  writeRaw(state, root);
-  return state[section];
+  return withStateLock(() => {
+    const state = touch(readRaw(root), section);
+    state[section] = value ?? null;
+    writeRaw(state, root);
+    return state[section];
+  }, { root });
 }
 
 /** Abschnitt zusammenfuehren; `null` loescht ihn. */
 export function updateSection(section, patch, { root = ROOT } = {}) {
-  const state = readRaw(root);
-  const previous = isObject(state[section]) ? state[section] : {};
-  const next = patch === null ? null : { ...previous, ...(isObject(patch) ? patch : {}) };
-  touch(state, section);
-  state[section] = next;
-  writeRaw(state, root);
-  return next;
+  return withStateLock(() => {
+    const state = readRaw(root);
+    const previous = isObject(state[section]) ? state[section] : {};
+    const next = patch === null ? null : { ...previous, ...(isObject(patch) ? patch : {}) };
+    touch(state, section);
+    state[section] = next;
+    writeRaw(state, root);
+    return next;
+  }, { root });
 }
 
 export function clearSection(section, { root = ROOT } = {}) {
-  const state = touch(readRaw(root), section);
-  state[section] = section === 'task' || section === 'gates' ? {} : null;
-  writeRaw(state, root);
-  return state[section];
+  return withStateLock(() => {
+    const state = touch(readRaw(root), section);
+    state[section] = section === 'task' || section === 'gates' ? {} : null;
+    writeRaw(state, root);
+    return state[section];
+  }, { root });
 }
 
 /** Gate-Cache: ein Eintrag je Gate, Schluessel bleibt Baumhash + Gate-Env. */
@@ -247,22 +325,26 @@ export function readGates({ root = ROOT } = {}) {
 }
 
 export function writeGate(name, record, { root = ROOT } = {}) {
-  const state = readRaw(root);
-  state.gates = { ...(isObject(state.gates) ? state.gates : {}), [name]: record };
-  touch(state, 'gates');
-  writeRaw(state, root);
-  return record;
+  return withStateLock(() => {
+    const state = readRaw(root);
+    state.gates = { ...(isObject(state.gates) ? state.gates : {}), [name]: record };
+    touch(state, 'gates');
+    writeRaw(state, root);
+    return record;
+  }, { root });
 }
 
 export function dropGate(name, { root = ROOT } = {}) {
-  const state = readRaw(root);
-  if (!isObject(state.gates) || !(name in state.gates)) return false;
-  const gates = { ...state.gates };
-  delete gates[name];
-  state.gates = gates;
-  touch(state, 'gates');
-  writeRaw(state, root);
-  return true;
+  return withStateLock(() => {
+    const state = readRaw(root);
+    if (!isObject(state.gates) || !(name in state.gates)) return false;
+    const gates = { ...state.gates };
+    delete gates[name];
+    state.gates = gates;
+    touch(state, 'gates');
+    writeRaw(state, root);
+    return true;
+  }, { root });
 }
 
 /**
@@ -309,7 +391,12 @@ function removeOldEntries(dir, days, now) {
  * Der eine Aufraeumpfad: TTL je Abschnitt, alte Gate-Eintraege, alte Logs und
  * Berichte, liegengebliebene Altdateien. Laeuft im Pretask, nie im Gate.
  */
-export function gcVerifyState({
+export function gcVerifyState(options = {}) {
+  const root = options.root ?? ROOT;
+  return withStateLock(() => gcVerifyStateLocked(options), { root });
+}
+
+function gcVerifyStateLocked({
   root = ROOT,
   now = stateStamp(),
   ttlDays = Number(process.env.RBD_VERIFY_STATE_TTL_DAYS || DEFAULT_TTL_DAYS),
