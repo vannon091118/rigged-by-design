@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { composeNarrative, type ComposeRequest, type ComposedNarrative } from '../index';
-import { NARRATIVE_REGISTRY } from '../registry.generated';
+import { NARRATIVE_FRAGMENTS } from '../index';
 import { VISITOR_RETURN_TEMPLATE } from '../../events/definitions/visitor-return';
 
 const RETURN_REQUEST: ComposeRequest = {
@@ -27,7 +27,7 @@ const slot = (result: ComposedNarrative, id: string) => {
 
 describe('Narrative Runtime Composer (NAR-11) – Fehlerpfade', () => {
   it('weist ungueltige Direktiven zurueck, ohne das Fragment zu verwenden', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
+    const baseline = NARRATIVE_FRAGMENTS.find((entry) => entry.contributionId === 'trigger-context-01');
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const invalid = {
       ...baseline,
@@ -36,7 +36,7 @@ describe('Narrative Runtime Composer (NAR-11) – Fehlerpfade', () => {
     };
     const result = composeNarrative(
       { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] },
-      [invalid, ...(NARRATIVE_REGISTRY as readonly unknown[])],
+      [invalid, ...(NARRATIVE_FRAGMENTS as readonly unknown[])],
     );
     expect(result.rejected).toContainEqual({
       contributionId: 'invalid-directive-01',
@@ -46,7 +46,7 @@ describe('Narrative Runtime Composer (NAR-11) – Fehlerpfade', () => {
   });
 
   it('weist ungueltige Fragmente zurueck und meldet den Grund', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
+    const baseline = NARRATIVE_FRAGMENTS.find((entry) => entry.contributionId === 'trigger-context-01');
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const invalid = { ...baseline, contributionId: 'invalid-text-01', text: '' };
     const result = composeNarrative(

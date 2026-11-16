@@ -16,6 +16,7 @@ import {
 import { explicitScope, scopeChanges } from './lib/staging-scope.mjs';
 import { classifyConflicts } from './lib/generated-files.mjs';
 import { afterTaskState, writeAfterTask } from './task-state.mjs';
+import { clearSection, readSection } from './lib/verify-state.mjs';
 import {
   classifyPaths,
   describeDiff,
@@ -204,18 +205,14 @@ if (!resumePending && !SKIP_AFFECTED) {
   console.log('turn:finish: betroffene schnelle Tests vor dem Versions-Bump');
   // Eine alte Delegationsliste darf einen Turn ohne lange Nachweise nicht
   // faelschlich als "offen" melden.
-  rmSync(resolve(ROOT, '.verify-cache', 'delegated.json'), { force: true });
+  clearSection('delegated');
   const affected = npmRun(['run', 'test:affected']);
   if (affected.status !== 0) {
     fail(1, 'ERR-4026', 'turn:finish', 'betroffene Tests sind rot; kein Commit und kein Push');
     showCause([causeForGate('affected')]);
     process.exit(1);
   }
-  try {
-    delegated = JSON.parse(readFileSync(resolve(ROOT, '.verify-cache', 'delegated.json'), 'utf8')).tests ?? [];
-  } catch {
-    // Keine lange Auswahl ist ein gültiger Zustand.
-  }
+  delegated = readSection('delegated')?.tests ?? [];
   if (delegated.length > 0) {
     console.log(`turn:finish: ${delegated.length} lange Nachweis(e) offen; CI führt sie auf dem PR-Commit aus`);
     for (const test of delegated) console.log(`  offen: ${test}`);

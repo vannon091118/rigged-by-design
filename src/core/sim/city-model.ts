@@ -2,7 +2,7 @@
  * Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug
  * zum Textpool `city-scene`. Keine UI, kein Geld - nur Fortschritt.
  */
-import { NARRATIVE_REGISTRY } from './narrative/composer/registry.generated';
+import { NARRATIVE_FRAGMENTS } from './narrative/composer/index';
 import type { WorldState } from './types';
 import type { ActionDef, CityBranchId, CityLocationId, CityState } from './city-types';
 import { clamp } from './num';
@@ -62,7 +62,7 @@ function fnv(text: string): number {
 }
 
 /** Texte des Stadt-Pools, sortiert nach ID, damit die Auswahl stabil bleibt. */
-const CITY_TEXTS: readonly string[] = NARRATIVE_REGISTRY
+const CITY_TEXTS: readonly string[] = NARRATIVE_FRAGMENTS
   .filter((fragment) => fragment.slot === CITY_SLOT)
   .map((fragment) => fragment.text)
   .sort();
@@ -74,7 +74,7 @@ export function cityText(key: string): string {
 }
 
 /** Texte des Nacht-Pools, ebenfalls stabil sortiert. */
-const NIGHT_TEXTS: readonly string[] = NARRATIVE_REGISTRY
+const NIGHT_TEXTS: readonly string[] = NARRATIVE_FRAGMENTS
   .filter((fragment) => fragment.slot === NIGHT_SLOT)
   .map((fragment) => fragment.text)
   .sort();

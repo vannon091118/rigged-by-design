@@ -7,7 +7,7 @@
  * denselben Satz, ein anderer Gast liest einen anderen.
  */
 import type { Guest, WorldState } from '../types';
-import { NARRATIVE_REGISTRY } from './composer/registry.generated';
+import { NARRATIVE_FRAGMENTS } from './composer/index';
 
 type VoiceBand = 'LOW' | 'MID' | 'HIGH';
 
@@ -43,7 +43,7 @@ function hashOf(value: string): number {
 export function guestVoice(world: WorldState, guest: Guest, reputation = world.reputation): string | null {
   const band = voiceBand(reputation);
   const slot = VOICE_SLOT[band];
-  const candidates = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === slot && fragment.locale === 'de');
+  const candidates = NARRATIVE_FRAGMENTS.filter((fragment) => fragment.slot === slot && fragment.locale === 'de');
   if (candidates.length === 0) return null;
   const key = `${guest.visitorId ?? 0}:${guest.id}:${band}`;
   return candidates[hashOf(key) % candidates.length]?.text ?? null;

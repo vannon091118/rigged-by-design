@@ -2,7 +2,7 @@
 /**
  * Task-Zustand: nach dem Turn ist vor dem naechsten.
  *
- * `.verify-cache/after-task.json` beschreibt den abgeschlossenen lokalen Turn
+ * Der Abschnitt `task.after` in `.verify-cache/state.json` beschreibt den abgeschlossenen lokalen Turn
  * (Branch, HEAD, Basis, Claim, eigene/fremde Pfade, Tests, Gate-Ergebnis,
  * naechste Schritte). `task:pause` friert ihn ein, `pretask --resume` prueft
  * Claim, Branch, Worktree und WIP erneut, `task:complete` akzeptiert nur einen
@@ -12,17 +12,18 @@
  * eine Datei, kein Git-Eingriff.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { scopeChanges } from './lib/staging-scope.mjs';
 import { ROOT } from './lib/report.mjs';
+import { readSection, STATE_FILE, updateSection } from './lib/verify-state.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'task-state' });
 
-export const AFTER_TASK_FILE = '.verify-cache/after-task.json';
-export const TASK_STATE_FILE = '.verify-cache/task-state.json';
+// Beide Namen bleiben als Kompatibilitaetsaliase: der Zustand liegt jetzt in
+// `.verify-cache/state.json` (Abschnitt `task` bzw. `task.after`).
+export const AFTER_TASK_FILE = STATE_FILE;
+export const TASK_STATE_FILE = STATE_FILE;
 export const AFTER_TASK_STATES = Object.freeze(['TESTS_PASSED', 'CI_PENDING']);
 export const TASK_PAUSED = 'TASK_PAUSED';
 export const TASK_COMPLETE = 'TASK_COMPLETE';
@@ -31,7 +32,7 @@ const FULL_SHA = /^[0-9a-f]{40}$/;
 // Ein Prozesszaehler statt jeder Uhr: das Governance-Lint verbietet
 // Kalender- und Wall-Clock-Zeit; ein monotoner Zaehler genuegt dem Zustand.
 let clock = 0; const now = () => String(++clock);
-const afterTaskPath = (root) => join(root, AFTER_TASK_FILE);
+const isObject = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
 /**
  * Nach dem lokalen Turn ist der Baum geprueft, aber noch nicht auf dem Remote:
@@ -82,11 +83,8 @@ export function afterTaskRecord({
 }
 
 export function readAfterTask({ root = ROOT } = {}) {
-  try {
-    return JSON.parse(readFileSync(afterTaskPath(root), 'utf8'));
-  } catch {
-    return null;
-  }
+  const task = readSection('task', { root });
+  return isObject(task.after) ? task.after : null;
 }
 
 /** Atomar schreiben und verschachtelte Bereiche erhalten. */
@@ -100,11 +98,7 @@ export function writeAfterTask(patch, { root = ROOT } = {}) {
     gate: { ...(previous.gate ?? {}), ...(patch.gate ?? {}) },
     updatedAt: now(),
   };
-  const file = afterTaskPath(root);
-  mkdirSync(dirname(file), { recursive: true });
-  const temp = `${file}.new`;
-  writeFileSync(temp, `${JSON.stringify(merged, null, 2)}\n`, 'utf8');
-  renameSync(temp, file);
+  updateSection('task', { after: merged }, { root });
   return merged;
 }
 
@@ -222,12 +216,11 @@ export function completeTask({ runId, root = ROOT, gh = defaultGh, git = default
 
 export function statusReport({ root = ROOT } = {}) {
   const afterTask = readAfterTask({ root });
-  let pretask = null;
-  try {
-    pretask = JSON.parse(readFileSync(join(root, TASK_STATE_FILE), 'utf8'));
-  } catch {
-    // Noch kein Pretask-Lauf ist ein gueltiger Zustand.
-  }
+  const task = readSection('task', { root });
+  // `after` gehoert zum abgeschlossenen Turn, nicht zum Pretask-Bericht.
+  const pretask = isObject(task) && Object.keys(task).some((key) => key !== 'after')
+    ? Object.fromEntries(Object.entries(task).filter(([key]) => key !== 'after'))
+    : null;
   return { state: afterTask?.state ?? pretask?.state ?? 'UNBEKANNT', afterTask, pretask };
 }
 

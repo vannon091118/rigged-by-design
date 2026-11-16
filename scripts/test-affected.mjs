@@ -8,9 +8,9 @@
  * `--include-long` nimmt sie bewusst wieder mit.
  */
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { changedFiles, selectAffectedTests } from './lib/affected-tests.mjs';
+import { setSection, stateStamp } from './lib/verify-state.mjs';
 import { ROOT } from './lib/report.mjs';
 import { partitionByProof, proofClassOf } from './lib/test-catalog.mjs';
 import { captureConsole } from './lib/compact.mjs';
@@ -35,11 +35,12 @@ for (const test of tests) console.log(`  ${test}`);
 if (long.length > 0) {
   // Eine Ausgabe ist keine Delegation: die Liste wird abgelegt und der Bericht
   // nennt den Nachweis als offen, bis `pnpm run ci:long` ihn erbracht hat.
-  mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-  writeFileSync(
-    join(ROOT, '.verify-cache', 'delegated.json'),
-    `${JSON.stringify({ tests: long, proof: long.map(proofClassOf), dispatched: false }, null, 2)}\n`,
-  );
+  setSection('delegated', {
+    tests: long,
+    proof: long.map(proofClassOf),
+    dispatched: false,
+    at: stateStamp(),
+  });
   console.log(`affected: ${long.length} lange Nachweis(e) NICHT lokal ausgefuehrt - Nachweis offen`);
   for (const test of long) console.log(`  ${test} [${proofClassOf(test)}]`);
   console.log('affected: der CI-Plan fuehrt sie auf dem PR-Commit aus; manuell: `pnpm run ci:long` (startet Actions und wartet)');

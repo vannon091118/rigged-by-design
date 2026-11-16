@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a4e0b98e50d458878e62adecec273ba319b6e4c7a2a4c5a4052106aea0290995",
+  "contentHash": "sha256:aa9820fb8b0bb51b6259a424882afd0bf17aeea8eb7149e74287a44ab97fb6a7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25324,6 +25324,28 @@
       "source": "content/narrative/contributions/2026-11-16-register-closeout.json"
     },
     {
+      "contributionId": "registry-boundary-01",
+      "turnId": "2026-11-16T23:06Z-registry-boundary-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Archiv gibt es jetzt nur noch eine Tuer zur Regalwand. Wer einen Satz braucht, klopft dort an und bekommt ihn gereicht; wer an der Wand selbst zieht, wird an der Schwelle abgewiesen. Die Regale duerfen sich fuellen, ohne dass draussen jemand mit umzieht - und die Tuer merkt sich, wer sie benutzt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-registry-boundary.json"
+    },
+    {
       "contributionId": "relationship-standing-01",
       "turnId": "2026-11-08T03:55Z-relationship-standing",
       "agentId": "buffy",
@@ -27021,6 +27043,28 @@
       "text": "Drei Türen, die lange klemmten, schließen jetzt leise: Das Geld stimmt, die Namen stimmen, und niemand muss mehr erklären, warum. Wer nachsieht, findet die Stadt genau so vor, wie sie beschrieben wurde.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-verify-gates.json"
+    },
+    {
+      "contributionId": "verify-state-01",
+      "turnId": "2026-11-16T22:58Z-verify-state",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-verify-state.json"
     },
     {
       "contributionId": "warm-return-body-01",
