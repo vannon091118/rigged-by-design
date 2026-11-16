@@ -1,3 +1,7 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { ROOT } from './report.mjs';
+
 /**
  * Kompakte Werkzeugausgabe: eine Bildschirmseite statt eines Logs.
  *
@@ -78,4 +82,110 @@ export function table(header, rows) {
   const width = Math.max(header[0].length, ...rows.map((row) => String(row[0]).length));
   const line = (cells) => cells.map((cell, index) => (index === 0 ? String(cell).padEnd(width) : String(cell))).join('  ');
   return [line(header), ...rows.map(line)].join('\n');
+}
+
+/**
+ * Token-Budget: die sichtbare Antwort bleibt unter 500 Token.
+ *
+ * Der Vertrag gilt fuer alle Agenten-Werkzeuge (`agent:start`, `agent:pretask`,
+ * Gates, Hooks, `turn:finish`). Gekuerzt wird nur Detail, nie Zustand: Status,
+ * Blocker, Befunde und der naechste Befehl ueberleben, alles andere steht
+ * vollstaendig im Log. `RBD_OUTPUT_FULL=1` hebt die Kappung auf; `--json` ist
+ * Werkzeugformat und wird nie gekappt.
+ */
+export const TOKEN_BUDGET = 500;
+export const FULL_ENV = 'RBD_OUTPUT_FULL';
+
+/** Konservative Obergrenze: deutsche Prosa braucht ~4 Zeichen je Token. */
+export function estimateTokens(value) {
+  return Math.ceil(Buffer.byteLength(String(value ?? ''), 'utf8') / 3);
+}
+
+/** Zeilen, die einen Zustand tragen, ueberleben jede Kuerzung. */
+const KEEP_LINE = /(PASS|FAIL|ROT|GRUEN|GRÜN|GREEN|ERR-\d|BLOCK|READY|REBASE|CONFLICT|SKIP|\[gate\]|BLOCKIERT|status=|ok=|phase=|claim|pnpm run |node scripts\/|--brief|--json|RBD_)/i;
+const HARD_LINE = /(ERR-\d|FAIL|ROT|BLOCKIERT)/;
+
+/** Kuerzt einen Bericht auf das Budget, ohne Zustand zu verlieren. */
+export function budgetText(value, { label = 'output', logPath = null, limit = TOKEN_BUDGET } = {}) {
+  const raw = String(value ?? '').replace(/\r\n/g, '\n');
+  const lines = raw.split('\n').filter((entry) => entry.trim() !== '');
+  const footer = logPath ? `vollstaendig: ${logPath}` : `vollstaendig: ${FULL_ENV}=1`;
+  if (lines.length === 0) return `${label}: keine Ausgabe\n${footer}`;
+  if (estimateTokens(raw) <= limit) return raw.replace(/\s+$/, '');
+  const header = clip(lines[0], 160);
+  const kept = [];
+  const seen = new Set([header]);
+  let hidden = 0;
+  for (const entry of lines.slice(1)) {
+    const trimmed = entry.trim();
+    if (!KEEP_LINE.test(trimmed)) {
+      hidden += 1;
+      continue;
+    }
+    const line = clip(trimmed, 150);
+    if (seen.has(line)) continue;
+    seen.add(line);
+    kept.push(line);
+  }
+  const render = (entries, count) => [header, '', ...entries, '', `… ${count} Zeile(n) gekuerzt · ${footer}`].join('\n');
+  let selected = kept.slice();
+  let count = hidden;
+  while (selected.length > 1 && estimateTokens(render(selected, count)) > limit) {
+    const at = selected.findLastIndex((line) => !HARD_LINE.test(line));
+    if (at <= 0) break;
+    selected = selected.filter((_, index) => index !== at);
+    count += 1;
+  }
+  let out = render(selected, count);
+  if (estimateTokens(out) > limit) out = render(selected.filter((line) => HARD_LINE.test(line)).map((line) => clip(line, 90)), count).slice(0, limit * 3);
+  return out;
+}
+
+/** Vollstaendiges Log neben der gekuerzten Ausgabe. */
+export function budgetLogPath(label) {
+  // Keine Wanduhr (Determinismus-Regel): PID plus monotone Laufzeit reicht,
+  // damit parallele Laeufe nicht dieselbe Logdatei ueberschreiben.
+  const stamp = `${process.pid}-${process.hrtime.bigint().toString(36)}`;
+  return join(ROOT, '.verify-cache', 'output', `${stamp}-${label}.log`);
+}
+
+const CAPTURED = Symbol.for('rbd.outputBudget.capture');
+
+/**
+ * Faengt die Ausgabe eines Werkzeugs ab, legt sie vollstaendig ins Log und
+ * gibt beim Beenden nur den Bericht im Budget aus. Der Flush haengt an
+ * `process.on('exit')`, damit auch ein Abbruch mit `process.exit(1)` gekappt
+ * wird; Exit-Codes bleiben unveraendert.
+ */
+export function captureConsole({ label, logPath = null, enabled = true } = {}) {
+  if (!enabled || process.env[FULL_ENV] === '1' || process[CAPTURED]) return { flush() {} };
+  const stdout = process.stdout.write.bind(process.stdout);
+  const stderr = process.stderr.write.bind(process.stderr);
+  const chunks = [];
+  process.stdout.write = (chunk) => {
+    chunks.push(typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf8'));
+    return true;
+  };
+  process.stderr.write = process.stdout.write;
+  const path = logPath ?? budgetLogPath(label);
+  let done = false;
+  const flush = () => {
+    if (done) return;
+    done = true;
+    process.stdout.write = stdout;
+    process.stderr.write = stderr;
+    const full = chunks.join('');
+    if (full.trim() === '') return;
+    try {
+      mkdirSync(dirname(path), { recursive: true });
+      writeFileSync(path, full, 'utf8');
+    } catch {
+      // Ein nicht schreibbares Log kippt keinen Lauf; der Bericht nennt den Pfad.
+    }
+    const body = budgetText(full, { label, logPath: path });
+    stdout(body.endsWith('\n') ? body : `${body}\n`);
+  };
+  process.on('exit', flush);
+  process[CAPTURED] = true;
+  return { flush };
 }

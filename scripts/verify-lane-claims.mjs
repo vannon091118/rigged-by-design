@@ -27,7 +27,7 @@ import {
 } from './lib/lane-claims.mjs';
 import { filterMergedCollisions } from './lib/claim-evidence.mjs';
 import { generatedOnlyDiff } from './lib/generated-files.mjs';
-import { compact } from './lib/compact.mjs';
+import { captureConsole, compact } from './lib/compact.mjs';
 
 /** Alle Pfade schreiben denselben Vertrag; Befunde bleiben immer sichtbar. */
 function report({ status, headline, facts = [], findings = [], details = [] }) {
@@ -45,6 +45,7 @@ const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'rep
 // Modus waere die Claim-Sperre nur lokal: ein Cloud-Agent ohne Hooks schriebe
 // ausserhalb jeder Allowlist, und niemand saehe es.
 const CI = process.argv.includes('--ci');
+captureConsole({ label: 'verify-claims' });
 const DECLARED_BASE = process.env.BASE_REF ?? 'origin/main';
 // Ohne HEAD_REF prueft der CI-Modus den ausgecheckten Stand. Fuer eine
 // Vorabpruefung aller Lanes von einem Branch aus laesst sich damit die

@@ -2619,3 +2619,17 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 **Umsetzung.** `current` und `comparison` liegen jetzt als WebP (q82, method=6): 9,76 MB → 1,84 MB, rund 17–19 % der PNG-Größe. Die 44 PNG-Originale und die drei alten Bildsätze sind entfernt, Roadmap PR-03 ist damit erledigt. README und Renderplan verweisen auf `.webp`, `.gitattributes` behandelt WebP als binär, die Inventur ist neu erzeugt. Eine Stichprobe der Stadtansicht bleibt lesbar.
 
 **Bewusst nicht getan.** Kein History-Rewrite: die alten PNG-Blobs bleiben in der Git-Historie, ein `filter-repo` mit Force-Push ist ein eigener, destruktiver Vorgang. Musik unter `public/assets/casino/music` (13,1 MB) ist Laufzeit-Asset und braucht für eine Neukodierung die WAV-Master; die 539 PNGs unter `public/` (1,5 MB) sind teils Atlas-Quellen.
+
+## 2026-11-16 — Agenten-Ausgabe auf 500 Token begrenzt (Buffy)
+
+**Ziel.** Jedes Werkzeug, das ein Agent aufruft, soll eine Antwort liefern, die in ein Kontextfenster passt und trotzdem vollstaendig ist — vom Testlauf bis zum naechsten Befehl.
+
+**Befund.** `agent:start` schrieb je nach Board-Lage 20–60 Zeilen, `pretask` einen Block pro Pruefung, der Pre-Commit-Hook eine Zeile je Schritt plus die Ausgabe jedes Kindprozesses. Bei roten Gates stand der Befund zwischen fremden Log-Zeilen; die eigentliche Antwort war damit nicht mehr lesbar.
+
+**Umsetzung.** `scripts/lib/compact.mjs` traegt jetzt das Budget: konservative Schaetzung (Bytes / 3), Kuerzung mit Status-Erhalt (PASS/FAIL/ERR/Blocker/Befund/naechster Befehl ueberleben), Logpfad als letzte Zeile, `RBD_OUTPUT_FULL=1` als bewusste Ausnahme. `captureConsole` kapselt `agent:start`, `pretask`, die Pipeline, `ci:local`, `turn:finish` und beide Claim-/Board-Gates; `precommit` und `ci:local` fahren Kindprozesse ueber Pipes und legen deren Ausgabe unter `.verify-cache/output/` ab. `--json` bleibt unangetastet, Exit-Codes ebenfalls.
+
+**Messung.** `verify:board` 90 Token, `pretask` 447, `agent:start --brief` 487, `verify:light` 467 (jeweils Obergrenze, vorher 1.200–4.000).
+
+**Bewusst nicht getan.** Keine zweite Formatierung neben `compact.mjs`; kein Abschalten von Details ohne Log — die Kuerzung ist immer verlustfrei nachlesbar.
+
+**Pruefungen.** `verify:light` gruen, neuer Test `output-budget.test.ts` deckt Obergrenze, Statuserhalt und Logverweis ab.

@@ -16,6 +16,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 import { executeStep, runGates } from './lib/gate-runner.mjs';
 import { resetTreeKey } from './lib/gate-cache.mjs';
 import { GATES, isFixMode, isProfile, normalizeProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
@@ -25,6 +26,8 @@ import { releaseOwner, sweepOrphans } from './lib/process-sweep.mjs';
 import { installStopHandlers } from './lib/pipeline-stop.mjs';
 
 const argv = process.argv.slice(2);
+// Gate-Bericht bleibt unter 500 Token; jedes Gate-Log liegt daneben.
+captureConsole({ label: 'verify' });
 const profileArg = argv.find((value) => value.startsWith('--profile='));
 // `verify:all` und `--profile=all` sind derselbe Lauf wie `full`; die CI gibt `all` aus.
 const PROFILE = normalizeProfile(profileArg ? profileArg.slice('--profile='.length) : 'full');

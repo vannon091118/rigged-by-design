@@ -40,6 +40,7 @@ import { dispatchRole } from './lib/worker-identity.mjs';
 import { canClaimWork, describeActorPolicy, evaluateWorkState, normalizeActors } from './lib/work-claim.mjs';
 import { readIdentityFile, validateIdentityFile, workspaceHome, workspacePaths } from './lib/workspace-home.mjs';
 import { ROOT } from './lib/report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 import { causeBlock, localCauses } from './agent-cause.mjs';
 import { refreshBase } from './lib/base-refresh.mjs';
 import { parseWorktrees, planCleanup } from './lib/branch-lifecycle.mjs';
@@ -57,6 +58,8 @@ const argv = process.argv.slice(2);
 // `--json` fuer Werkzeuge.
 const brief = argv.includes('--brief');
 const asJson = argv.includes('--json') || brief;
+// Texte bleiben im Budget; `--json` ist Werkzeugformat und vollstaendig.
+captureConsole({ label: 'pretask', enabled: !asJson });
 const wantNew = argv.includes('--new');
 const findingFlag = argv.indexOf('--new-governance-issues');
 const wantResume = argv.includes('--resume');

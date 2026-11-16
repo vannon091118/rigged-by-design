@@ -17,7 +17,7 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "a07952fe22e9f3c4093ff9133d99d24d3b6c5791",
+  "mergedEvidence": "PR #954 (merge_commit_sha 85ed452d, Head lane/governance/archive-integration-2026-11-16)",
   "mergedSha": "85ed452d0ac74680e57fc3a585b8ecf2e7af94ef",
-  "mergedEvidence": "PR #954 (merge_commit_sha 85ed452d, Head lane/governance/archive-integration-2026-11-16)"
+  "createdAt": "a07952fe22e9f3c4093ff9133d99d24d3b6c5791"
 }

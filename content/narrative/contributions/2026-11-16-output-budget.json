@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T11:20Z-output-budget",
+  "contributionId": "output-budget",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt hat einen Zettel ueber den Tresen gehaengt: auf eine Seite passen alle offenen Punkte, der Rest steht im Heft darunter. Wer den Zettel liest, weiss sofort, was klemmt und was als Naechstes zu tun ist; wer nachrechnen will, schlaegt hinten nach.",
+  "directives": []
+}
