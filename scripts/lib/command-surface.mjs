@@ -38,6 +38,7 @@ export const COMMANDS = Object.freeze([
   { group: 'verify', verb: 'fix-all', run: ['scripts/run-pipeline.mjs', '--fix', '--profile=full'], source: ['fix:all'], purpose: 'Alle Gates reparieren und pruefen' },
   { group: 'verify', verb: 'scope', run: ['scripts/verify-scope.mjs'], source: ['verify:scope'], purpose: 'Diff gegen die Claim-Allowlist' },
   { group: 'verify', verb: 'budget', run: ['scripts/verify-output-budget.mjs', '--probe'], source: ['verify:output-budget'], purpose: 'Ausgabe-Budget aller Pflicht-Einstiegspunkte' },
+  { group: 'verify', verb: 'contracts', run: ['scripts/verify-contracts.mjs'], source: ['verify:contracts'], purpose: 'Alle Vertraege: Owner, Writer, Test, Claim-Modus' },
   { group: 'verify', verb: 'docs', run: ['scripts/verify-docs.mjs'], source: ['verify:docs'], purpose: 'Doku-Pflichtgate' },
   { group: 'verify', verb: 'tree', run: ['scripts/verify-tree.mjs'], source: ['verify:tree'], purpose: 'Baum- und Schichtregeln' },
   { group: 'verify', verb: 'redundancy', run: ['scripts/verify-redundancy.mjs'], source: ['verify:redundancy'], purpose: 'Doppelte Wahrheiten' },

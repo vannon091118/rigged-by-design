@@ -105,7 +105,7 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 17 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 12 Light-Gates, 13 mit `affected`. `verify:all` = 17 Required-Gates plus Audit (18 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
+- **CI:** 18 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 13 Light-Gates, 14 mit `affected`. `verify:all` = 18 Required-Gates plus Audit (19 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
 - **Workflows:** keine. `Ensure PR`, `PR Cleanup`, `Promote` und `Board Overview` sind entfernt (FREEZE-0, #684): PR-Anlage und Closeout liegen beim Worker bzw. Maintainer, die Board-Übersicht pflegt der Maintainer-Lauf mit `pnpm run board:overview`. Kein GitHub-Lauf führt Tests, Gates, Builds oder APKs aus.
 - **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten.
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
@@ -130,7 +130,7 @@ deren Aktionen.
 | `pnpm rbd verify light` | Lint, LOC, Typecheck, Doku, Tree, Redundanz, Catalog, Generated. |
 | `pnpm rbd verify scope` | Nur der Diff gegen die Claim-Allowlist. |
 | `pnpm rbd ci local` | Lokaler Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build. |
-| `pnpm rbd verify all` | Lokaler Vollnachweis: 17 Required-Gates plus Audit. |
+| `pnpm rbd verify all` | Lokaler Vollnachweis: 18 Required-Gates plus Audit. |
 | `pnpm rbd test mechanics` | Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie im Regelprofil. |
 | `pnpm rbd turn finish` | Phasenwechsel, Commit, Vertrag und Branch-Push. |
 | `pnpm rbd sync generated` | Inventur, Marker, Registry und Roadmap neu erzeugen. |

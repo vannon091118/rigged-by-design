@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/contracts-enforcement",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/contracts-enforcement",
+  "baseSha": "9b2458f95bb34cd647822387d6246d32aa0f04bb",
+  "issue": 1000,
+  "task": "Vertragseinhaltung global und mechanisch erzwingen",
+  "pathAllowlist": [
+    "scripts/",
+    "package.json",
+    "src/core/governance/__tests__/",
+    "docs/contracts/README.md",
+    "docs/CI.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "AGENTS.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9b2458f95bb34cd647822387d6246d32aa0f04bb"
+}

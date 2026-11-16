@@ -33,6 +33,7 @@ export const ENTRY_POINTS = Object.freeze([
   { id: 'verify:scope', file: 'scripts/verify-scope.mjs', phase: 'commit', why: 'Diff gegen die Claim-Allowlist.', json: false, probe: [] },
   { id: 'verify:light', file: 'scripts/run-pipeline.mjs', phase: 'verify', why: 'Der Standard-Gate-Lauf waehrend der Arbeit.', json: false, probe: ['--profile=light'] },
   { id: 'ci:local', file: 'scripts/local-ci.mjs', phase: 'verify', why: 'Lokaler Vor-PR-Nachweis.', json: false, probe: ['--profile=mechanics', '--list'] },
+  { id: 'verify:contracts', file: 'scripts/verify-contracts.mjs', phase: 'verify', why: 'Alle Vertraege: Owner, Writer, Test, Claim-Modus.', json: false, dynamic: true, probe: [] },
   { id: 'verify:docs', file: 'scripts/verify-docs.mjs', phase: 'verify', why: 'Doku-Pflichtgate, einzeln aufrufbar.', json: false, dynamic: true, probe: [] },
   { id: 'verify:tree', file: 'scripts/verify-tree.mjs', phase: 'verify', why: 'Baum- und Schichtregeln.', json: false, dynamic: true, probe: [] },
   { id: 'verify:test-placement', file: 'scripts/verify-test-placement.mjs', phase: 'verify', why: 'Testplatzierung.', json: false, dynamic: true, probe: [] },

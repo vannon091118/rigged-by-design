@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-contracts-enforcement",
+  "claimId": "lane/governance/contracts-enforcement",
+  "branch": "lane/governance/contracts-enforcement",
+  "baseSha": "9b2458f95bb34cd647822387d6246d32aa0f04bb",
+  "phase": "IMPLEMENTING",
+  "title": "Vertragseinhaltung global und mechanisch erzwingen",
+  "goal": "Jeder Vertrag aus docs/contracts/ hat Tabellenzeile, Roster-Owner, Writer, existierenden Vertragstest mit @test-target und hoechstens einen schreibenden Claim; das Gate verify:contracts macht jede Luecke rot. Issue #1000.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gate und Tests bauen, Light gruen, PR.",
+  "revision": 1
+}
