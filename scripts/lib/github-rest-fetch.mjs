@@ -178,6 +178,16 @@ if (kind === 'issue-view') {
     body: { body: String(params.body ?? '') },
   });
   payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
+} else if (kind === 'hooks') {
+  // Nur lesbare Felder: das Secret legt GitHub nie offen.
+  const hooks = await api('/hooks?per_page=100');
+  payload = (Array.isArray(hooks) ? hooks : []).map((hook) => ({
+    id: hook.id,
+    active: Boolean(hook.active),
+    events: Array.isArray(hook.events) ? hook.events : [],
+    config: { url: hook?.config?.url ?? '' },
+    last_response: { status: hook?.last_response?.status ?? null },
+  }));
 } else if (kind === 'dispatch') {
   payload = await dispatch();
 } else if (kind === 'pull-for-branch') {

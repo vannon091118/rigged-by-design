@@ -37,12 +37,13 @@ import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
 import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
+import { hookStatus } from './lib/webhook-status.mjs';
 import {
   MERGE_ISSUE,
-  ackCommand,
   activeSessions,
   buildQueue,
   latestPlan,
+  nextAction,
   parseMergeEvents,
   publishCommand,
 } from './lib/merge-queue.mjs';
@@ -330,7 +331,9 @@ function pretaskVerdict() {
   const args = [join(ROOT, 'scripts', 'pretask.mjs'), '--json'];
   // Laufbudget gehoert zum Aufruf, nicht zu einer zweiten Runde: derselbe
   // Befehl nimmt die belegte Zahl aus Flag oder Umgebung mit.
-  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES);
+  // Beim Start sind in diesem Lauf noch keine Governance-Issues geoeffnet:
+  // die belegte Zahl ist 0. Wer eines oeffnet, wiederholt pretask mit der Zahl.
+  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES ?? '0');
   if (budget !== null && budget !== undefined) args.push('--new-governance-issues', String(budget));
   const options = { cwd: ROOT, encoding: 'utf8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] };
   try {
@@ -363,22 +366,30 @@ if (board.ok) {
   } else {
     const events = parseMergeEvents(thread.data?.comments ?? []);
     const plan = latestPlan(events);
-    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha: git(['rev-parse', 'origin/main']) });
-    const ready = queue.filter((row) => row.status === 'READY');
+    const mainSha = git(['rev-parse', 'origin/main']);
+    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha });
+    // Ein Zustand, ein Befehl: auch die leere Queue hat genau eine Aktion.
+    const action = nextAction({ plan, queue, events, session: agent, role: 'worker', mainSha });
     mergeQueue = {
-      ok: ready.length > 0,
+      ok: queue.some((row) => row.status === 'READY'),
       issue: MERGE_ISSUE,
       plan: plan ? { revision: plan.revision, hash: plan.hash, mainSha: plan.mainSha, tampered: plan.tampered } : null,
       sessions: activeSessions(events).map((entry) => entry.session),
       queue,
-      nextCommand: ready.length > 0
-        ? `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`
-        : plan ? ackCommand(agent, 'worker') : publishCommand(),
+      state: action.state,
+      text: action.text,
+      nextCommand: action.command,
     };
-    if (!plan) queueSteps.push(`Merge-Queue: keine bestaetigte Revision — \`${publishCommand()}\`, dann je Session \`${ackCommand(agent, 'worker')}\``);
-    else if (ready.length === 0) queueSteps.push(`Merge-Queue HOLD (Plan ${plan.hash}): fehlende ACKs, dann \`${mergeQueue.nextCommand}\``);
+    if (action.state !== 'READY') queueSteps.push(`Merge-Queue ${action.state}: ${action.text} — \`${action.command}\``);
   }
 }
+
+// --- 3c. Webhook: derselbe Ablauf, ausgeloest von GitHub -----------------
+// Der Hook ist kein Extra-Werkzeug: er speist dieselbe Entscheidung. Fehlt er,
+// nennt der Start den Befehl und die fehlende Berechtigung — nicht mehr.
+const webhook = board.ok
+  ? hookStatus({ repo })
+  : { ok: false, hooks: [], active: 0, events: [], url: '', error: 'Board nicht lesbar', step: '' };
 
 // --- 4. Mechaniken: was erzwungen wird, was niemand aufruft --------------
 /**
@@ -542,6 +553,7 @@ if (next) {
 } else if (board.ok) {
   steps.push('Kein freies Issue: Review/Blocker beim Maintainer, keine neue Lane');
 }
+if (!webhook.ok && webhook.step) steps.push(`Webhook: ${webhook.step}`);
 if (mechanics.orphan.length > 0) steps.push('Vergessene Systeme einbinden oder entfernen (siehe Blocker)');
 if (mechanics.unused.length > 0) steps.push(`Ohne Ausfuehrungspfad: ${mechanics.unused.map((entry) => entry.file).join(', ')} — einbinden oder entfernen`);
 if (!policyMissing) steps.push('Nach dem Push: PR ueber `gh pr create` (oder Konnektor) oeffnen und Review anfordern; Board lokal nachziehen mit `pnpm run board:sync`');
@@ -568,6 +580,15 @@ if (asJson) {
     },
     pretask,
     mergeQueue,
+    webhook: {
+      ok: webhook.ok,
+      active: webhook.active,
+      events: webhook.events,
+      url: webhook.url,
+      hooks: webhook.hooks,
+      step: webhook.step,
+      error: webhook.error ?? '',
+    },
     dispatch: dispatch ? { ok: dispatch.ok } : null,
     apkRelevance: apk,
     blockers,
@@ -600,6 +621,11 @@ if (asJson) {
   console.log(pretask.ran
     ? `  Modus ${pretask.mode ?? '?'} · Phase ${pretask.phase ?? '?'} · Claim ${pretask.claimState ?? '?'} · ${(pretask.blockers ?? []).length} Blocker`
     : `  nicht ausgewertet: ${pretask.reason}`);
+  console.log('');
+  console.log('=== Webhook (speist denselben Ablauf) ===');
+  console.log(webhook.ok
+    ? `  aktiv ${webhook.active} · Events ${webhook.events.join(',')} · Ziel ${webhook.url}`
+    : `  ${webhook.step || `nicht lesbar (${webhook.error})`}`);
   console.log('');
   console.log(`=== Merge-Queue (#${MERGE_ISSUE}) ===`);
   console.log(mergeQueue

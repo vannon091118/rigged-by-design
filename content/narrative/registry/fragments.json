@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8a4283f5b578b89e227fdb939ebb78a9ea38f850af6056ad468be54a198baf39",
+  "contentHash": "sha256:1966e58c3914c8b8dae96037c913ca2dd8081164449e20616c321d43277b3695",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10879,6 +10879,28 @@
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
     },
     {
+      "contributionId": "maintainer-913-empty-queue-action",
+      "turnId": "2026-11-16T03:22Z-empty-queue-action",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Aushang schweigt nicht mehr, wenn der Flur leer ist. Statt einer Unterschrift unter nichts steht dort ein Handgriff, der immer passt: nachsehen, ob das Brett noch stimmt. Erst wenn jemand vor der Tür steht, wird wieder bestätigt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-empty-queue-action.json"
+    },
+    {
       "contributionId": "maintainer-913-merge-queue",
       "turnId": "2026-11-16T02:35Z-merge-queue-913-01",
       "agentId": "maintainer",
@@ -10921,6 +10943,28 @@
       "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
+    },
+    {
+      "contributionId": "maintainer-913-webhook-delivery",
+      "turnId": "2026-11-16T05:10Z-webhook-delivery",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Es klingelt jetzt an derselben Tür, an der bisher nur jemand von Hand geklopft hat. Wer läuten darf, weist sich aus; wer es nicht tut, bleibt draußen. Und wer die Klingel noch nicht anschließen durfte, findet am Griff den Zettel mit dem fehlenden Schlüssel statt einer stillen Ausrede.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-webhook-delivery.json"
     },
     {
       "contributionId": "maintainer-937-audit-evidence",

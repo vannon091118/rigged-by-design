@@ -1,0 +1,21 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T05:10Z-webhook-delivery",
+  "contributionId": "maintainer-913-webhook-delivery",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Es klingelt jetzt an derselben Tür, an der bisher nur jemand von Hand geklopft hat. Wer läuten darf, weist sich aus; wer es nicht tut, bleibt draußen. Und wer die Klingel noch nicht anschließen durfte, findet am Griff den Zettel mit dem fehlenden Schlüssel statt einer stillen Ausrede.",
+  "directives": []
+}

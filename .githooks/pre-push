@@ -33,7 +33,7 @@ fi
 # Claim-Gate: derselbe Pruefer wie der Commit, aber gegen den Branch-Diff.
 # Cloud-Agenten ohne Hooks umgehen den Commit; hier sehen sie ihn trotzdem.
 if [ -f scripts/verify-lane-claims.mjs ]; then
-  if ! BASE_REF=origin/main HEAD_REF=HEAD BRANCH="$branch" node scripts/verify-lane-claims.mjs --ci; then
+  if ! HEAD_REF=HEAD BRANCH="$branch" node scripts/verify-lane-claims.mjs --ci; then
     echo "pre-push: Lane-Claim verletzt - Push blockiert (ERR-4019)." >&2
     exit 1
   fi
