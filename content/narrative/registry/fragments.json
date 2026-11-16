@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8cce32ef653c9a18cc71e0228e0c5d408ed33274adaee5f7e2941e2522128312",
+  "contentHash": "sha256:0219005085b7c6d6a879958d67fc21320f496fac894663e0f3af9370d0b81175",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3088,30 +3088,6 @@
       "text": "Am Türrahmen hängt eine Tafel, mit Kreide geschrieben und oft nachgezogen: erst das, was heute nicht warten kann, dann das, was jemand vor die Tür gestellt hat, zuletzt die eigene Liste. Wer sie umstellt, muss sie neu schreiben; zwei Tafeln im Haus hat noch niemand gelesen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-canonical-priorities.json"
-    },
-    {
-      "contributionId": "career-ladders-01",
-      "turnId": "2026-11-15T22:30Z-career-ladders-01",
-      "agentId": "shinon",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Rita streicht die Beförderungsliste mit dem Lineal durch: Wer sauber putzt, schnell serviert und nie fehlt, steigt auf. Wer schlampt, bleibt Reinigungskraft. Kein Geschenk, keine Automatik - nur Leistung zählt.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-career-ladders-01.json"
     },
     {
       "contributionId": "chain-echo-body-01",
@@ -9987,30 +9963,6 @@
       "source": "content/narrative/contributions/2026-11-10-items-und-synergien.json"
     },
     {
-      "contributionId": "job-market-01",
-      "turnId": "2026-11-15T22:35Z-job-market-01",
-      "agentId": "shinon",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Rita klopft an jede Tür im Kiez: Kneipe, Laden, Büro, Werkstatt. Jede hat ein Schild mit offenem Platz, aber nur wer hingeht und arbeitet, bekommt den Lohn. Keine Bewerbung ohne Gang zur Tür, keine Stelle ohne Gebäude.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-job-market-01.json"
-    },
-    {
       "contributionId": "job-market-bookable-01",
       "turnId": "2026-11-14T00:10Z-job-market-bookable",
       "agentId": "local-agent-1",
@@ -10317,8 +10269,8 @@
       "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
     },
     {
-      "contributionId": "liilith-787-esport-roles",
-      "turnId": "2026-11-16T00:12Z-787-esport-roles",
+      "contributionId": "liilith-806-hot-event-score",
+      "turnId": "2026-11-15T22:55Z-806-hot-event-score",
       "agentId": "liilith",
       "role": "BEOBACHTER",
       "locale": "de",
@@ -10328,15 +10280,15 @@
         "start"
       ],
       "tone": "sachlich",
-      "mood": "neutral",
+      "mood": "neugierig",
       "relationship": "neutral",
       "personaRefs": [],
       "flags": [
         "narrativ"
       ],
-      "text": "Der Turnierabend kennt jetzt drei Plätze. Wer zusieht, setzt und hofft. Wer teilnimmt, zahlt seinen Einsatz an der Tür und steht danach selbst am Tisch - die Quote interessiert ihn nicht mehr, nur das Ergebnis. Und wer den Abend ausrichtet, entscheidet vorher, wer gegen wen antritt. Dieselbe Ankündigung, dieselbe Halle, dieselbe Uhr: nur die Rolle entscheidet, was man tun darf.",
+      "text": "Der Lärm im Haus hat jetzt ein Maß. Ein Streit zählt nach seiner Schwere, eine Sabotage nach ihrem Indiz, eine Auszahlung nach ihrem Betrag - und was gestern noch Aufregung war, wird heute Routine, weil die Neuigkeit mit der Wiederholung sinkt. Unter der Schwelle bleibt der Alltag, was er ist: kein Ereignis.",
       "directives": [],
-      "source": "content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json"
+      "source": "content/narrative/contributions/2026-11-15-liilith-806-hot-event-score.json"
     },
     {
       "contributionId": "living-world-foundation-1",
@@ -10770,30 +10722,6 @@
       "text": "Im Hinterzimmer haengt eine Tafel mit allen Knoepfen des Hauses, und neben jedem Knopf steht genau eine Hand, die ihn druecken darf. Ein Lehrling fragte, was passiere, wenn jemand einen Knopf ohne Hand an die Tafel male. Der Hausmeister sagte nur: dann faellt es auf, bevor ein Gast sich wundert. Seitdem ist die Tafel kuerzer als die Geruechte ueber sie.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-menu-action-contract.json"
-    },
-    {
-      "contributionId": "meta-bestand-auflosen-01",
-      "turnId": "2026-11-15T22:40Z-meta-bestand-auflosen-01",
-      "agentId": "shinon",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "documentation"
-      ],
-      "tone": "sachlich",
-      "mood": "neutral",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ"
-      ],
-      "text": "Rita zieht die alten Meta-Karten vom Stapel und legt neue Stadtgeschichten darauf: Jeder entfernte Block wird durch einen lebendigen Text ersetzt, kein Pool schrumpft, jede Geschichte hat ihren Ort im Spiel.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-15-meta-bestand-auflosen-01.json"
     },
     {
       "contributionId": "mod-engine-01",
