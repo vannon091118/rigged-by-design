@@ -2732,3 +2732,9 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** Merge-Gate `GRUEN` (PR-Zwang, Admins gebunden, Force-Push/Loeschen blockiert, Checks/Rulesets keine), `drift: []`, `reconcile-claims: keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, 0 offene PRs, keine offene #987 und kein veralteter Kopf-Hash.
 
+## 2026-11-16 — Snapshot-Prosa ohne alten Kopf-SHA (Buffy)
+
+**Befund.** Der Snapshot-Kopf folgt der Closeout-Relation `head == main^`, die Summary nannte aber den vorherigen main-SHA als „main <sha>“ — nach dem naechsten Merge las sich das wie ein veralteter Stand.
+
+**Umsetzung.** Summary und Health-Notiz nennen keinen SHA mehr, sondern die Relation selbst; der Kopf bleibt der gemergte Stand. `sync-board-state --check` und `reconcile-claims --check` bleiben gruen.
+
