@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 442 Dateien — contract 229 · integration 120 · governance 80 · statistics 6 · performance 7.
+Summe: 443 Dateien — contract 229 · integration 121 · governance 80 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -480,6 +480,7 @@ Summe: 442 Dateien — contract 229 · integration 120 · governance 80 · stati
 | `src/store/__tests__/city-door-walk.test.ts` | store | integration | ja | `src/store/scene-commands.ts` |
 | `src/store/__tests__/city-exterior-view.test.ts` | store | integration | ja | `src/store/city-exterior-view.ts` |
 | `src/store/__tests__/city-growth-view.test.ts` | store | integration | ja | `src/store/snapshot.ts` |
+| `src/store/__tests__/command-atomicity.test.ts` | store | integration | ja | `src/store/command-guard.ts` |
 | `src/store/__tests__/determinism.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/__tests__/exclusion-command.test.ts` | store | integration | ja | `src/store/game-commands.ts` |
 | `src/store/__tests__/first-evening.test.ts` | store | integration | ja | `src/store/new-game.ts` |
@@ -748,10 +749,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3312 |
-| Gelistete Dateien | 3312 |
+| Getrackte Dateien | 3317 |
+| Gelistete Dateien | 3317 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (113), .lanes (1), artifacts (1), bin (1), content (1226), docs (90), packages (27), public (571), scripts (157), src (1104) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (115), .lanes (1), artifacts (1), bin (1), content (1227), docs (90), packages (27), public (571), scripts (157), src (1106) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -763,12 +764,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 55 Datei(en)
-- `.lane-claims/tasks/` — 54 Datei(en)
+- `.lane-claims/claims/` — 56 Datei(en)
+- `.lane-claims/tasks/` — 55 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1222 Datei(en)
+- `content/narrative/contributions/` — 1223 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -867,8 +868,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
-- `src/store/` — 45 Datei(en)
-- `src/store/__tests__/` — 39 Datei(en)
+- `src/store/` — 46 Datei(en)
+- `src/store/__tests__/` — 40 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 106 Datei(en)
@@ -921,6 +922,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-integrity-issue-975-command-atomicity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 38 Zeilen
@@ -975,6 +977,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/integrity-issue-975-command-atomicity.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
@@ -2198,6 +2201,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-board-closeout-relation.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-board-live-sync.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-16-command-atomicity.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-contracts-gate.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-evidence-final-main.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-freeze-0-code-cleanup.json` — { — gelesen: 17 Zeilen
@@ -2233,8 +2237,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27441 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4893 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27463 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4897 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3945,6 +3949,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/city-door-walk.test.ts` — Ein ferner Tuerklick ist ein Weg, kein Sprung: Der Spieler laeuft zur — gelesen: 63 Zeilen
 - `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
 - `src/store/__tests__/city-growth-view.test.ts` — Die Wachstumssicht ist eine Projektion: `buildView` liest dieselbe — gelesen: 68 Zeilen
+- `src/store/__tests__/command-atomicity.test.ts` — Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger, — gelesen: 127 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 146 Zeilen
@@ -3985,6 +3990,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/city-door-walk.ts` — Der Weg zur Stadtschwelle: ein ferner Tuerklick ist ein Auftrag, kein Sprung. — gelesen: 83 Zeilen
 - `src/store/city-exterior-view.ts` — Eine Exterieur-Ansicht je gespeicherter Stadt. — gelesen: 19 Zeilen
 - `src/store/clothing-tools.ts` — Kleidungskauf als eigener Command: Katalog, Ledger und Garderobe an einer Stelle. — gelesen: 23 Zeilen
+- `src/store/command-guard.ts` — Begrenzte Transaktion fuer einen Store-Command: sichert Welt, Ledger und PRNG — gelesen: 49 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 65 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
@@ -4021,8 +4027,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 177 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
-- `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 170 Zeilen
+- `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 181 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 169 Zeilen
 - `src/store/world-tick.ts` — Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn — gelesen: 67 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 768 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen

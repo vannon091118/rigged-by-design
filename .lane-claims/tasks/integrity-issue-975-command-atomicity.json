@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "taskId": "integrity-issue-975-command-atomicity",
+  "claimId": "lane/integrity/issue-975-command-atomicity",
+  "branch": "lane/integrity/issue-975-command-atomicity",
+  "baseSha": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497",
+  "phase": "CI_PENDING",
+  "title": "Issue #975: Fehlgeschlagene Commands duerfen keine Teilmutationen hinterlassen",
+  "goal": "Welt, Ledger, PRNG, Fact-Queue und Journal bleiben nach einem fehlgeschlagenen Command unveraendert; der Streit-Fact entsteht erst nach einem tatsaechlich gefuehrten Kampf.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Vorbestehend auf main (a30ccd1b): first-evening.test.ts (2) und new-game.test.ts (1) erwarten beim Start keine Gaeste, main spawnt aber bereits einen. Unabhaengig von diesem Diff nachgewiesen (git archive HEAD)."
+    }
+  ],
+  "nextAction": "PR gegen main oeffnen, RELEASE mit SHA melden, Maintainer-Review abwarten.",
+  "revision": 1
+}
