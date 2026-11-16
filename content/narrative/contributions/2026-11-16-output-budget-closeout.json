@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T11:32Z-output-budget-closeout",
+  "contributionId": "output-budget-closeout",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Zettel am Tresen traegt jetzt unten eine Zeile: wann er aufgehaengt wurde und wer ihn abgezeichnet hat. Die eine Seite bleibt die Antwort; das Heft darunter bleibt das Gedaechtnis.",
+  "directives": []
+}
