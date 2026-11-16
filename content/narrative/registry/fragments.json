@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:80452f2526c9a935b74d9a6b6f32046d328540ea1a21947f4d4071b806c79e6d",
+  "contentHash": "sha256:bae55e9101768c253cb9edd275ce63b6e32eb776497a6dddefb89b6a947dd343",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26426,6 +26426,28 @@
       "text": "Die ersten vier Fachrichtungen haben nun eine eigene Stufe: Reinigung weitet den Radius, Service hebt die Gaststimmung, Kartengeben verbessert die Gewinnchance, Reparatur spart alle N-te Ersatzteile. Wer arbeitet, wächst - nur tatsächliche abgeschlossene Handlungen zählen, nicht das bloße Anklicken.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-15-sim-player-skills-learn-by-doing.json"
+    },
+    {
+      "contributionId": "skill-effekt-kartengeben-01",
+      "turnId": "2026-11-16T16:15Z-skill-effekt-kartengeben",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Beim Kartengeben wachsen mit jeder Stufe Gabe und Geduld: Die Stimmung am Tisch steigt, die Gaste warten lieber eine Runde langer, und der Bonus beschrankt sich auf das, was der Tisch wirklich gibt - kein Gewinnchance-Bonus ohne Engine-Wirkung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-skill-effekt-kartengeben.json"
     },
     {
       "contributionId": "slot-discharge-fact-01",

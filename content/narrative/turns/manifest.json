@@ -4858,6 +4858,10 @@
       "contributionId": "logs-failure-only"
     },
     {
+      "turnId": "2026-11-16T16:15Z-skill-effekt-kartengeben",
+      "contributionId": "skill-effekt-kartengeben-01"
+    },
+    {
       "turnId": "2026-11-16T17:05Z-log-and-contract-closure",
       "contributionId": "log-and-contract-closure"
     },
