@@ -8,7 +8,10 @@
  * Aufrufer dieselbe Form bekommen wie von `gh --json`.
  *
  * Bevorzugt wird immer `gh` (kennt Auth und Scopes selbst); REST ist der
- * Fallback. Ohne Token bleibt der Zustand `unknown` — fail-closed, kein Raten.
+ * Fallback. Oeffentliche Daten liest REST auch anonym; ein Token erhoeht nur
+ * das Rate-Limit. Jeder Lesefehler kommt als `unknown` mit Zustand zurueck
+ * (UNKNOWN_RATE_LIMIT, UNKNOWN_AUTH, UNKNOWN_NETWORK, UNKNOWN_PAGINATION) und
+ * darf vom Aufrufer nie als leere Liste weitergereicht werden.
  */
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -29,7 +32,6 @@ export function githubTokenSource(env = process.env) {
 
 /** Ein REST-Aufruf, synchron ueber den Helferprozess. */
 export function rest(kind, params = {}) {
-  if (!githubToken()) return { ok: false, error: 'kein Token (GH_TOKEN oder GITHUB_TOKEN)' };
   const helper = process.env.RBD_REST_SCRIPT || HELPER;
   try {
     const output = execFileSync(process.execPath, [helper, kind, JSON.stringify(params)], {
@@ -37,7 +39,13 @@ export function rest(kind, params = {}) {
       timeout: 20000,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
-    return { ok: true, data: JSON.parse(output) };
+    const parsed = JSON.parse(output);
+    if (parsed && parsed.unknown === true) {
+      const when = parsed.reset ? ` bis ${parsed.reset}` : '';
+      const detail = parsed.detail ? ` (${parsed.detail})` : '';
+      return { ok: false, unknown: true, state: parsed.state, reset: parsed.reset, error: `${parsed.state}${when}${detail}` };
+    }
+    return { ok: true, data: parsed };
   } catch (error) {
     const stderr = String(error?.stderr ?? '').trim().split('\n')[0];
     return { ok: false, error: stderr || (error instanceof Error ? error.message.split('\n')[0] : 'unbekannt') };

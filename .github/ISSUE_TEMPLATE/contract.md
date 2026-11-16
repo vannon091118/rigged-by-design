@@ -59,7 +59,7 @@ Welche Contract-Lanes müssen zuerst gemergt sein? (nach topologischer Reihenfol
 - [ ] Minimalen TypeScript-Stub unter `src/core/contracts/<contract-id>.ts` erstellen
 - [ ] Vertragstest unter `src/core/contracts/__tests__/<contract-id>.test.ts` erstellen
 - [ ] `pnpm run verify:quick` grün
-- [ ] PR gegen `main` erstellen und über `promote.yml` fördern
+- [ ] PR gegen `main` erstellen; der Maintainer reviewed und merged auf dem exakten Kopf
 - [ ] Nach Merge: `agent:context` aktualisieren, Consumer-Lanes benachrichtigen
 
 ---\nLabel: lane, contract\nPhase: 0\nPriorität: P0

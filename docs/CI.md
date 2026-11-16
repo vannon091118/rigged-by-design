@@ -65,14 +65,10 @@ Stand 2026-11-16 liegen vier Workflow-Dateien in `.github/workflows/`; keine fü
 
 | Workflow | Status | Aufgabe |
 | --- | --- | --- |
-| `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
-| `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
-| `promote.yml` | **manuell** | Status anzeigen oder Notausgang `integration`; kein Auto-Merge |
-| `board-overview.yml` | aktiv | pflegt **einen** markierten Übersichtskommentar am Board-Issue #677 (#943) |
 
 ### Board-Overview (#943)
 
-Der Workflow `board-overview.yml` läuft auf Board-Ereignissen (`issues`, `issue_comment`, `pull_request`), manuell und über `repository_dispatch: board-refresh`. Er checkt **nur `main`** aus — PR-Code läuft in diesem Job nie, weil er `issues: write` hält — erzeugt die Übersicht mit `scripts/board-overview.mjs` und aktualisiert genau einen Kommentar mit dem Marker `<!-- rbd:board-overview -->` an Issue #677.
+Es gibt keine Repository-Workflows mehr (FREEZE-0, #684). Die frueheren Aufgaben gehoeren den Laeufen: PR eroeffnet der Worker aus seinem Fork, Closeout und Board-Uebersicht macht der Maintainer aus Live-Daten.
 
 Die Übersicht nennt je Issue Priorität, Phase, Claim-Lage, offenen PR, nächsten Akteur und die Begründung. Sie ersetzt die **Board-Hälfte** von `pretask` (Issues lesen, Reihenfolge, Claims, PR-Lage) und ist deterministisch: die Zeit kommt aus `--at`/`RBD_NOW`, nie aus einer Uhr im Skript. Ein nicht lesbares Board endet mit Exit 2.
 

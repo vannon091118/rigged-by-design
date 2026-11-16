@@ -68,10 +68,30 @@ describe('github-rest', () => {
     expect(restForGhArgs(['issue', 'comment', '1', '--body', 'x'])).toBeNull();
   });
 
-  it('liefert ohne Token einen Fehler statt zu raten', () => {
-    const result = rest('issue-view', { number: 886 });
-    expect(result.ok).toBe(false);
-    expect(String(result.error)).toContain('Token');
+  it('liest oeffentliche Daten ohne Token, statt den Start zu sperren', () => {
+    // FREEZE-0 (#684): kein Pflicht-Token. Der anonyme Pfad ist erlaubt; nur
+    // ein echter Lesefehler wird zum Zustand UNKNOWN und nie zu einer leeren Liste.
+    const parent = mkdtempSync(join(tmpdir(), 'rbd-rest-anon-'));
+    const savedToken = process.env.GH_TOKEN;
+    const savedScript = process.env.RBD_REST_SCRIPT;
+    try {
+      delete process.env.GH_TOKEN;
+      process.env.RBD_REST_SCRIPT = stubHelper(parent, { unknown: true, state: 'UNKNOWN_RATE_LIMIT', status: 403, reset: '2026-11-16T05:00:00Z' });
+      const limited = rest('issue-view', { number: 886 });
+      expect(limited.ok).toBe(false);
+      expect(limited.unknown).toBe(true);
+      expect(limited.state).toBe('UNKNOWN_RATE_LIMIT');
+      expect(limited.error).toContain('UNKNOWN_RATE_LIMIT');
+
+      process.env.RBD_REST_SCRIPT = stubHelper(parent, ISSUE_VIEW);
+      const ok = rest('issue-view', { number: 886 });
+      expect(ok.ok).toBe(true);
+      expect(ok.data.number).toBe(886);
+    } finally {
+      if (savedToken === undefined) delete process.env.GH_TOKEN; else process.env.GH_TOKEN = savedToken;
+      if (savedScript === undefined) delete process.env.RBD_REST_SCRIPT; else process.env.RBD_REST_SCRIPT = savedScript;
+      rmSync(parent, { recursive: true, force: true });
+    }
   });
 
   it('liest ueber den Stub-Helfer dieselbe Form wie gh', () => {

@@ -2,7 +2,7 @@
 /**
  * Post-Merge-Closeout: nach einem Merge den Registerstand nachziehen.
  *
- * Der Workflow `pr-cleanup.yml` ruft dieses Skript nach jedem gemergten PR auf.
+ * Der Maintainer ruft dieses Skript nach jedem gemergten PR auf; einen Workflow gibt es nicht mehr (FREEZE-0).
  * Es sucht den Claim des Heads, setzt ihn auf `merged`, schliesst den Task auf
  * `DONE`, wendet die 10-Task-Retention an und legt fuer die Aenderung einen
  * eigenen Closeout-PR an. Der Closeout-PR traegt `closeout: post-merge`; nur

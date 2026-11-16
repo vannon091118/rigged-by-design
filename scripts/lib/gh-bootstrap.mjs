@@ -8,7 +8,8 @@
  * Abschaltbar mit `RBD_NO_GH_INSTALL=1`; Zielverzeichnis ueber `RBD_GH_DIR`.
  */
 import { execFileSync } from 'node:child_process';
-import { chmodSync, copyFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -36,7 +37,30 @@ export function ghTargetDir() {
   return process.env.RBD_GH_DIR || join(homedir(), '.local', 'bin');
 }
 
-/** Laedt `gh` aus dem offiziellen Release; ein Fehlschlag ist ein Befund. */
+/**
+ * SHA256 einer Datei — die einzige Pruefung, die einen ungepruefte Installation
+ * ausschliesst. Fehlt die Pruefsumme im Release, wird nicht installiert.
+ */
+export function sha256OfFile(path) {
+  return createHash('sha256').update(readFileSync(path)).digest('hex');
+}
+
+/** Erwartete Pruefsumme aus `gh_<version>_checksums.txt`; `null`, wenn nicht belegbar. */
+export function expectedChecksum({ version, file }) {
+  try {
+    const text = execFileSync('curl', ['-fsSL', '--max-time', '60',
+      `https://github.com/cli/cli/releases/download/v${version}/gh_${version}_checksums.txt`], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 65000,
+    });
+    const line = text.split('\n').find((entry) => entry.trim().endsWith(`  ${file}`) || entry.trim().endsWith(` *${file}`));
+    const hash = line ? line.trim().split(/\s+/)[0] : '';
+    return /^[0-9a-f]{64}$/i.test(hash) ? hash.toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Laedt `gh` aus dem offiziellen Release; ohne Pruefsumme wird abgebrochen. */
 export function installGh({ version = process.env.RBD_GH_VERSION || '2.63.2' } = {}) {
   if (process.env.RBD_NO_GH_INSTALL === '1') {
     return { ok: false, skipped: true, reason: 'RBD_NO_GH_INSTALL=1' };
@@ -56,6 +80,14 @@ export function installGh({ version = process.env.RBD_GH_VERSION || '2.63.2' } =
       stdio: ['ignore', 'ignore', 'pipe'],
       timeout: 130000,
     });
+    const expected = expectedChecksum({ version, file });
+    if (!expected) {
+      return { ok: false, verified: false, reason: `keine Pruefsumme fuer ${file} verfuegbar; Installation abgebrochen`, url };
+    }
+    const actual = sha256OfFile(join(work, file));
+    if (actual !== expected) {
+      return { ok: false, verified: false, reason: `Pruefsumme weicht ab (${actual.slice(0, 12)} != ${expected.slice(0, 12)})`, url };
+    }
     execFileSync('tar', ['-xzf', join(work, file), '-C', work], { stdio: 'ignore', timeout: 60000 });
     const source = join(work, `gh_${version}_linux_${arch}`, 'bin', 'gh');
     if (!existsSync(source)) throw new Error(`Archiv enthaelt ${source} nicht`);
@@ -63,7 +95,7 @@ export function installGh({ version = process.env.RBD_GH_VERSION || '2.63.2' } =
     // copy statt rename: /tmp und $HOME koennen auf verschiedenen Dateisystemen liegen.
     copyFileSync(source, target);
     chmodSync(target, 0o755);
-    return { ok: true, path: target, url, version };
+    return { ok: true, verified: true, checksum: expected, path: target, url, version };
   } catch (error) {
     return { ok: false, reason: String(error?.message ?? error).split('\n')[0].slice(0, 160), url };
   } finally {

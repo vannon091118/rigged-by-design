@@ -8,9 +8,13 @@
  *
  *   node github-rest-fetch.mjs <kind> '<json-params>'
  *
- * Token: `GH_TOKEN` oder `GITHUB_TOKEN`. Repo: `RBD_REPO=owner/repo` oder das
- * `origin`-Remote. Ausgabe ist auf die Form von `gh --json` normalisiert, damit
- * die Aufrufer keinen zweiten Codepfad brauchen.
+ * Token: optional (`GH_READ_TOKEN`, sonst die Credential-Kette). Fuer
+ * oeffentliche Daten genuegt der anonyme Zugriff; ein Token erhoeht nur das
+ * Rate-Limit. Repo: `RBD_REPO=owner/repo` oder das `origin`-Remote.
+ *
+ * Fehler sind Zustaende, keine leeren Listen: bei Rate-Limit, Netzfehler oder
+ * abgeschnittener Pagination gibt der Helfer `{unknown:true,state,...}` aus.
+ * Der Aufrufer darf das nie als "0 Treffer" weiterreichen.
  */
 import { execFileSync } from 'node:child_process';
 import { resolveGithubToken } from './credentials.mjs';
@@ -18,11 +22,16 @@ import { resolveGithubToken } from './credentials.mjs';
 const [kind = '', raw = '{}'] = process.argv.slice(2);
 const params = JSON.parse(raw);
 // Dieselbe Aufloesungsstelle wie der Aufrufer; kein zweiter Token-Pfad.
-const token = resolveGithubToken().token;
+const token = String(process.env.GH_READ_TOKEN ?? '').trim() || resolveGithubToken().token;
 
-if (!token) {
-  console.error('REST: keine Credential-Quelle (GH_TOKEN, GITHUB_TOKEN, gh auth token oder git-credential-helper); `gh auth login` ausfuehren');
-  process.exit(2);
+/** Zustand statt Ausnahme: der Aufrufer entscheidet, was UNKNOWN bedeutet. */
+class RestUnknown extends Error {
+  constructor(state, { status = 0, reset = null, detail = '' } = {}) {
+    super(detail || state);
+    this.state = state;
+    this.status = status;
+    this.reset = reset;
+  }
 }
 
 /** `owner/repo` aus Env oder dem origin-Remote. */
@@ -46,23 +55,60 @@ function repoSlug() {
 const slug = repoSlug();
 const base = `https://api.github.com/repos/${slug}`;
 
+function authHeaders() {
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json',
+    'User-Agent': 'rbd-board-gate',
+  };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
+/** Ein GET; Fehler werden zu genau einem Zustand, nie zu einer leeren Liste. */
 async function api(path, { method = 'GET', body } = {}) {
-  const response = await fetch(`${base}${path}`, {
-    method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
-      'User-Agent': 'rbd-board-gate',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  if (!response.ok) {
-    console.error(`REST ${method} ${path}: HTTP ${response.status}`);
-    process.exit(4);
+  let response;
+  try {
+    response = await fetch(`${base}${path}`, {
+      method,
+      headers: authHeaders(),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (error) {
+    throw new RestUnknown('UNKNOWN_NETWORK', { detail: String(error?.message ?? error).slice(0, 160) });
   }
-  return response.json();
+  if (!response.ok) {
+    const remaining = response.headers.get('x-ratelimit-remaining');
+    const reset = response.headers.get('x-ratelimit-reset');
+    // Reset als Epochen-Sekunden: kein Uhrzeit-Zugriff im Determinismus-Pfad.
+    const resetEpoch = reset ? Number(reset) : null;
+    if (response.status === 429 || (response.status === 403 && remaining === '0')) {
+      throw new RestUnknown('UNKNOWN_RATE_LIMIT', { status: response.status, reset: resetEpoch });
+    }
+    if (response.status === 401 || response.status === 403) {
+      throw new RestUnknown('UNKNOWN_AUTH', { status: response.status, reset: resetEpoch });
+    }
+    throw new RestUnknown('UNKNOWN_NETWORK', { status: response.status, reset: resetEpoch, detail: `HTTP ${response.status}` });
+  }
+  return response;
+}
+
+/** Alle Seiten ueber den `Link: rel="next"`-Zeiger; Obergrenze statt Raten. */
+async function paged(path, { maxPages = 20 } = {}) {
+  const rows = [];
+  let next = path.includes('?') ? path : `${path}?per_page=100`;
+  for (let page = 0; page < maxPages; page += 1) {
+    const response = await api(next);
+    const chunk = await response.json();
+    if (!Array.isArray(chunk)) return chunk;
+    rows.push(...chunk);
+    const link = response.headers.get('link') ?? '';
+    const match = /<([^>]+)>;\s*rel="next"/.exec(link);
+    if (!match) return rows;
+    next = match[1].replace(base, '');
+  }
+  throw new RestUnknown('UNKNOWN_PAGINATION', { detail: `mehr als ${maxPages} Seiten` });
 }
 
 const labels = (issue) => (issue.labels ?? []).map((label) => ({ name: typeof label === 'string' ? label : label.name }));
@@ -90,9 +136,10 @@ function issueRow(issue) {
 }
 
 async function issues(query) {
-  const perPage = Math.min(Number(params.limit ?? 100), 100);
-  const rows = await api(`/issues?state=${query.state ?? 'open'}&per_page=${perPage}${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
-  return rows.filter((issue) => !issue.pull_request).map(issueRow);
+  const rows = await paged(`/issues?state=${query.state ?? 'open'}${query.label ? `&labels=${encodeURIComponent(query.label)}` : ''}`);
+  const mapped = rows.filter((issue) => !issue.pull_request).map(issueRow);
+  const limit = Number(params.limit ?? 0);
+  return limit > 0 ? mapped.slice(0, limit) : mapped;
 }
 
 async function pullForBranch() {
@@ -114,8 +161,9 @@ async function pullForBranch() {
 
 /** Offene Pull Requests; der Agenteneinstieg braucht PR-Bezug je Issue. */
 async function pullList() {
-  const rows = await api('/pulls?state=open&per_page=' + Math.min(Number(params.limit ?? 50), 100));
-  return rows.map((pr) => ({
+  const rows = await paged('/pulls?state=open');
+  const limited = rows.slice(0, Number(params.limit ?? 50));
+  return limited.map((pr) => ({
     number: pr.number,
     title: pr.title ?? '',
     headRefName: pr.head?.ref ?? '',
@@ -130,6 +178,7 @@ async function pullList() {
 
 /** Ereignis-Einstieg: loest den Board-Overview-Workflow ohne Server aus. */
 async function dispatch() {
+  if (!token) throw new RestUnknown('UNKNOWN_AUTH', { detail: 'dispatch braucht ein Token' });
   const response = await fetch(`${base}/dispatches`, {
     method: 'POST',
     headers: {
@@ -152,14 +201,15 @@ async function prDetail({ withComments = false } = {}) {
   const pr = await pullForBranch();
   if (!pr) return null;
   if (!withComments) return pr;
-  const comments = await api(`/issues/${pr.number}/comments?per_page=100`);
+  const comments = await paged(`/issues/${pr.number}/comments`);
   return { ...pr, comments: comments.map(comment), statusCheckRollup: [] };
 }
 
+async function run() {
 let payload;
 if (kind === 'issue-view') {
   const issue = await api(`/issues/${Number(params.number)}`);
-  const comments = await api(`/issues/${Number(params.number)}/comments?per_page=100`);
+  const comments = await paged(`/issues/${Number(params.number)}/comments`);
   payload = {
     number: issue.number,
     state: String(issue.state ?? '').toUpperCase(),
@@ -188,5 +238,15 @@ if (kind === 'issue-view') {
   console.error(`REST: unbekannte Abfrage '${kind}'`);
   process.exit(5);
 }
+return payload ?? {};
+}
 
-process.stdout.write(JSON.stringify(payload ?? {}));
+try {
+  process.stdout.write(JSON.stringify(await run()));
+} catch (error) {
+  if (error instanceof RestUnknown) {
+    process.stdout.write(JSON.stringify({ unknown: true, state: error.state, status: error.status, reset: error.reset, detail: error.message }));
+  } else {
+    process.stdout.write(JSON.stringify({ unknown: true, state: 'UNKNOWN_NETWORK', status: 0, reset: null, detail: String(error?.message ?? error).slice(0, 160) }));
+  }
+}

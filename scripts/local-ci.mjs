@@ -58,7 +58,6 @@ if (strict) {
   step('Commit-Nachricht', 'verify-commit-msg.mjs', ['--head']);
   if (existsSync(join(ROOT, '.lane-claims', 'claims'))) step('Lane-Claims', 'verify-lane-claims.mjs', ['--ci']);
   if (existsSync(join(ROOT, '.lane-claims', 'tasks'))) step('Task-Vertrag', 'verify-task-contract.mjs');
-  step('Governance-Freeze', 'verify-governance-freeze.mjs');
   if (process.env.PR_BODY) step('PR-Body', 'verify-pr-body.mjs');
 }
 

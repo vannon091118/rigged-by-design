@@ -1,5 +1,5 @@
 /**
- * @test-target: .github/workflows/ensure-pr.yml
+ * @test-target: scripts/local-ci.mjs
  * @error-code: ERR-4008
  *
  * Local-only: Kein GitHub-Workflow fuehrt Tests, Gates, Builds oder APKs aus.
@@ -12,19 +12,15 @@ import { describe, expect, it } from 'vitest';
 
 const root = process.cwd();
 const workflowDir = resolve(root, '.github', 'workflows');
-const workflowFiles = (): string[] => readdirSync(workflowDir).filter((file) => file.endsWith('.yml')).sort();
+const workflowFiles = (): string[] => (existsSync(workflowDir) ? readdirSync(workflowDir) : []).filter((file) => file.endsWith('.yml') || file.endsWith('.yaml')).sort();
 const localRunner = readFileSync(resolve(root, 'scripts', 'local-ci.mjs'), 'utf8');
 const scripts = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).scripts as Record<string, string>;
 
 describe('Lokale Testlinie statt Cloud-Runner', () => {
-  it('enthaelt keinen Workflow fuer Tests, Build oder APK', () => {
-    const files = workflowFiles();
-    expect(files).toEqual(['ensure-pr.yml', 'pr-cleanup.yml', 'promote.yml']);
-    for (const file of files) {
-      const text = readFileSync(resolve(workflowDir, file), 'utf8');
-      const commands = text.split(/\r?\n/).filter((line) => /^\s*run:/.test(line)).join('\n');
-      expect(commands, `${file} fuehrt noch Tests aus`).not.toMatch(/verify:|pnpm run|android:apk|version-bump/);
-    }
+  it('enthaelt keinen einzigen Workflow mehr', () => {
+    // FREEZE-0 (#684): Repository-Verwaltung ist Aufgabe der Maintainer-/
+    // Worker-Laeufe, nicht von Actions.
+    expect(workflowFiles()).toEqual([]);
     expect(existsSync(resolve(workflowDir, 'ci-verify.yml'))).toBe(false);
     expect(existsSync(resolve(workflowDir, 'long-checks.yml'))).toBe(false);
   });

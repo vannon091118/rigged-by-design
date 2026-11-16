@@ -75,7 +75,7 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Umsetzung:** Claim `lane/governance/claim-cleanup` auf `superseded`, Task-Vertrag auf `DONE`; der Inhalt liegt bereits ueber Lift-Commits auf `main`. Der Branch selbst bleibt bestehen (keine Branch-Loeschung); ein Promote ist ueber den geschlossenen Claim kein gueltiger Closeout mehr. Die Nachsorge-Lane #448-#450 ist mit PR #453 (`19f58db`) ebenfalls auf `merged`/`DONE` nachgezogen. Der verwaisste Branch `lane/governance/precommit-pipeline` bleibt als LOW-002 dokumentiert und wird nicht einzeln manuell geschlossen.
 
-**Pruefungen:** `verify-lane-claims`, `verify-task-contract`, `verify-narrative-blocks`, `verify:docs` und `verify-governance-freeze` lokal; der PR-Lauf prueft den exakten Kopf.
+**Pruefungen:** `verify-lane-claims`, `verify-task-contract`, `verify-narrative-blocks` und `verify:docs` lokal; der PR-Lauf prueft den exakten Kopf.
 
 **Abschluss:** PR #454 wurde auf dem Kopf `74c0c05` mit gruenem `Fail-Closed Gates` geprueft und als `50869ee` nach `main` squash-gemergt. Issue #452 ist geschlossen; der Claim `lane/governance/monitor-closeout-452` steht auf `merged`, der Task-Vertrag auf `DONE`. Der Register-Nachtrag fuehrt den Claim ohne neue Lane-Arbeit nach.
 

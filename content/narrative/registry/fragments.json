@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8a4283f5b578b89e227fdb939ebb78a9ea38f850af6056ad468be54a198baf39",
+  "contentHash": "sha256:c3b29f505076e362fc0d794a2bc3e490f0bf1e1246ab96ea036cde6dac1d1ff7",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10811,6 +10811,28 @@
       "text": "Rita liess die beiden langsamen Pruefungen laenger laufen, ohne ihre Aussage zu veraendern. Was unter Last wartete, musste nicht als Fehler gelten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-main-green-02.json"
+    },
+    {
+      "contributionId": "maintainer-684-freeze-0-code-cleanup",
+      "turnId": "2026-11-16T04:30Z-freeze-0-code-cleanup",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Werkstatt hat jetzt einen ehrlichen Zettel an der Tür: kein Häkchen für eine Prüfung, die niemand ausführt, und kein Werkzeug, das sich selbst aus dem Netz nachlädt, ohne dass jemand nachsieht, was da ankommt. Und wenn das Brett nicht lesbar ist, sagt der Aushang »unbekannt« statt »leer«.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-freeze-0-code-cleanup.json"
     },
     {
       "contributionId": "maintainer-782-start-guest-integration",

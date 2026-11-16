@@ -117,4 +117,4 @@ run('verify-narrative-blocks.mjs', ['--commit', '--pr'], {
 run('verify-docs.mjs');
 run('check-loc.mjs');
 
-console.log('precommit: PASS (Claims, Artefakte, Narrative, Doku, LOC und Freeze geprueft)');
+console.log('precommit: PASS (Claims, Artefakte, Narrative, Doku und LOC geprueft)');
