@@ -1,0 +1,17 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T02:15Z-lane-782-01",
+  "contributionId": "maintainer-782-start-guest-integration",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Am ersten Abend steht jetzt jemand am Empfang. Ein Gast, der hereinkommt, bevor der Spieler etwas aufgebaut hat, und eine Kiste, die noch auf dem Boden steht. Beides ist keine Ankündigung mehr, sondern Zustand: Wer den Raum betritt, findet ihn bewohnt vor.",
+  "directives": []
+}

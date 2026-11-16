@@ -1,0 +1,21 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T02:35Z-merge-queue-913-01",
+  "contributionId": "maintainer-913-merge-queue",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "In der Abstellkammer haengt jetzt eine Reihenfolge, die niemand mehr aus dem Kopf aendert. Jede Zeile traegt eine Nummer, einen Stempel und die Namen derer, die sie bestaetigt haben. Wer vorne steht, kommt durch; wer fehlt, wartet. Und wenn die Liste nicht lesbar ist, wird nicht gemergt, sondern geschwiegen.",
+  "directives": []
+}

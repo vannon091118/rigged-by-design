@@ -95,6 +95,27 @@ Der Ereignis-Workflow `Board Overview` bleibt als reine Repository-Verwaltung be
 - **Kein Actions noetig:** der Beweislauf auf Actions wurde entfernt. Die Kontosperre („The job was not started because your account is locked due to a billing issue.", Annotation am Lauf 43785194697) betrifft den Start nicht mehr.
 - **Nicht geprueft:** ein Live-Board-Lauf mit gueltigem Token in dieser Umgebung — hier gibt es keine Credential-Quelle, und `gh auth login` ist interaktiv.
 
+## Ein Befehl, dann Arbeit
+
+`pnpm run agent:start --brief` ist der einzige Start. Er liest Board, Claims und PRs aus GitHub, **fuehrt pretask im selben Lauf aus** und berechnet die Merge-Queue aus #913. Am Ende steht genau eine naechste Aktion mit Befehl.
+
+| Was | Woher | Blockiert? |
+| --- | --- | --- |
+| Board, Besitz, Review-Lage | Issues, Labels, `CLAIM`/`RELEASE` | ja: fremder Claim oder fehlende Credentials |
+| Arbeitsbaum, Task-Vertrag, Impact, Budget | `scripts/pretask.mjs` (im selben Lauf) | ja: korruptes WIP, ungueltiger Vertrag |
+| Merge-Reihenfolge und ACKs | Ereignisse an #913 | ja: kein Merge ohne bestaetigte Revision |
+
+### Merge-Queue (#913)
+
+`pnpm run merge:queue -- --check` zeigt Position, Status und Grund je offenem PR. Die Queue ist abgeleitet: die Ereignis-Kommentare an #913 sind die Quelle, es gibt keine zweite Liste und keine lokale Queue-Datei.
+
+Ereignisse: `MERGE_SESSION_JOIN role=worker session=s1` · `MERGE_PLAN rev=1 hash=<12> main=<sha>` mit `pr=<nr> head=<sha>`-Zeilen · `MERGE_ACK session=s1 role=worker plan=<12> main=<sha>` · `MERGE_SESSION_LEAVE session=s1`.
+
+- Nur **Position 1** mit ACK **aller** aktiven Sessions ist `READY`; alles andere ist `HOLD` oder `BLOCKED`.
+- Der Plan-Hash bindet Revision, `main`-SHA und die geordnete PR-Liste. Ein ACK gilt nur fuer genau diesen Hash, nur von einer registrierten Session und nur nach dem Plan.
+- `main`-Drift, ein geaenderter PR-Kopf, ein PR ausserhalb des Plans und ein manipulierter Plan blockieren. Ein nicht lesbares Board ist `HOLD`, nie Erfolg.
+- `scripts/promote.mjs` prueft dieselbe Freigabe am Merge-Punkt (`mergeAuthorization`); damit kann kein Skript an der Queue vorbei mergen.
+
 ## Rollen
 
 - **Worker:** `agent:start --brief` → freies Issue claimen → Branch → `verify:fast` → Push + PR → `RELEASE`.

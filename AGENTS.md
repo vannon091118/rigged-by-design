@@ -115,7 +115,8 @@ Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer
 | Befehl | Zweck |
 | --- | --- |
 | `pnpm run agent:start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur `GH_TOKEN`/`GITHUB_TOKEN`, keinen lokalen Zustand. |
-| `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget; ergänzt `agent:start`, ersetzt es nicht. |
+| `pnpm run agent:pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
+| `pnpm run merge:queue -- --check` | Merge-Queue (#913): Plan-Hash, Sessions, ACKs und Reihenfolge; Exit 1 sperrt den Merge und nennt den auflösenden Befehl. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
 | `pnpm run board:sync -- --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
 | `pnpm run claim:register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |

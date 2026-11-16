@@ -36,6 +36,15 @@ import { evaluateIssueClaim, orderBoard } from './lib/issue-claim.mjs';
 import { rest } from './lib/github-rest.mjs';
 import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 import { ensureGh } from './lib/gh-bootstrap.mjs';
+import {
+  MERGE_ISSUE,
+  ackCommand,
+  activeSessions,
+  buildQueue,
+  latestPlan,
+  parseMergeEvents,
+  publishCommand,
+} from './lib/merge-queue.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -272,6 +281,75 @@ if (wantedIssue) {
   notes.push('Kein freies Issue in den gezeigten Zeilen; alle Kandidaten sind besetzt oder warten auf Review.');
 }
 
+// --- 3b. Pretask und Merge-Queue -----------------------------------------
+/**
+ * Pretask gehoert in diesen Lauf: ein Befehl muss reichen. Der Aufruf liefert
+ * denselben Vertrag wie `agent:pretask`; scheitert er, bleibt der Bericht
+ * nutzbar und nennt den Ersatzbefehl, statt zu raten.
+ */
+function summarizePretask(parsed) {
+  const task = parsed?.taskState ?? {};
+  return {
+    mode: parsed?.mode ?? null,
+    claimState: parsed?.claimState ?? null,
+    phase: task.phase ?? null,
+    status: task.status ?? null,
+    blockers: Array.isArray(parsed?.blockers) ? parsed.blockers.slice(0, 3) : [],
+    nextActions: Array.isArray(parsed?.nextActions) ? parsed.nextActions.slice(0, 2) : [],
+  };
+}
+
+function pretaskVerdict() {
+  if (flag('no-pretask')) return { ran: false, reason: '--no-pretask gesetzt' };
+  const args = [join(ROOT, 'scripts', 'pretask.mjs'), '--json'];
+  const options = { cwd: ROOT, encoding: 'utf8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] };
+  try {
+    return { ran: true, ...summarizePretask(JSON.parse(execFileSync(process.execPath, args, options))) };
+  } catch (error) {
+    // pretask meldet Blocker mit Exit 1 und JSON auf stdout — das ist ein Befund.
+    try {
+      return { ran: true, ...summarizePretask(JSON.parse(String(error?.stdout ?? ''))) };
+    } catch {
+      return { ran: false, reason: `pretask nicht auswertbar (${String(error?.message ?? error).split('\n')[0].slice(0, 120)}); Fallback: \`pnpm run agent:pretask --json\`` };
+    }
+  }
+}
+
+const queueSteps = [];
+const pretask = board.ok ? pretaskVerdict() : { ran: false, reason: 'Board nicht lesbar: pretask uebersprungen' };
+if (pretask.ran) {
+  for (const blocker of pretask.blockers ?? []) blockers.push(`${blocker} (aus agent:pretask)`);
+} else if (pretask.reason) {
+  warnings.push(pretask.reason);
+}
+
+// Merge-Queue (#913): die Reihenfolge ist Teil des Starts, kein Extra-Befehl.
+let mergeQueue = null;
+if (board.ok) {
+  const thread = rest('issue-view', { number: MERGE_ISSUE, repo });
+  if (!thread.ok) {
+    mergeQueue = { ok: false, issue: MERGE_ISSUE, plan: null, sessions: [], queue: [], nextCommand: publishCommand(), error: thread.error };
+    warnings.push(`Merge-Queue #${MERGE_ISSUE} nicht lesbar (${thread.error}): Merge bleibt gesperrt (fail-closed)`);
+  } else {
+    const events = parseMergeEvents(thread.data?.comments ?? []);
+    const plan = latestPlan(events);
+    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha: git(['rev-parse', 'origin/main']) });
+    const ready = queue.filter((row) => row.status === 'READY');
+    mergeQueue = {
+      ok: ready.length > 0,
+      issue: MERGE_ISSUE,
+      plan: plan ? { revision: plan.revision, hash: plan.hash, mainSha: plan.mainSha, tampered: plan.tampered } : null,
+      sessions: activeSessions(events).map((entry) => entry.session),
+      queue,
+      nextCommand: ready.length > 0
+        ? `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`
+        : plan ? ackCommand(agent, 'worker') : publishCommand(),
+    };
+    if (!plan) queueSteps.push(`Merge-Queue: keine bestaetigte Revision — \`${publishCommand()}\`, dann je Session \`${ackCommand(agent, 'worker')}\``);
+    else if (ready.length === 0) queueSteps.push(`Merge-Queue HOLD (Plan ${plan.hash}): fehlende ACKs, dann \`${mergeQueue.nextCommand}\``);
+  }
+}
+
 // --- 4. Mechaniken: was erzwungen wird, was niemand aufruft --------------
 /**
  * Status:
@@ -296,7 +374,7 @@ const CONDITIONAL = new Map([
 const IGNORE = new Set(['github-rest-fetch.mjs', 'agent-start.mjs']);
 
 function scanMechanics() {
-  let scripts = [];
+  let scripts;
   try {
     scripts = readdirSync(join(ROOT, 'scripts')).filter((name) => name.endsWith('.mjs')).sort();
   } catch {
@@ -422,11 +500,12 @@ if (wantDispatch) {
 }
 
 // --- 6. Naechste Schritte -------------------------------------------------
-const claimBody = (row) =>
+const claimBody = () =>
   `CLAIM [A1] ${agent} ${at} scope=<pfade> plan=<ein Satz, was dieses Issue erledigt>`;
 const steps = [];
+steps.push(...queueSteps);
 if (next) {
-  steps.push(`CLAIM im Issue setzen: gh issue comment ${next.number} --body "${claimBody(next)}"`);
+  steps.push(`CLAIM im Issue setzen: gh issue comment ${next.number} --body "${claimBody()}"`);
   steps.push(`Lane-Branch: git switch -c fix/${next.number}-<slug> origin/main`);
   steps.push('Arbeit im Claim-Scope; vor dem Push `pnpm run verify:fast`');
   steps.push(`Uebergabe: push + PR gegen main, dann RELEASE [A1] done <sha> am Issue #${next.number}`);
@@ -457,6 +536,8 @@ if (asJson) {
       unused: mechanics.unused,
       orphan: mechanics.orphan,
     },
+    pretask,
+    mergeQueue,
     dispatch: dispatch ? { ok: dispatch.ok } : null,
     apkRelevance: apk,
     blockers,
@@ -484,6 +565,18 @@ if (asJson) {
     const pr = row.pr ? `#${row.pr.number}${row.pr.draft ? ' (draft)' : ''}` : '—';
     console.log(`  | #${row.number} | ${row.priority} | ${row.phase} | ${cell(claimCell(row.claim))} | ${pr} | ${cell(row.nextActor)} | ${cell(row.reasons.join(' · '))} |`);
   }
+  console.log('');
+  console.log('=== Start-Befund (pretask, im selben Lauf) ===');
+  console.log(pretask.ran
+    ? `  Modus ${pretask.mode ?? '?'} · Phase ${pretask.phase ?? '?'} · Claim ${pretask.claimState ?? '?'} · ${(pretask.blockers ?? []).length} Blocker`
+    : `  nicht ausgewertet: ${pretask.reason}`);
+  console.log('');
+  console.log(`=== Merge-Queue (#${MERGE_ISSUE}) ===`);
+  console.log(mergeQueue
+    ? `  Plan ${mergeQueue.plan ? `${mergeQueue.plan.revision} (${mergeQueue.plan.hash})` : 'fehlt'} · Sessions ${mergeQueue.sessions.length} · READY ${mergeQueue.queue.filter((row) => row.status === 'READY').length}`
+    : '  nicht gelesen: Board nicht lesbar');
+  for (const row of mergeQueue?.queue ?? []) console.log(`  ${row.status} #${row.number} (${row.position || '—'}): ${cell(row.reasons.join(' · '))}`);
+  console.log(`  Naechster Befehl: ${mergeQueue?.nextCommand ?? publishCommand()}`);
   console.log('');
   console.log('=== Mechaniken ===');
   for (const entry of mechanics.entries) console.log(`  FLOW   ${entry.id}: ${entry.rule}`);

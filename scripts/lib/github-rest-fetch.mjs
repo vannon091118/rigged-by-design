@@ -161,6 +161,14 @@ if (kind === 'issue-view') {
   payload = await issues({ label: params.label, state: params.state });
 } else if (kind === 'pr-list') {
   payload = await pullList();
+} else if (kind === 'issue-comment') {
+  // Schreibender Zugang fuer die Merge-Queue (#913): derselbe Token-Pfad,
+  // dieselbe Fehlerbehandlung - kein zweiter Weg an GitHub vorbei.
+  const posted = await api(`/issues/${Number(params.number)}/comments`, {
+    method: 'POST',
+    body: { body: String(params.body ?? '') },
+  });
+  payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
 } else if (kind === 'dispatch') {
   payload = await dispatch();
 } else if (kind === 'pull-for-branch') {

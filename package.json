@@ -23,6 +23,7 @@
     "claim:register": "node scripts/claim-register.mjs",
     "claim:hygiene": "node scripts/claim-hygiene.mjs --check",
     "board:sync": "node scripts/sync-board-state.mjs",
+    "merge:queue": "node scripts/merge-queue.mjs",
     "board:overview": "node scripts/board-overview.mjs",
     "webhook:install": "node scripts/install-webhook.mjs",
     "reconcile:claims": "node scripts/reconcile-claims.mjs",
