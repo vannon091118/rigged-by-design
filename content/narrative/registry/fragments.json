@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c98d0d5935218fb649471857c112edb4ffb89af0fee63b10f6c25bd5fb185a2d",
+  "contentHash": "sha256:4241c6d2a6eff36b51cddcb62238cb0fb7bd26cd5b7fdfcde7f2e21e12e867a8",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27109,6 +27109,28 @@
       "text": "Auf dem Schreibtisch der Kanzlei liegt ein einziges Buch, in das alle gleichzeitig schreiben. Bisher strich der spaetere Schreiber durch, was der fruehere gerade eingetragen hatte. Seit heute liegt ein Schluessel daneben: Wer schreibt, haelt ihn, traegt seine Zeile ein und legt ihn zurueck. Wer ihn nicht bekommt, schreibt trotzdem weiter - das Buch darf nie einen Lauf aufhalten, aber es verliert auch keine Zeile mehr.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-17-verify-state-concurrency.json"
+    },
+    {
+      "contributionId": "verify-state-test-time-01",
+      "turnId": "2026-11-17T23:44Z-verify-state-test-time-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Pruefer hatte auf die Uhr im Flur geschaut, um einen alten Eintrag zu datieren. Die Uhr geht in der Kammer nichts an: Wer eine Pruefung schreibt, nimmt ein festes Datum aus dem Buch, sonst aendert sich der Befund mit dem Tageslicht. Also steht dort jetzt eine Zahl, die immer denselben Tag beschreibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-verify-state-test-time.json"
     },
     {
       "contributionId": "warm-return-body-01",
