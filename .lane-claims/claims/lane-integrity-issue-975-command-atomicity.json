@@ -1,0 +1,27 @@
+{
+  "id": "lane/integrity/issue-975-command-atomicity",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/integrity/issue-975-command-atomicity",
+  "baseSha": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497",
+  "issue": 975,
+  "task": "Command-Atomaritaet: begrenzte Transaktion fuer fehlgeschlagene Commands, Facts erst nach echtem Kampf",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-integrity-issue-975-command-atomicity.json",
+    "src/store/command-guard.ts",
+    "src/store/world-store.ts",
+    "src/store/scene-commands.ts",
+    "src/store/venue-commands.ts",
+    "src/store/__tests__/command-atomicity.test.ts",
+    "content/narrative/contributions/**",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497"
+}

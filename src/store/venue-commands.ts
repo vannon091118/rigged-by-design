@@ -80,9 +80,13 @@ export function fightBrawlCmd(world: WorldState, ledger: Ledger, prng: Prng, dis
   if (!isInRange(world.player.position, d, INTERACTION_RADII.DISPUTE)) {
     throw new Error('Zu weit weg. Geh erst zum Streit.');
   }
+  const result = resolveDuel(world, ledger, prng, disputeId);
+  // Der Fact entsteht erst nach einem tatsaechlichen Kampf: GUARD, FAR und NONE
+  // duerfen keinen Spieler-Kampf behaupten, den es nicht gab.
+  const fought = result.outcome === 'WON' || result.outcome === 'LOST';
   const g = d?.guestIds?.[0] ? guestById(world, d.guestIds[0]) : undefined;
-  if (g?.visitorId) emitFact(world, { kind: 'VISITOR_CONFLICT', actorRefs: [actorRefOfVisitor(g.visitorId)], initiator: actorRefOfVisitor(g.visitorId), severity: 2 });
-  return duelNotice(resolveDuel(world, ledger, prng, disputeId), world.lastEvent);
+  if (fought && g?.visitorId) emitFact(world, { kind: 'VISITOR_CONFLICT', actorRefs: [actorRefOfVisitor(g.visitorId)], initiator: actorRefOfVisitor(g.visitorId), severity: 2 });
+  return duelNotice(result, world.lastEvent);
 }
 
 export function spendSkillCmd(world: WorldState, attribute: RpgAttribute): string {

@@ -23,6 +23,6 @@ Die Matrix wird von `scripts/sync-dependency-matrix.mjs` aus `package.json` und 
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 445: `package.json`<br>`src/Config/__tests__/eslint-determinism.test.ts`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>… (+439) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 446: `package.json`<br>`src/Config/__tests__/eslint-determinism.test.ts`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>… (+440) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 1: `scripts/version-bump.mjs` |
 <!-- DEP_MATRIX_END -->

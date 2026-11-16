@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:30f1ae75cf9f632d9ac4d46548bef090d784907b4c779168945c4161a4b4171a",
+  "contentHash": "sha256:f16cd1fe42348feadcc3e9068009a2ddbd64dc1627c224adf65aea25a13cd061",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8257,6 +8257,28 @@
       "text": "Zwei Lanes standen vor derselben Wand, weil beide die regenerierte Wand selbst im Zettel fuehrten. Rita strich die geteilten Blätter aus der Sperre: wer sie ohnehin neu schreibt, sperrt sie nicht fuer den Naechsten. Die eigenen Quellzeilen blieben gesperrt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-collision-scope.json"
+    },
+    {
+      "contributionId": "command-atomicity-01",
+      "turnId": "2026-11-16T18:55Z-command-atomicity",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein abgebrochener Handgriff hinterlaesst keine halbe Buchung: Kasse, Welt und Wuerfel stehen danach genau dort, wo sie vor dem Versuch standen. Nur ein wirklich gefuehrter Kampf wird als Streit erzaehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-command-atomicity.json"
     },
     {
       "contributionId": "command-dsl-01",
