@@ -120,6 +120,20 @@ Ereignisse: `MERGE_SESSION_JOIN role=worker session=s1` · `MERGE_PLAN rev=1 has
 - `main`-Drift, ein geaenderter PR-Kopf, ein PR ausserhalb des Plans und ein manipulierter Plan blockieren. Ein nicht lesbares Board ist `HOLD`, nie Erfolg.
 - `scripts/promote.mjs` prueft dieselbe Freigabe am Merge-Punkt (`mergeAuthorization`); damit kann kein Skript an der Queue vorbei mergen.
 
+### Eine Aktion je Zustand
+
+Die Queue endet nicht mit einem Vorschlag, sondern mit **genau einer** Aktion. Welche das ist, entscheidet der Zustand; die leere Queue ist ein eigener Zustand und nie ein ACK.
+
+| Zustand | Bedingung | Die eine naechste Aktion |
+| --- | --- | --- |
+| `IDLE` | kein offener PR in der Queue | `pnpm run board:sync -- --check` |
+| `PLAN_MISSING` | PR offen, aber kein Plan, `main`-Drift oder manipulierter Plan | `pnpm run merge:queue -- --publish` |
+| `ACK_MISSING` | Plan da, aber keine Session oder ein ACK fehlt | `MERGE_SESSION_JOIN` bzw. `... --ack --session <id>` |
+| `READY` | Position 1 mit ACK aller aktiven Sessions | `gh pr merge <nr> --squash --match-head-commit <sha>` |
+| `WAITING` | ACKs vollstaendig, aber Position > 1 oder Kopf abweichend | `pnpm run merge:queue -- --check` |
+
+`nextAction()` in `scripts/lib/merge-queue.mjs` ist die einzige Stelle, die das entscheidet; CLI und `agent:start` lesen nur noch dieses Ergebnis. Fuenf Faelle sind in `merge-queue.test.ts` festgehalten, darunter „leere Queue bleibt `IDLE`, auch ohne Plan und ohne Session“.
+
 ## Rollen
 
 - **Worker:** `agent:start --brief` → freies Issue claimen → Branch → `verify:fast` → Push + PR → `RELEASE`.

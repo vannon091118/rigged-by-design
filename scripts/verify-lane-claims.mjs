@@ -45,24 +45,11 @@ const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'rep
 // Modus waere die Claim-Sperre nur lokal: ein Cloud-Agent ohne Hooks schriebe
 // ausserhalb jeder Allowlist, und niemand saehe es.
 const CI = process.argv.includes('--ci');
-const BASE_REF = process.env.BASE_REF ?? 'origin/main';
+const DECLARED_BASE = process.env.BASE_REF ?? 'origin/main';
 // Ohne HEAD_REF prueft der CI-Modus den ausgecheckten Stand. Fuer eine
 // Vorabpruefung aller Lanes von einem Branch aus laesst sich damit die
 // Remote-Ref der jeweiligen Lane als Diff-Kopf setzen.
 const HEAD_REF = process.env.HEAD_REF ?? 'HEAD';
-const RANGE = CI ? `${BASE_REF}...${HEAD_REF}` : null;
-
-// Ein Merge bringt fremde Arbeit mit. Bewertet wird nur, was der Branch
-// gegenueber der Basis wirklich selbst hinzufuegt - sonst wuerde jeder Merge
-// von main als Lane-Verstoss gelten und liesse sich nie committen.
-const MERGING = (() => {
-  try {
-    return git(['rev-parse', '-q', '--verify', 'MERGE_HEAD']) !== '';
-  } catch {
-    return false;
-  }
-})();
-const DIFF_BASE = CI ? RANGE : (MERGING ? BASE_REF : null);
 
 const branch = process.env.BRANCH || (CI ? process.env.GITHUB_HEAD_REF : '') || git(['rev-parse', '--abbrev-ref', 'HEAD']);
 
@@ -107,6 +94,42 @@ const claims = allClaims.filter((c) => c.status === 'open');
 const laneClaim = selectClaim(allClaims, branch);
 const claim = laneClaim ?? botClaim(branch);
 const bot = laneClaim === null && claim !== null;
+
+/**
+ * Gestapelte Lanes: der Claim nennt seinen `baseSha`. Er zaehlt nur, wenn er
+ * Vorfahre von HEAD und in einem Remote-Ref enthalten ist (also integriert).
+ * Ohne diese Aufloesung prueft der Gate den ganzen Stapel gegen `main` und
+ * meldet die bereits gemergte Basis als Verstoss — dann waere jede Lane, die
+ * auf einer anderen aufsetzt, unpushbar. Ein ausdrueckliches BASE_REF gewinnt.
+ */
+function stackedBase(declared) {
+  const named = process.env.BASE_REF;
+  if (named) return named;
+  const sha = String(declared?.baseSha ?? '');
+  if (!/^[0-9a-f]{7,40}$/.test(sha)) return DECLARED_BASE;
+  try {
+    git(['merge-base', '--is-ancestor', sha, HEAD_REF]);
+  } catch {
+    return DECLARED_BASE;
+  }
+  const remote = git(['branch', '-r', '--contains', sha]);
+  return remote ? sha : DECLARED_BASE;
+}
+
+const BASE_REF = stackedBase(claim);
+const RANGE = CI ? `${BASE_REF}...${HEAD_REF}` : null;
+
+// Ein Merge bringt fremde Arbeit mit. Bewertet wird nur, was der Branch
+// gegenueber der Basis wirklich selbst hinzufuegt - sonst wuerde jeder Merge
+// von main als Lane-Verstoss gelten und liesse sich nie committen.
+const MERGING = (() => {
+  try {
+    return git(['rev-parse', '-q', '--verify', 'MERGE_HEAD']) !== '';
+  } catch {
+    return false;
+  }
+})();
+const DIFF_BASE = CI ? RANGE : (MERGING ? BASE_REF : null);
 
 /**
  * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz ohne

@@ -39,10 +39,10 @@ import { ensureGh } from './lib/gh-bootstrap.mjs';
 import { readIdentityFile, workspacePaths } from './lib/workspace-home.mjs';
 import {
   MERGE_ISSUE,
-  ackCommand,
   activeSessions,
   buildQueue,
   latestPlan,
+  nextAction,
   parseMergeEvents,
   publishCommand,
 } from './lib/merge-queue.mjs';
@@ -330,7 +330,9 @@ function pretaskVerdict() {
   const args = [join(ROOT, 'scripts', 'pretask.mjs'), '--json'];
   // Laufbudget gehoert zum Aufruf, nicht zu einer zweiten Runde: derselbe
   // Befehl nimmt die belegte Zahl aus Flag oder Umgebung mit.
-  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES);
+  // Beim Start sind in diesem Lauf noch keine Governance-Issues geoeffnet:
+  // die belegte Zahl ist 0. Wer eines oeffnet, wiederholt pretask mit der Zahl.
+  const budget = value('new-governance-issues', process.env.RBD_NEW_GOVERNANCE_ISSUES ?? '0');
   if (budget !== null && budget !== undefined) args.push('--new-governance-issues', String(budget));
   const options = { cwd: ROOT, encoding: 'utf8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] };
   try {
@@ -363,20 +365,21 @@ if (board.ok) {
   } else {
     const events = parseMergeEvents(thread.data?.comments ?? []);
     const plan = latestPlan(events);
-    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha: git(['rev-parse', 'origin/main']) });
-    const ready = queue.filter((row) => row.status === 'READY');
+    const mainSha = git(['rev-parse', 'origin/main']);
+    const queue = buildQueue({ plan, pulls: board.pulls, events, mainSha });
+    // Ein Zustand, ein Befehl: auch die leere Queue hat genau eine Aktion.
+    const action = nextAction({ plan, queue, events, session: agent, role: 'worker', mainSha });
     mergeQueue = {
-      ok: ready.length > 0,
+      ok: queue.some((row) => row.status === 'READY'),
       issue: MERGE_ISSUE,
       plan: plan ? { revision: plan.revision, hash: plan.hash, mainSha: plan.mainSha, tampered: plan.tampered } : null,
       sessions: activeSessions(events).map((entry) => entry.session),
       queue,
-      nextCommand: ready.length > 0
-        ? `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`
-        : plan ? ackCommand(agent, 'worker') : publishCommand(),
+      state: action.state,
+      text: action.text,
+      nextCommand: action.command,
     };
-    if (!plan) queueSteps.push(`Merge-Queue: keine bestaetigte Revision — \`${publishCommand()}\`, dann je Session \`${ackCommand(agent, 'worker')}\``);
-    else if (ready.length === 0) queueSteps.push(`Merge-Queue HOLD (Plan ${plan.hash}): fehlende ACKs, dann \`${mergeQueue.nextCommand}\``);
+    if (action.state !== 'READY') queueSteps.push(`Merge-Queue ${action.state}: ${action.text} — \`${action.command}\``);
   }
 }
 

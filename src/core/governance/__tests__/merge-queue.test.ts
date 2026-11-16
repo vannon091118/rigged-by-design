@@ -9,11 +9,14 @@
 import { describe, expect, it } from 'vitest';
 import {
   MERGE_STATUS,
+  QUEUE_IDLE_COMMAND,
+  QUEUE_STATE,
   activeSessions,
   authorizeMerge,
   buildQueue,
   latestPlan,
   parseMergeEvents,
+  nextAction,
   planBody,
   planDigest,
   validAcks,

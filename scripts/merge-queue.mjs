@@ -21,6 +21,7 @@ import {
   authorizeMerge,
   buildQueue,
   latestPlan,
+  nextAction,
   parseMergeEvents,
   planBody,
   publishCommand,
@@ -121,6 +122,7 @@ if (flag('ack')) {
 }
 
 const queue = buildQueue({ plan, pulls, events, mainSha });
+const action = nextAction({ plan, queue, events, session, role, mainSha });
 const sessions = events.filter((event) => event.kind === 'SESSION_JOIN').length - events.filter((event) => event.kind === 'SESSION_LEAVE').length;
 const ready = queue.filter((row) => row.status === 'READY');
 
@@ -152,9 +154,11 @@ if (asJson) {
     sessions,
     ready: ready.map((row) => row.number),
     queue,
-    nextCommand: plan ? (ready.length > 0 ? `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}` : ackCommand(session, role)) : publishCommand(),
+    state: action.state,
+    nextAction: action.text,
+    nextCommand: action.command,
   }, null, 2));
-  process.exit(ready.length > 0 ? 0 : 1);
+  process.exit(ready.length > 0 || queue.length === 0 ? 0 : 1);
 }
 
 console.log(`merge:queue — ${repo} · #${issue} · main ${mainSha.slice(0, 7)}`);
@@ -166,9 +170,6 @@ console.log('  | --- | --- | --- | --- |');
 const cell = (text) => String(text ?? '').replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
 for (const row of queue) console.log(`  | #${row.number} | ${row.position || '—'} | ${row.status} | ${cell(row.reasons.join(' · '))} |`);
 console.log('');
-if (ready.length > 0) {
-  console.log(`  Naechster Befehl: gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`);
-} else {
-  console.log(`  Naechster Befehl: ${plan ? ackCommand(session, role) : publishCommand()}`);
-}
-process.exit(ready.length > 0 ? 0 : 1);
+console.log(`  Zustand: ${action.state} — ${action.text}`);
+console.log(`  Naechster Befehl: ${action.command}`);
+process.exit(ready.length > 0 || queue.length === 0 ? 0 : 1);
