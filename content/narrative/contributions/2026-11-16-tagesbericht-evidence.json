@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T20:55Z-tagesbericht-evidence",
+  "contributionId": "tagesbericht-evidence",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt heftete den Tageszettel nicht an die Wand, sondern legte die Rechnung daneben: wer nachpruefen wollte, fand jeden Posten und den Weg, ihn selbst zu messen.",
+  "directives": []
+}

@@ -167,6 +167,21 @@ Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 | PR-09 | README-FAQ gegen den Spielstand prüfen | offen | `README.md`, `src/core/sim/__tests__/money-truth.test.ts` | Keine Antwort verspricht Mechanik, die nicht läuft |
 | PR-10 | Bildsprache und Asset-Lizenz belegen | offen | `docs/banners`, `README.md`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Stilregeln und Herkunft der Bilder stehen nachvollziehbar im Repo |
 
+## Offene Entscheidungen (Owner)
+
+Diese Punkte sind bewusst nicht Teil der Repo-Automatik. Sie brauchen eine
+Entscheidung des Owners und werden nicht als erledigt behauptet:
+
+- **Required Status Checks / Rulesets:** keine; es gibt keinen Cloud-Lauf, der
+  sie bedienen koennte (FREEZE-0). Eine Aktivierung ist eine Repo-Admin-Entscheidung
+  und wuerde einen GitHub-Workflow voraussetzen. Beleg: `docs/CI.md`, `docs/MECHANICS.md`.
+- **Merge-Queue:** absichtlich nicht vorhanden; die Integrationsautoritaet liegt
+  bei GitHub (Branch-Schutz, Review) und beim Maintainer. Eine Queue waere eine
+  Repo-Admin-Entscheidung und wird nicht lokal nachgebaut. Beleg: `docs/MECHANICS.md`.
+- **Getrennter Maintainer-Prinzipal:** Worker und Maintainer teilen derzeit einen
+  GitHub-Login; die technische Rollentrennung braucht einen eigenen Maintainer-Login.
+  Beleg: `docs/GOVERNANCE.md` (shared-principal).
+
 ## Referenzen
 
 - [`README.md`](../README.md) — Präsentation des Spiels.

@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **P0-Merge-Gate-Tagesbericht belegt.** Der vollstaendige Lauf aus einem frischen Klon steht in `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md`; `docs/ROADMAP.md` fuehrt Required Checks, Merge-Queue und getrennten Maintainer-Login als benannte Owner-Entscheidungen.
 - **Board-Drift kennt die Closeout-Relation.** `boardDrift` akzeptiert `head == main^` (erster Parent des Merge-Commits) als dokumentierte Selbstreferenz eines Snapshot-Commits; jeder andere Kopf-Drift bleibt rot. Test in `board-state-sync.test.ts`.
 - **Board-State live nachgezogen.** `.lane-claims/board-state.json` steht auf `633dfdf6`, 16 offene Issues, 0 offene PRs; #987 ist nicht mehr als offen gefuehrt, veraltete Summary-/Health-Notizen sind ersetzt. `sync-board-state --check` meldet `drift: []`, `reconcile-claims --check` `keine Abweichung`. Geschlossene P0-Issues (#634, #696, #909, #910, #913, #920) tragen jetzt `zustand-CLOSED` statt widerspruechlicher OPEN/BLOCK-Labels.
 - **Merge-Gate live pruefbar.** `verify:merge-gate` liest Branch-Protection und Rulesets ueber REST: gruen nur mit Pull-Request-Zwang, `enforce_admins`, blockierten Force-Pushes und Loeschungen; fehlende Status-Checks erscheinen als Befund. Live gemessen: `GRUEN · main ist serverseitig geschuetzt` (Reviews 0, Checks keine, Rulesets 0), Beleg in `docs/evidence/`.

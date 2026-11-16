@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/tagesbericht-evidence",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/tagesbericht-evidence",
+  "baseSha": "522b7e388f1b28ffca79254a34de00d26310ee75",
+  "issue": 1022,
+  "task": "Tagesbericht-Beleg und Owner-Entscheidungen",
+  "pathAllowlist": [
+    "docs/",
+    ".lane-claims/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "src/core/governance/__tests__/",
+    "package.json",
+    "scripts/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "522b7e388f1b28ffca79254a34de00d26310ee75"
+}
