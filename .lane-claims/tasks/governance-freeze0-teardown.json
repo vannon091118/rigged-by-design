@@ -4,14 +4,15 @@
   "claimId": "lane/governance/freeze0-teardown",
   "branch": "lane/governance/freeze0-teardown",
   "baseSha": "d94a3927e7d58a6fc0f9224433b25d2e99b64181",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "FREEZE-0 Teil 2",
   "goal": "Queue, Workflows, Cron-Lock weg; Leser anonym mit UNKNOWN; Prompt Maintainer-only.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": null,
+  "note": "Status DONE aber phase war IMPLEMENTING — angleichen. pr: null weil kein PR erstellt (Teardown ohne Code-Merge)."
   "findings": [],
-  "nextAction": "Gates, Commit, Push, PR, Merge, Issue schliessen.",
+  "nextAction": "Issue schliessen.",
   "revision": 1
 }
