@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T06:10Z-governance-queue-claim-rest",
+  "contributionId": "governance-queue-claim-rest",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "In der Abstellkammer hängen noch Zettel, die auf ein Regal zeigen, das längst ausgeräumt ist. Jemand streicht die Zeilen durch, statt sie stehen zu lassen, und lässt nur die Notizen stehen, die von wirklichen Türen erzählen.",
+  "directives": []
+}
