@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:778e419961088b74b7418f4b0b07a854fc76ac4c427f8037bcc42ceb887161b1",
+  "contentHash": "sha256:4fb6c11bf8cd5b68a84baa62fb6e8bf0ddc92065b3e231d02cd13d157b30dff9",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9653,6 +9653,28 @@
       "text": "Am Ende der Straße brennt eine Laterne tagsüber. Niemand meldet es, weil niemand dafür zuständig ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
+    },
+    {
+      "contributionId": "governance-freeze-reste",
+      "turnId": "2026-11-16T05:30Z-governance-freeze-reste",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Kontrollraum hängt ein Schild, das eine Prüfung meldet, die seit Wochen niemand mehr ausführt. Jemand nimmt es ab, statt es zu putzen. Neben der Tür bleibt nur, was den Weg wirklich verriegelt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-freeze-reste.json"
     },
     {
       "contributionId": "governance-freeze-task-path-01",

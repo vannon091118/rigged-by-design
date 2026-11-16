@@ -115,13 +115,10 @@ const repo = repoSlug();
 const credentials = resolveGithubToken();
 const token = credentials.token;
 if (!token) {
-  // Kein Workflow, kein Actions: fehlt `gh`, laedt der Lauf die CLI jetzt
-  // aus dem offiziellen Release nach (~/.local/bin, ohne sudo). Danach fehlt
-  // nur noch `gh auth login`.
+  // Fehlt `gh`, wird nichts nachgeladen (FREEZE-0): der Lauf nennt den
+  // Installationsweg und bleibt sonst bei genau einem Blocker.
   const gh = ensureGh();
-  const ghNote = gh.present
-    ? (gh.attempted ? ` \`gh\` wurde nachgeladen (${gh.path ?? 'gh'}); PATH ergaenzen, falls noetig.` : '')
-    : ` \`gh\` fehlt (${gh.install?.reason ?? 'unbekannt'}); manuell: ${gh.install?.url ?? 'https://cli.github.com'}.`;
+  const ghNote = gh.present ? '' : ` \`gh\` fehlt; Installation: ${gh.install?.url ?? 'https://cli.github.com'}.`;
   // Genau ein Blocker: ohne Credential-Quelle ist alles andere zweitrangig,
   // und der Agent soll genau einen Befehl ausfuehren, nicht drei.
   blockers.push(

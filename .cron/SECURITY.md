@@ -6,15 +6,16 @@ Der `GITHUB_TOKEN` wird **ausschließlich als Umgebungsvariable** bereitgestellt
 
 ## Warum
 
-- Der Cronjob-Prompt lebt im `cronjob_manage`-State und ist nicht versionskontrolliert
+- Der Cronjob-Prompt liegt versioniert unter `.cron/maintainer-prompt.md` und ist Gegenstand von Review. Eine externe Scheduler-Instanz kann eine zusätzliche Kopie halten; sie ist dann eine zweite Instanz, nicht die einzige Quelle
 - Ein im Prompt hardcodeter Token ist für jeden einsehbar, der auf Cron-History oder Delegation-Output zugreifen kann
 - Ein im Repo committeter Token würde das gesamte Repository kompromittieren
 
 ## Umsetzung
 
-- Der Cronjob liest `GITHUB_TOKEN` aus `process.env`
+- Der Maintainer-Lauf liest `GITHUB_TOKEN` aus `process.env`
 - Der Prompt verweist lediglich auf die Umgebungsvariable, ohne den Wert zu enthalten
 - Keine Datei im Repository enthält den Token-Wert
+- Der Owner-Token bleibt ausschließlich im isolierten Maintainer-Kontext; Worker-Prozesse erhalten ihn nicht
 
 ## Rotation
 

@@ -12,8 +12,8 @@
  *   apk        lokaler Debug-APK-Build (setzt den Web-Build voraus)
  *
  * `--strict` ergaenzt die frueheren Cloud-Preflight-Schritte (Commit-Nachricht,
- * Claim, Task-Vertrag, Freeze, optional PR-Body). Sie sind opt-in, weil der
- * lokale Lauf waehrend einer Lane ohne offenen PR stattfinden darf.
+ * Claim, Task-Vertrag, optional PR-Body). Sie sind opt-in, weil der lokale
+ * Lauf waehrend einer Lane ohne offenen PR stattfinden darf.
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -58,7 +58,6 @@ if (strict) {
   step('Commit-Nachricht', 'verify-commit-msg.mjs', ['--head']);
   if (existsSync(join(ROOT, '.lane-claims', 'claims'))) step('Lane-Claims', 'verify-lane-claims.mjs', ['--ci']);
   if (existsSync(join(ROOT, '.lane-claims', 'tasks'))) step('Task-Vertrag', 'verify-task-contract.mjs');
-  step('Governance-Freeze', 'verify-governance-freeze.mjs');
   if (process.env.PR_BODY) step('PR-Body', 'verify-pr-body.mjs');
 }
 

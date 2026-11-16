@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T05:30Z-governance-freeze-reste",
+  "contributionId": "governance-freeze-reste",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Im Kontrollraum hängt ein Schild, das eine Prüfung meldet, die seit Wochen niemand mehr ausführt. Jemand nimmt es ab, statt es zu putzen. Neben der Tür bleibt nur, was den Weg wirklich verriegelt.",
+  "directives": []
+}
