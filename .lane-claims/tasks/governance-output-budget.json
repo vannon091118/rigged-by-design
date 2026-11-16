@@ -4,14 +4,14 @@
   "claimId": "lane/governance/output-budget",
   "branch": "lane/governance/output-budget",
   "baseSha": "0565c9954cc7ee0c2226ed66d2d7b500af74045c",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Festes 500-Token-Ausgabebudget fuer Agenten-Werkzeuge und Hooks",
   "goal": "Jede agentengerichtete Ausgabe bleibt unter 500 Token und behaelt Status, Blocker, Befund und naechsten Befehl; Detail liegt in .verify-cache/output/. Issue #993.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": null,
+  "status": "DONE",
+  "pr": 994,
   "findings": [],
-  "nextAction": "Generatoren und verify:light gruen ziehen, committen, pushen, PR und Merge.",
-  "revision": 1
+  "nextAction": "Gemergt als 049a90fd (PR #994).",
+  "revision": 2
 }

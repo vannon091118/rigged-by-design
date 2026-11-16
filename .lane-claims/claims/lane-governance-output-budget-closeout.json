@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/output-budget-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/output-budget-closeout",
+  "baseSha": "049a90fdb65f33aec2f166d6f39ffed5dabc1841",
+  "issue": 993,
+  "task": "Aftercare: Budget-Lane auf merged mit Merge-SHA ziehen",
+  "pathAllowlist": [
+    ".lane-claims/**",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "049a90fdb65f33aec2f166d6f39ffed5dabc1841"
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-output-budget-closeout",
+  "claimId": "lane/governance/output-budget-closeout",
+  "branch": "lane/governance/output-budget-closeout",
+  "baseSha": "049a90fdb65f33aec2f166d6f39ffed5dabc1841",
+  "phase": "IMPLEMENTING",
+  "title": "Aftercare: Budget-Lane auf merged mit Merge-SHA ziehen",
+  "goal": "Claim und Task der Lane lane/governance/output-budget auf merged/DONE mit mergedSha 049a90fd (PR #994) ziehen. Issue #993.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Committen, pushen, PR und Merge.",
+  "revision": 1
+}

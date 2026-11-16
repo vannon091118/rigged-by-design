@@ -24,6 +24,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "0565c9954cc7ee0c2226ed66d2d7b500af74045c"
+  "status": "merged",
+  "createdAt": "0565c9954cc7ee0c2226ed66d2d7b500af74045c",
+  "mergedSha": "049a90fdb65f33aec2f166d6f39ffed5dabc1841",
+  "mergedEvidence": "PR #994 (merge commit 049a90fd, Head 3ee4de9f) auf main"
 }
