@@ -742,10 +742,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3413 |
-| Gelistete Dateien | 3413 |
+| Getrackte Dateien | 3245 |
+| Gelistete Dateien | 3245 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (256), .lanes (1), artifacts (1), content (1189), docs (108), packages (27), public (571), scripts (145), src (1086) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (85), .lanes (1), artifacts (1), content (1191), docs (109), packages (27), public (571), scripts (145), src (1086) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -759,15 +759,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 4 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 134 Datei(en)
-- `.lane-claims/tasks/` — 118 Datei(en)
+- `.lane-claims/claims/` — 42 Datei(en)
+- `.lane-claims/tasks/` — 39 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1185 Datei(en)
+- `content/narrative/contributions/` — 1187 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 20 Datei(en)
+- `docs/` — 21 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 2 Datei(en)
@@ -899,257 +899,86 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
 - `.lane-claims/board-state.json` — { — gelesen: 743 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/issue-648-diff-gate.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/lane-ci-issue-710-cron-sleep-lint.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-content-issue-546-city-events.json` — { — gelesen: 81 Zeilen
-- `.lane-claims/claims/lane-docs-issue-652-r9-status.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-agent-board-workflow.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-agent-onboarding.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-agents-md-maintainer-governance.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-board-closeout-849.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-board-final-consistency.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-board-issue-audit.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-board-issue-triage-closeout.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-board-issue-triage.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-board-pr-triage.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-board-status-tracking.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/lane-governance-board-triage-register.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-claim-register-reconcile-616.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-issue-531-readme-belege.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-issue-555-balance-run.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-issue-574-entrance-convention.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-617-generated-gate.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-issue-624-determinism-computed.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-issue-625-rng-entry-role.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-627-run-budget.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-issue-628-closeout-fallback.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-issue-629-generated-serialization.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-630-doc-parity.json` — { — gelesen: 34 Zeilen
-- `.lane-claims/claims/lane-governance-issue-635-claim-requires-issue.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-655-alt-texts.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-671-board-cursors.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-issue-672-canonical-priorities.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-issue-685-claim-reconcile.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-issue-693-comment-auth.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-issue-746-error-code-catalog.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-747-narrative-cli-help.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-750-run-budget-findings.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-issue-752-pretask-budget-count.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-766-main-green.json` — { — gelesen: 46 Zeilen
+- `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-834-835-693-694.json` — { — gelesen: 45 Zeilen
-- `.lane-claims/claims/lane-governance-issue-839-headless-imports.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-issue-861-claim-closeout.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-governance-issue-862-merged-index.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-governance-issue-877-generated-merge-driver.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 43 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-board-gate.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-board-merged.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-board-tolerant.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-closeout.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-886-comment-types.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-887-pin-state-contract.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/claims/lane-governance-issue-897-generated-classification.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-issue-913-merge-queue.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-issue-920-closeout-inbox.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-issue-943-board-overview.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-main-gates-repair-v2.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-922.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/claims/lane-governance-prompts-unification.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-governance-reconcile-stale-claims-530.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/claims/lane-governance-issue-937-audit-evidence.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-verify-all-green.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-worker-bootstrap.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-infra-issue-623-ledger-tick-balance.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-interaction-issue-771-menu-action-contract.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-ledger-issue-532-external-work-split.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/claims/lane-narrative-issue-541-fact-reader.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-narrative-issue-733-meta-bestand-auflosen.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-narrative-issue-806-hot-event-score-v2.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-render-issue-731-city-actor-tests.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 40 Zeilen
-- `.lane-claims/claims/lane-render-issue-772-furniture-action-roles.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/lane-render-issue-773-city-actor-roles.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/lane-render-issue-774-city-door-access.json` — { — gelesen: 33 Zeilen
-- `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-render-r8-city-assets.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/claims/lane-render-issue-772-furniture-action-roles.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-render-issue-773-city-actor-roles.json` — { — gelesen: 35 Zeilen
+- `.lane-claims/claims/lane-render-issue-774-city-door-access.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-render-residence-role.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-render-staff-actor-state.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-527-self-exclusion-scope-v2.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-533-scheduled-place.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/lane-sim-issue-539-esport-evening.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-sim-issue-538-billing-cycle.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-sim-issue-552-staff-qualification.json` — { — gelesen: 42 Zeilen
-- `.lane-claims/claims/lane-sim-issue-556-city-acceptance.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-566-job-market.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-sim-issue-597-foreign-floors.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-sim-issue-674-starter-guidance.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-sim-issue-706-pathfinding-detour.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-issue-759-decision-peer-index.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-sim-issue-760-population-housing.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-issue-761-relationship-contract.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-issue-762-factor-contract.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-sim-issue-764-money-counterfactual.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-sim-issue-776-city-encounter-proximity.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-sim-issue-787-esport-roles-v2.json` — { — gelesen: 40 Zeilen
-- `.lane-claims/claims/lane-sim-issue-788-staff-assignment-view.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-sim-issue-801-player-skills.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-sim-issue-803-career-ladders.json` — { — gelesen: 34 Zeilen
-- `.lane-claims/claims/lane-sim-issue-804-job-market.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-sim-issue-759-decision-peer-index.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-sim-issue-760-population-housing.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-sim-issue-761-relationship-contract.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-sim-issue-764-money-counterfactual.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-store-issue-644-mirror-roundtrip.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-store-issue-707-save-roundtrip-version.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ui-issue-642-workshop-entries.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ui-issue-643-workshop-tiles.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-ui-issue-645-fps-frames.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-ui-issue-646-smartphone-states.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-ui-issue-653-skill-tooltips.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-ui-issue-654-skill-path-test.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/claims/sim-issue-782-start-guest-v2.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/merged-index.json` — { — gelesen: 5 Zeilen
-- `.lane-claims/tasks/board-issue-audit.json` — { — gelesen: 55 Zeilen
-- `.lane-claims/tasks/board-pr-triage.json` — { — gelesen: 55 Zeilen
-- `.lane-claims/tasks/ci-issue-710-cron-sleep-lint.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/content-issue-546-city-events.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/tasks/docs-issue-652-r9-status.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-agent-board-workflow.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-agent-onboarding.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-agents-md-maintainer-governance.json` — { — gelesen: 16 Zeilen
-- `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-board-closeout-849.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/tasks/governance-board-final-consistency.json` — { — gelesen: 49 Zeilen
-- `.lane-claims/tasks/governance-board-issue-triage-closeout.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-board-issue-triage.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-board-status-tracking.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-board-triage-register.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-claim-register-reconcile-616.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-531-readme-belege.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-555-balance-run.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-574-entrance-convention.json` — { — gelesen: 46 Zeilen
-- `.lane-claims/tasks/governance-issue-617-generated-gate.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-625-rng-entry-role.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-issue-627-run-budget.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-628-closeout-fallback.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-629-generated-serialization.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-630-doc-parity.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-635-claim-requires-issue.json` — { — gelesen: 65 Zeilen
-- `.lane-claims/tasks/governance-issue-655-alt-texts.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-671-board-cursors.json` — { — gelesen: 83 Zeilen
-- `.lane-claims/tasks/governance-issue-672-canonical-priorities.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-685-claim-reconcile.json` — { — gelesen: 44 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-693-comment-auth.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-705-worldstore-fail-closed.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-747-narrative-cli-help.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-750-run-budget-findings.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-752-pretask-budget-count.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-766-main-green.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-834-835-693-694.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-839-headless-imports.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-issue-861-claim-closeout.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-issue-862-merged-index.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-877-generated-merge-driver.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-886-board-gate.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-886-comment-types.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-897-generated-classification.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-913-merge-queue.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-issue-943-board-overview.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-main-gates-repair-v2.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-post-merge-922.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-reconcile-stale-claims-530.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-verify-all-green.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-worker-bootstrap.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/infra-issue-746-error-code-catalog.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/interaction-issue-771-menu-action-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ledger-issue-532-external-work-split.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/narrative-issue-806-hot-event-score-v2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 42 Zeilen
-- `.lane-claims/tasks/render-issue-731-city-actor-tests.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/render-issue-768-city-actor-floor-target.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-772-furniture-action-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-773-city-actor-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-774-city-door-access.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
-- `.lane-claims/tasks/render-r8-city-assets.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/render-residence-role.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-staff-actor-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-519-employment.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-530-plot-road-guard.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-533-scheduled-place.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/sim-issue-534-first-evening.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-536-smartphone-inbox-vitter-immoluck.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/tasks/sim-issue-539-esport-evening.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-552-staff-qualification.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/tasks/sim-issue-556-city-acceptance.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-566-job-market.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-597-foreign-floors.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-674-starter-guidance.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-issue-706-pathfinding-detour.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-759-decision-peer-index.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-760-population-housing.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-761-relationship-contract.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/tasks/sim-issue-762-factor-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-764-money-counterfactual.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/sim-issue-775-city-tile-occupancy.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-776-city-encounter-proximity.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-782-start-guest-v2.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-787-esport-roles-v2.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-788-staff-assignment-view.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-801-player-skills.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/store-issue-644-mirror-roundtrip.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/store-issue-707-save-roundtrip-version.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/tasks/ui-issue-642-workshop-entries.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-643-workshop-tiles.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-645-fps-frames.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-646-smartphone-states.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-653-skill-tooltips.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/ui-issue-654-skill-path-test.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-770-floor-feedback-context.json` — { — gelesen: 17 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
@@ -2343,13 +2172,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-staff-assignment.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-world-test-soak-timeout.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-liilith-787-esport-roles.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26627 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4745 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26671 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4753 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
+- `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1192 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen

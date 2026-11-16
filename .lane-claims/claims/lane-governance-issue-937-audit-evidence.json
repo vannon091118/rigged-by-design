@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-937-audit-evidence",
+  "owner": "Monitor",
+  "branch": "lane/governance/issue-937-audit-evidence",
+  "baseSha": "1e65e48839cf2563d3af16007f891aed63e99b62",
+  "issue": 937,
+  "task": "Audit-Nachweis docs/AUDIT.md in main aufnehmen und Doku registrieren",
+  "pathAllowlist": [
+    "docs/AUDIT.md",
+    "docs/INDEX.md",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "content/narrative/contributions/**",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/**",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "1e65e48839cf2563d3af16007f891aed63e99b62"
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-937-audit-evidence",
+  "claimId": "lane/governance/issue-937-audit-evidence",
+  "branch": "lane/governance/issue-937-audit-evidence",
+  "baseSha": "1e65e48839cf2563d3af16007f891aed63e99b62",
+  "phase": "CI_PENDING",
+  "title": "Audit-Nachweis docs/AUDIT.md in main aufnehmen und Doku registrieren",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

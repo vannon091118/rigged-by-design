@@ -34,7 +34,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "archived",
-  "createdAt": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5",
-  "releasedAt": "2026-11-15T08:03:18.222Z",
-  "releasedReason": "stale-no-branch"
+  "createdAt": "19ec2c0508391f3c284b1d0085849e7ddc9cf6f5"
 }
