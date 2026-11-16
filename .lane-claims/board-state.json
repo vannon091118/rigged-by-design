@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-16T12:22:45Z",
+  "generatedAt": "2026-11-16T12:34:20Z",
   "generatedBy": "maintainer",
-  "head": "181a77c72c3349887125421c13186f943434f93c",
-  "headMessage": "Closeout-Relation head == main^ im Board-Drift (#1020)",
-  "base": "origin/main @ 181a77c72c3349887125421c13186f943434f93c",
+  "head": "590f2aa3c46c8c97300d417729d5da68f5ecbcc7",
+  "headMessage": "P0-Merge-Gate-Tagesbericht als reproduzierbaren Beleg festhalten (#1023)",
+  "base": "origin/main @ 590f2aa3c46c8c97300d417729d5da68f5ecbcc7",
   "worktree": "/workspace/chats/75042cf7e12fd480f9251993",
   "status": "READY",
-  "summary": "Board-Sync (#834) live nachgezogen auf main 181a77c7: 16 offene Issues, 0 offene PRs. #987 ist geschlossen; keine offene PR-Warteschlange.",
+  "summary": "Board-Sync (#834) live nachgezogen auf main 590f2aa3: 16 offene Issues, 0 offene PRs. #987 ist geschlossen; keine offene PR-Warteschlange.",
   "lastActions": [
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
@@ -583,7 +583,7 @@
   "health": {
     "verifyLight": {
       "status": "PASS",
-      "note": "alle Gates gruen auf main 181a77c7"
+      "note": "alle Gates gruen auf main 590f2aa3"
     },
     "fullSuite": {
       "status": "FAIL",
