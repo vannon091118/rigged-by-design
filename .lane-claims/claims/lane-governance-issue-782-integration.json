@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/issue-782-integration",
+  "owner": "Monitor",
+  "branch": "lane/governance/issue-782-integration",
+  "baseSha": "7cbf54feef2ca41bed41fe0f5fac4483b5f8ec6b",
+  "issue": 782,
+  "task": "Archiv-Lane 782 integrieren: Startpfad, Docs-Regeneration, Merge",
+  "pathAllowlist": [
+    "src/store/**",
+    "src/render/**",
+    "content/narrative/**",
+    "src/core/sim/narrative/composer/**",
+    ".lane-claims/**",
+    "docs/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7cbf54feef2ca41bed41fe0f5fac4483b5f8ec6b"
+}
