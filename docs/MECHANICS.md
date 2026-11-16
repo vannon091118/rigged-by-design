@@ -10,7 +10,6 @@
 pnpm run agent:start --brief     # Board, Claims, Mechanik-Inventur, nächste Befehle
 pnpm run agent:start --json      # vollständig, für Werkzeuge
 pnpm run agent:start -- --issue 874
-pnpm run agent:start -- --dispatch   # Ereignis-Workflow auslösen
 ```
 
 Reihenfolge, Besitz, Postfach und Review-Lage kommen aus GitHub, nicht aus `.lane-claims/board-state.json`, `.lanes/identity.json` oder einer Claim-Datei. Ein frischer Klon ohne diese Dateien liefert dasselbe Ergebnis.

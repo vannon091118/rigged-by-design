@@ -183,27 +183,6 @@ async function pullList() {
   }));
 }
 
-/** Ereignis-Einstieg: loest den Board-Overview-Workflow ohne Server aus. */
-async function dispatch() {
-  if (!token) throw new RestUnknown('UNKNOWN_AUTH', { detail: 'dispatch braucht ein Token' });
-  const response = await fetch(`${base}/dispatches`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
-      'User-Agent': 'rbd-board-gate',
-    },
-    body: JSON.stringify({ event_type: String(params.event_type ?? 'board-refresh') }),
-  });
-  if (!response.ok) {
-    console.error(`REST POST /dispatches: HTTP ${response.status}`);
-    process.exit(4);
-  }
-  return { dispatched: true, event_type: String(params.event_type ?? 'board-refresh') };
-}
-
 async function prDetail({ withComments = false } = {}) {
   const pr = await pullForBranch();
   if (!pr) return null;
@@ -235,8 +214,6 @@ if (kind === 'issue-view') {
     body: { body: String(params.body ?? '') },
   });
   payload = { ok: true, id: posted?.id ?? null, url: posted?.html_url ?? '' };
-} else if (kind === 'dispatch') {
-  payload = await dispatch();
 } else if (kind === 'pull-for-branch') {
   payload = await pullForBranch();
 } else if (kind === 'ci-for-branch') {
