@@ -754,10 +754,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3341 |
-| Gelistete Dateien | 3341 |
+| Getrackte Dateien | 3343 |
+| Gelistete Dateien | 3343 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (125), .lanes (1), artifacts (1), bin (1), content (1231), docs (90), packages (27), public (571), scripts (160), src (1113) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (127), .lanes (1), artifacts (1), bin (1), content (1231), docs (90), packages (27), public (571), scripts (160), src (1113) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -769,8 +769,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 61 Datei(en)
-- `.lane-claims/tasks/` — 60 Datei(en)
+- `.lane-claims/claims/` — 62 Datei(en)
+- `.lane-claims/tasks/` — 61 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -909,9 +909,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 55 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1041-registry-boundary.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1041-registry-boundary.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -972,6 +973,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1041-registry-boundary.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/tasks/governance-issue-1043-redundancy-budget.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-1045-claim-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen

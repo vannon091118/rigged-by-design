@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1045-claim-reconcile",
+  "claimId": "lane/governance/issue-1045-claim-reconcile",
+  "branch": "lane/governance/issue-1045-claim-reconcile",
+  "baseSha": "9899c2375074d6b8d8669136f582ff557d4644d8",
+  "phase": "IMPLEMENTING",
+  "title": "Claims der gemergten Lanes #1039 und #1041 schliessen",
+  "goal": "Gemergte Lanes stehen nicht mehr als offene Claims und blockieren keine Allowlist mehr.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Status der beiden Altclaims auf merged setzen, Verify laufen lassen, PR oeffnen.",
+  "revision": 1
+}
