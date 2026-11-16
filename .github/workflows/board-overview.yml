@@ -1,0 +1,81 @@
+name: Board Overview
+
+# Ein Ereignis-Hook, kein Testlauf (#943). Er haelt genau einen markierten
+# Kommentar am Board-Issue aktuell: Arbeitsreihenfolge, Phase, Claim-Lage,
+# offener PR, naechster Akteur — und die Begruendung je Zeile.
+#
+# Sicherheit: dieser Job hat `issues: write`. Deshalb wird **nur Code von
+# `main`** ausgecheckt und ausgefuehrt; PR-Code laeuft hier nie. Ereignisse aus
+# einem PR dienen ausschliesslich als Ausloeser.
+#
+# Es laufen bewusst keine Tests, Gates, Builds oder APKs: die Linie bleibt
+# lokal (`pnpm run verify:fast`, `pnpm run ci:local`).
+
+on:
+  issues:
+    types: [opened, reopened, labeled, unlabeled, closed]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, reopened, ready_for_review, labeled, unlabeled, closed]
+  workflow_dispatch:
+  # Externer Einstieg: ein Webhook-Empfaenger (oder ein Agent) kann den Lauf
+  # mit einem einzigen POST ausloesen, ohne dass dieses Repo einen Server
+  # betreiben muss: `POST /repos/<owner>/<repo>/dispatches` mit
+  # `{"event_type":"board-refresh"}`. Siehe `scripts/install-webhook.mjs`.
+  repository_dispatch:
+    types: [board-refresh]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: board-overview
+  cancel-in-progress: true
+
+jobs:
+  overview:
+    name: Übersicht erzeugen und Kommentar pflegen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RBD_BOARD_ISSUE: '677'
+    steps:
+      - name: main auschecken (nur vertrauenswürdiger Code)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Node 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+
+      - name: Übersicht erzeugen
+        run: |
+          set -eu
+          AT="$(git log -1 --format=%cI)"
+          node scripts/board-overview.mjs --repo "$GITHUB_REPOSITORY" --at "$AT" --markdown --limit 12 > overview.md
+          cp overview.md "$GITHUB_STEP_SUMMARY"
+          echo "Zeilen: $(wc -l < overview.md)"
+
+      - name: Einen markierten Kommentar aktualisieren
+        run: |
+          set -eu
+          MARKER='<!-- rbd:board-overview -->'
+          EXISTING="$(gh api "repos/$GITHUB_REPOSITORY/issues/$RBD_BOARD_ISSUE/comments?per_page=100" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -1)"
+          if [ -n "${EXISTING:-}" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$EXISTING" \
+              -F body=@overview.md > /dev/null
+            echo "Kommentar $EXISTING aktualisiert"
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$RBD_BOARD_ISSUE/comments" \
+              -F body=@overview.md > /dev/null
+            echo "Kommentar am Board-Issue #$RBD_BOARD_ISSUE angelegt"
+          fi

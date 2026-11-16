@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-943-board-overview",
+  "claimId": "lane/governance/issue-943-board-overview",
+  "branch": "lane/governance/issue-943-board-overview",
+  "baseSha": "7c309c2d5e5877c6d803d2757fac37ff7b6f7ac9",
+  "phase": "CI_PENDING",
+  "title": "Board-Uebersicht als Ereignis-Hook: deterministischer Generator plus Workflow, der einen markierten Kommentar pflegt",
+  "goal": "",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

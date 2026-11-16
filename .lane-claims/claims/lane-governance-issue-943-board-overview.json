@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/issue-943-board-overview",
+  "owner": "Monitor",
+  "branch": "lane/governance/issue-943-board-overview",
+  "baseSha": "7c309c2d5e5877c6d803d2757fac37ff7b6f7ac9",
+  "issue": 943,
+  "task": "Board-Uebersicht als Ereignis-Hook: deterministischer Generator plus Workflow, der einen markierten Kommentar pflegt",
+  "pathAllowlist": [
+    "scripts/board-overview.mjs",
+    "scripts/install-webhook.mjs",
+    ".github/workflows/board-overview.yml",
+    "package.json",
+    "AGENTS.md",
+    "docs/CI.md",
+    "content/narrative/contributions/**",
+    "content/narrative/registry/**",
+    "content/narrative/turns/**",
+    "src/core/sim/narrative/composer/**",
+    "docs/INVENTORY.md",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-governance-issue-943-board-overview.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7c309c2d5e5877c6d803d2757fac37ff7b6f7ac9"
+}
