@@ -15,7 +15,6 @@ import {
   nextAction,
   parseMergeEvents,
   planBody,
-  validAcks,
 } from '../../../../scripts/lib/merge-queue.mjs';
 
 const MAIN = 'a'.repeat(40);
@@ -23,7 +22,6 @@ const HEAD_A = '1'.repeat(40);
 const HEAD_B = '2'.repeat(40);
 const AT = '2026-11-16T03:00:00Z';
 
-type QueueRow = { number: number; status: string; head: string };
 const comment = (id: number, body: string) => ({ id, body, user: { login: 'vannon091118' } });
 const pullsOf = (entries: [number, string][]) => entries.map(([number, head]) => ({ number, headRefOid: head }));
 const join = (id: number, session: string, role = 'worker') =>

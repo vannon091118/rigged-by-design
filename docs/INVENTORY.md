@@ -3177,8 +3177,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/issue-scope.test.ts` — Ein Scope-Label entscheidet, ob ein offenes Issue eine Lane blockiert. — gelesen: 140 Zeilen
 - `src/core/governance/__tests__/lane-claims-issue.test.ts` — Das Issue-Board ist die Wahrheit ueber Auftrag und Besitz. Eine neue, offene — gelesen: 46 Zeilen
 - `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 211 Zeilen
-- `src/core/governance/__tests__/merge-queue-next-action.test.ts` — Der leere Zustand ist ein eigener Zustand: ohne offenen PR gibt es keine — gelesen: 86 Zeilen
-- `src/core/governance/__tests__/merge-queue.test.ts` — Der Vertrag aus #913 ist die Queue selbst: ein Plan mit Hash, ein ACK je — gelesen: 173 Zeilen
+- `src/core/governance/__tests__/merge-queue-next-action.test.ts` — Der leere Zustand ist ein eigener Zustand: ohne offenen PR gibt es keine — gelesen: 84 Zeilen
+- `src/core/governance/__tests__/merge-queue.test.ts` — Der Vertrag aus #913 ist die Queue selbst: ein Plan mit Hash, ein ACK je — gelesen: 170 Zeilen
 - `src/core/governance/__tests__/merged-index.test.ts` — Der Merge-Beleg-Index ist nur brauchbar, wenn er aus echten Merge-Commits — gelesen: 131 Zeilen
 - `src/core/governance/__tests__/narrative-blocks-cli.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 54 Zeilen
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 180 Zeilen
