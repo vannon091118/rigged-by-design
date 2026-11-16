@@ -1,0 +1,33 @@
+{
+  "id": "lane/governance/issue-1043-redundancy-budget",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1043-redundancy-budget",
+  "baseSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8",
+  "issue": 1043,
+  "task": "Redundanz-Budgets fuer Waisenquote, Fan-in, Entry-Points, Aliase und Doku-Bytes",
+  "goal": "Die fuenf Kennzahlen des globalen Scans sind dauerhafte Obergrenzen in verify:redundancy, ohne neuen Befehl.",
+  "pathAllowlist": [
+    "scripts/lib/redundancy-metrics.mjs",
+    "scripts/verify-redundancy.mjs",
+    "src/core/governance/__tests__/redundancy-metrics.test.ts",
+    "src/core/governance/__tests__/scripts-libs-redundancy-metrics.d.ts",
+    "content/narrative/contributions/2026-11-17-redundancy-budget.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/ROADMAP.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/merged-index.json",
+    ".lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json",
+    ".lane-claims/tasks/governance-issue-1043-redundancy-budget.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8"
+}

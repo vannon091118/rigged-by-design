@@ -1,0 +1,21 @@
+{
+  "agentId": "governance",
+  "turnId": "2026-11-17T23:18Z-redundancy-budget-01",
+  "contributionId": "redundancy-budget-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Kontor haengt seit heute eine Tafel mit fuenf Zahlen, und niemand darf sie still uebermalen. Wer ein Regal ohne Aufrufer baut, sieht die erste Zahl steigen; wer alles an einen einzigen Faden haengt, die zweite. Tueren, Namen und Papier haben eigene Zeilen. Keine Zahl ist ein Verbot, nur eine Schwelle, die man laut verschieben muss.",
+  "directives": []
+}

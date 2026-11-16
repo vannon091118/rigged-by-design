@@ -10,6 +10,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
+import { measureRedundancy, redundancyFindings } from './lib/redundancy-metrics.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'verify-redundancy' });
@@ -63,8 +64,22 @@ for (const code of codes) {
   seen.add(code);
 }
 
+// Die fuenf Kennzahlen des globalen Scans sind Obergrenzen, keine Momentaufnahme:
+// Waisenquote, Anteil Fan-in <= 1, Entry-Points, Aliase und Doku-Bytes. Sie laufen
+// im bestehenden Gate mit, damit Redundanz nicht nur dort auffaellt, wo zwei
+// Dateien byte-identisch sind.
+const metrics = measureRedundancy({ root: ROOT });
+for (const finding of redundancyFindings(metrics)) {
+  problems += 1;
+  fail(problems, 'ERR-4020', 'Redundanz-Budget', `${finding.metric}: ${finding.value} (Limit ${finding.limit}); ${finding.hint}`);
+}
+
 if (problems > 0) {
   console.error(`verify-redundancy: ${problems} Redundanz/Redundanzen`);
   process.exit(1);
 }
-console.log(`verify-redundancy: PASS (${files.length} Dateien, ${Object.keys(scripts).length} Skripte, ${codes.length} Codes)`);
+console.log(
+  `verify-redundancy: PASS (${files.length} Dateien, ${Object.keys(scripts).length} Skripte, ${codes.length} Codes; `
+  + `Waisen ${metrics.orphanRate} %, Fan-in<=1 ${metrics.fanInAtMostOneRate} %, ${metrics.entryPoints} Entry-Points, `
+  + `${metrics.aliases} Aliase, ${metrics.docBytes} Doku-Bytes)`,
+);

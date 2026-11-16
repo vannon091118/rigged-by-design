@@ -4896,6 +4896,10 @@
     {
       "turnId": "2026-11-16T19:11Z-store-guard-proof",
       "contributionId": "store-guard-proof-01"
+    },
+    {
+      "turnId": "2026-11-17T23:18Z-redundancy-budget-01",
+      "contributionId": "redundancy-budget-01"
     }
   ]
 }
