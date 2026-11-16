@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3877055cf886e86da0e984fa54a9a31371c3d2323ff9f1167e4c7b556d310f10",
+  "contentHash": "sha256:b820a7623ebd47c0dc7cd25dff79d38b3e4f8a270bcfba2d894d1a2868798b53",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -7655,6 +7655,28 @@
       "text": "Auf dem Formular stand eine Nummer, die niemand mehr benutzte. Der Sachbearbeiter strich sie durch und schrieb die aktuelle daneben, ohne den Vorgang neu aufzurollen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-city-scene-62.json"
+    },
+    {
+      "contributionId": "city-scene-63",
+      "turnId": "2026-11-14T13:10Z-city-scene-63",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Mann an der Ecke stand erst mitten auf der Kreuzung, dann endlich am Bordstein. Niemand hatte ihn zweimal gesetzt, nur einmal richtig.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-city-scene-63.json"
     },
     {
       "contributionId": "city-scene-64",
