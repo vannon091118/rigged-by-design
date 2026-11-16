@@ -38,6 +38,8 @@ const harness = vi.hoisted(() => {
     moveTo: noop,
     moveStep: noop,
     clean: noop,
+    businessWork: () => ({ tasks: [] as { id: string; ready: boolean }[] }),
+    workBusiness: noop,
   };
   return { view, floor, worldStore };
 });

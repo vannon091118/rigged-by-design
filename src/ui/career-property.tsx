@@ -6,6 +6,8 @@ import type { MachineHallView } from '../core/sim/machine-hall';
 import type { PropertyId } from '../core/sim/types';
 import { worldStore, useWorldStore } from '../store/use-world-store';
 import { CareerEsport } from './career-esport';
+import { CareerPropertyRenovation, CareerPropertyWork } from './career-property-work';
+
 import { vc } from './format';
 
 interface Props {
@@ -29,6 +31,7 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
   const binding: PropertyWorldBinding | null = property.binding;
   // Die Arena kommt aus derselben Karriere-Ableitung wie Immobilie und Betrieb.
   const arena = useWorldStore().career.arena;
+  const work = worldStore.businessWork();
   const arenaReady = arena.next !== null && house >= fromVC(arena.next.costVC);
   return (
     <section className="career-property" aria-label="Immobilie">
@@ -51,28 +54,9 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
             <div><span>Geräte</span><b>{binding?.furniture.length ?? 0}</b></div>
             <div><span>Gäste im Betrieb</span><b>{binding?.guests.length ?? 0}</b></div>
           </div>
+          {work.owned && <CareerPropertyWork work={work} />}
           {renovation !== undefined && renovation.owned && (
-            <div className="career-grid" aria-label="Renovierung">
-              <div><span>Zustand</span><b>{renovation.label}</b></div>
-              <div><span>Material</span><b>{renovation.parts} Ersatzteile im Lager</b></div>
-              <div>
-                <span>Nächste Stufe</span>
-                {renovation.step === null ? (
-                  <b>keine</b>
-                ) : (
-                  <button
-                    type="button"
-                    className={`btn small${renovation.ready ? ' primary' : ' ghost'}`}
-                    disabled={!renovation.ready || onRenovate === undefined}
-                    title={renovation.note}
-                    onClick={() => onRenovate?.()}
-                  >
-                    Renovieren ({vc(fromVC(renovation.costVC))})
-                  </button>
-                )}
-              </div>
-              <div><span>Hinweis</span><b>{renovation.note}</b></div>
-            </div>
+            <CareerPropertyRenovation renovation={renovation} onRenovate={onRenovate} />
           )}
           {arena.owned && (
             <div className="career-grid" aria-label="Arena">

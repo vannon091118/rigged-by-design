@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 437 Dateien — contract 228 · integration 120 · governance 76 · statistics 6 · performance 7.
+Summe: 438 Dateien — contract 229 · integration 120 · governance 76 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -255,6 +255,7 @@ Summe: 437 Dateien — contract 228 · integration 120 · governance 76 · stati
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
 | `src/core/sim/__tests__/building.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
+| `src/core/sim/__tests__/business-active-work.test.ts` | sim | contract | ja | `src/core/sim/business-active-work.ts` |
 | `src/core/sim/__tests__/business-areas.test.ts` | sim | contract | ja | `src/core/sim/business-areas.ts` |
 | `src/core/sim/__tests__/city-building-entrances.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
 | `src/core/sim/__tests__/city-construction.test.ts` | sim | contract | ja | `src/core/sim/city-construction.ts` |
@@ -743,10 +744,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3262 |
-| Gelistete Dateien | 3262 |
+| Getrackte Dateien | 3267 |
+| Gelistete Dateien | 3267 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (91), .lanes (1), artifacts (1), content (1194), docs (109), packages (27), public (571), scripts (149), src (1090) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (91), .lanes (1), artifacts (1), content (1195), docs (109), packages (27), public (571), scripts (149), src (1094) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -764,7 +765,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/` — 41 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1190 Datei(en)
+- `content/narrative/contributions/` — 1191 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -840,8 +841,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
-- `src/core/sim/` — 197 Datei(en)
-- `src/core/sim/__tests__/` — 176 Datei(en)
+- `src/core/sim/` — 199 Datei(en)
+- `src/core/sim/__tests__/` — 177 Datei(en)
 - `src/core/sim/narrative/` — 44 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 7 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -870,7 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 39 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 105 Datei(en)
+- `src/ui/` — 106 Datei(en)
 - `src/ui/__tests__/` — 41 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -2166,6 +2167,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-15-integrator-862-merged-index.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-job-market-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-liilith-806-hot-event-score.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-15-liilith-809-active-business-work.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-menu-action-contract.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-meta-bestand-auflosen-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-15-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
@@ -2185,8 +2187,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26737 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4765 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26759 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4769 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2198,7 +2200,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2611 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 393 Zeilen
-- `docs/INDEX.md` — Doku-Index — gelesen: 67 Zeilen
+- `docs/INDEX.md` — Doku-Index — gelesen: 68 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MERGE-QUEUE.md` — Merge-Queue (#913) — gelesen: 110 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
@@ -3270,6 +3272,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
+- `src/core/sim/__tests__/business-active-work.test.ts` — Der Spieler uebernimmt am eigenen Betrieb die Kernaufgabe seines Bereichs: — gelesen: 177 Zeilen
 - `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-building-entrances.test.ts` — Eine Nordzeile, eine Fassadenzeile: Jede Tuer liegt auf der Gehweg-Zeile des — gelesen: 58 Zeilen
 - `src/core/sim/__tests__/city-construction.test.ts` — Ein Neubau ist zuerst ein Rohbau: versiegelt, ohne Tuerkante, ohne belegbare — gelesen: 109 Zeilen
@@ -3446,7 +3449,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 150 Zeilen
 - `src/core/sim/building-types.ts` — Kanonische Typen für physische Gebäude in der Living World Engine. — gelesen: 83 Zeilen
 - `src/core/sim/building.ts` — Pure Funktionen zur Verwaltung physischer Gebäude in der Living World. — gelesen: 163 Zeilen
+- `src/core/sim/business-active-work.ts` — Aktive Betreiberarbeit: der Spieler uebernimmt am eigenen Betrieb die — gelesen: 146 Zeilen
 - `src/core/sim/business-areas.ts` — Modulare Business-Bereiche: das Haus fuehrt seine Bereiche im einen — gelesen: 86 Zeilen
+- `src/core/sim/business-work-stations.ts` — Stationsgeometrie und Bereitschaft fuer die aktive Betreiberarbeit. — gelesen: 99 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 59 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 137 Zeilen
 - `src/core/sim/city-construction.ts` — Ein Neubau ist zuerst ein Rohbau: versiegelt, ohne Türkante und ohne belegbare — gelesen: 123 Zeilen
@@ -3972,7 +3977,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 177 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 169 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 170 Zeilen
 - `src/store/world-tick.ts` — Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn — gelesen: 67 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 768 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
@@ -4011,7 +4016,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/skill-path.test.tsx` — Der Skillpunkt-Klick laeuft ueber den echten Command-Pfad bis in die — gelesen: 99 Zeilen
 - `src/ui/__tests__/skill-tooltips.test.tsx` — HUD und Karrierefenster lesen dieselbe Effektbeschreibung. Der Test haelt — gelesen: 85 Zeilen
-- `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen
+- `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 137 Zeilen
 - `src/ui/__tests__/small-screen-dock.test.tsx` — Abnahme Phase 2: alle Dock-Einstiege und die Gaesteuebersicht bleiben bei — gelesen: 80 Zeilen
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 138 Zeilen
@@ -4040,7 +4045,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/career-esport.tsx` — Stadtliga im bestehenden Charakterfenster: Tabelle, Rollen und Abend aus derselben Ableitung. — gelesen: 115 Zeilen
 - `src/ui/career-floor.tsx` — Arbeitsqualitaet im Charakterfenster: welche Rolle welches Attribut traegt. — gelesen: 27 Zeilen
 - `src/ui/career-history.tsx` — Spielhistorie im Charakterfenster: die letzten Etappen aus dem Archiv, keine zweite Chronik. — gelesen: 30 Zeilen
-- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 160 Zeilen
+- `src/ui/career-property-work.tsx` — import { fromVC } from '../core/economy/vacoin'; — gelesen: 70 Zeilen
+- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 144 Zeilen
 - `src/ui/career-section.tsx` — Karriere-Sektion des Charakterfensters: eine Sicht, eigene Ownership. — gelesen: 79 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/city-door-access.tsx` — DOM-Ortsziele der Stadt: dieselben Tuereffekte wie der Pixi-Tap, nur fokussierbar. — gelesen: 108 Zeilen
@@ -4054,7 +4060,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/editor-tools.ts` — Reine Werkzeuglogik des Layout-Editors: Sie uebersetzt die gewaehlte Absicht — gelesen: 53 Zeilen
 - `src/ui/floor-feedback.tsx` — Floor-Rueckmeldung: Hinweise, Story-/Dialog-/Stadt-Einstiege und Toast. — gelesen: 49 Zeilen
 - `src/ui/floor-keyboard.ts` — Tastaturpfad des Floors: E waehlt das naechste Ziel oder die Hauptaktion. — gelesen: 67 Zeilen
-- `src/ui/floor-role-bar.tsx` — Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. — gelesen: 28 Zeilen
+- `src/ui/floor-role-bar.tsx` — Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. — gelesen: 39 Zeilen
 - `src/ui/floor-scenes.ts` — Eine Regel fuer alle Floor-Eingaenge: Maus, Touch und Tastatur lesen dieselbe Szene. — gelesen: 34 Zeilen
 - `src/ui/floor-tap.ts` — Reine Tap-Aufloesung fuer Boden, Tueren und Stadtfiguren. — gelesen: 79 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
