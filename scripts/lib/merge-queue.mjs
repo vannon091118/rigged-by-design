@@ -186,6 +186,78 @@ export function ackCommand(session = '<session>', role = 'worker') {
   return `pnpm run merge:queue -- --ack --session ${session} --role ${role}`;
 }
 
+/**
+ * Ein Zustand, ein Befehl: was jetzt zu tun ist.
+ *
+ * Der leere Fall ist eigenstaendig. Ohne offenen PR gibt es keine Bestaetigung
+ * und keinen Merge — die eine naechste Aktion ist dann ein Board-Check, nie
+ * ein ACK auf einen PR, den es nicht gibt.
+ */
+export const QUEUE_IDLE_COMMAND = 'pnpm run board:sync -- --check';
+
+export const QUEUE_STATE = Object.freeze({
+  IDLE: 'IDLE',
+  PLAN_MISSING: 'PLAN_MISSING',
+  BLOCKED: 'BLOCKED',
+  ACK_MISSING: 'ACK_MISSING',
+  READY: 'READY',
+  WAITING: 'WAITING',
+});
+
+/** Der naechste freie Befehl, wenn die Queue selbst geprueft werden muss. */
+export function checkCommand() {
+  return 'pnpm run merge:queue -- --check';
+}
+
+/** Ohne registrierte Session hilft kein ACK: erst JOIN, dann bestaetigen. */
+export function joinCommand(session = '<session>', role = 'worker') {
+  return `gh issue comment ${MERGE_ISSUE} --body "MERGE_SESSION_JOIN role=${role} session=${session}"`;
+}
+
+/** Die eine naechste Aktion samt Befehl — abhaengig vom Queue-Zustand. */
+export function nextAction({
+  plan = null, queue = [], events = [], session = '<session>', role = 'worker', mainSha = '',
+} = {}) {
+  if (!Array.isArray(queue) || queue.length === 0) {
+    return { state: QUEUE_STATE.IDLE, text: 'keine offenen PRs in der Queue', command: QUEUE_IDLE_COMMAND };
+  }
+  if (!plan) {
+    return { state: QUEUE_STATE.PLAN_MISSING, text: `kein MERGE_PLAN an #${MERGE_ISSUE}`, command: publishCommand() };
+  }
+  if (plan.tampered) {
+    return { state: QUEUE_STATE.BLOCKED, text: `Plan ${plan.hash} passt nicht zu seinem Inhalt`, command: publishCommand() };
+  }
+  if (mainSha && plan.mainSha !== mainSha) {
+    return {
+      state: QUEUE_STATE.PLAN_MISSING,
+      text: `main ist ${mainSha.slice(0, 7)}, Plan nennt ${plan.mainSha.slice(0, 7)}`,
+      command: publishCommand(),
+    };
+  }
+  const ready = queue.filter((row) => row.status === MERGE_STATUS.READY);
+  if (ready.length > 0) {
+    return {
+      state: QUEUE_STATE.READY,
+      text: `#${ready[0].number} ist Position 1 und bestaetigt`,
+      command: `gh pr merge ${ready[0].number} --squash --match-head-commit ${ready[0].head}`,
+    };
+  }
+  const sessions = activeSessions(events);
+  const acks = validAcks(events, plan);
+  if (sessions.length === 0) {
+    return { state: QUEUE_STATE.ACK_MISSING, text: 'keine Session registriert', command: joinCommand(session, role) };
+  }
+  if (acks.length < sessions.length) {
+    return {
+      state: QUEUE_STATE.ACK_MISSING,
+      text: `${acks.length}/${sessions.length} aktive Sessions bestaetigt`,
+      command: ackCommand(session, role),
+    };
+  }
+  const first = queue[0];
+  return { state: QUEUE_STATE.WAITING, text: first.reasons.join('; ') || 'Queue wartet', command: checkCommand() };
+}
+
 /** Plan-Body aus den offenen PRs; Reihenfolge ist PR-Nummer aufsteigend. */
 export function planBody({ revision, mainSha, pulls = [], at = '' }) {
   const entries = [...pulls].sort((a, b) => Number(a.number) - Number(b.number)).map((pull) => ({

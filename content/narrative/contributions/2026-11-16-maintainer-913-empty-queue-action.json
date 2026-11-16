@@ -1,0 +1,21 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T03:22Z-empty-queue-action",
+  "contributionId": "maintainer-913-empty-queue-action",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Aushang schweigt nicht mehr, wenn der Flur leer ist. Statt einer Unterschrift unter nichts steht dort ein Handgriff, der immer passt: nachsehen, ob das Brett noch stimmt. Erst wenn jemand vor der Tür steht, wird wieder bestätigt.",
+  "directives": []
+}

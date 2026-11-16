@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:10fb8311f44e891c75e87c41b2a77a8da0decf47ef7b94ae445a89ee8e94f050",
+  "contentHash": "sha256:c92342fb61f3c74859965962bf0bad930f00427ab1b90dd0667c83211f3ebb5d",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10789,6 +10789,28 @@
       "text": "Der Schlüssel lag die ganze Zeit im Raum, nur nicht an dem Haken, den die Liste nannte. Jetzt wird jeder Name geprüft, der einen Schlüssel tragen darf, und der Aushang verlangt keinen Gang mehr zum Schalter. Dazu tragen die Zettel in der Abstellkammer endlich ihre Nummer: ohne sie war jede Bestätigung so alt wie der Plan selbst und zählte nie.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
+    },
+    {
+      "contributionId": "maintainer-913-empty-queue-action",
+      "turnId": "2026-11-16T03:22Z-empty-queue-action",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Aushang schweigt nicht mehr, wenn der Flur leer ist. Statt einer Unterschrift unter nichts steht dort ein Handgriff, der immer passt: nachsehen, ob das Brett noch stimmt. Erst wenn jemand vor der Tür steht, wird wieder bestätigt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-empty-queue-action.json"
     },
     {
       "contributionId": "maintainer-913-merge-queue",
