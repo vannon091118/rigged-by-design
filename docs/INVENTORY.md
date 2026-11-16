@@ -748,10 +748,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3301 |
-| Gelistete Dateien | 3301 |
+| Getrackte Dateien | 3305 |
+| Gelistete Dateien | 3305 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (111), .lanes (1), artifacts (1), bin (1), content (1223), docs (89), packages (27), public (571), scripts (157), src (1099) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (113), .lanes (1), artifacts (1), bin (1), content (1224), docs (90), packages (27), public (571), scripts (157), src (1099) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -763,19 +763,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 54 Datei(en)
-- `.lane-claims/tasks/` — 53 Datei(en)
+- `.lane-claims/claims/` — 55 Datei(en)
+- `.lane-claims/tasks/` — 54 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1219 Datei(en)
+- `content/narrative/contributions/` — 1220 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 23 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
-- `docs/evidence/` — 4 Datei(en)
+- `docs/evidence/` — 5 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 33 Datei(en)
 - `docs/superpowers/plans/` — 1 Datei(en)
@@ -918,6 +918,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 31 Zeilen
+- `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -971,6 +972,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-repo-ballast-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-sync-live-hooks.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
@@ -2228,18 +2230,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-repo-ballast-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27375 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4881 Zeilen
+- `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27397 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4885 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1749 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1206 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1207 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 107 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2726 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2734 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
@@ -2248,7 +2251,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 200 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
-- `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
+- `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 191 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 94 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 172 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
@@ -2275,6 +2278,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/github-hooks-pipelie-run-2026-11-16.json` — [ — gelesen: 29 Zeilen
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
+- `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 66 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.webp` — Binaerdatei — geprueft: Signatur, 27200 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.webp` — Binaerdatei — geprueft: Signatur, 41550 B

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-tagesbericht-evidence",
+  "claimId": "lane/governance/tagesbericht-evidence",
+  "branch": "lane/governance/tagesbericht-evidence",
+  "baseSha": "522b7e388f1b28ffca79254a34de00d26310ee75",
+  "phase": "IMPLEMENTING",
+  "title": "Tagesbericht-Beleg und Owner-Entscheidungen",
+  "goal": "Vollstaendigen P0-Merge-Gate-Lauf als Beleg festhalten und die drei offenen Punkte als Owner-Entscheidungen benennen. Issue #1022.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

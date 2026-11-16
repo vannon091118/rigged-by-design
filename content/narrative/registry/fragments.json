@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0fe566e982eb8b5ceb59c7cbaba3169dc6a0f45b6f3f36f9bc906d8d59b2d342",
+  "contentHash": "sha256:ce931940d096dcf57229476500512166e2123a907f4dafa3c4c6aa400d363d1a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26548,6 +26548,28 @@
       "text": "Bisher sortierte der Wirt die Aushänge nach einer Liste, die er sich am Vortag abgeschrieben hatte. Jetzt geht er vor jedem Sortieren zur Tür und sieht nach, ob der Bote noch angeschlossen ist; ist er es nicht, schreibt er den Grund auf das Blatt, statt es stillschweigend zu übergehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-sync-live-hooks.json"
+    },
+    {
+      "contributionId": "tagesbericht-evidence",
+      "turnId": "2026-11-16T20:55Z-tagesbericht-evidence",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt heftete den Tageszettel nicht an die Wand, sondern legte die Rechnung daneben: wer nachpruefen wollte, fand jeden Posten und den Weg, ihn selbst zu messen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-tagesbericht-evidence.json"
     },
     {
       "contributionId": "test-quality-voice-01",
