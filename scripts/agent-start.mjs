@@ -81,9 +81,6 @@ function repoSlug() {
 }
 
 const repo = repoSlug();
-if (!repo) {
-  blockers.push('[ERR-4019] Repository nicht bestimmbar; `git remote add origin <url>` oder RBD_REPO=owner/repo setzen');
-}
 
 // --- 1. Credentials ------------------------------------------------------
 // Eine Aufloesungsstelle (`lib/credentials.mjs`): GH_TOKEN, GITHUB_TOKEN,
@@ -92,10 +89,17 @@ if (!repo) {
 const credentials = resolveGithubToken();
 const token = credentials.token;
 if (!token) {
+  // Genau ein Blocker: ohne Credential-Quelle ist alles andere zweitrangig,
+  // und der Agent soll genau einen Befehl ausfuehren, nicht drei.
   blockers.push(
     `[ERR-4019] Keine Credential-Quelle: geprueft wurde ${credentials.tried.join(' -> ')}. ` +
       `Aufloesen mit genau einem Befehl: \`${TOKEN_FIX_COMMAND}\``,
   );
+  if (!repo) {
+    warnings.push('Repository nicht bestimmbar (origin zeigt nicht auf GitHub): nach dem Login `RBD_REPO=owner/repo` setzen');
+  }
+} else if (!repo) {
+  blockers.push('[ERR-4019] Repository nicht bestimmbar; `git remote add origin <url>` oder RBD_REPO=owner/repo setzen');
 }
 
 // --- 2. Actors-Policy (Regel, kein Zustand) -------------------------------
