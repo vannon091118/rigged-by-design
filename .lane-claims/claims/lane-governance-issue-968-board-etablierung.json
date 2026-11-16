@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/issue-968-board-etablierung",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-968-board-etablierung",
+  "baseSha": "d97e8a0e970592a624723512c26d55325c85f615",
+  "issue": 968,
+  "task": "Board-Etablierung",
+  "pathAllowlist": [
+    ".lane-claims/**",
+    "board-state.json",
+    "docs/**",
+    ".lane-claims/claims/lane-governance-issue-968-board-etablierung.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d97e8a0e970592a624723512c26d55325c85f615"
+}

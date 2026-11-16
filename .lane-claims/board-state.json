@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-15T05:50:00Z",
+  "generatedAt": "2026-11-16T09:45:00Z",
   "generatedBy": "maintainer",
-  "head": "4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
-  "headMessage": "docs(#857): Maintainer-Pflichten als globales Mission-Profil (#858)",
-  "base": "origin/main @ 4a5003113d9d6366c87e6eb4e84b68631c22bf1b",
-  "worktree": "/workspace/chats/195d7664885329f26a8e750f",
+  "head": "d97e8a0e970592a624723512c26d55325c85f615",
+  "headMessage": "FREEZE-0: Dispatch-Reste entfernen und Claim-Register schliessen (#970)",
+  "base": "origin/main @ d97e8a0e970592a624723512c26d55325c85f615",
+  "worktree": "D:/Projekte/rigged-by-design",
   "status": "READY",
   "summary": "Board-Sync (#834) auf main ac38b39ae6d46a28b93686b954aea047e0bd23ab: Snapshot aus dem Live-Board nachgezogen; 75 offene Issues, 0 offene PRs. Claim auf #685 (geschlossen) entfernt, #597 (Jenova, review-waiting) bleibt.",
   "lastActions": [
@@ -32,14 +32,15 @@
     "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
     "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt"
   ],
-  "activeClaims": [
+  "activeClaims": [],
+  "mergedClaimsThisRun": [
     {
-      "issue": 597,
-      "worker": "Jenova",
-      "note": "CLAIM [A19] Foreign-Floor-Gaeste, aktiv"
+      "issue": 913,
+      "claimId": "lane/governance/webhook-delivery",
+      "branch": "lane/governance/webhook-delivery",
+      "status": "merged"
     }
   ],
-  "mergedClaimsThisRun": [],
   "closedIssuesThisRun": [
     675,
     776
@@ -609,9 +610,14 @@
       }
     ],
     "newGovernanceIssuesThisRun": 0,
-    "openIssues": 27
+    "openIssues": [
+      684,
+      968,
+      972
+    ]
   },
-  "openIssuesCount": 69,
+  "openIssuesCount": 16,
+  "note": "Live-Board hat 3 offene Issues (#684, #968, #972). Die 'issues'-Map listet alle gescannten Tickets (inkl. geschlossener/konsolidierter); board-state.json ist abgeleitet und wird durch board:sync regeneriert.",
   "mergedPrsThisRun": [
     739,
     849

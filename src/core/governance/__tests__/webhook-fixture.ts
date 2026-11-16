@@ -6,7 +6,7 @@
  * Test daraus schreibt. Inhalt unveraendert aus der echten Delivery-Form.
  */
 
-/** `issue_comment` mit gueltigem MERGE_PLAN an #913. */
+/** `issue_comment` an #913: gewoehnlicher Kommentar, keine Queue-Semantik. */
 export const PLAN_DELIVERY = {
   "action": "created",
   "issue": {
@@ -20,7 +20,7 @@ export const PLAN_DELIVERY = {
       "login": "vannon091118"
     },
     "created_at": "2026-11-16T02:40:48Z",
-    "body": "MERGE_PLAN rev=4 hash=6f48c213bf48 main=a07952fe22e9f3c4093ff9133d99d24d3b6c5791 at=2026-11-16T02:52Z\npr=952 head=8832094070376fa0c4d3bace8d5c7ed6f8069b56\n\nQueue-Revision 4: 1 offene PRs, Basis `a07952fe22e9f3c4093ff9133d99d24d3b6c5791`.\nBestaetigung je aktiver Session:\n`pnpm run merge:queue -- --ack --session <session> --role <worker|maintainer>`"
+    "body": "Review-Notiz zur Lieferung: der Kommentar wird als Subjekt eingeordnet, nicht als Queue-Ereignis."
   },
   "repository": {
     "full_name": "vannon091118/rigged-by-design"
