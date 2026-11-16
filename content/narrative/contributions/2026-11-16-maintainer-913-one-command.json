@@ -1,0 +1,21 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T03:05Z-one-command-identity",
+  "contributionId": "maintainer-913-one-command-identity",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
+  "directives": []
+}

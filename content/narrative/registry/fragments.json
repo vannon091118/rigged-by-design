@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2fa54da76af2ede3ca55aa79a8a34f6b956253b291f4691dedded6840b33a3f7",
+  "contentHash": "sha256:889cc0d35d77df41ca2e18fc01a68a69a876fad85bd1ea349a8798b6b5578cf2",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9658,6 +9658,28 @@
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
     },
     {
+      "contributionId": "governance-image-diff-test",
+      "turnId": "2026-11-16T03:20Z-governance-image-diff-test",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer vergleicht jemand zwei Bilder Pixel für Pixel: gleiche Flächen, gleiche Farben, nur ein Schatten ist gewandert. Der Vergleich sagt nicht \"gut\" oder \"schlecht\", er sagt nur, wie weit sich etwas verändert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-image-diff-test.json"
+    },
+    {
       "contributionId": "governance-phase3-ci-state-01",
       "turnId": "2026-11-10T04:20Z-governance-phase3-ci-state",
       "agentId": "buffy",
@@ -10811,6 +10833,72 @@
       "text": "Im Hinterzimmer wird aufgeräumt. Zettel, auf denen längst erledigte Arbeiten stehen, wandern in den Papierkorb, und die Liste daneben stimmt wieder mit dem überein, was wirklich noch offen ist. Niemand hat etwas weggeworfen, das noch jemand hält: Was belegt war, ist belegt; was offen war, bleibt offen und ist jetzt wieder auffindbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json"
+    },
+    {
+      "contributionId": "maintainer-913-credential-queue-id",
+      "turnId": "2026-11-16T02:52Z-credential-queue-id",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schlüssel lag die ganze Zeit im Raum, nur nicht an dem Haken, den die Liste nannte. Jetzt wird jeder Name geprüft, der einen Schlüssel tragen darf, und der Aushang verlangt keinen Gang mehr zum Schalter. Dazu tragen die Zettel in der Abstellkammer endlich ihre Nummer: ohne sie war jede Bestätigung so alt wie der Plan selbst und zählte nie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-credential-queue-id.json"
+    },
+    {
+      "contributionId": "maintainer-913-merge-queue",
+      "turnId": "2026-11-16T02:35Z-merge-queue-913-01",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "In der Abstellkammer haengt jetzt eine Reihenfolge, die niemand mehr aus dem Kopf aendert. Jede Zeile traegt eine Nummer, einen Stempel und die Namen derer, die sie bestaetigt haben. Wer vorne steht, kommt durch; wer fehlt, wartet. Und wenn die Liste nicht lesbar ist, wird nicht gemergt, sondern geschwiegen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-merge-queue.json"
+    },
+    {
+      "contributionId": "maintainer-913-one-command-identity",
+      "turnId": "2026-11-16T03:05Z-one-command-identity",
+      "agentId": "maintainer",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Haken hängt jetzt ein Name statt einer Rolle, und der Aushang liest ihn selbst. Wer die Tür aufmacht, muss nicht mehr sagen, wer er ist, und der alte Zettel mit dem fremden Kürzel ist abgehängt. Was bleibt, ist eine Zeile: der nächste Handgriff, den nur noch einer tun kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-maintainer-913-one-command.json"
     },
     {
       "contributionId": "maintainer-937-audit-evidence",
