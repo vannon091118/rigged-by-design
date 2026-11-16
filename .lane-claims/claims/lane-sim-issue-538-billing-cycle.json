@@ -1,0 +1,20 @@
+{
+  "id": "lane-sim-issue-538-billing-cycle",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-538-billing-cycle",
+  "baseSha": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e",
+  "issue": 538,
+  "task": "Woechentliche Abrechnung mit Bankentscheidungen und belegter Ledger-Buchung (#538)",
+  "pathAllowlist": [
+    "src/core/sim",
+    "src/store",
+    "src/ui",
+    "content/narrative",
+    ".lane-claims/claims/lane-sim-issue-538-billing-cycle.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "36d1154e6a4552cf6aaed9512d6ccbf653f61e1e"
+}
