@@ -1,0 +1,23 @@
+{
+  "id": "lane/integrity/issue-1036-store-guard-proof",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/integrity/issue-1036-store-guard-proof",
+  "baseSha": "d79fd6d5ca8f32910c505b1d94a64dfdb35b7e51",
+  "issue": 1036,
+  "task": "Store-Pfad-Nachweis: Rollback von worldStore.#guard nach Teilmutation pruefen",
+  "pathAllowlist": [
+    "content/narrative/contributions/**",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-integrity-issue-1036-store-guard-proof.json",
+    "src/store/__tests__/store-command-guard.test.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d79fd6d5ca8f32910c505b1d94a64dfdb35b7e51"
+}
