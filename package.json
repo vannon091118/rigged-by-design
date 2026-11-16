@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.282",
+  "version": "0.3.283",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -22,6 +22,8 @@
     "claim:register": "node scripts/claim-register.mjs",
     "claim:hygiene": "node scripts/claim-hygiene.mjs --check",
     "board:sync": "node scripts/sync-board-state.mjs",
+    "board:overview": "node scripts/board-overview.mjs",
+    "webhook:install": "node scripts/install-webhook.mjs",
     "reconcile:claims": "node scripts/reconcile-claims.mjs",
     "worker:init": "node scripts/worker-init.mjs",
     "run:budget": "node scripts/run-budget.mjs",

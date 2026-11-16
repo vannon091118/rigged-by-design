@@ -1,0 +1,21 @@
+{
+  "agentId": "maintainer",
+  "turnId": "2026-11-16T01:05Z-board-overview-01",
+  "contributionId": "maintainer-943-board-overview",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am schwarzen Brett hängt jetzt eine einzige Liste. Sie sagt nicht nur, was offen ist: Sie sagt, wer es hält, was daran hängt und warum es als Nächstes drankommt. Wer vorbeigeht, muss nicht mehr fünf Zettel übereinanderlegen, um zu verstehen, wo er anfängt. Und wenn das Brett einmal nicht lesbar ist, schweigt die Liste, statt zu raten.",
+  "directives": []
+}
