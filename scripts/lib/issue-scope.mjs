@@ -4,7 +4,7 @@
  * Ein rotes Gate blockiert nur, was es wirklich betrifft: `main` global, eine
  * Lane nur sich selbst, eine Dependency nur ihre Dependents. Ein Issue ohne
  * Scope ist eine Warnung, `remote-ci` blockiert nie. Dieselbe Auslegung lesen
- * `pretask` (Startblocker) und `auto-resolve` (Eskalation); hier steht sie
+ * `pretask` (Startblocker) und `agent:cause` (Eskalation); hier steht sie
  * einmal.
  */
 

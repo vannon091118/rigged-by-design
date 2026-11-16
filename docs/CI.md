@@ -90,6 +90,8 @@ Ein echter Repo-Webhook braucht eine erreichbare Empfänger-URL (`scripts/instal
 
 Entfernt wurden `ci-verify.yml`, `long-checks.yml`, `auto-version-release.yml`, `build-apk.yml`, `pr-watcher.yml` und `auto-resolve.yml`: Ihre Arbeit ist vollständig lokal (`pnpm run ci:local`, `pnpm run test:mechanics`, `pnpm run android:apk`, `pnpm run turn:finish`). Ein zweiter Testpfad existiert nicht mehr.
 
+Mit den Workflows sind auch ihre Skripte entfernt: `ci-plan.mjs`, `gate-matrix.mjs`, `ci-long-checks.mjs`, `pr-watcher.mjs`, `auto-resolve.mjs` und der `merge-queue`-Client. Ihre Aufgaben sind jetzt erreichbar: lange Nachweise über `pnpm run test:mechanics`, APK-Relevanz über `pnpm run release:impact`, Tag und Release über `pnpm run release:tag`. `agent:start` meldet jede Mechanik ohne Ausführungspfad als Befund.
+
 ### Lokal statt Cloud
 
 ```bash
