@@ -2738,3 +2738,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Umsetzung.** Summary und Health-Notiz nennen keinen SHA mehr, sondern die Relation selbst; der Kopf bleibt der gemergte Stand. `sync-board-state --check` und `reconcile-claims --check` bleiben gruen.
 
+## 2026-11-16 — Beleg auf den finalen main-Stand gezogen (Buffy)
+
+**Befund.** Der Beleg transcriptierte einen aelteren Lauf (`522b7e38`) und damit eine andere Section-6/7-Form als der aktuelle Bericht; Section 6 und 7 fehlten in der Reproduktionsliste.
+
+**Umsetzung.** `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` enthaelt jetzt den vollstaendigen Lauf von `a1f9b275` (Clone-HEAD == `git ls-remote origin refs/heads/main`, Arbeitsbaum leer) samt Befehlen fuer alle sieben Abschnitte.
+
+**Nachweis.** Merge-Gate `GRUEN`, `drift: []`, `keine Abweichung`, Claim-Hygiene PASS, 0 Label-Widersprueche, #987 CLOSED, kein alter Kopf-Hash, 0 offene PRs; `verify:light` im selben Klon 13 Gates gruen.
+

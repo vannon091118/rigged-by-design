@@ -748,10 +748,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3311 |
-| Gelistete Dateien | 3311 |
+| Getrackte Dateien | 3312 |
+| Gelistete Dateien | 3312 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (113), .lanes (1), artifacts (1), bin (1), content (1225), docs (90), packages (27), public (571), scripts (157), src (1104) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (113), .lanes (1), artifacts (1), bin (1), content (1226), docs (90), packages (27), public (571), scripts (157), src (1104) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -768,7 +768,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1221 Datei(en)
+- `content/narrative/contributions/` — 1222 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -2199,6 +2199,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-board-closeout-relation.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-board-live-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-contracts-gate.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-16-evidence-final-main.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-freeze-0-code-cleanup.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-archive-ledger.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-governance-freeze-reste.json` — { — gelesen: 17 Zeilen
@@ -2232,8 +2233,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27419 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4889 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27441 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4893 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -2243,7 +2244,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1208 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 107 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2740 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2748 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 391 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 69 Zeilen
@@ -2279,7 +2280,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/github-hooks-pipelie-run-2026-11-16.json` — [ — gelesen: 29 Zeilen
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
-- `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 66 Zeilen
+- `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 87 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.webp` — Binaerdatei — geprueft: Signatur, 27200 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.webp` — Binaerdatei — geprueft: Signatur, 41550 B
