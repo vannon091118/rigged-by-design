@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:889cc0d35d77df41ca2e18fc01a68a69a876fad85bd1ea349a8798b6b5578cf2",
+  "contentHash": "sha256:8a4283f5b578b89e227fdb939ebb78a9ea38f850af6056ad468be54a198baf39",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -9365,6 +9365,28 @@
       "text": "Die erste Miete ist keine runde Zahl mehr im Kopf: Sie steht als Tagesbetrag im Hauskonto, und wer sie gedeckt hat, sieht statt eines vollen Balkens die nächste offene Bedingung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-goal-cost-truth.json"
+    },
+    {
+      "contributionId": "governance-archive-ledger",
+      "turnId": "2026-11-16T03:40Z-governance-archive-ledger",
+      "agentId": "monitor",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Tisch liegt eine Liste mit achtzehn Zeilen. Neben jeder steht ein Datum, eine Nummer und ein Wort: übernommen, erledigt, liegengeblieben. Am Ende ist keine Zeile leer, und das ist der eigentliche Beweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-governance-archive-ledger.json"
     },
     {
       "contributionId": "governance-ci-gates",

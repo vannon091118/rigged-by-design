@@ -1,0 +1,17 @@
+{
+  "agentId": "monitor",
+  "turnId": "2026-11-16T03:40Z-governance-archive-ledger",
+  "contributionId": "governance-archive-ledger",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Auf dem Tisch liegt eine Liste mit achtzehn Zeilen. Neben jeder steht ein Datum, eine Nummer und ein Wort: übernommen, erledigt, liegengeblieben. Am Ende ist keine Zeile leer, und das ist der eigentliche Beweis.",
+  "directives": []
+}
