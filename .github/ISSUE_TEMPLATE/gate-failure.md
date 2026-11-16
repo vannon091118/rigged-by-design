@@ -13,7 +13,7 @@ assignees: []
 **Rot-Gates:** `<gate-liste>`  
 **CI Run URL:** `<run-url>`  
 **Erkannt am:** `<timestamp>`  
-**Erkannt durch:** `pr-watcher.yml`
+**Erkannt durch:** lokale Gates (`pnpm run verify:fast`, `pnpm run ci:local`)
 
 ## 📋 Was der Agent tun muss
 

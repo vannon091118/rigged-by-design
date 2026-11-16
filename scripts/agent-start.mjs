@@ -33,7 +33,8 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
 import { evaluateIssueClaim, orderBoard } from './lib/issue-claim.mjs';
-import { githubToken, rest } from './lib/github-rest.mjs';
+import { rest } from './lib/github-rest.mjs';
+import { TOKEN_FIX_COMMAND, resolveGithubToken } from './lib/credentials.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -84,15 +85,16 @@ if (!repo) {
   blockers.push('[ERR-4019] Repository nicht bestimmbar; `git remote add origin <url>` oder RBD_REPO=owner/repo setzen');
 }
 
-// --- 1. Token -------------------------------------------------------------
-// Der einzige Zustand, der ausserhalb Git liegen darf, ist das Token — und das
-// kommt aus der Umgebung. Ein committetes Secret waere bereits kompromittiert.
-const token = githubToken();
+// --- 1. Credentials ------------------------------------------------------
+// Eine Aufloesungsstelle (`lib/credentials.mjs`): GH_TOKEN, GITHUB_TOKEN,
+// `gh auth token`, git-credential-helper. Nichts wird gespeichert oder
+// committet; ohne Quelle bricht der Lauf mit genau einem Befehl ab.
+const credentials = resolveGithubToken();
+const token = credentials.token;
 if (!token) {
   blockers.push(
-    '[ERR-4019] Kein Board-Token: `GH_TOKEN` (oder `GITHUB_TOKEN`) ist nicht gesetzt. ' +
-      'Token als Projekt-Secret (Settings → Project settings → Secrets) bzw. Repository-Secret ablegen; ' +
-      'im Repo liegt bewusst kein Secret. Danach denselben Befehl erneut ausfuehren.',
+    `[ERR-4019] Keine Credential-Quelle: geprueft wurde ${credentials.tried.join(' -> ')}. ` +
+      `Aufloesen mit genau einem Befehl: \`${TOKEN_FIX_COMMAND}\``,
   );
 }
 
@@ -341,7 +343,7 @@ function scanMechanics() {
     const text = readFileSync(join(ROOT, 'scripts', file), 'utf8');
     for (const other of scripts) {
       if (other === file) continue;
-      if (text.includes(`'${other}'`) || text.includes(`"${other}"`) || text.includes(`./${other}`)) {
+      if (text.includes(`'${other}'`) || text.includes(`"${other}"`) || text.includes(`./${other}`) || text.includes(`scripts/${other}`)) {
         if (!calledBy.has(other)) calledBy.set(other, []);
         calledBy.get(other).push(file);
       }
@@ -380,6 +382,24 @@ if (mechanics.orphan.length > 0) {
   );
 }
 
+// --- 4b. APK-Relevanz (release-impact) -----------------------------------
+// Eine Mechanik ohne Ausfuehrungspfad ist nutzlos: dieser Lauf fuehrt sie aus
+// und zeigt, ob der Diff ueberhaupt ein APK rechtfertigt.
+function apkRelevance() {
+  const prevTag = git(['describe', '--tags', '--abbrev=0']);
+  if (!prevTag) return { checked: false, reason: 'kein Vor-Tag im Klon: Relevanz unbekannt (flacher Klon)' };
+  try {
+    const output = execFileSync(process.execPath, [join(ROOT, 'scripts', 'release-impact.mjs'), `--prev=${prevTag}`], {
+      cwd: ROOT, encoding: 'utf8', timeout: 30000, stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    const match = /apk=(true|false)/.exec(output);
+    return { checked: true, prevTag, apk: match ? match[1] === 'true' : null };
+  } catch (error) {
+    return { checked: false, reason: `release-impact nicht auswertbar (${String(error?.message ?? error).split('\n')[0].slice(0, 120)})` };
+  }
+}
+const apk = apkRelevance();
+
 // --- 5. Ereignis-Hook ausloesen ------------------------------------------
 let dispatch = null;
 if (wantDispatch) {
@@ -412,7 +432,7 @@ if (asJson) {
     repo,
     at,
     agent,
-    tokenSource: token ? (process.env.GH_TOKEN ? 'GH_TOKEN' : 'GITHUB_TOKEN') : null,
+    tokenSource: credentials.source,
     board: {
       total: board.total,
       shown: board.rows.length,
@@ -426,6 +446,7 @@ if (asJson) {
       orphan: mechanics.orphan,
     },
     dispatch: dispatch ? { ok: dispatch.ok } : null,
+    apkRelevance: apk,
     blockers,
     warnings,
     notes,
@@ -458,6 +479,7 @@ if (asJson) {
   for (const entry of mechanics.wired.filter((item) => item.note)) console.log(`  HINWEIS ${entry.file}: ${entry.note}`);
   for (const entry of mechanics.unused) console.log(`  OHNE ABLAUF ${entry.file}: ${entry.note}`);
   for (const entry of mechanics.orphan) console.log(`  VERGESSEN ${entry.file}: ${entry.note}`);
+  console.log(`  APK-Relevanz: ${apk.checked ? `${apk.apk ? 'APK empfohlen' : 'kein APK noetig'} (seit ${apk.prevTag})` : apk.reason}`);
   for (const warning of warnings) console.log(`  ! ${warning}`);
   for (const note of notes) console.log(`  - ${note}`);
   console.log('');

@@ -183,22 +183,20 @@ describe('Red-Team: Test- und Gate-Lane', () => {
     }
   });
 
-  it('erzeugt Matrix und CI-Plan bei gleichem Zustand identisch und ohne Quellmutation', () => {
+  it('erzeugt den CI-Plan bei gleichem Zustand identisch und ohne Quellmutation', () => {
     const before = `${treeDigest(resolve(ROOT, 'src'))}:${treeDigest(resolve(ROOT, 'scripts'))}`;
 
-    const matrixA = runNode(['scripts/gate-matrix.mjs', '--profile=quick']);
-    const matrixB = runNode(['scripts/gate-matrix.mjs', '--profile=quick']);
-    expect(matrixB).toBe(matrixA);
-    const matrix = JSON.parse(matrixA) as { include: { gate: string }[] };
-    expect(matrix.include.map((entry) => entry.gate)).toEqual([...QUICK_GATES]);
+    // Der Plan ist die eine Gate-Liste. `gate-matrix.mjs` und `ci-plan.mjs`
+    // sind entfernt: es gibt keinen Actions-Job mehr, der eine Matrix oder
+    // einen Cloud-Plan konsumiert (docs/CI.md).
+    expect(planGates('full')).toEqual([...REQUIRED_CI_GATES, 'audit']);
+    expect(planGates('full')).toEqual(planGates('full'));
+    expect(planGates('quick') ?? []).toEqual([...QUICK_GATES]);
 
-    const planPath = join(stateDir, 'ci-plan.json');
-    const planA = runNode(['scripts/ci-plan.mjs', '--event=workflow_dispatch', '--json=1'], { CI_PLAN_PATH: planPath });
-    const planB = runNode(['scripts/ci-plan.mjs', '--event=workflow_dispatch', '--json=1'], { CI_PLAN_PATH: planPath });
-    expect(planB).toBe(planA);
-    const report = JSON.parse(planA) as { state: string; gates: string[] };
-    expect(report.state).toBe('MANUAL');
-    expect(report.gates).toEqual(expect.arrayContaining([...REQUIRED_CI_GATES, 'audit']));
+    // Kein Gate-Lauf darf den Quellbaum veraendern: derselbe Nachweis wie oben,
+    // jetzt ueber ein verbliebenes Skript, das nur liest.
+    const locA = runNode(['scripts/check-loc.mjs']);
+    expect(runNode(['scripts/check-loc.mjs'])).toBe(locA);
 
     const after = `${treeDigest(resolve(ROOT, 'src'))}:${treeDigest(resolve(ROOT, 'scripts'))}`;
     expect(after).toBe(before);

@@ -87,6 +87,8 @@
     "autofix:0911": "node scripts/autofix-0911.mjs",
     "android:apk": "node scripts/prepare-android.mjs",
     "android:apk:release": "node scripts/prepare-android.mjs --release",
+    "release:impact": "node scripts/release-impact.mjs",
+    "release:tag": "node scripts/ci-tag-release.mjs",
     "turn:finish": "node scripts/turn-push.mjs",
     "turn:finish:fast": "node scripts/turn-push.mjs --profile=fast",
     "turn:finish:integration": "node scripts/turn-push.mjs --profile=integration",

@@ -1,14 +1,13 @@
 /**
- * @test-target: scripts/auto-resolve.mjs
+ * @test-target: scripts/lib/repair-plan.mjs
  * @error-code: ERR-0911
  *
- * Die Reihenfolge ist der Vertrag: NOOP/PR_HANDOFF erzeugen nichts, ein
+ * Die Reihenfolge der Reparatur-Auswertung ist der Vertrag: NOOP/PR_HANDOFF erzeugen nichts, ein
  * transienter Befund wird genau einmal wiederholt, ein mechanischer Befund
  * wird im temporaeren Worktree repariert, erst danach entsteht ein Issue.
  * Ausserhalb der Allowlist bricht die Reparatur ab, ohne zu committen.
  */
 import { describe, expect, it } from 'vitest';
-import { changedPaths, attemptRepair, patchPath } from '../../../../scripts/auto-resolve.mjs';
 import {
   affectedGates,
   filterPaths,
@@ -82,68 +81,3 @@ describe('repair-plan Allowlist', () => {
   });
 });
 
-describe('auto-resolve Worktree', () => {
-  it('liest Renames als Zielpfad', () => {
-    expect(changedPaths('R  alt.ts -> docs/ARCHITECTURE.md\n?? docs/INVENTORY.md\n')).toEqual([
-      'docs/ARCHITECTURE.md',
-      'docs/INVENTORY.md',
-    ]);
-  });
-
-  it('baut den Patchpfad aus der SHA', () => {
-    expect(patchPath(sha)).toBe(`artifacts/autofix-${sha.slice(0, 12)}.patch`);
-  });
-
-  it('committet und pusht nur erlaubte Pfade mit Marker', () => {
-    const calls: { args: string[]; options: Record<string, unknown> }[] = [];
-    const git = (args: string[], options: Record<string, unknown> = {}) => {
-      calls.push({ args, options });
-      if (args[0] === 'status') return '?? docs/INVENTORY.md\n';
-      if (args[0] === 'rev-parse') return 'e'.repeat(40);
-      return '';
-    };
-    const result = attemptRepair({
-      branch: 'lane/x/y',
-      sha,
-      gates: ['docs'],
-      marker: `<!-- autofix: ${sha} -->`,
-      controlRoot: '/control',
-      token: 'token',
-      worktree: '.rbd-autofix-test-ok',
-      git,
-      exec: () => '',
-      log: () => {},
-    });
-    expect(result.ok).toBe(true);
-    expect(result.pushed).toBe(true);
-    expect(result.paths).toEqual(['docs/INVENTORY.md']);
-    const commit = calls.find(({ args }) => args.includes('commit'));
-    expect(String(commit?.options.input)).toContain(`<!-- autofix: ${sha} -->`);
-    const push = calls.find(({ args }) => args[0] === 'push');
-    expect(push?.args).toContain('HEAD:lane/x/y');
-  });
-
-  it('bricht bei einem Pfad ausserhalb der Allowlist vor dem Commit ab', () => {
-    const calls: string[][] = [];
-    const git = (args: string[]) => {
-      calls.push(args);
-      if (args[0] === 'status') return '?? docs/INVENTORY.md\n?? src/core/foo.ts\n';
-      return '';
-    };
-    const result = attemptRepair({
-      branch: 'lane/x/y',
-      sha,
-      gates: ['docs'],
-      marker: `<!-- autofix: ${sha} -->`,
-      controlRoot: '/control',
-      token: 'token',
-      worktree: '.rbd-autofix-test-foreign',
-      git,
-      exec: () => '',
-      log: () => {},
-    });
-    expect(result.ok).toBe(false);
-    expect(result.reason).toContain('src/core/foo.ts');
-    expect(calls.some((args) => args[0] === 'commit')).toBe(false);
-  });
-});

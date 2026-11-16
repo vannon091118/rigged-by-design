@@ -13,13 +13,15 @@
  * die Aufrufer keinen zweiten Codepfad brauchen.
  */
 import { execFileSync } from 'node:child_process';
+import { resolveGithubToken } from './credentials.mjs';
 
 const [kind = '', raw = '{}'] = process.argv.slice(2);
 const params = JSON.parse(raw);
-const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '';
+// Dieselbe Aufloesungsstelle wie der Aufrufer; kein zweiter Token-Pfad.
+const token = resolveGithubToken().token;
 
 if (!token) {
-  console.error('REST: kein Token (GH_TOKEN oder GITHUB_TOKEN setzen)');
+  console.error('REST: keine Credential-Quelle (GH_TOKEN, GITHUB_TOKEN, gh auth token oder git-credential-helper); `gh auth login` ausfuehren');
   process.exit(2);
 }
 

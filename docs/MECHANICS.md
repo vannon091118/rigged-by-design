@@ -2,61 +2,84 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Diese Seite beantwortet drei Fragen für Maintainer und Worker: **welcher Befehl startet Arbeit**, **welche Mechanik erzwingt was** und **warum** es sie gibt. Die Regeln selbst stehen in [`GOVERNANCE.md`](GOVERNANCE.md); hier steht ihre maschinelle Durchsetzung.
+**Zweck:** Diese Seite beantwortet drei Fragen für Maintainer und Worker: **welcher Befehl startet Arbeit**, **welche Credential-Quelle wann greift** und **welche Mechanik was erzwingt**. Die Regeln selbst stehen in [`GOVERNANCE.md`](GOVERNANCE.md); hier steht ihre maschinelle Durchsetzung.
 
 ## Der eine Start
 
 ```bash
-pnpm run agent:start --brief     # Board, Claims, Mechanik-Stand, nächste Befehle
+pnpm run agent:start --brief     # Board, Claims, Mechanik-Inventur, nächste Befehle
 pnpm run agent:start --json      # vollständig, für Werkzeuge
 pnpm run agent:start -- --issue 874
-pnpm run agent:start -- --dispatch   # Board-Overview-Ereignis auslösen
+pnpm run agent:start -- --dispatch   # Ereignis-Workflow auslösen
 ```
 
-`agent:start` **ersetzt den lokalen Start**: Reihenfolge, Besitz, Postfach und Review-Lage kommen aus GitHub, nicht aus `.lane-claims/board-state.json`, `.lanes/identity.json` oder einer Claim-Datei. Ein frischer Klon ohne diese Dateien liefert dasselbe Ergebnis.
+Reihenfolge, Besitz, Postfach und Review-Lage kommen aus GitHub, nicht aus `.lane-claims/board-state.json`, `.lanes/identity.json` oder einer Claim-Datei. Ein frischer Klon ohne diese Dateien liefert dasselbe Ergebnis.
 
-Die einzige Voraussetzung ist ein Token in der Umgebung:
+## Credential-Kette
 
-| Umgebung | Woher das Token kommt | Was im Repo liegt |
-| --- | --- | --- |
-| Cloud/Agent | Projekt-Secret `GH_TOKEN` (Settings → Project settings → Secrets) | nichts |
-| Lokal | `export GH_TOKEN=…` in der Shell | nichts |
-| GitHub Actions | Repository-Secret, `${{ secrets.GITHUB_TOKEN }}` | nichts |
+Eine Auflösungsstelle: `scripts/lib/credentials.mjs`. Kein zweiter Zustand, keine Config-Datei, kein gespeicherter Token.
 
-Ein Token wird **nie** committet, auch nicht verschleiert: ein Secret im Repo ist ein veröffentlichtes Secret. `scripts/lib/github-rest.mjs` liest ausschließlich `GH_TOKEN` oder `GITHUB_TOKEN`.
+| Reihenfolge | Quelle | Greift in | Anmerkung |
+| --- | --- | --- | --- |
+| 1 | `GH_TOKEN` | Cloud-Agent, Projekt-Secret | Vorrang, wenn gesetzt |
+| 2 | `GITHUB_TOKEN` | GitHub Actions | automatisch injiziert, keine Einrichtung |
+| 3 | `gh auth token` | lokal | nach `gh auth login` |
+| 4 | `git credential fill` | lokal | vorhandener Credential-Helper |
 
-`agent:pretask` bleibt für die tiefe lokale Prüfung (Arbeitsbaum, Impact-Plan, Task-Vertrag, Laufbudget). Es ist kein zweiter Einstieg: `agent:start` nennt es nur, wenn lokale Arbeit tatsächlich existiert.
+Fehlt jede Quelle, endet der Lauf mit **genau einem** Befehl: `gh auth login`. Kein Stacktrace, kein stiller Fallback.
+
+Im Repo liegt kein Secret — auch nicht kodiert: ein Secret in der Datei wäre ein veröffentlichtes Secret. Board-Zustand, Claims und Phasen stammen ausschließlich aus Issues, Labels, Kommentaren und PRs; `GITHUB_TOKEN` mit `issues: read`, `pull-requests: read`, `contents: read` genügt. GitHub Projects v2 wird nicht verwendet.
 
 ## Was der Ablauf prüft
 
 | Reihenfolge | Prüfung | Blockiert | Auflösung, die der Blocker nennt |
 | --- | --- | --- | --- |
-| 1 | Repository bestimmbar (`origin` oder `RBD_REPO`) | ja | `git remote add origin …` |
-| 2 | Board-Token vorhanden | ja | Token als Projekt-/Repository-Secret setzen |
+| 1 | Repository bestimmbar (`origin`, `RBD_REPO`, `GITHUB_REPOSITORY`) | ja | `git remote add origin …` |
+| 2 | Credential-Quelle vorhanden | ja | `gh auth login` |
 | 3 | Board lesbar (Issues + offene PRs) | ja | Leserecht prüfen; kein Bericht aus Vermutungen |
 | 4 | Claim je Issue aus dem Kommentarverlauf | ja, bei fremdem Claim am gewählten Issue | `RELEASE`/`HANDOFF` abwarten oder freies Issue nehmen |
 | 5 | Actor-Policy lesbar (`.lane-claims/actors.json`) | nein, Warnung | Datei reparieren; ohne sie autorisiert kein Kommentar |
-| 6 | Kein Skript ohne Aufrufer | ja | einbinden oder entfernen, im selben Commit belegt |
+| 6 | Kein Skript ohne Aufrufer (`ORPHAN`) | ja | einbinden oder entfernen, im selben Commit belegt |
 
 Reihenfolge und Auswahl folgen `orderBoard`: Priorität, Zustand, dann das **älteste** Issue. Dieselbe Funktion nutzt `board:overview`; es gibt keine zweite Klassifikation.
 
-## Mechanik-Stand
-
-Der Lauf klassifiziert jedes Skript unter `scripts/`:
+## Mechanik-Inventur
 
 | Status | Bedeutung | Konsequenz |
 | --- | --- | --- |
 | `FLOW` | dieser Lauf prüft und blockiert selbst | keine Aktion |
-| `AUTO` / `WIRED` | von Hook, Workflow oder `package.json` erreichbar | keine Aktion |
-| `ORPHAN` | niemand referenziert es | **Blocker**: einbinden oder entfernen |
+| `AUTO` / `WIRED` | von Hook, Workflow, `package.json` oder einem erreichbaren Skript aufgerufen | keine Aktion |
+| `UNUSED` | nur aus Tests oder Doku bekannt | Warnung + Entscheidung im Lauf sichtbar |
+| `ORPHAN` | niemand referenziert es | **Blocker** |
 
-Damit gibt es kein „vergessenes“ System mehr: was nicht erreichbar ist, hält den Start an, statt still zu verrotten. Was erreichbar, aber in keinem Ablauf ist, wird als Hinweis genannt und prioritär eingebunden oder entfernt.
+Im Lauf wird zusätzlich die APK-Relevanz über `release:impact` ausgeführt und angezeigt; sie ist damit erreichbar und nicht mehr nur dokumentiert.
 
-## Ereignis-Hook und Webhook
+### Entfernt (redundant oder widersprüchlich)
 
-- **Aktiv ohne Server:** `.github/workflows/board-overview.yml` läuft auf `issues`, `issue_comment`, `pull_request` und `repository_dispatch` und pflegt genau einen markierten Übersichtskommentar am Board-Issue #677. Er führt keine Tests, Gates, Builds oder APKs aus.
-- **Auslösen ohne Empfänger:** `pnpm run agent:start -- --dispatch` (oder `POST /repos/<owner>/<repo>/dispatches` mit `{"event_type":"board-refresh"}`).
-- **Klassischer Repo-Webhook:** am 2026-11-16 geprüft — es ist **keiner** registriert. Ein Webhook braucht eine erreichbare Empfänger-URL; dieses Repo betreibt keinen Server. `pnpm run webhook:install -- --check` belegt den Ist-Stand, `--url <https-empfänger> --secret-file <datei>` legt ihn idempotent an. Ohne Empfänger wäre ein Hook ein vergessenes System, deshalb bleibt `repository_dispatch` der aktive Weg.
+| Mechanik | Grund |
+| --- | --- |
+| `auto-resolve.mjs` | Reparatur brauchte einen PAT mit Sonderrechten; die Workflows reparieren nichts |
+| `pr-watcher.mjs` | ohne Cloud-Testlauf gibt es kein `workflow_run`, an dem er hängen könnte |
+| `ci-plan.mjs` (CLI) | Cloud-Plan ohne Cloud-Job; die Bibliothek bleibt für `promote` und Tests |
+| `gate-matrix.mjs` | Matrix für Actions-Jobs, die es nicht mehr gibt |
+| `ci-long-checks.mjs` | startete `long-checks.yml`, das entfernt ist |
+| `merge-queue.mjs` + `lib/merge-queue.mjs` | Merge-Reihenfolge leitet `agent:start` aus Issues, Claims und PRs ab |
+
+Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watcher.test.ts`, `merge-queue.test.ts`, `docs/MERGE-QUEUE.md`. Die Reparatur-Auswertung `lib/repair-plan.mjs` bleibt und wird von `repair-plan.test.ts` geprüft.
+
+### Eingebunden
+
+| Mechanik | Befehl | Wirkung |
+| --- | --- | --- |
+| `release-impact.mjs` | `pnpm run release:impact` | APK-Relevanz eines Diffs; `agent:start` führt sie aus |
+| `ci-tag-release.mjs` | `pnpm run release:tag` | Tag und Release aus `package.json`, der dokumentierte lokale Release-Pfad |
+| `local-ci.mjs --profile=mechanics` | `pnpm run test:mechanics` | lange Nachweise; `agent:verify --ci` startet sie lokal |
+
+## Ereignis-Workflows
+
+- **`Agent Start`** (`.github/workflows/agent-start.yml`): läuft auf `push`, `pull_request` und `workflow_dispatch`, führt `pnpm run agent:start --brief` mit dem automatisch injizierten `secrets.GITHUB_TOKEN` gegen das echte Repo aus und schreibt das Ergebnis in die Job-Summary. Er führt keine Tests, Gates, Builds oder APKs aus.
+- **`Board Overview`** (`.github/workflows/board-overview.yml`): pflegt genau einen markierten Übersichtskommentar am Board-Issue #677 auf `issues`, `issue_comment`, `pull_request` und `repository_dispatch`.
+- **Dispatch:** `pnpm run agent:start -- --dispatch` sendet `repository_dispatch` mit `board-refresh` und braucht `contents: write`. Ein klassischer Repo-Webhook bleibt entfernt, solange keine erreichbare Empfänger-URL existiert (`pnpm run webhook:install -- --check` belegt den Stand).
 
 ## Rollen
 
@@ -66,4 +89,4 @@ Damit gibt es kein „vergessenes“ System mehr: was nicht erreichbar ist, häl
 ## Pflege
 
 - Neue Mechanik heißt: Eintrag in `package.json`, Hook oder Workflow **und** eine Zeile in dieser Tabelle. Ein Skript ohne Aufrufer ist rot.
-- Eine Regel, die mechanisch prüfbar ist, gehört in den Ablauf, nicht in Prosa. Prosa bleibt nur für Entscheidungen, die kein Werkzeug treffen kann.
+- Eine Regel, die mechanisch prüfbar ist, gehört in den Ablauf, nicht in Prosa.

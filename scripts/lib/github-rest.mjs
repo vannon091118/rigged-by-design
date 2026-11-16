@@ -12,12 +12,19 @@
  */
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { resolveGithubToken } from './credentials.mjs';
 
 const HELPER = fileURLToPath(new URL('./github-rest-fetch.mjs', import.meta.url));
 
-/** Ein Token aus der Umgebung; beide ueblichen Namen. */
+/** Ein Token aus der einen Aufloesungsstelle (`credentials.mjs`). */
 export function githubToken(env = process.env) {
-  return env.GH_TOKEN || env.GITHUB_TOKEN || '';
+  return resolveGithubToken({ env }).token;
+}
+
+/** Woher das Token kommt, ohne den Wert zu nennen. */
+export function githubTokenSource(env = process.env) {
+  const resolution = resolveGithubToken({ env });
+  return resolution.ok ? resolution.source : null;
 }
 
 /** Ein REST-Aufruf, synchron ueber den Helferprozess. */
