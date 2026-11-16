@@ -90,3 +90,5 @@ Ihre Tests und Doku-Verweise sind mitentfernt: `auto-resolve.test.ts`, `pr-watch
 
 - Neue Mechanik heißt: Eintrag in `package.json`, Hook oder Workflow **und** eine Zeile in dieser Tabelle. Ein Skript ohne Aufrufer ist rot.
 - Eine Regel, die mechanisch prüfbar ist, gehört in den Ablauf, nicht in Prosa.
+
+<!-- Ausloeser-Push: Ereignis-Registrierung des Beweislaufs pruefen. -->
