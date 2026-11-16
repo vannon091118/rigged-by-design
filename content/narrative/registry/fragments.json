@@ -25302,6 +25302,28 @@
       "source": "content/narrative/contributions/2026-11-16-register-closeout.json"
     },
     {
+      "contributionId": "registry-boundary-01",
+      "turnId": "2026-11-16T23:06Z-registry-boundary-01",
+      "agentId": "governance",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Archiv gibt es jetzt nur noch eine Tuer zur Regalwand. Wer einen Satz braucht, klopft dort an und bekommt ihn gereicht; wer an der Wand selbst zieht, wird an der Schwelle abgewiesen. Die Regale duerfen sich fuellen, ohne dass draussen jemand mit umzieht - und die Tuer merkt sich, wer sie benutzt hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-registry-boundary.json"
+    },
+    {
       "contributionId": "relationship-standing-01",
       "turnId": "2026-11-08T03:55Z-relationship-standing",
       "agentId": "buffy",

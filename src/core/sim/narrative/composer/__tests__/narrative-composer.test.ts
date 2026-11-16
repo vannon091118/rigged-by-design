@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { composeNarrative, type ComposeRequest, type ComposedNarrative, type NarrativeFragment } from '../index';
-import { NARRATIVE_REGISTRY } from '../registry.generated';
+import { NARRATIVE_FRAGMENTS } from '../index';
 import { VISITOR_CONFLICT_TEMPLATE } from '../../events/definitions/visitor-conflict';
 import { VISITOR_RETURN_TEMPLATE } from '../../events/definitions/visitor-return';
 
@@ -44,7 +44,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
 
   it('liefert bei identischer Anfrage und anderer Registry-Reihenfolge dasselbe Ergebnis', () => {
     const forward = composeNarrative(RETURN_REQUEST);
-    const reverse = composeNarrative(RETURN_REQUEST, [...NARRATIVE_REGISTRY].reverse());
+    const reverse = composeNarrative(RETURN_REQUEST, [...NARRATIVE_FRAGMENTS].reverse());
     expect(reverse).toEqual(forward);
     expect(forward.rejected).toEqual([]);
   });
@@ -66,10 +66,12 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
   });
 
   it('verwirft Locale- und Persona-Inkompatibilitaeten fail-closed', () => {
-    const personaBound = {
-      ...NARRATIVE_REGISTRY[0], contributionId: 'persona-bound-test-01', slot: 'event-body',
+    const template = NARRATIVE_FRAGMENTS[0];
+    if (!template) throw new Error('Registry ist leer');
+    const personaBound: NarrativeFragment = {
+      ...template, contributionId: 'persona-bound-test-01', slot: 'event-body',
       personaRefs: ['rita-kern'], flags: ['narrativ', 'rueckkehrer'], contexts: ['return'],
-    } satisfies NarrativeFragment;
+    };
     const request = { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }], availablePersonas: [] };
     const withoutPersona = composeNarrative(request, [personaBound]);
     expect(slot(withoutPersona, 'BODY').fallback).toBe(true);
@@ -83,7 +85,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
   });
 
   it('reicht Direktiven unveraendert weiter, ohne Text oder Mechanik zu koppeln', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
+    const baseline = NARRATIVE_FRAGMENTS.find((entry) => entry.contributionId === 'trigger-context-01');
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const original = {
       ...baseline,
@@ -159,7 +161,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
   });
 
   it('waehlt einen Ausgang nur mit Nachwirkungs-Kontext', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'till-watch-01');
+    const baseline = NARRATIVE_FRAGMENTS.find((entry) => entry.contributionId === 'till-watch-01');
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const aftermath = {
       ...baseline,
@@ -179,7 +181,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
   });
 
   it('entscheidet Gleichstand pro Szenen-ID stabil, aber nicht immer gleich', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
+    const baseline = NARRATIVE_FRAGMENTS.find((entry) => entry.contributionId === 'trigger-context-01');
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const left = { ...baseline, contributionId: 'tie-left-01' };
     const right = { ...baseline, contributionId: 'tie-right-01' };

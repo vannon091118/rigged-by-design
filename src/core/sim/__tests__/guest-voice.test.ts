@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { createWorld, ensureStarter } from '../templates';
 import { makeGuest } from '../traits';
 import { Prng } from '../../rng/prng';
-import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
+import { NARRATIVE_FRAGMENTS } from '../narrative/composer/index';
 import { guestVoice, VOICE_SLOT, voiceBand, voiceLine } from '../narrative/guest-voice';
 
 const SEED = 4711;
@@ -31,7 +31,7 @@ describe('Gaststimme nach Ruf', () => {
 
   it('haelt je Band mindestens 50 verdrahtete Bausteine bereit', () => {
     for (const slot of Object.values(VOICE_SLOT)) {
-      const pool = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === slot && fragment.locale === 'de');
+      const pool = NARRATIVE_FRAGMENTS.filter((fragment) => fragment.slot === slot && fragment.locale === 'de');
       expect(pool.length, `Pool ${slot}`).toBeGreaterThanOrEqual(50);
     }
   });
@@ -55,8 +55,8 @@ describe('Gaststimme nach Ruf', () => {
       low.add(guestVoice(world, entry, 10) ?? '');
       high.add(guestVoice(world, entry, 90) ?? '');
     }
-    for (const text of low) expect(NARRATIVE_REGISTRY.some((fragment) => fragment.slot === 'guest-voice-low' && fragment.text === text)).toBe(true);
-    for (const text of high) expect(NARRATIVE_REGISTRY.some((fragment) => fragment.slot === 'guest-voice-high' && fragment.text === text)).toBe(true);
+    for (const text of low) expect(NARRATIVE_FRAGMENTS.some((fragment) => fragment.slot === 'guest-voice-low' && fragment.text === text)).toBe(true);
+    for (const text of high) expect(NARRATIVE_FRAGMENTS.some((fragment) => fragment.slot === 'guest-voice-high' && fragment.text === text)).toBe(true);
     expect(guestVoice(world, speaker, 55)).not.toBe(guestVoice(world, speaker, 95));
   });
 
