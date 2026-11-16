@@ -31,6 +31,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "396e90f2b7ca60d8ebdb1043a620281359a2d56d"
+  "status": "merged",
+  "createdAt": "396e90f2b7ca60d8ebdb1043a620281359a2d56d",
+  "mergedSha": "b10706c28436a83472ae2ce7ba0cdc2fabf89274",
+  "mergedEvidence": "PR #953 (merge_commit_sha b10706c2)"
 }

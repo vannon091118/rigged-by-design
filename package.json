@@ -96,7 +96,8 @@
     "turn:finish:full": "node scripts/turn-push.mjs --profile=full",
     "task:pause": "node scripts/task-state.mjs pause",
     "task:status": "node scripts/task-state.mjs status",
-    "task:complete": "node scripts/task-state.mjs complete"
+    "task:complete": "node scripts/task-state.mjs complete",
+    "webhook:receive": "node scripts/webhook-receiver.mjs"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",
