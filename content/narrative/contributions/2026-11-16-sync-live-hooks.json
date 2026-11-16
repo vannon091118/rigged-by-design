@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T14:45Z-sync-live-hooks",
+  "contributionId": "sync-live-hooks",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Bisher sortierte der Wirt die Aushänge nach einer Liste, die er sich am Vortag abgeschrieben hatte. Jetzt geht er vor jedem Sortieren zur Tür und sieht nach, ob der Bote noch angeschlossen ist; ist er es nicht, schreibt er den Grund auf das Blatt, statt es stillschweigend zu übergehen.",
+  "directives": []
+}

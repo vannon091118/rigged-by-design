@@ -26,11 +26,14 @@ import {
   roadmapProgress,
 } from './lib/generated-files.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { reportLiveHooks } from './lib/sync-hooks.mjs';
 
 const args = process.argv.slice(2);
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 const longRunning = args.includes('--serve') || args.includes('--watch');
 captureConsole({ label: 'sync-generated', enabled: !longRunning });
+// Jeder Sync-Befehl fragt den Hook-Stand live ab.
+reportLiveHooks();
 const check = args.includes('--check');
 const staged = args.includes('--staged');
 const all = args.includes('--all');

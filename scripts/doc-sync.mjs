@@ -4,11 +4,14 @@ import { execFileSync } from 'node:child_process';
 import { verifyDocs, DOC_SET, syncDocs } from './lib/doc-sync.mjs';
 import { ROOT } from './lib/report.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { reportLiveHooks } from './lib/sync-hooks.mjs';
 
 const args = process.argv.slice(2);
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 const longRunning = args.includes('--serve') || args.includes('--watch');
 captureConsole({ label: 'doc-sync', enabled: !longRunning });
+// Jeder Sync-Befehl fragt den Hook-Stand live ab.
+reportLiveHooks();
 
 if (args.includes('--check')) {
   const problems = verifyDocs();

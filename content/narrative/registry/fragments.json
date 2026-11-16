@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7c4e6da8777439b2723a6565d75786e47ae2e3cdaa760972b1e05afe4c914fc8",
+  "contentHash": "sha256:dfb68d5566f9601a1aac7e9a4a0cd2fee2b8ae5eb42c4fb487dbfd7a6738bb89",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -26372,6 +26372,28 @@
       "text": "Die Kiste steht noch am Eingang, das Holz hell im Scheinwerferlicht. Wer sie aufnimmt, spürt das Gewicht des Automaten darin; wer sie absetzt und die erste Schraube anzieht, hört das Klicken der Walzen. Erst danach dreht sich jemand an der Tür um.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-starter-crate-guidance.json"
+    },
+    {
+      "contributionId": "sync-live-hooks",
+      "turnId": "2026-11-16T14:45Z-sync-live-hooks",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Bisher sortierte der Wirt die Aushänge nach einer Liste, die er sich am Vortag abgeschrieben hatte. Jetzt geht er vor jedem Sortieren zur Tür und sieht nach, ob der Bote noch angeschlossen ist; ist er es nicht, schreibt er den Grund auf das Blatt, statt es stillschweigend zu übergehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-sync-live-hooks.json"
     },
     {
       "contributionId": "test-quality-voice-01",
