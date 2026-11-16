@@ -743,10 +743,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3259 |
-| Gelistete Dateien | 3259 |
+| Getrackte Dateien | 3262 |
+| Gelistete Dateien | 3262 |
 | Getrackte Ordner | 121 |
-| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (90), .lanes (1), artifacts (1), content (1193), docs (109), packages (27), public (571), scripts (149), src (1089) |
+| Bereiche | .cron (6), (Wurzel) (10), .githooks (4), .github (9), .lane-claims (91), .lanes (1), artifacts (1), content (1194), docs (109), packages (27), public (571), scripts (149), src (1090) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -760,11 +760,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 4 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 45 Datei(en)
+- `.lane-claims/claims/` — 46 Datei(en)
 - `.lane-claims/tasks/` — 41 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1189 Datei(en)
+- `content/narrative/contributions/` — 1190 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -866,7 +866,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
-- `src/store/` — 44 Datei(en)
+- `src/store/` — 45 Datei(en)
 - `src/store/__tests__/` — 39 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
@@ -928,6 +928,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-534-first-evening.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-537-clothing-brands.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-sim-issue-538-billing-cycle.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
@@ -2183,8 +2184,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-maintainer-864-claim-ledger.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-937-audit-evidence.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-maintainer-943-board-overview.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 26715 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4761 Zeilen
+- `content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json` — { — gelesen: 17 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 26737 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4765 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3697,7 +3699,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/player-job-market.ts` — Spieler-Arbeitsmarkt: Offene Stellen aus betretbaren Betrieben der Stadt. — gelesen: 116 Zeilen
 - `src/core/sim/player-job-promotion.ts` — Beförderung im Spielerjob: Durchschnitt der letzten Schichten, Anforderungen — gelesen: 69 Zeilen
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 141 Zeilen
-- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. — gelesen: 56 Zeilen
+- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. — gelesen: 123 Zeilen
 - `src/core/sim/player-needs-tick.ts` — Tick-Anbindung der Spielerbeduerfnisse; eigene Datei haelt tick.ts in seiner LOC-Zone. — gelesen: 18 Zeilen
 - `src/core/sim/player-needs.ts` — Spielerbeduerfnisse: Hunger und Durst als echter, gespeicherter Spielzustand. — gelesen: 153 Zeilen
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 130 Zeilen
@@ -3932,6 +3934,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 118 Zeilen
 - `src/store/city-door-walk.ts` — Der Weg zur Stadtschwelle: ein ferner Tuerklick ist ein Auftrag, kein Sprung. — gelesen: 83 Zeilen
 - `src/store/city-exterior-view.ts` — Eine Exterieur-Ansicht je gespeicherter Stadt. — gelesen: 19 Zeilen
+- `src/store/clothing-tools.ts` — Kleidungskauf als eigener Command: Katalog, Ledger und Garderobe an einer Stelle. — gelesen: 23 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 65 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
@@ -3969,7 +3972,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 177 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 167 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 169 Zeilen
 - `src/store/world-tick.ts` — Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn — gelesen: 67 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 768 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen

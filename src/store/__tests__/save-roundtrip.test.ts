@@ -34,7 +34,7 @@ function fixture() {
   recordJournal(world, {
     kind: 'SYSTEM', subject: 'Teststand', cause: 'Roundtrip', effect: 'Alles gespeichert.',
   });
-  world.look = { skin: '#b97c4b', hair: '#d9b35c', outfit: '#ff2e88', accessory: 'GLASSES' };
+  world.look = { skin: '#b97c4b', hair: '#d9b35c', outfit: '#ff2e88', accessory: 'GLASSES', wardrobe: [], equippedItemId: null };
   world.plinko = normalizePlinkoConfig({
     ...defaultPlinkoConfig(), pegs: [{ row: 1, column: 2, kind: 'MAGNET_PEG' }],
   });

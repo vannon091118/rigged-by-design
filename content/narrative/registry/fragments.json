@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b820a7623ebd47c0dc7cd25dff79d38b3e4f8a270bcfba2d894d1a2868798b53",
+  "contentHash": "sha256:809531aa03d0b5b794a78d8c3bdbe6522a846ebb6d9c753eee6b7cf30dadd105",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -11538,6 +11538,28 @@
       "text": "Sie fragt nach dem Platz von damals, nicht nach dem Gewinn. Als du nickst, setzt sie sich, als wäre es abgemacht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-nar-body-warm-02.json"
+    },
+    {
+      "contributionId": "nar-clothing-purchase-01",
+      "turnId": "2026-11-16T01:00Z-nar-clothing-purchase-01",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "city"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kleiderschrank im Apartment füllt sich: ein Street-Tee von UrbanThreads, eine Basis-Cap von CapCo, eine Silberkette von BlingHouse. Jedes Stück hat einen Preis, eine Marke und eine Wirkung, wenn man auf der Straße gesehen wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-nar-clothing-purchase-01.json"
     },
     {
       "contributionId": "nar-echo-body-01",

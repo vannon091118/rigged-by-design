@@ -70,7 +70,7 @@ describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
     it('uebernimmt Spielerfarben aus dem Look', () => {
       const nodes = makeNodes();
       const paint = new GuestPaint(nodes, { seed: 0, isPlayer: true, persona: 'STREET', portrait: false });
-      paint.setLook({ skin: '#f2d3b3', hair: '#2a1a14', outfit: '#00ffcc', accessory: 'NONE' }, 'neutral');
+      paint.setLook({ skin: '#f2d3b3', hair: '#2a1a14', outfit: '#00ffcc', accessory: 'NONE', wardrobe: [], equippedItemId: null }, 'neutral');
       expect(nodes.body.tint).toBe(0x00ffcc);
     });
   });

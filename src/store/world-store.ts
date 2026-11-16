@@ -26,6 +26,7 @@ import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
 import { flushNarrativeCmd } from './narrative-commands';
 import { chooseNarrativeAction, dismissNarrativeAction } from './narrative-store-actions';
 import type { PlayerLook } from '../core/sim/player-look';
+import { buyClothingItem } from './clothing-tools';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
 import type { CardDeal } from './foreign-play';
 import type { GameView } from './types';
@@ -155,7 +156,8 @@ class WorldStore {
     this.#emit();
     return report;
   }
-  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); } moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
+  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); }
+  buyClothing(itemId: string): void { this.#guard(() => { this.#notice = buyClothingItem(this.#world, this.#ledger, itemId); }, false); } moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); } deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); } useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
   spinTest(itemId: number): GameResult | null { const { result, notice } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = notice; this.#emit(); } return result; } deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); } setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); } exclusion(command: ExclusionCommand, limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }
   chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null { let result: ChoiceExecution | null = null; this.#guard(() => { const action = chooseNarrativeAction(this.#world, this.#ledger, eventId, choiceId); result = action.result; this.#notice = action.notice; }); return result; } dismissNarrative(eventId: number): void { this.#guard(() => { this.#notice = dismissNarrativeAction(this.#world, eventId); }); }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
