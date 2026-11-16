@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T20:40Z-board-closeout-relation",
+  "contributionId": "board-closeout-relation",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt datierte die Tafel auf den Moment, in dem er sie aufhängte, und schrieb darunter, dass sie den Tag davor beschreibt — damit niemand sie für veraltet hielt, nur weil sie den eigenen Nagel nicht kennt.",
+  "directives": []
+}

@@ -116,7 +116,14 @@ try {
 }
 
 if (check) {
-  const drift = boardDrift({ previous, next: next.state, dropped: next.dropped });
+  const parents = (() => {
+    try {
+      return [git(['rev-parse', 'HEAD^1'])];
+    } catch {
+      return [];
+    }
+  })();
+  const drift = boardDrift({ previous, next: next.state, dropped: next.dropped, headParents: parents });
   console.log(JSON.stringify({
     checked: true, file: STATE_FILE, head: next.state.head, drift,
   }, null, 2));

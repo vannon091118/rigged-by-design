@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/board-closeout-relation",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/board-closeout-relation",
+  "baseSha": "581cef6255eaa657fb0b17ca2d630c0b553a14f1",
+  "issue": 1019,
+  "task": "Closeout-Relation im Board-Drift",
+  "pathAllowlist": [
+    "scripts/",
+    ".lane-claims/",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/",
+    "src/core/governance/__tests__/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "package.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "581cef6255eaa657fb0b17ca2d630c0b553a14f1"
+}

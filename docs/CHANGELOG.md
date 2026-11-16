@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 
+- **Board-Drift kennt die Closeout-Relation.** `boardDrift` akzeptiert `head == main^` (erster Parent des Merge-Commits) als dokumentierte Selbstreferenz eines Snapshot-Commits; jeder andere Kopf-Drift bleibt rot. Test in `board-state-sync.test.ts`.
 - **Board-State live nachgezogen.** `.lane-claims/board-state.json` steht auf `633dfdf6`, 16 offene Issues, 0 offene PRs; #987 ist nicht mehr als offen gefuehrt, veraltete Summary-/Health-Notizen sind ersetzt. `sync-board-state --check` meldet `drift: []`, `reconcile-claims --check` `keine Abweichung`. Geschlossene P0-Issues (#634, #696, #909, #910, #913, #920) tragen jetzt `zustand-CLOSED` statt widerspruechlicher OPEN/BLOCK-Labels.
 - **Merge-Gate live pruefbar.** `verify:merge-gate` liest Branch-Protection und Rulesets ueber REST: gruen nur mit Pull-Request-Zwang, `enforce_admins`, blockierten Force-Pushes und Loeschungen; fehlende Status-Checks erscheinen als Befund. Live gemessen: `GRUEN · main ist serverseitig geschuetzt` (Reviews 0, Checks keine, Rulesets 0), Beleg in `docs/evidence/`.
 - **Register auf main nachgezogen.** `reconcile-claims --apply` hat die nach den Merges #999/#1001/#1003/#1005/#1007/#1009 offenen bzw. veralteten Claims belegt geschlossen (`merged` mit PR-/SHA-Beleg, Tasks `DONE`) und die Retention ausgefuehrt; `reconcile-claims --check` meldet danach `keine Abweichung`.

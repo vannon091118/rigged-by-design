@@ -2716,3 +2716,11 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** `sync-board-state --check` → `drift: []`, `reconcile-claims --check` → `keine Abweichung`, `claim-hygiene` → PASS, Suchabfrage nach geschlossenen P0-Issues ohne `zustand-CLOSED` → 0.
 
+## 2026-11-16 — Board-Snapshot ohne Selbstreferenz-Drift (Buffy)
+
+**Befund.** Ein Snapshot-Commit kann seinen eigenen SHA nicht enthalten: nach dem Merge steht `main` einen Commit weiter, und `sync-board-state --check` meldete dauerhaft `head:<alt>-><neu>`. Der Snapshot beschrieb den Stand korrekt, das Gate las ihn aber als Drift.
+
+**Entscheidung.** `boardDrift` bekommt die Parents des aktuellen HEAD und akzeptiert genau die dokumentierte Closeout-Relation `head == main^`; jede andere Abweichung bleibt ein Befund. Der Check auf `main` ist damit gruen, ohne Drift zu verschweigen.
+
+**Nachweis.** Sechs Tests in `board-state-sync.test.ts`, darunter der neue Closeout-Fall; `sync-board-state --check` auf dem gemergten Stand meldet `drift: []`.
+

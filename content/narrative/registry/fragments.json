@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ad9b3cc62311d174e01c09bf4ef0e883b00fd4ad5fc27fce94af395a0a716b50",
+  "contentHash": "sha256:0fe566e982eb8b5ceb59c7cbaba3169dc6a0f45b6f3f36f9bc906d8d59b2d342",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -2970,6 +2970,28 @@
       "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-bet-slip-register.json"
+    },
+    {
+      "contributionId": "board-closeout-relation",
+      "turnId": "2026-11-16T20:40Z-board-closeout-relation",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt datierte die Tafel auf den Moment, in dem er sie aufhängte, und schrieb darunter, dass sie den Tag davor beschreibt — damit niemand sie für veraltet hielt, nur weil sie den eigenen Nagel nicht kennt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-board-closeout-relation.json"
     },
     {
       "contributionId": "board-live-sync",
