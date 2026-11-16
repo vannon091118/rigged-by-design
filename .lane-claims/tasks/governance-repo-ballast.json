@@ -4,14 +4,14 @@
   "claimId": "lane/governance/repo-ballast",
   "branch": "lane/governance/repo-ballast",
   "baseSha": "fbad6d83001c7115f34f2167b0ea50d454c5595f",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Repo-Ballast entfernen: Screenshots als WebP, alte Bildsaetze loeschen",
   "goal": "docs/screenshots von 14,89 MB auf 1,84 MB bringen: current und comparison als WebP q82, die alten Saetze v0.3.78/v0.3.114/v0.3.132 entfernen, Verweise und Doku nachziehen. Issue #990.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": null,
+  "status": "DONE",
+  "pr": 991,
   "findings": [],
-  "nextAction": "Generatoren laufen lassen, verify:light gruen ziehen, committen, dann Push und PR gegen main.",
-  "revision": 1
+  "nextAction": "Gemergt als be808c34 (PR #991); Issue #990 schliesst der Maintainer.",
+  "revision": 2
 }

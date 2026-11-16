@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e0f3fd785f0e47d1a8ce6692fc2cc2eeeabb5d60bc593ccf363b5152f8ef2b3d",
+  "contentHash": "sha256:455709273b0bcfffe70d11278a51e7dbb9b80e3ccd4476b0132483e80ad33c81",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -25259,6 +25259,28 @@
       "text": "Im Archiv hingen die alten Aushänge noch in voller Größe an der Wand, jeder mit einem Rahmen aus Pappe. Der Wirt nahm sie ab, fotografierte sie schmaler und hängte nur die zwei auf, die noch etwas zeigen. Die Wand ist leerer geworden; was darauf steht, ist dasselbe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-16-repo-ballast.json"
+    },
+    {
+      "contributionId": "repo-ballast-closeout",
+      "turnId": "2026-11-16T11:05Z-repo-ballast-closeout",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die leere Stelle an der Wand ist jetzt beschrieben: Im Buch steht, wer die alten Aushänge abgenommen hat, an welchem Tag und mit welchem Siegel. Wer später nachzählt, findet die Wand leer und den Vorgang belegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-repo-ballast-closeout.json"
     },
     {
       "contributionId": "returning-memory-01",

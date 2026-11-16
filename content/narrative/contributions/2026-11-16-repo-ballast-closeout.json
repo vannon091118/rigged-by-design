@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-16T11:05Z-repo-ballast-closeout",
+  "contributionId": "repo-ballast-closeout",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die leere Stelle an der Wand ist jetzt beschrieben: Im Buch steht, wer die alten Aushänge abgenommen hat, an welchem Tag und mit welchem Siegel. Wer später nachzählt, findet die Wand leer und den Vorgang belegt.",
+  "directives": []
+}
