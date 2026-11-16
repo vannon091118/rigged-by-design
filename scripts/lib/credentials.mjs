@@ -71,7 +71,7 @@ function fromCredentialHelper() {
 export function resolveGithubToken({ env = process.env } = {}) {
   const fromEnv = fromEnvironment(env);
   if (fromEnv) return { ok: true, ...fromEnv };
-  for (const [name, probe] of [['gh auth token', fromGhCli], ['git-credential-helper', fromCredentialHelper]]) {
+  for (const probe of [fromGhCli, fromCredentialHelper]) {
     const found = probe();
     if (found) return { ok: true, ...found };
   }

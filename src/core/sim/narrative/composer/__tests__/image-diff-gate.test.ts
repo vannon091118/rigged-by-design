@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/sim/narrative/composer/image-diff-gate.ts
- * @error-code: ERR-2001
+ * @error-code: none
  *
  * Testet den lokalen Bild-Diff-Gate mit expliziten Toleranzen:
  * - Gleiche Bilder muessen als gleich erkannt werden

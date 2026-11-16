@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-787-esport-roles",
+  "claimId": "lane/sim/issue-787-esport-roles",
+  "branch": "lane/sim/issue-787-esport-roles",
+  "baseSha": "562f1848301477233e85ff07ab3d246c29401fb0",
+  "phase": "CI_PENDING",
+  "title": "Issue #787: E-Sport-Abend um Teilnehmer- und Betreiberrolle vervollstaendigen",
+  "goal": "Zuschauer-, Teilnehmer- und Betreiberrolle sauber getrennt auf derselben TURNIER_ABEND-Instanz; Einsaetze/Quoten/Auszahlungen im Ledger; Event-ID und Journal ueberleben Save/Load; kein zweiter Scheduler.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

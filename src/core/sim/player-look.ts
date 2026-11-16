@@ -1,12 +1,29 @@
-/** Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. */
+/** Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. */
+
+import type { VaCoinMicro } from '../economy/vacoin';
+import { subVC } from '../economy/vacoin';
 
 export type LookAccessory = 'NONE' | 'CAP' | 'GLASSES' | 'CHAIN';
+
+export type ClothingCategory = 'TOPS' | 'BOTTOMS' | 'ACCESSORIES' | 'HEAD';
+
+export interface ClothingItem {
+  readonly id: string;
+  readonly name: string;
+  readonly category: ClothingCategory;
+  readonly brand: string;
+  readonly priceVC: number; // VaCoins als Mikro-Einheiten (Integer)
+  readonly visual: string; // Hex-Farbe für die visuelle Darstellung
+  readonly socialFactor: number; // -1 .. 1, beeinflusst NPC-Wahrnehmung bei Begegnung
+}
 
 export interface PlayerLook {
   readonly skin: string;
   readonly hair: string;
   readonly outfit: string;
   readonly accessory: LookAccessory;
+  readonly wardrobe: readonly string[]; // Beschaffte Item-IDs
+  readonly equippedItemId: string | null; // Aktuell getragenes Item
 }
 
 export const LOOK_SKINS = ['#f2d3b3', '#e0b48c', '#b97c4b', '#8a5a36', '#d8a27a'] as const;
@@ -19,12 +36,50 @@ export const LOOK_ACCESSORIES: readonly { id: LookAccessory; name: string }[] = 
   { id: 'CHAIN', name: 'Kette' },
 ];
 
+/** Kaufbares Kleidungs- und Accessoire-Inventar. Preise in Mikro-VaCoins (Integer). */
+export const LOOK_ITEMS: readonly ClothingItem[] = Object.freeze([
+  { id: 'tee_street', name: 'Street-Tee', category: 'TOPS', brand: 'UrbanThreads', priceVC: 500, visual: '#ff2e88', socialFactor: 0.10 },
+  { id: 'cap_basic', name: 'Basis-Cap', category: 'HEAD', brand: 'CapCo', priceVC: 300, visual: '#000000', socialFactor: 0.05 },
+  { id: 'chain_silver', name: 'Silberkette', category: 'ACCESSORIES', brand: 'BlingHouse', priceVC: 800, visual: '#ffd166', socialFactor: 0.15 },
+  { id: 'dress_evening', name: 'Abendkleid', category: 'TOPS', brand: 'Nachtrag', priceVC: 1200, visual: '#b06bff', socialFactor: 0.20 },
+]);
+
+export function findClothingItem(itemId: string): ClothingItem | undefined {
+  return LOOK_ITEMS.find((item) => item.id === itemId);
+}
+
+export function canAfford(balance: VaCoinMicro, itemId: string): { ok: boolean; item?: ClothingItem; shortfall?: VaCoinMicro } {
+  const item = findClothingItem(itemId);
+  if (!item) return { ok: false };
+  if (balance >= (item.priceVC as VaCoinMicro)) return { ok: true, item };
+  return { ok: false, item, shortfall: subVC(item.priceVC as VaCoinMicro, balance) };
+}
+
+export function buyItem(balance: VaCoinMicro, itemId: string): { ok: boolean; remaining: VaCoinMicro; item?: ClothingItem; error?: string } {
+  const check = canAfford(balance, itemId);
+  if (!check.ok) {
+    return { ok: false, remaining: balance, error: check.shortfall ? 'Nicht genug Geld.' : 'Kleidungsstück nicht im Katalog.' };
+  }
+  return { ok: true, remaining: subVC(balance, check.item!.priceVC as VaCoinMicro), item: check.item };
+}
+
 export const DEFAULT_LOOK: PlayerLook = {
   skin: LOOK_SKINS[0],
   hair: LOOK_HAIRS[0],
   outfit: LOOK_OUTFITS[0],
   accessory: 'NONE',
+  wardrobe: [],
+  equippedItemId: null,
 };
+
+export function equipItem(look: PlayerLook, itemId: string): PlayerLook {
+  if (!look.wardrobe.includes(itemId)) return look;
+  return { ...look, equippedItemId: itemId };
+}
+
+export function unequipItem(look: PlayerLook): PlayerLook {
+  return { ...look, equippedItemId: null };
+}
 
 const isHex = (value: unknown): value is string =>
   typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value);
@@ -41,14 +96,26 @@ export function normalizeLook(raw: unknown): PlayerLook {
     hair: isHex(value.hair) ? value.hair : DEFAULT_LOOK.hair,
     outfit: isHex(value.outfit) ? value.outfit : DEFAULT_LOOK.outfit,
     accessory,
+    wardrobe: Array.isArray(value.wardrobe) && value.wardrobe.every((id) => typeof id === 'string')
+      ? [...value.wardrobe]
+      : DEFAULT_LOOK.wardrobe,
+    equippedItemId: typeof value.equippedItemId === 'string' || value.equippedItemId === null
+      ? value.equippedItemId
+      : DEFAULT_LOOK.equippedItemId,
   };
 }
 
 /** Nur echte Optionen sind erlaubt; die UI kann keinen freien Hex-Wert einschmuggeln. */
 export function applyLook(current: PlayerLook, patch: Partial<PlayerLook>): PlayerLook {
   const next = normalizeLook({ ...current, ...patch });
+  const validWardrobe = next.wardrobe.filter((id) => LOOK_ITEMS.some((item) => item.id === id));
+  const validEquipped = next.equippedItemId !== null && validWardrobe.includes(next.equippedItemId)
+    ? next.equippedItemId
+    : null;
   return {
     ...next,
+    wardrobe: validWardrobe,
+    equippedItemId: validEquipped,
     skin: (LOOK_SKINS as readonly string[]).includes(next.skin) ? next.skin : current.skin,
     hair: (LOOK_HAIRS as readonly string[]).includes(next.hair) ? next.hair : current.hair,
     outfit: (LOOK_OUTFITS as readonly string[]).includes(next.outfit) ? next.outfit : current.outfit,

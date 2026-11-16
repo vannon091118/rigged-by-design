@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-16T01:00Z-nar-clothing-purchase-01",
+  "contributionId": "nar-clothing-purchase-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": ["city"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Kleiderschrank im Apartment füllt sich: ein Street-Tee von UrbanThreads, eine Basis-Cap von CapCo, eine Silberkette von BlingHouse. Jedes Stück hat einen Preis, eine Marke und eine Wirkung, wenn man auf der Straße gesehen wird.",
+  "directives": []
+}

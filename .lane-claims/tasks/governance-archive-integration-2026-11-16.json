@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-archive-integration-2026-11-16",
+  "claimId": "lane/governance/archive-integration-2026-11-16",
+  "branch": "lane/governance/archive-integration-2026-11-16",
+  "baseSha": "a07952fe22e9f3c4093ff9133d99d24d3b6c5791",
+  "phase": "IMPLEMENTING",
+  "title": "Alle Archiv-Tags 2026-11-16 integrieren oder belegt abweisen",
+  "goal": "Jeder Archiv-Tag hat einen Merge-Commit auf main oder einen Beleg; Abrechnungstabelle in docs/.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Tags 640, 537, 803, WIPs abarbeiten",
+  "revision": 1
+}

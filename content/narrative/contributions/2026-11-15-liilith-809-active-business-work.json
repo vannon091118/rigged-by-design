@@ -1,0 +1,17 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-15T23:10Z-active-business-work-01",
+  "contributionId": "active-business-work-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["service"],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Hinter dem Tresen steht kein Knopf, der Umsatz erzeugt. Wer die Schicht uebernimmt, stellt ein Glas hin, und der Gast zahlt dafuer; wer die Runde leitet, laesst den Gast setzen, und die Kasse sieht Einsatz und Auszahlung. Betreuung in der Lounge bucht nichts, sie hebt Laune und Geduld. Drei Aufgaben, drei Bereiche, ein Grundsatz: der Betrieb verdient nur an dem, was im Raum wirklich passiert, und wer dort steht, kann es besser als das Personal.",
+  "directives": []
+}
