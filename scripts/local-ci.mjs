@@ -19,6 +19,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { ROOT } from './lib/report.mjs';
+import { logFilePath } from './lib/verify-state.mjs';
 import { captureConsole, logsEnabled } from './lib/compact.mjs';
 
 const argv = process.argv.slice(2);
@@ -43,7 +44,7 @@ captureConsole({ label: 'ci-local' });
 const node = process.execPath;
 const step = (label, script, args = [], env = {}) => {
   const withLog = logsEnabled();
-  const log = join(ROOT, '.verify-cache', 'output', `ci-${label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.log`);
+  const log = logFilePath(`ci-${label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`);
   const result = spawnSync(node, [join(ROOT, 'scripts', script), ...args], {
     cwd: ROOT,
     stdio: ['ignore', 'pipe', 'pipe'],

@@ -16,6 +16,7 @@ import { availableParallelism } from 'node:os';
 import { join, relative } from 'node:path';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
+import { reportsDir } from './verify-state.mjs';
 import { logsEnabled } from './compact.mjs';
 import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
@@ -49,7 +50,7 @@ const LOGS = logsEnabled();
 function reports() {
   if (reportDir !== undefined) return reportDir;
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'reports', stamp);
+  const dir = reportsDir({ root: ROOT, stamp });
   try {
     mkdirSync(dir, { recursive: true });
     reportDir = dir;

@@ -142,6 +142,7 @@ export default defineConfig(
       'scripts/lib/doc-sync.mjs',
       'scripts/lib/gate-runner.mjs',
       'scripts/lib/gate-cache.mjs',
+      'scripts/lib/verify-state.mjs',
       'scripts/lib/process-sweep.mjs',
       'scripts/lib/issue-claim.mjs',
       'scripts/claim-register.mjs',

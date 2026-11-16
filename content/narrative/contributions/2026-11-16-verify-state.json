@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T22:58Z-verify-state",
+  "contributionId": "verify-state-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
+  "directives": []
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:76fc8b17441a99cc5fc39d338cbd3d0181a916996706499c9778e15126fcde71",
+  "contentHash": "sha256:457a1946a9659e3a7e6dea832aa2b80737d59d969bcae65cfc2e199b9e3c56bb",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27021,6 +27021,28 @@
       "text": "Drei Türen, die lange klemmten, schließen jetzt leise: Das Geld stimmt, die Namen stimmen, und niemand muss mehr erklären, warum. Wer nachsieht, findet die Stadt genau so vor, wie sie beschrieben wurde.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-verify-gates.json"
+    },
+    {
+      "contributionId": "verify-state-01",
+      "turnId": "2026-11-16T22:58Z-verify-state",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neun Zettel lagen hinter dem Tresen, jeder in einer anderen Handschrift: einer fuer die Aufgabe, einer fuer die Basis, einer fuer das, was ein anderer noch zu tun hat. Jetzt steht alles in einem Buch. Wer eine Seite aufschlaegt, sieht denselben Stand wie der Wirt, und was zu alt geworden ist, faellt beim Aufraeumen von selbst heraus. Ein zerrissener Eintrag kostet keinen Abend mehr, nur einen neuen Versuch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-verify-state.json"
     },
     {
       "contributionId": "warm-return-body-01",
