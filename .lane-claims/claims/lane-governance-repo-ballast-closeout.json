@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/repo-ballast-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/repo-ballast-closeout",
+  "baseSha": "be808c3464e17e4541b9ccf160975bebe90c59fd",
+  "issue": 990,
+  "task": "Aftercare: Register der Ballast-Lane auf merged mit Merge-SHA ziehen",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-repo-ballast.json",
+    ".lane-claims/tasks/governance-repo-ballast.json",
+    ".lane-claims/claims/lane-governance-repo-ballast-closeout.json",
+    ".lane-claims/tasks/governance-repo-ballast-closeout.json",
+    ".lane-claims/merged-index.json",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "be808c3464e17e4541b9ccf160975bebe90c59fd"
+}
