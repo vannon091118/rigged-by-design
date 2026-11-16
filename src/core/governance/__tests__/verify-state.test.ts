@@ -188,8 +188,9 @@ describe('verify-state', () => {
 
   it('behaelt einen frischen Gate-Eintrag ueber den TTL-Pfad', () => {
     const { root } = tempRoot();
-    // Der Gate-Cache schrieb sein Alter frueher als ISO-String.
-    writeGate('lint', { key: 'k', at: new Date(NOW).toISOString() }, { root });
+    // Der Gate-Cache schrieb sein Alter frueher als ISO-String; NOW als Literal,
+    // damit der Test keine Uhr liest (Determinismus-Regel).
+    writeGate('lint', { key: 'k', at: '2001-09-09T01:46:40.000Z' }, { root });
     writeGate('typecheck', { key: 'k', at: NOW }, { root });
 
     const gc = gcVerifyState({ root, ttlDays: 1, now: NOW });

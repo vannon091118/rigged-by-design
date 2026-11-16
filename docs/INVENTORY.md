@@ -754,10 +754,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3349 |
-| Gelistete Dateien | 3349 |
+| Getrackte Dateien | 3352 |
+| Gelistete Dateien | 3352 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (131), .lanes (1), artifacts (1), bin (1), content (1233), docs (90), packages (27), public (571), scripts (160), src (1113) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (133), .lanes (1), artifacts (1), bin (1), content (1234), docs (90), packages (27), public (571), scripts (160), src (1113) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -769,12 +769,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 64 Datei(en)
-- `.lane-claims/tasks/` — 63 Datei(en)
+- `.lane-claims/claims/` — 65 Datei(en)
+- `.lane-claims/tasks/` — 64 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1229 Datei(en)
+- `content/narrative/contributions/` — 1230 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -914,7 +914,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1047-verify-state-concurrency.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 32 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -978,6 +979,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1045-claim-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1047-verify-state-concurrency.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1049-verify-state-cache.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-1051-verify-state-test-time.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
@@ -2264,8 +2266,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-17-redundancy-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27595 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4921 Zeilen
+- `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27617 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4925 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3300,7 +3303,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/test-worker-home.ts` — Fixture-Identitaet und Pretask-Helfer fuer Tests, die `pretask` als — gelesen: 165 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/verify-scope.test.ts` — `verify:scope` liest ausschliesslich den Diff und vergleicht ihn mit der — gelesen: 103 Zeilen
-- `src/core/governance/__tests__/verify-state.test.ts` — Ein Cache, ein Besitzer: Altdateien wandern in die Abschnitte von — gelesen: 214 Zeilen
+- `src/core/governance/__tests__/verify-state.test.ts` — Ein Cache, ein Besitzer: Altdateien wandern in die Abschnitte von — gelesen: 215 Zeilen
 - `src/core/governance/__tests__/webhook-action.test.ts` — Eine Delivery darf keine eigene Wahrheit erzeugen. Nach dem Queue-Rueckbau — gelesen: 32 Zeilen
 - `src/core/governance/__tests__/webhook-fixture.ts` — Aufgezeichnete GitHub-Deliveries fuer den Webhook-Empfaenger. — gelesen: 63 Zeilen
 - `src/core/governance/__tests__/webhook-receiver.test.ts` — Der Empfaenger muss eine gueltig signierte Delivery annehmen und eine — gelesen: 128 Zeilen

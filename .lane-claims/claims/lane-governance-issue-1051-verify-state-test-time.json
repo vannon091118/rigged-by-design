@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/issue-1051-verify-state-test-time",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1051-verify-state-test-time",
+  "baseSha": "d250ab6b2858f0657abc7fc215e960823dd6ffbb",
+  "issue": 1051,
+  "task": "Verify-State-Test: deterministische Zeit statt Date",
+  "goal": "Der Test nutzt eine feste ISO-Zeit ohne Uhr; verify:light ist wieder gruen bis auf #1038.",
+  "pathAllowlist": [
+    "src/core/governance/__tests__/verify-state.test.ts",
+    ".lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-17-verify-state-test-time.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json",
+    ".lane-claims/tasks/governance-issue-1051-verify-state-test-time.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d250ab6b2858f0657abc7fc215e960823dd6ffbb"
+}

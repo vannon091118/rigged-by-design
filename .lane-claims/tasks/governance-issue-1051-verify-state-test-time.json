@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1051-verify-state-test-time",
+  "claimId": "lane/governance/issue-1051-verify-state-test-time",
+  "branch": "lane/governance/issue-1051-verify-state-test-time",
+  "baseSha": "d250ab6b2858f0657abc7fc215e960823dd6ffbb",
+  "phase": "IMPLEMENTING",
+  "title": "Verify-State-Test: deterministische Zeit statt Date",
+  "goal": "Der Test nutzt eine feste ISO-Zeit ohne Uhr; verify:light ist wieder gruen bis auf #1038.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Testzeit fixieren, Lint/Light pruefen, PR.",
+  "revision": 1
+}
