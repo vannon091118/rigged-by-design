@@ -24,6 +24,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "d4b051b6ff177d8097b11dff74f355d3dcdcbf9d"
+  "status": "merged",
+  "createdAt": "d4b051b6ff177d8097b11dff74f355d3dcdcbf9d",
+  "mergedSha": "51a1052e",
+  "mergedEvidence": "PR #1003 auf main; Statuskorrektur ohne Aftercare-Lauf"
 }

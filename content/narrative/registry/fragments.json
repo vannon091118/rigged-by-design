@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:dfb68d5566f9601a1aac7e9a4a0cd2fee2b8ae5eb42c4fb487dbfd7a6738bb89",
+  "contentHash": "sha256:383cbf9602e3bf7b073bc19dd256f2636bc6de538eb40c8cb3860de4e8ae30cc",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10046,6 +10046,28 @@
       "text": "Wer nach Hause will, geht nicht mehr in die Wohnung des Spielers; die eigene Adresse steht im Eintrag, und der Weg endet vor einer anderen Haustür.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-home-households.json"
+    },
+    {
+      "contributionId": "hook-live-proof",
+      "turnId": "2026-11-16T15:20Z-hook-live-proof",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt ging zur Tür und kam mit leerem Zettel zurück: kein Bote angeschlossen. Statt das zu verschweigen, schrieb er „null Boten, geprüft mit Schlüssel“ auf die Tafel und hängte daneben den Zettel eines Nachbarhauses, auf dem einer verzeichnet war — damit niemand behaupten konnte, er habe das Lesen nur geübt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-16-hook-live-proof.json"
     },
     {
       "contributionId": "house-debt-01",

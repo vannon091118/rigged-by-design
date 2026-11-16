@@ -2666,3 +2666,13 @@ Merge-Kopf, keine Allowlist-Aufweichung).
 
 **Nachweis.** `sync deps` gibt die Live-Zeile aus und bleibt gruen; fuenf Testfaelle decken aktive Hooks, fehlende Hooks und nicht abfragbare Hooks ohne Netz ab.
 
+## 2026-11-16 — Hook-Abfrage gegen echtes GitHub (Buffy)
+
+**Befund.** Die Sync-Zeile zeigte zuletzt nur `nicht abfragbar (HTTP 403)`, weil ohne Token gelesen wurde. Der Erfolgspfad des Parsers war nie mit echten Daten gelaufen.
+
+**Messung.** Mit `GH_TOKEN` antwortet `GET /repos/vannon091118/rigged-by-design/hooks` mit HTTP 200, `x-accepted-github-permissions: repository_hooks=read`, `x-ratelimit-remaining: 496` und der leeren Liste `[]`: das Repo hat null Hooks. Die Sync-Ausgabe nennt jetzt `0 aktiv, authentifiziert via GH_TOKEN · keine Hooks` und den Anlegebefehl.
+
+**Beleg des Parsers.** Fuer den nicht-leeren Fall ist die echte Antwort von `GET /repos/vannon091118/Pipelie_Run/hooks` aufgezeichnet (`fixtures/github-hooks-live-2026-11-16.json`): ein aktiver Codacy-Hook, Events `pull_request, push, repository`, Ziel-URL. Der Test liest daraus aktiv, Events und URL und rendert sie in der Live-Zeile; kein erfundener Payload.
+
+**Entscheidung.** `hookStatus()` trennt `reachable` von `configured` und fuehrt `authenticated`/`tokenSource` mit; die Zeile verschweigt weder Anonymitaet noch fehlende Hooks.
+
