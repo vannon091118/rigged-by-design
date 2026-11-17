@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ed27e19a9a88f7083a5f80d735b03ea4b5c92780e7c9a23b21a0dd7429c4092f",
+  "contentHash": "sha256:8ab60b8062caaaf3240f93ca1dd7a2f62c20450ba2ebc8e3368ef3280168c974",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10269,6 +10269,28 @@
       "text": "Wer nach Hause will, geht nicht mehr in die Wohnung des Spielers; die eigene Adresse steht im Eintrag, und der Weg endet vor einer anderen Haustür.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-home-households.json"
+    },
+    {
+      "contributionId": "hook-closeout-1105-01",
+      "turnId": "2026-11-17T23:50Z-hook-closeout-1105",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Morgen ging der Hausmeister die Tueren ab, eine nach der anderen. Jede liess sich oeffnen, keine klemmte. Nur die letzte am Ende des Gangs brauchte einen zweiten Versuch, und der Hausmeister notierte nichts dazu. Wer spaeter kam, fand sie offen vor.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-hook-closeout-1105.json"
     },
     {
       "contributionId": "hook-live-proof",

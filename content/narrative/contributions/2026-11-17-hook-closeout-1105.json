@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-17T23:50Z-hook-closeout-1105",
+  "contributionId": "hook-closeout-1105-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Am Morgen ging der Hausmeister die Tueren ab, eine nach der anderen. Jede liess sich oeffnen, keine klemmte. Nur die letzte am Ende des Gangs brauchte einen zweiten Versuch, und der Hausmeister notierte nichts dazu. Wer spaeter kam, fand sie offen vor.",
+  "directives": []
+}
