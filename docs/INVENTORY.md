@@ -4043,7 +4043,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/city-door-walk.test.ts` — Ein ferner Tuerklick ist ein Weg, kein Sprung: Der Spieler laeuft zur — gelesen: 63 Zeilen
 - `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
 - `src/store/__tests__/city-growth-view.test.ts` — Die Wachstumssicht ist eine Projektion: `buildView` liest dieselbe — gelesen: 68 Zeilen
-- `src/store/__tests__/command-atomicity.test.ts` — Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger, — gelesen: 203 Zeilen
+- `src/store/__tests__/command-atomicity.test.ts` — Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger, — gelesen: 205 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 146 Zeilen

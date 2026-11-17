@@ -7,7 +7,7 @@
  * Streit erzeugt nur dann einen Konflikt-Fact, wenn der Kampf stattgefunden hat.
  * Der letzte Fall geht denselben Weg wie der Spieler: ueber worldStore.hire.
  */
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { fromVC } from '../../core/economy/vacoin';
 import { Prng } from '../../core/rng/prng';
@@ -15,7 +15,7 @@ import { settleMoneyJournal } from '../../core/sim/journal';
 import { HAUSKONTO } from '../../core/sim/money';
 import { emitCommandRejected } from '../../core/sim/narrative/facts';
 import { spawnGuest } from '../../core/sim/spawn';
-import * as staffModule from '../../core/sim/staff';
+import { hireAgent } from '../../core/sim/staff';
 import { createWorld } from '../../core/sim/templates';
 import type { StaffRole, WorldState } from '../../core/sim/types';
 import { captureCommandState } from '../command-guard';
@@ -24,8 +24,30 @@ import { fightBrawlCmd } from '../venue-commands';
 const SEED = 0x2f6e2b1;
 const FAILURE = 'Einstellung gebucht, dann gerissen.';
 const mutation = { entries: 0, agents: 0 };
+let failHire = false;
 
-let hireAgentSpy: ReturnType<typeof vi.spyOn> | null = null;
+// Der Mock liegt auf Modulebene, damit Vitest ihn vor dem Store-Import anwendet.
+vi.mock('../../core/sim/staff', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../core/sim/staff')>();
+  return {
+    ...actual,
+    hireAgent: (world: WorldState, ledger: Ledger, role: StaffRole) => {
+      if (!failHire) return actual.hireAgent(world, ledger, role);
+      const entriesBefore = ledger.entryCount;
+      const agentsBefore = world.agents.length;
+      actual.hireAgent(world, ledger, role);
+      mutation.entries = ledger.entryCount - entriesBefore;
+      mutation.agents = world.agents.length - agentsBefore;
+      throw new Error(FAILURE);
+    },
+  };
+});
+
+beforeEach(() => {
+  mutation.entries = 0;
+  mutation.agents = 0;
+  failHire = false;
+});
 
 function brawlSetup() {
   const world = createWorld('SMALL');
@@ -60,16 +82,6 @@ function memoryStorage(): Storage {
     get length() { return values.size; },
   } as Storage;
 }
-
-beforeEach(() => {
-  mutation.entries = 0;
-  mutation.agents = 0;
-  hireAgentSpy = vi.spyOn(staffModule, 'hireAgent');
-});
-
-afterEach(() => {
-  if (hireAgentSpy) hireAgentSpy.mockRestore();
-});
 
 describe('Begrenzte Command-Transaktion', () => {
   it('nimmt eine Teilmutation an Welt, Ledger, PRNG und Facts vollstaendig zurueck', () => {
@@ -135,7 +147,7 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
   it('erzeugt keinen Kampf-Fact, wenn der Security den Streit bearbeitet', () => {
     const { world, ledger, prng } = brawlSetup();
     const dispute = world.disputes[0]!;
-    const guard = staffModule.hireAgent(world, ledger, 'guard');
+    const guard = hireAgent(world, ledger, 'guard');
     guard.x = dispute.x;
     guard.y = dispute.y;
 
@@ -158,18 +170,8 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
 describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
   it('laesst Welt, Ledger, PRNG, Facts und Journal nach dem Rollback unveraendert', async () => {
     vi.stubGlobal('localStorage', memoryStorage());
-    // Mock hireAgent NUR fuer diesen Test; der Originalaufruf mutiert vor dem Fehler.
-    const originalHireAgent = staffModule.hireAgent;
-    hireAgentSpy = vi.spyOn(staffModule, 'hireAgent').mockImplementation(
-      (world: WorldState, ledger: Ledger, role: StaffRole) => {
-        const entriesBefore = ledger.entryCount;
-        const agentsBefore = world.agents.length;
-        originalHireAgent(world, ledger, role);
-        mutation.entries = ledger.entryCount - entriesBefore;
-        mutation.agents = world.agents.length - agentsBefore;
-        throw new Error(FAILURE);
-      }
-    );
+    // Der Modul-Mock ist bereits aktiv; fuer diesen Pfad scheitert der echte Aufruf nach der Mutation.
+    failHire = true;
     // Der Store ist ein Modul-Singleton: erst nach dem Speicher-Stub und Mock importieren.
     const { worldStore } = await import('../world-store');
     worldStore.newGame('SMALL');
