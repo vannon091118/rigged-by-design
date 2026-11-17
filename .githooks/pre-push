@@ -48,6 +48,22 @@ if [ -f scripts/verify-lane-claims.mjs ]; then
   fi
 fi
 
+# Doku-Gate: Existenz und Budget der fuenf Pflichtdokus plus Merge-Drift.
+# Beides ist rein lesend und laeuft lokal, ohne GitHub Actions.
+if [ -f scripts/verify-docs.mjs ]; then
+  if ! node scripts/verify-docs.mjs; then
+    echo "pre-push: Pflichtdoku oder Token-Budget verletzt - Push blockiert (ERR-4023)." >&2
+    exit 1
+  fi
+fi
+
+if [ -f scripts/verify-docs.mjs ]; then
+  if ! node scripts/verify-docs.mjs --drift --base "${BASE_REF:-origin/main}"; then
+    echo "pre-push: Doku-Drift - Push blockiert (ERR-4023)." >&2
+    exit 1
+  fi
+fi
+
 # Board-Gate: die lokale Claim-Datei ist nur ein Spiegel. Gepusht wird erst,
 # wenn der Claim im verifizierten Issue-Verlauf steht. Ist das Board nicht
 # lesbar, blockiert der Hook statt zu raten.

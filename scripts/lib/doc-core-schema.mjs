@@ -1,42 +1,48 @@
 /**
- * Der Doku-Vertrag: fuenf Pflichtdokus, zwei Einstiege, ein Token-Budget.
- * Reine Konstanten und Lese-Helfer; die Pruefungen liegen in eigenen Modulen.
+ * Der Doku-Vertrag: fuenf Pflichtdokus in `docs/governance/`, zwei Einstiege,
+ * ein Token-Budget. Reine Konstanten und Lese-Helfer; die Pruefungen liegen in
+ * eigenen Modulen.
+ *
+ * Gemessen wird mit einem echten Tokenizer (`gpt-tokenizer`, o200k_base), nicht
+ * mit einer Zeichen-Naeherung: das Budget soll die Kontextkosten abbilden, die
+ * ein Modell tatsaechlich zahlt.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { encode } from 'gpt-tokenizer';
 
-export const CHARS_PER_TOKEN = 4;
 export const CORE_TOKEN_BUDGET = 500;
 export const OVERVIEW_TOKEN_BUDGET = 10_000;
+export const TOKENIZER = 'gpt-tokenizer/o200k_base';
 
 export const CORE_DOCS = Object.freeze([
   {
-    path: 'AGENTS.md',
+    path: 'docs/governance/AGENTS.md',
     title: 'Agentenvertrag',
     scope: 'document',
-    sections: ['## Kern', '## Zehn unverhandelbare Regeln', '## Pitfalls', '## Referenzen'],
+    sections: ['## Kern', '## Zehn Regeln', '## Ablauf', '## Referenzen'],
   },
   {
-    path: 'docs/WORKFLOW.md',
-    title: 'Workflow',
+    path: 'docs/governance/PITFALLS.md',
+    title: 'Pitfalls',
     scope: 'document',
-    sections: ['## Kern', '## Ablauf', '## Abschluss', '## Referenzen'],
+    sections: ['## Kern', '## Fallen', '## Doku-Regeln'],
   },
   {
-    path: 'docs/INDEX.md',
+    path: 'docs/governance/INDEX.md',
     title: 'Doku-Index',
     scope: 'document',
     sections: ['## Kern', '## Pflichtdokus', '## Referenzen', '## Ordner'],
   },
   {
-    path: 'docs/ROADMAP.md',
+    path: 'docs/governance/ROADMAP.md',
     title: 'Roadmap',
-    scope: 'kern',
-    sections: ['## Kern', '## Major-Ziele', '## Minor-Ziele', '## Jetzt', '## Als Nächstes', '## Später'],
+    scope: 'document',
+    sections: ['## Kern', '## Major-Ziele', '## Minor-Ziele', '## Jetzt', '## Als Naechstes', '## Spaeter'],
   },
   {
-    path: 'docs/LAST-CHANGES.md',
+    path: 'docs/governance/LAST-CHANGES.md',
     title: 'Last Changes',
     scope: 'document',
     sections: ['## Kern', '## Letzte Änderungen', '## Regeln'],
@@ -54,9 +60,16 @@ export const READING_DOCS = Object.freeze([...CORE_DOCS, ...ENTRY_DOCS]);
 export const READING_PATHS = Object.freeze(READING_DOCS.map((doc) => doc.path));
 export const READING_TOKEN_BUDGET = OVERVIEW_TOKEN_BUDGET;
 
-/** Deterministische Naeherung; Budget, keine Messung am Tokenizer. */
-export function estimateTokens(text) {
-  return Math.ceil(String(text ?? '').replaceAll('\r\n', '\n').length / CHARS_PER_TOKEN);
+const tokenCache = new Map();
+
+/** Echte Tokenzahl aus dem Tokenizer; derselbe Text wird nur einmal kodiert. */
+export function countTokens(text) {
+  const value = String(text ?? '').replaceAll('\r\n', '\n');
+  const cached = tokenCache.get(value);
+  if (cached !== undefined) return cached;
+  const count = encode(value).length;
+  tokenCache.set(value, count);
+  return count;
 }
 
 /** Inhalt zwischen `## Kern` und der naechsten Ueberschrift. */

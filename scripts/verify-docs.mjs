@@ -4,9 +4,11 @@
  * Rot bei Abweichung, also auch dann, wenn ein Link auf einen Anker zeigt,
  * den keine Ueberschrift erzeugt (#860).
  */
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkDocAnchors } from './lib/doc-anchors.mjs';
+import { changedPaths, driftMessage, driftProblems } from './lib/doc-drift.mjs';
 import { docCoreProblems } from './lib/doc-core.mjs';
 import { verifyDocParity } from './lib/doc-parity.mjs';
 import { verifyDocs } from './lib/doc-sync.mjs';
@@ -16,6 +18,34 @@ import { ROOT, fail } from './lib/report.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'verify-docs' });
+
+// Ein Gate, zwei Modi: volle Doku-Pruefung oder Merge-Drift gegen Index/Basis.
+// Der Drift-Modus ist rein lesend und laeuft in pre-commit und pre-push.
+if (process.argv.includes('--drift')) {
+  const args = process.argv.slice(2);
+  const staged = args.includes('--staged') || !args.includes('--base');
+  const baseIndex = args.indexOf('--base');
+  const base = baseIndex >= 0 ? args[baseIndex + 1] : null;
+  const started = process.hrtime.bigint();
+  let files = [];
+  try {
+    files = changedPaths({ staged, base }, (command, argv) =>
+      execFileSync(command, argv, { cwd: ROOT, encoding: 'utf8' }),
+    );
+  } catch (error) {
+    console.error(`verify:docs --drift: Dateiliste nicht lesbar (${error.message}).`);
+    process.exit(1);
+  }
+  const problems = driftProblems(files);
+  const ms = Number(process.hrtime.bigint() - started) / 1e6;
+  if (problems.length > 0) {
+    console.error(driftMessage(problems));
+    console.error(`verify:docs --drift: FAIL (${files.length} Dateien, ${ms.toFixed(1)} ms)`);
+    process.exit(1);
+  }
+  console.log(`verify:docs --drift: PASS (${files.length} Dateien, ${ms.toFixed(1)} ms)`);
+  process.exit(0);
+}
 
 /** Alle Dokumente, deren interne Links gelten: Wurzelvertrag und `docs/`. */
 function markdownFiles() {

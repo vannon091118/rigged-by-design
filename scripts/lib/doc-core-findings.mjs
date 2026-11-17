@@ -33,8 +33,8 @@ const CHANGELOG_DATE = /\b(\d{4}-\d{2}-\d{2})\b/g;
 
 /** Last Changes: 3-7 datierte Zeilen, neueste oben, nie aelter als das Changelog. */
 export function lastChangesProblems({ root, text = null } = {}) {
-  const value = text ?? readText('docs/LAST-CHANGES.md', root);
-  if (value === null) return ['docs/LAST-CHANGES.md fehlt.'];
+  const value = text ?? readText('docs/governance/LAST-CHANGES.md', root);
+  if (value === null) return ['docs/governance/LAST-CHANGES.md fehlt.'];
   const start = value.indexOf('## Letzte Änderungen');
   if (start < 0) return [];
   const rest = value.slice(start + '## Letzte Änderungen'.length);
@@ -47,20 +47,20 @@ export function lastChangesProblems({ root, text = null } = {}) {
     const date = /^(\d{4}-\d{2}-\d{2})$/.exec(cells[0] ?? '');
     if (!date) continue;
     if (cells.length < 3 || cells[1] === '' || cells[2] === '') {
-      return [`docs/LAST-CHANGES.md: Zeile ${date[1]} braucht Aenderung und Beleg.`];
+      return [`docs/governance/LAST-CHANGES.md: Zeile ${date[1]} braucht Aenderung und Beleg.`];
     }
     dates.push(date[1]);
   }
   if (dates.length < 3 || dates.length > 7) {
-    return [`docs/LAST-CHANGES.md: ${dates.length} Eintraege, erlaubt sind 3-7.`];
+    return [`docs/governance/LAST-CHANGES.md: ${dates.length} Eintraege, erlaubt sind 3-7.`];
   }
   for (let index = 1; index < dates.length; index += 1) {
-    if (dates[index] > dates[index - 1]) return ['docs/LAST-CHANGES.md: Eintraege nicht absteigend datiert.'];
+    if (dates[index] > dates[index - 1]) return ['docs/governance/LAST-CHANGES.md: Eintraege nicht absteigend datiert.'];
   }
   const changelog = readText('docs/CHANGELOG.md', root) ?? '';
   const newest = [...changelog.matchAll(CHANGELOG_DATE)].map((match) => match[1]).sort().at(-1);
   if (newest && dates[0] < newest) {
-    return [`docs/LAST-CHANGES.md: neuester Eintrag ${dates[0]} aelter als Changelog ${newest}.`];
+    return [`docs/governance/LAST-CHANGES.md: neuester Eintrag ${dates[0]} aelter als Changelog ${newest}.`];
   }
   return [];
 }

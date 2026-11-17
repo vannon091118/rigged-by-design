@@ -133,3 +133,20 @@ bash -n scripts/shell/guard.sh              # Shell-Syntax
 
 
 
+
+## Messung v2 — Governance-Ordner (2026-11-17)
+
+Gemessen mit `gpt-tokenizer` 4.1.2 (`o200k_base`), nicht geschätzt:
+
+| Pflichtdoku | Token | Budget |
+| --- | ---: | ---: |
+| `docs/governance/AGENTS.md` | 500 | 500 |
+| `docs/governance/PITFALLS.md` | 278 | 500 |
+| `docs/governance/INDEX.md` | 499 | 500 |
+| `docs/governance/ROADMAP.md` | 468 | 500 |
+| `docs/governance/LAST-CHANGES.md` | 480 | 500 |
+
+**Lesepfad:** 2.795 / 10.000 Token (fünf Pflichtdokus plus Test- und Governance-Kern).
+**Durchsetzung:** `verify:docs` 0,29 s; `verify:docs --drift --staged` 6,6 ms (blockiert bei Code ohne Doku, geht bei vollständiger Doku durch).
+**Vor dem Lesen:** PreToolUse verweigert `Grep`; guarded Shell verweigert `pip` (Exit 2); Watcher eskaliert `ROT`.
+**Nach dem Lesen:** PreToolUse erlaubt `Grep`; `pip` läuft (Exit 0).

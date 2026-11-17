@@ -37,7 +37,7 @@ const EMPTY_DIFF = /^[+-]\s*$/;
 export const GENERATED_FILES = Object.freeze({
   '.lane-claims/merged-index.json': Object.freeze({ owner: 'scripts/sync-merged-index.mjs', mode: 'whole' }),
   'docs/INVENTORY.md': Object.freeze({ owner: 'scripts/build-inventory.mjs', mode: 'whole' }),
-  'docs/ROADMAP.md': Object.freeze({ owner: 'scripts/sync-generated.mjs', mode: 'progress' }),
+  'docs/ROADMAP-DETAIL.md': Object.freeze({ owner: 'scripts/sync-generated.mjs', mode: 'progress' }),
   'content/narrative/registry/fragments.json': Object.freeze({
     owner: 'scripts/compile-narrative-content.mjs',
     mode: 'whole',

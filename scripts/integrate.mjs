@@ -176,7 +176,7 @@ if (!regenerated.ok) {
 
 const changed = tryRun(['status', '--porcelain']).out.trim();
 if (changed) {
-  tryRun(['add', '--', 'docs/INVENTORY.md', 'docs/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer']);
+  tryRun(['add', '--', 'docs/INVENTORY.md', 'docs/ROADMAP-DETAIL.md', 'content/narrative/registry', 'src/core/sim/narrative/composer']);
   const committed = tryRun(['commit', '--amend', '--no-edit'], { stdio: ['ignore', 'inherit', 'inherit'] });
   if (!committed.ok) {
     console.error('integrate: Regeneration konnte nicht in den Commit uebernommen werden.');

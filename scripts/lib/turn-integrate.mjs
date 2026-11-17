@@ -9,7 +9,7 @@ import { classifyConflicts } from './generated-files.mjs';
 import { ROOT } from './report.mjs';
 
 /** Generierte Artefakte, die jede Integration neu schreiben muss. */
-const GENERATED_PATHS = ['docs/INVENTORY.md', 'docs/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer'];
+const GENERATED_PATHS = ['docs/INVENTORY.md', 'docs/governance/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer'];
 
 export function createIntegrator({ git, gitRun, fail, targetBranch }) {
   const publishedBranch = (branch) =>

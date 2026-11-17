@@ -15,7 +15,7 @@ import { checkDocParity, documentedOwners, verifyDocParity } from '../../../../s
 
 const root = process.cwd();
 const doc = readFileSync(resolve(root, 'docs', 'CI.md'), 'utf8');
-const agents = readFileSync(resolve(root, 'AGENTS.md'), 'utf8');
+const agents = readFileSync(resolve(root, 'docs', 'governance', 'AGENTS.md'), 'utf8');
 const governance = readFileSync(resolve(root, 'docs', 'GOVERNANCE.md'), 'utf8');
 
 /** Die Gate-Namen der Required-Tabelle: `| 3 | `typecheck` | ... |`. */

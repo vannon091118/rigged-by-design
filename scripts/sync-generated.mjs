@@ -109,12 +109,12 @@ generate('sync-merged-index.mjs', check ? ['--check'] : [], ['.lane-claims/merge
 generate('build-inventory.mjs', check ? ['--check'] : [], ['docs/INVENTORY.md']);
 
 // 6. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
-const roadmapFile = join(ROOT, 'docs', 'ROADMAP.md');
+const roadmapFile = join(ROOT, 'docs', 'ROADMAP-DETAIL.md');
 const count = registryQuotaCount(ROOT);
 if (existsSync(roadmapFile) && count !== null) {
   const current = readFileSync(roadmapFile, 'utf8');
   if (roadmapProgress(current) !== null && roadmapProgress(current) !== count) {
-    if (check) stale.push('docs/ROADMAP.md');
+    if (check) stale.push('docs/ROADMAP-DETAIL.md');
     else writeFileSync(roadmapFile, applyRoadmapProgress(current, count));
   }
 }

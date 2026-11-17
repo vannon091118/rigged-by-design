@@ -13,10 +13,10 @@ export function referenceProblems({ index = null, tracked = trackedFiles(ROOT) }
   const problems = [];
   for (const path of tracked) {
     if (!path.startsWith('docs/') || !path.endsWith('.md')) continue;
-    if (READING_PATHS.includes(path) || path === 'docs/INDEX.md') continue;
+    if (READING_PATHS.includes(path) || path === 'docs/governance/INDEX.md') continue;
     if (path.startsWith('docs/contracts/') && path !== 'docs/contracts/README.md') continue;
     const name = path.split('/').pop();
-    if (!index.includes(name)) problems.push(`docs/INDEX.md: Referenz ${path} nicht verlinkt.`);
+    if (!index.includes(name)) problems.push(`docs/governance/INDEX.md: Referenz ${path} nicht verlinkt.`);
   }
   return problems;
 }
@@ -34,12 +34,13 @@ export const LAYERS = Object.freeze([
   { name: 'Dev', paths: ['scripts', 'bin', 'packages', 'src/core/governance'] },
   {
     name: 'Governance',
-    paths: ['AGENTS.md', 'docs', '.github', '.claude', '.githooks', '.cron', '.lane-claims', '.lanes', 'artifacts'],
+    paths: ['docs/governance', 'docs', '.github', '.claude', '.githooks', '.cron', '.lane-claims', '.lanes', 'artifacts'],
   },
 ]);
 
 /** Die Tiefen, fuer die CODEOWNERS einen eigenen Eintrag nennen muss. */
 const DEEP_OWNED = Object.freeze([
+  'docs/governance',
   'src/core/governance',
   'src/core/sim',
   'src/render',
@@ -70,16 +71,16 @@ function sectionOf(text, heading) {
 export function layerProblems({ index = null, tracked = trackedFiles(ROOT) } = {}) {
   if (!index) return [];
   const section = sectionOf(index, '## Ordner');
-  if (section === '') return ['docs/INDEX.md: Abschnitt "## Ordner" fehlt.'];
+  if (section === '') return ['docs/governance/INDEX.md: Abschnitt "## Ordner" fehlt.'];
   const problems = [];
   for (const layer of LAYERS) {
     const line = section.split('\n').find((entry) => entry.includes(`**${layer.name}:**`));
     if (!line) {
-      problems.push(`docs/INDEX.md: Schicht "${layer.name}" fehlt in "## Ordner".`);
+      problems.push(`docs/governance/INDEX.md: Schicht "${layer.name}" fehlt in "## Ordner".`);
       continue;
     }
     for (const path of layer.paths) {
-      if (!line.includes(path)) problems.push(`docs/INDEX.md: ${path} fehlt in Schicht "${layer.name}".`);
+      if (!line.includes(path)) problems.push(`docs/governance/INDEX.md: ${path} fehlt in Schicht "${layer.name}".`);
     }
   }
   const all = new Set(LAYERS.flatMap((layer) => layer.paths));
@@ -87,11 +88,11 @@ export function layerProblems({ index = null, tracked = trackedFiles(ROOT) } = {
   for (const dir of roots) {
     const covered = all.has(dir) || [...all].some((path) => path.startsWith(`${dir}/`));
     if (!covered && !section.includes(`\`${dir}/\``)) {
-      problems.push(`docs/INDEX.md: Wurzelordner ${dir}/ fehlt in "## Ordner".`);
+      problems.push(`docs/governance/INDEX.md: Wurzelordner ${dir}/ fehlt in "## Ordner".`);
     }
   }
   if (!section.includes('ohne `governance`')) {
-    problems.push('docs/INDEX.md: Spiel-Schicht muss "src/core" ohne governance nennen.');
+    problems.push('docs/governance/INDEX.md: Spiel-Schicht muss "src/core" ohne governance nennen.');
   }
   return problems;
 }
@@ -111,7 +112,7 @@ export function ownershipProblems({ root = ROOT, index = null, tracked = tracked
   const owned = new Set([...codeowners.matchAll(CODEOWNER_ENTRY)].map((match) => match[1]));
   for (const dir of dirs) {
     if (!owned.has(dir)) problems.push(`.github/CODEOWNERS: Ordner /${dir}/ ohne Owner.`);
-    if (index && !index.includes(`${dir}/`)) problems.push(`docs/INDEX.md: Ordner ${dir}/ fehlt in "## Ordner".`);
+    if (index && !index.includes(`${dir}/`)) problems.push(`docs/governance/INDEX.md: Ordner ${dir}/ fehlt in "## Ordner".`);
   }
   for (const dir of DEEP_OWNED) {
     const exists = tracked.some((path) => path === dir || path.startsWith(`${dir}/`)) || existsSync(join(root, dir));

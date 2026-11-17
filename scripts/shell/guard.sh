@@ -32,6 +32,8 @@ npm() { __rbd_guard "npm $*" npm "$@"; }
 npx() { __rbd_guard "npx $*" npx "$@"; }
 node() { __rbd_guard "node $*" node "$@"; }
 gh() { __rbd_guard "gh $*" gh "$@"; }
+pip() { __rbd_guard "pip $*" pip "$@"; }
+pip3() { __rbd_guard "pip3 $*" pip3 "$@"; }
 vitest() { __rbd_guard "vitest $*" vitest "$@"; }
 
 __rbd_prompt() {

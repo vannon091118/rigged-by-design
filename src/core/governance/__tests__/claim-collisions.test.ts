@@ -40,7 +40,7 @@ describe('claim-collisions', () => {
   // der Pre-Push-Hook jede Lane, die es teilt.
   it('fuehrt die generierten Doku-Artefakte aus docs/CI.md als mechanisch', () => {
     expect(MECHANICAL_FILES).toEqual(
-      expect.arrayContaining(['docs/INVENTORY.md', 'docs/ROADMAP.md', 'docs/DEPENDENCY-MATRIX.md']),
+      expect.arrayContaining(['docs/INVENTORY.md', 'docs/governance/ROADMAP.md', 'docs/DEPENDENCY-MATRIX.md']),
     );
   });
 

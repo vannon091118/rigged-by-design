@@ -6,7 +6,14 @@ import { patternPrefix } from './claim-collisions.mjs';
 import { CORE_PATHS } from './doc-core.mjs';
 
 export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
-export const SHARED_DOC_FILES = Object.freeze(['docs/LAST-CHANGES.md']);
+export const SHARED_DOC_FILES = Object.freeze([
+  'docs/governance/LAST-CHANGES.md',
+  // Generiert aus package.json; jede Dependency-Lane schreibt dieselbe Zeile.
+  'docs/DEPENDENCY-MATRIX.md',
+  // Legacy-Pfade der Doku-Migration: Loeschung/Umzug ist Koordination, keine Kollision.
+  'docs/INDEX.md',
+  'docs/LAST-CHANGES.md',
+]);
 const CORE_CONTENT_DOCS = Object.freeze(
   CORE_PATHS.filter((path) => !SHARED_DOC_FILES.includes(path)),
 );
@@ -54,7 +61,7 @@ export const MECHANICAL_FILES = Object.freeze([
   'package.json',
   'pnpm-lock.yaml',
   'docs/INVENTORY.md',
-  'docs/ROADMAP.md',
+  'docs/governance/ROADMAP.md',
   'docs/DEPENDENCY-MATRIX.md',
 ]);
 

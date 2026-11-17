@@ -1,9 +1,9 @@
 /**
  * Der Doku-Kern: fuenf Pflichtdokus, ein Token-Budget, ein Cross-Check.
  *
- * Ein Dokument "verstehen" heisst: seinen `## Kern` lesen. Fuer vier Dokumente
- * ist sogar das ganze Dokument budgetiert; die Roadmap traegt unter dem Kern
- * ihre ausfuehrlichen Phasentabellen. Die Summe aller Kerne ist der vollstaendige
+ * Alle fuenf Pflichtdokus sind als ganzes Dokument budgetiert: kein Kern-Trick,
+ * kein Detailblock unter dem Kern. Tiefe liegt in Referenzdokumenten daneben
+ * (`docs/ROADMAP-DETAIL.md`). Die Summe aller Kerne ist der vollstaendige
  * Ueberblick und bleibt weit unter 10.000 Token.
  *
  * Die Pruefung ist rein lesend und merge-stabil: der Kern darf weder Version
@@ -15,16 +15,16 @@ import { GENERATED_FILES } from './generated-files.mjs';
 import { ROOT } from './report.mjs';
 import {
   CORE_DOCS, CORE_PATHS, CORE_TOKEN_BUDGET, READING_DOCS, READING_PATHS,
-  READING_TOKEN_BUDGET, budgetedText, estimateTokens, kernBlock, packageScripts,
+  READING_TOKEN_BUDGET, budgetedText, countTokens, kernBlock, packageScripts,
   readText, trackedFiles,
 } from './doc-core-schema.mjs';
 import { commandFindings, lastChangesProblems, volatileFindings } from './doc-core-findings.mjs';
 import { layerProblems, ownershipProblems, referenceProblems } from './doc-core-structure.mjs';
 
 export {
-  CHARS_PER_TOKEN, CORE_DOCS, CORE_PATHS, CORE_TOKEN_BUDGET, ENTRY_DOCS,
+  CORE_DOCS, CORE_PATHS, CORE_TOKEN_BUDGET, ENTRY_DOCS,
   OVERVIEW_TOKEN_BUDGET, READING_DOCS, READING_PATHS, READING_TOKEN_BUDGET,
-  budgetedText, estimateTokens, kernBlock,
+  TOKENIZER, budgetedText, countTokens, kernBlock,
 } from './doc-core-schema.mjs';
 export { commandFindings, lastChangesProblems, volatileFindings } from './doc-core-findings.mjs';
 export { LAYERS, layerProblems, ownershipProblems, referenceProblems } from './doc-core-structure.mjs';
@@ -56,7 +56,7 @@ export function docCoreProblems({ root = ROOT, coreDocs = CORE_DOCS } = {}) {
       return;
     }
     const budgeted = budgetedText(doc, text) ?? '';
-    const tokens = estimateTokens(budgeted);
+    const tokens = countTokens(budgeted);
     overview += tokens;
     if (tokens > CORE_TOKEN_BUDGET) {
       problems.push(`${doc.path}: ${tokens} Token ueber Budget ${CORE_TOKEN_BUDGET} (${doc.scope}).`);
@@ -77,18 +77,18 @@ export function docCoreProblems({ root = ROOT, coreDocs = CORE_DOCS } = {}) {
   if (overview > READING_TOKEN_BUDGET) {
     problems.push(`Lesepfad: ${overview} Token ueber Gesamtbudget ${READING_TOKEN_BUDGET}.`);
   }
-  const index = texts.get('docs/INDEX.md');
+  const index = texts.get('docs/governance/INDEX.md');
   if (index) {
     for (const doc of coreDocs) {
       const name = doc.path.split('/').pop();
-      if (!index.includes(name)) problems.push(`docs/INDEX.md: Pflichtdoku ${doc.path} nicht verlinkt.`);
+      if (!index.includes(name)) problems.push(`docs/governance/INDEX.md: Pflichtdoku ${doc.path} nicht verlinkt.`);
     }
   }
   const tracked = trackedFiles(root);
   problems.push(...referenceProblems({ index, tracked }));
   problems.push(...ownershipProblems({ root, index, tracked }));
   problems.push(...layerProblems({ index, tracked }));
-  problems.push(...lastChangesProblems({ root, text: texts.get('docs/LAST-CHANGES.md') }));
+  problems.push(...lastChangesProblems({ root, text: texts.get('docs/governance/LAST-CHANGES.md') }));
   return problems;
 }
 
@@ -105,10 +105,10 @@ export function auditDocs({ root = ROOT, coreDocs = CORE_DOCS } = {}) {
       title: doc.title,
       scope: doc.scope,
       bytes: Buffer.byteLength(text),
-      tokens: estimateTokens(budgeted),
-      kernTokens: estimateTokens(kern),
+      tokens: countTokens(budgeted),
+      kernTokens: countTokens(kern),
       budget: CORE_TOKEN_BUDGET,
-      ok: estimateTokens(budgeted) <= CORE_TOKEN_BUDGET,
+      ok: countTokens(budgeted) <= CORE_TOKEN_BUDGET,
     };
   };
   const core = coreDocs.map(measure);
@@ -120,7 +120,7 @@ export function auditDocs({ root = ROOT, coreDocs = CORE_DOCS } = {}) {
       return {
         path,
         bytes: Buffer.byteLength(text),
-        tokens: estimateTokens(text),
+        tokens: countTokens(text),
         generated: Object.hasOwn(GENERATED_FILES, path),
       };
     })

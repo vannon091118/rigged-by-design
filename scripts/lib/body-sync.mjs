@@ -15,6 +15,8 @@
  * keine zweite Wahrheit ueber Body, Marker und Sektionen gibt.
  */
 
+import { CONTENT_PATH, DOCS_PATH, GOVERNANCE_PATH, RUNTIME_PATH, TEST_PATH, TOOLING_PATH, VERSION_PATH } from './body-paths.mjs';
+
 export const AUTO_START = '<!-- rbd:auto-body:start -->';
 export const AUTO_END = '<!-- rbd:auto-body:end -->';
 
@@ -47,13 +49,6 @@ const GROUP_LABELS = Object.freeze({
 /** Reihenfolge der Gruppen ist die Reihenfolge im Text: Arbeit vor Doku. */
 const GROUPS = Object.freeze(Object.keys(GROUP_LABELS));
 
-const VERSION_PATH = /^(?:package\.json|pnpm-lock\.yaml)$/;
-const TEST_PATH = /(?:^|\/)__tests__\/|\.test\.tsx?$|\.bench\.ts$/;
-const RUNTIME_PATH = /^src\//;
-const CONTENT_PATH = /^(?:content|public)\//;
-const GOVERNANCE_PATH = /^(?:AGENTS\.md|\.github\/|\.githooks\/|\.lane-claims\/|\.mailmap$|CODEOWNERS$)/;
-const DOCS_PATH = /^(?:README\.md|docs\/)/;
-const TOOLING_PATH = /^scripts\//;
 
 /**
  * `git diff --name-status` zerlegen. Umbenennungen tragen zwei Pfade; der
@@ -264,7 +259,7 @@ export function describeAutomation({ entries = [], outside = '', commitText = ''
 
   if (missing.has(REQUIRED_SECTIONS[2])) {
     section(REQUIRED_SECTIONS[2], [
-      'Offene Punkte stehen im PR-Text und in docs/ROADMAP.md; die Automatik erfindet keinen Ausblick.',
+      'Offene Punkte stehen im PR-Text und in docs/governance/ROADMAP.md; die Automatik erfindet keinen Ausblick.',
     ]);
   }
 

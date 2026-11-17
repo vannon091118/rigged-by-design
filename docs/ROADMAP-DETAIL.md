@@ -3,6 +3,7 @@
 <!-- rbd-doc: managed -->
 
 ## Kern
+**Kurzfassung:** Die verbindliche, budgetierte Roadmap steht in [governance/ROADMAP.md](governance/ROADMAP.md); diese Datei trägt die Detailtabellen.
 **Nordstern:** begehbare Lebenssimulation — Wohnung, Straße, Stadt, Bewohner. Das Casino ist Start- und Testumgebung, nicht das Genre.
 **Major-Ziele:** M1 Erster Abend · M2 Wohnung→Stadt · M3 Render/Living-World-Rework · M4 Wirtschaft & Events · M5 1.500 Textbausteine · M6 Abnahme & Release.
 **Minor-Ziele:** S1–S5 (Spiel), PR-01–PR-10 (Präsentation), R-0–R-4 (Render), P-13 (Textbausteine). Eine Zeile = eine Aufgabe mit Status, Beleg und Fertig-Kriterium.

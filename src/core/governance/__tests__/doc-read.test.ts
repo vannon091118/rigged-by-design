@@ -54,7 +54,7 @@ describe('PreToolUse', () => {
     expect(pretoolDecision({ toolName: 'Grep', toolInput: { pattern: 'x' }, root }).decision).toBe('deny');
     expect(pretoolDecision({ toolName: 'Bash', toolInput: { command: 'pnpm rbd docs read' }, root }).decision).toBe('allow');
     expect(pretoolDecision({ toolName: 'Bash', toolInput: { command: 'pnpm rbd docs read | head' }, root }).decision).toBe('deny');
-    expect(pretoolDecision({ toolName: 'Read', toolInput: { file_path: join(root, 'docs/WORKFLOW.md') }, root }).decision).toBe('allow');
+    expect(pretoolDecision({ toolName: 'Read', toolInput: { file_path: join(root, 'docs/governance/AGENTS.md') }, root }).decision).toBe('allow');
   });
 
   it('laesst nach dem Receipt Arbeit zu, aber keine verlustreiche Gate-Pipe', () => {
