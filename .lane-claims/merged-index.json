@@ -223,6 +223,24 @@
       "number": 1038,
       "headSha": "25bb21f664dd9088cbf183028d7fb43a51f3de5f",
       "mergeSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8"
+    },
+    {
+      "branch": "lane/integrity/issue-975-command-atomicity",
+      "number": 1067,
+      "headSha": "39d6355a10cc7eec956401d88fecce5b0fa06b3d",
+      "mergeSha": "e1d09fff6d2701b85423569cfa3974060bbb1328"
+    },
+    {
+      "branch": "lane/store/issue-988-save-cadence",
+      "number": 1068,
+      "headSha": "c7558b7fda7d76407378851a5b142469d7b18fe3",
+      "mergeSha": "7cb2748bf98f443cebfc6f9689d9aae319551f00"
+    },
+    {
+      "branch": "lane/governance/issue-1065-agent-state-test-target",
+      "number": 1069,
+      "headSha": "201d73e6383659ac664dabb3a060779224973aa8",
+      "mergeSha": "dc3204c285ee7550476617e3b1bc96958d90bdde"
     }
   ]
 }
