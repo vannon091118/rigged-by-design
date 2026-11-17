@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-17T02:43:00+01:00",
+  "generatedAt": "2026-11-17T10:18:00Z",
   "generatedBy": "maintainer",
-  "head": "26a8846785457b87ad8384a33eedb1f7b77f4ef2",
-  "headMessage": "Merge pull request #1072 from vannon091118/lane/governance/claim-reconcile-2026-11-17",
-  "base": "origin/main @ 26a8846785457b87ad8384a33eedb1f7b77f4ef2",
+  "head": "1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
+  "headMessage": "docs: add UD documentation for gameplay issues #972-#974",
+  "base": "origin/main @ 1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
   "worktree": "/data/data/com.hermesagent.android/files/home/rigged-by-design",
   "status": "READY",
   "summary": "Board-Sync (#834) live nachgezogen: 13 offene Issues, 0 offene PRs. Prioritaet: 80% Spielarbeit, 20% Governance. Offene Issues: #684 (P0 Blocked), #968, #972, #976 (P1 Save), #977 (P2 RNG), #979 (P2 SIM), #980 (DOKU P1), #981 (DOKU P2), #982 (DOKU P1/P2), #984 (GOVERNANCE P1), #985 (GAMEPLAY P1/P2), #984 (GOVERNANCE P1), #998 (TECH-DEBT). Keine offene PR-Warteschlange. Kopf: Closeout-Relation head == main^ (Snapshot-Commit kann seinen eigenen SHA nicht enthalten).",
@@ -614,7 +614,7 @@
       684
     ]
   },
-  "openIssuesCount": 13,
+  "openIssuesCount": 11,
   "note": "Live-Board hat 3 offene Issues (#684, #968, #972). Die 'issues'-Map listet alle gescannten Tickets (inkl. geschlossener/konsolidierter); board-state.json ist abgeleitet und wird durch board:sync regeneriert.",
   "mergedPrsThisRun": [
     739,

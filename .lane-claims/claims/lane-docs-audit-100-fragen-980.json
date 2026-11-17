@@ -1,0 +1,17 @@
+{
+  "id": "lane/docs/audit-100-fragen-980",
+  "owner": "Governance-Owner",
+  "branch": "lane/docs/audit-100-fragen-980",
+  "baseSha": "5dfbbb9edc88273966b660920ba3c0af3a22b383",
+  "issue": 980,
+  "task": "Doku-Belege fuer AUDIT-100 P1-Eintraege (UD-01, UD-07, UD-18, UD-30, UD-37, UD-46, UD-49, UD-50, DU-16) nach docs/AUDIT.md ergaenzen und verify:docs gruen",
+  "pathAllowlist": [
+    "docs/AUDIT.md",
+    ".lane-claims/claims/lane-docs-audit-100-fragen-980.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "5dfbbb9edc88273966b660920ba3c0af3a22b383"
+}

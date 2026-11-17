@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-verify-all",
+  "claimId": "lane/governance/issue-1090-verify-all",
+  "branch": "lane/governance/issue-1090-verify-all",
+  "baseSha": "54200b74bc65fc7fca968cfc9eb08b62bff40fd2",
+  "phase": "CI_PENDING",
+  "title": "#1090: Tote Exporte entfernen und Test-Qualitaet-Zielverknuepfungen ergaenzen",
+  "goal": "rbd verify all 19/19 gruen inklusive vollstaendiger Testsuite; verify:light 13/13; Arbeitsbaum clean; claim-hygiene 0 Verstoesse; kein --no-verify; keine GitHub Actions",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 1098,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1098",
+    "state": "open",
+    "headSha": "0234319ea3c4dcae80425a95c21945b7bd9680b6"
+  },
+  "findings": [],
+  "nextAction": "PR #1098 offen gegen main@54200b74, Kopf 0234319e gepusht; Maintainer merged auf exaktem Kopf, dann Vertrag auf MERGE_PENDING, Nachsorge/Closeout (Issue #1090 schliessen, Claim auf merged, Task auf DONE).",
+  "revision": 3
+}

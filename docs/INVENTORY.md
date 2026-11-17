@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 457 Dateien — contract 230 · integration 125 · governance 89 · statistics 6 · performance 7.
+Summe: 459 Dateien — contract 231 · integration 125 · governance 90 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -237,6 +237,7 @@ Summe: 457 Dateien — contract 230 · integration 125 · governance 89 · stati
 | `src/core/governance/__tests__/tree-changes.test.ts` | pipeline | governance | ja | `scripts/lib/tree-changes.mjs` |
 | `src/core/governance/__tests__/verify-scope.test.ts` | pipeline | governance | ja | `scripts/verify-scope.mjs` |
 | `src/core/governance/__tests__/verify-state.test.ts` | pipeline | governance | ja | `scripts/lib/verify-state.mjs` |
+| `src/core/governance/__tests__/verify-test-quality-linkage.test.ts` | pipeline | governance | ja | `scripts/verify-test-quality.mjs` |
 | `src/core/governance/__tests__/webhook-action.test.ts` | pipeline | governance | ja | `scripts/lib/webhook-action.mjs` |
 | `src/core/governance/__tests__/webhook-receiver.test.ts` | pipeline | governance | ja | `scripts/webhook-receiver.mjs` |
 | `src/core/governance/__tests__/webhook-signature.test.ts` | pipeline | governance | ja | `scripts/lib/webhook-signature.mjs` |
@@ -436,6 +437,7 @@ Summe: 457 Dateien — contract 230 · integration 125 · governance 89 · stati
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/hot-event-score.test.ts` | sim | contract | ja | `src/core/sim/narrative/hot-event-score.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
+| `src/core/sim/narrative/__tests__/npc-identity-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/narrative/composer/__tests__/image-diff-gate.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/image-diff-gate.ts` |
 | `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
@@ -763,10 +765,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3459 |
-| Gelistete Dateien | 3459 |
+| Getrackte Dateien | 3473 |
+| Gelistete Dateien | 3473 |
 | Getrackte Ordner | 120 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (149), .lanes (1), artifacts (1), bin (1), content (1241), docs (93), packages (27), public (571), scripts (226), src (1126) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (155), .lanes (1), artifacts (1), bin (1), content (1242), docs (97), packages (27), public (571), scripts (227), src (1128) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -780,16 +782,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 72 Datei(en)
-- `.lane-claims/tasks/` — 73 Datei(en)
+- `.lane-claims/claims/` — 75 Datei(en)
+- `.lane-claims/tasks/` — 76 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1237 Datei(en)
+- `content/narrative/contributions/` — 1238 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 25 Datei(en)
+- `docs/` — 29 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 6 Datei(en)
@@ -837,7 +839,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 80 Datei(en)
-- `scripts/lib/` — 145 Datei(en)
+- `scripts/lib/` — 146 Datei(en)
 - `scripts/shell/` — 1 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 8 Datei(en)
@@ -851,7 +853,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 112 Datei(en)
+- `src/core/governance/__tests__/` — 113 Datei(en)
 - `src/core/governance/fixtures/` — 1 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
@@ -862,7 +864,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/` — 204 Datei(en)
 - `src/core/sim/__tests__/` — 177 Datei(en)
 - `src/core/sim/narrative/` — 44 Datei(en)
-- `src/core/sim/narrative/__tests__/` — 7 Datei(en)
+- `src/core/sim/narrative/__tests__/` — 8 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
@@ -913,16 +915,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
 - `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/fix-main-lint-command-atomicity.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/gov-fix-docs-index-1092.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-docs-audit-100-fragen-981.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-archive-integration-2026-11-16.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-board-closeout-relation.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-docsystem-10k-watcher.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
@@ -932,7 +935,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -944,6 +948,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-logs-failure-only.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-merge-gate.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-output-budget-closeout.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-1079.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-register-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -951,7 +956,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-integrity-issue-1036-store-guard-proof.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 38 Zeilen
@@ -980,20 +984,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-976-save-recovery.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-979-npc-identitaet.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/merged-index.json` — { — gelesen: 288 Zeilen
-- `.lane-claims/tasks/fix-main-lint-command-atomicity.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/docs-audit-100-fragen-981.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/gov-fix-docs-index-1092.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-live-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-docsystem-10k-watcher.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
@@ -1005,6 +1011,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1054-state-sections.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-full-gate-repair.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-loc-refactor.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-1090-verify-all.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
@@ -1016,6 +1023,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-logs-failure-only.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-merge-gate.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-output-budget-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-1079.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-register-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-repo-ballast-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -1023,7 +1031,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/integrity-issue-1036-store-guard-proof.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 42 Zeilen
@@ -1055,6 +1062,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/sim-issue-978-skill-effects.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-979-npc-identitaet.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
@@ -2298,27 +2306,28 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-verify-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-sections.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-test-target.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-17-dead-exports-1090.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-full-gate-proof.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-life-sim-day-typecheck.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-redundancy-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27774 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4953 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27796 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4957 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1751 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
-- `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 843 Zeilen
+- `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 896 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1214 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 109 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2756 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 403 Zeilen
-- `docs/INDEX.md` — Doku-Index — gelesen: 31 Zeilen
+- `docs/INDEX.md` — Doku-Index — gelesen: 32 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LAST-CHANGES.md` — Last Changes — gelesen: 23 Zeilen
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
@@ -2327,6 +2336,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 215 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
+- `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
+- `docs/UD-13.md` — UD-13: Ortswirtschaft — Übersicht — gelesen: 79 Zeilen
+- `docs/UD-21.md` — UD-21: Ortswirtschaft — Kiez und Markt Detail — gelesen: 70 Zeilen
+- `docs/UD-27.md` — UD-27: Ortswirtschaft — Casino Integration & Save/Load — gelesen: 67 Zeilen
 - `docs/WORKFLOW-DETAIL.md` — Workflow — Referenztiefe — gelesen: 174 Zeilen
 - `docs/WORKFLOW.md` — Workflow — gelesen: 24 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
@@ -3159,6 +3172,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/task-contract-validate.mjs` — Schema und Validierung des Task-Vertrags. — gelesen: 99 Zeilen
 - `scripts/lib/task-contract.mjs` — Task-Vertrag: die eine Wahrheit eines Laufs. — gelesen: 184 Zeilen
 - `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 123 Zeilen
+- `scripts/lib/test-target-links.mjs` — Zielverknuepfung von Tests: welche Dateien ein Test wirklich beruehrt. — gelesen: 144 Zeilen
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lib/turn-commit.mjs` — Commit-Nachricht eines Turns: inhaltliche Notes oder eine ehrliche — gelesen: 73 Zeilen
@@ -3223,7 +3237,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-scope.mjs` — verify:scope: Nur der Diff gegen die Claim-Allowlist. — gelesen: 174 Zeilen
 - `scripts/verify-task-contract.mjs` — verify-task-contract: prueft den Task-Vertrag des aktuellen Branches gegen — gelesen: 133 Zeilen
 - `scripts/verify-test-placement.mjs` — Neue Testdateien muessen beim Ziel liegen. — gelesen: 118 Zeilen
-- `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 235 Zeilen
+- `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 209 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 158 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 59 Zeilen
 - `scripts/webhook-receiver.mjs` — webhook:receive — der Empfaenger im Repo. — gelesen: 141 Zeilen
@@ -3418,8 +3432,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/verify-scope.test.ts` — `verify:scope` liest ausschliesslich den Diff und vergleicht ihn mit der — gelesen: 103 Zeilen
 - `src/core/governance/__tests__/verify-state.test.ts` — Ein Cache, ein Besitzer: Altdateien wandern in die Abschnitte von — gelesen: 215 Zeilen
+- `src/core/governance/__tests__/verify-test-quality-linkage.test.ts` — Die Zielverknuepfungserkennung von verify-test-quality erkennt belegte — gelesen: 61 Zeilen
 - `src/core/governance/__tests__/webhook-action.test.ts` — Eine Delivery darf keine eigene Wahrheit erzeugen. Nach dem Queue-Rueckbau — gelesen: 32 Zeilen
-- `src/core/governance/__tests__/webhook-fixture.ts` — Aufgezeichnete GitHub-Deliveries fuer den Webhook-Empfaenger. — gelesen: 51 Zeilen
+- `src/core/governance/__tests__/webhook-fixture.ts` — Aufgezeichnete GitHub-Deliveries fuer den Webhook-Empfaenger. — gelesen: 53 Zeilen
 - `src/core/governance/__tests__/webhook-receiver.test.ts` — Der Empfaenger muss eine gueltig signierte Delivery annehmen und eine — gelesen: 128 Zeilen
 - `src/core/governance/__tests__/webhook-signature.test.ts` — GitHub signiert den rohen Body mit HMAC-SHA256. Gueltig heisst: genau diese — gelesen: 44 Zeilen
 - `src/core/governance/__tests__/wip-takeover.test.ts` — "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel, — gelesen: 75 Zeilen
@@ -3660,13 +3675,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-growth-view.ts` — Snapshot und Stadtfenster lesen dieselbe Sicht: Arbeitsmarkt, Bauträger-Konto, — gelesen: 79 Zeilen
 - `src/core/sim/city-growth.ts` — Die Stadt baut auf ein Signal: Ein Bewohner ohne Arbeitsslot heisst, es gibt zu — gelesen: 160 Zeilen
 - `src/core/sim/city-households.ts` — Jeder Bewohner traegt seine Wohnung als Kennung im Save. Die Zuordnung wird — gelesen: 88 Zeilen
-- `src/core/sim/city-identity.ts` — Jeder Bewohner bekommt eine individuelle Kennung, die auf sein Profil zeigt. — gelesen: 34 Zeilen
+- `src/core/sim/city-identity.ts` — Jeder Bewohner bekommt eine individuelle Kennung, die auf sein Profil zeigt. — gelesen: 35 Zeilen
 - `src/core/sim/city-life-apply.ts` — Der Intent ist erst dann echt, wenn er Beduerfnisse, Bargeld, Faehigkeiten, — gelesen: 149 Zeilen
 - `src/core/sim/city-life-create.ts` — Ein Bewohner entsteht aus seiner Figur in der Besetzung (`city-npc-roster`): — gelesen: 97 Zeilen
 - `src/core/sim/city-life-decision.ts` — Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion — gelesen: 124 Zeilen
 - `src/core/sim/city-life-effects.ts` — Der Tagesplan und der Score waehlen nur; erst diese Effekte veraendern — gelesen: 99 Zeilen
 - `src/core/sim/city-life-memory.ts` — Erinnerungen sind das Erfahrungsgedaechtnis der NPCs: eine Begegnung erzeugt — gelesen: 45 Zeilen
-- `src/core/sim/city-life-movement.ts` — Ein Ortswechsel ist keine Etikette: Der Bewohner steht auf einer Kachel, das — gelesen: 214 Zeilen
+- `src/core/sim/city-life-movement.ts` — Ein Ortswechsel ist keine Etikette: Der Bewohner steht auf einer Kachel, das — gelesen: 255 Zeilen
 - `src/core/sim/city-life-normalize.ts` — Alte Saves kennen weder Attribute, Faehigkeiten, Beziehungen noch — gelesen: 125 Zeilen
 - `src/core/sim/city-life-override.ts` — Zwei Regeln, die den Score begrenzen statt ihn zu ersetzen: Ein Gewerbe hat — gelesen: 74 Zeilen
 - `src/core/sim/city-life-restore.ts` — Ein Save nennt Kennungen, keine Figuren: Alles Weitere laesst sich aus der — gelesen: 141 Zeilen
@@ -3773,6 +3788,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/__tests__/dialogue.test.ts` — Dialoge sind Daten plus ein reiner Ablauf: gleicher Klick, gleiche Folgeseite. — gelesen: 60 Zeilen
 - `src/core/sim/narrative/__tests__/hot-event-score.test.ts` — Der Hot-Event-Score ist eine reine Ableitung: Alltag bleibt unter der — gelesen: 101 Zeilen
 - `src/core/sim/narrative/__tests__/narrative-view.test.ts` — Das View-Modell leitet Szenen, Choices und Profile rein aus Welt, Ledger und — gelesen: 198 Zeilen
+- `src/core/sim/narrative/__tests__/npc-identity-memory.test.ts` — NPC-Identitaet (#979): Stadt- und Casino-Begegnungen desselben NPC schreiben ueber — gelesen: 193 Zeilen
 - `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` — Der Slot-Drucklader wird erst nach der echten Ledger-Buchung narrativ: — gelesen: 53 Zeilen
 - `src/core/sim/narrative/belief.ts` — Glaubwuerdigkeit als Mechanik: Wer teilt (Charisma, Intelligenz, Traits) und — gelesen: 200 Zeilen
 - `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 45 Zeilen
@@ -3860,7 +3876,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/knowledge.ts` — Wissenskette: Niemand berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 172 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/main-event-pool.ts` — P-22 Main-Event-Pool: feste, normale Szenen werden nur bei idle gezogen. — gelesen: 157 Zeilen
-- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 73 Zeilen
+- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 97 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 75 Zeilen
 - `src/core/sim/narrative/relationship-tier.ts` — Deterministische Beziehungstier, abgeleitet aus den kanonischen Kanten. — gelesen: 72 Zeilen
@@ -3902,7 +3918,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/player-job-market.ts` — Spieler-Arbeitsmarkt: Offene Stellen aus betretbaren Betrieben der Stadt. — gelesen: 116 Zeilen
 - `src/core/sim/player-job-promotion.ts` — Beförderung im Spielerjob: Durchschnitt der letzten Schichten, Anforderungen — gelesen: 69 Zeilen
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 141 Zeilen
-- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. — gelesen: 115 Zeilen
+- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. — gelesen: 114 Zeilen
 - `src/core/sim/player-needs-tick.ts` — Tick-Anbindung der Spielerbeduerfnisse; eigene Datei haelt tick.ts in seiner LOC-Zone. — gelesen: 18 Zeilen
 - `src/core/sim/player-needs.ts` — Spielerbeduerfnisse: Hunger und Durst als echter, gespeicherter Spielzustand. — gelesen: 153 Zeilen
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 130 Zeilen

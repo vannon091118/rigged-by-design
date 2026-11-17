@@ -1,5 +1,6 @@
 /** Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. */
 import type { Visitor, WorldState } from '../types';
+import { ensureCityLife } from '../city-life-state';
 import { scoreMemories, type MemoryScore } from './disposition';
 import { recordFirstHand } from './knowledge';
 import { recordJournal } from '../journal';
@@ -21,6 +22,29 @@ function remember(world: WorldState, fact: VisitEndedFact): boolean {
   visitor.memories.push({ factId: fact.id, tick: fact.tick, score: fact.score, valence: fact.valence });
   if (visitor.memories.length > NARRATIVE_LIMITS.memories) {
     visitor.memories.splice(0, visitor.memories.length - NARRATIVE_LIMITS.memories);
+  }
+  // Sync Visitor.memories -> CityResidentState.memories über residentNpcId
+  if (visitor.residentNpcId) {
+    const life = ensureCityLife(world);
+    const residentIndex = life.residents.findIndex((r) => r.npcId === visitor.residentNpcId);
+    if (residentIndex >= 0) {
+      const npcMemories = visitor.memories.map((mem) => ({
+        id: mem.factId,
+        tick: mem.tick,
+        kind: 'SOCIAL' as const,
+        aboutNpcId: null,
+        sentiment: mem.valence === 'GOOD' ? 1 : mem.valence === 'BAD' ? -1 : 0,
+        confidence: 1,
+      }));
+      const resident = life.residents[residentIndex]!;
+      const next = [...resident.memories];
+      for (const entry of npcMemories) {
+        if (!next.some((mem) => mem.id === entry.id)) next.push(entry);
+      }
+      const residents = [...life.residents];
+      residents[residentIndex] = { ...resident, memories: next.slice(-8) };
+      world.cityLife = { ...life, residents };
+    }
   }
   return true;
 }

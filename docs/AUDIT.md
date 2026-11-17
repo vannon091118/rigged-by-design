@@ -841,3 +841,56 @@ Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig
 **#942** — `[P0][QUALITY] Zwei rote Tests ohne WIP-Erklärung blockieren den Vor-PR-Nachweis`.
 Begründung: `player-jobs.test.ts:101` und `test-catalog.test.ts` sind ohne fremde WIP rot; solange sie rot sind, kann **kein** Issue dieser Liste mit grünem Nachweis abgeschlossen werden. Abhängigkeiten: keine. Danach **#782** (erste spielbare Handlung) als erstes Produkt-P0.
 
+
+## Doku-Belege: Issue #980 — AUDIT-100 P1-Einträge
+
+Ergänzung durch Issue #980. Die nachfolgenden AUDIT-100-Einträge (alle P1, Status TEILWEISE oder WIDERSPRÜCHLICH) besitzen nun einen nachweisbaren Doku-Beleg. Widersprüche sind als solche dokumentiert und auf das zugehörige Issue mit Akzeptanzkriterien verwiesen.
+
+- **UD-01 Spielkreislauf** — Beleg: Startpfad `new-game.ts` → `scene-commands.ts` → `city-encounter.ts`; Tagesende abgedeckt durch `first-evening.test.ts` (Eröffnung → Kiste → Gast → Buchung → Tagesende). Offener Gegenstand: Stadt- und Arbeitsstationen sind nicht an den Tagesabschluss gekoppelt → dokumentiert als offener Punkt, verweisend auf #780 und #810.
+- **UD-07 Skills** — Beleg: mechanische Wirkleser auf `main` belegt für `cleaning` (`floor-work.ts:71`) und `repair` (`actions.ts:64`); `service` und `cardDealing` haben auf `main` keinen Wirkleser (einziger Leser `business-active-work.ts:197` ist untrackter WIP, #809). `skillEffect()` (`player-skills.ts:65`) liefert Strings, keinen Effekt.
+- **UD-18 Gedächtnis** — Beleg: `NpcMemory` (`city-life-types.ts:60`), `Visitor`-Erinnerungen (max. 6), `narrative/relationships.ts` (Kanten, Limit 200). Widerspruch: drei Gedächtnismodelle ohne gemeinsamen Schreibvertrag; eine Begegnung kann im einen, nicht im anderen Modell landen. Dokumentiert über #763.
+- **UD-30 Ressourcen** — Beleg: Zeit über `world.tick` fortgeschrieben in `tick.ts`; Ruf `world.reputation` ohne Verfall; Teile `world.parts` knapp. Befund: Zeit hat keine Opportunitätskosten (Warten ist immer gratis) → nicht bewertet, offener wirtschaftlicher Hebel (#810).
+- **UD-37 Aktionsmenü** — Beleg: `src/ui/__tests__/action-card.test.tsx` existiert und deckt die Karte ab. Widerspruch: `docs/capabilities.json` führt `actions.radial-menu` / `actions.dropdown-sheet` als „Testdatei fehlt noch“ (`testIds: []`). Dokumentiert über #940; die Schwelle (6/7 Radial→Sheet) ist offen.
+- **UD-46 Capabilities** — Beleg: `verify:capabilities` = PASS (13 Fähigkeiten, 8 aktiv, 5 unverified); `unverified`-Begründungen sind durch den Baum widerlegt (`action-card.test.tsx` existiert, `nav-edges.test.ts` existiert); Owner sind Legacy. Manifest ist „grün und falsch“. Dokumentiert über #940.
+- **UD-49 Doku** — Beleg: `INDEX.md` und `ARCHITECTURE.md` nennen gleichzeitig unterschiedliche Gate-Zahlen („15“, „fünf Profile“, „acht“, „vierzehn“, „fünfzehn/sechzehn“); Code: 16 Required / 11 Light / 8 Profile. Widerspruch: vier Gate-Zahlen gleichzeitig auf demselben Commit. Dokumentiert über #941.
+- **UD-50 Produktreife** — Beleg: Exit-Kriterien verteilt (`verify:all` 16 Gates, S5-09 bespielbare Stadt, PR-08/09/10, S5-08 APK). Kein einzelnes „Produkt reif“-Gate. Größte fehlende Abnahme: S2-12 (#780) → Stadtnetz nicht nachweisbar, daher „bespielbare Stadt“ nicht erfüllbar (#780, #795).
+- **DU-16 Speicher-Sync** — Beleg: `city-life-memory.ts` (`CityResidentState`/`cityLife`), `Visitor`-Erinnerungen (max. 6), `narrative/relationships.ts` (Kanten, 200). Widerspruch: drei Speicher ohne gemeinsame Schreibregel; eine Begegnung kann im einen Modell landen und im anderen fehlen (NPC „erinnert“ Streit, Beziehung bleibt unverändert). Dokumentiert über #763.
+
+Alle Einträge verweisen auf ein zugehöriges Issue mit Akzeptanzkriterien; Widersprüche sind dokumentiert, nicht stillschweigend aufgelöst.
+
+## Doku-Belege: Issue #981 — AUDIT-100 P2-Einträge (Batch B)
+
+Ergänzung durch Issue #981. Die nachfolgenden AUDIT-100-Einträge (Batch B, Status TEILWEISE oder WIDERSPRÜCHLICH) besitzen nun einen nachweisbaren Doku-Beleg. Widersprüche sind als solche dokumentiert und auf das zugehörige Issue mit Akzeptanzkriterien verwiesen.
+
+- **UD-02 Motivation** — Beleg: `player-job-catalog.ts` (acht Jobs mit `requiredSkill`), `player-job-promotion.ts`, `payDailyWage` (`player-jobs.ts:100`); kein Geldzufluss ausserhalb des Casinos (jeder Job über Hauskonto oder `EXTERNAL_WORLD`) → offener zweiter Verdienstpfad (#801, #803).
+- **UD-03 Ziele** — Beleg: fünf Ziele angelegt (Casino-Ausbau, Immobilie, Karriere, E-Sport, Ruf); ein Wechsel zwischen Zielen ist nirgends modelliert (#810).
+- **UD-04 Versprechen** — Beleg: „Kisten schleppen“ hängt an S1-06 (#782, offen); „Anrufe & Nachrichten“ ohne Sim-Ereignis (#782, #797); README markiert Fiktion sauber (#782, #797).
+- **UD-05 Druck** — Beleg: Erschöpfung erreichbar (Miete `goal.ts`, `HAUS_SCHULDEN` via `openLiability`, `injuryTicks`, Hunger), aber kein Konkurs-/Endzustand (#538).
+- **UD-06 XP** — Beleg: `SKILL_XP_SOURCES` (`player-skills.ts:82`) zentral registriert; kein benannter Vergabepfad (`trainSkill`/`addSkillXp` nicht auffindbar) (#801).
+- **UD-10 Konkurrenz** — Beleg: Priorisierung nur für NPCs (`city-life-score.ts`, `city-life-tiebreak.ts`); Spieler-Entscheidungslogik absichtlich offen (#810).
+- **UD-11 NPC-Kette** — Beleg: zwei Identitätsmodelle (`city-life-*` vs. `visitors`); Synchronisation quellengebunden, nicht bei jeder Begegnung (#763).
+- **UD-13 Ortsgraph** — Beleg: drei Orte-Quellen (Netz, Venues, Szenen) ohne gemeinsamen Test; S2-12 offen (#780).
+- **UD-14 Navigation** — Beleg: Regeln getestet, Engpässe nicht (kein Stresstest an Tür/Kreuzung) (#840).
+- **UD-15 Bevölkerung** — Beleg: vier Bevölkerungsbegriffe ohne gemeinsame Zählung (#822).
+- **UD-20 Content** — Beleg: Leser registriert, Szenenkontext offen; `documentation`-Pool verzerrt jede Content-Menge-Aussage (#541).
+- **UD-21 Bereiche** — Beleg: ein Konto, eine Besuchermenge; Unterschiede nur Öffnungszeit/Preis (#810, #540).
+- **UD-22 Personal** — Beleg: Qualifikation ja, Bewertung nein (S3-10 offen) (#810).
+- **UD-24 Events** — Beleg: zwei Quotenmodelle, keine gemeinsame Event-Instanz (S3-09 offen) (#787).
+- **UD-25 Betrieb** — Beleg: aktive Betriebsrollen nur als untrackter WIP (`business-active-work.ts`, #809); auf `main` läuft Betrieb passiv (#809).
+- **UD-27 Schulden** — Beleg: Tilgung nur aus Überschuss über `HOUSE_FLOAT` (#538).
+- **UD-29 Waren** — Beleg: Getränke mit Bestand/Kreislauf; Deko und Geräte zustandslos ohne Bestand (#809).
+- **UD-32 RTP** — Beleg: RTP-Messung (Monte-Carlo) nicht im Regelprofil; Klasse `statistics` läuft nicht in light/quick/fast (#789, #840).
+- **UD-34 Mods** — Beleg: Wirkungen zentral aufgelöst (`resolveModEffects`, `installMod`); Kombinationen ungemessen; EXTRA_REEL hat zwei Wirkungen ohne gemeinsamen Test (#840).
+- **UD-38 Assets** — Beleg: nur CARPET hat eine echte Manifest-Textur, Rest prozedural mit stabilem Fallback (#647, #786).
+- **UD-39 Viewports** — Beleg: Layout-Tests grün, Abnahmetests im Vollauf rot (`worldStore.businessWork`, WIP #809) (#840, #795).
+- **UD-40 Renderkosten** — Beleg: 2,42 MB ist Notiz, kein Gate; `verify:assets` prüft Manifest, nicht Bytes (#651).
+- **UD-41 Save-Umfang** — Beleg: `toSavedGame` breit, Aufnahme von `narrative`/`rivals` nicht belegt (#792).
+- **UD-42 Wachstum** — Beleg: Grenzen bekannt, keine Messung über 1/5/10/20 Tage (#840).
+- **UD-45 Replay** — Beleg: Voraussetzungen benannt (`prngState`, keine Wanduhr, feste Reihenfolge); Save → 200 Ticks → identisch fehlt als Test (#792).
+- **UD-47 Testarten** — Beleg: Katalog 436 Dateien / 423 Regellauf / 13 Mechanik; keine Domäne×Beweisklasse-Matrix (#840).
+- **UD-48 Last** — Beleg: Langlast vorbereitet (`test:mechanics` 13, `soak` 100 000 Ticks), nicht gefahren (#789).
+- **DU-02 Commands** — Beleg: Commands zentral über `world-store.ts`; keine Command→Leser-Inventur (#840).
+- **DU-38 CityActorSync** — Beleg: Klasse existiert, Lebenszyklus getestet; Positions-/Richtungs-Sync nicht belegt (#640).
+
+Alle Einträge verweisen auf ein zugehöriges Issue mit Akzeptanzkriterien; Widersprüche sind dokumentiert, nicht stillschweigend aufgelöst.
+

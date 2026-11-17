@@ -1,0 +1,17 @@
+{
+  "agentId": "shinon",
+  "turnId": "2026-11-17T13:27Z-dead-exports-1090",
+  "contributionId": "dead-exports-1090-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Export wurde aus der Liste gestrichen, bevor der erste Gast ihn bestellen konnte. Was niemand aufruft, verschleimt die Fuehrung nicht - es erledigt den Weg einfach nicht. Aufrufe pruefen die Liste, die Liste prueft den Raum, und der Raum bleibt verschlossen für den toten Pfad.",
+  "directives": []
+}

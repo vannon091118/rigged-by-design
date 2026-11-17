@@ -16,8 +16,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "archived",
-  "createdAt": "0f8cd59a1ea482534f63aa48b0e8405946ab2a9f",
-  "releasedAt": "2026-11-17T08:48:54.024Z",
-  "releasedReason": "stale-no-branch"
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "184bbcbbaf6e7fa363e9a6350d8bd6e7ef87d472",
+  "createdAt": "0f8cd59a1ea482534f63aa48b0e8405946ab2a9f"
 }

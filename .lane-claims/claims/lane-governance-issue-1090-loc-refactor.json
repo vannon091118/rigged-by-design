@@ -11,6 +11,7 @@
     "src/core/governance/__tests__/",
     "src/Config/eslint.config.mjs",
     "docs/INVENTORY.md",
+    "docs/ARCHITECTURE.md",
     ".lane-claims/claims/",
     ".lane-claims/tasks/",
     "docs/DEPENDENCY-MATRIX.md"

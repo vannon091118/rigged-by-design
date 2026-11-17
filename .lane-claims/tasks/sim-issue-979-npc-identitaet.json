@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-979-npc-identitaet",
+  "claimId": "lane/sim/issue-979-npc-identitaet",
+  "branch": "lane/sim/issue-979-npc-identitaet",
+  "baseSha": "cb0523f373bcdfdb32499e45d5e1b451b7baebd0",
+  "phase": "IMPLEMENTING",
+  "title": "[P2][SIM] NPC-Identitaet: eine kanonische Erinnerung ueber Stadt- und Casino-Begegnungen",
+  "goal": "Stadt- und Casino-Begegnungen eines NPC schreiben ueber die gebundene visitorId in die kanonische Besuchererinnerung (Visitor.memories); die stadtseitige Projektion (CityResidentState.memories) bleibt konsistent und baut keine widerspruechliche zweite Historie auf; die Casino-Disposition waengt stadtseitige Erinnerungen mit; Retention-Grenzen (Gast 6, Bewohner 8) und Save/Load bleiben deterministisch erhalten. AC #979: Querkanal-Test Stadtbegegnung -> Casino-Besuch -> Rueckkehr, Save/Load-Erhalt, Disposition-Wirkung, Retention-Messung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Tests gruen, claim:preflight, Branch gegen main pushen, PR oeffnen, Maintainer-Review anstoßen",
+  "revision": 1
+}

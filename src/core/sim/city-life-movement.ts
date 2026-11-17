@@ -28,6 +28,7 @@ import { selectSocialEncounter } from './social-encounter';
 import { clampInt } from './num';
 import { createCityScene } from './city-scene';
 import { applyPush, createOccupancy, moveOccupant, resolveStep, separatePositions } from './city-tile-occupancy';
+import { NARRATIVE_LIMITS } from './narrative/types';
 import type { WorldState } from './types';
 
 /** Kacheln pro Tick: bei 25 Ticks je Stunde sind das 25 Kacheln je Stunde. */
@@ -208,7 +209,47 @@ export function tickCityMovement(world: WorldState): void {
     const arrived = settleArrival({ ...resident, position: step.position, travel: null, location: resident.travel.to },
       life.residents, world.tick, memorySeq);
     memorySeq = arrived.nextMemoryId;
+    projectNewMemories(world, resident, arrived.resident);
     residentsById.set(id, { ...arrived.resident, needs: { ...arrived.resident.needs, fatigue } });
   }
   world.cityLife = { ...life, residents: ordered.map((resident) => residentsById.get(resident.npcId)!), memorySeq };
+}
+
+/**
+ * Neue Stadterinnerungen eines Bewohners ins kanonische Gast-Gedaechtnis
+ * projizieren (selbe NPC-Identitaet via visitorId). Wird sowohl nach der
+ * entschiedenen Wirkung als auch nach der Ankunft gerufen; ein Erinnerungs-
+ * Eintrag landet also maximal einmal im Gast-Profil.
+ */
+export function projectNewMemories(
+  world: WorldState,
+  before: CityResidentState,
+  after: CityResidentState,
+): void {
+  const beforeIds = new Set(before.memories.map((memory) => memory.id));
+  const visitorId = after.visitorId ?? before.visitorId;
+  if (!visitorId) return;
+  const visitor = world.visitors.find((entry) => entry.id === visitorId);
+  if (!visitor) return;
+  let memories = visitor.memories ?? [];
+  let changed = false;
+  for (const memory of after.memories) {
+    if (beforeIds.has(memory.id)) continue;
+    if (memories.some((entry) => entry.factId === memory.id)) continue;
+    memories = [
+      ...memories,
+      {
+        factId: memory.id,
+        tick: memory.tick,
+        score: memory.sentiment >= 1 ? 70 : memory.sentiment <= -1 ? 30 : 50,
+        valence: memory.sentiment >= 1 ? 'GOOD' : memory.sentiment <= -1 ? 'BAD' : 'NEUTRAL',
+      },
+    ];
+    changed = true;
+  }
+  if (!changed) return;
+  if (memories.length > NARRATIVE_LIMITS.memories) {
+    memories = memories.slice(-NARRATIVE_LIMITS.memories);
+  }
+  visitor.memories = memories;
 }
