@@ -919,7 +919,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1065-agent-state-test-target.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1065-agent-state-test-target.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
