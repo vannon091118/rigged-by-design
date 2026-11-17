@@ -41,6 +41,20 @@ let registerAudited = false;
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
+// Parallel-Agent-Konfiguration eines Claims. Rueckwaertskompatibel:
+// Claims ohne diese Felder erhalten parallelAgents: 1, conflictResolution: 'strict'.
+function parallelAgentsOf(claim) {
+  return Number(claim?.parallelAgents ?? 1);
+}
+function conflictResolutionOf(claim) {
+  return claim?.conflictResolution ?? 'strict';
+}
+
+/** Ein Claim darf parallel arbeiten, wenn parallelAgents > 1 und nicht strict. */
+function isParallel(claim) {
+  return parallelAgentsOf(claim) > 1 && conflictResolutionOf(claim) !== 'strict';
+}
+
 // `--ci` prüft den PR-Diff gegen die Basis statt den lokalen Index. Ohne diesen
 // Modus waere die Claim-Sperre nur lokal: ein Cloud-Agent ohne Hooks schriebe
 // ausserhalb jeder Allowlist, und niemand saehe es.
@@ -73,9 +87,17 @@ try {
 
 /** Genau ein Claim pro Lane-ID und pro Branch. Doppelte Eintraege sind ein Loch. */
 for (const key of ['id', 'branch']) {
-  const seen = new Set();
+  const seen = new Map();
   for (const entry of allClaims) {
-    if (seen.has(entry[key])) {
+    const prev = seen.get(entry[key]);
+    if (prev) {
+      // Regel 4 (Zeile 84): Gleiche ID ist bei parallelAgents > 1 erlaubt,
+      // wenn die Branches unterschiedlich sind (je Agent eigener Branch).
+      // Gleicher Branch bleibt immer verboten (zwei Lanes koennen nicht denselben
+      // Zweig beanspruchen).
+      if (key === 'id' && parallelAgentsOf(entry) > 1 && parallelAgentsOf(prev) > 1 && prev.branch !== entry.branch) {
+        continue;
+      }
       report({
         status: 'ROT',
         headline: `${branch} · doppelter ${key} im Claim-Register`,
@@ -84,7 +106,7 @@ for (const key of ['id', 'branch']) {
       });
       process.exit(1);
     }
-    seen.add(entry[key]);
+    seen.set(entry[key], entry);
   }
 }
 
@@ -148,16 +170,27 @@ if (branch === 'main') {
 }
 
 if (!claim) {
-  report({
-    status: 'ROT',
-    headline: `${branch} · kein Lane-Claim`,
-    facts: [['Basis', BASE_REF]],
-    findings: [
-      `[ERR-4019] Kein Lane-Claim für Branch '${branch}' in .lane-claims/`,
-      'Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).',
-    ],
-  });
-  process.exit(1);
+  // Ohne eigenen Claim ist die Parallel-Agent-Konfiguration nicht auf der Lane
+  // ablesbar; Umgebungsvariablen liefern den Default (Rueckwaertskompatibel:
+  // parallelAgents: 1, conflictResolution: 'strict').
+  const parallelAgents = Number(process.env.PARALLEL_AGENTS ?? 1);
+  const conflictResolution = process.env.CONFLICT_RESOLUTION ?? 'strict';
+  const blockWhenNoClaim = parallelAgents === 1 || conflictResolution === 'strict';
+
+  if (blockWhenNoClaim) {
+    report({
+      status: 'ROT',
+      headline: `${branch} · kein Lane-Claim`,
+      facts: [['Basis', BASE_REF]],
+      findings: [
+        `[ERR-4019] Kein Lane-Claim für Branch '${branch}' in .lane-claims/`,
+        'Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).',
+      ],
+    });
+    process.exit(1);
+  } else {
+    notes.push(`Warnung: Branch '${branch}' hat keinen Claim, aber PARALLEL_AGENTS=${parallelAgents} und CONFLICT_RESOLUTION='${conflictResolution}' – Claim wird als Warnung akzeptiert.`);
+  }
 }
 
 /** Feste Owner: eine Lane ohne benannten Owner ist keine Lane. */
@@ -252,12 +285,33 @@ if (!baseRegister) {
 } else {
   const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
   const firstRegister = firstTouch ? registerAt(firstTouch) : null;
-  const audit = auditRegisterAgainstBase({
+
+  // Regel 3 (Zeile 267): parallelAgents-basierte Zulässigkeit.
+  // - Eigene Lane darf eigene Allowlist erweitern.
+  // - Bei parallelAgents > 1 und conflictResolution = 'perAgent' ist eine
+  //   Selbst-Erweiterung der Allowlist erlaubt (keine Kollision mit fremden).
+  // - Fremde Lanes werden immer gegen die Basis geprueft.
+  const nextClaimsJson = allClaims.map((entry) => entry.toJSON());
+  let audit = auditRegisterAgainstBase({
     baseClaims: baseRegister,
     registrationClaims: firstRegister ?? baseRegister,
-    nextClaims: allClaims.map((entry) => entry.toJSON()),
+    nextClaims: nextClaimsJson,
     branch,
   });
+
+  // Bei parallelAgents > 1 und conflictResolution = 'perAgent' darf die eigene
+  // Lane ihre Allowlist selbst erweitern; diese Audit-Befunde werden verworfen.
+  const parallelAgents = Number(process.env.PARALLEL_AGENTS ?? claim?.parallelAgents ?? 1);
+  const conflictResolution = process.env.CONFLICT_RESOLUTION ?? claim?.conflictResolution ?? 'strict';
+  const allowOwnExpansion = parallelAgents > 1 && conflictResolution === 'perAgent';
+  if (allowOwnExpansion && !audit.ok) {
+    const ownId = selectClaim(nextClaimsJson, branch)?.id;
+    audit.violations = audit.violations.filter((v) => {
+      const isOwnExpansion = v.includes('Allowlist erweitert') && ownId && v.startsWith(`${ownId}:`);
+      return !isOwnExpansion;
+    });
+    audit.ok = audit.violations.length === 0;
+  }
   if (!audit.ok) {
     report({
       status: 'ROT',
@@ -333,6 +387,23 @@ const generatedMeta = [];
 const inherited = [];
 const handedOver = [];
 
+function pathBlocks(file, claim, conflictResolution) {
+  // Regel 2 (Zeile 392): Pfade außerhalb der Allowlist hängen vom ConflictResolution ab:
+  // - conflictResolution = 'perAgent': Jeder Agent schreibt nur seine eigenen Pfade.
+  //   Die Allowlist wird pro Agent interpretiert (bereits geprüft durch claim.allowsPath).
+  // - conflictResolution = 'shared': Jeder Agent darf alle in der Allowlist genannten Pfade schreiben.
+  // - conflictResolution = 'strict' (Default): Keine parallelen Schreibberechtigungen.
+  const cr = conflictResolution ?? 'strict';
+  const allowed = claim.allowsPath(file);
+  if (allowed) return { blocks: false };
+  // Pfad liegt außerhalb der Allowlist.
+  const paral = parallelAgentsOf(claim);
+  if (cr === 'perAgent' && paral > 1) {
+    return { blocks: true, kind: 'warn', message: `${file} (außerhalb Allowlist, perAgent: nur eigene Pfade erlaubt)` };
+  }
+  return { blocks: true, kind: 'error', message: `${file} (außerhalb Allowlist)` };
+}
+
 for (const file of staged) {
   // Koordinationsdateien sind Werkzeug jeder Lane (Register, PIN-Freigabe);
   // sie brauchen keinen Allowlist-Eintrag und kollidieren nicht.
@@ -352,12 +423,23 @@ for (const file of staged) {
       generatedMeta.push(file);
       continue;
     }
-    if (claim.allowsPath(file)) continue;
-    if (onlySystemLines(file)) {
-      allowedBySystem.push(file);
+    // Regel 2 (Zeile 392): Pfade außerhalb der Allowlist hängen vom
+    // ConflictResolution ab (perAgent: nur eigene Pfade, shared: gemeinsame Liste).
+    const pathResult = pathBlocks(file, claim, conflictResolutionOf(claim));
+    if (pathResult.blocks) {
+      // System-Zeilen (Marker/Version) sind auch ausserhalb der Allowlist erlaubt.
+      if (onlySystemLines(file)) {
+        allowedBySystem.push(file);
+        continue;
+      }
+      if (pathResult.kind === 'warn') {
+        notes.push(pathResult.message);
+        continue;
+      }
+      violations.push(pathResult.message);
       continue;
     }
-    violations.push(`${file} (Meta-Datei: nur Marker/Version; alles andere braucht einen Claim)`);
+    // Allowlist-Pfad erlaubt – kein weiterer Check nötig.
     continue;
   }
   if (claim.allowsPath(file)) continue;
@@ -381,7 +463,16 @@ for (const file of staged) {
       continue;
     }
   }
-  violations.push(file);
+  // Regel 2 (Zeile 392): Pfade außerhalb der Allowlist hängen vom ConflictResolution ab.
+  const pathResult = pathBlocks(file, claim, conflictResolutionOf(claim));
+  if (pathResult.blocks) {
+    if (pathResult.kind === 'warn') {
+      notes.push(pathResult.message);
+      continue;
+    }
+    violations.push(pathResult.message);
+    continue;
+  }
 }
 
 if (violations.length > 0) {
