@@ -939,7 +939,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-integrity-issue-1036-store-guard-proof.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-integrity-issue-975-command-atomicity.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-integrity-issue-975-command-atomicity.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 38 Zeilen
