@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-clock-fix",
+  "claimId": "lane/governance/issue-1090-clock-fix",
+  "branch": "lane/governance/issue-1090-clock-fix",
+  "baseSha": "8b825f2379def6a950eba518d3016ec39ab87396",
+  "phase": "IMPLEMENTING",
+  "title": "Lint-Allowlist fuer Tooling-Uhr auf main nachziehen",
+  "goal": "verify:all auf main gruen halten, ohne Spielcode-Uhr zu erlauben.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Commit, PR, Merge, verify:all auf main",
+  "revision": 1
+}

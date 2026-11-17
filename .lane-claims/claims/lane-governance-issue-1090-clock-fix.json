@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/issue-1090-clock-fix",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1090-clock-fix",
+  "baseSha": "8b825f2379def6a950eba518d3016ec39ab87396",
+  "issue": 1100,
+  "task": "Lint-Allowlist fuer Tooling-Uhr auf main nachziehen",
+  "goal": "verify:all auf main gruen halten, ohne Spielcode-Uhr zu erlauben",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1090-clock-fix.json",
+    ".lane-claims/claims/lane-governance-issue-1090-loc-refactor.json",
+    ".lane-claims/tasks/governance-issue-1090-clock-fix.json",
+    "content/narrative/contributions/2026-11-17-clock-allowlist-1102.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP-DETAIL.md",
+    "docs/governance/LAST-CHANGES.md",
+    "scripts/lib/board-read.mjs",
+    "src/Config/eslint.config.mjs",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8b825f2379def6a950eba518d3016ec39ab87396"
+}

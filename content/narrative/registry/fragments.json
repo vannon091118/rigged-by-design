@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fe58d105830d83306f29f0a20654f885a1095e07bdabaa27618e70046bdee318",
+  "contentHash": "sha256:1d0206470fa2952332c7a067259d4665c2307dfa9dc00c8f481b79b46f455e79",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8185,6 +8185,28 @@
       "text": "Am Schwarzen Brett haengt seit drei Tagen dieselbe Handschrift. Der Mann mit dem Besen sagt, eine Reservierung sei kein Besitz: Wer sie nicht mehr braucht, muss sie zurueckgeben, sonst wartet der Naechste umsonst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-claim-stale-01.json"
+    },
+    {
+      "contributionId": "clock-allowlist-1102-01",
+      "turnId": "2026-11-17T23:20Z-clock-allowlist-1102",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Werkzeuguhr steht jetzt auf der Liste der erlaubten Zeitnehmer, nicht im Spielcode. Der Unterschied ist klein im Text und gross im Betrieb: der Cache darf altern, der Spielzustand nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-clock-allowlist-1102.json"
     },
     {
       "contributionId": "close-rights-01",
