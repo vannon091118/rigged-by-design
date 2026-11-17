@@ -247,6 +247,12 @@
       "number": 1070,
       "headSha": "b70b85088d12e942b8280a331d6ec859ad8321ee",
       "mergeSha": "41fa90b2816ca2915ab8eab085fd5aa1c9fb79da"
+    },
+    {
+      "branch": "lane/governance/claim-reconcile-2026-11-17",
+      "number": 1072,
+      "headSha": "f15222a826cfd7defe8f55e6f9a38bce423c3070",
+      "mergeSha": "26a8846785457b87ad8384a33eedb1f7b77f4ef2"
     }
   ]
 }
