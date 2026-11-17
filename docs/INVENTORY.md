@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 458 Dateien — contract 229 · integration 125 · governance 91 · statistics 6 · performance 7.
+Summe: 459 Dateien — contract 230 · integration 125 · governance 91 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -437,6 +437,7 @@ Summe: 458 Dateien — contract 229 · integration 125 · governance 91 · stati
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/hot-event-score.test.ts` | sim | contract | ja | `src/core/sim/narrative/hot-event-score.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
+| `src/core/sim/narrative/__tests__/npc-identity-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/narrative/composer/__tests__/image-diff-gate.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/image-diff-gate.ts` |
 | `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
@@ -764,10 +765,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3410 |
-| Gelistete Dateien | 3410 |
+| Getrackte Dateien | 3413 |
+| Gelistete Dateien | 3413 |
 | Getrackte Ordner | 120 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (150), .lanes (1), artifacts (1), bin (1), content (1241), docs (97), packages (27), public (571), scripts (172), src (1126) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (152), .lanes (1), artifacts (1), bin (1), content (1241), docs (97), packages (27), public (571), scripts (172), src (1127) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -781,8 +782,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 73 Datei(en)
-- `.lane-claims/tasks/` — 73 Datei(en)
+- `.lane-claims/claims/` — 74 Datei(en)
+- `.lane-claims/tasks/` — 74 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -863,7 +864,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/` — 204 Datei(en)
 - `src/core/sim/__tests__/` — 177 Datei(en)
 - `src/core/sim/narrative/` — 44 Datei(en)
-- `src/core/sim/narrative/__tests__/` — 7 Datei(en)
+- `src/core/sim/narrative/__tests__/` — 8 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
 - `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
@@ -982,6 +983,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-976-save-recovery.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-sim-issue-979-npc-identitaet.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
@@ -1057,6 +1059,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/sim-issue-978-skill-effects.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-979-npc-identitaet.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
@@ -3619,7 +3622,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-life-decision.ts` — Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion — gelesen: 124 Zeilen
 - `src/core/sim/city-life-effects.ts` — Der Tagesplan und der Score waehlen nur; erst diese Effekte veraendern — gelesen: 99 Zeilen
 - `src/core/sim/city-life-memory.ts` — Erinnerungen sind das Erfahrungsgedaechtnis der NPCs: eine Begegnung erzeugt — gelesen: 45 Zeilen
-- `src/core/sim/city-life-movement.ts` — Ein Ortswechsel ist keine Etikette: Der Bewohner steht auf einer Kachel, das — gelesen: 214 Zeilen
+- `src/core/sim/city-life-movement.ts` — Ein Ortswechsel ist keine Etikette: Der Bewohner steht auf einer Kachel, das — gelesen: 255 Zeilen
 - `src/core/sim/city-life-normalize.ts` — Alte Saves kennen weder Attribute, Faehigkeiten, Beziehungen noch — gelesen: 125 Zeilen
 - `src/core/sim/city-life-override.ts` — Zwei Regeln, die den Score begrenzen statt ihn zu ersetzen: Ein Gewerbe hat — gelesen: 74 Zeilen
 - `src/core/sim/city-life-restore.ts` — Ein Save nennt Kennungen, keine Figuren: Alles Weitere laesst sich aus der — gelesen: 141 Zeilen
@@ -3726,6 +3729,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/__tests__/dialogue.test.ts` — Dialoge sind Daten plus ein reiner Ablauf: gleicher Klick, gleiche Folgeseite. — gelesen: 60 Zeilen
 - `src/core/sim/narrative/__tests__/hot-event-score.test.ts` — Der Hot-Event-Score ist eine reine Ableitung: Alltag bleibt unter der — gelesen: 101 Zeilen
 - `src/core/sim/narrative/__tests__/narrative-view.test.ts` — Das View-Modell leitet Szenen, Choices und Profile rein aus Welt, Ledger und — gelesen: 198 Zeilen
+- `src/core/sim/narrative/__tests__/npc-identity-memory.test.ts` — NPC-Identitaet (#979): Stadt- und Casino-Begegnungen desselben NPC schreiben ueber — gelesen: 193 Zeilen
 - `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` — Der Slot-Drucklader wird erst nach der echten Ledger-Buchung narrativ: — gelesen: 53 Zeilen
 - `src/core/sim/narrative/belief.ts` — Glaubwuerdigkeit als Mechanik: Wer teilt (Charisma, Intelligenz, Traits) und — gelesen: 200 Zeilen
 - `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 45 Zeilen
@@ -3813,7 +3817,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/knowledge.ts` — Wissenskette: Niemand berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 172 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/main-event-pool.ts` — P-22 Main-Event-Pool: feste, normale Szenen werden nur bei idle gezogen. — gelesen: 157 Zeilen
-- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 91 Zeilen
+- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 97 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 75 Zeilen
 - `src/core/sim/narrative/relationship-tier.ts` — Deterministische Beziehungstier, abgeleitet aus den kanonischen Kanten. — gelesen: 72 Zeilen
