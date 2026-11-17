@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-17T00:05Z-agent-state-sections",
+  "contributionId": "agent-state-sections-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Wege schreiben in dasselbe Buch, und niemand hatte geprueft, ob das Gelesene noch das Geschriebene ist: der eine notiert, welches Gate rot war, der andere, welche langen Pruefungen noch offen sind. Jetzt steht ein Zeuge daneben, der den Eintrag erst schreiben laesst und ihn danach ohne die alte Quelle wieder aufschlaegt. Bleibt der Eintrag aus, faellt der Zeuge durch - nicht die Buchfuehrung.",
+  "directives": []
+}

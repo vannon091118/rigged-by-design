@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/issue-1054-state-sections",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1054-state-sections",
+  "baseSha": "3a39819eba025398a6da5613b97bef8e8fe0099e",
+  "issue": 1054,
+  "task": "Round-Trip-Test fuer cause- und delegated-Abschnitt",
+  "pathAllowlist": [
+    "src/core/governance/__tests__/agent-state-sections.test.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-17-agent-state-sections.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-issue-1054-state-sections.json",
+    ".lane-claims/tasks/governance-issue-1054-state-sections.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3a39819eba025398a6da5613b97bef8e8fe0099e"
+}
