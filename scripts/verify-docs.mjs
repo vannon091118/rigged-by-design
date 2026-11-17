@@ -7,6 +7,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkDocAnchors } from './lib/doc-anchors.mjs';
+import { docCoreProblems } from './lib/doc-core.mjs';
 import { verifyDocParity } from './lib/doc-parity.mjs';
 import { verifyDocs } from './lib/doc-sync.mjs';
 import { PROMPT_REGISTER_FILE, promptProblems } from './lib/prompt-register.mjs';
@@ -68,13 +69,16 @@ function promptRegisterProblems() {
 // Struktur und Marker allein reichen nicht: die Zahlen und Rollen muessen zum
 // ausfuehrbaren Plan passen, sonst arbeitet ein Agent nach einer zweiten Wahrheit.
 const problems = [
-  ...verifyDocs(),
-  ...verifyDocParity(),
-  ...checkDocAnchors(loadDocuments()),
-  ...promptRegisterProblems(),
+  ...new Set([
+    ...verifyDocs(),
+    ...docCoreProblems(),
+    ...verifyDocParity(),
+    ...checkDocAnchors(loadDocuments()),
+    ...promptRegisterProblems(),
+  ]),
 ];
 if (problems.length === 0) {
-  console.log('verify:docs: PASS (Struktur, Marker, interne Anker und Prompt-Register)');
+  console.log('verify:docs: PASS (5 Pflichtdokus, Kern-Budgets, Cross-Checks, Anker, Prompt-Register)');
   process.exit(0);
 }
 problems.forEach((problem, index) => fail(index + 1, 'ERR-4017', 'verify:docs', problem));

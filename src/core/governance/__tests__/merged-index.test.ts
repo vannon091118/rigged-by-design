@@ -114,6 +114,31 @@ describe('merged-index', () => {
     }
   });
 
+  it('ueberschreibt einen belegten Index nicht mit einem leeren Neuaufbau', () => {
+    const root = mkdtempSync(join(tmpdir(), 'rbd-merged-index-'));
+    const file = 'merged-index.json';
+    const index = {
+      version: 1,
+      source: 'git-merge-commits',
+      entries: [{ branch: 'lane/foo', number: 42, headSha: HEAD, mergeSha: MERGE }],
+    };
+    writeFileSync(join(root, file), JSON.stringify(index));
+    try {
+      const result = syncMergedIndex({
+        root,
+        file,
+        owner: 'vannon091118',
+        git: () => {
+          throw new Error('origin/main fehlt');
+        },
+      });
+      expect(result.changed).toBe(false);
+      expect(readMergedIndex({ root, file })?.entries).toHaveLength(1);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it('schreibt den Index idempotent und meldet Veraltung im Check-Modus', () => {
     const root = mkdtempSync(join(tmpdir(), 'rbd-merged-index-'));
     const git = fakeGit(`${MERGE}\tparent0 ${HEAD}\tMerge pull request #5 from vannon091118/lane/foo`);

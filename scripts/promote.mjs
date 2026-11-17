@@ -23,6 +23,7 @@ import {
   splitAutomation,
 } from './lib/body-sync.mjs';
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
+import { META_FILES } from './lib/lane-claims.mjs';
 import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
 import { buildCiState, isSupersededRun, parseCiState, serializeCiState } from './lib/ci-state.mjs';
 import { blockedIssuesFrom } from './lib/issue-scope.mjs';
@@ -492,18 +493,6 @@ function redBranches() {
   const fromLabel = raw.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   return [...new Set([...fromLabel, branch])].filter((name) => name && name !== MAIN);
 }
-
-/** Die acht Meta-Dateien: hier sind Konflikte meist nur Marker und Version. */
-const META_FILES = Object.freeze([
-  'AGENTS.md',
-  'docs/INVENTORY.md',
-  'docs/ARCHITECTURE.md',
-  'docs/CHANGELOG.md',
-  'docs/DEVTAGEBUCH.md',
-  'docs/ROADMAP.md',
-  'package.json',
-  'pnpm-lock.yaml',
-]);
 
 /** Eine Zeile, die das System schreibt, nicht ein Mensch. */
 const SYSTEM_LINE = /^(?:<!--\s*rbd-doc:.*-->|"version":\s*".*",?)$/;

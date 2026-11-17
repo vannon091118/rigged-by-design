@@ -7,12 +7,20 @@
 ## Der eine Start
 
 ```bash
-pnpm run agent:start --brief     # Board, Claims, Mechanik-Inventur, nächste Befehle
-pnpm run agent:start --json      # vollständig, für Werkzeuge
-pnpm run agent:start -- --issue 874
+pnpm rbd docs read               # 7 Kerne + Receipt (<10k Token)
+pnpm rbd shell watch             # guarded Shell + lokaler Toolgate-Watcher
+pnpm rbd agent start --brief     # Board, Claims, Mechanik-Inventur, nächste Befehle
+pnpm rbd agent start --json      # vollständig, für Werkzeuge
+pnpm rbd agent start --issue 874
 ```
 
+Primär ist die Route `rbd <gruppe> <aktion>`; die `pnpm run`-Namen bleiben Kompatibilitätsaliase. Die Doku-Messung läuft über `pnpm rbd docs audit` (Tabelle) bzw. `pnpm rbd docs audit --json`; das Gate ist `pnpm rbd verify docs`.
+
 Reihenfolge, Besitz, Postfach und Review-Lage kommen aus GitHub, nicht aus `.lane-claims/board-state.json`, `.lanes/identity.json` oder einer Claim-Datei. Ein frischer Klon ohne diese Dateien liefert dasselbe Ergebnis.
+
+## Doku-Kern
+
+Fünf Pflichtdokus tragen den Doku-Kern: `AGENTS.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/ROADMAP.md` und `docs/LAST-CHANGES.md`. Jedes Dokument hat einen `## Kern` von höchstens 500 Token; zusammen bleiben sie unter 10.000 Token. `verify:docs` prüft zusätzlich, dass jede Referenz von [`INDEX.md`](INDEX.md) erreichbar ist, jeder Wurzelordner einen Eintrag in `.github/CODEOWNERS` hat und `LAST-CHANGES.md` nicht älter als das Changelog ist. `node scripts/doc-audit.mjs` zeigt die Messung; `node scripts/doc-audit.mjs --check` ist der Nachweis für den Vor-PR-Lauf.
 
 ## Credential-Kette
 

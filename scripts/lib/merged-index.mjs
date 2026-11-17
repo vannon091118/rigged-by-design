@@ -55,7 +55,14 @@ export function buildMergedIndex({ baseRef = 'origin/main', git = defaultGit, ow
   try {
     output = git(['log', '--merges', '--format=%H%x09%P%x09%s', baseRef]);
   } catch {
-    return { version: MERGED_INDEX_VERSION, source: 'git-merge-commits', entries: [] };
+    // Ein frischer Cloud-Worktree hat oft keinen `origin/main`-Ref. Dann ist
+    // HEAD die lokale Wahrheit; ein leerer Index waere kein Beleg, sondern
+    // Datenverlust.
+    try {
+      output = git(['log', '--merges', '--format=%H%x09%P%x09%s', 'HEAD']);
+    } catch {
+      return { version: MERGED_INDEX_VERSION, source: 'git-merge-commits', entries: [] };
+    }
   }
   const entries = [];
   for (const line of String(output ?? '').split(/\r?\n/)) {
@@ -150,6 +157,21 @@ export function syncMergedIndex({
   const next = renderMergedIndex(index);
   const path = resolve(root, file);
   const current = existsSync(path) ? readFileSync(path, 'utf8') : null;
+  const currentIndex = (() => {
+    if (!current) return null;
+    try {
+      const parsed = JSON.parse(current);
+      return validateMergedIndex(parsed) ? parsed : null;
+    } catch {
+      return null;
+    }
+  })();
+  // Fail-closed: ein leerer Neuaufbau (fehlender Ref, unbekannter Owner) darf
+  // einen belegten Index nicht loeschen. Erst ein gueltiger Neuaufbau ersetzt
+  // Belege; ein kaputter oder fehlender Index wird weiterhin geschrieben.
+  if (index.entries.length === 0 && currentIndex && currentIndex.entries.length > 0) {
+    return { changed: false, index: currentIndex, path };
+  }
   if (current === next) return { changed: false, index, path };
   if (check) return { changed: true, index, path };
   mkdirSync(dirname(path), { recursive: true });

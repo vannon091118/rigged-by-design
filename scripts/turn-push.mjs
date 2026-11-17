@@ -532,6 +532,16 @@ if (rueck > 0) {
     process.exit(1);
   }
 }
+// Claim-/WIP-Preflight vor dem Push: erkennt offene Claims und Restarbeiten,
+// die nach einem Kontextverlust sonst unbemerkt im Arbeitsbaum liegen.
+const claimPreflight = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'claim-preflight.mjs')], {
+  cwd: ROOT,
+  stdio: 'inherit',
+});
+if (claimPreflight.status !== 0) {
+  fail(1, 'ERR-4019', 'turn:finish', 'Claim-Preflight rot: offener Rest-WIP oder Claim ohne Issue; kein Push');
+  process.exit(1);
+}
 // Board-Gate vor dem Push: ein Claim ohne Issue-Verlauf ist kein Beleg.
 const boardGate = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'verify-board-usage.mjs')], {
   cwd: ROOT,

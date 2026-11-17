@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/docsystem-10k-watcher",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/docsystem-10k-watcher",
+  "baseSha": "84642271d50fe2e32dfe79db43e87c8239a0899c",
+  "issue": 1081,
+  "task": "10k-Dokulesepfad, PreToolUse-Gate und Shell-Watcher",
+  "goal": "Sieben Kerne unter 10k, Receipt, lokale Toolgates und Shell-Watcher ohne Actions oder Hook-Umgehung.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "README.md",
+    "package.json",
+    "docs/",
+    "scripts/",
+    "src/core/governance/",
+    ".claude/",
+    ".githooks/",
+    ".github/",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-docsystem-10k-watcher.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "84642271d50fe2e32dfe79db43e87c8239a0899c"
+}

@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+- **10k-Lesepfad und lokale Toolgates.** `rbd docs read` liest fünf Pflichtdokus plus Test-/Governance-Kern (7 Dokumente, ~2,5k Token) und schreibt ein Hash-Receipt. Der Claude-PreToolUse-Hook und die guarded Bash `rbd shell watch` blockieren Arbeit bis zum Receipt, verlustreiche Gate-Pipes und destructive Git-/Merge-Befehle; der lokale Watcher eskaliert Verstöße im Terminal. Kein Actions-Pfad, keine zusätzliche Pflichtdoku.
+
+- **Claim-Preflight vor dem Push.** `rbd claim preflight` meldet offene Claims und Rest-WIP; der Hook blockiert bei uncommitted WIP oder Claim ohne Issue. `docs/LAST-CHANGES.md` ist gemeinsame Ablage, `docs/INDEX.md`/`docs/WORKFLOW.md` sind governance-geschützt.
+- **RBD ist die primäre Oberfläche.** Die Pflichtdokus nennen `rbd <gruppe> <aktion>`; `pnpm run` bleibt Alias. Neu: `rbd docs audit`, `docs:audit` und ein Routen-Cross-Check im Doku-Gate. Zwei Startblocker sind an der Ursache behoben: `prepare` ohne gesetzten `core.hooksPath` und die Lint-Fehler im Skill-Treiber.
+- **Fünf Pflichtdokus mit Kern-Budget.** `AGENTS.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/ROADMAP.md` und `docs/LAST-CHANGES.md` sind der neue Doku-Kern. Jedes Dokument bleibt in seinem Kern unter 500 Token, der Gesamtüberblick unter 10.000; `verify:docs` prüft Budget, erreichbare Referenzen, Ordner-Owner und die Last-Changes-Kopplung. Die Detailtiefe des Workflows steht in `docs/WORKFLOW-DETAIL.md`; die Roadmap folgt zuletzt.
 - **Board-Check druckt relativen Pfad.** `board:sync --check` nennt `.lane-claims/board-state.json` statt eines absoluten Clone-Pfads; der Tagesbericht-Beleg ist damit ohne Pfad-Sonderfall diffbar.
 - **Snapshot-Prosa nennt keinen alten Kopf-SHA mehr.** Summary und Health beschreiben die Closeout-Relation `head == main^`, statt einen main-Stand zu behaupten, der nach dem naechsten Merge veraltet waere.
 - **P0-Merge-Gate-Tagesbericht belegt.** Der vollstaendige Lauf aus einem frischen Klon steht in `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md`; `docs/ROADMAP.md` fuehrt Required Checks, Merge-Queue und getrennten Maintainer-Login als benannte Owner-Entscheidungen.

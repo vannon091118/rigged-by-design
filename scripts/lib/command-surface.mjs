@@ -24,6 +24,7 @@ export const COMMANDS = Object.freeze([
   { group: 'board', verb: 'overview', run: ['scripts/board-overview.mjs'], source: ['board:overview'], purpose: 'Board-Uebersicht fuer den Maintainer' },
   { group: 'board', verb: 'verify', run: ['scripts/verify-board-usage.mjs'], source: ['verify:board'], purpose: 'Board-Gate: Claim, Kommentar, Nutzung' },
   { group: 'claim', verb: 'register', run: ['scripts/claim-register.mjs'], source: ['claim:register'], purpose: 'Lokale Sperre aus dem Issue-Claim spiegeln' },
+  { group: 'claim', verb: 'preflight', run: ['scripts/claim-preflight.mjs'], source: ['claim:preflight'], purpose: 'Offene Claims und Rest-WIP vor dem Push pruefen' },
   { group: 'claim', verb: 'hygiene', run: ['scripts/claim-hygiene.mjs', '--check'], source: ['claim:hygiene'], purpose: 'Offene Claims und belegte Abschluesse pruefen' },
   { group: 'claim', verb: 'reconcile', run: ['scripts/reconcile-claims.mjs'], source: ['reconcile:claims'], purpose: 'Register gegen den Remote-Zustand nachziehen' },
   { group: 'claim', verb: 'verify', run: ['scripts/verify-lane-claims.mjs'], source: ['verify:claims'], purpose: 'Claim- und Scope-Gate' },
@@ -56,12 +57,15 @@ export const COMMANDS = Object.freeze([
   { group: 'ci', verb: 'long', run: ['scripts/local-ci.mjs', '--profile=mechanics'], source: ['ci:long'], purpose: 'Lange Mechanik-Nachweise' },
   { group: 'verify', verb: 'long', run: ['scripts/local-ci.mjs', '--profile=mechanics'], source: ['verify:long'], purpose: 'Lange Mechanik-Nachweise ueber die Verify-Gruppe' },
   { group: 'test', verb: 'mechanics', run: ['scripts/local-ci.mjs', '--profile=mechanics'], source: ['test:mechanics'], purpose: 'Statistik, Soak, Langlauf, Benchmarks' },
+  { group: 'shell', verb: 'watch', run: ['scripts/agent-shell.mjs'], source: ['shell:watch'], purpose: 'Guarded Agenten-Shell mit lokalem Toolgate-Watcher' },
   { group: 'turn', verb: 'finish', run: ['scripts/turn-push.mjs'], source: ['turn:finish'], purpose: 'Phasenwechsel, Commit, Vertrag, Push' },
   { group: 'turn', verb: 'fast', run: ['scripts/turn-push.mjs', '--profile=fast'], source: ['turn:finish:fast'], purpose: 'Turn-Ende mit Fast-Profil' },
   { group: 'turn', verb: 'integration', run: ['scripts/turn-push.mjs', '--profile=integration'], source: ['turn:finish:integration'], purpose: 'Turn-Ende mit Integrationsprofil' },
   { group: 'turn', verb: 'full', run: ['scripts/turn-push.mjs', '--profile=full'], source: ['turn:finish:full'], purpose: 'Turn-Ende mit Vollprofil' },
   { group: 'docs', verb: 'sync', run: ['scripts/doc-sync.mjs'], source: ['docs:sync'], purpose: 'Fehlende Doku-Marker ergaenzen' },
   { group: 'docs', verb: 'stub', run: ['scripts/doc-stub.mjs'], source: ['docs:stub'], purpose: 'Doku-Stub anlegen' },
+  { group: 'docs', verb: 'read', run: ['scripts/doc-audit.mjs', '--read'], source: ['docs:read'], purpose: 'Pflichtlektuere (5 Kerne + 2 Einstiege) lesen und Receipt schreiben' },
+  { group: 'docs', verb: 'audit', run: ['scripts/doc-audit.mjs'], source: ['docs:audit'], purpose: 'Doku-Inventur und Budget-Nachweis' },
   { group: 'narrative', verb: 'check', run: ['scripts/verify-narrative-content.mjs'], source: ['narrative:check'], purpose: 'Narrative-Quellen gueltig' },
   { group: 'narrative', verb: 'blocks', run: ['scripts/verify-narrative-blocks.mjs'], source: ['narrative:blocks'], purpose: 'Mengenquoten der Narrative-Bloecke' },
   { group: 'narrative', verb: 'compile', run: ['scripts/compile-narrative-content.mjs', '--write'], source: ['narrative:compile'], purpose: 'Narrative-Quellen kompilieren' },
@@ -83,7 +87,7 @@ export const COMMANDS = Object.freeze([
   { group: 'sync', verb: 'generated', run: ['scripts/sync-generated.mjs'], source: [], purpose: 'Inventur, Marker, Registry und Roadmap neu erzeugen' }
 ]);
 
-export const GROUP_ORDER = Object.freeze(['agent', 'board', 'claim', 'verify', 'ci', 'test', 'turn', 'docs', 'narrative', 'hooks', 'webhook', 'task', 'gov', 'worker', 'run', 'escalation', 'pr', 'branches', 'inventory', 'sync', 'catalog']);
+export const GROUP_ORDER = Object.freeze(['agent', 'board', 'claim', 'verify', 'ci', 'test', 'shell', 'turn', 'docs', 'narrative', 'hooks', 'webhook', 'task', 'gov', 'worker', 'run', 'escalation', 'pr', 'branches', 'inventory', 'sync', 'catalog']);
 
 /** Alle Routen einer Gruppe, in Tabellenreihenfolge. */
 export function commandsOf(group) {

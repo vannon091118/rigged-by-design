@@ -2,68 +2,30 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die Landkarte. `AGENTS.md` ist der Kurzvertrag; die folgenden Dokumente tragen das Tiefenwissen. Keine Regel wird hier dupliziert, nur verlinkt.
+## Kern
+**Standard:** fünf Pflichtdokus mit `Kern` ≤500 Token; Tiefe auf Abruf, Überblick <10.000 Token.
+**Wahrheit:** Issue > Datei, Code > Prosa. **Start:** `pnpm rbd agent start --brief`.
 
-## Einstieg
-
-| Dokument | Wofür |
+## Pflichtdokus
+| Dokument | Inhalt |
 | --- | --- |
-| [`README.md`](../README.md) | Spiel, aktueller Stand, Setup und Entwicklerweg. |
-| [`AGENTS.md`](../AGENTS.md) | Erster Befehl, verbindlicher Agent-Workflow, zehn unverhandelbare Regeln, Zustand und Befehle. |
-| [`AGENT-ONBOARDING.md`](AGENT-ONBOARDING.md) | Verbindliche Agent-Schleife: Issue-Check, Claim per Issue-Kommentar, PR, Umsetzungs-Kommentar und Review-Antwort. |
-| [`MECHANICS.md`](MECHANICS.md) | Der eine Startbefehl (`agent:start`), Mechanik-Stand, Token-Vertrag und Ereignis-Hook. |
-| [`WORKFLOW.md`](WORKFLOW.md) | Pretask, Resume, Abschluss, PR und manueller Merge. |
-| [`TESTING.md`](TESTING.md) | Die eine Testlinie, Testmatrix 1–17 und Zusatzregressionen. |
+| [AGENTS.md](../AGENTS.md) | Vertrag, zehn Regeln, Pitfalls. |
+| [WORKFLOW.md](WORKFLOW.md) | Lauf, Abschluss, Übergabe. |
+| [INDEX.md](INDEX.md) | Karte, Budgets, Ordner. |
+| [ROADMAP.md](ROADMAP.md) | Major- und Minor-Ziele. |
+| [LAST-CHANGES.md](LAST-CHANGES.md) | Letzte Änderungen. |
+
+**Einstiege:** [TESTING](TESTING.md) · [GOVERNANCE](GOVERNANCE.md) — Kerne im 10k-Lesepfad.
 
 ## Referenzen
+- **Governance:** [GOVERNANCE](GOVERNANCE.md) · [AGENT-ONBOARDING](AGENT-ONBOARDING.md) · [PROMPTS](PROMPTS.md) · [FLAG](FLAG.md)
+- **Technik:** [ARCHITECTURE](ARCHITECTURE.md) · [MECHANICS](MECHANICS.md) · [CI](CI.md) · [TESTING](TESTING.md) · [DEPENDENCY-MATRIX](DEPENDENCY-MATRIX.md)
+- **Produkt/Historie:** [AUDIT](AUDIT.md) · [AUDIT-ARCHIVE](AUDIT-ARCHIVE-2026-11-16.md) · [LOC-REARCHITECTURE](LOC-REARCHITECTURE-2026-11-16.md) · [RENDER_REWORK_PLAN](RENDER_REWORK_PLAN.md) · [CHANGELOG](CHANGELOG.md) · [DEVTAGEBUCH](DEVTAGEBUCH.md) · [INVENTORY](INVENTORY.md)
+- **Belege:** [Merge-Gate](evidence/p0-merge-gate-tagesbericht-2026-11-16.md) · [Weight-Tuning](evidence/living-world-weight-tuning.md) · [Doku-System](evidence/docsystem-2026-11-17.md) · [WORKFLOW-DETAIL](WORKFLOW-DETAIL.md)
+- **Verträge:** [Index](contracts/README.md) sowie Einzelverträge.
 
-| Dokument | Wofür |
-| --- | --- |
-| [`CI.md`](CI.md) | 15 lokale Required-Gates, optionale Audit-Stufe, Zustände, drei Repository-Workflows und Branch-Schutz ohne Required-Status. |
-| [`GOVERNANCE.md`](GOVERNANCE.md) | Rollen, Lanes, Claims, Register-Audit und Eskalation. |
-| [`PROMPTS.md`](PROMPTS.md) | Prompt-Register: jeder Prompt mit Verhaltenswirkung, sein Pfad, Schweregrad und Board-Issue. |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Zustandsbesitz, Schichten, Pipeline, Save, Narrative und Fehlerregister. |
-| [`DEPENDENCY-MATRIX.md`](DEPENDENCY-MATRIX.md) | Generierte Live-Dependency-Matrix; liegt bewusst ausserhalb der gesperrten Architektur. |
-| [`ROADMAP.md`](ROADMAP.md) | Jetzt, als Nächstes, später; offene Punkte und PARKED. |
-| [`AUDIT.md`](AUDIT.md) | Produkt-Audit: 100 Fragen (UD-01…50, DU-01…50) mit Status, Evidenz, Gegenprobe und Issue-Zuordnung; Kontrollpunkt ist #937. |
-| [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Ausfuehrbare Task-Phasen R0–R12, Meilensteine M0–M4 und Preview-Sichtabnahme fuer sichtbare Slices. |
-
-## Pflichtdokumente
-
-Diese zwölf Dokumente tragen den `rbd-doc`-Marker und werden vom Pre-Commit-Hook bzw. `pnpm run docs:sync` aktualisiert:
-
-| Dokument | Inhalt |
-| --- | --- |
-| [`INVENTORY.md`](INVENTORY.md) | Was existiert, was gelesen wurde, Befunde; Abdeckung gegen `git ls-files`. |
-| [`CHANGELOG.md`](CHANGELOG.md) | Was sich je Version geändert hat. |
-| [`DEVTAGEBUCH.md`](DEVTAGEBUCH.md) | Warum, mit Prüfungen und offenen Enden. |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | System- und Zustandsarchitektur. |
-| [`ROADMAP.md`](ROADMAP.md) | Produktvertrag und Horizonte. |
-| [`WORKFLOW.md`](WORKFLOW.md) | Pretask, Resume, Abschluss und manueller Merge. |
-| [`TESTING.md`](TESTING.md) | Die eine Testlinie und die Testmatrix 1–17. |
-| [`CI.md`](CI.md) | 15 lokale Required-Gates, Zustände, drei Repository-Workflows und Branch-Schutz ohne Required-Status. |
-| [`GOVERNANCE.md`](GOVERNANCE.md) | Rollen, Claims, Register-Audit und Eskalation. |
-| [`INDEX.md`](INDEX.md) | Diese Landkarte. |
-| [`contracts/README.md`](contracts/README.md) | Index der sieben Kernverträge. |
-| [`AGENTS.md`](../AGENTS.md) | Kurzvertrag und Referenzen. |
-
-## Verträge
-
-| Dokument | Inhalt |
-| --- | --- |
-| [`contracts/README.md`](contracts/README.md) | Index der sieben Kernverträge mit Writern und Vertragstests. |
-| [`capabilities.json`](capabilities.json) | Capability-Inventar; aktive Fähigkeiten brauchen registrierte Tests. |
-| [`contracts/actionset.md`](contracts/actionset.md) | ActionSet, ActionProvider und Kategorien. |
-| [`contracts/actor-id.md`](contracts/actor-id.md) | Stabile Actor-IDs und Referenzregeln. |
-| [`contracts/domain-event.md`](contracts/domain-event.md) | Unveränderliche Event-Hülle und ID-Aufbau. |
-| [`contracts/factor.md`](contracts/factor.md) | Factor-IDs, Kontext und Contribution-Trace. |
-| [`contracts/relationship.md`](contracts/relationship.md) | Gerichtete Beziehungen und Retention. |
-| [`contracts/save.md`](contracts/save.md) | Save-Envelope, Versionierung und Migration. |
-| [`contracts/world-time.md`](contracts/world-time.md) | Weltzeit, Ticks und Tagesgrenzen. |
-
-## Pflege
-
-- Marker und Pflichtabschnitte prüft `pnpm run verify:docs`; die generierte Dateiliste in `INVENTORY.md` entsteht aus `git ls-files`.
-- Neue Referenzdokumente werden in diesem Index verlinkt und in `scripts/lib/doc-sync.mjs` registriert, sobald sie Pflichtabschnitte tragen.
-- Ein neuer Prompt mit Verhaltenswirkung bekommt eine Zeile in [`PROMPTS.md`](PROMPTS.md) mit Board-Issue; `verify:docs` prüft die Abdeckung.
-- Ein neuer Vertrag braucht einen Eintrag in [`contracts/README.md`](contracts/README.md), einen Writer und einen Vertragstest.
+## Ordner
+Owner: [CODEOWNERS](../.github/CODEOWNERS).
+**Spiel:** `src/core/` (ohne `governance`), `src/render/`, `src/ui/`, `src/store/`, `src/Config/`, `src/debug/`, `src/styles/`, `src/test/`, `content/`, `public/`.
+**Dev:** `scripts/`, `bin/`, `packages/`, `src/core/governance/` (Tests).
+**Governance:** `AGENTS.md`, `docs/`, `.github/`, `.claude/`, `.githooks/`, `.cron/`, `.lane-claims/`, `.lanes/`, `artifacts/`.

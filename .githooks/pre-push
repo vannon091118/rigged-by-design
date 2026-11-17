@@ -30,6 +30,15 @@ if [ -x scripts/integrate.mjs ] || [ -f scripts/integrate.mjs ]; then
   esac
 fi
 
+# Claim-/WIP-Preflight: offene Claims und Restarbeiten vor dem Push sichtbar
+# machen. Der Audit blockiert bei uncommitted WIP und Claim ohne Issue.
+if [ -f scripts/claim-preflight.mjs ]; then
+  if ! BRANCH="$branch" node scripts/claim-preflight.mjs; then
+    echo "pre-push: Claim-/WIP-Preflight rot - Push blockiert (ERR-4019)." >&2
+    exit 1
+  fi
+fi
+
 # Claim-Gate: derselbe Pruefer wie der Commit, aber gegen den Branch-Diff.
 # Cloud-Agenten ohne Hooks umgehen den Commit; hier sehen sie ihn trotzdem.
 if [ -f scripts/verify-lane-claims.mjs ]; then

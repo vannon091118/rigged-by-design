@@ -37,18 +37,24 @@ export const normalizeText = (text) => String(text ?? '')
  *
  * Ein Commit, der ausschliesslich diese Pfade anfasst, aendert weder Spielcode
  * noch Content und braucht deshalb keinen neuen Textbaustein. Die Liste ist
- * bewusst eng und wird als Praefix geprueft: `content/`, `src/`, `public/`,
- * `index.html` und `package.json` sind nie Pflege. Es gilt alles-oder-nichts,
+ * bewusst eng und wird als Praefix geprueft: `content/`, `src/` (ausser der
+ * Governance-Testbruecke) und `public/` sind nie Pflege. `package.json` und
+ * `.claude/` sind Kontrollebene: Skripte, Hooks und Agentenregeln erzeugen
+ * keinen Spieltext. Tests unter `src/.../__tests__/` pruefen Verhalten, sie
+ * liefern keinen Text; sie bleiben ebenfalls Pflege. Es gilt alles-oder-nichts,
  * ein einziger Pfad ausserhalb der Liste hebt die Ausnahme auf.
  */
 export const MAINTENANCE_PATHS = Object.freeze([
   'docs/',
   'AGENTS.md',
   'README.md',
+  '.claude/',
   '.lane-claims/',
   '.github/',
   '.githooks/',
   'scripts/',
+  'src/core/governance/',
+  'package.json',
   '.nvmrc',
   '.npmrc',
   '.gitignore',
@@ -57,10 +63,12 @@ export const MAINTENANCE_PATHS = Object.freeze([
 ]);
 
 /** True, wenn die Pfadliste nicht leer ist und jede Datei Pflege ist. */
+const TEST_PATH = /^src\/.+\/__tests__\//;
+
 export function isMaintenanceOnly(paths) {
   const files = [...new Set(paths ?? [])].filter(Boolean);
   if (files.length === 0) return false;
-  return files.every((file) => MAINTENANCE_PATHS.some((entry) =>
+  return files.every((file) => TEST_PATH.test(file) || MAINTENANCE_PATHS.some((entry) =>
     (entry.endsWith('/') ? file.startsWith(entry) : file === entry)));
 }
 

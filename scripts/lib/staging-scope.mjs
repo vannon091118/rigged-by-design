@@ -7,7 +7,7 @@
  * welche geaenderten Pfade der Claim fuehrt. Eine zweite Allowlist-Auslegung
  * waere eine zweite Wahrheit.
  */
-import { allowsPath, isTaskContractPath, MECHANICAL_FILES } from './lane-claims.mjs';
+import { allowsPath, isTaskContractPath, MECHANICAL_FILES, SHARED_DOC_FILES } from './lane-claims.mjs';
 import { classifyWip, summarizeTakeover } from './takeover.mjs';
 
 /**
@@ -46,6 +46,11 @@ export function scopeChanges({
   for (const raw of changed) {
     const file = normalize(raw);
     if (!file || exempt.includes(file)) continue;
+    // Gemeinsame Doku-Ablage: kein Allowlist-Eintrag, aber sehr wohl Commit-Inhalt.
+    if (SHARED_DOC_FILES.includes(file)) {
+      allowed.push(file);
+      continue;
+    }
     // Der Task-Vertrag ist Lane-Werkzeug; er braucht keinen Allowlist-Eintrag.
     if (isTaskContractPath(file) || allowsPath(allowlist, file)) allowed.push(file);
     else foreign.push(file);
@@ -68,7 +73,15 @@ export function explicitScope({ paths, allowlist, exempt = TURN_EXEMPT }) {
     const unsafe = file.startsWith('/')
       || /^[a-zA-Z]:\//.test(file)
       || file.split('/').includes('..');
-    if (unsafe || (!isTaskContractPath(file) && !allowsPath(allowlist, file))) foreign.push(file);
+    if (unsafe) {
+      foreign.push(file);
+      continue;
+    }
+    if (SHARED_DOC_FILES.includes(file)) {
+      allowed.push(file);
+      continue;
+    }
+    if (!isTaskContractPath(file) && !allowsPath(allowlist, file)) foreign.push(file);
     else allowed.push(file);
   }
   return { allowed: [...new Set(allowed)], foreign: [...new Set(foreign)], ok: foreign.length === 0 };
