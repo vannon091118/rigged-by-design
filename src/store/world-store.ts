@@ -71,7 +71,7 @@ class WorldStore {
   readonly queue = new QueueCommands({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   readonly scene = new SceneCommands({ world: () => this.#world, emit: () => this.#emit(), notice: (text) => { this.#notice = text; }, prng: () => this.#prng, ledger: () => this.#ledger });
   constructor() {
-    const hadOld = clearOldSave();
+    clearOldSave();
     const loaded = loadWorld();
     if (loaded) {
       this.#world = loaded.world;
@@ -79,8 +79,10 @@ class WorldStore {
       this.#prng = new Prng(loaded.prngState);
       this.#notice = 'Spielstand geladen.';
     } else {
-      this.#startNew('SMALL');
-      if (hadOld) this.#notice = 'Alter Spielstand verworfen. Neues Spiel in der Stadt.';
+      // Kein automatischer Start: Ladefehler erhalten, UI/Player entscheiden.
+      // Der ursprüngliche Stand blieb bei loadWorld() unverändert erhalten;
+      // lastLoadError liefert die Ursache für den Recovery-Dialog.
+      this.#notice = 'Kein gespeicherter Stand gefunden oder Ladefehler. Bitte Recovery starten.';
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
   }

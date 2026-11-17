@@ -1,0 +1,21 @@
+{
+  "id": "lane/sim/issue-976-save-recovery",
+  "owner": "Governance-Owner",
+  "branch": "lane/sim/issue-976-save-recovery",
+  "baseSha": "0f8cd59a1ea482534f63aa48b0e8405946ab2a9f",
+  "issue": 976,
+  "task": "save-recovery",
+  "pathAllowlist": [
+    "src/store/save.ts",
+    "src/store/world-store.ts",
+    "src/store/save-recovery.ts",
+    "src/store/__tests__/save-recovery.test.ts",
+    ".lane-claims/tasks/lane-sim-issue-976-save-recovery.json",
+    ".lane-claims/claims/lane-sim-issue-976-save-recovery.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0f8cd59a1ea482534f63aa48b0e8405946ab2a9f"
+}
