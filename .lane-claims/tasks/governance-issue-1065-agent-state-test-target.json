@@ -3,14 +3,20 @@
   "taskId": "governance-issue-1065-agent-state-test-target",
   "claimId": "lane/governance/issue-1065-agent-state-test-target",
   "branch": "lane/governance/issue-1065-agent-state-test-target",
-  "baseSha": "acc30591e2717538df47382e044aba8311a6fe2c",
-  "phase": "IMPLEMENTING",
+  "baseSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80",
+  "phase": "DONE",
   "title": "agent-state-sections-Test an sein deklariertes Ziel binden",
   "goal": "Der Test importiert diagnoseLog aus scripts/agent-cause.mjs und prueft damit die Log-Zeile des Shims; verify-test-quality meldet wieder 6 Befunde wie am Basis-Commit d55824b4.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1066,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1066",
+    "state": "merged",
+    "headSha": "0d51eb73fe1d076d08b6e167584f904635e3c917",
+    "mergedSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80"
+  },
   "findings": [
     {
       "id": "F-1",
@@ -19,6 +25,6 @@
       "summary": "Die uebrigen 6 Test-Quality- und 9 Dead-Code-Befunde sind vorbestehende Drift und nicht Teil dieses Fixes."
     }
   ],
-  "nextAction": "Commit mit Hooks, PR gegen main, danach Claim auf merged nachziehen.",
+  "nextAction": "Gemergt und abgeschlossen.",
   "revision": 1
 }
