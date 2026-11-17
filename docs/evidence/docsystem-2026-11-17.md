@@ -127,4 +127,7 @@ bash -n scripts/shell/guard.sh              # Shell-Syntax
 - Pre-Push-Hook: Claim-/Board-Gate grün (`OPEN · claimed-self`, Claim A1); Push über den authentifizierten Connector, keine GitHub Actions.
 - `main` enthält den Feature-Commit und den Merge; die Doku-/Baum-/Claim-Gates laufen auf diesem Stand erneut.
 - Einzige Vorbelastung: der ungenutzte Rückgabewert im bestehenden Store-Test; die separate Fix-Lane Issue #1084 stellt `rbd verify light` wieder auf 13/13.
+- Fix-Commit: `ac6ff28d`; PR: **#1086**; Merge-Status: **gemergt** als `13a9644c`; fokussierter Store-Test 5/5.
+- Closeout: `merged-index` nach den Merges regeneriert; `rbd verify light` auf `main` wieder **13/13**.
+
 

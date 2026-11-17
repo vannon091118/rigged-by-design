@@ -4,7 +4,7 @@
   "claimId": "lane/governance/docsystem-10k-watcher",
   "branch": "lane/governance/docsystem-10k-watcher",
   "baseSha": "84642271d50fe2e32dfe79db43e87c8239a0899c",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "10k-Lesepfad, PreToolUse-Gate und Shell-Watcher",
   "goal": "Sieben Kerne unter 10k, Receipt, lokale Toolgates und Shell-Watcher ohne Actions oder Hook-Umgehung.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Hook-Commit, Push, PR gegen main, Merge und Nachweis auf main.",
-  "revision": 1
+  "nextAction": "Abgeschlossen: PR #1083, Merge 6f78b4c1; Nachweis auf main erbracht.",
+  "revision": 2
 }

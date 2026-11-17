@@ -984,7 +984,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/merged-index.json` — { — gelesen: 276 Zeilen
+- `.lane-claims/merged-index.json` — { — gelesen: 282 Zeilen
 - `.lane-claims/tasks/fix-main-lint-command-atomicity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
@@ -2345,7 +2345,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/save.md` — Contract: save v1.0 — gelesen: 58 Zeilen
 - `docs/contracts/world-time.md` — Contract: world-time v1.0 — gelesen: 56 Zeilen
-- `docs/evidence/docsystem-2026-11-17.md` — Doku-System — Inventur, Umbau und Nachweis — gelesen: 130 Zeilen
+- `docs/evidence/docsystem-2026-11-17.md` — Doku-System — Inventur, Umbau und Nachweis — gelesen: 133 Zeilen
 - `docs/evidence/github-branch-protection-main-2026-11-16.json` — { — gelesen: 24 Zeilen
 - `docs/evidence/github-hooks-pipelie-run-2026-11-16.json` — [ — gelesen: 29 Zeilen
 - `docs/evidence/living-world-longturn-424242-4d.json` — { — gelesen: 3381 Zeilen
