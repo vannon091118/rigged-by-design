@@ -14,23 +14,23 @@
   "findings": [
     {
       "id": "pickweighted-no-cycle",
-      "status": "open",
+      "status": "resolved",
       "severity": "info",
-      "summary": "pickWeighted() sucht nur vom Startindex bis Array-Ende, nicht zyklisch (weighted.ts:105-126)"
+      "summary": "pickWeighted() sucht jetzt zyklisch: (start + offset) % entries.length"
     },
     {
       "id": "no-additional-prng",
-      "status": "open",
+      "status": "resolved",
       "severity": "info",
-      "summary": "Fallback darf keinen zusätzlichen PRNG-Wert verbrauchen (AC)"
+      "summary": "Kein zusätzlicher PRNG-Verbrauch; ein nextFloat() wie vorher"
     },
     {
       "id": "consumers-traits-guestchoice",
-      "status": "open",
+      "status": "resolved",
       "severity": "info",
       "summary": "Consumer: randomPersona() in traits.ts:31 und tryGame() in guest-choice.ts:84"
     }
   ],
-  "nextAction": "Claim [A1] LIILITH <UTC> scope=<Dateien> plan=<ein Satz>; dann Pretask, Arbeit, PR, RELEASE",
-  "revision": 1
+  "nextAction": "PR gegen main erstellen",
+  "revision": 2
 }
