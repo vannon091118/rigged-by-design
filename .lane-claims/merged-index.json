@@ -217,6 +217,48 @@
       "number": 1037,
       "headSha": "d69de7553fefb83c401aa22a26502d24cae38705",
       "mergeSha": "8ecc26719b8f4d130c4cbb535747d63c7918faa3"
+    },
+    {
+      "branch": "lane/sim/issue-973-life-sim-day",
+      "number": 1038,
+      "headSha": "25bb21f664dd9088cbf183028d7fb43a51f3de5f",
+      "mergeSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8"
+    },
+    {
+      "branch": "lane/integrity/issue-975-command-atomicity",
+      "number": 1067,
+      "headSha": "39d6355a10cc7eec956401d88fecce5b0fa06b3d",
+      "mergeSha": "e1d09fff6d2701b85423569cfa3974060bbb1328"
+    },
+    {
+      "branch": "lane/store/issue-988-save-cadence",
+      "number": 1068,
+      "headSha": "c7558b7fda7d76407378851a5b142469d7b18fe3",
+      "mergeSha": "7cb2748bf98f443cebfc6f9689d9aae319551f00"
+    },
+    {
+      "branch": "lane/governance/issue-1065-agent-state-test-target",
+      "number": 1069,
+      "headSha": "201d73e6383659ac664dabb3a060779224973aa8",
+      "mergeSha": "dc3204c285ee7550476617e3b1bc96958d90bdde"
+    },
+    {
+      "branch": "lane/governance/merged-index-sync-20261117",
+      "number": 1070,
+      "headSha": "b70b85088d12e942b8280a331d6ec859ad8321ee",
+      "mergeSha": "41fa90b2816ca2915ab8eab085fd5aa1c9fb79da"
+    },
+    {
+      "branch": "lane/governance/claim-reconcile-2026-11-17",
+      "number": 1072,
+      "headSha": "f15222a826cfd7defe8f55e6f9a38bce423c3070",
+      "mergeSha": "26a8846785457b87ad8384a33eedb1f7b77f4ef2"
+    },
+    {
+      "branch": "lane/governance/state-sync-20261117",
+      "number": 1073,
+      "headSha": "2cc10a65a4fb418caecfb14d1b8513a6b176ccc6",
+      "mergeSha": "3d4014b097d332f740ab16a40d64703851510a06"
     }
   ]
 }

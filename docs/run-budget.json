@@ -3,7 +3,7 @@
   "killSwitch": false,
   "maxIterations": 3,
   "maxIssues": 3,
-  "maxCommits": 6,
+  "maxCommits": 10,
   "maxNewGovernanceIssues": 3,
   "productProgress": {
     "mergedProductPrs": 0,
