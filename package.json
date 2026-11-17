@@ -45,7 +45,7 @@
     "docs:stub": "node scripts/doc-stub.mjs",
     "inventory:build": "node scripts/build-inventory.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",
-    "prepare": "pnpm run hooks:install",
+    "prepare": "node -e \"const fs=require('fs');const cp=require('child_process');const hookPath=cp.execSync('git config core.hooksPath',{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();if(!hookPath||!fs.existsSync('.githooks/pre-commit')){cp.execSync('pnpm run hooks:install',{stdio:'inherit'});}else{console.log('prepare: hooks already installed, skipping');}\"",
     "gov:precommit": "node scripts/precommit.mjs",
     "verify:test-placement": "node scripts/verify-test-placement.mjs",
     "ci:local": "node scripts/local-ci.mjs",
