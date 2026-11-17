@@ -756,23 +756,24 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3363 |
-| Gelistete Dateien | 3363 |
-| Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (135), .lanes (1), artifacts (1), bin (1), content (1240), docs (90), packages (27), public (571), scripts (160), src (1116) |
+| Getrackte Dateien | 3366 |
+| Gelistete Dateien | 3366 |
+| Getrackte Ordner | 118 |
+| Bereiche | .claude (1), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (137), .lanes (1), artifacts (1), bin (1), content (1240), docs (90), packages (27), public (571), scripts (160), src (1116) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
 - `./` — 10 Datei(en)
+- `.claude/skills/run-rigged-by-design/` — 1 Datei(en)
 - `.cron/` — 2 Datei(en)
 - `.githooks/` — 4 Datei(en)
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 66 Datei(en)
-- `.lane-claims/tasks/` — 65 Datei(en)
+- `.lane-claims/claims/` — 67 Datei(en)
+- `.lane-claims/tasks/` — 66 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -885,6 +886,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 ### 18.3 Dateien
 
+- `.claude/skills/run-rigged-by-design/driver.mjs` — Treiber für run-rigged-by-design Skill. — gelesen: 104 Zeilen
 - `.cron/SECURITY.md` — Sicherheit: GITHUB_TOKEN für Maintainer-Cronjob — gelesen: 22 Zeilen
 - `.cron/maintainer-prompt.md` — Maintainer-Cron-Prompt (Version 2.0) — gelesen: 39 Zeilen
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 20 Zeilen
@@ -960,6 +962,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
@@ -967,7 +970,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/merged-index.json` — { — gelesen: 258 Zeilen
+- `.lane-claims/merged-index.json` — { — gelesen: 264 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
@@ -1004,6 +1007,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/integrity-issue-1036-store-guard-proof.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 19 Zeilen
