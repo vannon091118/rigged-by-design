@@ -1,14 +1,9 @@
 {
-  "version": 1,
-  "taskId": "lane-sim-issue-973-life-sim-day",
   "id": "lane/sim/issue-973-life-sim-day",
+  "owner": "Sim-/Domain-Owner",
   "branch": "lane/sim/issue-973-life-sim-day",
   "baseSha": "563292f4531aff503ddbf197a52f3b96b2e5acc9",
-  "owner": "Sim-/Domain-Owner",
   "issue": 973,
-  "phase": "IMPLEMENTING",
-  "status": "open",
-  "gateProfile": "light",
   "task": "Issue #973: Vollständigen Lebenssimulations-Tag über bestehende Systeme spielbar verbinden",
   "goal": "Einen deterministischen End-to-End-Test erstellen, der einen Spieler durch einen vollständigen Tag führt (Wohnung → Stadt/Begegnung → Arbeit → Bedürfnisse/Konsum → eigener Betrieb → Tageswechsel → Folgetag → Save/Load-Wiederaufnahme), unter Nutzung bestehender Store-/Command-/Sim-Systeme ohne neues Meta-Framework.",
   "pathAllowlist": [
@@ -20,11 +15,11 @@
     ".lane-claims/claims/lane-sim-issue-973-life-sim-day.json",
     ".lane-claims/tasks/lane-sim-issue-973-life-sim-day.json"
   ],
-  "title": "Issue #973: Vollständigen Lebenssimulations-Tag über bestehende Systeme spielbar verbinden",
-  "taskType": "single",
-  "holdMerge": false,
-  "pr": null,
-  "findings": ["payDailyWage laeuft automatisch via staffTick am Tageswechsel (kein manueller Aufruf); world.day erhoeht sich erst im Tick (staffTick tickInDay==0), nicht durch advanceToNextDay allein; BARTENDER-Lohn 5 VC reicht nicht fuer GEWERBERAUM (60 VC) -> playerTakeHome vor dem Kauf; eatAtHome braucht Spielerposition am Kochnische-Tile (<=3 Manhattan-Abstand)"],
-  "nextAction": "Commit (nur allowlistierte Dateien: src/store/__tests__/life-sim-day.test.ts + beide .lane-claims-Dateien); Push auf lane/sim/issue-973-life-sim-day; PR gegen main oeffnen; RELEASE [A58] done <sha> am Issue #973; reconcile:claims --apply auf main. Offen: Narrative-Baustein liegt ausserhalb der Claim-Allowlist (content/narrative/) und wird vom Maintainer nachgereicht (Regel 6).",
-  "revision": 2
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "merged-pr",
+  "mergedSha": "d55824b4b2cdbcc12f23724dad93f5a1093e5dc8",
+  "createdAt": "563292f4531aff503ddbf197a52f3b96b2e5acc9"
 }
