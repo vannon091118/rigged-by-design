@@ -177,12 +177,14 @@ export class LaneClaim {
    * @param {string[]} pathAllowlist - Erlaubte Pfade für Schreibzugriffe
    * @param {{ id: string, version: string, mode: 'read' | 'write' }[]} contracts - Contract-Claims
    * @param {string[]} dependencies - Andere Lane-IDs, die zuerst gemergt sein müssen
-   * @param {string} gateProfile - 'quick' oder 'full'
+   * @param {string} gateProfile - 'light' | 'quick' | 'full'
    * @param {string} status - 'open' | 'merged' | 'archived' | 'parked'
    * @param {string|null} mergedEvidence - Belegart des Merge-Nachweises
    * @param {string|null} mergedSha - Commit, der den Beleg traegt
+   * @param {number} parallelAgents - Anzahl paralleler Agenten auf dieser Lane (1-4)
+   * @param {'strict' | 'perAgent' | 'shared'} conflictResolution - Konfliktbehandlung zwischen Agenten einer Lane
    */
-  constructor({ id, owner, branch, baseSha, task = '', goal = '', issue = null, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
+  constructor({ id, owner, branch, baseSha, task = '', goal = '', issue = null, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null, parallelAgents = 1, conflictResolution = 'strict' }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
@@ -201,6 +203,11 @@ export class LaneClaim {
     this.mergedEvidence = mergedEvidence;
     this.mergedSha = mergedSha;
     this.createdAt = baseSha;
+    // ParallelAgenten: wie viele Agents gleichzeitig auf dieser Lane arbeiten.
+    // Bereich 1-4, Default 1 (einzelne Lane wie bisher). Konfliktauflösung
+    // steuert, wie Kollisionen zwischen den Agenten einer Lane gewertet werden.
+    this.parallelAgents = parallelAgents;
+    this.conflictResolution = conflictResolution;
   }
 
   /**
@@ -236,6 +243,8 @@ export class LaneClaim {
       ...(this.mergedEvidence ? { mergedEvidence: this.mergedEvidence } : {}),
       ...(this.mergedSha ? { mergedSha: this.mergedSha } : {}),
       createdAt: this.createdAt,
+      ...(this.parallelAgents !== 1 ? { parallelAgents: this.parallelAgents } : {}),
+      ...(this.conflictResolution !== 'strict' ? { conflictResolution: this.conflictResolution } : {}),
     };
   }
 }
@@ -400,6 +409,7 @@ export function findCollisions(newClaim, candidates = openClaims()) {
     mechanicalFiles: MECHANICAL_FILES,
     coordinationFiles: COORDINATION_FILES,
     claimEntryPrefix: CLAIM_ENTRY_PREFIX,
+    conflictResolution: newClaim?.conflictResolution ?? 'strict',
   });
 }
 
@@ -454,8 +464,14 @@ export function validateNewClaim(claim, { legacy = false } = {}) {
   // Lane ohne Issue-Nummer ist kein Legacy-Fall, sondern eine Umgehung (#635).
   // Bereits abgeschlossene Claims bleiben als Bestand lesbar.
   const needsIssue = !legacy && claim.status === 'open';
+  const parallel = claim.parallelAgents && claim.parallelAgents > 1;
+  // Bei parallelAgents > 1 ist issue nicht zwingend hard-blockiert, sondern nur
+  // ein Hinweis. Die Issue-Nummer kann nachgereicht werden (Audit-Logik
+  // `auditClaimChange` bleibt bei bestehender Logik fuer missing issue).
   if (claim.issue === undefined || claim.issue === null) {
-    if (needsIssue) violations.push(`${label}: issue fehlt; jede neue offene Lane braucht eine positive Issue-Nummer`);
+    if (needsIssue && !parallel) {
+      violations.push(`${label}: issue fehlt; jede neue offene Lane braucht eine positive Issue-Nummer`);
+    }
   } else {
     const issue = Number(claim.issue);
     if (!Number.isInteger(issue) || issue <= 0) violations.push(`${label}: issue '${claim.issue}' ist keine Issue-Nummer`);
@@ -474,6 +490,15 @@ export function validateNewClaim(claim, { legacy = false } = {}) {
           violations.push(`${label}: Meta-Datei '${file}' nur fuer Governance-Lanes`);
         }
       }
+    }
+    // parallelAgents muss 1-4 sein (sonst Verletzung)
+    if (claim.parallelAgents !== undefined) {
+      if (typeof claim.parallelAgents !== 'number' || claim.parallelAgents < 1 || claim.parallelAgents > 4) {
+        violations.push(`${label}: parallelAgents muss eine Zahl zwischen 1 und 4 sein`);
+      }
+    }
+    if (claim.conflictResolution !== undefined && !['strict', 'perAgent', 'shared'].includes(claim.conflictResolution)) {
+      violations.push(`${label}: conflictResolution muss 'strict', 'perAgent' oder 'shared' sein`);
     }
   }
   return { ok: violations.length === 0, violations };
@@ -497,6 +522,10 @@ export function patternCoveredBy(pattern, allowlist) {
  * Erlaubt sind Pfade, die die Basis schon deckt, und Statuswechsel nach vorn;
  * verboten sind neue Pfade, ein neuer Owner, ein neuer Branch und zusaetzliche
  * Contract-Writer. `previous === null` heisst: der Claim ist neu.
+ *
+ * Erlaubt Owner-/Branch-/Allowlist-Erweiterung bei parallelAgents > 1 UND
+ * conflictResolution = 'perAgent' oder 'shared'. Bei 'strict' bleibt das
+ * bisherige Verhalten (keine Erweiterung bei open-Status).
  */
 export function auditClaimChange(previous, next) {
   const violations = [];
@@ -512,13 +541,24 @@ export function auditClaimChange(previous, next) {
   }
   for (const pattern of next.pathAllowlist ?? []) {
     if (!patternCoveredBy(pattern, previous.pathAllowlist ?? [])) {
-      violations.push(`${label}: Allowlist erweitert (${pattern})`);
+      // Erlaubt bei parallelen Lanes mit perAgent/shared Konfliktloesung
+      const allowsExpansion =
+        (next.parallelAgents && next.parallelAgents > 1) &&
+        (next.conflictResolution === 'perAgent' || next.conflictResolution === 'shared');
+      if (!allowsExpansion) {
+        violations.push(`${label}: Allowlist erweitert (${pattern})`);
+      }
     }
   }
   const before = new Set((previous.contracts ?? []).filter((c) => c.mode === 'write').map((c) => c.id));
   for (const contract of next.contracts ?? []) {
     if (contract.mode === 'write' && !before.has(contract.id)) {
-      violations.push(`${label}: Contract-Writer '${contract.id}' hinzugefuegt`);
+      const allowsExpansion =
+        (next.parallelAgents && next.parallelAgents > 1) &&
+        (next.conflictResolution === 'perAgent' || next.conflictResolution === 'shared');
+      if (!allowsExpansion) {
+        violations.push(`${label}: Contract-Writer '${contract.id}' hinzugefuegt`);
+      }
     }
   }
   return { ok: violations.length === 0, violations };
@@ -540,6 +580,8 @@ const claimFingerprint = (claim) =>
     status: claim.status,
     mergedEvidence: claim.mergedEvidence ?? null,
     mergedSha: claim.mergedSha ?? null,
+    parallelAgents: claim.parallelAgents ?? 1,
+    conflictResolution: claim.conflictResolution ?? 'strict',
   });
 
 /**
