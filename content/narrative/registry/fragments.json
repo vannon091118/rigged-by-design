@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0eb31a2c3f8f51dd06404be5d9ac4c7ae1641c1a9c3194a34d8f6b4d8d8138cd",
+  "contentHash": "sha256:6d97075e259f854f7f70c8a8d8f3519295326633e213eaed4a77ac0fb7ca471a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -196,6 +196,28 @@
       "text": "Zwei Wege schreiben in dasselbe Buch, und niemand hatte geprueft, ob das Gelesene noch das Geschriebene ist: der eine notiert, welches Gate rot war, der andere, welche langen Pruefungen noch offen sind. Jetzt steht ein Zeuge daneben, der den Eintrag erst schreiben laesst und ihn danach ohne die alte Quelle wieder aufschlaegt. Bleibt der Eintrag aus, faellt der Zeuge durch - nicht die Buchfuehrung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-17-agent-state-sections.json"
+    },
+    {
+      "contributionId": "agent-state-test-target-01",
+      "turnId": "2026-11-17T00:41Z-agent-state-test-target",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Test hatte sich ein Ziel auf die Stirn geschrieben, das er nie beruehrte: Er startete den Befehl als Fremdkoerper und pruefte nur, was zurueckkam. Jetzt liest er denselben Parser, den auch der Befehl benutzt, und vergleicht die Zeile, die aus dem Protokoll faellt, mit dem, was der Lauf meldet. Der Marker ist damit keine Behauptung mehr, sondern eine Kante mit zwei Enden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-agent-state-test-target.json"
     },
     {
       "contributionId": "agent14-changelog-1",
