@@ -24,7 +24,8 @@
     "content/narrative/contributions/2026-11-17-full-gate-proof.json",
     "content/narrative/registry/fragments.json",
     "content/narrative/turns/manifest.json",
-    "src/core/sim/narrative/composer/registry.generated.ts"
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/city-identity.ts"
   ],
   "contracts": [],
   "dependencies": [],
