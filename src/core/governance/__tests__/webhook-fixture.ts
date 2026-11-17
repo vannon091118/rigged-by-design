@@ -49,15 +49,3 @@ export const PR_DELIVERY = {
     "login": "vannon091118"
   }
 } as const;
-
-/** Offene PRs zum Zeitpunkt der Aufzeichnung. */
-export const OPEN_PULLS = [
-  {
-    "number": 952,
-    "headRefOid": "8832094070376fa0c4d3bace8d5c7ed6f8069b56",
-    "state": "open"
-  }
-] as const;
-
-/** Die Event-Namen, die zu den Payloads gehoeren. */
-export const EVENTS = { plan: 'issue_comment', pullRequest: 'pull_request' } as const;

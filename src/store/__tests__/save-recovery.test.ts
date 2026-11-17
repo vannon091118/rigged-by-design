@@ -7,11 +7,32 @@
  * Storage). Original-Save bleibt bei Fehlern unverändert. Roh-Save exportierbar,
  * Quarantäne möglich, getLastLoadError liefert Ursache.
  */
-import { describe, expect, it, vi } from 'vitest';
-import { saveWorld, loadWorld, replaySave, getLastLoadError, getRawSave, quarantineSave, hasQuarantinedSave, SAVE_VERSION, toSavedGame } from '../save';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { saveWorld, loadWorld, replaySave, getLastLoadError, getRawSave, quarantineSave, hasQuarantinedSave, SAVE_VERSION, toSavedGame, type LoadError } from '../save';
 import { Ledger } from '../../core/economy/ledger';
 import { fromVC } from '../../core/economy/vacoin';
 import { createWorld } from '../../core/sim/templates';
+
+/** Node hat kein DOM-Storage; der Save-Pfad braucht einen echten Prototyp fuer die Spies. */
+class MemoryStorage {
+  private values = new Map<string, string>();
+  getItem(key: string): string | null { return this.values.get(key) ?? null; }
+  setItem(key: string, value: string): void { this.values.set(key, String(value)); }
+  removeItem(key: string): void { this.values.delete(key); }
+  clear(): void { this.values.clear(); }
+  key(index: number): string | null { return [...this.values.keys()][index] ?? null; }
+  get length(): number { return this.values.size; }
+}
+
+beforeEach(() => {
+  vi.stubGlobal('Storage', MemoryStorage);
+  vi.stubGlobal('localStorage', new MemoryStorage());
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+});
 
 function fixtureWorld() {
   const world = createWorld('SMALL');
@@ -24,7 +45,7 @@ describe('Loadfehler in unterscheidbare Ursachen aufteilen', () => {
   it('beschädigtes JSON liefert parse-Fehler und gibt null zurück', () => {
     const loaded = replaySave('{ nicht geschlossen');
     expect(loaded).toBeNull();
-    const err = getLastLoadError();
+    const err: LoadError | null = getLastLoadError();
     expect(err?.type).toBe('parse');
   });
 

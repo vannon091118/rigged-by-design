@@ -1,5 +1,6 @@
 /**
  * @test-target: scripts/lib/compact.mjs
+ * @test-target-mode: process
  * @error-code: ERR-4019
  *
  * Log-Vertrag: Dateien entstehen nur mit `--log` UND nur fuer fehlerhafte
@@ -92,7 +93,7 @@ describe('Logs nur bei Fehlschlag und nur mit --log', () => {
 
   it('gate-runner schreibt nur rote Gates und traegt den Schritt-Code', () => {
     const source = readFileSync(join(ROOT, 'scripts/lib/gate-runner.mjs'), 'utf8');
-    expect(source).toContain("if (!LOGS || status === 'PASS') return null;");
+    expect(source).toContain("if (!logsEnabled() || status === 'PASS') return null;");
     expect(source).toContain('[${step.code}] ${step.name}');
   });
 });

@@ -7,10 +7,11 @@ import { ensureCityLife, ensureCityPopulationForScene } from '../core/sim/city-l
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
+import { toSavedGame } from './save-format';
 import { SAVE_VERSIONS } from '../core/io/repair';
 import { getRawSave as getRawSaveFromRecovery, quarantineSave as quarantineSaveFromRecovery, hasQuarantinedSave as hasQuarantinedSaveFromRecovery } from './save-recovery';
 
-export const SAVE_VERSION = 11;
+export { SAVE_VERSION, toSavedGame } from './save-format';
 const KEY = 'vcoin.casino.v11';
 const LEGACY_KEYS = ['vcoin.casino.v10', 'vcoin.casino.v9', 'vcoin.casino.v8', 'vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
 const OLD_KEYS = ['vcoin.casino.v3', 'vcoin.casino.v4']; // v3/v4 werden verworfen
@@ -65,8 +66,15 @@ export function hasQuarantinedSave(suffix = 'recovery'): boolean {
 
 /** Lädt einen gespeicherten Stand; kehrt null, wenn kein Speicher oder Fehler. */
 export function loadWorld(): LoadedSave | null {
-  let raw = localStorage.getItem(KEY);
-  for (const key of LEGACY_KEYS) raw = raw ?? localStorage.getItem(key);
+  let raw: string | null;
+  try {
+    // Headless- und SSR-Laeufe haben keinen Storage; das ist kein Ladefehler.
+    if (typeof localStorage === 'undefined') return null;
+    raw = localStorage.getItem(KEY);
+    for (const key of LEGACY_KEYS) raw = raw ?? localStorage.getItem(key);
+  } catch {
+    return null;
+  }
   if (!raw) return null;
   let parsed: unknown;
   try {
@@ -95,7 +103,18 @@ export function saveWorld(world: WorldState, ledger: Ledger, prngState: number):
 /** Bau Welt und Ledger aus einem gespeicherten Stand; v5/v6 werden dabei gehoben. */
 export function replaySave(raw: unknown): LoadedSave | null {
   try {
-    const saved = raw as Partial<SavedGame> | null;
+    // Der Export ist auch als roher JSON-String nutzbar; ein kaputter String
+    // ist ein Parse-Fehler, kein fehlendes Pflichtfeld.
+    let source = raw;
+    if (typeof raw === 'string') {
+      try {
+        source = JSON.parse(raw);
+      } catch (cause) {
+        savedLoadError = { type: 'parse', message: 'Speicherdaten sind kein gültiges JSON.', cause };
+        return null;
+      }
+    }
+    const saved = source as Partial<SavedGame> | null;
     if (!saved || !SAVE_VERSIONS.has(saved.version ?? 0)) {
       const missing: string[] = [];
       if (saved?.version === undefined) missing.push('version');
@@ -143,79 +162,6 @@ export function replaySave(raw: unknown): LoadedSave | null {
     savedLoadError = { type: 'parse', message: 'Konnte Speicherdaten nicht parsen.', cause };
     return null;
   }
-}
-
-export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number): SavedGame {
-  return {
-      version: SAVE_VERSION,
-      template: world.template,
-      carpet: world.carpet,
-      layout: world.layout,
-      furniture: world.furniture,
-      guests: world.guests,
-      player: world.player,
-      dirty: [...world.dirty],
-      prices: world.prices,
-      staff: world.staff,
-      tick: world.tick,
-      day: world.day,
-      nextGuestId: world.nextGuestId,
-      nextArrivalTick: world.nextArrivalTick,
-      satisfaction: world.satisfaction,
-      demandTier: world.demandTier,
-      nextFurnitureId: world.nextFurnitureId,
-      guardsHired: world.guardsHired,
-      crates: world.crates,
-      agents: world.agents,
-      disputes: world.disputes,
-      stains: world.stains,
-      mops: world.mops,
-      parts: world.parts,
-      guestsServed: world.guestsServed,
-      reputation: world.reputation,
-      city: world.city,
-      cityLife: world.cityLife,
-      cityGrowth: world.cityGrowth,
-      wallColor: world.wallColor,
-      neonColor: world.neonColor,
-      barLevel: world.barLevel,
-      wcLevel: world.wcLevel,
-      nextCrateId: world.nextCrateId,
-      nextAgentId: world.nextAgentId,
-      nextDisputeId: world.nextDisputeId,
-      activePenalties: world.activePenalties,
-      visitors: world.visitors,
-      nextVisitorId: world.nextVisitorId,
-      lastEvent: world.lastEvent,
-      journal: world.journal,
-      archive: world.archive,
-      fightBets: world.fightBets,
-      fightFx: world.fightFx,
-      nextJournalId: world.nextJournalId,
-      journaledSeq: world.journaledSeq,
-      look: world.look,
-      plinko: world.plinko,
-      plinkoMode: world.plinkoMode,
-      totalPlinkoDrops: world.totalPlinkoDrops,
-      addictionScore: world.addictionScore,
-      lastPlinko: world.lastPlinko,
-      exclusionPact: world.exclusionPact,
-      playerAddictionScore: world.playerAddictionScore,
-      brokenExclusionPacts: world.brokenExclusionPacts,
-      clarityBadge: world.clarityBadge,
-      foreignFloors: world.foreignFloors,
-      nextForeignFloorId: world.nextForeignFloorId,
-      activeForeignFloorId: world.activeForeignFloorId,
-      scene: world.scene,
-      actionQueue: world.actionQueue,
-      cityScene: world.cityScene,
-      sceneReturnPosition: world.sceneReturnPosition,
-      onboarding: world.onboarding,
-      narrative: world.narrative,
-      rivals: world.rivals,
-      entries: ledger.entries.map(({ tick, from, to, amount, reason, game }) => ({ tick, from, to, amount, reason, game })),
-      prngState,
-  };
 }
 
 export const SAVE_FAILED_NOTICE = 'Speichern fehlgeschlagen: Browser-Speicher voll oder gesperrt. Fortschritt geht beim Neuladen verloren.';

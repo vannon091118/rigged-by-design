@@ -6,7 +6,7 @@
  * wird der Prozessbaum beendet und der Lauf meldet 124 statt weiterzuwarten.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { executeStep, runGates } from '../../../../scripts/lib/gate-runner.mjs';
@@ -20,6 +20,8 @@ let failPath = '';
 
 beforeAll(() => {
   process.env.RBD_VERIFY_STATE = stateDir;
+  // Logs sind opt-in; dieser Test prueft genau den aktivierten Pfad.
+  process.env.RBD_LOG = '1';
   // Der Berichtsordner muss vor dem ersten runGates feststehen: er wird gemerkt.
   process.env.RBD_VERIFY_REPORTS = reportsDir;
   holdPath = join(stateDir, 'hold.mjs');
@@ -35,6 +37,7 @@ afterAll(() => {
   rmSync(stateDir, { recursive: true, force: true });
   delete process.env.RBD_VERIFY_STATE;
   delete process.env.RBD_VERIFY_REPORTS;
+  delete process.env.RBD_LOG;
 });
 
 describe('Harte Gate-Timeouts', () => {
@@ -75,11 +78,13 @@ describe('Harte Gate-Timeouts', () => {
     const failed = await runGates([{ name: 'artifact-probe', command: 'node', script: failPath, timeoutMs: 60_000 }]);
     expect(failed).toContain('artifact-probe');
 
-    const log = readFileSync(join(reportsDir, 'artifact-probe.log'), 'utf8');
+    // gate-runner legt je Lauf einen eigenen Zeitstempel-Ordner an.
+    const runDir = join(reportsDir, readdirSync(reportsDir)[0]!);
+    const log = readFileSync(join(runDir, 'artifact-probe.log'), 'utf8');
     expect(log).toContain('FAIL');
     expect(log).toContain('boom');
 
-    const summary = readFileSync(join(reportsDir, 'summary.md'), 'utf8');
+    const summary = readFileSync(join(runDir, 'summary.md'), 'utf8');
     expect(summary).toContain('artifact-probe');
     expect(summary).toContain('FAIL (artifact-probe)');
   });

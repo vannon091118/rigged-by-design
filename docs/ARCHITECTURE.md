@@ -120,8 +120,10 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4027 | Governance / Worker | Worker-Identitaet ist nicht global reserviert, der Workspace-Home fehlt oder der Worktree-Neuaufbau hat keinen Merge-Beleg. | `IDENTITY_CLAIM` im Identity-Board verifizieren, `.lanes/identity.json` pruefen und erst nach belegtem Merge neu aufbauen. |
 | ERR-4028 | Governance / Generated | Generierte Narrative- oder Register-Artefakte sind veraltet; `--check` erkennt den Stand ohne zu schreiben. | `node scripts/sync-generated.mjs --all` ausfuehren, Diff pruefen, Lauf wiederholen. |
+| ERR-4029 | Governance / Merge | Merge-Queue blockiert: PR nicht offen oder lesbar, oder Reihenfolge und Zustimmung der aktiven Sessions fehlen. | PR oeffnen und lesbar machen, Zustimmung aller aktiven Sessions einsammeln, Queue erneut auswerten; kein Merge an der Queue vorbei. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
 | ERR-4030 | Governance / Uebernahme | Ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad oder nicht uebernehmbare WIP. | Als eigene Arbeit in den Claim holen oder die Aenderung verwerfen; keine stille Uebernahme. |
+| ERR-4031 | Simulation / Bilddiff | Zwei Bilder weichen ausserhalb der Toleranz voneinander ab; der visuelle Nachweis ist nicht erbracht. | Bild oder Erwartung an der Ursache korrigieren oder die Toleranz begruendet anpassen; keine Toleranz nur zum Gruenmachen erhoehen. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 
 ## Pipeline

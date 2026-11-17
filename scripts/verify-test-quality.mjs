@@ -31,7 +31,12 @@ for (const file of tests) {
   const comments = ts.getLeadingCommentRanges(source.getFullText(), 0) ?? [];
   const header = comments.map((range) => source.getFullText().slice(range.pos, range.end)).join('\n');
   const target = /@test-target:\s*([^\s|*]+)/.exec(header)?.[1];
+  // Ein Ziel kann ueber einen statischen Import, einen dynamischen Import
+  // (Modul-Singleton) oder einen echten Kindprozess geprueft werden. Der Modus
+  // ist Teil des Testkopfes; ohne Angabe gilt der statische/dynamische Import.
+  const targetMode = /@test-target-mode:\s*(\S+)/.exec(header)?.[1] ?? 'import';
   const code = /@error-code:\s*(ERR-\d{4})/.exec(header)?.[1];
+  if (!['import', 'process'].includes(targetMode)) report('ERR-4001', name, `unbekannter @test-target-mode: ${targetMode}`);
   if (!target) report('ERR-4001', name, '@test-target fehlt');
   else if (!existsSync(resolve(ROOT, target))) report('ERR-4001', name, `Ziel existiert nicht: ${target}`);
   if (!code) report('ERR-4001', name, '@error-code fehlt');
@@ -89,9 +94,12 @@ for (const file of tests) {
   const targetFile = target ? resolve(ROOT, target) : null;
   const targetIsCode = Boolean(target && /\.(ts|tsx|js|mjs|cjs)$/.test(target));
   const targetNames = new Set();
+  let processLinked = false;
   if (targetFile && targetIsCode) {
     const normalizedTarget = targetFile.replaceAll('\\', '/');
     const rootPrefix = resolve(ROOT).replaceAll('\\', '/');
+    // Statische Importe: direkt aus dem Ziel oder ueber ein Helfermodul, das
+    // das Ziel selbst importiert. Namespace-Importe decken alle Namen ab.
     forEachNode(source, (node) => {
       if (!ts.isImportDeclaration(node) || !node.importClause || node.importClause.isTypeOnly) return;
       const specifier = node.moduleSpecifier.text;
@@ -113,6 +121,45 @@ for (const file of tests) {
         }
       }
     });
+    // Dynamischer Import ist kein schwacher Bezug: bei einem Modul-Singleton
+    // (z. B. worldStore) muss der Speicher-Stub vor dem Import stehen. Der
+    // zurueckgegebene Name wird wie ein statischer Import behandelt.
+    forEachNode(source, (node) => {
+      if (!ts.isCallExpression(node) || node.expression.kind !== ts.SyntaxKind.ImportKeyword) return;
+      const specifier = node.arguments[0];
+      if (!specifier || !ts.isStringLiteralLike(specifier)) return;
+      if (resolveSpecifier(specifier.text, file) !== normalizedTarget) return;
+      let parent = node.parent;
+      if (parent && ts.isAwaitExpression(parent)) parent = parent.parent;
+      if (!parent || !ts.isVariableDeclaration(parent)) return;
+      if (ts.isIdentifier(parent.name)) targetNames.add(parent.name.text);
+      else if (ts.isObjectBindingPattern(parent.name)) {
+        for (const element of parent.name.elements) {
+          if (ts.isBindingElement(element) && ts.isIdentifier(element.name)) targetNames.add(element.name.text);
+        }
+      }
+    });
+    // Prozessziel: Der Test startet die Datei als echten Kindprozess. Das ist
+    // fuer CLIs die einzige ehrliche Pruefung; ein Import wuerde den Prozess
+    // schon beim Laden ausfuehren. Der Zielpfad muss als Literal im Aufruf
+    // stehen, nicht nur im Testkopf.
+    if (targetMode === 'process') {
+      const base = target.split('/').pop() ?? '';
+      const literals = new Set();
+      let spawnCall = false;
+      forEachNode(source, (node) => {
+        if (ts.isStringLiteralLike(node)) literals.add(node.text);
+        if (!ts.isCallExpression(node)) return;
+        const callee = node.expression;
+        const name = ts.isIdentifier(callee)
+          ? callee.text
+          : ts.isPropertyAccessExpression(callee)
+            ? callee.name.text
+            : '';
+        if (['spawn', 'spawnSync', 'exec', 'execFile', 'execFileSync', 'execSync'].includes(name)) spawnCall = true;
+      });
+      processLinked = Boolean(base && spawnCall && [...literals].some((text) => text === target || text === base || text.endsWith(`/${base}`)));
+    }
   }
   let fileUsesTarget = false;
   const walkTargetUse = (node) => {
@@ -121,14 +168,21 @@ for (const file of tests) {
     ts.forEachChild(node, walkTargetUse);
   };
   ts.forEachChild(source, walkTargetUse);
-  const targetLinked = !targetIsCode || (targetNames.size > 0 && fileUsesTarget);
+  const targetLinked = !targetIsCode
+    ? true
+    : targetMode === 'process'
+      ? processLinked
+      : targetNames.size > 0 && fileUsesTarget;
   for (const block of testBlocks) {
     let hasExpect = false;
     forEachNode(block.callback, (node) => { if (isExpectCall(node)) hasExpect = true; });
     if (!hasExpect) report('ERR-4002', name, `Testfall ohne Assertion: ${block.title}`);
   }
-  if (targetIsCode && targetNames.size === 0) report('ERR-4002', name, `kein Import aus dem Ziel ${target}`);
-  else if (!targetLinked) report('ERR-4002', name, 'kein Testfall mit Assertion und Bezug zum Ziel');
+  if (targetIsCode && targetMode === 'process' && !processLinked) {
+    report('ERR-4002', name, `Prozessziel nicht belegt aufgerufen: ${target}`);
+  } else if (targetIsCode && targetMode !== 'process' && targetNames.size === 0) {
+    report('ERR-4002', name, `kein Import aus dem Ziel ${target}`);
+  } else if (!targetLinked) report('ERR-4002', name, 'kein Testfall mit Assertion und Bezug zum Ziel');
 
   const ordered = [
     [found.seed, 'fester Seed im Test; randomSeed() verwenden'],

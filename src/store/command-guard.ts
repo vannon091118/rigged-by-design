@@ -10,7 +10,7 @@ import type { AccountId, LedgerEntry } from '../core/economy/ledger-integrity';
 import type { Prng } from '../core/rng/prng';
 import type { WorldState } from '../core/sim/types';
 
-export interface CommandSnapshot {
+interface CommandSnapshot {
   /** Nimmt Welt und PRNG zurueck und liefert den Ledger-Stand von vor der Aktion. */
   restore(): Ledger;
 }

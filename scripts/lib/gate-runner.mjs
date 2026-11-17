@@ -44,8 +44,9 @@ export function lastGateRows() {
 /**
  * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
  * Arbeitsbaum: Verify bleibt lesend, und das Gitignor haelt ihn aus jedem Hash.
+ * `logsEnabled` wird pro Aufruf gelesen, damit ein Aufrufer die Umgebung noch
+ * nach dem Import setzen kann (Tests und eingebettete Laeufe).
  */
-const LOGS = logsEnabled();
 
 function reports() {
   if (reportDir !== undefined) return reportDir;
@@ -63,7 +64,7 @@ function reports() {
 function saveLog(name, body, status = 'PASS') {
   // Logs nur mit --log (oder RBD_LOG=1) und nur fuer rote Gates: ein gruener
   // Lauf hinterlaesst keine Datei, ein roter traegt seinen Error Code im Log.
-  if (!LOGS || status === 'PASS') return null;
+  if (!logsEnabled() || status === 'PASS') return null;
   const dir = reports();
   if (!dir) return null;
   const file = join(dir, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.log`);
@@ -120,7 +121,7 @@ export function executeStep(step) {
         // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze pnpm->vitest-Kette trifft.
         detached: process.platform !== 'win32',
         // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
-        env: { ...process.env, ...(step.env ?? {}), RBD_LOG: LOGS ? '1' : '0' },
+        env: { ...process.env, ...(step.env ?? {}), RBD_LOG: logsEnabled() ? '1' : '0' },
       });
     } catch (error) {
       done({ status: null, output: String(error), ms: Date.now() - started, timedOut: false, timeoutMs: 0 });
@@ -188,7 +189,7 @@ process.on('exit', () => {
 
 /** Zusammenfassung als Markdown: eine Zeile je Gate, mit Pfad zum vollen Log. */
 function summarize(rows, failed) {
-  if (!LOGS) return;
+  if (!logsEnabled()) return;
   const dir = reports();
   if (!dir || rows.length === 0) return;
   const lines = [

@@ -1,5 +1,6 @@
 /**
  * @test-target: scripts/verify-contracts.mjs
+ * @test-target-mode: process
  * @error-code: ERR-4019
  *
  * Die Vertragsliste kommt aus `docs/contracts/`, nicht aus einer zweiten

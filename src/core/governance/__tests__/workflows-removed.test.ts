@@ -1,5 +1,5 @@
 /**
- * @test-target: scripts/lib/pipeline-plan.mjs
+ * @test-target: .github
  * @error-code: ERR-4019
  *
  * FREEZE-0 (#684): Die vier Repository-Workflows sind entfernt. Ihre

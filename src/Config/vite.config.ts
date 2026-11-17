@@ -69,10 +69,10 @@ export default defineConfig({
     // Mechanik-Suiten koennen ihr Budget per Env bewusst erhoehen.
     testTimeout: TEST_TIMEOUT,
     pool: 'threads',
-    // Testdateien teilen keine mutierenden Singletons; Worker-Reuse spart pro Lauf
-    // rund vier Sekunden Startzeit. Die UI-Suiten setzen den Store vor jedem
-    // Fall selbst zurueck; Isolation pro Datei kostete 60 s ohne Zusatznutzen.
-    isolate: false,
+    // Jede Testdatei bekommt frische Module: Store-Singletons und vi.mock-
+    // Fabriken duerfen nicht aus einer vorherigen Datei durchschlagen. Die
+    // Isolation kostet Startzeit, verhindert aber ordnungsabhaengige Fehlschlaege.
+    isolate: true,
     teardownTimeout: 1_000,
     hookTimeout: HOOK_TIMEOUT,
     maxConcurrency: 8,
