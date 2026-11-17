@@ -163,7 +163,7 @@ class WorldStore {
   /** Fehlgeschlagene Commands lassen keine Teilmutation stehen: Welt, Ledger und PRNG werden zurueckgenommen. */
   #guard(action: () => void, flush = true): void {
     const snapshot = captureCommandState(this.#world, this.#ledger, this.#prng);
-    try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); } catch (error) { this.#ledger = snapshot.restore(); this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); return; }
+    try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); } catch (error) { const restoredLedger = snapshot.restore(); this.#ledger = restoredLedger; this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); return; }
     this.#emit();
   }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }
