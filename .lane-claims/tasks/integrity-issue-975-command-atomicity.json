@@ -3,14 +3,20 @@
   "taskId": "integrity-issue-975-command-atomicity",
   "claimId": "lane/integrity/issue-975-command-atomicity",
   "branch": "lane/integrity/issue-975-command-atomicity",
-  "baseSha": "0eac60897fe67a14e491b425917451b72325eea4",
-  "phase": "CI_PENDING",
+  "baseSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80",
+  "phase": "DONE",
   "title": "Issue #975: Fehlgeschlagene Commands duerfen keine Teilmutationen hinterlassen",
   "goal": "Welt, Ledger, PRNG, Fact-Queue und Journal bleiben nach einem fehlgeschlagenen Command unveraendert; der Streit-Fact entsteht erst nach einem tatsaechlich gefuehrten Kampf.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1063,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1063",
+    "state": "merged",
+    "headSha": "55a20b4b8b99c8aee6518a3e5389c9e5fb554b8f",
+    "mergedSha": "acc30591e2717538df47382e044aba8311a6fe2c"
+  },
   "findings": [
     {
       "id": "F-1",
@@ -19,6 +25,6 @@
       "summary": "Vorbestehend auf main (a30ccd1b): first-evening.test.ts (2) und new-game.test.ts (1) erwarten beim Start keine Gaeste, main spawnt aber bereits einen. Unabhaengig von diesem Diff nachgewiesen (git archive HEAD)."
     }
   ],
-  "nextAction": "PR gegen main oeffnen, RELEASE mit SHA melden, Maintainer-Review abwarten.",
+  "nextAction": "Gemergt; Restrisiko moveTo und offene Emit-Pfade bleibt in Issue #975.",
   "revision": 1
 }
