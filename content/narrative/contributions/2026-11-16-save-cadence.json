@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-16T18:40Z-save-cadence",
+  "contributionId": "save-cadence-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der passive Takt schreibt nicht mehr bei jedem Schritt: Er sammelt dreißig Schritte, bevor er den ganzen Stand sichert. Wer den Tab verlässt, verliert diesen Vorlauf nicht, weil der Wechsel in den Hintergrund den ausstehenden Stand sofort schreibt.",
+  "directives": []
+}

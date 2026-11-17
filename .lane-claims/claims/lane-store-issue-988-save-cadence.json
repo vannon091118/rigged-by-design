@@ -1,0 +1,26 @@
+{
+  "id": "lane/store/issue-988-save-cadence",
+  "owner": "Save-/Migrations-Owner",
+  "branch": "lane/store/issue-988-save-cadence",
+  "baseSha": "3c9884815d62f20dbf4ca507bfa57a5fda8c63e7",
+  "issue": 988,
+  "task": "Issue #988: Turn-Save drosseln und beim Tab-Wechsel sichern",
+  "pathAllowlist": [
+    "src/store/save-cadence.ts",
+    "src/store/world-tick.ts",
+    "src/store/__tests__/save-cadence.test.ts",
+    "content/narrative/contributions/2026-11-16-save-cadence.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-store-issue-988-save-cadence.json",
+    ".lane-claims/tasks/store-issue-988-save-cadence.json",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497"
+}

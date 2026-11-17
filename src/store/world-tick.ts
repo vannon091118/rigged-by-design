@@ -1,10 +1,11 @@
 /**
  * @module world-tick — der Welt-Takt des Stores an einer Stelle
  *
- * Der Takt besitzt Intervall, Zaehler und Fehlergrenze. Ein Fehler beendet ihn
- * dauerhaft: kein zweiter Lauf auf demselben inkonsistenten Zustand, keine
- * Save- oder Journal-Buchung aus dem Fehlerpfad. Nur `reset()` (neues Spiel,
- * Import) gibt ihn wieder frei.
+ * Der Takt besitzt Intervall, Zaehler, Speicherkadenz und Fehlergrenze. Ein
+ * Fehler beendet ihn dauerhaft: kein zweiter Lauf auf demselben inkonsistenten
+ * Zustand, keine Save- oder Journal-Buchung aus dem Fehlerpfad. Nur `reset()`
+ * (neues Spiel, Import) gibt ihn wieder frei. Weil der passive Lauf drosselt,
+ * sichert der Takt den ausstehenden Stand beim Verlassen des Tabs.
  */
 import type { Ledger } from '../core/economy/ledger';
 import type { Prng } from '../core/rng/prng';
@@ -12,6 +13,7 @@ import { TICK_MS } from '../core/sim/tick-timing';
 import type { WorldState } from '../core/sim/types';
 import { advanceWorld } from './narrative-clock';
 import { LedgerHalt } from './ledger-halt';
+import { bindSaveOnHide, shouldPersistTick } from './save-cadence';
 import { TickScheduler } from './tick-scheduler';
 
 interface WorldTickOptions {
@@ -38,6 +40,7 @@ export class WorldTick {
       tick: () => this.run(),
       onFault: (error) => this.#onFault(error),
     });
+    if (typeof document !== 'undefined') bindSaveOnHide(() => this.options.emit(true), document);
   }
 
   start(): void { this.#scheduler.start(); }
@@ -57,7 +60,7 @@ export class WorldTick {
     if (this.options.leaveApartmentDoor()) return;
     if (this.options.leaveInteriorDoor()) return;
     this.#savedTick += 1;
-    this.options.emit(this.#savedTick % 6 === 0);
+    this.options.emit(shouldPersistTick(this.#savedTick));
   }
 
   #onFault(error: unknown): void {
