@@ -2,7 +2,7 @@
   "id": "lane/store/issue-988-save-cadence",
   "owner": "Save-/Migrations-Owner",
   "branch": "lane/store/issue-988-save-cadence",
-  "baseSha": "3c9884815d62f20dbf4ca507bfa57a5fda8c63e7",
+  "baseSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80",
   "issue": 988,
   "task": "Issue #988: Turn-Save drosseln und beim Tab-Wechsel sichern",
   "pathAllowlist": [
@@ -21,6 +21,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497"
+  "status": "merged",
+  "createdAt": "a30ccd1b1aa24a8bcb7e5137b7741176b93c7497",
+  "mergedEvidence": "head-on-main",
+  "mergedSha": "8674700ffcb3e60f6b3179fffee3a9fdb957e4f9"
 }
