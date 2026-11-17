@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/issue-1090-verify-all",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1090-verify-all",
+  "baseSha": "54200b74bc65fc7fca968cfc9eb08b62bff40fd2",
+  "issue": 1090,
+  "task": "Tote Exporte entfernen und Test-Qualitaet-Zielverknuepfungen ergaenzen (#1090)",
+  "goal": "rbd verify all 19/19 gruen inklusive vollstaendiger Testsuite; verify:light 13/13; Arbeitsbaum clean; claim-hygiene 0 Verstoesse; kein --no-verify; keine GitHub Actions",
+  "pathAllowlist": [
+    "src/core/governance/__tests__/webhook-fixture.ts",
+    "src/core/sim/player-look.ts",
+    "src/store/command-guard.ts",
+    "scripts/verify-test-quality.mjs",
+    "src/core/governance/__tests__/verify-test-quality-linkage.test.ts",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-governance-issue-1090-verify-all.json",
+    ".lane-claims/tasks/governance-issue-1090-verify-all.json",
+    "content/narrative/contributions/2026-11-17-dead-exports-1090.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "54200b74bc65fc7fca968cfc9eb08b62bff40fd2"
+}
