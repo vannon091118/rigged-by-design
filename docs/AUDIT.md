@@ -841,3 +841,20 @@ Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig
 **#942** — `[P0][QUALITY] Zwei rote Tests ohne WIP-Erklärung blockieren den Vor-PR-Nachweis`.
 Begründung: `player-jobs.test.ts:101` und `test-catalog.test.ts` sind ohne fremde WIP rot; solange sie rot sind, kann **kein** Issue dieser Liste mit grünem Nachweis abgeschlossen werden. Abhängigkeiten: keine. Danach **#782** (erste spielbare Handlung) als erstes Produkt-P0.
 
+
+## Doku-Belege: Issue #980 — AUDIT-100 P1-Einträge
+
+Ergänzung durch Issue #980. Die nachfolgenden AUDIT-100-Einträge (alle P1, Status TEILWEISE oder WIDERSPRÜCHLICH) besitzen nun einen nachweisbaren Doku-Beleg. Widersprüche sind als solche dokumentiert und auf das zugehörige Issue mit Akzeptanzkriterien verwiesen.
+
+- **UD-01 Spielkreislauf** — Beleg: Startpfad `new-game.ts` → `scene-commands.ts` → `city-encounter.ts`; Tagesende abgedeckt durch `first-evening.test.ts` (Eröffnung → Kiste → Gast → Buchung → Tagesende). Offener Gegenstand: Stadt- und Arbeitsstationen sind nicht an den Tagesabschluss gekoppelt → dokumentiert als offener Punkt, verweisend auf #780 und #810.
+- **UD-07 Skills** — Beleg: mechanische Wirkleser auf `main` belegt für `cleaning` (`floor-work.ts:71`) und `repair` (`actions.ts:64`); `service` und `cardDealing` haben auf `main` keinen Wirkleser (einziger Leser `business-active-work.ts:197` ist untrackter WIP, #809). `skillEffect()` (`player-skills.ts:65`) liefert Strings, keinen Effekt.
+- **UD-18 Gedächtnis** — Beleg: `NpcMemory` (`city-life-types.ts:60`), `Visitor`-Erinnerungen (max. 6), `narrative/relationships.ts` (Kanten, Limit 200). Widerspruch: drei Gedächtnismodelle ohne gemeinsamen Schreibvertrag; eine Begegnung kann im einen, nicht im anderen Modell landen. Dokumentiert über #763.
+- **UD-30 Ressourcen** — Beleg: Zeit über `world.tick` fortgeschrieben in `tick.ts`; Ruf `world.reputation` ohne Verfall; Teile `world.parts` knapp. Befund: Zeit hat keine Opportunitätskosten (Warten ist immer gratis) → nicht bewertet, offener wirtschaftlicher Hebel (#810).
+- **UD-37 Aktionsmenü** — Beleg: `src/ui/__tests__/action-card.test.tsx` existiert und deckt die Karte ab. Widerspruch: `docs/capabilities.json` führt `actions.radial-menu` / `actions.dropdown-sheet` als „Testdatei fehlt noch“ (`testIds: []`). Dokumentiert über #940; die Schwelle (6/7 Radial→Sheet) ist offen.
+- **UD-46 Capabilities** — Beleg: `verify:capabilities` = PASS (13 Fähigkeiten, 8 aktiv, 5 unverified); `unverified`-Begründungen sind durch den Baum widerlegt (`action-card.test.tsx` existiert, `nav-edges.test.ts` existiert); Owner sind Legacy. Manifest ist „grün und falsch“. Dokumentiert über #940.
+- **UD-49 Doku** — Beleg: `INDEX.md` und `ARCHITECTURE.md` nennen gleichzeitig unterschiedliche Gate-Zahlen („15“, „fünf Profile“, „acht“, „vierzehn“, „fünfzehn/sechzehn“); Code: 16 Required / 11 Light / 8 Profile. Widerspruch: vier Gate-Zahlen gleichzeitig auf demselben Commit. Dokumentiert über #941.
+- **UD-50 Produktreife** — Beleg: Exit-Kriterien verteilt (`verify:all` 16 Gates, S5-09 bespielbare Stadt, PR-08/09/10, S5-08 APK). Kein einzelnes „Produkt reif“-Gate. Größte fehlende Abnahme: S2-12 (#780) → Stadtnetz nicht nachweisbar, daher „bespielbare Stadt“ nicht erfüllbar (#780, #795).
+- **DU-16 Speicher-Sync** — Beleg: `city-life-memory.ts` (`CityResidentState`/`cityLife`), `Visitor`-Erinnerungen (max. 6), `narrative/relationships.ts` (Kanten, 200). Widerspruch: drei Speicher ohne gemeinsame Schreibregel; eine Begegnung kann im einen Modell landen und im anderen fehlen (NPC „erinnert“ Streit, Beziehung bleibt unverändert). Dokumentiert über #763.
+
+Alle Einträge verweisen auf ein zugehöriges Issue mit Akzeptanzkriterien; Widersprüche sind dokumentiert, nicht stillschweigend aufgelöst.
+
