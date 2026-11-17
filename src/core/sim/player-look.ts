@@ -5,9 +5,9 @@ import { subVC } from '../economy/vacoin';
 
 export type LookAccessory = 'NONE' | 'CAP' | 'GLASSES' | 'CHAIN';
 
-export type ClothingCategory = 'TOPS' | 'BOTTOMS' | 'ACCESSORIES' | 'HEAD';
+type ClothingCategory = 'TOPS' | 'BOTTOMS' | 'ACCESSORIES' | 'HEAD';
 
-export interface ClothingItem {
+interface ClothingItem {
   readonly id: string;
   readonly name: string;
   readonly category: ClothingCategory;
@@ -37,7 +37,7 @@ export const LOOK_ACCESSORIES: readonly { id: LookAccessory; name: string }[] = 
 ];
 
 /** Kaufbares Kleidungs- und Accessoire-Inventar. Preise in Mikro-VaCoins (Integer). */
-export const LOOK_ITEMS: readonly ClothingItem[] = Object.freeze([
+const LOOK_ITEMS: readonly ClothingItem[] = Object.freeze([
   { id: 'tee_street', name: 'Street-Tee', category: 'TOPS', brand: 'UrbanThreads', priceVC: 500, visual: '#ff2e88', socialFactor: 0.10 },
   { id: 'cap_basic', name: 'Basis-Cap', category: 'HEAD', brand: 'CapCo', priceVC: 300, visual: '#000000', socialFactor: 0.05 },
   { id: 'chain_silver', name: 'Silberkette', category: 'ACCESSORIES', brand: 'BlingHouse', priceVC: 800, visual: '#ffd166', socialFactor: 0.15 },
@@ -48,7 +48,7 @@ export function findClothingItem(itemId: string): ClothingItem | undefined {
   return LOOK_ITEMS.find((item) => item.id === itemId);
 }
 
-export function canAfford(balance: VaCoinMicro, itemId: string): { ok: boolean; item?: ClothingItem; shortfall?: VaCoinMicro } {
+function canAfford(balance: VaCoinMicro, itemId: string): { ok: boolean; item?: ClothingItem; shortfall?: VaCoinMicro } {
   const item = findClothingItem(itemId);
   if (!item) return { ok: false };
   if (balance >= (item.priceVC as VaCoinMicro)) return { ok: true, item };
@@ -71,15 +71,6 @@ export const DEFAULT_LOOK: PlayerLook = {
   wardrobe: [],
   equippedItemId: null,
 };
-
-export function equipItem(look: PlayerLook, itemId: string): PlayerLook {
-  if (!look.wardrobe.includes(itemId)) return look;
-  return { ...look, equippedItemId: itemId };
-}
-
-export function unequipItem(look: PlayerLook): PlayerLook {
-  return { ...look, equippedItemId: null };
-}
 
 const isHex = (value: unknown): value is string =>
   typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value);

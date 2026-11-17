@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6d97075e259f854f7f70c8a8d8f3519295326633e213eaed4a77ac0fb7ca471a",
+  "contentHash": "sha256:18d3001d9e9bb35c63143d6f3bbc6d71d792e790d333ac212fa2bcbc79b3e124",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -8690,6 +8690,28 @@
       "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "dead-exports-1090-01",
+      "turnId": "2026-11-17T13:27Z-dead-exports-1090",
+      "agentId": "shinon",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Export wurde aus der Liste gestrichen, bevor der erste Gast ihn bestellen konnte. Was niemand aufruft, verschleimt die Fuehrung nicht - es erledigt den Weg einfach nicht. Aufrufe pruefen die Liste, die Liste prueft den Raum, und der Raum bleibt verschlossen für den toten Pfad.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-dead-exports-1090.json"
     },
     {
       "contributionId": "dead-exports-847-01",
