@@ -2,7 +2,7 @@
   "id": "lane/integrity/issue-975-command-atomicity",
   "owner": "Ledger-/Core-Owner",
   "branch": "lane/integrity/issue-975-command-atomicity",
-  "baseSha": "0eac60897fe67a14e491b425917451b72325eea4",
+  "baseSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80",
   "issue": 975,
   "task": "Command-Atomaritaet: begrenzte Transaktion fuer fehlgeschlagene Commands, Facts erst nach echtem Kampf",
   "pathAllowlist": [
