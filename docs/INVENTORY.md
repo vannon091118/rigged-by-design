@@ -756,10 +756,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3364 |
-| Gelistete Dateien | 3364 |
+| Getrackte Dateien | 3365 |
+| Gelistete Dateien | 3365 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (139), .lanes (1), artifacts (1), bin (1), content (1237), docs (90), packages (27), public (571), scripts (160), src (1116) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (139), .lanes (1), artifacts (1), bin (1), content (1238), docs (90), packages (27), public (571), scripts (160), src (1116) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -776,7 +776,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1233 Datei(en)
+- `content/narrative/contributions/` — 1234 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -2268,6 +2268,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-repo-ballast.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-16-save-cadence.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-shinon-974-sites-datenvertrag.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-16-store-guard-path.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-store-guard-proof.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-sync-live-hooks.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
@@ -2278,8 +2279,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27683 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4937 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27705 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4941 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen
@@ -3999,7 +4000,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/city-door-walk.test.ts` — Ein ferner Tuerklick ist ein Weg, kein Sprung: Der Spieler laeuft zur — gelesen: 63 Zeilen
 - `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
 - `src/store/__tests__/city-growth-view.test.ts` — Die Wachstumssicht ist eine Projektion: `buildView` liest dieselbe — gelesen: 68 Zeilen
-- `src/store/__tests__/command-atomicity.test.ts` — Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger, — gelesen: 127 Zeilen
+- `src/store/__tests__/command-atomicity.test.ts` — Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger, — gelesen: 196 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 146 Zeilen

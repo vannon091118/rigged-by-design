@@ -5,8 +5,9 @@
  * Ein fehlgeschlagener Command laesst keine Teilmutation stehen: Welt, Ledger,
  * PRNG, Fact-Queue und Journal stehen danach exakt wie vor dem Versuch. Ein
  * Streit erzeugt nur dann einen Konflikt-Fact, wenn der Kampf stattgefunden hat.
+ * Der letzte Fall geht denselben Weg wie der Spieler: ueber worldStore.hire.
  */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { fromVC } from '../../core/economy/vacoin';
 import { Prng } from '../../core/rng/prng';
@@ -16,10 +17,30 @@ import { emitCommandRejected } from '../../core/sim/narrative/facts';
 import { spawnGuest } from '../../core/sim/spawn';
 import { hireAgent } from '../../core/sim/staff';
 import { createWorld } from '../../core/sim/templates';
+import type { StaffRole, WorldState } from '../../core/sim/types';
 import { captureCommandState } from '../command-guard';
 import { fightBrawlCmd } from '../venue-commands';
 
 const SEED = 0x2f6e2b1;
+const FAILURE = 'Einstellung gebucht, dann gerissen.';
+const mutation = { entries: 0, agents: 0 };
+
+// Die echte Einstellung laeuft, erst danach reisst sie: so entsteht die
+// Teilmutation, die der Store im echten Command-Pfad zuruecknehmen muss.
+vi.mock('../venue-commands', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../venue-commands')>();
+  return {
+    ...actual,
+    hireCmd: (world: WorldState, ledger: Ledger, role: StaffRole): string => {
+      const entriesBefore = ledger.entryCount;
+      const agentsBefore = world.agents.length;
+      actual.hireCmd(world, ledger, role);
+      mutation.entries = ledger.entryCount - entriesBefore;
+      mutation.agents = world.agents.length - agentsBefore;
+      throw new Error(FAILURE);
+    },
+  };
+});
 
 function brawlSetup() {
   const world = createWorld('SMALL');
@@ -38,8 +59,21 @@ function brawlSetup() {
   return { world, ledger, prng };
 }
 
-function conflictFacts(world: ReturnType<typeof brawlSetup>['world']): number {
+function conflictFacts(world: WorldState): number {
   return world.narrative.pending.filter((fact) => fact.kind === 'VISITOR_CONFLICT').length;
+}
+
+/** Der Store ist headless; im node-Lauf gibt es keinen Storage, also eine Attrappe. */
+function memoryStorage(): Storage {
+  const values = new Map<string, string>();
+  return {
+    getItem: (key: string) => values.get(key) ?? null,
+    setItem: (key: string, value: string) => { values.set(key, value); },
+    removeItem: (key: string) => { values.delete(key); },
+    clear: () => values.clear(),
+    key: (index: number) => [...values.keys()][index] ?? null,
+    get length() { return values.size; },
+  } as Storage;
 }
 
 describe('Begrenzte Command-Transaktion', () => {
@@ -123,5 +157,40 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
     fightBrawlCmd(world, ledger, prng, 1);
 
     expect(conflictFacts(world)).toBe(1);
+  });
+});
+
+describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
+  it('laesst Welt, Ledger, PRNG, Facts und Journal nach dem Rollback unveraendert', async () => {
+    vi.stubGlobal('localStorage', memoryStorage());
+    // Der Store ist ein Modul-Singleton: erst nach dem Speicher-Stub importieren.
+    const { worldStore } = await import('../world-store');
+    worldStore.newGame('SMALL');
+
+    const exportBefore = worldStore.exportGame();
+    const ledgerBefore = worldStore.auditLedger();
+    const payloadBefore = JSON.parse(exportBefore).payload as Record<string, unknown>;
+
+    worldStore.hire('guard');
+
+    // Der Command ist mitten in der Wirkung gescheitert: Buchung und Agent standen schon.
+    expect(mutation.entries).toBeGreaterThan(0);
+    expect(mutation.agents).toBeGreaterThan(0);
+
+    const exportAfter = worldStore.exportGame();
+    const payloadAfter = JSON.parse(exportAfter).payload as Record<string, unknown>;
+    const ledgerAfter = worldStore.auditLedger();
+
+    expect(exportAfter).toBe(exportBefore);
+    expect(ledgerAfter.entries).toBe(ledgerBefore.entries);
+    expect(ledgerAfter.circulating).toBe(ledgerBefore.circulating);
+    expect(payloadAfter.entries).toEqual(payloadBefore.entries);
+    expect(payloadAfter.narrative).toEqual(payloadBefore.narrative);
+    expect(payloadAfter.journal).toEqual(payloadBefore.journal);
+    expect(payloadAfter.journaledSeq).toBe(payloadBefore.journaledSeq);
+    expect(payloadAfter.prngState).toBe(payloadBefore.prngState);
+    expect(payloadAfter.staff).toEqual(payloadBefore.staff);
+    expect(payloadAfter.agents).toEqual(payloadBefore.agents);
+    expect(worldStore.getSnapshot().notice).toContain('gerissen');
   });
 });
