@@ -6,12 +6,16 @@
   "locale": "de",
   "slot": "description",
   "function": "describe",
-  "contexts": ["documentation"],
+  "contexts": [
+    "documentation"
+  ],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": ["narrativ"],
-  "text": "Die Werkzeuguhr steht jetzt auf der Liste der erlaubten Zeitnehmer, nicht im Spielcode. Der Unterschied ist klein im Text und gross im Betrieb: der Cache darf altern, der Spielzustand nicht.",
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die alte Standuhr im Foyer ging seit Jahren zwei Minuten vor. Niemand stellte sie, niemand fragte. Erst als der Gast um Mitternacht gehen wollte, merkte der Portier: die Zeit im Haus war nicht die Zeit draussen. Er liess die Uhr stehen und oeffnete die Tuer eine Handbreit frueher.",
   "directives": []
 }

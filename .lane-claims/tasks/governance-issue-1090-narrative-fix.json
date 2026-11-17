@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-narrative-fix",
+  "claimId": "lane/governance/issue-1090-narrative-fix",
+  "branch": "lane/governance/issue-1090-narrative-fix",
+  "baseSha": "43de0973b8ad63faf793eedaf5ba69fefc2645f3",
+  "phase": "IMPLEMENTING",
+  "title": "Narrative-Texte ohne Governance-Sprache auf main nachziehen",
+  "goal": "narrative-world-text auf main gruen halten, ohne den Test zu lockern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Commit, PR, Merge, verify:all auf main",
+  "revision": 1
+}

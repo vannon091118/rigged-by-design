@@ -766,10 +766,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3484 |
-| Gelistete Dateien | 3484 |
+| Getrackte Dateien | 3487 |
+| Gelistete Dateien | 3487 |
 | Getrackte Ordner | 121 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (157), .lanes (1), artifacts (1), bin (1), content (1244), docs (100), packages (27), public (571), scripts (229), src (1130) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (159), .lanes (1), artifacts (1), bin (1), content (1245), docs (100), packages (27), public (571), scripts (229), src (1130) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -783,12 +783,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 76 Datei(en)
-- `.lane-claims/tasks/` — 77 Datei(en)
+- `.lane-claims/claims/` — 77 Datei(en)
+- `.lane-claims/tasks/` — 78 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1240 Datei(en)
+- `content/narrative/contributions/` — 1241 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -937,8 +937,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 28 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 83 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-narrative-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
@@ -1015,6 +1016,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1090-clock-fix.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-full-gate-repair.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-loc-refactor.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-1090-narrative-fix.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-verify-all.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
@@ -2310,17 +2312,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-verify-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-sections.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-test-target.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-17-board-cache-1102.json` — { — gelesen: 17 Zeilen
-- `content/narrative/contributions/2026-11-17-clock-allowlist-1102.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-17-board-cache-1102.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-17-clock-allowlist-1102.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-dead-exports-1090.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-full-gate-proof.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-life-sim-day-typecheck.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-17-narrative-text-fix-1104.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-redundancy-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27840 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4965 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27862 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4969 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -3835,7 +3838,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 200 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 144 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 111 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 315 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 316 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

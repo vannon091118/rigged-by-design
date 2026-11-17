@@ -23,6 +23,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "8b825f2379def6a950eba518d3016ec39ab87396"
+  "status": "archived",
+  "createdAt": "8b825f2379def6a950eba518d3016ec39ab87396",
+  "releasedAt": "2026-11-17T23:30:06.434Z",
+  "releasedReason": "PR #1103 gemergt (43de0973)"
 }

@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/issue-1090-narrative-fix",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1090-narrative-fix",
+  "baseSha": "43de0973b8ad63faf793eedaf5ba69fefc2645f3",
+  "issue": 1100,
+  "task": "Welttexte ohne Governance-Sprache",
+  "goal": "Testsuite auf main gruen halten",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1090-narrative-fix.json",
+    ".lane-claims/claims/lane-governance-issue-1090-clock-fix.json",
+    ".lane-claims/tasks/governance-issue-1090-narrative-fix.json",
+    "content/narrative/contributions/2026-11-17-board-cache-1102.json",
+    "content/narrative/contributions/2026-11-17-clock-allowlist-1102.json",
+    "content/narrative/contributions/2026-11-17-narrative-text-fix-1104.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP-DETAIL.md",
+    "docs/governance/LAST-CHANGES.md",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "43de0973b8ad63faf793eedaf5ba69fefc2645f3"
+}
