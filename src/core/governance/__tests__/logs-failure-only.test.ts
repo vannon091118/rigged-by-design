@@ -1,5 +1,6 @@
 /**
  * @test-target: scripts/lib/compact.mjs
+ * @test-target-mode: process
  * @error-code: ERR-4019
  *
  * Log-Vertrag: Dateien entstehen nur mit `--log` UND nur fuer fehlerhafte
@@ -29,6 +30,9 @@ function probe({ exitCode, body, logPath, log }: { exitCode: number; body: strin
   // und raeumt RBD_LOG aus der Umgebung, damit kein Elternlauf es erbt.
   const env: NodeJS.ProcessEnv = { ...process.env, PROBE_LOG: logPath };
   env.RBD_LOG = log ? '1' : '0';
+  // RBD_OUTPUT_FULL schaltet captureConsole im Kind ab. Ein Elternlauf darf
+  // den Log-Vertrag damit nicht stillschweigend aushebeln.
+  delete env.RBD_OUTPUT_FULL;
   return spawnSync(process.execPath, ['-e', source], { encoding: 'utf8', env });
 }
 
@@ -92,7 +96,7 @@ describe('Logs nur bei Fehlschlag und nur mit --log', () => {
 
   it('gate-runner schreibt nur rote Gates und traegt den Schritt-Code', () => {
     const source = readFileSync(join(ROOT, 'scripts/lib/gate-runner.mjs'), 'utf8');
-    expect(source).toContain("if (!LOGS || status === 'PASS') return null;");
+    expect(source).toContain("if (!logsEnabled() || status === 'PASS') return null;");
     expect(source).toContain('[${step.code}] ${step.name}');
   });
 });

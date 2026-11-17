@@ -17,6 +17,7 @@ import { join, relative } from 'node:path';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
 import { reportsDir } from './verify-state.mjs';
+import { writeSummary } from './gate-summary.mjs';
 import { logsEnabled } from './compact.mjs';
 import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
@@ -44,8 +45,9 @@ export function lastGateRows() {
 /**
  * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
  * Arbeitsbaum: Verify bleibt lesend, und das Gitignor haelt ihn aus jedem Hash.
+ * `logsEnabled` wird pro Aufruf gelesen, damit ein Aufrufer die Umgebung noch
+ * nach dem Import setzen kann (Tests und eingebettete Laeufe).
  */
-const LOGS = logsEnabled();
 
 function reports() {
   if (reportDir !== undefined) return reportDir;
@@ -63,7 +65,7 @@ function reports() {
 function saveLog(name, body, status = 'PASS') {
   // Logs nur mit --log (oder RBD_LOG=1) und nur fuer rote Gates: ein gruener
   // Lauf hinterlaesst keine Datei, ein roter traegt seinen Error Code im Log.
-  if (!LOGS || status === 'PASS') return null;
+  if (!logsEnabled() || status === 'PASS') return null;
   const dir = reports();
   if (!dir) return null;
   const file = join(dir, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.log`);
@@ -120,7 +122,7 @@ export function executeStep(step) {
         // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze pnpm->vitest-Kette trifft.
         detached: process.platform !== 'win32',
         // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
-        env: { ...process.env, ...(step.env ?? {}), RBD_LOG: LOGS ? '1' : '0' },
+        env: { ...process.env, ...(step.env ?? {}), RBD_LOG: logsEnabled() ? '1' : '0' },
       });
     } catch (error) {
       done({ status: null, output: String(error), ms: Date.now() - started, timedOut: false, timeoutMs: 0 });
@@ -186,29 +188,6 @@ process.on('exit', () => {
   for (const pid of running) killTree(pid);
 });
 
-/** Zusammenfassung als Markdown: eine Zeile je Gate, mit Pfad zum vollen Log. */
-function summarize(rows, failed) {
-  if (!LOGS) return;
-  const dir = reports();
-  if (!dir || rows.length === 0) return;
-  const lines = [
-    '# Gate-Bericht',
-    '',
-    `Erstellt: ${new Date().toISOString()}`,
-    `Ergebnis: ${failed.length === 0 ? 'PASS' : `FAIL (${failed.join(', ')})`}`,
-    '',
-    '| Gate | Ergebnis | Dauer | Log |',
-    '| --- | --- | --- | --- |',
-    ...rows.map((row) => `| ${row.name} | ${row.status} | ${row.seconds}s | ${row.logPath ? `\`${row.logPath}\`` : '—'} |`),
-  ];
-  try {
-    writeFileSync(join(dir, 'summary.md'), `${lines.join('\n')}\n`);
-    console.log(`Gate-Bericht: ${relative(ROOT, dir).replaceAll('\\', '/')}/summary.md`);
-  } catch {
-    // Der Bericht ist Komfort; das Gate-Ergebnis haengt nicht daran.
-  }
-}
-
 /** Jede rote Gate bleibt rot; gruene Gates werden nur bei identischem Hash uebersprungen. */
 export async function runGates(steps) {
   const queue = [...steps];
@@ -261,6 +240,6 @@ export async function runGates(steps) {
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
   lastRows = rows;
-  summarize(rows, failed);
+  if (logsEnabled()) writeSummary({ rows, failed, dir: reports(), root: ROOT });
   return failed;
 }

@@ -4790,12 +4790,12 @@
       "contributionId": "governance-archive-ledger"
     },
     {
-      "turnId": "2026-11-16T04:30Z-freeze-0-code-cleanup",
-      "contributionId": "maintainer-684-freeze-0-code-cleanup"
-    },
-    {
       "turnId": "2026-11-16T04:20Z-governance-loc-audit",
       "contributionId": "governance-loc-audit"
+    },
+    {
+      "turnId": "2026-11-16T04:30Z-freeze-0-code-cleanup",
+      "contributionId": "maintainer-684-freeze-0-code-cleanup"
     },
     {
       "turnId": "2026-11-16T05:00Z-governance-tag-vollpruefung",
@@ -4866,12 +4866,32 @@
       "contributionId": "log-and-contract-closure"
     },
     {
+      "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
+      "contributionId": "shinon-974-sites-datenvertrag"
+    },
+    {
       "turnId": "2026-11-16T17:45Z-register-closeout",
       "contributionId": "register-closeout"
     },
     {
+      "turnId": "2026-11-16T18:40Z-save-cadence",
+      "contributionId": "save-cadence-01"
+    },
+    {
+      "turnId": "2026-11-16T18:55Z-command-atomicity",
+      "contributionId": "command-atomicity-01"
+    },
+    {
+      "turnId": "2026-11-16T19:05Z-store-guard-path",
+      "contributionId": "store-guard-path-01"
+    },
+    {
       "turnId": "2026-11-16T19:10Z-merge-gate",
       "contributionId": "merge-gate"
+    },
+    {
+      "turnId": "2026-11-16T19:11Z-store-guard-proof",
+      "contributionId": "store-guard-proof-01"
     },
     {
       "turnId": "2026-11-16T19:55Z-board-live-sync",
@@ -4886,24 +4906,8 @@
       "contributionId": "tagesbericht-evidence"
     },
     {
-      "turnId": "2026-11-16T17:17Z-shinon-974-sites-datenvertrag",
-      "contributionId": "shinon-974-sites-datenvertrag"
-    },
-    {
       "turnId": "2026-11-16T21:10Z-evidence-final-main",
       "contributionId": "evidence-final-main"
-    },
-    {
-      "turnId": "2026-11-16T18:55Z-command-atomicity",
-      "contributionId": "command-atomicity-01"
-    },
-    {
-      "turnId": "2026-11-16T19:11Z-store-guard-proof",
-      "contributionId": "store-guard-proof-01"
-    },
-    {
-      "turnId": "2026-11-17T23:18Z-redundancy-budget-01",
-      "contributionId": "redundancy-budget-01"
     },
     {
       "turnId": "2026-11-16T22:58Z-verify-state",
@@ -4912,6 +4916,30 @@
     {
       "turnId": "2026-11-16T23:06Z-registry-boundary-01",
       "contributionId": "registry-boundary-01"
+    },
+    {
+      "turnId": "2026-11-17T00:05Z-agent-state-sections",
+      "contributionId": "agent-state-sections-01"
+    },
+    {
+      "turnId": "2026-11-17T00:25Z-life-sim-day-typecheck",
+      "contributionId": "life-sim-day-typecheck-01"
+    },
+    {
+      "turnId": "2026-11-17T00:41Z-agent-state-test-target",
+      "contributionId": "agent-state-test-target-01"
+    },
+    {
+      "turnId": "2026-11-17T10:45Z-full-gate-proof",
+      "contributionId": "full-gate-proof-01"
+    },
+    {
+      "turnId": "2026-11-17T13:27Z-dead-exports-1090",
+      "contributionId": "dead-exports-1090-01"
+    },
+    {
+      "turnId": "2026-11-17T23:18Z-redundancy-budget-01",
+      "contributionId": "redundancy-budget-01"
     },
     {
       "turnId": "2026-11-17T23:34Z-verify-state-concurrency-01",
@@ -4924,30 +4952,6 @@
     {
       "turnId": "2026-11-17T23:44Z-verify-state-test-time-01",
       "contributionId": "verify-state-test-time-01"
-    },
-    {
-      "turnId": "2026-11-17T00:05Z-agent-state-sections",
-      "contributionId": "agent-state-sections-01"
-    },
-    {
-      "turnId": "2026-11-17T00:25Z-life-sim-day-typecheck",
-      "contributionId": "life-sim-day-typecheck-01"
-    },
-    {
-      "turnId": "2026-11-16T18:40Z-save-cadence",
-      "contributionId": "save-cadence-01"
-    },
-    {
-      "turnId": "2026-11-16T19:05Z-store-guard-path",
-      "contributionId": "store-guard-path-01"
-    },
-    {
-      "turnId": "2026-11-17T00:41Z-agent-state-test-target",
-      "contributionId": "agent-state-test-target-01"
-    },
-    {
-      "turnId": "2026-11-17T13:27Z-dead-exports-1090",
-      "contributionId": "dead-exports-1090-01"
     }
   ]
 }

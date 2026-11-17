@@ -1,5 +1,6 @@
 /**
  * @test-target: bin/rbd.mjs
+ * @test-target-mode: process
  * @error-code: ERR-4019
  *
  * Die globale Befehlsoberflaeche ist vertraglich: jede Governance-Zeile aus

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-loc-refactor",
+  "claimId": "lane/governance/issue-1090-loc-refactor",
+  "branch": "lane/governance/issue-1090-full-gate-repair",
+  "baseSha": "0ffa22b5337a9652892fe0f442cbbf3758b488c6",
+  "phase": "READY",
+  "title": "LOC-Refactor pretask/promote, Guard-Haertung und Vollnachweis main",
+  "goal": "pretask und promote funktionsgleich modularisieren, LOC-Guard fuer src und scripts erzwingen und den Vollnachweis auf main-Stand bringen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Vollen Verify-Lauf abschließen, dann Push und PR gegen main.",
+  "revision": 1
+}

@@ -6,7 +6,6 @@ import { openHouse } from '../core/sim/money';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { seedStartPool } from '../core/sim/narrative/state';
 import { createWorld } from '../core/sim/templates';
-import { spawnGuest } from '../core/sim/spawn';
 import { createCityLifeState, ensureCityLife } from '../core/sim/city-life-state';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import { flushNarrativeCmd } from './narrative-commands';
@@ -46,9 +45,8 @@ export function createNewGame(template: TemplateId): NewGameState {
   const prng = new Prng(seed);
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);
-  // Der erste Gast ist Teil des Startpfads: er erscheint auf dem Casino-Floor,
-  // sobald die Er-offnung abgeschlossen ist, und ist daruber sichtbar.
-  spawnGuest(world, prng, ledger);
+  // Der erste Gast entsteht erst aus der Nachfrage, wenn ein spielbares Gerät
+  // steht; createNewGame legt keinen Gast vor dem Automaten an.
   // Profile entstehen beim Anlegen, nicht beim ersten Snapshot. Nach dem
   // Start-Pool bleiben dessen Kennungen unveraendert.
   ensureCityLife(world);

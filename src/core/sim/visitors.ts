@@ -1,5 +1,6 @@
 /** Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. */
 import type { PersonaId, Visitor, WorldState } from './types';
+import { recordResidentVisitor } from './visitor-record';
 import { visitorDisposition } from './narrative/disposition';
 import { memoryEffect } from './narrative/memory';
 import type { RelationshipEdge } from './narrative/types';
@@ -44,27 +45,9 @@ export function recordVisitor(
   return visitor;
 }
 
-/**
- * Profil eines Stadtbewohners. Es entsteht ohne Besuch (`visits: 0`) und traegt
- * seine Kennung: Der Bewohner hat eine Identitaet, lange bevor er als Gast
- * auftaucht. Erst ein echter Besuch macht ihn zum Rueckkehrer.
- */
-export function recordResidentVisitor(
-  world: WorldState,
-  input: { npcId: string; name: string; persona: PersonaId },
-): Visitor {
-  const visitor: Visitor = {
-    id: world.nextVisitorId++,
-    name: input.name,
-    persona: input.persona,
-    residentNpcId: input.npcId,
-    visits: 0,
-    lastSeenTick: 0,
-    memories: [],
-  };
-  world.visitors.push(visitor);
-  return visitor;
-}
+// Ein Blattmodul, damit `city-npcs` nicht die Narrativ-Schicht mitzieht; der
+// Export bleibt hier, weil bestehende Leser ihn an dieser Stelle erwarten.
+export { recordResidentVisitor };
 
 /**
  * Waehlt deterministisch aus der Gast-ID (kein PRNG-Zug), damit der Zufallsablauf bestehender

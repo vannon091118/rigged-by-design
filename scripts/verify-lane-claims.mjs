@@ -21,20 +21,14 @@ import {
   LEGACY_PREFIXES,
   selectClaim,
   botClaim,
-  auditRegisterAgainstBase,
-  COORDINATION_FILES,
-  isTaskContractPath,
 } from './lib/lane-claims.mjs';
-import { filterMergedCollisions } from './lib/claim-evidence.mjs';
-import { generatedOnlyDiff } from './lib/generated-files.mjs';
-import { captureConsole, compact } from './lib/compact.mjs';
+import { filterMergedCollisions } from './lib/claim-merge-filter.mjs';
+import { auditRegisterBase } from './lib/lane-claim-register-check.mjs';
+import { collectDiffScope, stackedBase } from './lib/lane-claim-diff.mjs';
+import { classifyStaged } from './lib/lane-claim-staged.mjs';
+import { report, reportLaneGreen } from './lib/lane-claim-report.mjs';
+import { captureConsole } from './lib/compact.mjs';
 
-/** Alle Pfade schreiben denselben Vertrag; Befunde bleiben immer sichtbar. */
-function report({ status, headline, facts = [], findings = [], details = [] }) {
-  const text = compact({ status, headline, facts, findings, details });
-  if (String(status).toUpperCase() === 'ROT') console.error(text);
-  else console.log(text);
-}
 const notes = [];
 const mergedNotes = [];
 let registerAudited = false;
@@ -62,7 +56,7 @@ try {
   report({
     status: 'ROT',
     headline: `${branch} · Claim-Register nicht lesbar`,
-    facts: [['Basis', BASE_REF]],
+    facts: [['Basis', DECLARED_BASE]],
     findings: [
       `[ERR-4019] Claim-Register nicht lesbar (${error instanceof Error ? error.message : 'unbekannt'}).`,
       'Governance ist fail-closed: erst das Register reparieren, dann committen.',
@@ -79,7 +73,7 @@ for (const key of ['id', 'branch']) {
       report({
         status: 'ROT',
         headline: `${branch} · doppelter ${key} im Claim-Register`,
-        facts: [['Basis', BASE_REF]],
+        facts: [['Basis', DECLARED_BASE]],
         findings: [`[ERR-4019] doppelter ${key} '${entry[key]}' im Claim-Register.`],
       });
       process.exit(1);
@@ -96,28 +90,7 @@ const laneClaim = selectClaim(allClaims, branch);
 const claim = laneClaim ?? botClaim(branch);
 const bot = laneClaim === null && claim !== null;
 
-/**
- * Gestapelte Lanes: der Claim nennt seinen `baseSha`. Er zaehlt nur, wenn er
- * Vorfahre von HEAD und in einem Remote-Ref enthalten ist (also integriert).
- * Ohne diese Aufloesung prueft der Gate den ganzen Stapel gegen `main` und
- * meldet die bereits gemergte Basis als Verstoss — dann waere jede Lane, die
- * auf einer anderen aufsetzt, unpushbar. Ein ausdrueckliches BASE_REF gewinnt.
- */
-function stackedBase(declared) {
-  const named = process.env.BASE_REF;
-  if (named) return named;
-  const sha = String(declared?.baseSha ?? '');
-  if (!/^[0-9a-f]{7,40}$/.test(sha)) return DECLARED_BASE;
-  try {
-    git(['merge-base', '--is-ancestor', sha, HEAD_REF]);
-  } catch {
-    return DECLARED_BASE;
-  }
-  const remote = git(['branch', '-r', '--contains', sha]);
-  return remote ? sha : DECLARED_BASE;
-}
-
-const BASE_REF = stackedBase(claim);
+const BASE_REF = process.env.BASE_REF || stackedBase({ declared: claim, headRef: HEAD_REF, defaultBase: DECLARED_BASE, git });
 const RANGE = CI ? `${BASE_REF}...${HEAD_REF}` : null;
 
 // Ein Merge bringt fremde Arbeit mit. Bewertet wird nur, was der Branch
@@ -185,60 +158,12 @@ if (claim.status === 'merged') {
   notes.push(`'${claim.id}' ist gemergt; der Branch fuehrt unter derselben Allowlist weiter.`);
 }
 
-/** Erster Commit im Bereich, der das Register beruehrt; leer heisst: keiner. */
-function firstTouchCommit(range) {
-  try {
-    return (
-      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims'], {
-        encoding: 'utf8',
-        stdio: ['ignore', 'pipe', 'ignore'],
-      })
-        .split(/\r?\n/)
-        .find(Boolean) ?? ''
-    );
-  } catch {
-    return '';
-  }
-}
-
-/** Registerstand an einer Ref; `null` heisst: nicht lesbar (fail-closed). */
-function registerAt(ref) {
-  const entries = [];
-  try {
-    const data = JSON.parse(
-      execFileSync('git', ['show', `${ref}:.lane-claims/claims.json`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
-    );
-    if (!Array.isArray(data)) return null;
-    entries.push(...data);
-  } catch {
-    // Kein Legacy-Register an dieser Ref: Claim-Dateien koennen trotzdem existieren.
-  }
-  try {
-    const names = execFileSync('git', ['ls-tree', '-r', '--name-only', ref, '--', '.lane-claims/claims'], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).split(/\r?\n/).filter((name) => name.endsWith('.json'));
-    for (const name of names) {
-      const data = JSON.parse(
-        execFileSync('git', ['show', `${ref}:${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
-      );
-      entries.push(...(Array.isArray(data) ? data : [data]));
-    }
-  } catch {
-    // Kein Claim-Verzeichnis an dieser Ref.
-  }
-  return entries.length > 0 ? entries : null;
-}
-
 /**
  * Die Basis ist die vertrauenswuerdige Wahrheit fuer die Allowlist. Zusaetzlich
- * zaehlt die erste Beruehrung des Registers im PR als Registrierung: sonst
- * koennte eine Lane ihren Claim mit jedem Push weiter ausdehnen, weil die
- * Basis den Branch noch gar nicht kennt. Eine Selbsterweiterung ist damit
- * selbst dann sichtbar, wenn sie ueber mehrere Commits verteilt wird.
+ * zaehlt die erste Beruehrung des Registers im PR als Registrierung.
  */
-const baseRegister = registerAt(BASE_REF);
-if (!baseRegister) {
+const registerAudit = auditRegisterBase({ baseRef: BASE_REF, headRef: HEAD_REF, allClaims, branch });
+if (registerAudit.unreadable) {
   if (CI) {
     report({
       status: 'ROT',
@@ -249,140 +174,30 @@ if (!baseRegister) {
     process.exit(1);
   }
   notes.push(`[ERR-4019] Basis-Register '${BASE_REF}' nicht lesbar; Basis-Audit lokal uebersprungen.`);
-} else {
-  const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
-  const firstRegister = firstTouch ? registerAt(firstTouch) : null;
-  const audit = auditRegisterAgainstBase({
-    baseClaims: baseRegister,
-    registrationClaims: firstRegister ?? baseRegister,
-    nextClaims: allClaims.map((entry) => entry.toJSON()),
-    branch,
+} else if (!registerAudit.ok) {
+  report({
+    status: 'ROT',
+    headline: `${branch} · Claim-Register gegen die Basis veraendert`,
+    facts: [['Basis', BASE_REF]],
+    findings: registerAudit.violations.map((entry) => `[ERR-4019] ${entry}`),
+    details: ['Eine Lane erweitert weder ihre eigene Allowlist noch fremde Claims; Registerpflege ist Governance.'],
   });
-  if (!audit.ok) {
-    report({
-      status: 'ROT',
-      headline: `${branch} · Claim-Register gegen die Basis veraendert`,
-      facts: [['Basis', BASE_REF]],
-      findings: audit.violations.map((entry) => `[ERR-4019] ${entry}`),
-      details: ['Eine Lane erweitert weder ihre eigene Allowlist noch fremde Claims; Registerpflege ist Governance.'],
-    });
-    process.exit(1);
-  }
+  process.exit(1);
+} else {
   registerAudited = true;
 }
 
 // Die acht Meta-Dateien kommen aus scripts/lib/lane-claims.mjs: eine Liste fuer
 // Gate und turn:finish, damit die Sperre nicht an zwei Stellen driftet.
 
-/** Hook-Dateien: sie gehören der Governance-Lane, nie einer Feature-Lane. */
-const HOOK_FILES = Object.freeze(['.githooks/pre-commit', '.githooks/commit-msg']);
+const { staged, mergedClaims, deletedFiles } = collectDiffScope({
+  git, diffBase: DIFF_BASE, ci: CI, merging: MERGING, allClaims,
+});
 
-/** Der mechanische Schreibpfad des Systems: Doku-Marker und Versionszeile. */
-// Die Versionszeile steht in zwei Formaten: JSON in `package.json` und YAML
-// in `pnpm-lock.yaml`. Ohne den YAML-Fall galt der Versions-Bump der Lockfile
-// als Lane-Inhalt und blockierte jeden Abschluss, der die Datei nicht
-// ausdruecklich im Claim fuehrt.
-const SYSTEM_LINE = /^[+-]\s*(<!--\s*rbd-doc:.*-->|"version":\s*".*",?|version:\s*\S+)\s*$/;
-
-/** Geaenderte Diff-Zeilen einer Datei; `null` heisst: Diff nicht lesbar. */
-function diffLines(file) {
-  let diff;
-  try {
-    diff = DIFF_BASE
-      ? git(['diff', '--unified=0', DIFF_BASE, '--', file])
-      : git(['diff', '--cached', '--unified=0', '--', file]);
-  } catch {
-    return null;
-  }
-  return diff
-    .split(/\r?\n/)
-    .filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line));
-}
-
-function onlySystemLines(file) {
-  const changed = diffLines(file);
-  if (changed === null) return false;
-  if (changed.length === 0) return true;
-  return changed.every((line) => SYSTEM_LINE.test(line));
-}
-
-const staged = (DIFF_BASE
-  ? git(['diff', '--name-only', '--diff-filter=ACMR', DIFF_BASE])
-  : git(['diff', '--cached', '--name-only', '--diff-filter=ACMR'])
-).split(/\r?\n/).filter(Boolean);
-
-// CI prueft den ganzen Branch-Diff, also auch Arbeit, die aus bereits
-// gemergten Lanes stammt. Deren Pfade sind gedeckt - aber nur durch Claims,
-// die wirklich als `merged` registriert sind. Ein Pfad ohne jeden Claim
-// bleibt eine Verletzung, auch in CI.
-// CI und Merge pruefen einen Stand, der fremde Arbeit enthaelt; nur ein
-// normaler Commit prueft ausschliesslich die eigene Arbeit.
-const mergedClaims = (CI || MERGING) ? allClaims.filter((c) => c.status === 'merged') : [];
-
-// Loeschungen fremder Lane-Dateien sind eine Uebergabe, kein Schreiben: die
-// Governance-Lane gibt zurueck, was eine andere Lane besitzt. Der Diff zeigt
-// nur die Loeschung; der Pfad bleibt der anderen Lane zugeordnet.
-const deletedFiles = new Set((DIFF_BASE
-  ? git(['diff', '--name-only', '--diff-filter=D', DIFF_BASE])
-  : git(['diff', '--cached', '--name-only', '--diff-filter=D'])
-).split(/\r?\n/).filter(Boolean));
-
-const violations = [];
-const allowedBySystem = [];
-const generatedMeta = [];
-const inherited = [];
-const handedOver = [];
-
-for (const file of staged) {
-  // Koordinationsdateien sind Werkzeug jeder Lane (Register, PIN-Freigabe);
-  // sie brauchen keinen Allowlist-Eintrag und kollidieren nicht.
-  if (COORDINATION_FILES.includes(file)) continue;
-  // Task-Vertraege sind ebenfalls Lane-Werkzeug; das Vertrags-Gate prueft
-  // Claim-Bindung und Phasenwechsel, nicht die Allowlist.
-  if (isTaskContractPath(file)) continue;
-  if (HOOK_FILES.includes(file)) {
-    if (!claim.allowsPath(file)) violations.push(`${file} (Hook-Datei nur mit Claim)`);
-    continue;
-  }
-  if (META_FILES.includes(file)) {
-    // Generierte Anteile gehoeren ihrem Generator, nicht der Lane: Inventur,
-    // Roadmap-Fortschritt und Doku-Marker entstehen deterministisch und sind
-    // fuer jede Lane erlaubt. Handinhalt in derselben Datei bleibt gesperrt.
-    if (generatedOnlyDiff(file, diffLines(file))) {
-      generatedMeta.push(file);
-      continue;
-    }
-    if (claim.allowsPath(file)) continue;
-    if (onlySystemLines(file)) {
-      allowedBySystem.push(file);
-      continue;
-    }
-    violations.push(`${file} (Meta-Datei: nur Marker/Version; alles andere braucht einen Claim)`);
-    continue;
-  }
-  if (claim.allowsPath(file)) continue;
-  // Marker sind mechanisch: eine Zeile, die nur den kanonischen Doku-Marker
-  // setzt, gehoert keinem Feature und braucht keine Lane. Dieselbe Auslegung
-  // nutzt der Governance-Freeze; ohne sie erzeugt jede Marker-Normalisierung
-  // einen Claim-Konflikt in jeder Lane.
-  if (onlySystemLines(file)) {
-    allowedBySystem.push(file);
-    continue;
-  }
-  const mergedOwner = mergedClaims.find((c) => c.allowsPath(file));
-  if (mergedOwner) {
-    inherited.push(`${file} <- ${mergedOwner.id}`);
-    continue;
-  }
-  if (deletedFiles.has(file)) {
-    const owner = allClaims.find((c) => c !== claim && c.allowsPath(file));
-    if (owner) {
-      handedOver.push(`${file} -> ${owner.id}`);
-      continue;
-    }
-  }
-  violations.push(file);
-}
+const classified = classifyStaged({
+  claim, staged, deletedFiles, mergedClaims, allClaims, git, diffBase: DIFF_BASE,
+});
+const { violations, allowedBySystem, generatedMeta, inherited, handedOver } = classified;
 
 if (violations.length > 0) {
   report({
@@ -427,31 +242,9 @@ if (collisions.length > 0) {
   process.exit(1);
 }
 
-const systemNote = [
-  allowedBySystem.length > 0 ? `${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '',
-  generatedMeta.length > 0 ? `${generatedMeta.length} generierte Inventur` : '',
-].filter(Boolean).join(', ');
-const scope = CI ? `CI-Diff ${RANGE}` : (MERGING ? `Merge-Diff ${DIFF_BASE}` : 'gestagte Dateien');
-// Ein Block statt einer Absatzfolge; Pfadbelege nur mit RBD_VERBOSE=1.
-report({
-  status: 'GRUEN',
-  headline: `${branch} · ${staged.length} Datei(en) · ${scope}`,
-  facts: [
-    ['Claim', `${claim.id} (${claim.owner}) · ${claim.status} · ${claim.pathAllowlist.length} Pfad(e)`],
-    ['Basis', BASE_REF],
-    ['Ref', CI ? HEAD_REF : 'HEAD'],
-    ['Register', registerAudited ? 'gegen Basis geprueft' : ''],
-    ['Belege', inherited.length > 0 || handedOver.length > 0 || mergedNotes.length > 0
-      ? `${inherited.length} uebernommen · ${handedOver.length} zurueckgegeben · ${mergedNotes.length} gemergt`
-      : ''],
-    ['Meta', systemNote],
-  ],
-  details: [
-    ...notes,
-    ...mergedNotes,
-    ...inherited.map((entry) => `uebernommen: ${entry}`),
-    ...handedOver.map((entry) => `zurueckgegeben: ${entry}`),
-    ...allowedBySystem.map((entry) => `Marker/Version: ${entry}`),
-  ],
+reportLaneGreen({
+  branch, staged, ci: CI, range: RANGE, merging: MERGING, diffBase: DIFF_BASE,
+  claim, baseRef: BASE_REF, headRef: HEAD_REF, registerAudited,
+  inherited, handedOver, mergedNotes, notes, allowedBySystem, generatedMeta,
 });
 process.exit(0);

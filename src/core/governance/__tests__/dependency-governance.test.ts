@@ -35,7 +35,8 @@ for (const file of walk(resolve(ROOT, 'src'))) {
   const text = readFileSync(file, 'utf8');
   for (const match of text.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
     const specifier = match[1]!;
-    if (specifier.startsWith('.') || specifier.startsWith('node:')) continue;
+    // Template-Fixtures wie `${from}` sind keine statische Dependency.
+    if (specifier.startsWith('.') || specifier.startsWith('node:') || specifier.includes('${')) continue;
     imported.add(pkgRoot(specifier));
   }
 }

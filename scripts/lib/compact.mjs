@@ -135,7 +135,8 @@ export function budgetText(value, { label = 'output', logPath = null, limit = TO
       hidden += 1;
       continue;
     }
-    const line = clip(trimmed, 150);
+    // Zeilenlayout nicht normalisieren: die Feldbreite ist Teil des Vertrags.
+    const line = trimmed.length <= 150 ? trimmed : `${trimmed.slice(0, 149)}…`;
     if (seen.has(line)) continue;
     seen.add(line);
     kept.push(line);

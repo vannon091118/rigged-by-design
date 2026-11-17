@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-full-gate-repair",
+  "claimId": "lane/governance/issue-1090-full-gate-repair",
+  "branch": "lane/governance/issue-1090-full-gate-repair",
+  "baseSha": "bf53823ecbc66a3c8d41ae4ecccdb5bcbdad89e0",
+  "phase": "READY",
+  "title": "Vollnachweis main: tote Exporte und Test-Qualitaets-Luecken schliessen",
+  "goal": "rbd verify all und die vollstaendige Testsuite auf main gruen; Doku-Gates und Token-Budget unveraendert",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Tote Exporte bereinigen, Test-Qualitaets-Gate erweitern, danach verify all.",
+  "revision": 1
+}

@@ -1,5 +1,6 @@
 /**
  * @test-target: scripts/verify-output-budget.mjs
+ * @test-target-mode: process
  * @error-code: ERR-4019
  *
  * Der Vollscan als Test: die Pflichtliste muss Start, Board, Commit, Verify
@@ -49,7 +50,9 @@ describe('Pflicht-Einstiegspunkte und Ausgabe-Budget', () => {
   });
 
   it('laesst keinen Altpfad mit alter Ausgabe stehen', () => {
-    const jsonOnly = new Set(['install-webhook.mjs']);
+    // Protokoll-/Terminalpfade liefern absichtlich JSON oder Shell-Ausgabe;
+    // dieselbe Ausnahmeliste steht in scripts/verify-output-budget.mjs.
+    const jsonOnly = new Set(['install-webhook.mjs', 'agent-pretool.mjs', 'agent-shell.mjs', 'shell-guard.mjs', 'shell-watch.mjs']);
     for (const name of readdirSync(join(ROOT, 'scripts')).filter((entry) => entry.endsWith('.mjs'))) {
       const source = readFileSync(join(ROOT, 'scripts', name), 'utf8');
       if (!/console\.(log|error)\(|process\.stdout\.write/.test(source)) continue;

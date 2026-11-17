@@ -10,7 +10,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { mergedPullRequestIndex } from '../../../../scripts/lib/claim-evidence.mjs';
+import { mergedPullRequestIndex } from '../../../../scripts/lib/claim-pr-index.mjs';
 import {
   buildMergedIndex,
   mergedIndexGroups,

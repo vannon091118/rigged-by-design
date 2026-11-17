@@ -11,7 +11,6 @@
  */
 import { ensureCityVisitor } from './city-npcs';
 import { rosterDefById } from './city-npc-roster';
-import { syncResidentMemories } from './city-life-restore';
 import type { WorldState } from './types';
 
 /**

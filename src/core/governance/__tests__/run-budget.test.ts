@@ -86,7 +86,10 @@ describe('Laufbudget und Stop-Vertrag', () => {
   });
 
   it('erkennt die alte feste 0 im Pretask als Fehlverdrahtung', () => {
-    const source = readFileSync(resolve(process.cwd(), 'scripts', 'pretask.mjs'), 'utf8');
+    const source = [
+      readFileSync(resolve(process.cwd(), 'scripts', 'pretask.mjs'), 'utf8'),
+      readFileSync(resolve(process.cwd(), 'scripts', 'lib', 'pretask-worker.mjs'), 'utf8'),
+    ].join('\n');
     expect(source).not.toContain('newGovernanceIssues: 0');
     expect(source).toContain('new-governance-issues=unknown');
     expect(source).toContain('parseGovernanceFindingCount');
