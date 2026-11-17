@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1d0206470fa2952332c7a067259d4665c2307dfa9dc00c8f481b79b46f455e79",
+  "contentHash": "sha256:ed27e19a9a88f7083a5f80d735b03ea4b5c92780e7c9a23b21a0dd7429c4092f",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3033,7 +3033,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Das Board war nicht erreichbar, also entschied der letzte belegte Stand. Nicht die Datei, die jemand gerade geschrieben hat - der Schnappschuss, den GitHub zuvor bestaetigt hatte. Wer den Cache frisiert, merkt es spaetestens beim naechsten Lauf: ohne Quelle bleibt das Gate zu.",
+      "text": "Der Saal lag still, als die Lichter ausfielen. Am Tresen wartete noch der letzte Einsatz, sauber aufgereiht wie Muenzen vor dem Schliessen. Wer jetzt nachlegte, spielte auf Kredit; wer wartete, behielt sein Blatt. Der Croupier raeumte nicht ab, sondern deckte nur das Tuch ueber den Tisch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-17-board-cache-1102.json"
     },
@@ -8204,7 +8204,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Werkzeuguhr steht jetzt auf der Liste der erlaubten Zeitnehmer, nicht im Spielcode. Der Unterschied ist klein im Text und gross im Betrieb: der Cache darf altern, der Spielzustand nicht.",
+      "text": "Die alte Standuhr im Foyer ging seit Jahren zwei Minuten vor. Niemand stellte sie, niemand fragte. Erst als der Gast um Mitternacht gehen wollte, merkte der Portier: die Zeit im Haus war nicht die Zeit draussen. Er liess die Uhr stehen und oeffnete die Tuer eine Handbreit frueher.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-17-clock-allowlist-1102.json"
     },
@@ -14235,6 +14235,28 @@
       "text": "Ohne Worte das übliche Glas hinstellen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-nar-var-ret-welcome-03.json"
+    },
+    {
+      "contributionId": "narrative-text-fix-1104-01",
+      "turnId": "2026-11-17T23:30Z-narrative-text-fix-1104",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast fragte nach dem Weg, obwohl die Tuer offen stand. Der Portier zeigte nicht auf den Flur, sondern auf den Stuhl am Fenster. Dort sass der Mann, der jeden Abend kam und nie bestellte. Manchmal ist die Antwort kein Weg, sondern eine Person, die wartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-narrative-text-fix-1104.json"
     },
     {
       "contributionId": "needs-core-voice-01",

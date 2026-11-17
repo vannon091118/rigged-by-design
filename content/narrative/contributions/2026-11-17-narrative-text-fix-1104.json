@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-17T23:30Z-narrative-text-fix-1104",
+  "contributionId": "narrative-text-fix-1104-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Gast fragte nach dem Weg, obwohl die Tuer offen stand. Der Portier zeigte nicht auf den Flur, sondern auf den Stuhl am Fenster. Dort sass der Mann, der jeden Abend kam und nie bestellte. Manchmal ist die Antwort kein Weg, sondern eine Person, die wartet.",
+  "directives": []
+}

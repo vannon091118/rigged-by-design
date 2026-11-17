@@ -6,12 +6,16 @@
   "locale": "de",
   "slot": "description",
   "function": "describe",
-  "contexts": ["documentation"],
+  "contexts": [
+    "documentation"
+  ],
   "tone": "sachlich",
   "mood": "neutral",
   "relationship": "neutral",
   "personaRefs": [],
-  "flags": ["narrativ"],
-  "text": "Das Board war nicht erreichbar, also entschied der letzte belegte Stand. Nicht die Datei, die jemand gerade geschrieben hat - der Schnappschuss, den GitHub zuvor bestaetigt hatte. Wer den Cache frisiert, merkt es spaetestens beim naechsten Lauf: ohne Quelle bleibt das Gate zu.",
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Saal lag still, als die Lichter ausfielen. Am Tresen wartete noch der letzte Einsatz, sauber aufgereiht wie Muenzen vor dem Schliessen. Wer jetzt nachlegte, spielte auf Kredit; wer wartete, behielt sein Blatt. Der Croupier raeumte nicht ab, sondern deckte nur das Tuch ueber den Tisch.",
   "directives": []
 }
