@@ -241,6 +241,12 @@
       "number": 1069,
       "headSha": "201d73e6383659ac664dabb3a060779224973aa8",
       "mergeSha": "dc3204c285ee7550476617e3b1bc96958d90bdde"
+    },
+    {
+      "branch": "lane/governance/merged-index-sync-20261117",
+      "number": 1070,
+      "headSha": "b70b85088d12e942b8280a331d6ec859ad8321ee",
+      "mergeSha": "41fa90b2816ca2915ab8eab085fd5aa1c9fb79da"
     }
   ]
 }
