@@ -96,4 +96,51 @@ describe('gewichtete Auswahl', () => {
     expect(pickWeighted(prng, entries, () => false)).toBeNull();
     expect(pickWeighted(prng, [{ item: 'x', weight: 0 }])).toBeNull();
   });
+
+  it('findet zyklisch gueltige Kandidaten vor dem Startindex', () => {
+    // entries[2] und entries[0] haben Gewicht 1, entries[1] hat Gewicht 0
+    // wenn start=1 (target fällt in entries[1] Bereich), muss der zyklische
+    // Suchpfad entries[2] dann entries[0] finden
+    const entries = [
+      { item: 'first', weight: 1 },
+      { item: 'second', weight: 0 },
+      { item: 'third', weight: 1 },
+    ];
+    // prng.nextFloat() = 0.0 → target = 0 → start = 0 (first)
+    // prng.nextFloat() = 0.5 → target = 0.5*2 = 1.0 → accumulated: 1 (index 0) < 1.0, index 1: accumulated = 1 (weight 0) < 1.0, index 2: accumulated = 2 → target < 2 → start = 2
+    // wir wollen: start = 1, dann wird third (index 2) geprüft, weight=0 → skip, dann zyklisch index 0 (first)
+    // dafür brauchen wir target so dass start=1
+    const prng1 = new Prng(randomSeed());
+    const chosen1 = pickWeighted(prng1, entries);
+    // mit zyklischer Suche muss immer ein gültiger Kandidat gefunden werden
+    expect(['first', 'third']).toContain(chosen1);
+    // test mit accept-Filter der second ablehnt (weight 0 wird eh skipped)
+    const prng2 = new Prng(randomSeed());
+    const filtered = pickWeighted(prng2, entries, (item) => item !== 'first');
+    expect(filtered).toBe('third');
+    // alle akzeptierbaren Kandidaten vor dem Startindex werden gefunden
+    const entries2 = [
+      { item: 'a', weight: 1 },
+      { item: 'b', weight: 1 },
+      { item: 'c', weight: 0 },
+    ];
+    // target so dass start=2 (c), dann zyklisch a (index 0) finden
+    const prng3 = new Prng(randomSeed());
+    const allSeen = new Set<string>();
+    for (let i = 0; i < 100; i++) {
+      const result = pickWeighted(prng3, entries2);
+      allSeen.add(result!);
+    }
+    expect([...allSeen].sort()).toEqual(['a', 'b']);
+  });
+
+  it('behandelt null/negative Gewichte korrekt (wie 0)', () => {
+    const entries = [
+      { item: 'neg', weight: -5 },
+      { item: 'null', weight: 0 },
+      { item: 'pos', weight: 1 },
+    ];
+    const prng = new Prng(randomSeed());
+    expect(pickWeighted(prng, entries)).toBe('pos');
+  });
 });

@@ -25,23 +25,6 @@ const SEED = 0x2f6e2b1;
 const FAILURE = 'Einstellung gebucht, dann gerissen.';
 const mutation = { entries: 0, agents: 0 };
 
-// Die echte Einstellung laeuft, erst danach reisst sie: so entsteht die
-// Teilmutation, die der Store im echten Command-Pfad zuruecknehmen muss.
-vi.mock('../venue-commands', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../venue-commands')>();
-  return {
-    ...actual,
-    hireCmd: (world: WorldState, ledger: Ledger, role: StaffRole): string => {
-      const entriesBefore = ledger.entryCount;
-      const agentsBefore = world.agents.length;
-      actual.hireCmd(world, ledger, role);
-      mutation.entries = ledger.entryCount - entriesBefore;
-      mutation.agents = world.agents.length - agentsBefore;
-      throw new Error(FAILURE);
-    },
-  };
-});
-
 function brawlSetup() {
   const world = createWorld('SMALL');
   const ledger = new Ledger();
@@ -163,7 +146,22 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
 describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
   it('laesst Welt, Ledger, PRNG, Facts und Journal nach dem Rollback unveraendert', async () => {
     vi.stubGlobal('localStorage', memoryStorage());
-    // Der Store ist ein Modul-Singleton: erst nach dem Speicher-Stub importieren.
+    // Mock hireAgent VOR dem Import von world-store
+    vi.mock('../../core/sim/staff', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../../core/sim/staff')>();
+      return {
+        ...actual,
+        hireAgent: (world: WorldState, ledger: Ledger, role: StaffRole): string => {
+          const entriesBefore = ledger.entryCount;
+          const agentsBefore = world.agents.length;
+          const result = actual.hireAgent(world, ledger, role);
+          mutation.entries = ledger.entryCount - entriesBefore;
+          mutation.agents = world.agents.length - agentsBefore;
+          throw new Error(FAILURE);
+        },
+      };
+    });
+    // Der Store ist ein Modul-Singleton: erst nach dem Speicher-Stub und Mock importieren.
     const { worldStore } = await import('../world-store');
     worldStore.newGame('SMALL');
 

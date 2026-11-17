@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "taskId": "lane/sim/issue-977-pickweighted-zyklisch",
+  "claimId": "lane/sim/issue-977-pickweighted-zyklisch",
+  "branch": "lane/sim/issue-977-pickweighted-zyklisch",
+  "baseSha": "0f8cd59a1ea482534f63aa48b0e8405946ab2a9f",
+  "phase": "READY",
+  "title": "[P2][RNG] pickWeighted muss nach abgelehnten Kandidaten den Rest des Pools zyklisch prüfen",
+  "goal": "pickWeighted(): zweite Schleife muss zyklisch vom Anfang bis vor startIndex laufen (nicht nur startIndex bis Ende); Null-/negative Gewichte explizit behandeln; kein zusätzlicher PRNG-Verbrauch (AC: 'Fallback verbraucht keinen weiteren PRNG-Wert'); Tests für jeden Consumer (traits.ts, guest-choice.ts): Fall 'gültiger Kandidat vor dem Startindex'",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "pickweighted-no-cycle",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "pickWeighted() sucht jetzt zyklisch: (start + offset) % entries.length"
+    },
+    {
+      "id": "no-additional-prng",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "Kein zusätzlicher PRNG-Verbrauch; ein nextFloat() wie vorher"
+    },
+    {
+      "id": "consumers-traits-guestchoice",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "Consumer: randomPersona() in traits.ts:31 und tryGame() in guest-choice.ts:84"
+    }
+  ],
+  "nextAction": "PR gegen main erstellen",
+  "revision": 2
+}
