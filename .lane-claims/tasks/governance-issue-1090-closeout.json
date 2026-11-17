@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-closeout",
+  "claimId": "lane/governance/issue-1090-closeout",
+  "branch": "lane/governance/issue-1090-closeout",
+  "baseSha": "319a957da473f0d2e5e6f67a1e92ad130bb63efb",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout issue-1090: Hooks 755 und Claims schliessen",
+  "goal": "Alle Hooks im Index ausfuehrbar, kein offener issue-1090-Claim nach gemergten PRs.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "findings": [],
+  "nextAction": "Nach dem Merge keine offene Arbeit fuer issue-1090.",
+  "revision": 1
+}
