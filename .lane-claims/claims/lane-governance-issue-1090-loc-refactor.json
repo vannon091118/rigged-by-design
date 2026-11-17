@@ -3,7 +3,7 @@
   "owner": "Integrator",
   "branch": "lane/governance/issue-1090-full-gate-repair",
   "baseSha": "0ffa22b5337a9652892fe0f442cbbf3758b488c6",
-  "issue": 1090,
+  "issue": 1100,
   "task": "LOC-Refactor pretask/promote, Guard-Haertung und Vollnachweis main",
   "goal": "pretask und promote funktionsgleich modularisieren, LOC-Guard fuer src und scripts erzwingen und den Vollnachweis auf main-Stand bringen",
   "pathAllowlist": [
