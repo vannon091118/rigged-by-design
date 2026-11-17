@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "fix-main-lint-command-atomicity",
+  "claimId": "fix/main-lint-command-atomicity",
+  "branch": "fix/main-lint-command-atomicity",
+  "baseSha": "6f78b4c1230a83a303c1629b4ebab0bf7c76de1e",
+  "phase": "IMPLEMENTING",
+  "title": "Main-Lint-Fix command-atomicity",
+  "goal": "Den ungenutzten Rueckgabewert im bestehenden Store-Test entfernen, ohne Verhalten zu aendern; main wieder 13/13 gruen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge und verify light auf main.",
+  "revision": 1
+}

@@ -120,3 +120,11 @@ bash -n scripts/shell/guard.sh              # Shell-Syntax
 - Die generierten Referenzartefakte bleiben bestehen und werden weiterhin nach einem Merge regeneriert.
 - Der `PreToolUse`-Hook wirkt in Claude-Code-Sitzungen; Freebuff und andere Clients nutzen ihn nicht automatisch. Dort ist `rbd shell watch` der lokale Durchsetzungspfad, und die Git-Hooks sichern Claims/Vertrag unabhängig davon.
 - Die guarded Bash prüft die aufgerufenen Werkzeugfunktionen, nicht beliebige Shell-Builtins. `cat`/`ls` bleiben lesend erlaubt; die Pflichtlektüre wird über die Arbeitswerkzeuge und den Hook erzwungen, nicht über jedes Builtin.
+
+## Merge-Beleg (2026-11-17)
+
+- Governance-Commit: `f4e94609`; PR: **#1083**; Merge-Status: **gemergt** als `6f78b4c1` auf `main`.
+- Pre-Push-Hook: Claim-/Board-Gate grün (`OPEN · claimed-self`, Claim A1); Push über den authentifizierten Connector, keine GitHub Actions.
+- `main` enthält den Feature-Commit und den Merge; die Doku-/Baum-/Claim-Gates laufen auf diesem Stand erneut.
+- Einzige Vorbelastung: der ungenutzte Rückgabewert im bestehenden Store-Test; die separate Fix-Lane Issue #1084 stellt `rbd verify light` wieder auf 13/13.
+

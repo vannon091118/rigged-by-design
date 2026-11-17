@@ -158,12 +158,13 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
 describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
   it('laesst Welt, Ledger, PRNG, Facts und Journal nach dem Rollback unveraendert', async () => {
     vi.stubGlobal('localStorage', memoryStorage());
-    // Mock hireAgent NUR fuer diesen Test
+    // Mock hireAgent NUR fuer diesen Test; der Originalaufruf mutiert vor dem Fehler.
+    const originalHireAgent = staffModule.hireAgent;
     hireAgentSpy = vi.spyOn(staffModule, 'hireAgent').mockImplementation(
-      (world: WorldState, ledger: Ledger, role: StaffRole): string => {
+      (world: WorldState, ledger: Ledger, role: StaffRole) => {
         const entriesBefore = ledger.entryCount;
         const agentsBefore = world.agents.length;
-        const result = staffModule.hireAgent(world, ledger, role);
+        originalHireAgent(world, ledger, role);
         mutation.entries = ledger.entryCount - entriesBefore;
         mutation.agents = world.agents.length - agentsBefore;
         throw new Error(FAILURE);
