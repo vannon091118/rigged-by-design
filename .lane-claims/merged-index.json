@@ -277,6 +277,12 @@
       "number": 1086,
       "headSha": "ac6ff28dd933318b866438a850fe437af034162a",
       "mergeSha": "13a9644c1c8f20b0725bcae905f18bbe5e0ea718"
+    },
+    {
+      "branch": "fix/main-lint-command-atomicity",
+      "number": 1087,
+      "headSha": "9a024244b3cb4faf770fe8bc1c449b9ae7a7c77b",
+      "mergeSha": "2bed35d30f78e2f8b7d79b66438482a5605f8f1f"
     }
   ]
 }

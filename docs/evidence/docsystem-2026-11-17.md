@@ -129,5 +129,7 @@ bash -n scripts/shell/guard.sh              # Shell-Syntax
 - Einzige Vorbelastung: der ungenutzte Rückgabewert im bestehenden Store-Test; die separate Fix-Lane Issue #1084 stellt `rbd verify light` wieder auf 13/13.
 - Fix-Commit: `ac6ff28d`; PR: **#1086**; Merge-Status: **gemergt** als `13a9644c`; fokussierter Store-Test 5/5.
 - Closeout: `merged-index` nach den Merges regeneriert; `rbd verify light` auf `main` wieder **13/13**.
+- Closeout #1087: Merge `2bed35d3`; der finale Index-Nachtrag wird per **Squash** gemergt, damit der Generator keinen weiteren Merge-Eintrag fuer sich selbst erzeugt.
+
 
 
