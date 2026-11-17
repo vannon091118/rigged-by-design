@@ -4,7 +4,7 @@
   "claimId": "lane/store/issue-988-save-cadence",
   "branch": "lane/store/issue-988-save-cadence",
   "baseSha": "4a5430eb6666349c59672b4a4bb94a18185e6f80",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Issue #988: Turn-Save drosseln und beim Tab-Wechsel sichern",
   "goal": "Der passive Takt speichert hoechstens alle SAVE_EVERY_TICKS (30 Ticks, ~15,6 s) statt alle sechs; pagehide und Wechsel in den Hintergrund sichern den ausstehenden Stand; ein Test belegt die Grenze.",
   "taskType": "single",
@@ -18,6 +18,6 @@
     "mergedSha": "0eac60897fe67a14e491b425917451b72325eea4"
   },
   "findings": [],
-  "nextAction": "Merge belegt; nachziehen auf AFTERCARE, dann DONE.",
+  "nextAction": "Nachsorge abgeschlossen; letzter Schritt DONE mit Claim merged.",
   "revision": 1
 }
