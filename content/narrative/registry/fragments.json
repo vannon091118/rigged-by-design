@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:80452f2526c9a935b74d9a6b6f32046d328540ea1a21947f4d4071b806c79e6d",
+  "contentHash": "sha256:f646a503e2bec69af69f391fa253e3ba9c249445e1889f0a2129cad8f0bca8e3",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10667,6 +10667,28 @@
       "text": "Am Schwarzen Brett hängt ein Lesezeichen: eine Kerbe neben dem letzten Zettel, den der Wächter gelesen hat. Wer neu anschlägt, bekommt eine eigene Kerbe – und wenn eine Seite fehlt, bleibt die Kerbe stehen, bis der Rest nachgelesen ist. Ein fehlendes Blatt ist kein leeres Brett.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-14-lesezeichen.json"
+    },
+    {
+      "contributionId": "life-sim-day-typecheck-01",
+      "turnId": "2026-11-17T00:25Z-life-sim-day-typecheck",
+      "agentId": "liilith",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Test beschrieb den Tag noch mit einem Schluessel, den das Haus laengst abgegeben hatte: er verlangte die Uhr als Gegenstand, obwohl sie nur noch auf Anfrage herausgegeben wird, und zaehlte eine einzelne Immobilie, wo inzwischen eine Liste steht. Der Abend selbst war nie kaputt - nur die Beschreibung passte nicht mehr zum Aktenschrank. Jetzt fragt der Test nach der Uhr, wenn er sie braucht, und liest die Liste, die wirklich gefuehrt wird. Kein neues Spielverhalten, nur eine Fixture, die den Vertrag wieder trifft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-life-sim-day-typecheck.json"
     },
     {
       "contributionId": "liilith-787-esport-roles",

@@ -54,7 +54,7 @@ function start(): { world: WorldState; ledger: ReturnType<typeof createNewGame>[
     world,
     ledger: game.ledger,
     prng,
-    scene: new SceneCommands({ world: () => world, emit: () => {}, notice: () => {}, prng, ledger: game.ledger }),
+    scene: new SceneCommands({ world: () => world, emit: () => {}, notice: () => {}, prng: () => prng, ledger: () => game.ledger }),
   };
 }
 
@@ -66,7 +66,7 @@ describe('Vollständiger Lebenssimulations-Tag', () => {
     expect(world.onboarding?.step).toBe('OPENING');
     expect(world.scene.kind).toBe('APARTMENT');
     expect(world.crates).toHaveLength(1);
-    expect(world.player.property).toBeNull();
+    expect(world.player.properties).toEqual([]);
 
     // 2. Eröffnung abschließen: in die Wohnung erwachen.
     scene.finishOpening();
@@ -143,7 +143,7 @@ describe('Vollständiger Lebenssimulations-Tag', () => {
     playerTakeHome(ledger, fromVC(100), world.tick);
     const balanceBefore = ledger.getBalance('PORTEMONNAIE');
     buyProperty(world, ledger, 'GEWERBERAUM', world.tick);
-    expect(world.player.property?.id).toBe('GEWERBERAUM');
+    expect(world.player.properties.map((site) => site.propertyId)).toContain('GEWERBERAUM');
     expect(ledger.getBalance('PORTEMONNAIE')).toBeLessThan(balanceBefore);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
 
@@ -165,7 +165,7 @@ describe('Vollständiger Lebenssimulations-Tag', () => {
     expect(loadedWorld.player.position).toEqual(world.player.position);
     expect(loadedWorld.player.job?.jobId).toBe('BARTENDER');
     expect(loadedWorld.player.job?.workDays).toBe(1);
-    expect(loadedWorld.player.property?.id).toBe('GEWERBERAUM');
+    expect(loadedWorld.player.properties.map((site) => site.propertyId)).toContain('GEWERBERAUM');
     expect(loadedLedger.verifyLedgerIntegrity()).toBe(true);
     expect(loadedLedger.entryCount).toBeGreaterThanOrEqual(ledger.entryCount);
 
@@ -175,8 +175,8 @@ describe('Vollständiger Lebenssimulations-Tag', () => {
       world: () => loadedWorld,
       emit: () => {},
       notice: () => {},
-      prng: loadedPrng,
-      ledger: loadedLedger,
+      prng: () => loadedPrng,
+      ledger: () => loadedLedger,
     });
     loadedScene.enterCity();
     expect(loadedWorld.scene.kind).toBe('CITY');
