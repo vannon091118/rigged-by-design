@@ -108,7 +108,7 @@ function verifyNarrativeStaged() {
 }
 
 stageOwnClaim();
-run('verify-lane-claims.mjs');
+run('verify-lane-claims.mjs', [], { BASE_REF: process.env.BASE_REF ?? 'origin/main' });
 run('verify-output-budget.mjs');
 run('verify-contracts.mjs');
 run('verify-task-contract.mjs', ['--staged']);
@@ -133,7 +133,7 @@ run('verify-narrative-content.mjs');
 
 // Der Claim wird nach dem Stagen der generierten Dateien erneut geprueft:
 // kein Generator darf eine nicht gedeckte Datei in den Commit schieben.
-run('verify-lane-claims.mjs');
+run('verify-lane-claims.mjs', [], { BASE_REF: process.env.BASE_REF ?? 'origin/main' });
 run('verify-narrative-blocks.mjs', ['--commit', '--pr'], {
   BASE_REF: process.env.BASE_REF ?? 'origin/main',
 });

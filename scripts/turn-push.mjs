@@ -4,7 +4,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
-import { claimForBranch } from './lib/lane-claims.mjs';
+import { claimForBranch, openClaims } from './lib/lane-claims.mjs';
 import {
   loadTaskContractForClaim,
   makeTaskContract,
@@ -83,6 +83,8 @@ if (branchClaim && !taskContract) {
   taskContract = makeTaskContract(branchClaim, {
     baseSha: git(['merge-base', 'HEAD', `origin/${TARGET_BRANCH}`]) || branchClaim.baseSha,
     nextAction: 'Erste Aenderung im Claim-Scope; danach turn:finish ohne Flags.',
+    parallelAgents: branchClaim?.parallelAgents ?? 1,
+    conflictResolution: branchClaim?.conflictResolution ?? 'strict',
   });
 }
 if (branchClaim && taskContract) {
@@ -125,12 +127,15 @@ const stage = () => {
     stageList(paths);
     return;
   }
-  const claim = claimForBranch(currentBranch);
+  const claims = openClaims();
+  const claim = claims.find((c) => c.branch === currentBranch) || claimForBranch(currentBranch);
   if (!claim) {
     fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; kein Staging ohne Allowlist`);
     process.exit(1);
   }
-  const scope = scopeChanges({ changed: changedPaths(), allowlist: claim.pathAllowlist });
+  // Berücksichtige parallelAgents: bei paralleler Arbeit wird die Allowlist
+  // je Claim separat geprüft; nur Pfade im eigenen Claim-Scope gestagen.
+  const scope = scopeChanges({ changed: changedPaths(), allowlist: claim.pathAllowlist, claims });
   if (!scope.ok) {
     fail(1, 'ERR-4019', 'turn:finish', `Pfade ausserhalb des Claims: ${scope.foreign.slice(0, 8).join(', ')}`);
     process.exit(1);
@@ -155,7 +160,8 @@ if (resumePending) {
 // eines parallelen Agenten einsammeln; ein Pfad ausserhalb der Allowlist ist
 // ein Befund (ERR-4019), keine stille Mitnahme.
 if (paths.length === 0 && schmutz) {
-  const claim = claimForBranch(currentBranch);
+  const claims = openClaims();
+  const claim = claims.find((c) => c.branch === currentBranch) || claimForBranch(currentBranch);
   if (!claim) {
     fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; erst Claim eintragen, dann committen`);
     process.exit(1);
@@ -169,7 +175,7 @@ if (paths.length === 0 && schmutz) {
     .filter(Boolean)
     .map((line) => line.slice(2).trim())
     .map((path) => path.split(' -> ').pop());
-  const scope = scopeChanges({ changed, allowlist: claim.pathAllowlist });
+  const scope = scopeChanges({ changed, allowlist: claim.pathAllowlist, claims });
   if (!scope.ok) {
     fail(1, 'ERR-4019', 'turn:finish', `Pfade ausserhalb des Claims: ${scope.foreign.slice(0, 8).join(', ')}; fremde Arbeit bleibt unangetastet`);
     process.exit(1);
