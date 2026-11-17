@@ -1,0 +1,17 @@
+{
+  "id": "gov/fix-docs-index-1092",
+  "owner": "Governance-Owner",
+  "branch": "fix/issue-1092-docs-index-ud-links",
+  "baseSha": "e2ee8608ce80e1b5592f1f4a4ef5ae489b621048",
+  "issue": 1092,
+  "task": "docs/INDEX.md um die vier UD-Referenzen (UD-01, UD-13, UD-21, UD-27) ergaengen, damit verify-docs gruen wird",
+  "pathAllowlist": [
+    "docs/INDEX.md",
+    ".lane-claims/claims/gov-fix-docs-index-1092.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e2ee8608ce80e1b5592f1f4a4ef5ae489b621048"
+}

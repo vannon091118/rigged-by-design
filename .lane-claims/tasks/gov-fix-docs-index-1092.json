@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "gov-fix-docs-index-1092",
+  "claimId": "gov/fix-docs-index-1092",
+  "branch": "fix/issue-1092-docs-index-ud-links",
+  "baseSha": "e2ee8608ce80e1b5592f1f4a4ef5ae489b621048",
+  "phase": "IMPLEMENTING",
+  "title": "docs/INDEX.md um die vier UD-Referenzen (UD-01, UD-13, UD-21, UD-27) ergaengen, damit verify-docs gruen wird",
+  "goal": "verify-docs auf main gruen bekommen; Issue #1092 durch Maintainer-Review und Merge schliessen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Branch puschen, PR oeffnen, Label review-waiting setzen; Maintainer-Cron uebernimmt Review und Merge",
+  "revision": 1
+}
