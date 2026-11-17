@@ -766,10 +766,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3480 |
-| Gelistete Dateien | 3480 |
+| Getrackte Dateien | 3481 |
+| Gelistete Dateien | 3481 |
 | Getrackte Ordner | 121 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (155), .lanes (1), artifacts (1), bin (1), content (1242), docs (100), packages (27), public (571), scripts (229), src (1130) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (155), .lanes (1), artifacts (1), bin (1), content (1243), docs (100), packages (27), public (571), scripts (229), src (1130) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -788,7 +788,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1238 Datei(en)
+- `content/narrative/contributions/` — 1239 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -937,7 +937,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 73 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
@@ -2308,6 +2308,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-verify-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-sections.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-test-target.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-17-board-cache-1102.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-dead-exports-1090.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-full-gate-proof.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-17-life-sim-day-typecheck.json` — { — gelesen: 21 Zeilen
@@ -2315,8 +2316,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27796 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4957 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27818 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4961 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -2324,7 +2325,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 896 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1214 Zeilen
-- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 109 Zeilen
+- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 114 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 29 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2756 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
@@ -3065,9 +3066,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
 - `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 133 Zeilen
 - `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 168 Zeilen
-- `scripts/lib/board-read.mjs` — Board lesen mit zwei Wegen — ein Ergebnis. — gelesen: 51 Zeilen
+- `scripts/lib/board-read.mjs` — Board lesen mit zwei Wegen — ein Ergebnis. — gelesen: 90 Zeilen
 - `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 135 Zeilen
-- `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 155 Zeilen
+- `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 158 Zeilen
 - `scripts/lib/body-paths.mjs` — Pfadklassen der Commit-/PR-Bodies. Eigene Datei, weil `body-sync.mjs` sonst — gelesen: 11 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 267 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
@@ -3169,7 +3170,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/repo-inventory.mjs` — Repository-Inventur: Bestaende werden am Remote erkannt, nicht am Ordnernamen. — gelesen: 111 Zeilen
 - `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 41 Zeilen
 - `scripts/lib/run-budget.mjs` — Externes Laufbudget: eine Wahrheit für Stop-Entscheidung und Finding-Gate. — gelesen: 167 Zeilen
-- `scripts/lib/shell-guard.mjs` — Die Regeln der guarded Shell, ohne Bash und ohne Seiteneffekt. — gelesen: 95 Zeilen
+- `scripts/lib/shell-guard.mjs` — Die Regeln der guarded Shell, ohne Bash und ohne Seiteneffekt. — gelesen: 101 Zeilen
 - `scripts/lib/staging-scope.mjs` — Staging-Umfang: `git add -A` ist nur zulaessig, wenn jede Aenderung im — gelesen: 88 Zeilen
 - `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
 - `scripts/lib/sync-hooks.mjs` — Jeder Sync-Befehl fragt den Hook-Stand live bei GitHub ab. — gelesen: 39 Zeilen

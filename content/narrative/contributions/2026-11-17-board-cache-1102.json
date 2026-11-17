@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-17T23:10Z-board-cache-1102",
+  "contributionId": "board-cache-1102-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Das Board war nicht erreichbar, also entschied der letzte belegte Stand. Nicht die Datei, die jemand gerade geschrieben hat - der Schnappschuss, den GitHub zuvor bestaetigt hatte. Wer den Cache frisiert, merkt es spaetestens beim naechsten Lauf: ohne Quelle bleibt das Gate zu.",
+  "directives": []
+}

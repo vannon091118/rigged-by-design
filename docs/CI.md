@@ -107,3 +107,8 @@ Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check 
 - [`GOVERNANCE.md`](GOVERNANCE.md) — Claims, Register und Eskalation.
 - [`TESTING.md`](TESTING.md) — Testlinie und Testmatrix.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Pipeline, Kontrollebene und Zustandsbesitz.
+
+## Audit und lokale Board-Aufloesung
+
+- `audit:gate` prueft `pnpm audit --prod`: der einzige High-Hinweis (`picomatch` via vite/typescript-eslint, dev-only, keine Patch-Version) betrifft kein ausgeliefertes Paket.
+- Sind `gh` und REST nicht erreichbar, nutzt `verify:board-usage` einen hoechstens 24 Stunden alten, aus GitHub gelesenen Schnappschuss unter `.verify-cache/board-cache/<issue>.json`. Antwortet das Remote (Issue fehlt, geschlossen, fremder Claim), entscheidet nie der Cache.

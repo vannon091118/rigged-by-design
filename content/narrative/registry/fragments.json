@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7497dc5fe6e137f92c2a02f5a092a950e23b3ee8d11726af68c68ad128a25cf5",
+  "contentHash": "sha256:fe58d105830d83306f29f0a20654f885a1095e07bdabaa27618e70046bdee318",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -3014,6 +3014,28 @@
       "text": "Der Schein bleibt in der Tasche des Buchmachers liegen, bis der Abend ausgezählt ist – auch wenn im Kiez längst die nächste Runde läuft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-bet-slip-register.json"
+    },
+    {
+      "contributionId": "board-cache-1102-01",
+      "turnId": "2026-11-17T23:10Z-board-cache-1102",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Board war nicht erreichbar, also entschied der letzte belegte Stand. Nicht die Datei, die jemand gerade geschrieben hat - der Schnappschuss, den GitHub zuvor bestaetigt hatte. Wer den Cache frisiert, merkt es spaetestens beim naechsten Lauf: ohne Quelle bleibt das Gate zu.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-17-board-cache-1102.json"
     },
     {
       "contributionId": "board-closeout-relation",
