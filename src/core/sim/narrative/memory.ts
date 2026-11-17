@@ -22,6 +22,24 @@ function remember(world: WorldState, fact: VisitEndedFact): boolean {
   if (visitor.memories.length > NARRATIVE_LIMITS.memories) {
     visitor.memories.splice(0, visitor.memories.length - NARRATIVE_LIMITS.memories);
   }
+  // Sync Visitor.memories -> CityResidentState.memories über residentNpcId
+  if (visitor.residentNpcId) {
+    const life = ensureCityLife(world);
+    const residentIndex = life.residents.findIndex((r) => r.npcId === visitor.residentNpcId);
+    if (residentIndex >= 0) {
+      const npcMemories = visitor.memories.map((mem) => ({
+        id: mem.factId,
+        tick: mem.tick,
+        kind: 'SOCIAL' as const,
+        aboutNpcId: null,
+        sentiment: mem.valence === 'GOOD' ? 1 : mem.valence === 'BAD' ? -1 : 0,
+        confidence: 1,
+      }));
+      const residents = [...life.residents];
+      residents[residentIndex] = { ...residents[residentIndex], memories: npcMemories };
+      world.cityLife = { ...life, residents };
+    }
+  }
   return true;
 }
 
