@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-978-skill-effects",
+  "claimId": "lane/sim/issue-978-skill-effects",
+  "branch": "lane/sim/issue-978-skill-effects",
+  "baseSha": "02fb183a676aaa749d2e4cdf448c3a5e12b193e8",
+  "phase": "IMPLEMENTING",
+  "title": "[P2][PROGRESSION] Angezeigte Fach-Skill-Effekte mit den tatsaechlichen Produktionswirkungen abgleichen (#978)",
+  "goal": "Skill-Anzeige und Produktionsformel stimmen ueberein; kein Gewinnchance-Bonus ohne Engine-Wirkung; Skill-Fortschritt im Charakterfenster mit Level, XP und realer Wirkung",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Charakterfenster-UI und Save/Load fuer Skills lokalisieren; player-skills.ts cardDealing-Text anpassen; Tests pro Skill schreiben; verify:light gruen stellen; lokal commiten",
+  "revision": 1
+}
