@@ -9,7 +9,7 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
-| 2026-11-17 | Fuenf Pflichtdokus in `docs/governance/`; Budget misst ein echter Tokenizer, Drift-Check in pre-commit und pre-push, Board-Gate lokal ueber verifizierten Cache. | `scripts/lib/doc-core.mjs`, `scripts/lib/doc-drift.mjs` |
+| 2026-11-17 | Fuenf Pflichtdokus in `docs/governance/`; Budget misst ein echter Tokenizer, Drift-Check in pre-commit und pre-push, Board-Gate lokal ueber verifizierten Cache; Tooling-Uhr lint-konform. | `scripts/lib/doc-core.mjs`, `scripts/lib/doc-drift.mjs` |
 | 2026-11-17 | LOC-Guard deckt `scripts/` ohne Ausnahme; pretask und promote modularisiert. | #1101, `scripts/pretask.mjs`, `scripts/promote.mjs` |
 | 2026-11-17 | NPC-Identitaet: Begegnungen schreiben ueber die gebundene visitorId in die kanonische Erinnerung. | #979, `src/core/sim/narrative/memory.ts` |
 | 2026-11-17 | 10k-Lesepfad, PreToolUse-Hook und guarded Shell mit Watcher. | `scripts/lib/doc-read.mjs`, `scripts/shell-watch.mjs` |

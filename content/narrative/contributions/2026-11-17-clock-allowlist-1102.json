@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-17T23:20Z-clock-allowlist-1102",
+  "contributionId": "clock-allowlist-1102-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Werkzeuguhr steht jetzt auf der Liste der erlaubten Zeitnehmer, nicht im Spielcode. Der Unterschied ist klein im Text und gross im Betrieb: der Cache darf altern, der Spielzustand nicht.",
+  "directives": []
+}

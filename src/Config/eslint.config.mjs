@@ -140,6 +140,7 @@ export default defineConfig(
       'scripts/doc-sync.mjs',
       'scripts/doc-stub.mjs',
       'scripts/lib/doc-sync.mjs',
+      'scripts/lib/board-read.mjs',
       'scripts/lib/gate-runner.mjs',
       'scripts/lib/gate-cache.mjs',
       'scripts/lib/gate-summary.mjs',
