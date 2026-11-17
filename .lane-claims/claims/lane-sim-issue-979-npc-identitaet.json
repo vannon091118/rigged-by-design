@@ -1,0 +1,21 @@
+{
+  "id": "lane/sim/issue-979-npc-identitaet",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-979-npc-identitaet",
+  "baseSha": "cb0523f373bcdfdb32499e45d5e1b451b7baebd0",
+  "issue": 979,
+  "task": "NPC-Identitaet: Stadt- und Casino-Begegnungen eines NPC ueber die gebundene visitorId in die kanonische Besuchererinnerung schreiben; Casino-Disposition und Rueckkehr waegen stadtseitige Erinnerungen mit; Retention-Grenzen und Save/Load deterministisch erhalten (AC #979)",
+  "pathAllowlist": [
+    "src/core/sim/narrative/memory.ts",
+    "src/core/sim/city-life-movement.ts",
+    "src/core/sim/narrative/__tests__/npc-identity-memory.test.ts",
+    "docs/LAST-CHANGES.md",
+    ".lane-claims/tasks/lane-sim-issue-979-npc-identitaet.json",
+    ".lane-claims/claims/lane-sim-issue-979-npc-identitaet.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "54200b74bc65fc7fca968cfc9eb08b62bff40fd2"
+}
