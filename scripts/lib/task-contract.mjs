@@ -39,7 +39,15 @@ export const CLOSEOUT_KINDS = Object.freeze(['post-merge']);
 const FULL_SHA = /^[0-9a-f]{40}$/;
 const TASK_ID = /^[a-z0-9][a-z0-9-]*$/;
 
-/** Erlaubte Phasenwechsel; derselbe Zustand ist ein erneuter Lauf, kein Wechsel. */
+/** Erlaubte Phasenwechsel.
+ *
+ * Mehrere Agents können gleichzeitig `IMPLEMENTING` sein – es gibt kein
+ * 1:1 Mapping Claim → Task. Ein Agent kann von `READY` → `IMPLEMENTING`
+ * wechseln, während ein anderer Agent ebenfalls `IMPLEMENTING` ist.
+ *
+ * `conflictResolution` bestimmt, wie sich widersprüchliche Claims vertragen:
+ * 'strict' = blockieren bei Konflikten, 'flexible' = erlauben bei gültiger Konfiguration.
+ */
 export const PHASE_TRANSITIONS = Object.freeze({
   READY: ['READY', 'IMPLEMENTING', 'CI_PENDING'],
   IMPLEMENTING: ['IMPLEMENTING', 'READY', 'CI_PENDING'],
@@ -66,7 +74,7 @@ export function contractRelativePath(taskId) {
 }
 
 /** Ein Vertrag aus Claim und Startphase; ohne Zeitstempel, damit er deterministisch bleibt. */
-export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAction = 'Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.' } = {}) {
+export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAction = 'Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.', parallelAgents = 1, conflictResolution = 'strict' } = {}) {
   const taskId = taskIdForClaim(claim);
   return {
     version: 1,
@@ -84,6 +92,8 @@ export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAct
     findings: [],
     nextAction,
     revision: 1,
+    parallelAgents,
+    conflictResolution,
   };
 }
 
@@ -184,6 +194,17 @@ export function validateTaskContract(contract, { claim = null, branch = '', prev
   }
   if (!Number.isInteger(contract.revision) || contract.revision < 1) violations.push('revision ist keine positive Ganzzahl');
   if (contract.phase !== 'DONE' && !String(contract.nextAction ?? '').trim()) violations.push('nextAction fehlt');
+
+  if (contract.parallelAgents !== undefined) {
+    if (!Number.isInteger(contract.parallelAgents) || contract.parallelAgents < 1) {
+      violations.push('parallelAgents ist keine positive Ganzzahl');
+    }
+  }
+  if (contract.conflictResolution !== undefined) {
+    if (!['strict', 'flexible'].includes(String(contract.conflictResolution))) {
+      violations.push(`conflictResolution '${String(contract.conflictResolution)}' ist unbekannt`);
+    }
+  }
 
   if (contract.pr !== null && contract.pr !== undefined) {
     if (!isObject(contract.pr)) violations.push('pr ist weder null noch ein Objekt');
@@ -351,8 +372,7 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
     status: 'CONTINUE',
     phase: contract?.phase ?? 'READY',
     nextAction: contract?.nextAction ?? 'Task-Vertrag fehlt; `pnpm run turn:finish` legt ihn beim ersten Turn aus dem Claim an.',
-    findings,
-    parallelLane: null,
+    parallelLane: contract?.parallelLane ?? null,
   };
   if (blockers.length > 0) {
     return { ...base, status: 'BLOCKED', nextAction: `Blockers aufloesen: ${blockers[0]}` };
