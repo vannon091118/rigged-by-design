@@ -15,7 +15,7 @@ import {
   READING_DOCS,
   READING_TOKEN_BUDGET,
   budgetedText,
-  estimateTokens,
+  countTokens,
 } from './doc-core.mjs';
 import { ROOT } from './report.mjs';
 
@@ -44,7 +44,7 @@ export function readingEntries(root = ROOT) {
       // Fehlt der Kern, bleibt das Receipt ungueltig; der Aufrufer nennt den Pfad.
     }
     const body = text === null ? '' : (budgetedText(doc, text) ?? '');
-    const tokens = estimateTokens(body);
+    const tokens = countTokens(body);
     return {
       path: doc.path,
       title: doc.title,

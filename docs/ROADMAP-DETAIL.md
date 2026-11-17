@@ -3,6 +3,7 @@
 <!-- rbd-doc: managed -->
 
 ## Kern
+**Kurzfassung:** Die verbindliche, budgetierte Roadmap steht in [governance/ROADMAP.md](governance/ROADMAP.md); diese Datei trägt die Detailtabellen.
 **Nordstern:** begehbare Lebenssimulation — Wohnung, Straße, Stadt, Bewohner. Das Casino ist Start- und Testumgebung, nicht das Genre.
 **Major-Ziele:** M1 Erster Abend · M2 Wohnung→Stadt · M3 Render/Living-World-Rework · M4 Wirtschaft & Events · M5 1.500 Textbausteine · M6 Abnahme & Release.
 **Minor-Ziele:** S1–S5 (Spiel), PR-01–PR-10 (Präsentation), R-0–R-4 (Render), P-13 (Textbausteine). Eine Zeile = eine Aufgabe mit Status, Beleg und Fertig-Kriterium.
@@ -159,7 +160,7 @@ Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| P-13 | 798 / 1500 gewertete Textbausteine (1030 gesamt; `documentation`, `memory`, `rumor` quota-frei) | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 gewertete Bausteine, kein gewerteter Pool unter 50, freigestellte Slots mit Befund dokumentiert |
+| P-13 | 799 / 1500 gewertete Textbausteine (1030 gesamt; `documentation`, `memory`, `rumor` quota-frei) | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 gewertete Bausteine, kein gewerteter Pool unter 50, freigestellte Slots mit Befund dokumentiert |
 | S4-01 | Neue Pools brauchen einen Leser im Spiel | offen | `scripts/verify-narrative-blocks.mjs`, `src/core/sim/narrative` | Die Prüfung lehnt einen Textpool ohne anzeigendes System ab |
 | S4-02 | Geräte-, Lager- und Personal-Facts | offen | `src/core/sim/narrative/facts.ts` | Jeder Fact hat Definition, Template und Leser |
 | S4-03 | Narrative Balance messen statt begrenzen | offen | `src/core/sim/__tests__/balance-operating.test.ts` | Die Grenzen haben eine Messreihe, nicht nur einen Deckel |

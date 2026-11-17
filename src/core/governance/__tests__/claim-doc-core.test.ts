@@ -40,26 +40,31 @@ const claim = (patch: Partial<Claim> = {}): Claim => ({
 describe('claim doc core', () => {
   it('schuetzt die inhaltlichen Kern-Dokus und teilt Last Changes', () => {
     expect(META_FILES).toEqual(
-      expect.arrayContaining(['AGENTS.md', 'docs/INDEX.md', 'docs/WORKFLOW.md', 'docs/ROADMAP.md']),
+      expect.arrayContaining([
+        'docs/governance/AGENTS.md',
+        'docs/governance/PITFALLS.md',
+        'docs/governance/INDEX.md',
+        'docs/governance/ROADMAP.md',
+      ]),
     );
-    expect(META_FILES).not.toContain('docs/LAST-CHANGES.md');
-    expect(validateNewClaim(claim({ pathAllowlist: ['docs/INDEX.md'] })).ok).toBe(false);
-    expect(validateNewClaim(claim({ pathAllowlist: ['docs/WORKFLOW.md'] })).ok).toBe(false);
-    expect(validateNewClaim(claim({ pathAllowlist: ['docs/LAST-CHANGES.md'] })).ok).toBe(true);
+    expect(META_FILES).not.toContain('docs/governance/LAST-CHANGES.md');
+    expect(validateNewClaim(claim({ pathAllowlist: ['docs/governance/INDEX.md'] })).ok).toBe(false);
+    expect(validateNewClaim(claim({ pathAllowlist: ['docs/WORKFLOW.md'] })).ok).toBe(true);
+    expect(validateNewClaim(claim({ pathAllowlist: ['docs/governance/LAST-CHANGES.md'] })).ok).toBe(true);
     const governance = claim({
       id: 'lane/governance/docs',
       branch: 'lane/governance/docs',
-      pathAllowlist: ['docs/INDEX.md', 'docs/WORKFLOW.md', 'AGENTS.md'],
+      pathAllowlist: ['docs/governance/INDEX.md', 'docs/governance/PITFALLS.md', 'docs/governance/AGENTS.md'],
     });
     expect(validateNewClaim(governance).ok).toBe(true);
   });
 
   it('ignoriert die gemeinsame Last-Changes-Zeile als Kollision', () => {
-    const a = claim({ id: 'lane/a/demo', pathAllowlist: ['docs/LAST-CHANGES.md'] });
+    const a = claim({ id: 'lane/a/demo', pathAllowlist: ['docs/governance/LAST-CHANGES.md'] });
     const b = claim({
       id: 'lane/b/demo',
       branch: 'lane/b/demo',
-      pathAllowlist: ['docs/LAST-CHANGES.md'],
+      pathAllowlist: ['docs/governance/LAST-CHANGES.md'],
     });
     expect(findCollisions(a, [b])).toEqual([]);
   });

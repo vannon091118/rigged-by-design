@@ -29,7 +29,7 @@ describe('bot branches', () => {
     expect(claim?.allowsPath('pnpm-lock.yaml')).toBe(true);
     expect(claim?.allowsPath('.github/workflows/ci-verify.yml')).toBe(true);
     expect(claim?.allowsPath('src/core/economy.ts')).toBe(false);
-    expect(claim?.allowsPath('AGENTS.md')).toBe(false);
+    expect(claim?.allowsPath('docs/governance/AGENTS.md')).toBe(false);
     expect(claim?.allowsPath('scripts/promote.mjs')).toBe(false);
   });
 
@@ -157,7 +157,7 @@ describe('claim register trust', () => {
     });
     expect(validateNewClaim(valid).ok).toBe(true);
     expect(validateNewClaim({ ...valid, pathAllowlist: ['scripts/promote.mjs'] }).ok).toBe(false);
-    expect(validateNewClaim({ ...valid, pathAllowlist: ['AGENTS.md'] }).ok).toBe(false);
+    expect(validateNewClaim({ ...valid, pathAllowlist: ['docs/governance/AGENTS.md'] }).ok).toBe(false);
     expect(validateNewClaim({ ...valid, pathAllowlist: ['docs/CHANGELOG.md'] }).ok).toBe(false);
     expect(validateNewClaim({ ...valid, pathAllowlist: [] }).ok).toBe(false);
     expect(validateNewClaim({ ...valid, task: '' }).ok).toBe(false);
@@ -170,7 +170,7 @@ describe('claim register trust', () => {
       task: 'Governance',
       baseSha: 'b'.repeat(40),
       gateProfile: 'light',
-      pathAllowlist: ['scripts/**', 'AGENTS.md', 'docs/ARCHITECTURE.md'],
+      pathAllowlist: ['scripts/**', 'docs/governance/AGENTS.md', 'docs/ARCHITECTURE.md'],
     });
     expect(validateNewClaim(governance).ok).toBe(true);
   });
@@ -179,7 +179,7 @@ describe('claim register trust', () => {
     const shared = [
       '.lane-claims/claims.json',
       '.lane-claims/claims/lane-a.json',
-      'AGENTS.md',
+      'docs/governance/AGENTS.md',
       'docs/ARCHITECTURE.md',
       'package.json',
       'pnpm-lock.yaml',

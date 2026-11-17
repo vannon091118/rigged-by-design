@@ -106,6 +106,9 @@ export function evaluateBoardUsage({
   const state = String(issueClaim.state ?? '').toUpperCase();
   const status = String(issueClaim.status ?? 'unknown');
   facts.push(['Board', `${state || 'unbekannt'}${status ? ` · ${status}` : ''}`]);
+  if (issueClaim.source === 'cache') {
+    facts.push(['Board-Quelle', `Cache ${issueClaim.cachedAt ?? 'ohne Zeit'} (Remote nicht erreichbar)`]);
+  }
   if (state !== OPEN) {
     failures.push(`Issue #${claim.issue} ist ${state || 'unbekannt'}: eine Lane braucht ein offenes Issue`);
   }

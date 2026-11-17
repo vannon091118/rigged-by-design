@@ -43,13 +43,21 @@
 /public/                  @vannon091118
 /packages/                @vannon091118
 
-# Doku: Kern, Referenzen, Vertraege, Belege
-/docs/                    @vannon091118
-/docs/INDEX.md            @vannon091118
-/docs/WORKFLOW.md         @vannon091118
-/docs/ROADMAP.md          @vannon091118
-/docs/LAST-CHANGES.md     @vannon091118
-/docs/GOVERNANCE.md       @vannon091118
-/docs/CI.md               @vannon091118
-/docs/contracts/          @vannon091118
-/docs/evidence/           @vannon091118
+# Doku: Governance-Kern, Referenzen, Vertraege, Belege
+/docs/                            @vannon091118
+
+# Pflichtdokus: genau fuenf, je ≤500 Token
+/docs/governance/                 @vannon091118
+/docs/governance/AGENTS.md        @vannon091118
+/docs/governance/PITFALLS.md      @vannon091118
+/docs/governance/INDEX.md         @vannon091118
+/docs/governance/ROADMAP.md       @vannon091118
+/docs/governance/LAST-CHANGES.md  @vannon091118
+
+# Tiefe und Einstiege (Referenz, keine Pflichtdoku)
+/docs/ROADMAP-DETAIL.md           @vannon091118
+/docs/WORKFLOW.md                 @vannon091118
+/docs/GOVERNANCE.md               @vannon091118
+/docs/CI.md                       @vannon091118
+/docs/contracts/                  @vannon091118
+/docs/evidence/                   @vannon091118

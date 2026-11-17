@@ -10,7 +10,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { LOSSY_PIPE, isDocReadCommand, receiptProblems } from './doc-read.mjs';
+import { LOSSY_PIPE, isDocReadCommand, readingBudget, receiptProblems } from './doc-read.mjs';
 import { ROOT } from './report.mjs';
 
 export const GUARD_STATE_PATH = '.verify-cache/shell-guard.json';
@@ -83,6 +83,12 @@ export function recordViolation({ root = ROOT, command = '', reason = '', code =
 export function guardStatusLine(root = ROOT) {
   const receipt = receiptProblems(root);
   const state = readState(root);
+  // Dasselbe Budget wie `verify:docs`: der Watcher meldet eine Ueberschreitung
+  // live, statt nur das Receipt zu pruefen.
+  const budget = readingBudget(root);
+  if (!budget.ok && receipt.length === 0) {
+    return `ROT · Lesepfad ${budget.tokens}/${budget.budget} Token · Verstoesse ${state.count}`;
+  }
   if (receipt.length > 0) return `ROT · ${receipt[0]} · Verstoesse ${state.count}`;
   if (state.count > 0) return `INFO · Lesepfad gueltig · Verstoesse ${state.count} · letzter: ${state.last?.code ?? ''}`;
   return 'OK · Lesepfad gueltig · 0 Verstoesse';

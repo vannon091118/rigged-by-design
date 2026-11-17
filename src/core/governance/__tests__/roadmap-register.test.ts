@@ -1,5 +1,5 @@
 /**
- * @test-target: docs/ROADMAP.md
+ * @test-target: docs/ROADMAP-DETAIL.md
  * @error-code: ERR-4017
  *
  * Die Roadmap ist die einzige Liste offener Spiel- und Praesentationsarbeit.
@@ -25,7 +25,7 @@ const GOVERNANCE =
 
 type Task = { id: string; task: string; status: string; refs: string; done: string };
 
-const roadmap = readFileSync(join(ROOT, 'docs', 'ROADMAP.md'), 'utf8');
+const roadmap = readFileSync(join(ROOT, 'docs', 'ROADMAP-DETAIL.md'), 'utf8');
 const tasks: Task[] = roadmap
   .split('\n')
   .filter((line) => TASK.test(line))

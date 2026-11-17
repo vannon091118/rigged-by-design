@@ -50,7 +50,7 @@ export function prepareCommitMessage({ git, files, fail }) {
       '- Keine Runtime-, Test- oder Inhaltsaenderung im Diff; geaendert sind nur Dokumentation, Governance oder die Versionszeile.',
       '',
       REQUIRED_SECTIONS[2],
-      '- Offene Punkte stehen in docs/ROADMAP.md; dieser Commit behauptet keine Spielaenderung.',
+      '- Offene Punkte stehen in docs/ROADMAP-DETAIL.md; dieser Commit behauptet keine Spielaenderung.',
     ].join('\n');
   }
 

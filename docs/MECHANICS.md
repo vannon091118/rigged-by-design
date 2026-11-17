@@ -20,7 +20,7 @@ Reihenfolge, Besitz, Postfach und Review-Lage kommen aus GitHub, nicht aus `.lan
 
 ## Doku-Kern
 
-Fünf Pflichtdokus tragen den Doku-Kern: `AGENTS.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/ROADMAP.md` und `docs/LAST-CHANGES.md`. Jedes Dokument hat einen `## Kern` von höchstens 500 Token; zusammen bleiben sie unter 10.000 Token. `verify:docs` prüft zusätzlich, dass jede Referenz von [`INDEX.md`](INDEX.md) erreichbar ist, jeder Wurzelordner einen Eintrag in `.github/CODEOWNERS` hat und `LAST-CHANGES.md` nicht älter als das Changelog ist. `node scripts/doc-audit.mjs` zeigt die Messung; `node scripts/doc-audit.mjs --check` ist der Nachweis für den Vor-PR-Lauf.
+Fünf Pflichtdokus tragen den Doku-Kern und liegen in `docs/governance/`: `AGENTS.md`, `PITFALLS.md`, `INDEX.md`, `ROADMAP.md` und `LAST-CHANGES.md`. Jedes Dokument ist **vollständig** auf höchstens 500 Token begrenzt, gemessen mit einem echten Tokenizer (`gpt-tokenizer`, o200k_base); zusammen bleiben sie unter 10.000 Token. `verify:docs` prüft Budget, erreichbare Referenzen, Ordner-Owner und die Last-Changes-Kopplung; `verify:doc-drift` blockiert in pre-commit und pre-push Code ohne Doku-Aktualisierung. `node scripts/doc-audit.mjs` zeigt die Messung; `node scripts/doc-audit.mjs --check` ist der Nachweis für den Vor-PR-Lauf.
 
 ## Credential-Kette
 

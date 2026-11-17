@@ -17,7 +17,7 @@ import {
   auditDocs,
   commandFindings,
   docCoreProblems,
-  estimateTokens,
+  countTokens,
   kernBlock,
   lastChangesProblems,
   ownershipProblems,
@@ -46,7 +46,7 @@ describe('Doku-Kern: Budget und Struktur', () => {
 
   it('bleibt je Dokument unter 500 Token', () => {
     for (const doc of docs) {
-      expect(estimateTokens(budgeted(doc)), doc.path).toBeLessThanOrEqual(CORE_TOKEN_BUDGET);
+      expect(countTokens(budgeted(doc)), doc.path).toBeLessThanOrEqual(CORE_TOKEN_BUDGET);
     }
   });
 
@@ -56,10 +56,10 @@ describe('Doku-Kern: Budget und Struktur', () => {
       text: readFileSync(join(ROOT, doc.path), 'utf8'),
     }));
     expect(reading).toHaveLength(7);
-    const total = reading.reduce((sum: number, doc: LoadedDoc) => sum + estimateTokens(budgeted(doc)), 0);
+    const total = reading.reduce((sum: number, doc: LoadedDoc) => sum + countTokens(budgeted(doc)), 0);
     expect(total).toBeLessThanOrEqual(READING_TOKEN_BUDGET);
     for (const doc of reading) {
-      expect(estimateTokens(budgeted(doc)), doc.path).toBeLessThanOrEqual(CORE_TOKEN_BUDGET);
+      expect(countTokens(budgeted(doc)), doc.path).toBeLessThanOrEqual(CORE_TOKEN_BUDGET);
     }
   });
 
@@ -99,7 +99,7 @@ describe('Doku-Kern: Cross-Checks', () => {
   it('meldet verwaiste Referenzen', () => {
     const problems = referenceProblems({
       index: '[INDEX](INDEX.md)',
-      tracked: ['docs/INDEX.md', 'docs/NEU.md'],
+      tracked: ['docs/governance/INDEX.md', 'docs/NEU.md'],
     });
     expect(problems.join('\n')).toContain('docs/NEU.md');
   });

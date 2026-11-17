@@ -105,7 +105,7 @@ export function verifyDocParity(root = ROOT) {
   const read = (file) => readFileSync(join(root, file), 'utf8');
   return checkDocParity({
     ciText: read('docs/CI.md'),
-    agentsText: read('AGENTS.md'),
+    agentsText: read('docs/governance/AGENTS.md'),
     governanceText: read('docs/GOVERNANCE.md'),
   });
 }

@@ -171,4 +171,4 @@ Danach prüft `node scripts/claim-hygiene.mjs --check` alle Claims gegen den Boa
 - [`CI.md`](CI.md) — Required-Gates, Zustände und Workflow-Wahrheit.
 - [`GOVERNANCE.md`](GOVERNANCE.md) — Claims, Rollen, Register-Audit und Eskalation.
 - [`TESTING.md`](TESTING.md) — die eine Testlinie und die 17 Fälle.
-- [`INDEX.md`](INDEX.md) — vollständige Doku-Landkarte.
+- [`INDEX.md`](governance/INDEX.md) — vollständige Doku-Landkarte.

@@ -51,15 +51,15 @@ describe('Generierte Artefakte', () => {
   });
 
   it('erlaubt in Meta-Dateien nur den generierten Anteil', () => {
-    expect(generatedOnlyDiff('docs/ROADMAP.md', ['-| P-13 | 836/1500 Textbausteine | x', '+| P-13 | 838/1500 Textbausteine | x'])).toBe(true);
-    expect(generatedOnlyDiff('docs/ROADMAP.md', ['-| P-14 | alt | offen', '+| P-14 | neu | offen'])).toBe(false);
+    expect(generatedOnlyDiff('docs/ROADMAP-DETAIL.md', ['-| P-13 | 836/1500 Textbausteine | x', '+| P-13 | 838/1500 Textbausteine | x'])).toBe(true);
+    expect(generatedOnlyDiff('docs/ROADMAP-DETAIL.md', ['-| P-14 | alt | offen', '+| P-14 | neu | offen'])).toBe(false);
     expect(generatedOnlyDiff('docs/INVENTORY.md', ['-entfernt', '+hinzugefuegt'])).toBe(true);
     expect(generatedOnlyDiff('package.json', ['-"version": "0.3.1",', '+"version": "0.3.2",'])).toBe(false);
-    expect(generatedOnlyDiff('docs/ROADMAP.md', null)).toBe(false);
+    expect(generatedOnlyDiff('docs/ROADMAP-DETAIL.md', null)).toBe(false);
   });
 
   it('trennt generierte von fachlichen Konflikten', () => {
-    const generated = classifyConflicts(['docs/INVENTORY.md', 'docs/ROADMAP.md']);
+    const generated = classifyConflicts(['docs/INVENTORY.md', 'docs/ROADMAP-DETAIL.md']);
     expect(generated.status).toBe('REGENERATE');
     const mixed = classifyConflicts(['docs/INVENTORY.md', 'src/core/sim/tick.ts']);
     expect(mixed.status).toBe('MANUAL_CONFLICT');
@@ -97,7 +97,7 @@ describe('Integrationszustand', () => {
 
 describe('CI-Gates nach Risiko', () => {
   it('faehrt fuer reine Doku nur Doku, LOC und Struktur', () => {
-    const plan = buildPlan(['docs/CI.md', 'docs/ROADMAP.md'], pr(['docs/CI.md', 'docs/ROADMAP.md']));
+    const plan = buildPlan(['docs/CI.md', 'docs/governance/ROADMAP.md'], pr(['docs/CI.md', 'docs/governance/ROADMAP.md']));
     expect(plan.state).toBe('PR');
     expect(plan.risk).toBe('docs');
     expect(plan.gateKeys).toEqual(['check:loc', 'docs', 'tree']);

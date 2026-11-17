@@ -138,6 +138,7 @@ run('verify-narrative-blocks.mjs', ['--commit', '--pr'], {
   BASE_REF: process.env.BASE_REF ?? 'origin/main',
 });
 run('verify-docs.mjs');
+run('verify-docs.mjs', ['--drift', '--staged']);
 run('check-loc.mjs');
 
 console.log('precommit: PASS (Claims, Artefakte, Narrative, Doku und LOC geprueft)');

@@ -14,7 +14,7 @@ docs/ARCHITECTURE.md text eol=lf
 # (`pnpm run hooks:install`); fehlt er, bleibt es beim normalen Konflikt.
 .lane-claims/merged-index.json merge=generated-regenerate
 docs/INVENTORY.md merge=generated-regenerate
-docs/ROADMAP.md merge=generated-regenerate
+docs/ROADMAP-DETAIL.md merge=generated-regenerate
 content/narrative/registry/fragments.json merge=generated-regenerate
 src/core/sim/narrative/composer/registry.generated.ts merge=generated-regenerate
 src/core/sim/narrative/composer/slot-map.generated.ts merge=generated-regenerate

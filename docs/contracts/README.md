@@ -38,11 +38,11 @@ ausgenommen; `contracts-gate.test.ts` legt einen Wegwerf-Vertrag in
 1. **Genau ein Writer pro Contract-ID.** Read-only-Konsumenten dürfen parallel arbeiten; der Claim trägt den Modus.
 2. **Vertragstest ist Pflicht.** Jede aktive Fähigkeit und jeder Vertrag braucht einen registrierten Test; `pnpm run verify:capabilities` prüft die Pfade und Test-IDs.
 3. **Keine zweite Wahrheit.** Der Vertrag beschreibt IDs, Invarianten und Kompatibilität; Welt-, Ledger-, RNG- und Save-Zustand bleiben bei ihren Ownern.
-4. **Änderungen am Vertrag** laufen über einen Governance-/Contract-Claim, einen Test und einen Eintrag im [`INDEX.md`](../INDEX.md).
+4. **Änderungen am Vertrag** laufen über einen Governance-/Contract-Claim, einen Test und einen Eintrag im [`INDEX.md`](../governance/INDEX.md).
 5. **Verweise** auf Verträge stehen in `docs/ARCHITECTURE.md` und in den Lane-Claims; neue Consumer tragen den Modus `read`.
 
 ## Referenzen
 
-- [`INDEX.md`](../INDEX.md) — Doku-Landkarte.
+- [`INDEX.md`](../governance/INDEX.md) — Doku-Landkarte.
 - [`GOVERNANCE.md`](../GOVERNANCE.md) — Claims, Writer und Kollisionen.
 - [`TESTING.md`](../TESTING.md) — Vertrags- und Governance-Nachweise.

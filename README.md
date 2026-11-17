@@ -167,12 +167,12 @@ Alles. Du bist kein unsichtbarer Vorstandschef, der auf Excel-Tabellen starrt. D
 
 Du willst unter die Haube schauen, an den Zahnrädern drehen oder die mathematischen Verträge prüfen?
 
-Alle technischen Details, Schnittstellen, Testlinien und Entwickler-Dokumente sind sauber ausgelagert, damit dieser Text atmen kann. Es gibt **fünf Pflichtdokus**, jede mit einem Kern von höchstens 500 Token:
-- [`AGENTS.md`](AGENTS.md) — Vertrag, zehn Regeln und Pitfalls.
-- [`docs/INDEX.md`](docs/INDEX.md) — Landkarte, Budgets und Ordner-Owner.
-- [`docs/WORKFLOW.md`](docs/WORKFLOW.md) — Lauf, Abschluss und Übergabe.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — Major- und Minor-Ziele.
-- [`docs/LAST-CHANGES.md`](docs/LAST-CHANGES.md) — letzte wirksame Änderungen.
+Alle technischen Details, Schnittstellen, Testlinien und Entwickler-Dokumente sind sauber ausgelagert, damit dieser Text atmen kann. Es gibt **fünf Pflichtdokus** in [`docs/governance/`](docs/governance/INDEX.md), jede vollständig höchstens 500 Token:
+- [`AGENTS.md`](docs/governance/AGENTS.md) — Vertrag, zehn Regeln und Ablauf.
+- [`PITFALLS.md`](docs/governance/PITFALLS.md) — Fallen und die Gates, die sie halten.
+- [`INDEX.md`](docs/governance/INDEX.md) — Landkarte, Budgets und Ordner-Owner.
+- [`ROADMAP.md`](docs/governance/ROADMAP.md) — Major- und Minor-Ziele.
+- [`LAST-CHANGES.md`](docs/governance/LAST-CHANGES.md) — letzte wirksame Änderungen.
 
 Tiefe Referenzen bleiben auf Abruf: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) für Architekturverträge, [`docs/TESTING.md`](docs/TESTING.md) für die Testlinie.
 
@@ -214,6 +214,6 @@ Das Repository hat **eine Steuerungswahrheit**: das [Issue-Board](https://github
 
 **Der Ablauf in fünf Sätzen.** Ein Agent claimt ein freies Issue mit einem `CLAIM`-Kommentar, bevor er Code liest. Er arbeitet auf seinem Lane-Branch, prüft lokal (`pnpm run ci:local`) und öffnet einen Pull Request gegen `main`. Die Übergabe ist `RELEASE done <sha>` plus Label `review-waiting`. Der Maintainer reviewt gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`), merged auf exaktem Kopf und schließt das Issue; Agenten mergen nicht und schließen nie.
 
-Ein Issue wird angelegt, wenn eine eigenständige Entscheidung, Korrektur, Umsetzung oder Abnahme nötig ist. Reine Referenzdokumente brauchen kein eigenes Ticket: sie stehen in [`docs/INDEX.md`](docs/INDEX.md) und verweisen auf den kanonischen Vertrag. Prompts, die Verhalten regeln, sind die Ausnahme — sie haben immer ein Issue und stehen in [`docs/PROMPTS.md`](docs/PROMPTS.md).
+Ein Issue wird angelegt, wenn eine eigenständige Entscheidung, Korrektur, Umsetzung oder Abnahme nötig ist. Reine Referenzdokumente brauchen kein eigenes Ticket: sie stehen in [`docs/governance/INDEX.md`](docs/governance/INDEX.md) und verweisen auf den kanonischen Vertrag. Prompts, die Verhalten regeln, sind die Ausnahme — sie haben immer ein Issue und stehen in [`docs/PROMPTS.md`](docs/PROMPTS.md).
 
 Weiterlesen: [`AGENTS.md`](AGENTS.md) (Kurzvertrag), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) (Rollen und Prioritäten), [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) (die Schleife), [`docs/WORKFLOW.md`](docs/WORKFLOW.md) (Abschluss und Merge).

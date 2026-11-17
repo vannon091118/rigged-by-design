@@ -2,7 +2,7 @@
 
 **Zweck:** Dieser Plan ist die ausführbare Todo hinter der Render- und
 Living-World-Roadmap. Er beschreibt Reihenfolge, Abhängigkeiten, Dateien, Tests
-und Abnahmekriterien. Die Produktplanung bleibt in [`ROADMAP.md`](ROADMAP.md);
+und Abnahmekriterien. Die Produktplanung bleibt in [`ROADMAP.md`](governance/ROADMAP.md);
 die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 **Stand:** 2026-11-13 · Baum `0.3.250` · Audit-Basis `0.3.231`
@@ -1551,7 +1551,7 @@ ihre eigenen Belege vorliegen.
 
 ## 12. Referenzen
 
-- [`ROADMAP.md`](ROADMAP.md) — Produktreihenfolge, offene Punkte, Phasen 1–7.
+- [`ROADMAP.md`](governance/ROADMAP.md) — Produktreihenfolge, offene Punkte, Phasen 1–7.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Zustandsbesitz, Render-Grenzen,
   Living-World-Leitentscheidungen.
 - [`TESTING.md`](TESTING.md) — lokale Testline und Mechanik-Tests.

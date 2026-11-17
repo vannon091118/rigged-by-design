@@ -1709,7 +1709,7 @@ Ziel.
 
 Der ausfuehrbare Task-Phasen-Plan steht in
 [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md). Er ist die Detail-Todo; die
-Produktreihenfolge bleibt in [`ROADMAP.md`](ROADMAP.md), die Testlinie in
+Produktreihenfolge bleibt in [`ROADMAP.md`](governance/ROADMAP.md), die Testlinie in
 [`TESTING.md`](TESTING.md) und [`CI.md`](CI.md).
 
 ### Grenzen
