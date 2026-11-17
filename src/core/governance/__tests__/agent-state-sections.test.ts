@@ -15,6 +15,7 @@ import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:f
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { diagnoseLog } from '../../../../scripts/agent-cause.mjs';
 import { readSection } from '../../../../scripts/lib/verify-state.mjs';
 
 const CAUSE = resolve(process.cwd(), 'scripts', 'agent-cause.mjs');
@@ -82,6 +83,10 @@ describe('Zustandsabschnitte der CLI-Schreiber', () => {
   it('schreibt cause und liest ihn im naechsten Lauf ohne gh wieder', () => {
     const root = repo();
     const head = git(root, ['rev-parse', 'HEAD']).trim();
+
+    // Derselbe Parser, den die CLI auf das Job-Log anwendet: der Befund ist nicht nur im JSON, sondern auch als Zeile belegt.
+    const [diagnosed] = diagnoseLog('[IDX-0002] [ERR-4011] pipeline/lint: Gate fehlgeschlagen');
+    expect([diagnosed?.gate, diagnosed?.code]).toEqual(['lint', 'ERR-4011']);
 
     const first = runCause(root, `${fakeGh(root)}:${SYSTEM_PATH}`, { RBD_FAKE_HEAD: head });
     const firstBody = JSON.parse(first.stdout) as CauseBody;

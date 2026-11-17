@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1065-agent-state-test-target",
+  "claimId": "lane/governance/issue-1065-agent-state-test-target",
+  "branch": "lane/governance/issue-1065-agent-state-test-target",
+  "baseSha": "acc30591e2717538df47382e044aba8311a6fe2c",
+  "phase": "IMPLEMENTING",
+  "title": "agent-state-sections-Test an sein deklariertes Ziel binden",
+  "goal": "Der Test importiert diagnoseLog aus scripts/agent-cause.mjs und prueft damit die Log-Zeile des Shims; verify-test-quality meldet wieder 6 Befunde wie am Basis-Commit d55824b4.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "F-1",
+      "status": "accepted",
+      "severity": "info",
+      "summary": "Die uebrigen 6 Test-Quality- und 9 Dead-Code-Befunde sind vorbestehende Drift und nicht Teil dieses Fixes."
+    }
+  ],
+  "nextAction": "Commit mit Hooks, PR gegen main, danach Claim auf merged nachziehen.",
+  "revision": 1
+}

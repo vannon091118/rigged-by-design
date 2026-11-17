@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-17T00:41Z-agent-state-test-target",
+  "contributionId": "agent-state-test-target-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Test hatte sich ein Ziel auf die Stirn geschrieben, das er nie beruehrte: Er startete den Befehl als Fremdkoerper und pruefte nur, was zurueckkam. Jetzt liest er denselben Parser, den auch der Befehl benutzt, und vergleicht die Zeile, die aus dem Protokoll faellt, mit dem, was der Lauf meldet. Der Marker ist damit keine Behauptung mehr, sondern eine Kante mit zwei Enden.",
+  "directives": []
+}
