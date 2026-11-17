@@ -25,7 +25,10 @@
     "content/narrative/registry/fragments.json",
     "content/narrative/turns/manifest.json",
     "src/core/sim/narrative/composer/registry.generated.ts",
-    "src/core/sim/city-identity.ts"
+    "src/core/sim/city-identity.ts",
+    "src/core/sim/city-npcs.ts",
+    "src/core/sim/visitor-record.ts",
+    "src/core/sim/visitors.ts"
   ],
   "contracts": [],
   "dependencies": [],

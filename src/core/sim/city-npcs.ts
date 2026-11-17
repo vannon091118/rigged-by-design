@@ -9,7 +9,7 @@ import type { PersonaId, Visitor, WorldState } from './types';
 import { LOCATIONS } from './city-model';
 import type { CityLocationId, TraitId } from './city-types';
 import { seedTraits } from './city-traits';
-import { recordResidentVisitor } from './visitors';
+import { recordResidentVisitor } from './visitor-record';
 
 export interface CityNpcDef {
   readonly id: string;

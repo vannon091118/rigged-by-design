@@ -765,10 +765,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3473 |
-| Gelistete Dateien | 3473 |
+| Getrackte Dateien | 3474 |
+| Gelistete Dateien | 3474 |
 | Getrackte Ordner | 120 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (155), .lanes (1), artifacts (1), bin (1), content (1242), docs (97), packages (27), public (571), scripts (227), src (1128) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (155), .lanes (1), artifacts (1), bin (1), content (1242), docs (97), packages (27), public (571), scripts (227), src (1129) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -861,7 +861,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
-- `src/core/sim/` — 204 Datei(en)
+- `src/core/sim/` — 205 Datei(en)
 - `src/core/sim/__tests__/` — 177 Datei(en)
 - `src/core/sim/narrative/` — 44 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 8 Datei(en)
@@ -935,7 +935,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 35 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
@@ -3379,7 +3379,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/issue-scope.test.ts` — Ein Scope-Label entscheidet, ob ein offenes Issue eine Lane blockiert. — gelesen: 140 Zeilen
 - `src/core/governance/__tests__/lane-claims-issue.test.ts` — Das Issue-Board ist die Wahrheit ueber Auftrag und Besitz. Eine neue, offene — gelesen: 46 Zeilen
 - `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 211 Zeilen
-- `src/core/governance/__tests__/logs-failure-only.test.ts` — Log-Vertrag: Dateien entstehen nur mit `--log` UND nur fuer fehlerhafte — gelesen: 99 Zeilen
+- `src/core/governance/__tests__/logs-failure-only.test.ts` — Log-Vertrag: Dateien entstehen nur mit `--log` UND nur fuer fehlerhafte — gelesen: 102 Zeilen
 - `src/core/governance/__tests__/merge-gate.test.ts` — Das Merge-Gate ist nur so gut wie seine Lesart der echten Antwort. Der Test — gelesen: 96 Zeilen
 - `src/core/governance/__tests__/merged-index.test.ts` — Der Merge-Beleg-Index ist nur brauchbar, wenn er aus echten Merge-Commits — gelesen: 156 Zeilen
 - `src/core/governance/__tests__/narrative-blocks-cli.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 54 Zeilen
@@ -3963,7 +3963,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/upkeep-costs.ts` — Laufende Wohnkosten: eine Quelle fuer Tagesbuchung und HUD-Ziel. — gelesen: 10 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 70 Zeilen
 - `src/core/sim/venue-event.ts` — Zentrale Event-Infrastruktur: Veranstaltungen laufen als Phasen ueber die — gelesen: 176 Zeilen
-- `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 105 Zeilen
+- `src/core/sim/visitor-record.ts` — Bewohnerprofil anlegen: Blattmodul ohne Rueckweg in die Stadt- oder — gelesen: 33 Zeilen
+- `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 88 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 177 Zeilen
 - `src/debug/runtime-probe-render.ts` — RBD Runtime Probe — Render-Informationen (DEV-only, READ-ONLY). — gelesen: 63 Zeilen
 - `src/debug/runtime-probe-snapshot.ts` — RBD Runtime Probe — Welt-Snapshot-Funktionen (DEV-only, READ-ONLY). — gelesen: 101 Zeilen

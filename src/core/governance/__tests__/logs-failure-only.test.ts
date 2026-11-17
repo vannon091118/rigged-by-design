@@ -30,6 +30,9 @@ function probe({ exitCode, body, logPath, log }: { exitCode: number; body: strin
   // und raeumt RBD_LOG aus der Umgebung, damit kein Elternlauf es erbt.
   const env: NodeJS.ProcessEnv = { ...process.env, PROBE_LOG: logPath };
   env.RBD_LOG = log ? '1' : '0';
+  // RBD_OUTPUT_FULL schaltet captureConsole im Kind ab. Ein Elternlauf darf
+  // den Log-Vertrag damit nicht stillschweigend aushebeln.
+  delete env.RBD_OUTPUT_FULL;
   return spawnSync(process.execPath, ['-e', source], { encoding: 'utf8', env });
 }
 
