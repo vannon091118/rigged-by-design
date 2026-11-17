@@ -755,10 +755,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3356 |
-| Gelistete Dateien | 3356 |
+| Getrackte Dateien | 3359 |
+| Gelistete Dateien | 3359 |
 | Getrackte Ordner | 117 |
-| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (135), .lanes (1), artifacts (1), bin (1), content (1235), docs (90), packages (27), public (571), scripts (160), src (1114) |
+| Bereiche | .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (137), .lanes (1), artifacts (1), bin (1), content (1236), docs (90), packages (27), public (571), scripts (160), src (1114) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -770,12 +770,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 66 Datei(en)
-- `.lane-claims/tasks/` — 65 Datei(en)
+- `.lane-claims/claims/` — 67 Datei(en)
+- `.lane-claims/tasks/` — 66 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1231 Datei(en)
+- `content/narrative/contributions/` — 1232 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -962,6 +962,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
@@ -1029,6 +1030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-775-city-tile-occupancy.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-787-esport-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-770-floor-feedback-context.json` — { — gelesen: 17 Zeilen
@@ -2267,12 +2269,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-16-tagesbericht-evidence.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-16-verify-state.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-agent-state-sections.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-17-life-sim-day-typecheck.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-redundancy-budget.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-cache.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-concurrency.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27639 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4929 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27661 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4933 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 231 Zeilen

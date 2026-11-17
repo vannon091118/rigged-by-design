@@ -1,0 +1,21 @@
+{
+  "agentId": "liilith",
+  "turnId": "2026-11-17T00:25Z-life-sim-day-typecheck",
+  "contributionId": "life-sim-day-typecheck-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Test beschrieb den Tag noch mit einem Schluessel, den das Haus laengst abgegeben hatte: er verlangte die Uhr als Gegenstand, obwohl sie nur noch auf Anfrage herausgegeben wird, und zaehlte eine einzelne Immobilie, wo inzwischen eine Liste steht. Der Abend selbst war nie kaputt - nur die Beschreibung passte nicht mehr zum Aktenschrank. Jetzt fragt der Test nach der Uhr, wenn er sie braucht, und liest die Liste, die wirklich gefuehrt wird. Kein neues Spielverhalten, nur eine Fixture, die den Vertrag wieder trifft.",
+  "directives": []
+}
