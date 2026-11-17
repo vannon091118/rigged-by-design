@@ -8,7 +8,8 @@
  * auf `main` macht den Claim `merged`.
  */
 import { describe, expect, it } from 'vitest';
-import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from '../../../../scripts/lib/claim-evidence.mjs';
+import { commitOnMain, decideClaim, localMergeEvidence } from '../../../../scripts/lib/claim-evidence.mjs';
+import { mergedPullRequestIndex } from '../../../../scripts/lib/claim-pr-index.mjs';
 
 /** Git-Aufrufe als Tabelle: der Test braucht kein Repository, nur Antworten. */
 function fakeGit(answers: Record<string, string | Error>) {

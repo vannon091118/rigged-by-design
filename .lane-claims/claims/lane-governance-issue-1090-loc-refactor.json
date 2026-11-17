@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/issue-1090-loc-refactor",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1090-full-gate-repair",
+  "baseSha": "bf53823ecbc66a3c8d41ae4ecccdb5bcbdad89e0",
+  "issue": 1090,
+  "task": "LOC-Refactor pretask/promote und Guard-Haertung",
+  "goal": "pretask und promote funktionsgleich modularisieren, LOC-Guard fuer src und scripts erzwingen",
+  "pathAllowlist": [
+    "scripts/",
+    "src/core/governance/__tests__/",
+    "src/Config/eslint.config.mjs",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/",
+    ".lane-claims/tasks/",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0ffa22b5337a9652892fe0f442cbbf3758b488c6"
+}

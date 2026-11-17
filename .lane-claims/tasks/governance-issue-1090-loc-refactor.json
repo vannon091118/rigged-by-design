@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1090-loc-refactor",
+  "claimId": "lane/governance/issue-1090-loc-refactor",
+  "branch": "lane/governance/issue-1090-full-gate-repair",
+  "baseSha": "bf53823ecbc66a3c8d41ae4ecccdb5bcbdad89e0",
+  "phase": "READY",
+  "title": "LOC-Refactor pretask/promote und Guard-Haertung",
+  "goal": "pretask und promote funktionsgleich modularisieren, LOC-Guard fuer src und scripts erzwingen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Vollen Verify-Lauf und Commit über den Hook abschließen.",
+  "revision": 1
+}

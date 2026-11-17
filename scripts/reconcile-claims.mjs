@@ -26,7 +26,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
-import { planReconcile } from './lib/claim-evidence.mjs';
+import { planReconcile } from './lib/claim-reconcile.mjs';
 import { claimEntryPath, planRetention, planTaskCloseout } from './lib/claim-lifecycle.mjs';
 import { loadClaimsStrict, saveClaims } from './lib/lane-claims.mjs';
 import { loadTaskContracts, writeTaskContract } from './lib/task-contract.mjs';

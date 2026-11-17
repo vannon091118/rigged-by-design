@@ -1,5 +1,5 @@
 /**
- * @test-target: scripts/lib/claim-evidence.mjs
+ * @test-target: scripts/lib/claim-reconcile.mjs
  * @error-code: ERR-4019
  *
  * Der lesende Reconcile: eine Branch auf `main` oder ein gemergter PR mit
@@ -7,7 +7,7 @@
  * bleibt offen. Geschrieben wird hier nichts.
  */
 import { describe, expect, it } from 'vitest';
-import { planReconcile, remoteHeads } from '../../../../scripts/lib/claim-evidence.mjs';
+import { planReconcile, remoteHeads } from '../../../../scripts/lib/claim-reconcile.mjs';
 
 function fakeGit(answers: Record<string, string | Error>) {
   return (args: string[]) => {

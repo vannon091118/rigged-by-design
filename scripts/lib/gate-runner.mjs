@@ -17,6 +17,7 @@ import { join, relative } from 'node:path';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
 import { reportsDir } from './verify-state.mjs';
+import { writeSummary } from './gate-summary.mjs';
 import { logsEnabled } from './compact.mjs';
 import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
@@ -187,29 +188,6 @@ process.on('exit', () => {
   for (const pid of running) killTree(pid);
 });
 
-/** Zusammenfassung als Markdown: eine Zeile je Gate, mit Pfad zum vollen Log. */
-function summarize(rows, failed) {
-  if (!logsEnabled()) return;
-  const dir = reports();
-  if (!dir || rows.length === 0) return;
-  const lines = [
-    '# Gate-Bericht',
-    '',
-    `Erstellt: ${new Date().toISOString()}`,
-    `Ergebnis: ${failed.length === 0 ? 'PASS' : `FAIL (${failed.join(', ')})`}`,
-    '',
-    '| Gate | Ergebnis | Dauer | Log |',
-    '| --- | --- | --- | --- |',
-    ...rows.map((row) => `| ${row.name} | ${row.status} | ${row.seconds}s | ${row.logPath ? `\`${row.logPath}\`` : '—'} |`),
-  ];
-  try {
-    writeFileSync(join(dir, 'summary.md'), `${lines.join('\n')}\n`);
-    console.log(`Gate-Bericht: ${relative(ROOT, dir).replaceAll('\\', '/')}/summary.md`);
-  } catch {
-    // Der Bericht ist Komfort; das Gate-Ergebnis haengt nicht daran.
-  }
-}
-
 /** Jede rote Gate bleibt rot; gruene Gates werden nur bei identischem Hash uebersprungen. */
 export async function runGates(steps) {
   const queue = [...steps];
@@ -262,6 +240,6 @@ export async function runGates(steps) {
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
   lastRows = rows;
-  summarize(rows, failed);
+  if (logsEnabled()) writeSummary({ rows, failed, dir: reports(), root: ROOT });
   return failed;
 }

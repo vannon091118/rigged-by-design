@@ -1,5 +1,5 @@
 /**
- * @test-target: scripts/lib/claim-evidence.mjs
+ * @test-target: scripts/lib/claim-merge-filter.mjs
  * @error-code: ERR-4019
  *
  * Ein Branch-Name, zwei gemergte PRs: Für die Identität eines Claims bleibt das
@@ -8,7 +8,7 @@
  * jede Lane mit denselben Pfaden — genau das war passiert.
  */
 import { describe, expect, it } from 'vitest';
-import { filterMergedCollisions } from '../../../../scripts/lib/claim-evidence.mjs';
+import { filterMergedCollisions } from '../../../../scripts/lib/claim-merge-filter.mjs';
 
 describe('Mehrdeutiger Merge-Beleg', () => {
   it('wertet einen vollstaendig gemergten PR-Verlauf als Merge-Beleg', () => {

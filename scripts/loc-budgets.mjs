@@ -10,6 +10,8 @@
 export const LOC_BUDGETS = [
   { id: 'entry', cap: 60, hotZone: 45, matches: (name) => name === 'src/main.tsx' },
   { id: 'test', cap: 240, hotZone: 180, matches: (name) => name.includes('/__tests__/') || name.endsWith('.test.ts') || name.endsWith('.test.tsx') || name.endsWith('.bench.ts') },
+  // Werkzeuge sind Code wie Produktcode: gleiche Grenze wie die breite Utility-Rolle.
+  { id: 'tool', cap: 260, hotZone: 200, matches: (name) => name.startsWith('scripts/') },
   { id: 'engine', cap: 200, hotZone: 150, matches: (name) => name.startsWith('src/core/') },
   { id: 'state', cap: 220, hotZone: 165, matches: (name) => name.startsWith('src/store/') },
   { id: 'render', cap: 260, hotZone: 200, matches: (name) => name.startsWith('src/render/') },
