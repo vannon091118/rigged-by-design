@@ -45,6 +45,17 @@ describe('staging-scope', () => {
       .toEqual({ ok: true, allowed: ['docs/CHANGELOG.md'], exempt: true });
   });
 
+  it('nimmt die gemeinsame Last-Changes-Zeile ohne Allowlist auf', () => {
+    const scope = scopeChanges({ changed: ['docs/LAST-CHANGES.md'], allowlist: ['src/core/**'] });
+    expect(scope).toEqual({
+      allowed: ['docs/LAST-CHANGES.md'],
+      foreign: [],
+      ok: true,
+      takeover: takeover(0, 0),
+    });
+    expect(TURN_EXEMPT).not.toContain('docs/LAST-CHANGES.md');
+  });
+
   it('nimmt die mechanischen Version- und Fortschrittsdateien von der Sperre aus', () => {
     const scope = scopeChanges({
       changed: ['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md', 'docs/ROADMAP.md', 'src/ui/hud.tsx'],

@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { findClaimCollisions, patternPrefix, patternsOverlap } from './claim-collisions.mjs';
+import { CORE_PATHS } from './doc-core.mjs';
 
 export { patternPrefix, patternsOverlap };
 
@@ -25,6 +26,17 @@ const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
 const CLAIM_ENTRIES_DIR = join(CLAIMS_DIR, 'claims');
 export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
 
+/**
+ * Gemeinsame Doku-Ablage: jede Lane traegt ihren datierten Eintrag in
+ * `docs/LAST-CHANGES.md` ein, ohne ihre Allowlist zu erweitern. Die uebrigen
+ * Kern-Dokus bleiben governance-geschuetzt; diese Datei ist weder generiert
+ * noch eine Kollisionssperre.
+ */
+export const SHARED_DOC_FILES = Object.freeze(['docs/LAST-CHANGES.md']);
+const CORE_CONTENT_DOCS = Object.freeze(
+  CORE_PATHS.filter((path) => !SHARED_DOC_FILES.includes(path)),
+);
+
 /** Lane-Werkzeug: Claim-Dateien und Task-Vertraege sind immer eigene Arbeit. */
 export function isClaimTooling(file) {
   const path = String(file ?? '').replaceAll('\\', '/');
@@ -34,8 +46,14 @@ export function isClaimTooling(file) {
 // Lane mechanisch beruehren, ohne ihre Allowlist zu erweitern oder mit einer
 // anderen Lane zu kollidieren. Sonst blockierte die Freigabe genau den Lane,
 // der sie braucht.
-// Register, Vertraege und PIN-Freigabe sind Werkzeug jeder Lane.
-export const COORDINATION_FILES = Object.freeze(['.lane-claims', '.lane-claims/claims.json']);
+// Register, Vertraege, PIN-Freigabe und die gemeinsame Last-Changes-Zeile sind
+// Werkzeug jeder Lane. Letztere wird im selben PR wie die Aenderung gepflegt,
+// ohne dass eine Feature-Lane ihre Allowlist erweitern muss.
+export const COORDINATION_FILES = Object.freeze([
+  '.lane-claims',
+  '.lane-claims/claims.json',
+  ...SHARED_DOC_FILES,
+]);
 
 /**
  * Task-Vertraege sind Lane-Werkzeug wie Claims und Freigabe: sie beschreiben
@@ -69,18 +87,19 @@ export const OWNERS = Object.freeze([
 ]);
 
 /**
- * Die acht Meta-Dateien. Feature-Lanes duerfen sie nicht inhaltlich schreiben;
- * der mechanische Pfad (Doku-Marker, Versionszeile) bleibt erlaubt. Dieselbe
- * Liste fuehrt `verify-lane-claims.mjs` und `turn-push.mjs` filtert damit den
- * Index, damit ein globales `git add -A` keine Meta-Datei mitschleppt.
+ * Meta-Dateien: Feature-Lanes duerfen sie nicht inhaltlich schreiben; der
+ * mechanische Pfad (Doku-Marker, Versionszeile) bleibt erlaubt. Die vier
+ * inhaltlichen Kern-Dokus kommen aus `CORE_PATHS`; `LAST-CHANGES` ist bewusst
+ * nicht dabei, weil jede Lane ihren Eintrag im selben PR schreibt. Dieselbe
+ * Liste fuehrt `verify-lane-claims.mjs`; `promote.mjs` importiert sie, damit
+ * die Konfliktloesung nicht auseinanderlaeuft.
  */
 export const META_FILES = Object.freeze([
-  'AGENTS.md',
+  ...CORE_CONTENT_DOCS,
   'docs/INVENTORY.md',
   'docs/ARCHITECTURE.md',
   'docs/CHANGELOG.md',
   'docs/DEVTAGEBUCH.md',
-  'docs/ROADMAP.md',
   'package.json',
   'pnpm-lock.yaml',
 ]);
@@ -107,7 +126,10 @@ export const MECHANICAL_FILES = Object.freeze([
 ]);
 
 /** Diese Dateien fuehrt nur die Governance-Lane inhaltlich. */
-export const GOVERNANCE_ONLY_FILES = Object.freeze(['AGENTS.md', 'docs/ARCHITECTURE.md', 'docs/ROADMAP.md']);
+export const GOVERNANCE_ONLY_FILES = Object.freeze([
+  ...CORE_CONTENT_DOCS,
+  'docs/ARCHITECTURE.md',
+]);
 
 /** True, wenn der Pfad zu den gesperrten Meta-Dateien gehoert. */
 export function isForbiddenForLanes(filePath) {

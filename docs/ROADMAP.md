@@ -2,11 +2,35 @@
 
 <!-- rbd-doc: managed -->
 
+## Kern
+**Nordstern:** begehbare Lebenssimulation — Wohnung, Straße, Stadt, Bewohner. Das Casino ist Start- und Testumgebung, nicht das Genre.
+**Major-Ziele:** M1 Erster Abend · M2 Wohnung→Stadt · M3 Render/Living-World-Rework · M4 Wirtschaft & Events · M5 1.500 Textbausteine · M6 Abnahme & Release.
+**Minor-Ziele:** S1–S5 (Spiel), PR-01–PR-10 (Präsentation), R-0–R-4 (Render), P-13 (Textbausteine). Eine Zeile = eine Aufgabe mit Status, Beleg und Fertig-Kriterium.
+**Regel:** Status nur `erledigt`, `verifiziert`, `offen`, `blockiert`, `zurueckgestellt`; „fertig“ nur mit Code- oder Testbeleg.
+
+## Major-Ziele
+| ID | Ziel | Exit | Detail |
+| --- | --- | --- | --- |
+| M1 | Der erste Abend trägt | Ein Einstieg, ein Ziel, ein bedienbarer Gast | Phase 1–2 |
+| M2 | Wohnung und Stadt als Raum | Wohnung→Straße→Stadt ohne Teleport | Phase 3 |
+| M3 | Render und Living World ehrlich | Kein Fallback, echte Materialien, sichtbare Stadt | Phase 3R |
+| M4 | Wirtschaft und Events | Bereiche, Bar, Club, Arena, Wetten, E-Sport | Phase 4 |
+| M5 | Inhalt und Erzählung | 1.500 gewertete Textbausteine mit Lesern | Phase 5 |
+| M6 | Abnahme und Release | Performance, Geräte, Präsentation, Release-Horizont | Phase 6–7 |
+
+## Minor-Ziele
+| Gruppe | Umfang | Detail |
+| --- | --- | --- |
+| S1–S5 | Spielphasen 1–6 | Tabellen unten; IDs `S<phase>-<nr>` |
+| PR-01–PR-10 | Präsentation und Release-Bilder | Tabellen unten |
+| R-0–R-4 | Render-Meilensteine M0–M4 | unten plus [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) |
+| P-13 (Detail) | Textbausteine | Zeile unten; Zahl aus der Registry |
+
 **Zweck:** Diese Datei ist die einzige Planung für das Spiel und seine Präsentation.
 Jede Zeile nennt den Code, den Test oder das Bild, an dem die Arbeit weitergeht.
 Abgeschlossenes bleibt als Beleg stehen, bis es ins Changelog wandert.
 
-**Stand:** 2026-11-14 · Version `0.3.267`
+**Stand:** laufend; Status je Zeile, keine Versionsbehauptung.
 
 ## Lesart
 

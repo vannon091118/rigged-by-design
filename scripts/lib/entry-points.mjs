@@ -23,6 +23,7 @@ export const ENTRY_POINTS = Object.freeze([
   { id: 'agent:pretask', file: 'scripts/pretask.mjs', phase: 'turn-start', why: 'Arbeitsbaum, Impact, Task-Vertrag, Laufbudget.', json: false, probe: [] },
   { id: 'agent:context', file: 'scripts/agent-context.mjs', phase: 'turn-start', why: 'Systeme, Invarianten, betroffene Tests, Gate-Plan.', json: false, probe: [] },
   { id: 'claim:register', file: 'scripts/claim-register.mjs', phase: 'board', why: 'Lokale Kollisionssperre aus dem Issue-Claim spiegeln.', json: false, probe: [] },
+  { id: 'claim:preflight', file: 'scripts/claim-preflight.mjs', phase: 'commit', why: 'Offene Claims und Rest-WIP vor dem Push pruefen.', json: false, probe: null },
   { id: 'board:sync', file: 'scripts/sync-board-state.mjs', phase: 'board', why: 'Board-Snapshot nachziehen.', json: false, probe: ['--check'] },
   { id: 'board:overview', file: 'scripts/board-overview.mjs', phase: 'board', why: 'Board-Uebersicht fuer den Maintainer-Lauf.', json: false, probe: [] },
   { id: 'verify:board', file: 'scripts/verify-board-usage.mjs', phase: 'board', why: 'Board-Gate im Pre-Push-Hook.', json: false, probe: [] },

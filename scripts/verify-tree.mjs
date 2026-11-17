@@ -64,6 +64,47 @@ for (const file of filesUnder('src')) {
   }
 }
 
+/**
+ * Spiel, Dev und Governance sind auch eine Importgrenze.
+ *
+ * Die einzige Bruecke sind Tests unter `__tests__`: sie duerfen Produktions-
+ * und Dev-Code lesen. Produktions-Spielcode darf niemals `scripts/`, `docs/`
+ * oder einen Governance-Ordner importieren; Dev-Code darf nicht in `src/`
+ * hineinwachsen. `src/core/governance` ist Test-/Vertragsflaeche, kein Spiel.
+ */
+const GOVERNANCE_TARGET = /^(?:scripts|docs|\.lane-claims|\.claude|\.github|\.githooks|\.cron)\//;
+const isTestFile = (file) => file.includes('/__tests__/');
+const isGovernanceSurface = (file) => file.includes('/src/core/governance/');
+
+function importedTargets(file) {
+  const targets = [];
+  const text = readFileSync(file, 'utf8');
+  for (const match of text.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
+    if (!match[1].startsWith('.')) continue;
+    targets.push(resolve(file, '..', match[1]));
+  }
+  return targets;
+}
+
+for (const file of filesUnder('src')) {
+  if (isTestFile(file) || isGovernanceSurface(file)) continue;
+  for (const target of importedTargets(file)) {
+    const path = norm(relative(ROOT, target));
+    if (GOVERNANCE_TARGET.test(path) || path === 'AGENTS.md') {
+      flag(relative(ROOT, file), `Spielcode importiert Governance/Dev: "${path}".`);
+    }
+  }
+}
+
+for (const file of filesUnder('scripts')) {
+  for (const target of importedTargets(file)) {
+    const path = norm(relative(ROOT, target));
+    if (path.startsWith('src/')) {
+      flag(relative(ROOT, file), `Dev-Code importiert Spielcode: "${path}".`);
+    }
+  }
+}
+
 for (const file of filesUnder('src/core')) {
   if (file.includes('/__tests__/')) continue;
   const text = readFileSync(file, 'utf8');

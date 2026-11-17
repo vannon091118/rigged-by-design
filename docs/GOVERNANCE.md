@@ -2,6 +2,13 @@
 
 <!-- rbd-doc: managed -->
 
+## Kern
+**Wahrheit:** Issue > lokale Datei; Claim vor Read; fremder Claim tabu.
+**Lokal:** Claims, Board und Vertrag laufen in pre-commit/pre-push; keine GitHub-Actions-Abhängigkeit.
+**Rollen:** Agent claimt, arbeitet, pusht und öffnet PR; Maintainer reviewt, merged und schließt.
+**Eskalation:** nur `BLOCKED` hält an; `AUTO_FIX` → `LOCAL_GATE` → `REMOTE_CI` → `AGENT`.
+**Schichten:** Spiel, Dev und Governance sind getrennt; die Testbrücke liegt nur in `__tests__`.
+
 **Zweck:** Die verbindlichen Regeln für parallele Arbeit. Der Kurzvertrag steht in `AGENTS.md`; dieses Dokument beschreibt Rollen, Claim-Prüfung und die eine Eskalationsleiter.
 
 ## Rollen und Lanes
@@ -90,8 +97,10 @@ Es gibt genau drei Worker-Identitäten: **`LIILITH`**, **`Shinon`** und **`Jenov
 - **Branch-Schema:** `lane/<domäne>/<task>`; Legacy-Präfixe `gov/`, `hygiene/` und `fix/` bleiben lesbar. Der Agent-Workflow nennt `fix/<issue-nr>-<slug>`; beide Formen sind zulässig, weil das Register einen Branch nach Schema braucht.
 - **Workspace:** `RBD_WORKSPACE_HOME` hält `.lanes/identity.json`, `.lanes/dependencies.json`, `.pnpm-store/`, `main/` und `worker/` — außerhalb beider Git-Worktrees, damit die Identität einen Neuaufbau überlebt. Regulär existieren genau **zwei** RBD-Worktrees pro System (Main und Worker); weitere Klone und Worktrees werden inventarisiert und klassifiziert, fremde oder ungeklärte WIP nie gelöscht.
 - **Worktree:** Ein verknüpfter Worktree ist optional; `--require-worktree` fordert ihn explizit. Ein neuer Agent startet in einem **eigenen** Worktree von `origin/main`; der geteilte Arbeitsbaum wird nie zurückgesetzt. Jede Branch außer `main` ist temporär und wird nach belegtem Merge entfernt.
-- **Meta-Dateien:** `AGENTS.md`, `package.json`, `pnpm-lock.yaml`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`. Inhaltliche Änderungen brauchen eine Governance- oder ausdrücklich berechtigte Lane.
+- **Meta-Dateien:** `AGENTS.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/ROADMAP.md`, `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `package.json`, `pnpm-lock.yaml`. `docs/LAST-CHANGES.md` ist gemeinsame Pflichtablage: jede Lane ergänzt ihren datierten Eintrag im selben PR, ohne die Allowlist zu erweitern. Inhaltliche Änderungen an den Kern-/Meta-Dokumenten brauchen eine Governance-Lane.
+- **Pre-Push-Claim-Audit:** `rbd claim preflight` läuft im Pre-Push-Hook und vor `turn:finish`. Offene Claims, parallele Lanes und Rest-WIP werden sichtbar; uncommitted WIP, ein Claim ohne Issue und ein Bruch der Claim/Task-Parität blockieren den Push. Die Meldung sagt auch nach Kontextverlust, was zu tun ist: eigenen WIP abschließen, fremden nicht anfassen, offene Arbeit ohne Issue als Issue anlegen.
 - **Kontrollebene:** `.github/`, `scripts/` und `src/Config/` bleiben Governance- oder CI-Lanes vorbehalten; Feature-Claims können sie nicht öffnen.
+- **Lokaler Shell-Watcher:** `rbd shell watch` startet eine guarded Bash. Die Shell-Funktionen prüfen `grep`, `git`, `pnpm`, `node` und `gh` vor der Ausführung; vor dem Lesereceipt ist nur `rbd docs read` erlaubt. Verstöße zählt `.verify-cache/shell-guard.json`, der Watcher eskaliert sie im Terminal. Der Pfad ist lokal, ohne Actions, und blockiert weder Commit noch Push.
 
 ### Laufbudget und Stop-Vertrag
 
@@ -385,6 +394,9 @@ Drei angeheftete Issues wurden entwirrt (#561, #563, #677). Es gilt ein bewusst 
 
 ## Referenzen
 
+- [`AGENTS.md`](../AGENTS.md) — Kurzvertrag, zehn Regeln und Pitfalls.
+- [`INDEX.md`](INDEX.md) — Doku-Kern, Budgets und Ordner-Owner.
+- [`LAST-CHANGES.md`](LAST-CHANGES.md) — letzte wirksame Änderungen.
 - [`WORKFLOW.md`](WORKFLOW.md) — Pretask, Claim-Nutzung und Abschluss.
 - [`CI.md`](CI.md) — Required-Gates, Zustände und Branch-Schutz.
 - [`TESTING.md`](TESTING.md) — Testlinie und Governance-Testmatrix.

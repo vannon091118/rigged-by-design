@@ -2,6 +2,12 @@
 
 <!-- rbd-doc: managed -->
 
+## Kern
+**Eine Linie:** lokal; gezielt `pnpm run test:affected`, Standard `rbd verify light`, Abschluss `rbd ci local`, vollständig `rbd verify all`.
+**Mechanik:** nur `rbd test mechanics`; kein Regelprofil wartet auf Langlauf.
+**Matrix:** 17 Fälle sind der Governance-Vertrag; die Nachweisdatei steht in der Tabelle, nicht im Kopf.
+**Grenze:** kein Cloud-Test; lokal ist die Autorität.
+
 **Zweck:** Die eine Testlinie und die Matrix, die Governance-Änderungen belegen. `AGENTS.md` verweist hierher; die Gate-Liste bleibt in [`CI.md`](CI.md).
 
 ### Die eine Testlinie

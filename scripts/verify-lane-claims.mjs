@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat,
- * alle gestagten Dateien innerhalb der Allowlist liegen, die acht Meta-Dateien
+ * alle gestagten Dateien innerhalb der Allowlist liegen, die Meta-Dateien
  * für Feature-Lanes gesperrt bleiben und keine Kollision mit einer anderen
  * offenen Lane besteht.
  *

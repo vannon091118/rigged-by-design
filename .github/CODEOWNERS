@@ -2,13 +2,54 @@
 # Sicherheits- und Automatisierungsvertrag tragen, brauchen den Owner-Review;
 # Spielcode, Doku und Claims sind normale Mitarbeit. Die Rechte selbst kommen
 # aus den GitHub-Rulesets, nicht aus dieser Datei; sie macht sichtbar, wer
-# prueft.
+# prueft. Die Tiefe folgt der Ablage: Wurzel -> Bereich -> Unterbereich.
+
+# Wurzel und Vertrag
 /.github/                 @vannon091118
+/.github/ISSUE_TEMPLATE/  @vannon091118
 /.githooks/               @vannon091118
 /.cron/                   @vannon091118
+/.claude/                 @vannon091118
 /AGENTS.md                @vannon091118
+/README.md                @vannon091118
+
+# Werkzeuge und Automatisierung
 /scripts/                 @vannon091118
-/src/core/governance/     @vannon091118
+/scripts/lib/             @vannon091118
+/bin/                     @vannon091118
+/.lane-claims/            @vannon091118
 /.lane-claims/actors.json @vannon091118
+/.lanes/                  @vannon091118
+/artifacts/               @vannon091118
+
+# Spielcode
+/src/                     @vannon091118
+/src/core/                @vannon091118
+/src/core/governance/     @vannon091118
+/src/core/sim/            @vannon091118
+/src/render/              @vannon091118
+/src/ui/                  @vannon091118
+/src/store/               @vannon091118
+/src/Config/              @vannon091118
+/src/debug/               @vannon091118
+/src/styles/              @vannon091118
+/src/test/                @vannon091118
+/.claude/skills/          @vannon091118
+/.lane-claims/claims/     @vannon091118
+/.lane-claims/tasks/      @vannon091118
+
+# Inhalte und Assets
+/content/                 @vannon091118
+/public/                  @vannon091118
+/packages/                @vannon091118
+
+# Doku: Kern, Referenzen, Vertraege, Belege
+/docs/                    @vannon091118
+/docs/INDEX.md            @vannon091118
+/docs/WORKFLOW.md         @vannon091118
+/docs/ROADMAP.md          @vannon091118
+/docs/LAST-CHANGES.md     @vannon091118
 /docs/GOVERNANCE.md       @vannon091118
 /docs/CI.md               @vannon091118
+/docs/contracts/          @vannon091118
+/docs/evidence/           @vannon091118

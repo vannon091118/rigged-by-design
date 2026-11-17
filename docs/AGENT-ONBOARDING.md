@@ -6,6 +6,8 @@
 
 Du bist ein **ausführender Agent**. Ein Issue pro Turn. Du schließt keine Issues — du kommentierst, und der Maintainer prüft.
 
+**Leseregel.** Zuerst `rbd docs read`: fünf Pflichtdokus plus die Kerne von `docs/TESTING.md` und `docs/GOVERNANCE.md` (7 Dokumente, <10.000 Token). `rbd shell watch` erzwingt diesen Lesepfad in der Shell; dieses Dokument ist die Tiefe für die Schleife.
+
 **Deine Rolle.** Claimen, lesen, arbeiten, eigenen Branch pushen, PR öffnen, im Issue belegen. **Merge, Close/Reopen, Push auf `main` und Release-Tags** macht ausschließlich der Maintainer; er reviewt deine Meldung gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`) und entscheidet Konflikte zwischen Agenten. Deshalb gibt es keine Merge-Anweisung in dieser Schleife — nur die Übergabe.
 
 **Du schließt nie.** Issues und Pull Requests werden von dir nur **erstellt und kommentiert**; Schließen, Wiedereröffnen und Mergen liegen ausschließlich bei Maintainer oder User. Auch ein erledigtes Ticket bleibt offen, bis der Maintainer es schließt.
@@ -218,6 +220,7 @@ Dieses Dokument entscheidet über **Koordination** (Claim, Priorität, Freigabe,
 | Name | `LIILITH`, `Shinon` oder `Jenova` | Global im Identity-Board reserviert (`IDENTITY_CLAIM`), lokal in `.lanes/identity.json`; ein Kommentar nennt Identität und Claim-ID. |
 | Checks | `verify:light`, `verify:fast`, `pnpm run ci:local` | „Checks grün" meint diese Linie ([`CI.md`](CI.md), [`TESTING.md`](TESTING.md)), nicht Browser-Klicktests. |
 | Abschluss | Commit + Push + PR nach grünem Nachweis; Merge durch den Maintainer | `turn:finish` bleibt der lokale Abschlussweg; ein pauschaler Cloud-Testlauf existiert nicht. |
+| Pre-Push | `rbd claim preflight` | Meldet offene Claims und Rest-WIP. Eigener WIP wird abgeschlossen, fremder nicht angefasst; offene Arbeit ohne Issue wird als Issue angelegt. |
 | Rollen | Maintainer merged/schließt/taggt; Agenten pushen nur ihren Branch | Rechte stehen in [`GOVERNANCE.md`](GOVERNANCE.md#rollen-und-lanes). |
 | Textbaustein | Jeder Commit braucht einen registrierten Baustein (`AGENTS.md` Regel 6) | Bleibt bestehen; die Registry wird nicht handgeschrieben. |
 | Lokaler State | Datei außerhalb des Repos | Nie committen, nie als Beweis nutzen. |

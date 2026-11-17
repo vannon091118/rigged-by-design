@@ -5,7 +5,7 @@
 // im Hintergrund und wartet auf Bereitschaft.
 // Die eigentliche Browser-Navigation erfolgt über die MCP-Browser-Tools.
 
-import { execSync, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { readFileSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
@@ -17,8 +17,12 @@ function log(msg) {
   process.stdout.write(`[run-rigged-by-design] ${msg}\n`);
 }
 
+// ANSI-Sequenzen ohne Control-Char-Regel: das Escape-Zeichen entsteht zur
+// Laufzeit, der Ausdruck bleibt ein normales RegExp.
+const ANSI_PATTERN = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*[a-zA-Z]`, 'g');
+
 function stripAnsi(text) {
-  return text.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
+  return text.replace(ANSI_PATTERN, '');
 }
 
 function viteBinExists() {

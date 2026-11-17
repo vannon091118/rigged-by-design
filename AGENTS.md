@@ -1,159 +1,33 @@
-# Rigged by Design
+# Rigged by Design — Agentenvertrag
 
 <!-- rbd-doc: managed -->
 
-> **Erster Befehl:** `pnpm run agent:start --brief`
-
-Dieser Kurzvertrag ist der Einstieg. Das **Issue-Board ist die Steuerungswahrheit**: Auftrag, Priorität, Besitz, Review und Merge-Beleg stehen dort. Dieses Dokument nennt Rollen, Grenzen und Befehle; Tiefenwissen steht in den verlinkten Dokumenten unter `docs/`.
-
-## Eine Quelle pro Datentyp
-
-| Datentyp | Autoritative Quelle |
-| --- | --- |
-| Auftrag, Akzeptanz, fachliche Entscheidung | GitHub Issue |
-| Reihenfolge und Priorität | Issue-Labels + [kanonische Priorität](docs/GOVERNANCE.md#maintainer-prioritäten-kanonisch) |
-| Besitz und Übergabe | `CLAIM`- und `RELEASE`-Kommentare am Issue |
-| Identität | Identity-Board plus verifizierte Claim-ID |
-| Diff, Reviews, Checks, Merge-Status | GitHub Pull Request und seine Ereignisse |
-| Laufzeit-Snapshot und Cursor | `.lane-claims/board-state.json`, abgeleitet und regenerierbar (`pnpm run board:sync`) |
-| Pfad-Allowlist und Task-Phase | `.lane-claims/` — nur Kollisions- und Ausführungssperre |
-| Rollen-, Merge- und Sicherheitsregeln | [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) |
-
-Kein zweiter Ort entscheidet über Besitz, Priorität oder Status. Weicht eine lokale Datei vom Issue ab, gewinnt das Issue; die Sperre wird nachgezogen, statt Arbeit zu blockieren. Ein Snapshot behauptet keine Vollständigkeit, die er nicht belegt.
-
-## Rollen
-
-Zwei Rollen, ein Board. Wer was darf, steht verbindlich in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#rollen-und-lanes); die ausführende Schleife in [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md).
-
-| Rolle | Identität | Darf | Darf nicht |
-| --- | --- | --- | --- |
-| **Maintainer** | der benannte Reviewer und Orchestrator | Triage, Priorisierung, Zuweisung, Konfliktentscheidung, Review-Verdikt `ACCEPT`/`PARTIAL`/`REJECT`, Merge nach `main`, Release-Tags, Issues und PRs schließen oder wiedereröffnen | eine Spiel-Lane ohne eigenen Claim führen |
-| **Agent** | `LIILITH`, `Shinon` oder `Jenova` (global im Identity-Board reserviert) | Issue und Kommentare lesen, `CLAIM`/`RELEASE` kommentieren, eigenen Branch pushen, PR gegen `main` öffnen, Review-Fragen beantworten | mergen, auf `main` pushen, Issues oder PRs schließen/wiedereröffnen, Tags setzen, fremden Claim übernehmen |
-| **User** | der Eigentümer | Produktentscheidungen und Richtungswechsel | — |
-
-Jeder Kommentar nennt Identität und Claim-ID. Ein Agent bearbeitet genau ein Issue pro Turn.
-
-## Lebenszyklus eines Issues
-
-`NEW → TRIAGE → READY → CLAIMED → IMPLEMENTING → REVIEW_WAITING → ACCEPTED/PARTIAL/REJECTED → MERGED → AFTERCARE → CLOSED`
-
-`BLOCKED` ist ein Zustand mit konkretem Blocker, Owner und nächstem Ereignis, kein Endlager. Nicht jedes Issue durchläuft alle Stufen. Label, Kommentar und PR müssen dieselbe Phase ausdrücken; ein Status ohne Beleg zählt nicht.
-
-## Verbindlicher Issue-Closeout (Issue #920, P0)
-
-Ein Issue darf nur geschlossen werden, wenn ein vollständiger Closeout-Beleg vorliegt:
-
-- **Ergebnis:** Was wurde umgesetzt oder warum wurde abgeschlossen ohne Codeänderung?
-- **Verknüpfter PR/Commit:** PR-Nummer, Head-SHA und Merge-SHA (falls gemergt)
-- **Verifizierter Beleg:** Merge auf main oder begründeter Abschluss ohne Code
-- **Erfüllte Akzeptanzkriterien:** Welche ACs aus dem Issue sind erfüllt?
-- **Verbleibende Restpunkte:** Was bleibt offen, mit Folge-Issue?
-• **Autorisierter schließender Akteur:** Nur Maintainer oder User dürfen schließen
-
-Worker dürfen den Abschluss vorbereiten (RELEASE + PR) und Nachweise liefern, aber nicht eigenmächtig schließen oder die Prüfung umgehen. Ein `RELEASE done <sha>` ohne PR und ohne Closeout-Beleg gilt als nicht erledigt.
-
-## Verbindlicher Pin- und State-Vertrag (Issue #887, P1)
-
-Drei angeheftete Issues wurden entwirrt (#561, #563, #677). Es gilt ein bewusst kleines, eindeutiges Pin-Set:
-
-- **#677 (aktiv gepinnt):** Zentraler Maintainer-/Board-Vertrag mit Badge-Matrix und state:JSON-Protokoll. Der Pin-Status ist technisch bestätigt.
-- **#561 (entpinnt):** Historisches Review-Log ohne aktuellen Inhalt (leerer Tabellenheader). Nicht als aktive Steuerungsquelle lesen.
-- **#563 (entpinnt):** Historischer Backlog-Snapshot mit veralteten SHA-Referenzen. Nicht als aktive Steuerungsquelle lesen.
-
-**Regeln:**
-
-1. **Ein einziger aktiver Pin.** Zu jedem Zeitpunkt trägt genau ein Issue das GitHub-Pin-Label. #677 ist der zentrale Maintainer-/Board-Vertrag.
-
-2. **Snapshot-/Cursor-Datei ist abgeleitet.** `.lane-claims/board-state.json` und alle state:JSON-Dateien sind abgeleitete Datenquellen, nicht der Ersatz für Issue-Ereignisse. Bei Abweichung gewinnt das GitHub-Issue.
-
-3. **Alle Docs verlinken denselben Vertrag.** `AGENTS.md`, `WORKFLOW.md`, `GOVERNANCE.md` und `PROMPTS.md` verweisen alle auf #677 als den kanonischen Board-Vertrag.
-
-## Identitaetsgebundene ID-Postfache (Issue #920, P0)
-
-Jede handlungsrelevante Nachricht am Board muss eindeutig adressiert sein:
-
-- GitHub Issue-/PR-Nummer und Kommentar-/Review-/Event-ID
-- Authentifizierter Absender mit verifizierter Rolle/Capability
-- Eindeutiger Empfänger bzw. Empfängerkreis
-- Empfänger-Identitäts-ID und Session-ID (sofern sessiongebunden)
-- Nachrichtentyp und erwartete Aktion
-- Zeitstempel und persistente Cursor-/Gelesen-Markierung
-- Status: NEW, ACKNOWLEDGED, IN_PROGRESS, WAITING, RESOLVED, REJECTED
-- Nächster Akteur sowie Verweis auf Antwort/Entscheidung/Closeout
-
-Jede Nachricht wird genau einmal verarbeitet. Unklare Adressierung geht in die Maintainer-Triage, nicht ins Leere. Ein ACK eines Workers ist keine Maintainer-Freigabe und umgekehrt.
+## Kern
+**Start:** `pnpm rbd agent start --brief` — Board live, Token aus `GH_TOKEN` u. a.
+**Rollen:** Agent (`LIILITH`, `Shinon`, `Jenova`) claimt, arbeitet, pusht, öffnet PR. Maintainer reviewt, merged, schließt, taggt. User entscheidet die Richtung.
+**Gates:** 18 lokale Required-Gates, 13 Light-Gates, `verify:all` = 18 Required-Gates plus Audit (19 Läufe).
+**Leseregel:** `rbd docs read` (7 Kerne, <10k), dann nur nötige Tiefe; Claim vor Read.
 
 ## Zehn unverhandelbare Regeln
+1. Claim vor Read; fremder Claim ist tabu.
+2. WIP adoptieren; kein `reset --hard`, `clean`, `stash`, `push --force`, `branch -D`.
+3. Ein Zustandsbesitzer: `world-store`; `src/core/` bleibt headless.
+4. Geld ist integer; jede Bewegung ist eine Ledger-Zeile, Quelle nur `EXTERNAL_WORLD`.
+5. Kein `Math.random()`, `Date.now()` oder `new Date()` im Spielpfad.
+6. Narrative nur aus echten Zustandsgrenzen; kein LLM im Spielpfad.
+7. Eine Testlinie lokal: `rbd verify light`, `rbd verify fast`, `rbd ci local`; Mechanik `rbd test mechanics`.
+8. Doku gehört in den Commit; generierte Blöcke nur über ihren Generator.
+9. Lieferung per Branch und PR; vor Push `rbd claim preflight`; Merge nur Maintainer oder User.
+10. `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur Invarianten blockieren.
 
-1. **Claim vor Read, Start mit `agent:start`.** Besitz ist der `CLAIM`-Kommentar am Issue (`CLAIM [A<n>] <agent> <UTC> scope=… plan=…`); erst danach wird Code gelesen, ein Issue mit aktivem fremdem Claim ist tabu. Der Start ist `pnpm run agent:start --brief`: der Lauf liest Board, Claims und PRs live aus GitHub (Token aus `GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT` oder `RBD_GH_TOKEN` — kein lokaler Zustand, kein Login) und blockiert mit dem auflösenden Befehl. Die tiefe lokale Prüfung (Arbeitsbaum, Impact, Task-Vertrag, Laufbudget) bleibt `pnpm run agent:pretask --json`. Ein nicht leerer Baum wird adoptiert (Regel 2). Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` protokolliert Phase, Befunde und nächste Aktion als **Mechanik**, nicht als Board-Wahrheit.
-2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird nur, was der Claim deckt. `reset --hard`, `clean -xdf`, `stash`, `push --force` und `branch -D` sind für Agenten verboten; der Maintainer nutzt sie ausschließlich in seinem eigenen Review-Checkout, nie im geteilten Arbeitsbaum.
-3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
-4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
-5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
-6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder neue Pool braucht einen Leser im Spiel; die Mengenquoten misst `verify:narrative-blocks`, normativ ist dieser Absatz. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein.
-7. **Eine Testlinie, lokal.** Während der Arbeit gezielte Tests und `verify:light`; Standard vor dem Push ist `verify:fast`, der Vor-PR-Nachweis `pnpm run ci:local`. GitHub-Workflows führen keine Tests, Gates, Builds oder APKs aus. Mechanik läuft ausschließlich über `pnpm run test:mechanics`. Die Linie steht in [`docs/TESTING.md`](docs/TESTING.md), die Gates in [`docs/CI.md`](docs/CI.md).
-8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Die Landkarte ist [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung über Branch und PR, Merge beim Maintainer.** Der Agent committet und pusht seinen Lane-Branch, öffnet den PR und übergibt mit `RELEASE [A<n>] done <sha>` plus Label `review-waiting`. Der Maintainer prüft gegen den Code, merged auf exaktem Kopf, setzt Release-Tags und löst Claim-Konflikte. Es gibt keinen Cloud-Testlauf und keinen Force-Push.
-10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`. Keine zweite Klassifikation.
-
-Governance-Issues entstehen nur, wenn sie aktive Spielarbeit blockieren. **Governance-Drift:** produzieren mehr als zwei aufeinanderfolgende Maintainer-Läufe primär Governance-Issues, entsteht einmalig ein `[GOVERNANCE-DRIFT]`-Issue mit P2 und neue Governance-Issues pausieren, bis es geschlossen ist.
-
-## Prompts sind Board-Tickets
-
-Jeder Prompt, der Maintainer- oder Agentenverhalten regelt — `.cron/maintainer-prompt.md`, `.cron/SECURITY.md`, `AGENTS.md`, `docs/GOVERNANCE.md`, der externe System-Reminder — hat ein Incident-Issue und eine Zeile in [`docs/PROMPTS.md`](docs/PROMPTS.md). Ein Prompt ohne Issue und Registrierung ist ein roter `verify:docs`-Befund. Reine Referenzdokumente brauchen kein eigenes Ticket: sie stehen in [`docs/INVENTORY.md`](docs/INVENTORY.md) und verweisen auf den kanonischen Vertrag.
-
-## Zustand
-
-- **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 18 lokale Required-Gates, davon `narrative`, `catalog` und `build`; Audit optional. 13 Light-Gates, 14 mit `affected`. `verify:all` = 18 Required-Gates plus Audit (19 Läufe). Alle Tests, Gates, Builds und APKs laufen lokal; die Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** keine. `Ensure PR`, `PR Cleanup`, `Promote` und `Board Overview` sind entfernt (FREEZE-0, #684): PR-Anlage und Closeout liegen beim Worker bzw. Maintainer, die Board-Übersicht pflegt der Maintainer-Lauf mit `pnpm run board:overview`. Kein GitHub-Lauf führt Tests, Gates, Builds oder APKs aus.
-- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten.
-- **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
-
-## Befehle
-
-Jeder Befehl hat dieselbe Form: `rbd <gruppe> <aktion> [flags]`. Global wird er
-mit `pnpm link --global`; ohne Installation genuegt `pnpm rbd …`. Die alten
-`pnpm run`-Namen bleiben als Kompatibilitaetsaliase bestehen, sind aber nicht
-mehr der dokumentierte Weg. `rbd help` nennt alle Gruppen, `rbd help <gruppe>`
-deren Aktionen.
-
-| Befehl | Zweck |
+## Pitfalls
+| Falle | Regel |
 | --- | --- |
-| `pnpm rbd agent start --brief` | Der eine Einstieg: Board live aus GitHub, Claim-/Postfachlage, Mechanik-Stand, nächste Befehle. Braucht nur ein Environment-Token (`GH_TOKEN`, `GITHUB_TOKEN`, `githubPAT`, `GITHUB_PAT`, `GH_PAT`, `RBD_GH_TOKEN`), keinen lokalen Zustand und keinen Login. |
-| `pnpm rbd agent pretask --json` | Tiefe lokale Prüfung von Arbeitsbaum, Impact, Task-Vertrag und Laufbudget. `agent:start` führt sie im selben Lauf aus; der Einzelaufruf bleibt für Werkzeuge. |
-| `pnpm rbd webhook receive --payload <datei> --event <name>` | Prüft eine aufgezeichnete GitHub-Delivery per HMAC und liefert dieselbe nächste Aktion wie `agent:start`; `--serve` nimmt echtes `POST /webhook` an (202/401), `--live` liest Board und offene PRs. |
-| `pnpm rbd webhook install --check` | Ist-Stand der Repo-Hooks (`active`, Events, Ziel-URL). Anlegen braucht `administration: write` (klassisch `admin:repo_hook`) und eine öffentliche HTTPS-URL; das Secret kommt aus `RBD_WEBHOOK_SECRET`. |
-| `pnpm rbd agent context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
-| `pnpm rbd board sync --at <ISO>` | Board-Snapshot nachziehen; `--check` meldet Drift mit Exit 1. |
-| `pnpm rbd claim register --issue <nr>` | Lokale Kollisionssperre aus dem Issue-Claim spiegeln. |
-| `pnpm rbd verify light` | Lint, LOC, Typecheck, Doku, Tree, Redundanz, Catalog, Generated. |
-| `pnpm rbd verify scope` | Nur der Diff gegen die Claim-Allowlist. |
-| `pnpm rbd ci local` | Lokaler Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build. |
-| `pnpm rbd verify all` | Lokaler Vollnachweis: 18 Required-Gates plus Audit. |
-| `pnpm rbd test mechanics` | Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie im Regelprofil. |
-| `pnpm rbd turn finish` | Phasenwechsel, Commit, Vertrag und Branch-Push. |
-| `pnpm rbd sync generated` | Inventur, Marker, Registry und Roadmap neu erzeugen. |
-| `pnpm rbd claim reconcile [--apply]` | Belegte Merges prüfen bzw. Claim und Task nachziehen. |
-
-## Pflichtdoku
-
-- Die Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md). In der Wurzel liegen nur `README.md` und `AGENTS.md`; anderes Markdown gehört unter `docs/`.
-- `pnpm run docs:sync` ergänzt nur fehlende stabile Marker; generierte Blöcke bleiben unangetastet.
-- Fehlende Doku ergänzt der Hook bzw. `turn:finish`; Lanes synchronisieren nicht manuell.
+| Gate-Zahl schätzen | Zahl aus [CI](docs/CI.md), nie aus dem Gedächtnis. |
+| Fremdes WIP löschen | Adoptieren und fertigbauen. |
+| Generiertes editieren | Generator ändern, dann `pnpm rbd sync generated`. |
+| Selbst mergen oder schließen | Nur Maintainer/User. |
+| Zweite Wahrheit | Issue schlägt lokale Datei, Code schlägt Prosa. |
 
 ## Referenzen
-
-| Dokument | Inhalt |
-| --- | --- |
-| [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) | Verbindliche Agent-Schleife, Claims, Review-Antwort und Übergabe. |
-| [`docs/INDEX.md`](docs/INDEX.md) | Einstieg, Doku-Landkarte und Vertragsindex. |
-| [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | Pretask, Resume, Arbeitsweise, Abschluss und manueller Merge. |
-| [`docs/CI.md`](docs/CI.md) | Required-Gates, Zustände, Workflows und Branch-Schutz. |
-| [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) | **Kanonisch:** Rollen, Prioritäten, Claims, Review, Board-Status und Eskalation. |
-| [`docs/MECHANICS.md`](docs/MECHANICS.md) | Der eine Startbefehl, Mechanik-Stand, Token-Vertrag und Ereignis-Hook. |
-| [`docs/PROMPTS.md`](docs/PROMPTS.md) | Prompt-Register mit Pfad, Schweregrad und Board-Issue. |
-| [`docs/TESTING.md`](docs/TESTING.md) | Die eine Testlinie, Testmatrix und Zusatzregressionen. |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Zustandsbesitz, Pipeline, Verträge, Save und Narrative. |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Jetzt, als Nächstes, später; offene Punkte. |
-| [`docs/contracts/README.md`](docs/contracts/README.md) | Index der sieben Kernverträge mit Writern und Tests. |
+[INDEX](docs/INDEX.md) · [WORKFLOW](docs/WORKFLOW.md) · [ROADMAP](docs/ROADMAP.md) · [LAST-CHANGES](docs/LAST-CHANGES.md) · [GOVERNANCE](docs/GOVERNANCE.md) · [CI](docs/CI.md) · Board #677

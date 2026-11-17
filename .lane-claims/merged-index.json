@@ -259,6 +259,12 @@
       "number": 1073,
       "headSha": "2cc10a65a4fb418caecfb14d1b8513a6b176ccc6",
       "mergeSha": "3d4014b097d332f740ab16a40d64703851510a06"
+    },
+    {
+      "branch": "lane/sim/issue-973-life-sim-day-clean",
+      "number": 1076,
+      "headSha": "5512903aac48f4e9703dcaad4e0cebf838b58e0a",
+      "mergeSha": "8fc748343cd28e93f67b4f86621d976ce1b63a52"
     }
   ]
 }

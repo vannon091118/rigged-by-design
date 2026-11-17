@@ -39,7 +39,15 @@ for (const entry of ENTRY_POINTS) {
 
 // Kein Altpfad: jedes Top-Level-Skript mit Ausgabe laeuft durch den Vertrag.
 // Einzige Ausnahme ist reines Werkzeugformat (JSON als ganze Antwort).
-const JSON_ONLY = new Set(['scripts/install-webhook.mjs']);
+const JSON_ONLY = new Set([
+  'scripts/install-webhook.mjs',
+  // Protokoll-/Terminalpfade: Hook-JSON, Shell-Gate, Watcher und der
+  // interaktive Launcher liefern absichtlich keine 500-Token-Berichte.
+  'scripts/agent-pretool.mjs',
+  'scripts/agent-shell.mjs',
+  'scripts/shell-guard.mjs',
+  'scripts/shell-watch.mjs',
+]);
 for (const name of readdirSync(join(ROOT, 'scripts')).filter((entry) => entry.endsWith('.mjs'))) {
   const file = `scripts/${name}`;
   const source = readFileSync(join(ROOT, file), 'utf8');
