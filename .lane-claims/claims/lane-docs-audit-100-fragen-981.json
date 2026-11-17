@@ -1,0 +1,20 @@
+{
+  "id": "lane/docs/audit-100-fragen-981",
+  "owner": "Governance-Owner",
+  "branch": "lane/docs/audit-100-fragen-981",
+  "baseSha": "102a7b705af4894f87081020e3e26069884bfafb",
+  "issue": 981,
+  "task": "Doku-Belege fuer AUDIT-100 Batch-B-Eintraege (UD-02..UD-48, DU-02, DU-38) in docs/AUDIT.md ergaengen; verify:docs gruen",
+  "pathAllowlist": [
+    "docs/AUDIT.md",
+    ".lane-claims/tasks/docs-audit-100-fragen-981.json",
+    ".lane-claims/claims/lane-docs-audit-100-fragen-981.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "mergedEvidence": "branch-in-main",
+  "mergedSha": "102a7b70",
+  "createdAt": "102a7b705af4894f87081020e3e26069884bfafb"
+}
