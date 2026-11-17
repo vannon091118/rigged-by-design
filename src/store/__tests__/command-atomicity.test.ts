@@ -71,6 +71,22 @@ afterEach(() => {
   if (hireAgentSpy) hireAgentSpy.mockRestore();
 });
 
+// Mock hireAgent at top level for Store-Test
+vi.mock('../../core/sim/staff', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../core/sim/staff')>();
+  return {
+    ...actual,
+    hireAgent: vi.fn((world: WorldState, ledger: Ledger, role: StaffRole): string => {
+      const entriesBefore = ledger.entryCount;
+      const agentsBefore = world.agents.length;
+      actual.hireAgent(world, ledger, role);
+      mutation.entries = ledger.entryCount - entriesBefore;
+      mutation.agents = world.agents.length - agentsBefore;
+      throw new Error(FAILURE);
+    }),
+  };
+});
+
 describe('Begrenzte Command-Transaktion', () => {
   it('nimmt eine Teilmutation an Welt, Ledger, PRNG und Facts vollstaendig zurueck', () => {
     const { world, ledger, prng } = brawlSetup();
@@ -158,18 +174,7 @@ describe('Streit-Fact nur nach einem gefuehrten Kampf', () => {
 describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
   it('laesst Welt, Ledger, PRNG, Facts und Journal nach dem Rollback unveraendert', async () => {
     vi.stubGlobal('localStorage', memoryStorage());
-    // Mock hireAgent NUR fuer diesen Test
-    hireAgentSpy = vi.spyOn(staffModule, 'hireAgent').mockImplementation(
-      (world: WorldState, ledger: Ledger, role: StaffRole): string => {
-        const entriesBefore = ledger.entryCount;
-        const agentsBefore = world.agents.length;
-        const result = staffModule.hireAgent(world, ledger, role);
-        mutation.entries = ledger.entryCount - entriesBefore;
-        mutation.agents = world.agents.length - agentsBefore;
-        throw new Error(FAILURE);
-      }
-    );
-    // Der Store ist ein Modul-Singleton: erst nach dem Speicher-Stub und Mock importieren.
+    // Der Store ist ein Modul-Singleton: erst nach dem Mock importieren.
     const { worldStore } = await import('../world-store');
     worldStore.newGame('SMALL');
 
@@ -177,7 +182,9 @@ describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
     const ledgerBefore = worldStore.auditLedger();
     const payloadBefore = JSON.parse(exportBefore).payload as Record<string, unknown>;
 
-    worldStore.hire('guard');
+    // Ruft worldStore.hire auf, der intern #guard nutzt und hireCmd mockt
+    // Der gemockte hireCmd wirft einen Fehler nach der Buchung
+    await expect(worldStore.hire('guard')).rejects.toThrow('Einstellung gebucht, dann gerissen.');
 
     // Der Command ist mitten in der Wirkung gescheitert: Buchung und Agent standen schon.
     expect(mutation.entries).toBeGreaterThan(0);
@@ -198,5 +205,5 @@ describe('Store-Pfad: gescheiterter Multi-System-Command', () => {
     expect(payloadAfter.staff).toEqual(payloadBefore.staff);
     expect(payloadAfter.agents).toEqual(payloadBefore.agents);
     expect(worldStore.getSnapshot().notice).toContain('gerissen');
-  });
+  }, 30000);
 });

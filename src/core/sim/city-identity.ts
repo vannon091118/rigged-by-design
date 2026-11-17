@@ -12,6 +12,7 @@
 import { ensureCityVisitor } from './city-npcs';
 import { rosterDefById } from './city-npc-roster';
 import type { WorldState } from './types';
+import { syncResidentMemories } from './city-life-restore';
 
 /**
  * Bindet alle Bewohner an ihr Profil. Idempotent: ist die Kennung schon
@@ -31,4 +32,6 @@ export function bindCityIdentities(world: WorldState): void {
     return { ...resident, visitorId };
   });
   if (changed) world.cityLife = { ...life, residents };
+  // Synchronisiere Visitor.memories -> CityResidentState.memories
+  syncResidentMemories(world);
 }

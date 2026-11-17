@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/issue-985-gameplay-doku",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-985-gameplay-doku",
+  "baseSha": "3a0075a30164077353241c576811a09756a4060f",
+  "issue": 985,
+  "task": "gameplay-doku",
+  "pathAllowlist": [
+    "docs/UD-01.md",
+    "docs/UD-13.md",
+    "docs/UD-21.md",
+    "docs/UD-27.md",
+    "src/store/__tests__/first-evening.test.ts",
+    ".lane-claims/tasks/lane-governance-issue-985-gameplay-doku.json",
+    ".lane-claims/claims/lane-governance-issue-985-gameplay-doku.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3a0075a30164077353241c576811a09756a4060f"
+}
