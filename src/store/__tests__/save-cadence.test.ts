@@ -77,8 +77,8 @@ describe('Sicherung beim Verlassen des Tabs', () => {
     const unbind = bindSaveOnHide(() => { saved += 1; }, host);
     const fire = (type: string): void => {
       const listener = listeners.get(type);
-      expect(listener).toBeDefined();
-      listener?.();
+      if (!listener) throw new Error(`Kein Listener fuer ${type} gebunden.`);
+      listener();
     };
 
     fire('visibilitychange');

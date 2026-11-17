@@ -6,7 +6,9 @@
   "issue": 988,
   "task": "Issue #988: Turn-Save drosseln und beim Tab-Wechsel sichern",
   "pathAllowlist": [
-    "src/store/**",
+    "src/store/save-cadence.ts",
+    "src/store/world-tick.ts",
+    "src/store/__tests__/save-cadence.test.ts",
     "content/narrative/contributions/2026-11-16-save-cadence.json",
     "content/narrative/turns/manifest.json",
     "content/narrative/registry/fragments.json",
