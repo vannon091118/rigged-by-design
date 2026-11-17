@@ -101,6 +101,8 @@ interface Weighted<T> {
 /**
  * Zieht ein Element nach Gewicht. Ein abgelehntes Element (z. B. besetzter Platz)
  * wird uebersprungen statt die Ziehung zu wiederholen; ohne Kandidat kommt null.
+ * Die Suche ist zyklisch: nach dem Startindex wird bis zum Ende und dann vom
+ * Anfang bis vor dem Startindex weitergesucht. Kein zusätzlicher PRNG-Verbrauch.
  */
 export function pickWeighted<T>(
   prng: Prng,
@@ -117,7 +119,9 @@ export function pickWeighted<T>(
     accumulated += positive(entries[index]!.weight);
     if (target < accumulated) { start = index; break; }
   }
-  for (let index = start; index < entries.length; index += 1) {
+  // Zyklische Suche: erst start bis Ende, dann 0 bis start-1
+  for (let offset = 0; offset < entries.length; offset += 1) {
+    const index = (start + offset) % entries.length;
     const entry = entries[index]!;
     if (positive(entry.weight) === 0) continue;
     if (!accept || accept(entry.item)) return entry.item;
