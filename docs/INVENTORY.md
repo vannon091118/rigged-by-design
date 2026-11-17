@@ -766,7 +766,7 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 | Getrackte Dateien | 3400 |
 | Gelistete Dateien | 3400 |
 | Getrackte Ordner | 120 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (146), .lanes (1), artifacts (1), bin (1), content (1240), docs (93), packages (27), public (571), scripts (172), src (1125) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (142), .lanes (1), artifacts (1), bin (1), content (1240), docs (97), packages (27), public (571), scripts (172), src (1125) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -780,8 +780,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 71 Datei(en)
-- `.lane-claims/tasks/` — 71 Datei(en)
+- `.lane-claims/claims/` — 69 Datei(en)
+- `.lane-claims/tasks/` — 69 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -789,7 +789,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 25 Datei(en)
+- `docs/` — 29 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 6 Datei(en)
@@ -913,7 +913,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
 - `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/fix-main-lint-command-atomicity.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
@@ -922,7 +921,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-docsystem-10k-watcher.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
@@ -943,6 +941,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-logs-failure-only.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-merge-gate.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-output-budget-closeout.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-1087.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-register-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -950,7 +949,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-integrity-issue-1036-store-guard-proof.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-issue-768-city-actor-floor-target.json` — { — gelesen: 38 Zeilen
@@ -974,10 +972,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-issue-976-save-recovery.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
@@ -985,14 +983,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/merged-index.json` — { — gelesen: 288 Zeilen
-- `.lane-claims/tasks/fix-main-lint-command-atomicity.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-live-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-docsystem-10k-watcher.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
@@ -1013,6 +1009,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-logs-failure-only.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-merge-gate.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-output-budget-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-1087.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-register-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-repo-ballast-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -1020,7 +1017,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/integrity-issue-1036-store-guard-proof.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 42 Zeilen
@@ -2323,6 +2319,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1563 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 215 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
+- `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
+- `docs/UD-13.md` — UD-13: Ortswirtschaft — Übersicht — gelesen: 79 Zeilen
+- `docs/UD-21.md` — UD-21: Ortswirtschaft — Kiez und Markt Detail — gelesen: 70 Zeilen
+- `docs/UD-27.md` — UD-27: Ortswirtschaft — Casino Integration & Save/Load — gelesen: 67 Zeilen
 - `docs/WORKFLOW-DETAIL.md` — Workflow — Referenztiefe — gelesen: 174 Zeilen
 - `docs/WORKFLOW.md` — Workflow — gelesen: 24 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
@@ -3602,7 +3602,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-growth-view.ts` — Snapshot und Stadtfenster lesen dieselbe Sicht: Arbeitsmarkt, Bauträger-Konto, — gelesen: 79 Zeilen
 - `src/core/sim/city-growth.ts` — Die Stadt baut auf ein Signal: Ein Bewohner ohne Arbeitsslot heisst, es gibt zu — gelesen: 160 Zeilen
 - `src/core/sim/city-households.ts` — Jeder Bewohner traegt seine Wohnung als Kennung im Save. Die Zuordnung wird — gelesen: 88 Zeilen
-- `src/core/sim/city-identity.ts` — Jeder Bewohner bekommt eine individuelle Kennung, die auf sein Profil zeigt. — gelesen: 34 Zeilen
+- `src/core/sim/city-identity.ts` — Jeder Bewohner bekommt eine individuelle Kennung, die auf sein Profil zeigt. — gelesen: 35 Zeilen
 - `src/core/sim/city-life-apply.ts` — Der Intent ist erst dann echt, wenn er Beduerfnisse, Bargeld, Faehigkeiten, — gelesen: 149 Zeilen
 - `src/core/sim/city-life-create.ts` — Ein Bewohner entsteht aus seiner Figur in der Besetzung (`city-npc-roster`): — gelesen: 97 Zeilen
 - `src/core/sim/city-life-decision.ts` — Der gewaehlte Intent und die zwoelf Familien werden mit derselben Score-Funktion — gelesen: 124 Zeilen
@@ -3802,7 +3802,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/knowledge.ts` — Wissenskette: Niemand berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 172 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/main-event-pool.ts` — P-22 Main-Event-Pool: feste, normale Szenen werden nur bei idle gezogen. — gelesen: 157 Zeilen
-- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 73 Zeilen
+- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 91 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 75 Zeilen
 - `src/core/sim/narrative/relationship-tier.ts` — Deterministische Beziehungstier, abgeleitet aus den kanonischen Kanten. — gelesen: 72 Zeilen
