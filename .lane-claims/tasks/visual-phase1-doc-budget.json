@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "visual-phase1-doc-budget",
+  "claimId": "lane/governance/visual-phase1-doc-budget",
+  "branch": "lane/governance/visual-phase1-doc-budget",
+  "baseSha": "2f5003c368deee78b39c72a61c0fa0e91b254dfe",
+  "phase": "DONE",
+  "title": "Docs-Budget nach Head-03",
+  "goal": "Doku-Bytes unter 1.650.000 halten, ohne den Head-03-Nachweis zu verlieren.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Abgeschlossen.",
+  "revision": 1
+}
