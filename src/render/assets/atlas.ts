@@ -118,9 +118,15 @@ function registerPage(page: AtlasPage, image: HTMLImageElement): void {
   }
 }
 
-/** Rueckfall: die Einzeldateien werden erst hier zu Seiten gepackt. */
+/**
+ * Rueckfall: nur PNG-Einzeldateien werden hier zu Seiten gepackt. SVGs sind
+ * reine Build-Quellen; sie werden nie im Browser nachgeladen, sonst gaebe es
+ * einen zweiten, ungepackten Ladepfad neben dem Atlas.
+ */
 async function packFolders(plan: AtlasManifest, base: string): Promise<void> {
-  const paths = plan.order.flatMap((folder) => plan.folders[folder] ?? []);
+  const paths = plan.order
+    .flatMap((folder) => plan.folders[folder] ?? [])
+    .filter((path) => path.endsWith('.png'));
   const images = new Map<string, HTMLImageElement>();
   const queue = [...paths];
   const workers = Array.from({ length: 12 }, async () => {
