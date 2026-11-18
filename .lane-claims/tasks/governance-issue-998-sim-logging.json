@@ -3,7 +3,7 @@
   "taskId": "governance-issue-998-sim-logging",
   "claimId": "lane/governance/issue-998-sim-logging",
   "branch": "lane/governance/issue-998-sim-logging",
-  "baseSha": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3",
+  "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
   "phase": "IMPLEMENTING",
   "title": "Sim-Tests loggen strukturiert statt mit console.log",
   "goal": "Alle console.log-Aufrufe in den Sim-Testdateien durch strukturiertes Logging ersetzen und verify:light samt betroffenen Suiten gruen belegen",
