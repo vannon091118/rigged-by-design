@@ -77,7 +77,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "archived",
-  "createdAt": "0ffa22b5337a9652892fe0f442cbbf3758b488c6",
-  "releasedAt": "2026-11-17T23:16:40.090Z",
-  "releasedReason": "PR #1102 gemergt (8b825f23)"
+  "createdAt": "0ffa22b5337a9652892fe0f442cbbf3758b488c6"
 }

@@ -24,7 +24,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "archived",
-  "createdAt": "43de0973b8ad63faf793eedaf5ba69fefc2645f3",
-  "releasedAt": "2026-11-17T23:37:40.688Z",
-  "releasedReason": "PR #1104 gemergt (319a957d)"
+  "createdAt": "43de0973b8ad63faf793eedaf5ba69fefc2645f3"
 }
