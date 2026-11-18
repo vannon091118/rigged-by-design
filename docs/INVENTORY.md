@@ -955,7 +955,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
-- `.lane-claims/claims/lane-governance-issue-998-sim-logging.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-issue-998-sim-logging.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-logs-failure-only.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-merge-gate.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-output-budget-closeout.json` — { — gelesen: 23 Zeilen
@@ -3215,7 +3215,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/promotion-state.mjs` — Promotion-Entscheidung: aus CI-Plan, Task-Vertrag und BLOCKED-Issues wird — gelesen: 78 Zeilen
 - `scripts/lib/prompt-register.mjs` — Prompt-Register (#885): jeder Prompt, der Maintainer- oder Agentenverhalten — gelesen: 85 Zeilen
 - `scripts/lib/readme-media.mjs` — README-Medien: Alt-Texte und Bildpfade. — gelesen: 49 Zeilen
-- `scripts/lib/redundancy-metrics.mjs` — Fuenf Redundanz-Kennzahlen als dauerhafte Budgets. — gelesen: 189 Zeilen
+- `scripts/lib/redundancy-metrics.mjs` — Fuenf Redundanz-Kennzahlen als dauerhafte Budgets. — gelesen: 194 Zeilen
 - `scripts/lib/release-escalation.mjs` — Eskalationsleiter fuer Umgebungsprobleme im Release. — gelesen: 56 Zeilen
 - `scripts/lib/repair-plan.mjs` — Reparaturplan: aus einem roten Lauf wird genau eine Entscheidung. — gelesen: 175 Zeilen
 - `scripts/lib/repo-inventory.mjs` — Repository-Inventur: Bestaende werden am Remote erkannt, nicht am Ordnernamen. — gelesen: 111 Zeilen
