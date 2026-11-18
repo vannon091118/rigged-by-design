@@ -33,16 +33,27 @@ export function driftProblems(files = []) {
   const hot = code.filter((path) => GAME_HOT_ZONE.test(path) && !DEV_TEST_BRIDGE.test(path));
   const problems = [];
 
-  if (code.length > 0 && !changed.includes(LAST_CHANGES)) {
-    problems.push(
-      `Code geaendert (${code.slice(0, 4).join(', ')}${code.length > 4 ? ', ...' : ''}), aber ${LAST_CHANGES} fehlt im selben Commit.`,
-    );
-  }
-  if (hot.length > 0 && !changed.includes(ROADMAP)) {
-    problems.push(
-      `Spiel-Hot-Zone geaendert (${hot.slice(0, 4).join(', ')}${hot.length > 4 ? ', ...' : ''}), aber ${ROADMAP} fehlt im selben Commit.`,
-    );
-  }
+  // Ob ein Pflichtdoku-Pfad im Commit steht; pro Pfad nur einmal auswerten (Memoization).
+  const docContentOk = (() => {
+    const cache = new Map();
+    return (path) => {
+      if (cache.has(path)) return cache.get(path);
+      const ok = changed.includes(path);
+      cache.set(path, ok);
+      return ok;
+    };
+  })();
+
+  /** Prueft ein Pflichtdoku und meldet Drift, wenn es fehlt. */
+  const checkDocFile = (path, label) => {
+    if (!docContentOk(path)) {
+      problems.push(`${label} geaendert, aber ${path} fehlt im selben Commit.`);
+    }
+  };
+
+  if (code.length > 0) checkDocFile(LAST_CHANGES, 'Code');
+  if (hot.length > 0) checkDocFile(ROADMAP, 'Spiel-Hot-Zone');
+
   return problems;
 }
 
