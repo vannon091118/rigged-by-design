@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-lod-hysteresis",
+  "claimId": "lane/governance/visual-phase2-lod-hysteresis",
+  "branch": "lane/governance/visual-phase2-lod-hysteresis",
+  "baseSha": "c18c4735d50bb05419ac3afcd8495b2b7d2bc7f0",
+  "phase": "READY",
+  "title": "LOD-Hysterese im Band und an den Kanten testen",
+  "goal": "Den echten Kameraweg durch das Hysterese-Band pruefen: fern, Detail, Wackeln im Band, zurueck, Kanten stabil; Doku und Belege nachziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Test und Doku fertigstellen, Gates fahren, dann Commit und PR.",
+  "revision": 1
+}

@@ -40,7 +40,7 @@ RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json
 | R3 | `actor-silhouette.ts` + Test: 12×16-Silhouette, fünf Personafamilien; Pin-Skalierung gegen die Kamera entfernt | Code-/Testbeleg |
 | R4 | sechs echte Boden-SVGs im Manifest, `floorTextureKey` testet Vorhandensein; `CarpetOverlay` entfernt, Teppichwahl tintet das Material | Code-/Testbeleg |
 | R5 | `light-pool.ts` + Test: 16 Slots, eine Radialtextur, BlendMode am Lichtkind; `drawLightSpill`-Ellipsenschleife entfernt | Code-/Testbeleg |
-| R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
+| R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt; `floor-camera-hysteresis.test.ts`: Kantenverlauf unter/ueber/im Band; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
 | R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest **und** Browserbild `24-r10-wohnung.png`; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
 | R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 bleibt offen | **R7 teilweise** (Produktionspfad und Browserbild `21-r7-stadt.png`); **R8 teilweise** (539 Semantik-Assets und 10 Stadttexturen tragen Rolle, Welt, `displayScale` und `license`; Sicht offen), **R9 teilweise** (Kachel/Weg/Ankunft; Renderer `CityActorSync`, in `floor-view.ts`/`view-layers.ts` verdrahtet; Position/Animation offen #640); keine zweite Stadt |
@@ -1029,6 +1029,12 @@ flattert nicht an der Schwelle.
 - [ ] Test: Bounds 60×60 versus 10×10, Zoom-Grenzen, Hysterese an der Schwelle,
       Hintergrund bewegt sich langsamer als die Welt.
 
+**Beleg Hysterese:** `floor-camera-hysteresis.test.ts` faehrt den echten
+Kameraweg (`resize`/`zoomStep`/`step`) unter dem Band, ueber `enter`, mehrfach
+im Band auf und ab, unter `exit` und an beiden Kanten. Die Kanten werden aus
+`nextDetail` selbst bestimmt, nicht aus den Konstanten; der Test scheitert an
+einer einzelnen Schwelle, an `enter == exit` und an vertauschten Kanten.
+
 **Akzeptanz**
 
 - [ ] Keine quadratische Kameraannahme mehr im Renderer.
@@ -1588,6 +1594,8 @@ Die Screenshots sind physikalisch mit DPR 2 aufgenommen; die CSS-Viewports entsp
 
 - Detail ab `1,16 × fit`, aus unter `1,08 × fit`; bei `1,00 × fit` ist der Pin damit immer die kleinste Stufe. Der Pin laedt drei Atlas-Sprites, ohne Atlas zeichnet `drawActorSilhouette`.
 - Ein Live-Lauf im Produktionsbuild belegt den Wechsel ohne erzwungene Sichtbarkeit: `lod-fit-pins.png` (FIT, `detail=false`, `pin.visible=true`), `lod-fit-detail.png` (`1,82 × fit`, `detail=true`, Figur sichtbar) und `lod-fit-return.png` (zurueck auf FIT, wieder Pin).
+- Die drei Belege wurden im Produktionsbuild (`pnpm build`, Preview) aufgenommen, dafuer stand der Floor voruebergehend auf dem Canvas-Renderer, weil der Cloud-Browser WebGL nicht capturen kann. Der Eingriff ist nicht Teil des Commits; die Aufnahmen zeigen die echte LOD-Auswahl, aber nicht den WebGL-Pfad.
+- `floor-camera-hysteresis.test.ts` sichert den Kantenverlauf: unter dem Band fern, ueber `enter` Detail, Wackeln im Band ohne Wechsel, unter `exit` zurueck; die Kanten liest der Test aus `nextDetail`.
 - `guest-lod-evidence.png` (DPR 1/2) zeigt die Sprite-Qualitaet der drei Kopffamilien, keinen LOD-Wechsel; als Wechsel-Beleg war die Beschreibung zu weit.
 - Belege: `actor-silhouette.test.ts`, `atlas-environment.test.ts`, `guest-rig-detail.test.ts`, `lod-fit-pins.png`, `lod-fit-detail.png`, `lod-fit-return.png`.
 

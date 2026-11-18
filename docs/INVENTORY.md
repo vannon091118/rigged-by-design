@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 465 Dateien — contract 232 · integration 128 · governance 92 · statistics 6 · performance 7.
+Summe: 466 Dateien — contract 232 · integration 129 · governance 92 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -463,6 +463,7 @@ Summe: 465 Dateien — contract 232 · integration 128 · governance 92 · stati
 | `src/render/__tests__/floor-anchor.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
 | `src/render/__tests__/floor-cache.test.ts` | render | integration | ja | `src/render/floor-math.ts` |
 | `src/render/__tests__/floor-camera-bounds.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
+| `src/render/__tests__/floor-camera-hysteresis.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
 | `src/render/__tests__/floor-camera.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
 | `src/render/__tests__/floor-hit.test.ts` | render | integration | ja | `src/render/floor-hit.ts` |
 | `src/render/__tests__/floor-input.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
@@ -771,10 +772,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3548 |
-| Gelistete Dateien | 3548 |
+| Getrackte Dateien | 3552 |
+| Gelistete Dateien | 3552 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (190), .lanes (1), artifacts (1), bin (1), content (1252), docs (111), packages (27), public (573), scripts (232), src (1137) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (192), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -788,12 +789,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 93 Datei(en)
-- `.lane-claims/tasks/` — 93 Datei(en)
+- `.lane-claims/claims/` — 94 Datei(en)
+- `.lane-claims/tasks/` — 94 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1248 Datei(en)
+- `content/narrative/contributions/` — 1249 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -888,7 +889,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
 - `src/render/` — 68 Datei(en)
-- `src/render/__tests__/` — 39 Datei(en)
+- `src/render/__tests__/` — 40 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 3 Datei(en)
 - `src/render/city/` — 1 Datei(en)
@@ -979,6 +980,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
@@ -1062,6 +1064,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
@@ -2366,10 +2369,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-18-visual-head-03.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-editor-heads.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-18-visual-phase2-lod-hysteresis.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 28034 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4997 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 28059 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 5001 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -2386,7 +2390,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 208 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1621 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1629 Zeilen
 - `docs/ROADMAP-DETAIL.md` — Roadmap — Spiel und Präsentation — gelesen: 216 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
 - `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
@@ -3903,7 +3907,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 200 Zeilen
 - `src/core/sim/narrative/composer/image-diff-gate.ts` — Vergleicht zwei RGBA-Bildpuffer pixelgenau und meldet ob der Unterschied — gelesen: 144 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 111 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 317 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 318 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -4068,6 +4072,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-anchor.test.ts` — Der Weltanker ist die Gegenrichtung zum Trefferpfad: derselbe Punkt muss — gelesen: 42 Zeilen
 - `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 88 Zeilen
 - `src/render/__tests__/floor-camera-bounds.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 70 Zeilen
+- `src/render/__tests__/floor-camera-hysteresis.test.ts` — Die echte Detail-Auswahl muss an der Schwelle ruhig bleiben: unterhalb des — gelesen: 169 Zeilen
 - `src/render/__tests__/floor-camera.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 39 Zeilen
 - `src/render/__tests__/floor-hit.test.ts` — Ein Trefferpfad: Tiefe vor Array-Reihenfolge, Figur vor Moebel, Wand vor — gelesen: 84 Zeilen
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 123 Zeilen
@@ -4121,7 +4126,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-actions.ts` — Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. — gelesen: 210 Zeilen
 - `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 59 Zeilen
 - `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 118 Zeilen
-- `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen und expliziten Weltgrenzen; lerpt ohne Frame-Allokationen. — gelesen: 209 Zeilen
+- `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen und expliziten Weltgrenzen; lerpt ohne Frame-Allokationen. — gelesen: 212 Zeilen
 - `src/render/floor-cash.ts` — Kasse als Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch. — gelesen: 69 Zeilen
 - `src/render/floor-crates.ts` — Lieferkisten: am Boden abgelegt oder sichtbar am Traeger. Liest nur Snapshots. — gelesen: 110 Zeilen
 - `src/render/floor-cues.ts` — Bodenhinweise: Spielerring, Zielraster, Laufweg und Klick-Puls in einer Ebene. — gelesen: 218 Zeilen

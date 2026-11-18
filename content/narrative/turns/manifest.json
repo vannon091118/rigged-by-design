@@ -4992,6 +4992,10 @@
     {
       "turnId": "2026-11-18T20:48Z-visual-phase2-lod-sprites",
       "contributionId": "visual-phase2-lod-sprites-01"
+    },
+    {
+      "turnId": "2026-11-18T22:03Z-visual-phase2-lod-hysteresis",
+      "contributionId": "visual-phase2-lod-hysteresis-01"
     }
   ]
 }
