@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "docs-issue-1100-bypass-nachweis",
+  "claimId": "lane/docs/issue-1100-bypass-nachweis",
+  "branch": "lane/docs/issue-1100-bypass-nachweis",
+  "baseSha": "d086e1524370c662e7e1b40914a1da24096aa7ef",
+  "phase": "DONE",
+  "title": "Nachhol-Erkennung nach --no-verify",
+  "goal": "Belegen und dokumentieren, dass --no-verify-Commits im Push auffallen",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Gemergt; keine offene Arbeit.",
+  "revision": 1
+}
