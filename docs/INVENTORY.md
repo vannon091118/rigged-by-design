@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 464 Dateien — contract 232 · integration 127 · governance 92 · statistics 6 · performance 7.
+Summe: 465 Dateien — contract 232 · integration 128 · governance 92 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -468,6 +468,7 @@ Summe: 464 Dateien — contract 232 · integration 127 · governance 92 · stati
 | `src/render/__tests__/floor-input.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
 | `src/render/__tests__/floor-interact-unhandled.test.ts` | render | integration | ja | `src/render/floor-interact.ts` |
 | `src/render/__tests__/floor-layout.test.ts` | render | integration | ja | `src/render/floor-material.ts` |
+| `src/render/__tests__/guest-rig-detail.test.ts` | render | integration | ja | `src/render/guest-rig.ts` |
 | `src/render/__tests__/guest-sprite.test.ts` | render | integration | ja | `src/render/guest-paint.ts` |
 | `src/render/__tests__/light-pool.test.ts` | render | integration | ja | `src/render/light-pool.ts` |
 | `src/render/__tests__/locomotion.test.ts` | render | integration | ja | `src/render/locomotion.ts` |
@@ -770,10 +771,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3541 |
-| Gelistete Dateien | 3541 |
+| Getrackte Dateien | 3547 |
+| Gelistete Dateien | 3547 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (187), .lanes (1), artifacts (1), bin (1), content (1252), docs (108), packages (27), public (573), scripts (232), src (1136) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (189), .lanes (1), artifacts (1), bin (1), content (1252), docs (111), packages (27), public (573), scripts (232), src (1137) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -787,8 +788,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 91 Datei(en)
-- `.lane-claims/tasks/` — 92 Datei(en)
+- `.lane-claims/claims/` — 92 Datei(en)
+- `.lane-claims/tasks/` — 93 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -806,7 +807,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/superpowers/plans/` — 1 Datei(en)
 - `docs/visual-rework/baseline/` — 4 Datei(en)
 - `docs/visual-rework/phase1/` — 1 Datei(en)
-- `docs/visual-rework/phase2/` — 1 Datei(en)
+- `docs/visual-rework/phase2/` — 4 Datei(en)
 - `packages/gamescout/` — 5 Datei(en)
 - `packages/gamescout/bin/` — 1 Datei(en)
 - `packages/gamescout/src/cli/` — 5 Datei(en)
@@ -887,7 +888,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
 - `src/render/` — 68 Datei(en)
-- `src/render/__tests__/` — 38 Datei(en)
+- `src/render/__tests__/` — 39 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 3 Datei(en)
 - `src/render/city/` — 1 Datei(en)
@@ -977,6 +978,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
@@ -1059,6 +1061,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
@@ -2382,7 +2385,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 208 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1619 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1621 Zeilen
 - `docs/ROADMAP-DETAIL.md` — Roadmap — Spiel und Präsentation — gelesen: 216 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
 - `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
@@ -2476,6 +2479,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/visual-rework/baseline/fresh-start-loader-390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 356026 B
 - `docs/visual-rework/phase1/environment-contact-sheet.png` — PNG-Textur — geprueft: PNG 1056x1264, 111891 B
 - `docs/visual-rework/phase2/guest-lod-evidence.png` — PNG-Textur — geprueft: PNG 1400x1080, 161846 B
+- `docs/visual-rework/phase2/lod-fit-detail.png` — PNG-Textur — geprueft: PNG 1592x1472, 393617 B
+- `docs/visual-rework/phase2/lod-fit-pins.png` — PNG-Textur — geprueft: PNG 1592x1472, 371146 B
+- `docs/visual-rework/phase2/lod-fit-return.png` — PNG-Textur — geprueft: PNG 1592x1472, 398739 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 145 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
@@ -4066,6 +4072,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 123 Zeilen
 - `src/render/__tests__/floor-interact-unhandled.test.ts` — Regression #771: Der Switch im Floor-Interact hatte keinen exhaustiven — gelesen: 23 Zeilen
 - `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 161 Zeilen
+- `src/render/__tests__/guest-rig-detail.test.ts` — Der Fern-Pin darf nicht am Rig haengen bleiben: `setDetail(false)` zeigt — gelesen: 46 Zeilen
 - `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 102 Zeilen
 - `src/render/__tests__/light-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/locomotion.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen

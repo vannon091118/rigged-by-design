@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/visual-phase2-lod-live-evidence",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase2-lod-live-evidence",
+  "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
+  "issue": 1157,
+  "task": "Phase 2: LOD-Wechsel im Live-Lauf belegen",
+  "goal": "Drei Sichtbelege (FIT-Pin, Zoom-Rig, Rueckkehr) aus dem laufenden Produktionsbuild, Doku korrigieren, Regressionstest fuer setDetail.",
+  "pathAllowlist": [
+    "docs/",
+    "src/render/__tests__/",
+    ".lane-claims/",
+    "content/narrative/",
+    ".lane-claims/claims/lane-governance-visual-phase2-lod-live-evidence.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "192db0147186ab80bcd4980b9da227bb81d03e1d"
+}
