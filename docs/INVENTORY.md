@@ -937,6 +937,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json` — { — gelesen: 24 Zeilen
@@ -1029,6 +1030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-install-hooks-stat-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1043-redundancy-budget.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1045-claim-reconcile.json` — { — gelesen: 17 Zeilen
@@ -3115,7 +3117,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/encode-audio.mjs` — Musik-Master zu Browser-Audio: die WAV-Dateien bleiben Master und liegen — gelesen: 79 Zeilen
 - `scripts/escalation-plan.mjs` — Druckt die Eskalationsstufe zu einem Befund. Ohne Argument liest er die — gelesen: 40 Zeilen
 - `scripts/init-github.sh` — Initialisiert das Repo, setzt .gitignore, macht den ersten Commit und legt — gelesen: 47 Zeilen
-- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 101 Zeilen
+- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 106 Zeilen
 - `scripts/install-webhook.mjs` — webhook:install — den Repo-Webhook idempotent anlegen (#943). — gelesen: 153 Zeilen
 - `scripts/integrate.mjs` — Integrationscontroller: eine Pruefung vor der CI, ein Reparaturpfad. — gelesen: 199 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 197 Zeilen

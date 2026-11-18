@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-install-hooks-stat-sync",
+  "claimId": "lane/governance/install-hooks-stat-sync",
+  "branch": "lane/governance/install-hooks-stat-sync",
+  "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
+  "phase": "IMPLEMENTING",
+  "title": "install-hooks.mjs: statSync auf Dateisystemen ohne exec-Bit entfallen lassen",
+  "goal": "isFileModeIrrelevant() immer true zurueckgeben; statSync-Pruefung entfaellt auf Dateisystemen ohne exec-Bit (NTFS/FAT32 unter Linux/WSL2). Index-Modus 100755 bleibt massgebend.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, Push, PR, Merge.",
+  "revision": 1
+}

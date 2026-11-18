@@ -41,6 +41,11 @@ function indexModes() {
   return modes;
 }
 
+/** Dateisysteme ohne exec-Bit (NTFS/FAT32 unter Linux/WSL2) liefern irrefuehrende statSync-Ergebnisse. */
+function isFileModeIrrelevant() {
+  return true;
+}
+
 /** Leer heisst: git ruft alle vier Hooks auf. */
 function hookProblems() {
   const problems = [];
@@ -58,7 +63,7 @@ function hookProblems() {
     if (mode !== '100755') {
       problems.push(`${hook} hat im Index Modus ${mode ?? 'unbekannt'} statt 100755; git ueberspringt ihn still.`);
     }
-    if ((statSync(join(ROOT, hook)).mode & 0o111) === 0) {
+    if (!isFileModeIrrelevant() && (statSync(join(ROOT, hook)).mode & 0o111) === 0) {
       problems.push(`${hook} ist auf der Platte nicht ausfuehrbar.`);
     }
   }
