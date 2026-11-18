@@ -9,7 +9,7 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
-| 2026-11-18 | `--no-verify`-Bypass: Push blockiert Claim, Drift, Budget; Nachricht per `verify:commit-msg`. | `docs/CI.md` |
+| 2026-11-18 | `--no-verify`-Bypass: Push prueft Claim, Drift, Budget und jede Nicht-Merge-Nachricht (ERR-4006). | `.githooks/pre-push` |
 | 2026-11-18 | Hooks armen im Install; Contract-Gate meldet ungeschuetzte Klone (ERR-4018). | `scripts/install-hooks.mjs` |
 | 2026-11-17 | Fuenf Pflichtdokus; Budget echt gemessen, Drift in pre-commit/push, Board-Gate lokal ueber Cache; Tooling-Uhr lint-konform; Welttexte weltlich; Hooks 755. | `scripts/lib/doc-core.mjs`, `scripts/lib/doc-drift.mjs` |
 | 2026-11-17 | LOC-Guard deckt `scripts/` ohne Ausnahme; pretask und promote modularisiert. | #1101, `scripts/pretask.mjs`, `scripts/promote.mjs` |

@@ -121,7 +121,7 @@ Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check 
 
 ### Nachhol-Erkennung nach `--no-verify`
 
-Ein uebersprungener Hook bleibt lokal sichtbar: der Push prueft unabhaengig vom Commit-Pfad. Belegt im frischen Klon (`d086e152`, Hooks armiert):
+Ein uebersprungener Hook bleibt lokal sichtbar: der Push prueft unabhaengig vom Commit-Pfad. Belegt im frischen Klon mit armierten Hooks:
 
 | Verstoss (Commit mit `--no-verify`) | blockiert in | Exit |
 | --- | --- | --- |
@@ -129,5 +129,6 @@ Ein uebersprungener Hook bleibt lokal sichtbar: der Push prueft unabhaengig vom 
 | Aenderung ohne Doku-Nachtrag | `verify-docs --drift` (ERR-4023) | 1 |
 | Doku ueber Token-Budget | `verify-docs` (ERR-4017) | 1 |
 | Konflikt in Handdateien | `integrate --check` (ERR-4019) | 1 |
+| Commit-Nachricht ohne Pflichtsektionen | `verify-commit-msg --range` (ERR-4006) | 1 |
 
-Die Commit-Nachricht prueft kein Push-Hook; Nachzug ist `pnpm verify:commit-msg` (ERR-4006, Exit 1) bzw. `local-ci.mjs`, das dieselbe Zeile fuehrt.
+Die Commit-Nachricht prueft `verify-commit-msg --range <basis>..<sha>` fuer jeden Nicht-Merge-Commit; Merge-Commits und ein bereits aktueller main fallen heraus. `pnpm verify:commit-msg` prueft weiterhin HEAD allein.
