@@ -16,7 +16,5 @@
   "status": "archived",
   "mergedEvidence": "branch-in-main",
   "mergedSha": "102a7b70",
-  "createdAt": "102a7b705af4894f87081020e3e26069884bfafb",
-  "releasedAt": "2026-11-18T05:12:39.325Z",
-  "releasedReason": "Issue #981 am 2026-11-17 geschlossen; Doku-Beleg steht auf main in docs/AUDIT.md; kein Branch mehr am Remote."
+  "createdAt": "102a7b705af4894f87081020e3e26069884bfafb"
 }
