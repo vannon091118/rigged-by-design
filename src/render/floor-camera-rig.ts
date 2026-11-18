@@ -91,7 +91,9 @@ export class FloorCameraRig {
   /** Folgt der Figur, ohne jede Bewegung zur Kamerafahrt zu machen. */
   follow(x: number, y: number): void {
     this.cam.keepInView(x, y, this.#deps.screen.width, this.#deps.screen.height, this.#bounds());
-    this.cam.step();
+    // Jede Kamera-Bewegung muss auch ankommen: Ohne diesen Apply blieb der
+    // Zoom nach dem LOD-Wechsel auf dem alten Skalenwert stehen.
+    if (this.cam.step()) this.apply();
   }
 
   /** Shake liegt auf dem Container, damit kein Compositing der ganzen App entsteht. */

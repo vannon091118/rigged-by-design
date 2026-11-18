@@ -86,23 +86,19 @@ Ein Sprite darf hoechstens drei Helligkeitsstufen je Material besitzen.
 
 ## 6. NPCs, LOD und Identitaet
 
-Diese Regeln binden Phase 2 (NPC-Rig) und Phase 3 (Editor) an dieselbe Quelle:
+Regeln fuer Phase 2 (NPC-Rig) und Phase 3 (Editor):
 
 1. **LOD reduziert Detail, nie Identitaet.** Die 12 × 16-Silhouette behaelt
-   Kopf, Koerper und zwei Beine. Sie ist kein Pin und kein Quadrat. Kopfform,
-   Outfit-Farbe und Haarton bleiben aus der Ferne erkennbar.
-2. **Eine Sprite-Quelle fuer Editor und Spiel.** Der Editor zeigt denselben
-   Kopf, dieselbe Frisur und dieselbe Outfit-Palette wie die Szene. Es gibt
-   keinen zweiten Editor-Zeichenpfad.
-3. **Kopf ist Identitaet.** `head-01-*`, `head-02-*` und `head-03-*` sind die
-   drei Familien. Die dritte Familie (`head-03-01.svg`) liegt seit 2026-11-18
-   im selben Atlas; ihre SVG-Quelle und die beiden PNG-Familien teilen den
-   Ladevertrag aus `ASSET.heads` und `RUNTIME_ART`.
-4. **Outfit bleibt flaechig.** Ein Outfit hat eine Hauptfarbe, eine
-   Schattenfarbe und hoechstens einen Akzent. Keine Muster, die im LOD zu
-   Rauschen werden.
-5. **Animation aendert die Silhouette nicht.** Ein Schritt verschiebt Beine und
-   Arme, aber nicht die Grundhoehe oder den Anker.
+   Kopf, Koerper und zwei Beine. Kopf, Outfit und Haarton bleiben fern lesbar.
+2. **Eine Sprite-Quelle fuer Editor und Spiel.** Beide zeigen denselben Kopf,
+   dieselbe Frisur und Outfit-Palette; kein zweiter Zeichenpfad.
+3. **Kopf ist Identitaet.** `head-01-*` bis `head-03-*` sind die drei Familien.
+   `head-03-01.svg` liegt seit 2026-11-18 im selben Atlas; SVG und PNG teilen
+   den Ladevertrag aus `ASSET.heads` und `RUNTIME_ART`.
+4. **Outfit bleibt flaechig.** Hauptfarbe, Schattenfarbe, hoechstens ein Akzent;
+   keine Muster, die im LOD rauschen.
+5. **Animation aendert die Silhouette nicht.** Schritte bewegen Beine und Arme,
+   nicht Grundhoehe oder Anker.
 
 ## 7. Charaktereditor
 

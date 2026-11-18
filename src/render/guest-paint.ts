@@ -24,9 +24,10 @@ interface PaintOptions {
 
 export class GuestPaint {
   readonly #nodes: GuestRigNodes;
-  readonly #seed: number;
+  #seed: number;
   readonly #isPlayer: boolean;
-  readonly #headSprite: Sprite | null;
+  #headSprite: Sprite | null;
+  readonly #portrait: boolean;
   #skin: number;
   #hairColor: number;
   #outfit: number;
@@ -38,20 +39,13 @@ export class GuestPaint {
     this.#nodes = nodes;
     this.#seed = seed;
     this.#isPlayer = isPlayer;
+    this.#portrait = portrait;
     this.#skin = isPlayer ? 0xf2d3b3 : SKINS[seed % SKINS.length]!;
     this.#hairColor = isPlayer ? 0x2a1a14 : HAIRS[(seed >> 3) % HAIRS.length]!;
     this.#outfit = isPlayer ? 0x00ffcc : PERSONA_COLORS[persona] ?? 0x9a86b8;
     this.#accessory = look?.accessory ?? 'NONE';
     this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait);
-
-    const parts = rigPartsFor(seed);
-    this.#setupPart(nodes.body, parts.torso, 0.5, 0.5, 4, 4);
-    this.#setupPart(nodes.legs, parts.leg, 0.5, 0, 4, 9);
-    this.#setupPart(nodes.legOther, parts.leg, 0.5, 0, 4, 9);
-    this.#setupPart(nodes.armL, parts.arm, 0.5, 0, 3, 10);
-    this.#setupPart(nodes.armR, parts.arm, 0.5, 0, 3, 10);
-    this.#setupPart(nodes.footwearL, parts.footwear, 0.5, 0.5, 3, 2);
-    this.#setupPart(nodes.footwearR, parts.footwear, 0.5, 0.5, 3, 2);
+    this.#applyParts(seed);
 
     this.setPersona(persona);
     if (look) this.setLook(look, 'neutral');
@@ -71,6 +65,39 @@ export class GuestPaint {
     paintHair(this.#nodes.hair, this.#hairState());
     this.#paintPin();
     return true;
+  }
+
+  /**
+   * Pool-Figuren starten ohne Gastnamen; erst beim Ausleihen bekommt der Gast
+   * seinen Namens-Seed und damit Kopftextur, Haarton und Fernsilhouette.
+   */
+  setSeed(seed: number): void {
+    if (seed === this.#seed) return;
+    this.#seed = seed;
+    this.#headSprite?.destroy();
+    this.#headSprite = mountHead(this.#nodes.head, [this.#nodes.skull, this.#nodes.face, this.#nodes.hair], seed, this.#portrait);
+    if (!this.#isPlayer) {
+      this.#skin = SKINS[seed % SKINS.length]!;
+      this.#hairColor = HAIRS[(seed >> 3) % HAIRS.length]!;
+    }
+    this.#applyParts(seed);
+    this.#paintHead();
+    this.#applyBodyColors();
+    paintHair(this.#nodes.hair, this.#hairState());
+    this.#paintPin();
+  }
+
+  /** Rig-Teile folgen dem Seed; Atlastausch nur beim Ausleihen, nicht im Frame. */
+  #applyParts(seed: number): void {
+    const nodes = this.#nodes;
+    const parts = rigPartsFor(seed);
+    this.#setupPart(nodes.body, parts.torso, 0.5, 0.5, 4, 4);
+    this.#setupPart(nodes.legs, parts.leg, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.legOther, parts.leg, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.armL, parts.arm, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.armR, parts.arm, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.footwearL, parts.footwear, 0.5, 0.5, 3, 2);
+    this.#setupPart(nodes.footwearR, parts.footwear, 0.5, 0.5, 3, 2);
   }
 
   /** Look des Spielers: dieselben Flaechen, nur andere Farben und ein Accessoire. */

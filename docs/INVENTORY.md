@@ -769,10 +769,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3524 |
-| Gelistete Dateien | 3524 |
-| Getrackte Ordner | 123 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (177), .lanes (1), artifacts (1), bin (1), content (1249), docs (107), packages (27), public (572), scripts (232), src (1134) |
+| Getrackte Dateien | 3528 |
+| Gelistete Dateien | 3528 |
+| Getrackte Ordner | 124 |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (179), .lanes (1), artifacts (1), bin (1), content (1250), docs (108), packages (27), public (572), scripts (232), src (1134) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -786,12 +786,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 86 Datei(en)
-- `.lane-claims/tasks/` — 87 Datei(en)
+- `.lane-claims/claims/` — 87 Datei(en)
+- `.lane-claims/tasks/` — 88 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1245 Datei(en)
+- `content/narrative/contributions/` — 1246 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -805,6 +805,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/superpowers/plans/` — 1 Datei(en)
 - `docs/visual-rework/baseline/` — 4 Datei(en)
 - `docs/visual-rework/phase1/` — 1 Datei(en)
+- `docs/visual-rework/phase2/` — 1 Datei(en)
 - `packages/gamescout/` — 5 Datei(en)
 - `packages/gamescout/bin/` — 1 Datei(en)
 - `packages/gamescout/src/cli/` — 5 Datei(en)
@@ -971,6 +972,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-doc-budget.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
@@ -1048,6 +1050,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-sync-live-hooks.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
@@ -2348,9 +2351,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-art-contract.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-head-03.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27959 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4985 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 27984 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4989 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -2453,13 +2457,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/37-stadtnetz-abnahme.webp` — Binaerdatei — geprueft: Signatur, 25724 B
 - `docs/screenshots/current/38-kiez-interior-abnahme.webp` — Binaerdatei — geprueft: Signatur, 24524 B
 - `docs/screenshots/current/39-stadtbewohner.webp` — Binaerdatei — geprueft: Signatur, 24278 B
-- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 133 Zeilen
+- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 129 Zeilen
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `docs/visual-rework/baseline/360x640.png` — PNG-Textur — geprueft: PNG 816x1350, 431336 B
 - `docs/visual-rework/baseline/390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 485659 B
 - `docs/visual-rework/baseline/768x1024-boot-splash.png` — PNG-Textur — geprueft: PNG 816x1350, 183526 B
 - `docs/visual-rework/baseline/fresh-start-loader-390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 356026 B
 - `docs/visual-rework/phase1/environment-contact-sheet.png` — PNG-Textur — geprueft: PNG 1056x1264, 111891 B
+- `docs/visual-rework/phase2/guest-lod-evidence.png` — PNG-Textur — geprueft: PNG 1400x1080, 188234 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 145 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
@@ -4025,7 +4030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/debug/runtime-probe-types.ts` — RBD Runtime Probe — Typen (DEV-only). — gelesen: 68 Zeilen
 - `src/debug/runtime-probe.ts` — RBD Runtime Probe — DEV-only, READ-ONLY Gameplay-Diagnose (Haupteinstieg). — gelesen: 47 Zeilen
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 50 Zeilen
-- `src/render/__tests__/actor-silhouette.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
+- `src/render/__tests__/actor-silhouette.test.ts` — import type { Graphics } from 'pixi.js'; — gelesen: 58 Zeilen
 - `src/render/__tests__/ambient-late-texture.test.ts` — Die Lichttextur wird lazy geladen. Ein identischer Ambient-Plan darf den — gelesen: 36 Zeilen
 - `src/render/__tests__/ambient-plan.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 162 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
@@ -4063,8 +4068,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/sound-fx.test.ts` — Lautstaerke und Kanaele sind Geraeteeinstellungen: sie muessen klemmbar, getrennt — gelesen: 33 Zeilen
 - `src/render/__tests__/staff-actor-state.test.ts` — Personal ist kein verschobener Wurzelknoten: Es bekommt Facing, Gang und — gelesen: 92 Zeilen
 - `src/render/__tests__/view-layers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 76 Zeilen
-- `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 61 Zeilen
-- `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 54 Zeilen
+- `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 64 Zeilen
+- `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 86 Zeilen
 - `src/render/ambient-layer.ts` — Ambient-Schicht: statischer Schleier, statische Sonnenstrahlen und ein — gelesen: 109 Zeilen
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
 - `src/render/apartment-furniture-art.ts` — Die Wohnung teilt die Möbelmechanik mit dem Casino, aber nicht dessen Optik: — gelesen: 81 Zeilen
@@ -4090,10 +4095,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/depth-perf.bench.ts` — Tiefensortierung derselben Szene auf SMALL, MEDIUM und LARGE: 200 Figuren, — gelesen: 48 Zeilen
 - `src/render/depth.ts` — Gemeinsamer Tiefenvertrag der Szene: sortiert wird ausschliesslich nach dem — gelesen: 56 Zeilen
 - `src/render/editor-overlay.ts` — Editor-Auswahl als reine Pixi-Darstellung: eine Zelle und optional ihre Kante. — gelesen: 50 Zeilen
-- `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 221 Zeilen
+- `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 225 Zeilen
 - `src/render/floor-actions.ts` — Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. — gelesen: 210 Zeilen
-- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 49 Zeilen
-- `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 116 Zeilen
+- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 59 Zeilen
+- `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 118 Zeilen
 - `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen und expliziten Weltgrenzen; lerpt ohne Frame-Allokationen. — gelesen: 209 Zeilen
 - `src/render/floor-cash.ts` — Kasse als Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch. — gelesen: 69 Zeilen
 - `src/render/floor-crates.ts` — Lieferkisten: am Boden abgelegt oder sichtbar am Traeger. Liest nur Snapshots. — gelesen: 110 Zeilen
@@ -4141,9 +4146,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/slot-symbols-extra.ts` — Zusatz-Symbole aus dem Pre-Alpha Pixel-Paket: gezeichnete Fallbacks, wenn die Textur nicht geladen ist. — gelesen: 191 Zeilen
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
-- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 113 Zeilen
+- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 115 Zeilen
 - `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
-- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 140 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 167 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 65 Zeilen
 - `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Silhouette, Namensschild, Squash und Tap-Ring. — gelesen: 142 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen

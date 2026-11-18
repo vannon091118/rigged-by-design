@@ -7,6 +7,7 @@ import { dirtyNear, emotionOf } from '../core/sim/emotion';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import type { ActorPool } from './actor-pool';
+import { silhouettePinScale } from './actor-silhouette';
 import { footAnchor } from './depth';
 import { createFurnitureArt, type FurnitureArt } from './furniture-art';
 import { isVisible, visibleRect } from './floor-math';
@@ -40,6 +41,8 @@ export class EntitySync {
   readonly #seenGuests = new Set<number>();
   readonly #results = new Map<number, string>();
   #playerPlaced = false;
+  /** Bildschirmfester Maßstab der Fernsilhouette; 1 im Detail-LOD. */
+  #pinScale = 1;
 
   constructor(deps: EntityDeps) {
     this.#deps = deps;
@@ -61,13 +64,12 @@ export class EntitySync {
     this.#deps.player.setLod(detail);
   }
 
-  setPinScale(lod: number, _scale: number): void {
-    // Die Silhouette gehoert zur Welt und skaliert mit ihr; sie wird nicht
-    // gegen die Kamera vergroessert. `lod` bleibt im Vertrag, damit der
-    // Aufrufer nicht wissen muss, welche Darstellung gerade gilt.
-    void lod;
-    for (const art of this.#deps.actors.active.values()) art.root.scale.set(1);
-    this.#deps.player.root.scale.set(1);
+  setPinScale(lod: number, scale: number): void {
+    // Die Uebersicht ist ein bildschirmfester Marker; nur der Detail-Rig
+    // waechst mit der Kamera. Die Kamera meldet jede Zoom-Aenderung.
+    this.#pinScale = silhouettePinScale(lod === 1, scale);
+    for (const art of this.#deps.actors.active.values()) art.root.scale.set(this.#pinScale);
+    this.#deps.player.root.scale.set(this.#pinScale);
   }
 
   /** Sichtbarkeit folgt der Kamera; ohne Detail-LOD bleibt alles an. */
@@ -156,7 +158,7 @@ export class EntitySync {
         art.from.y = art.target.y;
         art.moveStart = now - stepMs;
         art.root.position.set(art.target.x, art.target.y);
-        art.root.scale.set(1);
+        art.root.scale.set(this.#pinScale);
         art.sticker.position.set(art.target.x, art.target.y);
       }
       const queue = guest.state === 'EXCHANGE' || guest.state === 'CASHOUT' ? guest.queueIndex : 0;
@@ -170,6 +172,7 @@ export class EntitySync {
         lastResult: guest.lastResult,
       }));
       art.setLod(lod() === 1);
+      art.root.scale.set(this.#pinScale);
       art.setNameVisible(guest.id === focusId);
       scene.depth.set(art.root, art.root.y, 'actor', guest.id);
     }
@@ -207,6 +210,7 @@ export class EntitySync {
     scene.depth.set(player.root, player.root.y, 'actor', PLAYER_ID);
     drawPlayerMarker(marker, { injured: view.player.rpg.injuryTicks > 0, fighting, won: view.fightFx?.won ?? false });
     player.setLod(lod() === 1);
+    player.root.scale.set(this.#pinScale);
   }
 }
 

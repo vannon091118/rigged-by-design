@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-lod-heads",
+  "claimId": "lane/governance/visual-phase2-lod-heads",
+  "branch": "lane/governance/visual-phase2-lod-heads",
+  "baseSha": "ac115a1ca05e8dafd4594de6a2b58b9951cf079f",
+  "phase": "IMPLEMENTING",
+  "title": "Phase 2: Fern-LOD traegt Kopffamilie und Haarton bei 1x und 2x",
+  "goal": "Gast-Seed beim Pool-Ausleihen setzen, Fernsilhouette mit drei Kopffamilien und Haarton zeichnen, echte WebGL-Screenshots bei 1x/2x/Detail belegen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Aenderungen committen, Branch pushen, PR gegen main oeffnen und Checks gruen ziehen.",
+  "revision": 1
+}
