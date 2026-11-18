@@ -38,7 +38,7 @@ function addBinding(node, add) {
   }
 }
 
-/** Benannte Exporte einer Datei: Name -> Zeile; Default-Exports sind kein benanntes Artefakt. */
+/** Alle Exporte einer Datei: Name -> Zeile, einschliesslich Default-Exports. */
 function collectExports(file) {
   const source = parse(file);
   const names = new Map();
@@ -46,7 +46,6 @@ function collectExports(file) {
   for (const statement of source.statements) {
     const modifiers = ts.canHaveModifiers(statement) ? (ts.getModifiers(statement) ?? []) : [];
     if (!modifiers.some((mod) => mod.kind === ts.SyntaxKind.ExportKeyword)) continue;
-    if (modifiers.some((mod) => mod.kind === ts.SyntaxKind.DefaultKeyword)) continue;
     if (ts.isExportDeclaration(statement) && statement.moduleSpecifier) {
       const target = resolveSpecifier(statement.moduleSpecifier.text, file);
       const clause = statement.exportClause;

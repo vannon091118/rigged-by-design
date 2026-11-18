@@ -26,3 +26,6 @@ test-results/
 plugins/
 .dev-server.log
 .dev-server.pid
+
+# Claude Code worktrees (embedded repos, not part of outer repo)
+.claude/worktrees/

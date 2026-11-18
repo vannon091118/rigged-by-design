@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "maintainers": ["vannon091118"],
-  "users": ["vannon091118"],
+  "maintainers": ["vannon091118-maintainer"],
+  "users": ["vannon091118-maintainer", "vannon091118"],
   "workers": ["vannon091118"],
-  "note": "Dieser Principal ist zugleich User, Maintainer und Worker. Deshalb sind Verdikte (ACCEPT/PARTIAL/REJECT/MERGED/CLOSED) aus ihm wirkungslos: work-claim.mjs meldet shared-principal-not-authorized, pretask shared-principal und no-exclusive-maintainer-principal. Die Trennung (#694) braucht einen eigenen Maintainer-Login, der nur in maintainers/users steht, waehrend workers einen anderen Login fuehrt. Worker-Claims bleiben mit dem gemeinsamen Login funktionsfaehig."
+  "note": "Rollentrennung (#694): vannon091118-maintainer ist exklusiver Maintainer (nur in maintainers/users). vannon091118 bleibt Worker. Damit entfaellt shared-principal-not-authorized für Maintainer-Entscheidungen."
 }

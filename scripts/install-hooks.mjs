@@ -31,6 +31,16 @@ function git(args) {
   }
 }
 
+/** Auf Windows (NTFS) oder mit core.fileMode=false ist das ausfuehrbare Bit
+ *  irrelevant; git fuehrt den Hook trotzdem aus, wenn der Index-Modus 100755
+ *  ist. Die statSync-Pruefung wird dann ausgelassen. */
+function isFileModeIrrelevant() {
+  const fileMode = git(['config', '--get', 'core.fileMode']);
+  if (fileMode === 'false') return true;
+  const osType = process.platform;
+  return osType === 'win32';
+}
+
 /** Index-Modus je Hook: git fuehrt nur 100755 aus. */
 function indexModes() {
   const modes = new Map();
