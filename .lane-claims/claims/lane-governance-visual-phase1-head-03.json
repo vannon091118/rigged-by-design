@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/visual-phase1-head-03",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase1-head-03",
+  "issue": 1133,
+  "baseSha": "a3d6082fb4cb588c0649b24ed69d293d3e6956d9",
+  "task": "Phase 1: head-03-01 als drittes Kopf-Asset",
+  "goal": "Die dritte Kopffamilie nach Freigabe als 32x36-SVG zeichnen, per resvg in den bestehenden Atlas rastern und ueber ASSET.heads/RUNTIME_ART testbar machen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/",
+    "scripts/",
+    "src/render/assets/",
+    "public/assets/casino/characters/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "a3d6082fb4cb588c0649b24ed69d293d3e6956d9"
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "visual-phase1-head-03",
+  "claimId": "lane/governance/visual-phase1-head-03",
+  "branch": "lane/governance/visual-phase1-head-03",
+  "baseSha": "a3d6082fb4cb588c0649b24ed69d293d3e6956d9",
+  "phase": "IMPLEMENTING",
+  "title": "Phase 1: head-03-01 als drittes Kopf-Asset",
+  "goal": "head-03-01 als echtes 32x36-Asset ueber resvg/Atlas einbinden, in ASSET.heads und RUNTIME_ART registrieren und ohne SVG-Fetch testen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit, PR und Checks; danach Closeout.",
+  "revision": 1
+}

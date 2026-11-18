@@ -13,6 +13,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { ASSET, RUNTIME_ART } from '../keys';
 import manifest from '../manifest.json';
 
 const { assetsLoad } = vi.hoisted(() => ({ assetsLoad: vi.fn() }));
@@ -43,12 +44,14 @@ vi.mock('pixi.js', () => {
 });
 
 class FakeImage {
+  static readonly sources: string[] = [];
   readonly naturalWidth = manifest.atlas.size;
   readonly naturalHeight = manifest.atlas.size;
   onload: (() => void) | null = null;
   onerror: (() => void) | null = null;
 
-  set src(_value: string) {
+  set src(value: string) {
+    FakeImage.sources.push(value);
     queueMicrotask(() => this.onload?.());
   }
 }
@@ -117,5 +120,29 @@ describe('Environment-SVGs im Produktionsatlas', () => {
       expect(header.toString('ascii', 0, 4)).toBe('RIFF');
       expect(header.toString('ascii', 8, 12)).toBe('WEBP');
     }
+  });
+
+  it('loest die dritte Kopffamilie ueber Keys, Cache und Atlas auf', async () => {
+    const path = 'characters/head-03-01.svg';
+    expect(ASSET.heads).toContain(path);
+    expect(RUNTIME_ART).toContain(path);
+    expect(manifest.characters[path]).toBe(path);
+    expect(manifest.atlas.folders.characters).toContain(path);
+    expect(frames.get(path)).toMatchObject({ width: 32, height: 36 });
+
+    const { atlasTexture, loadAtlas } = await import('../atlas');
+    const { textureFor } = await import('../textures');
+    await loadAtlas(manifest.atlas, manifest.base);
+
+    const first = textureFor(path);
+    const second = textureFor(path);
+    expect(first).not.toBeNull();
+    expect(second).toBe(first);
+    expect(atlasTexture(path)).toBe(first);
+    expect(first?.source.scaleMode).toBe('nearest');
+    expect(first?.frame).toMatchObject({ width: 32, height: 36 });
+
+    expect(assetsLoad).not.toHaveBeenCalled();
+    expect(FakeImage.sources.some((source) => source.includes('head-03-01.svg'))).toBe(false);
   });
 });

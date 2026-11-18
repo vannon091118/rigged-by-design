@@ -10,7 +10,7 @@
       "environment",
       "machines"
     ],
-    "frameCount": 170,
+    "frameCount": 171,
     "folders": {
       "characters": [
         "characters/arm-segment-01.png",
@@ -59,6 +59,7 @@
         "characters/head-02-07.png",
         "characters/head-02-08.png",
         "characters/head-02-09.png",
+        "characters/head-03-01.svg",
         "characters/leg-segment-01.png",
         "characters/leg-segment-02.png",
         "characters/leg-segment-03.png",
@@ -1034,211 +1035,218 @@
             "height": 36
           },
           {
-            "path": "machines/table-games/dealer-button.png",
+            "path": "characters/head-03-01.svg",
             "x": 512,
+            "y": 503,
+            "width": 32,
+            "height": 36
+          },
+          {
+            "path": "machines/table-games/dealer-button.png",
+            "x": 544,
             "y": 503,
             "width": 36,
             "height": 32
           },
           {
             "path": "machines/table-games/card-shoe-marker.png",
-            "x": 548,
+            "x": 580,
             "y": 503,
             "width": 15,
             "height": 32
           },
           {
             "path": "characters/leg-segment-13.png",
-            "x": 563,
+            "x": 595,
             "y": 503,
             "width": 15,
             "height": 30
           },
           {
             "path": "characters/leg-segment-08.png",
-            "x": 578,
+            "x": 610,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-09.png",
-            "x": 592,
+            "x": 624,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-12.png",
-            "x": 606,
+            "x": 638,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-01.png",
-            "x": 620,
+            "x": 652,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-02.png",
-            "x": 633,
+            "x": 665,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-04.png",
-            "x": 646,
+            "x": 678,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-10.png",
-            "x": 659,
+            "x": 691,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-11.png",
-            "x": 672,
+            "x": 704,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-14.png",
-            "x": 685,
+            "x": 717,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-03.png",
-            "x": 698,
+            "x": 730,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-05.png",
-            "x": 710,
+            "x": 742,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-06.png",
-            "x": 722,
+            "x": 754,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "machines/table-games/suit-diamond.png",
-            "x": 734,
+            "x": 766,
             "y": 503,
             "width": 22,
             "height": 28
           },
           {
             "path": "characters/arm-segment-01.png",
-            "x": 756,
+            "x": 788,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-06.png",
-            "x": 770,
+            "x": 802,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-13.png",
-            "x": 784,
+            "x": 816,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-02.png",
-            "x": 798,
+            "x": 830,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-05.png",
-            "x": 811,
+            "x": 843,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-08.png",
-            "x": 824,
+            "x": 856,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-04.png",
-            "x": 837,
+            "x": 869,
             "y": 503,
             "width": 12,
             "height": 28
           },
           {
             "path": "characters/arm-segment-03.png",
-            "x": 849,
+            "x": 881,
             "y": 503,
             "width": 11,
             "height": 28
           },
           {
             "path": "characters/leg-segment-07.png",
-            "x": 860,
+            "x": 892,
             "y": 503,
             "width": 16,
             "height": 27
           },
           {
             "path": "characters/arm-segment-09.png",
-            "x": 876,
+            "x": 908,
             "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-11.png",
-            "x": 890,
+            "x": 922,
             "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-10.png",
-            "x": 904,
+            "x": 936,
             "y": 503,
             "width": 14,
             "height": 26
           },
           {
             "path": "machines/table-games/suit-club.png",
-            "x": 918,
+            "x": 950,
             "y": 503,
             "width": 24,
             "height": 25
           },
           {
             "path": "machines/table-games/suit-spade.png",
-            "x": 942,
+            "x": 974,
             "y": 503,
             "width": 24,
             "height": 25
@@ -1673,6 +1681,7 @@
     "characters/head-02-07.png": "characters/head-02-07.png",
     "characters/head-02-08.png": "characters/head-02-08.png",
     "characters/head-02-09.png": "characters/head-02-09.png",
+    "characters/head-03-01.svg": "characters/head-03-01.svg",
     "characters/leg-segment-01.png": "characters/leg-segment-01.png",
     "characters/leg-segment-02.png": "characters/leg-segment-02.png",
     "characters/leg-segment-03.png": "characters/leg-segment-03.png",

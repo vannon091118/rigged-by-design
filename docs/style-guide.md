@@ -96,9 +96,10 @@ Diese Regeln binden Phase 2 (NPC-Rig) und Phase 3 (Editor) an dieselbe Quelle:
 2. **Eine Sprite-Quelle fuer Editor und Spiel.** Der Editor zeigt denselben
    Kopf, dieselbe Frisur und dieselbe Outfit-Palette wie die Szene. Es gibt
    keinen zweiten Editor-Zeichenpfad.
-3. **Kopf ist Identitaet.** `head-01-*` und `head-02-*` sind die zwei
-   bestehenden Familien. Eine dritte Familie (`head-03-01`) fehlt und ist in
-   `docs/art-needs.md` als Bedarf gefuehrt, nicht als Datei erfunden.
+3. **Kopf ist Identitaet.** `head-01-*`, `head-02-*` und `head-03-*` sind die
+   drei Familien. Die dritte Familie (`head-03-01.svg`) liegt seit 2026-11-18
+   im selben Atlas; ihre SVG-Quelle und die beiden PNG-Familien teilen den
+   Ladevertrag aus `ASSET.heads` und `RUNTIME_ART`.
 4. **Outfit bleibt flaechig.** Ein Outfit hat eine Hauptfarbe, eine
    Schattenfarbe und hoechstens einen Akzent. Keine Muster, die im LOD zu
    Rauschen werden.

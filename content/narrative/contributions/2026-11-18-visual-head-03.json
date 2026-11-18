@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T07:55Z-visual-head-03",
+  "contributionId": "visual-head-03-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita hat den dritten Kopf neben die beiden anderen in den Charakterbogen geklebt: silberner Bob, ein Streifen Teal, ein goldener Ohrring. Er liegt auf demselben Atlasblatt wie die ersten Familien, nicht in einem eigenen Ordner.",
+  "directives": []
+}

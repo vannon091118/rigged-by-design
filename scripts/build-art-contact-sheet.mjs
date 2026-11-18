@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Kontaktbogen fuer den Art-Audit: Environment-Assets und repraesentative
- * Casino-PNGs in einer dunklen Uebersicht. Die Reihenfolge ist zeilenweise
+ * Casino-Assets in einer dunklen Uebersicht. Die Reihenfolge ist zeilenweise
  * und steht in `docs/art-needs.md`; das Bild ist der Sichtnachweis, keine
  * Laufzeittextur.
  */
@@ -35,6 +35,7 @@ const environment = walk(join(ASSETS, 'environment'))
 const casino = [
   'characters/head-01-01.png',
   'characters/head-02-01.png',
+  'characters/head-03-01.svg',
   'machines/table-games/card-back.png',
   'machines/table-games/poker-chip-single.png',
   'machines/blackjack-table.png',
