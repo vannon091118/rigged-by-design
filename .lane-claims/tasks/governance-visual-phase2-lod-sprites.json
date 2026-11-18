@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase2-lod-sprites",
   "branch": "lane/governance/visual-phase2-lod-sprites",
   "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Phase 2: LOD-Sprite-Set je Kopffamilie bei 1x/2x",
   "goal": "Ein 36x48-LOD-Sprite-Sheet mit drei Kopffamilien und den Layern Koerper/Kopf/Haar in den Atlas legen, per Tint in der Fernsilhouette nutzen und bei 1x/2x sichtpruefen.",
   "taskType": "single",
@@ -14,9 +14,9 @@
     "number": 1151,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/1151",
     "state": "open",
-    "headSha": "a754e73e27a5c9d5d8b898d05faba6aec6a46982"
+    "headSha": "cedeba8b"
   },
   "findings": [],
-  "nextAction": "PR #1151 ist offen und ohne konfigurierte Remote-Checks; lokale 13/13-Belege gelten, Merge vorbereiten.",
-  "revision": 2
+  "nextAction": "PR #1151 auf dem exakten Kopf mergen; danach AFTERCARE und Issue-Release.",
+  "revision": 3
 }
