@@ -1,5 +1,6 @@
 /** Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. */
 import { createGuestArt, type GuestArt } from './guest-art';
+import { hash } from './guest-parts';
 
 const POOL_SIZE = 32;
 
@@ -39,6 +40,8 @@ export class ActorPool {
       this.#attach(art);
     }
     art.setPersona(guest.persona);
+    // Der Pool legt die Figuren ohne Namen an; der Gast-Seed kommt erst hier.
+    art.setSeed(hash(guest.name));
     art.setName(guest.name);
     art.root.visible = true;
     this.#active.set(guest.id, art);

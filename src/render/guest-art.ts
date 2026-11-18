@@ -22,6 +22,7 @@ export interface GuestArt {
   readonly setEmotion: (kind: GuestEmotion) => void;
   readonly setMood: (mood: number, angry: boolean, addiction: number) => void;
   readonly setPersona: (persona: string) => void;
+  readonly setSeed: (seed: number) => void;
   readonly setName: (name: string) => void;
   /** Namensschild nur fuer den Gast, der gerade dran ist. */
   readonly setNameVisible: (visible: boolean) => void;
@@ -82,6 +83,7 @@ export function createGuestArt(
     rig.setDetail(next);
     applySticker();
   };
+  const setSeed = (seed: number): void => { paint.setSeed(seed); };
   const setName = (next: string): void => {
     if (next === currentName) return;
     currentName = next;
@@ -101,7 +103,7 @@ export function createGuestArt(
 
   return {
     root: rig.root, sticker: sticker.container, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
-    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, setFacing, bump, tapRing, animate,
+    setEmotion, setMood, setPersona, setSeed, setName, setNameVisible, setLod, setState, setFacing, bump, tapRing, animate,
     get facing() { return facing; },
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;

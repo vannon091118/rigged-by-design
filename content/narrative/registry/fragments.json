@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cf0b020600fefbe1bee817e93161183ad344bec9b6bf6414f3979394513ee39a",
+  "contentHash": "sha256:b84f8e3e58ce0ac166cd7e5788d4f45ed18323dab7c432dcc12abf5ee778605a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27448,6 +27448,31 @@
       "text": "Rita hat den dritten Kopf neben die beiden anderen in den Charakterbogen geklebt: silberner Bob, ein Streifen Teal, ein goldener Ohrring. Er liegt auf demselben Atlasblatt wie die ersten Familien, nicht in einem eigenen Ordner.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-head-03.json"
+    },
+    {
+      "contributionId": "visual-phase2-lod-heads-01",
+      "turnId": "2026-11-18T10:12Z-visual-phase2-lod-heads",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hat drei Gaeste bei 1x und 2x nebeneinandergelegt: Emil traegt die Kappe, Timo den runden Kopf, Kai den silbernen Bob. Die Namen stehen noch am Rand, aber die Konturen bleiben im kleinen Bild unterscheidbar; den Editor hat sie nicht angefasst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json"
     },
     {
       "contributionId": "visual-phase2-npc-rig-01",

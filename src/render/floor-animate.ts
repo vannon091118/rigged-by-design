@@ -18,6 +18,14 @@ export function animateFloor(
   cityActors: CityActorSync,
 ): void {
   rig.follow(player.root.x, player.root.y);
+  // Fern-LOD auf das Bildpixelraster legen: 1-px-Kopfformen bleiben so scharf.
+  const snap = (art: GuestArt): void => {
+    if (rig.lod === 1) return;
+    const scale = rig.root.scale.x;
+    if (!(scale > 0)) return;
+    art.root.x = (Math.round(rig.root.x + art.root.x * scale) - rig.root.x) / scale;
+    art.root.y = (Math.round(rig.root.y + art.root.y * scale) - rig.root.y) / scale;
+  };
   // Bewohner laufen im selben Frame-Ticker wie Gaeste und Spieler (#640).
   cityActors.animate(now);
   for (const art of actors.active.values()) {
@@ -31,6 +39,7 @@ export function animateFloor(
     art.root.x = art.from.x + (art.target.x - art.from.x) * t;
     art.root.y = art.from.y + (art.target.y - art.from.y) * t + gait + (walking ? Math.abs(gait) * 1.5 : 0);
     art.root.rotation = gait * 0.14;
+    snap(art);
     art.sticker.position.set(art.root.x, art.root.y);
   }
   player.animate(now);
@@ -43,6 +52,7 @@ export function animateFloor(
   player.root.x = player.from.x + (player.target.x - player.from.x) * pt;
   player.root.y = player.from.y + (player.target.y - player.from.y) * pt + pgait + (pwalking ? Math.abs(pgait) * 1.5 : 0);
   player.root.rotation = pgait * 0.14;
+  snap(player);
   player.sticker.position.set(player.root.x, player.root.y);
   cues.animate(now, player.root);
   props.walk(now, TICK_MS);
