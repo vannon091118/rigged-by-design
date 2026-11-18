@@ -49,6 +49,19 @@ describe('Squash-Nachricht aus dem PR-Body', () => {
     );
   });
 
+  it('lehnt eine Pflichtsektion als Titel ab', () => {
+    const result = squashMessage({ title: SECTIONS[0], body: BODY });
+    expect(result.ok).toBe(false);
+    expect(result.message).toBe('');
+    expect(result.violations.map((hit: { message: string }) => hit.message)).toContain(
+      'Titel ist eine Markdown-Ueberschrift statt einer Aussage',
+    );
+    const headered = `### Changes (Was ist neu)\n\n${BODY}`;
+    expect(messageViolations(headered).map((hit: { message: string }) => hit.message)).toContain(
+      'Titel ist eine Markdown-Ueberschrift statt einer Aussage',
+    );
+  });
+
   it('bleibt bei ASCII-Ueberschriften rot', () => {
     const ascii = BODY.replace('### Technische Basis & Kausalität', '### Technische Basis & Kausalitaet')
       .replace('### Ausblick (Nächste Schritte)', '### Ausblick (Naechste Schritte)');
