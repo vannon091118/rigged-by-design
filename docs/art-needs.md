@@ -61,7 +61,7 @@ Klassen:
 | 25 | `machines/cash-register.png` | Requisite | 64×64 | KEEP | Metall-/Displaywerte konsistent. |
 | 26 | `machines/bar-bottle-amber.png` | Requisite | 32×64 | KEEP | Flaschenform und Amber-Glas lesbar. |
 
-**Ergebnis:** 0 BROKEN, 0 REPLACE, 9 REWORK, 17 KEEP. Kein Asset wird
+**Ergebnis:** 0 BROKEN, 0 REPLACE, 8 REWORK, 18 KEEP. Kein Asset wird
 geloescht; die REWORK-Faelle bleiben bis zur Neufassung im Einsatz.
 
 ## 4. Offene Art-Needs
