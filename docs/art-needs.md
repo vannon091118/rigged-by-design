@@ -79,6 +79,4 @@ Diese Assets fehlen und werden **nicht** durch Platzhalter ersetzt:
 
 ## 5. head-03-01
 
-Die Suche in Historie, Refs, 84 unreachable Objekten und Manifest ergab keine
-Quelle (Befehle: Issue #1133). Nach Freigabe neu als 32×36-SVG gezeichnet;
-gleicher resvg-/Atlas-Pfad wie die Environment-SVGs.
+Negativsuche und Freigabe: Issue #1133. Die SVG-Quelle liegt im selben Atlas.

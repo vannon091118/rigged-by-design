@@ -768,10 +768,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3515 |
-| Gelistete Dateien | 3515 |
+| Getrackte Dateien | 3517 |
+| Gelistete Dateien | 3517 |
 | Getrackte Ordner | 123 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (171), .lanes (1), artifacts (1), bin (1), content (1248), docs (107), packages (27), public (572), scripts (232), src (1132) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (173), .lanes (1), artifacts (1), bin (1), content (1248), docs (107), packages (27), public (572), scripts (232), src (1132) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -785,8 +785,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 83 Datei(en)
-- `.lane-claims/tasks/` — 84 Datei(en)
+- `.lane-claims/claims/` — 84 Datei(en)
+- `.lane-claims/tasks/` — 85 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -967,6 +967,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-audit-count-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-audit-count.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-closeout.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase1-doc-budget.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
@@ -1087,6 +1088,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/visual-phase1-audit-count-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/visual-phase1-audit-count.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/visual-phase1-closeout.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/visual-phase1-doc-budget.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/visual-phase1-head-03-closeout-final.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/visual-phase1-head-03.json` — { — gelesen: 23 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
@@ -2368,7 +2370,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/UD-27.md` — UD-27: Ortswirtschaft — Casino Integration & Save/Load — gelesen: 67 Zeilen
 - `docs/WORKFLOW-DETAIL.md` — Workflow — Referenztiefe — gelesen: 174 Zeilen
 - `docs/WORKFLOW.md` — Workflow — gelesen: 8 Zeilen
-- `docs/art-needs.md` — Art-Audit und offene Art-Needs — gelesen: 84 Zeilen
+- `docs/art-needs.md` — Art-Audit und offene Art-Needs — gelesen: 82 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 195 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
