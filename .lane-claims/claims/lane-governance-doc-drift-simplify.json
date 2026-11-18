@@ -3,7 +3,7 @@
   "owner": "Governance-Owner",
   "branch": "lane/governance/doc-drift-simplify",
   "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
-  "issue": 1148,
+  "issue": 1153,
   "task": "doc-drift.mjs Memoization und checkDocFile-Hilfsfunktion",
   "pathAllowlist": [
     "scripts/lib/doc-drift.mjs",
