@@ -4,14 +4,34 @@
   "claimId": "lane/governance/docs-fokus-stadt",
   "branch": "lane/governance/docs-fokus-stadt",
   "baseSha": "62a9b155eab285a4df5dd26cd942f3aa27d30e03",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Issue #1113: README und Banner auf die belebte Stadt fokussieren",
   "goal": "README, Hauptbanner, Abschnittsbanner und GitHub-Beschreibung ohne Casino-Genre und ohne Technikdetail; ausfuehrliche Abschnitte zu MVP, Spiellauf und Doku-Stand.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1114,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1114",
+    "state": "merged",
+    "headSha": "3cbd452837ed7c66d9b6a197d53ef1cc78dcba1c",
+    "mergedSha": "c64f6d9c1d2de3af4f240e7553fef3aeaa933bd2"
+  },
   "findings": [],
-  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
-  "revision": 1
+  "nextAction": "Nach Merge geschlossen (post-merge-closeout c64f6d9c).",
+  "revision": 2,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "post-merge-closeout",
+      "sha": "c64f6d9c1d2de3af4f240e7553fef3aeaa933bd2"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "pending",
+      "evidence": "remote-branch-present"
+    }
+  }
 }
