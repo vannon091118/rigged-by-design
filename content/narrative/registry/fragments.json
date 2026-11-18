@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e68ca0038779c51694fd8631f5f05e2be2a0e7159a9620cf67e31880565b8d74",
+  "contentHash": "sha256:e066ff68ea211bc600be25996ecc4f0a2238bcc03fd0affeeb97e2c9d7378101",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27423,6 +27423,31 @@
       "text": "Im Ordner der Materialmuster liegt jetzt ein Bogen mit allen Boeden, Fassaden und Requisiten. Rita hat die neun Stellen markiert, die noch zu flach wirken, und daneben notiert, welche Moebel fuer die Wohnung fehlen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-art-contract.json"
+    },
+    {
+      "contributionId": "visual-head-03-01",
+      "turnId": "2026-11-18T07:55Z-visual-head-03",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hat den dritten Kopf neben die beiden anderen in den Charakterbogen geklebt: silberner Bob, ein Streifen Teal, ein goldener Ohrring. Er liegt auf demselben Atlasblatt wie die ersten Familien, nicht in einem eigenen Ordner.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-head-03.json"
     },
     {
       "contributionId": "warm-return-body-01",

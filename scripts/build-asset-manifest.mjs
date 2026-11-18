@@ -63,6 +63,11 @@ const image = (file) => file.endsWith('.png') || file.endsWith('.svg');
 
 const byTop = (top) => png.filter((file) => file.startsWith(`${top}/`));
 const asMap = (top) => Object.fromEntries(byTop(top).map((file) => [file, file]));
+// Charaktere enthalten neben PNGs auch die SVG-Quellen der Kopffamilien; beide
+// muessen im Manifest stehen, damit verify-assets sie als abgedeckt sieht.
+const asImageMap = (top) => Object.fromEntries(
+  all.filter((file) => file.startsWith(`${top}/`) && image(file)).map((file) => [file, file]),
+);
 
 // SVGs werden mit resvg in ihrer viewBox-Groesse gerastert; resvg liefert
 // 8-Bit-RGBA, genau das Format, das der Atlas-Decoder prueft.
@@ -144,7 +149,7 @@ const manifest = {
   decor: asMap('decor'),
   plinko: asMap('plinko'),
   ui: asMap('ui'),
-  characters: asMap('characters'),
+  characters: asImageMap('characters'),
   environment: Object.fromEntries(environmentFiles.map((file) => [file, file])),
   fx: asMap('fx'),
   animations,

@@ -4,18 +4,17 @@
 
 **Zweck:** Klassifikation der vorhandenen Environment- und relevanten
 Casino-Assets fuer Phase 1, plus die Liste dessen, was fuer Wohnung, Strasse
-und NPC-Pipeline fehlt. Fehlende Assets werden hier eingetragen, nicht als
-Datei erfunden.
+und NPC-Pipeline fehlt.
 
-**Stand:** 2026-11-18 · Basis `d7844ba0` · Kontaktbogen
+**Stand:** 2026-11-18 · Basis `d7844ba0`, `head-03-01` nach Freigabe ergaenzt ·
+Kontaktbogen
 [`environment-contact-sheet.png`](visual-rework/phase1/environment-contact-sheet.png)
 
 ## 1. Methode
 
 Der Kontaktbogen wird mit `node scripts/build-art-contact-sheet.mjs` erzeugt. Er
-zeigt 26 Assets in zeilenweiser Reihenfolge (5 Spalten), jeweils auf dunklem
-Grund und naechstem Nachbarn skaliert. Die Tabelle unten nennt dieselbe
-Reihenfolge; die Groesse ist die Quellgroesse, nicht die Anzeigegroesse.
+zeigt 27 Assets in zeilenweiser Reihenfolge (5 Spalten); die Tabelle nennt
+dieselbe Reihenfolge und die Quellgroesse.
 
 Klassen:
 
@@ -49,19 +48,20 @@ Klassen:
 | 18 | `environment/tiles/casino-carpet-plum.png` | Teppich | 512×512 | KEEP | Wiederholbares Motiv, Gold/Plum-Palette, gute Kachelgrenze. |
 | 19 | `environment/tiles/wallpaper-damask-plum.png` | Tapete | 512×512 | KEEP | Ruhiges Damastmuster, wiederholbar. |
 
-## 3. Relevante Casino-PNGs (7 Assets)
+## 3. Relevante Casino-Assets (8 Assets)
 
 | # | Asset-ID | Typ | Groesse | Klasse | Begruendung |
 | ---: | --- | --- | --- | --- | --- |
 | 20 | `characters/head-01-01.png` | Kopf | 32×36 | KEEP | Erste Kopf-Familie, klare Kontur, LOD-taugliche Silhouette. |
 | 21 | `characters/head-02-01.png` | Kopf | 32×36 | KEEP | Zweite Familie mit Muetze; Farbe bleibt im LOD lesbar. |
-| 22 | `machines/table-games/card-back.png` | Tisch | 64×96 | KEEP | Kartenruecken mit klarer Rahmenkante. |
-| 23 | `machines/table-games/poker-chip-single.png` | Tisch | 64×64 | KEEP | Chip mit zwei Werten und sauberer Kante. |
-| 24 | `machines/blackjack-table.png` | Tisch | 192×128 | KEEP | Gruener Filz, Goldrand, passende Perspektive. |
-| 25 | `machines/cash-register.png` | Requisite | 64×64 | KEEP | Metall-/Displaywerte konsistent. |
-| 26 | `machines/bar-bottle-amber.png` | Requisite | 32×64 | KEEP | Flaschenform und Amber-Glas lesbar. |
+| 22 | `characters/head-03-01.svg` | Kopf | 32×36 | KEEP | Dritte Familie: Silberbob mit Teal-Akzent; im LOD lesbar. |
+| 23 | `machines/table-games/card-back.png` | Tisch | 64×96 | KEEP | Kartenruecken mit klarer Rahmenkante. |
+| 24 | `machines/table-games/poker-chip-single.png` | Tisch | 64×64 | KEEP | Chip mit zwei Werten und sauberer Kante. |
+| 25 | `machines/blackjack-table.png` | Tisch | 192×128 | KEEP | Gruener Filz, Goldrand, passende Perspektive. |
+| 26 | `machines/cash-register.png` | Requisite | 64×64 | KEEP | Metall-/Displaywerte konsistent. |
+| 27 | `machines/bar-bottle-amber.png` | Requisite | 32×64 | KEEP | Flaschenform und Amber-Glas lesbar. |
 
-**Ergebnis:** 0 BROKEN, 0 REPLACE, 8 REWORK, 18 KEEP. Kein Asset wird
+**Ergebnis:** 0 BROKEN, 0 REPLACE, 8 REWORK, 19 KEEP. Kein Asset wird
 geloescht; die REWORK-Faelle bleiben bis zur Neufassung im Einsatz.
 
 ## 4. Offene Art-Needs
@@ -70,7 +70,6 @@ Diese Assets fehlen und werden **nicht** durch Platzhalter ersetzt:
 
 | Bedarf | Fuer | Warum jetzt | Groesse |
 | --- | --- | --- | --- |
-| `characters/head-03-01.png` | NPC-Familie 3, Editor | Dritte Kopffamilie ist im Code/der Doku referenziert, aber im Repo und in der Historie nicht vorhanden. | 32×36 |
 | Apartment-Moebel-Set | Wohnung | `player-apartment.ts` kennt 9 Moebel, aber es gibt keine eigenen Sprites fuer Bett, Sofa, Tisch, Kochzeile, Kuehlschrank, Toilette, Waschbecken, Dusche, Schrank. | 32–96 px |
 | Apartment-Boden/Wand | Wohnung | Nur Casino-Teppich und Damast-Tapete existieren; fuer das 1-Zimmer-Appartement fehlen ruhige Wohnungs-Varianten. | 64/512 px |
 | Strassen-Infrastruktur | Strasse | Bordstein, Kreuzung, Hydrant, parkendes Auto und Muelltonnen-Variante fehlen; die vorhandenen Props decken nur Gehweg und Haltestelle. | 32–128 px |
@@ -78,13 +77,8 @@ Diese Assets fehlen und werden **nicht** durch Platzhalter ersetzt:
 | LOD-Identitaetsframes | NPC-Pipeline | Die 12×16-Silhouette existiert als Zeichnung, aber nicht als Sprite-Set je Kopf-/Outfit-Familie. | 12×16 |
 | Konflikt-/Dispute-Icons | UI/Floor | Keine eigenen Icons fuer Streit, Hausverbot und Razzia; UI nutzt Text. | 16–24 px |
 
-Die Reihenfolge ist keine Priorisierung; sie folgt dem Vertical Slice
-(Wohnung → Strasse → NPCs).
+## 5. head-03-01
 
-## 5. Grenzen des Audits
-
-- Der Audit bewertet Lesbarkeit und Stil, nicht Animation oder Laufzeitframe.
-- Der Kontaktbogen ist eine statische Uebersicht; er belegt keine WebGL-
-  Darstellung. Die Sichtabnahme auf einem echten Geraet bleibt offen.
-- `head-03-01` wird bewusst nicht angelegt: ein erfundenes Asset wuerde den
-  Runtime-Test und die Editor-Parität verletzen.
+Die Suche in Historie, Refs, 84 unreachable Objekten und Manifest ergab keine
+Quelle (Befehle: Issue #1133). Nach Freigabe neu als 32×36-SVG gezeichnet;
+gleicher resvg-/Atlas-Pfad wie die Environment-SVGs.

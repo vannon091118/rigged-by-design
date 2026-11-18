@@ -9,7 +9,7 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
-| 2026-11-18 | Phase 1: Art-Vertrag, Audit und 17 SVGs als Atlasframes. | `docs/style-guide.md`, `scripts/build-asset-manifest.mjs` |
+| 2026-11-18 | Phase 1: Art-Vertrag, Audit und 18 SVGs als Atlasframes. | `docs/style-guide.md`, `scripts/build-asset-manifest.mjs` |
 | 2026-11-18 | Claims #1092/#979 nachgezogen; Sektionskopf-Titel rot. | `.lane-claims/`, `scripts/lib/commit-msg.mjs` |
 | 2026-11-18 | `--no-verify`-Bypass: Push prueft Claim, Drift, Budget und jede Nicht-Merge-Nachricht (ERR-4006). | `.githooks/pre-push` |
 | 2026-11-18 | Hooks armen im Install; Contract-Gate meldet ungeschuetzte Klone (ERR-4018). | `scripts/install-hooks.mjs` |

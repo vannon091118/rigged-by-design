@@ -34,6 +34,7 @@ export const ASSET = {
     'characters/head-02-01.png',
     'characters/head-02-04.png',
     'characters/head-02-07.png',
+    'characters/head-03-01.svg',
   ],
 } as const;
 
