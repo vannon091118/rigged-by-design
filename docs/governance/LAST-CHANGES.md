@@ -9,12 +9,11 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
-| 2026-11-18 | Sim-Tests strukturiert loggen (#998). | `test-log.ts` |
-| 2026-11-18 | LOD traegt Kopf und Haarton; Seed folgt dem Namen. | `actor-silhouette.ts` |
-| 2026-11-18 | Phase 2: NPC-Rig waehlt Koerpervarianten und drei Kopfformen. | `rig-parts.ts` |
-| 2026-11-18 | Phase 1: Art-Vertrag, Audit und 18 SVGs als Atlasframes. | `style-guide.md` |
-| 2026-11-18 | Claims #1092/#979 nachgezogen; Sektionskopf-Titel rot. | `.lane-claims/`, `scripts/lib/commit-msg.mjs` |
-| 2026-11-18 | `--no-verify`-Bypass: Push prueft Claim, Drift, Budget und jede Nicht-Merge-Nachricht (ERR-4006). | `.githooks/pre-push` |
+| 2026-11-18 | Sim-Tests strukturiert (#998). | `test-log.ts` |
+| 2026-11-18 | LOD traegt Kopf und Haarton. | `actor-silhouette.ts` |
+| 2026-11-18 | Phase 2: NPC-Rig waehlt Koerpervarianten. | `rig-parts.ts` |
+| 2026-11-18 | Phase 1: Art-Vertrag, Audit, 18 SVG-Atlasframes. | `style-guide.md` |
+| 2026-11-18 | Claims #1092/#979. | `.lane-claims/` |
 
 ## Regeln
 - Maximal sieben Zeilen; der aelteste Eintrag faellt heraus.

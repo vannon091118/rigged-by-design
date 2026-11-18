@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 463 Dateien — contract 231 · integration 127 · governance 92 · statistics 6 · performance 7.
+Summe: 464 Dateien — contract 232 · integration 127 · governance 92 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -423,6 +423,7 @@ Summe: 463 Dateien — contract 231 · integration 127 · governance 92 · stati
 | `src/core/sim/__tests__/staff-assignment-view.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
 | `src/core/sim/__tests__/staff-qualification.test.ts` | sim | contract | ja | `src/core/sim/staff-qualification.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
+| `src/core/sim/__tests__/test-log.test.ts` | sim | contract | ja | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/treat-influence.test.ts` | sim | contract | ja | `src/core/sim/player.ts` |
 | `src/core/sim/__tests__/trigger-dialog.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
 | `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
@@ -769,10 +770,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3531 |
-| Gelistete Dateien | 3531 |
+| Getrackte Dateien | 3532 |
+| Gelistete Dateien | 3532 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (181), .lanes (1), artifacts (1), bin (1), content (1250), docs (108), packages (27), public (572), scripts (232), src (1135) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (181), .lanes (1), artifacts (1), bin (1), content (1250), docs (108), packages (27), public (572), scripts (232), src (1136) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -870,7 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 5 Datei(en)
 - `src/core/rng/__tests__/` — 4 Datei(en)
 - `src/core/sim/` — 205 Datei(en)
-- `src/core/sim/__tests__/` — 178 Datei(en)
+- `src/core/sim/__tests__/` — 179 Datei(en)
 - `src/core/sim/narrative/` — 44 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 8 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -2411,7 +2412,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 92 Zeilen
 - `docs/governance/AGENTS.md` — Agentenvertrag — gelesen: 28 Zeilen
 - `docs/governance/INDEX.md` — Doku-Index — gelesen: 22 Zeilen
-- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 22 Zeilen
+- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 21 Zeilen
 - `docs/governance/PITFALLS.md` — Pitfalls — gelesen: 21 Zeilen
 - `docs/governance/ROADMAP.md` — Roadmap — gelesen: 34 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
@@ -3695,6 +3696,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/staff-assignment-view.test.ts` — Auftrag, Blockadegrund und Leistung sind gemeinsam aus dem Agentenbestand — gelesen: 142 Zeilen
 - `src/core/sim/__tests__/staff-qualification.test.ts` — Die Qualifikation ist eine Eigenschaft des Agenten, nicht der Rolle: gleiche — gelesen: 104 Zeilen
 - `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 126 Zeilen
+- `src/core/sim/__tests__/test-log.test.ts` — Waechter fuer #998: Sim-Tests belegen ihren Verlauf mit strukturierter — gelesen: 49 Zeilen
 - `src/core/sim/__tests__/test-log.ts` — Strukturierte Testausgabe (#998): genau eine JSON-Zeile je Ereignis. — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/treat-influence.test.ts` — Döner-/Treat-Synergie am realen Serve-Pfad: an der Bar positiv, am Slot — gelesen: 105 Zeilen
 - `src/core/sim/__tests__/trigger-dialog.test.ts` — P-15: TRIGGER_DIALOG ist ausfuehrbar. Der Command schreibt bewusst keinen — gelesen: 78 Zeilen
