@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/visual-phase1-audit-count-closeout",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase1-audit-count-closeout",
+  "issue": 1130,
+  "baseSha": "798e9095b0227d80cb2eebf0e795db33ce4504fd",
+  "task": "Audit-Count-Closeout #1131",
+  "goal": "Den Korrektur-Claim und Task nach dem Merge von PR #1131 auf merged beziehungsweise DONE ziehen.",
+  "pathAllowlist": [
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "798e9095b0227d80cb2eebf0e795db33ce4504fd",
+  "createdAt": "798e9095b0227d80cb2eebf0e795db33ce4504fd"
+}
