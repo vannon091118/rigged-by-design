@@ -6,7 +6,8 @@
 import { describe, expect, it } from 'vitest';
 import { Container, Graphics, Sprite } from 'pixi.js';
 import { GuestPaint } from '../guest-paint';
-import { PERSONA_COLORS, PANTS, SHOES } from '../guest-parts';
+import { LOOK_HAIR_RECTS } from '../guest-head';
+import { HEAD_FAMILIES, PERSONA_COLORS, PANTS, SHOES, headTextureForFamily } from '../guest-parts';
 import type { GuestRigNodes } from '../guest-rig';
 
 function makeNodes(): GuestRigNodes {
@@ -70,9 +71,23 @@ describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
     it('uebernimmt Spielerfarben aus dem Look', () => {
       const nodes = makeNodes();
       const paint = new GuestPaint(nodes, { seed: 0, isPlayer: true, persona: 'STREET', portrait: false });
-      paint.setLook({ skin: '#f2d3b3', hair: '#2a1a14', outfit: '#00ffcc', accessory: 'NONE', wardrobe: [], equippedItemId: null }, 'neutral');
+      paint.setLook({ skin: '#f2d3b3', hair: '#2a1a14', head: 'head-01', outfit: '#00ffcc', accessory: 'NONE', wardrobe: [], equippedItemId: null }, 'neutral');
       expect(nodes.body.tint).toBe(0x00ffcc);
     });
+
+    it('wechselt die Kopffamilie ohne die Spielerfarben zu verlieren', () => {
+      const nodes = makeNodes();
+      const paint = new GuestPaint(nodes, { seed: 0, isPlayer: true, persona: 'STREET', portrait: false });
+      paint.setLook({ skin: '#e0b48c', hair: '#d9b35c', head: 'head-03', outfit: '#ff2e88', accessory: 'NONE', wardrobe: [], equippedItemId: null }, 'neutral');
+      expect(nodes.body.tint).toBe(0xff2e88);
+      expect(LOOK_HAIR_RECTS['head-03']).not.toEqual(LOOK_HAIR_RECTS['head-01']);
+    });
+  });
+
+  it('gibt jeder Kopffamilie eine eigene Atlastextur', () => {
+    const paths = HEAD_FAMILIES.map((head) => headTextureForFamily(head));
+    expect(paths).toEqual(['characters/head-01-01.png', 'characters/head-02-01.png', 'characters/head-03-01.svg']);
+    expect(new Set(paths).size).toBe(3);
   });
 });
 

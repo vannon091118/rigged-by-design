@@ -107,6 +107,8 @@ Regeln fuer Phase 2 (NPC-Rig) und Phase 3 (Editor):
 - Kopf, Haut, Haare und Outfit kommen aus denselben Maps wie die Szene
   (`ASSET.heads`, `RUNTIME_ART`). Der Editor ist eine Produktionsfigur, keine
   Vorschaugrafik.
+- `PlayerLook.head` waehlt die Kopffamilie; dieselbe Textur und derselbe
+  Haarton gelten in Vorschau, LOD und Silhouette.
 - Jede Auswahl muss im LOD als Silhouette lesbar bleiben; der Editor zeigt
   deshalb eine 12 × 16-Vorschau neben der Detailansicht.
 

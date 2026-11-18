@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-editor-heads",
+  "claimId": "lane/governance/visual-phase2-editor-heads",
+  "branch": "lane/governance/visual-phase2-editor-heads",
+  "baseSha": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3",
+  "phase": "IMPLEMENTING",
+  "title": "Phase 2: Charaktereditor waehlt Kopffamilie und Haarton",
+  "goal": "Kopffamilie als Look-Feld fuehren, im Charaktereditor waehlen und dieselbe Kopftextur sowie denselben Haarton in Vorschau und Floor zeigen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Look-Feld, Editorauswahl und Runtime-Verdrahtung implementieren; Screenshot und Gates belegen.",
+  "revision": 1
+}

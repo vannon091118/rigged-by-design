@@ -410,11 +410,16 @@
   background: radial-gradient(circle at 50% 40%, rgba(0, 255, 204, 0.08), transparent 65%), #0b0715;
 }
 .look-shadow { position: absolute; left: 30px; bottom: 14px; width: 80px; height: 8px; background: rgba(0, 0, 0, 0.45); }
-.look-head { position: absolute; left: 48px; top: 30px; width: 44px; height: 40px; }
-.look-hair { position: absolute; left: -4px; top: -7px; width: 52px; height: 15px; }
-.look-eye { position: absolute; top: 17px; width: 6px; height: 6px; background: #171020; }
-.look-eye.left { left: 10px; }
-.look-eye.right { right: 10px; }
+.look-head { position: absolute; left: 49px; top: 28px; width: 42px; height: 42px; overflow: hidden; }
+/* 32x36-Textur auf den Kopfbereich (x 4..28, y 3..27) zuschneiden. */
+.look-head-art { position: absolute; left: -16.67%; top: -12.5%; width: 133.33%; height: 150%; image-rendering: pixelated; }
+.look-hair-layer {
+  position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask-size: 56px 63px; mask-size: 56px 63px;
+  -webkit-mask-position: -7px -5.25px; mask-position: -7px -5.25px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.look-hair-tone { position: absolute; display: block; }
 .look-glasses { position: absolute; left: 4px; top: 14px; width: 36px; height: 12px; border: 2px solid #1a1020; }
 .look-cap { position: absolute; left: -4px; top: -11px; width: 54px; height: 12px; }
 .look-body { position: absolute; left: 50px; top: 70px; width: 40px; height: 52px; }

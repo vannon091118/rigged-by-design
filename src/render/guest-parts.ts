@@ -1,5 +1,6 @@
 /** Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. */
 import { Graphics, Sprite, type Renderer, type Texture } from 'pixi.js';
+import { LOOK_HEADS, type LookHead } from '../core/sim/player-look';
 import { SHADOW } from './art-tokens';
 
 export const PERSONA_COLORS: Record<string, number> = {
@@ -17,8 +18,19 @@ export const hash = (value: string): number => {
 };
 
 /** Die drei Kopffamilien; ihre Vertreter liegen im selben Atlas. */
-export const HEAD_FAMILIES = Object.freeze(['head-01', 'head-02', 'head-03'] as const);
-export type HeadFamily = (typeof HEAD_FAMILIES)[number];
+export const HEAD_FAMILIES = LOOK_HEADS;
+export type HeadFamily = LookHead;
+
+/** Erste Textur je Familie: dieselbe Quelle fuer Editorvorschau und Spielerfigur. */
+const FAMILY_TEXTURE: Readonly<Record<HeadFamily, string>> = Object.freeze({
+  'head-01': 'characters/head-01-01.png',
+  'head-02': 'characters/head-02-01.png',
+  'head-03': 'characters/head-03-01.svg',
+});
+
+export function headTextureForFamily(family: HeadFamily): string {
+  return FAMILY_TEXTURE[family];
+}
 
 /**
  * Kopf-Texturen aus dem Manifest, einem Gast nach seinem Seed zugeordnet.
@@ -43,6 +55,11 @@ export function headTextureFor(seed: number): string | null {
 export function headFamilyFor(path: string | null): HeadFamily | null {
   const match = /characters\/(head-\d{2})-/.exec(path ?? '');
   return HEAD_FAMILIES.find((family) => family === match?.[1]) ?? null;
+}
+
+/** Seed-Kopf bleibt fuer Gaeste; der Spieler bringt seine Familie aus dem Look mit. */
+export function headTextureForSeedOrFamily(seed: number, family: HeadFamily | null): string | null {
+  return family ? headTextureForFamily(family) : headTextureFor(seed);
 }
 
 /** Schatten einmal backen: eine Textur fuer alle Figuren statt Graphic pro Figur. */

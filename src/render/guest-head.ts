@@ -2,7 +2,7 @@
 import { Graphics, Sprite, type Container } from 'pixi.js';
 import type { LookAccessory } from '../core/sim/player-look';
 import { textureFor } from './assets/textures';
-import { headTextureFor } from './guest-parts';
+import { headTextureForSeedOrFamily, type HeadFamily } from './guest-parts';
 import { pixelHead } from './pixel-head';
 
 export type FaceKind = 'angry' | 'greedy' | 'happy' | 'meh' | 'neutral';
@@ -19,8 +19,23 @@ export interface HeadHair {
  * Kopf-Textur oder Pixelkopf liegt ueber dem gezeichneten Schaedel; der bleibt dann leer.
  * Liefert das Sprite, damit der Aufrufer den Schaedel nicht erneut bemalen muss.
  */
+/**
+ * Haarton-Flaeche je Familie in Kopfkoordinaten (-7..7). Editor und Spieler
+ * lesen dieselben Rechtecke; Gaeste behalten ihre Textur unveraendert.
+ */
+export const LOOK_HAIR_RECTS: Readonly<Record<HeadFamily, readonly (readonly [number, number, number, number])[]>> = Object.freeze({
+  'head-01': [[-7, -7, 14, 5], [-7, -4, 2, 3], [5, -4, 2, 3]],
+  'head-02': [[-7, -4, 1, 4], [6, -4, 1, 4]],
+  'head-03': [[-7, -7, 14, 6], [-7, -5, 4, 8], [3, -5, 4, 8]],
+});
+
+export function paintLookHair(g: Graphics, family: HeadFamily, hair: number): void {
+  g.clear();
+  for (const [x, y, w, h] of LOOK_HAIR_RECTS[family]) g.rect(x, y, w, h).fill(hair);
+}
+
 export function mountHead(
-  head: Container, drawn: readonly Graphics[], seed: number, portrait: boolean,
+  head: Container, drawn: readonly Graphics[], seed: number, portrait: boolean, family: HeadFamily | null = null,
 ): Sprite | null {
   const hide = (): void => { for (const part of drawn) part.visible = false; };
   const pixel = portrait ? pixelHead(seed, 13) : null;
@@ -29,7 +44,7 @@ export function mountHead(
     head.addChild(pixel);
     hide();
   }
-  const key = headTextureFor(seed);
+  const key = headTextureForSeedOrFamily(seed, family);
   const texture = key ? textureFor(key) : null;
   if (!texture) return null;
   const sprite = new Sprite(texture);

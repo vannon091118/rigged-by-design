@@ -5,6 +5,10 @@ import { subVC } from '../economy/vacoin';
 
 export type LookAccessory = 'NONE' | 'CAP' | 'GLASSES' | 'CHAIN';
 
+/** Die drei Kopffamilien aus dem Charakter-Atlas; der Editor waehlt eine davon. */
+export const LOOK_HEADS = ['head-01', 'head-02', 'head-03'] as const;
+export type LookHead = (typeof LOOK_HEADS)[number];
+
 type ClothingCategory = 'TOPS' | 'BOTTOMS' | 'ACCESSORIES' | 'HEAD';
 
 interface ClothingItem {
@@ -20,6 +24,7 @@ interface ClothingItem {
 export interface PlayerLook {
   readonly skin: string;
   readonly hair: string;
+  readonly head: LookHead;
   readonly outfit: string;
   readonly accessory: LookAccessory;
   readonly wardrobe: readonly string[]; // Beschaffte Item-IDs
@@ -66,6 +71,7 @@ export function buyItem(balance: VaCoinMicro, itemId: string): { ok: boolean; re
 export const DEFAULT_LOOK: PlayerLook = {
   skin: LOOK_SKINS[0],
   hair: LOOK_HAIRS[0],
+  head: LOOK_HEADS[0],
   outfit: LOOK_OUTFITS[0],
   accessory: 'NONE',
   wardrobe: [],
@@ -82,9 +88,13 @@ export function normalizeLook(raw: unknown): PlayerLook {
   const accessory = LOOK_ACCESSORIES.some((entry) => entry.id === value.accessory)
     ? value.accessory as LookAccessory
     : DEFAULT_LOOK.accessory;
+  const head = (LOOK_HEADS as readonly unknown[]).includes(value.head)
+    ? value.head as LookHead
+    : DEFAULT_LOOK.head;
   return {
     skin: isHex(value.skin) ? value.skin : DEFAULT_LOOK.skin,
     hair: isHex(value.hair) ? value.hair : DEFAULT_LOOK.hair,
+    head,
     outfit: isHex(value.outfit) ? value.outfit : DEFAULT_LOOK.outfit,
     accessory,
     wardrobe: Array.isArray(value.wardrobe) && value.wardrobe.every((id) => typeof id === 'string')
@@ -109,6 +119,7 @@ export function applyLook(current: PlayerLook, patch: Partial<PlayerLook>): Play
     equippedItemId: validEquipped,
     skin: (LOOK_SKINS as readonly string[]).includes(next.skin) ? next.skin : current.skin,
     hair: (LOOK_HAIRS as readonly string[]).includes(next.hair) ? next.hair : current.hair,
+    head: (LOOK_HEADS as readonly unknown[]).includes(patch.head) ? patch.head as LookHead : current.head,
     outfit: (LOOK_OUTFITS as readonly string[]).includes(next.outfit) ? next.outfit : current.outfit,
   };
 }

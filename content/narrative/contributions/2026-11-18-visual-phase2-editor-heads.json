@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T20:20Z-visual-phase2-editor-heads",
+  "contributionId": "visual-phase2-editor-heads-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita oeffnet den Spiegel und klickt die drei Koepfe durch: rund mit dunklem Haar, Kappe mit Rot, Bob mit Blond. Die grosse Vorschau zeigt den Ausschnitt; nach dem Schliessen traegt die Figur auf dem Floor denselben Bob und denselben Ton.",
+  "directives": []
+}
