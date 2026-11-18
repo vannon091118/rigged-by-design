@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase2-lod-sprites",
   "branch": "lane/governance/visual-phase2-lod-sprites",
   "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
-  "phase": "MERGE_PENDING",
+  "phase": "DONE",
   "title": "Phase 2: LOD-Sprite-Set je Kopffamilie bei 1x/2x",
   "goal": "Ein 36x48-LOD-Sprite-Sheet mit drei Kopffamilien und den Layern Koerper/Kopf/Haar in den Atlas legen, per Tint in der Fernsilhouette nutzen und bei 1x/2x sichtpruefen.",
   "taskType": "single",
@@ -13,10 +13,11 @@
   "pr": {
     "number": 1151,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/1151",
-    "state": "open",
-    "headSha": "cedeba8b"
+    "state": "merged",
+    "headSha": "276e6c079d994227547c9afb964926aabe0cce27",
+    "mergeSha": "dd6350db0ad1e7f3a3596245ee755a61dd74e2b0"
   },
   "findings": [],
-  "nextAction": "PR #1151 auf dem exakten Kopf mergen; danach AFTERCARE und Issue-Release.",
-  "revision": 3
+  "nextAction": "Abgeschlossen; echte Gast-LOD-Wechsel und die FIT-Hysterese bleiben offen.",
+  "revision": 5
 }

@@ -977,7 +977,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
@@ -1059,7 +1059,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
