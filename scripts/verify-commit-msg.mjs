@@ -4,15 +4,10 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { fail } from './lib/report.mjs';
 import { captureConsole } from './lib/compact.mjs';
+import { messageViolations } from './lib/commit-msg.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
 captureConsole({ label: 'verify-commit-msg' });
 
-const FORBIDDEN = /Co-authored-by:|Generated with|\bFreebuff\b|\bCodebuff\b|\bClaude\b|\bAnthropic\b|\bOpenAI\b|\bCursor\b|Signed-off-by:|\[(?:Codebuff|Freebuff)\]/i;
-const SECTIONS = [
-  '### Changes (Was ist neu)',
-  '### Technische Basis & Kausalität',
-  '### Ausblick (Nächste Schritte)',
-];
 const args = process.argv.slice(2);
 // `--range <a>..<b>` prueft jeden Nicht-Merge-Commit im Bereich. Der pre-push
 // Hook nutzt denselben Pruefer statt einer zweiten Nachrichten-Logik.
@@ -27,30 +22,7 @@ function readInput() {
 }
 
 /** Alle Regeln an genau einer Stelle: Commit, Datei, PR-Body und Bereich teilen sie. */
-function violations(text, { pr = false } = {}) {
-  const found = [];
-  const trailer = FORBIDDEN.exec(text);
-  if (trailer) found.push({ code: 'ERR-4005', message: `verbotener Drittanbieter-Trailer: ${trailer[0]}` });
-  if (pr) return found;
-  const lines = text.split(/\r?\n/).map((line) => line.trim());
-  if (!lines[0] || lines[0].length < 8) found.push({ code: 'ERR-4006', message: 'deutscher Update-Titel fehlt' });
-  let previous = -1;
-  for (const section of SECTIONS) {
-    const at = lines.indexOf(section);
-    if (at < 0) {
-      found.push({ code: 'ERR-4006', message: `Pflichtsektion fehlt: ${section}` });
-      continue;
-    }
-    if (at < previous) found.push({ code: 'ERR-4006', message: `Sektion in falscher Reihenfolge: ${section}` });
-    previous = at;
-    const next = lines.findIndex((line, position) => position > at && line.startsWith('### '));
-    const body = lines.slice(at + 1, next < 0 ? undefined : next).filter((line) => line.startsWith('- '));
-    if (body.length === 0 || body.every((line) => line.length < 8)) {
-      found.push({ code: 'ERR-4006', message: `Sektion ohne echten Inhalt: ${section}` });
-    }
-  }
-  return found;
-}
+const violations = messageViolations;
 
 if (range !== null) {
   let shas = [];

@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- **Squash-Nachricht aus dem PR-Body, mechanisch.** `scripts/lib/commit-msg.mjs` haelt Pflichtsektionen und Inhaltsregel einmal; `verify-commit-msg` und der neue `node scripts/merge-commit-message.mjs` lesen dieselbe. Der Bauer erzeugt mit `--out <datei>` den Text fuer `commit_message` und endet ohne Nachricht (`ERR-4006`), wenn eine Sektion fehlt; `promote` merged nur mit vollstaendigem PR-Body. `docs/AUDIT.md` nennt im Nachtrag vom 2026-11-18 den verifizierten Stand (8 offene Issues, gruener Vor-PR-Nachweis, #782 gemergt) statt der Zahlen vom 15.11.
+
 - **10k-Lesepfad und lokale Toolgates.** `rbd docs read` liest fünf Pflichtdokus plus Test-/Governance-Kern (7 Dokumente, ~2,5k Token) und schreibt ein Hash-Receipt. Der Claude-PreToolUse-Hook und die guarded Bash `rbd shell watch` blockieren Arbeit bis zum Receipt, verlustreiche Gate-Pipes und destructive Git-/Merge-Befehle; der lokale Watcher eskaliert Verstöße im Terminal. Kein Actions-Pfad, keine zusätzliche Pflichtdoku.
 
 - **Claim-Preflight vor dem Push.** `rbd claim preflight` meldet offene Claims und Rest-WIP; der Hook blockiert bei uncommitted WIP oder Claim ohne Issue. `docs/governance/LAST-CHANGES.md` ist gemeinsame Ablage, die übrigen Pflichtdokus sind governance-geschützt.
