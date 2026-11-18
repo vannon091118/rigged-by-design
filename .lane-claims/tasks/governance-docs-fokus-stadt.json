@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-docs-fokus-stadt",
+  "claimId": "lane/governance/docs-fokus-stadt",
+  "branch": "lane/governance/docs-fokus-stadt",
+  "baseSha": "62a9b155eab285a4df5dd26cd942f3aa27d30e03",
+  "phase": "IMPLEMENTING",
+  "title": "Issue #1113: README und Banner auf die belebte Stadt fokussieren",
+  "goal": "README, Hauptbanner, Abschnittsbanner und GitHub-Beschreibung ohne Casino-Genre und ohne Technikdetail; ausfuehrliche Abschnitte zu MVP, Spiellauf und Doku-Stand.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
+  "revision": 1
+}
