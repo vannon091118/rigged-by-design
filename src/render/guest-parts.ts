@@ -16,7 +16,15 @@ export const hash = (value: string): number => {
   return Math.abs(result);
 };
 
-/** Kopf-Texturen aus dem Manifest, einem Gast nach seinem Seed zugeordnet. */
+/** Die drei Kopffamilien; ihre Vertreter liegen im selben Atlas. */
+export const HEAD_FAMILIES = Object.freeze(['head-01', 'head-02', 'head-03'] as const);
+export type HeadFamily = (typeof HEAD_FAMILIES)[number];
+
+/**
+ * Kopf-Texturen aus dem Manifest, einem Gast nach seinem Seed zugeordnet.
+ * `head-03-01.svg` haengt hinten an: bestehende Gaeste behalten ihren Kopf,
+ * nur der neue Bucket bekommt die dritte Familie.
+ */
 const HEAD_TEXTURES: readonly string[] = [
   'characters/head-01-01.png', 'characters/head-01-02.png', 'characters/head-01-03.png',
   'characters/head-01-04.png', 'characters/head-01-05.png', 'characters/head-01-06.png',
@@ -24,10 +32,17 @@ const HEAD_TEXTURES: readonly string[] = [
   'characters/head-02-01.png', 'characters/head-02-02.png', 'characters/head-02-03.png',
   'characters/head-02-04.png', 'characters/head-02-05.png', 'characters/head-02-06.png',
   'characters/head-02-07.png', 'characters/head-02-08.png', 'characters/head-02-09.png',
+  'characters/head-03-01.svg',
 ];
 
 export function headTextureFor(seed: number): string | null {
   return HEAD_TEXTURES[Math.abs(seed) % HEAD_TEXTURES.length] ?? null;
+}
+
+/** Kopffamilie eines Texturpfads; unbekannte Pfade bleiben ohne Familie. */
+export function headFamilyFor(path: string | null): HeadFamily | null {
+  const match = /characters\/(head-\d{2})-/.exec(path ?? '');
+  return HEAD_FAMILIES.find((family) => family === match?.[1]) ?? null;
 }
 
 /** Schatten einmal backen: eine Textur fuer alle Figuren statt Graphic pro Figur. */

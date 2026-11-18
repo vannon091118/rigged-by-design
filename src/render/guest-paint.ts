@@ -1,10 +1,11 @@
 /** Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. */
 import { Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
-import { drawActorSilhouette } from './actor-silhouette';
+import { drawActorSilhouette, silhouetteHeadFor } from './actor-silhouette';
 import { ROLE } from './art-tokens';
 import { mountHead, paintFace as drawFace, paintHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
-import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS } from './guest-parts';
+import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS, headFamilyFor, headTextureFor } from './guest-parts';
+import { rigPartsFor } from './rig-parts';
 import { textureFor } from './assets/textures';
 import type { GuestRigNodes } from './guest-rig';
 
@@ -12,10 +13,6 @@ const hex = (value: string): number => Number.parseInt(value.replace('#', ''), 1
 
 /** Atlas-Teile sind etwa dreimal so gross wie die alte Graphics-Zeichnung. */
 const PART_SCALE = 0.34;
-const BODY_FRAME = 'characters/torso-outfit-01.png';
-const ARM_FRAME = 'characters/arm-segment-01.png';
-const LEG_FRAME = 'characters/leg-segment-01.png';
-const FOOTWEAR_FRAME = 'characters/footwear-part-01.png';
 
 interface PaintOptions {
   readonly seed: number;
@@ -47,13 +44,14 @@ export class GuestPaint {
     this.#accessory = look?.accessory ?? 'NONE';
     this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait);
 
-    this.#setupPart(nodes.body, BODY_FRAME, 0.5, 0.5, 4, 4);
-    this.#setupPart(nodes.legs, LEG_FRAME, 0.5, 0, 4, 9);
-    this.#setupPart(nodes.legOther, LEG_FRAME, 0.5, 0, 4, 9);
-    this.#setupPart(nodes.armL, ARM_FRAME, 0.5, 0, 3, 10);
-    this.#setupPart(nodes.armR, ARM_FRAME, 0.5, 0, 3, 10);
-    this.#setupPart(nodes.footwearL, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
-    this.#setupPart(nodes.footwearR, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
+    const parts = rigPartsFor(seed);
+    this.#setupPart(nodes.body, parts.torso, 0.5, 0.5, 4, 4);
+    this.#setupPart(nodes.legs, parts.leg, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.legOther, parts.leg, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.armL, parts.arm, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.armR, parts.arm, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.footwearL, parts.footwear, 0.5, 0.5, 3, 2);
+    this.#setupPart(nodes.footwearR, parts.footwear, 0.5, 0.5, 3, 2);
 
     this.setPersona(persona);
     if (look) this.setLook(look, 'neutral');
@@ -131,7 +129,12 @@ export class GuestPaint {
   #paintPin(): void {
     const { pin } = this.#nodes;
     pin.clear();
-    drawActorSilhouette(pin, this.#outfit, this.#skin);
+    drawActorSilhouette(pin, {
+      outfit: this.#outfit,
+      skin: this.#skin,
+      hair: this.#hairColor,
+      head: silhouetteHeadFor(headFamilyFor(headTextureFor(this.#seed))),
+    });
     if (this.#isPlayer) pin.circle(0, -8, 9).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
   }
 }

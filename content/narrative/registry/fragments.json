@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e066ff68ea211bc600be25996ecc4f0a2238bcc03fd0affeeb97e2c9d7378101",
+  "contentHash": "sha256:cf0b020600fefbe1bee817e93161183ad344bec9b6bf6414f3979394513ee39a",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27448,6 +27448,31 @@
       "text": "Rita hat den dritten Kopf neben die beiden anderen in den Charakterbogen geklebt: silberner Bob, ein Streifen Teal, ein goldener Ohrring. Er liegt auf demselben Atlasblatt wie die ersten Familien, nicht in einem eigenen Ordner.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-head-03.json"
+    },
+    {
+      "contributionId": "visual-phase2-npc-rig-01",
+      "turnId": "2026-11-18T09:10Z-visual-phase2-npc-rig",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hat die Gaesteliste gegen den Charakterbogen gelegt: Jeder Kopf hat jetzt einen eigenen Koerper, und selbst im kleinen Ueberblick bleiben Bob, Kappe und Haarton auseinanderzuhalten. Sie hat die neuen Varianten nicht gezeichnet, nur die vorhandenen richtig zugeordnet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json"
     },
     {
       "contributionId": "warm-return-body-01",

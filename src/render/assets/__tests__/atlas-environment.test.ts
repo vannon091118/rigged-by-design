@@ -14,6 +14,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { ASSET, RUNTIME_ART } from '../keys';
+import { rigPartsFor } from '../../rig-parts';
 import manifest from '../manifest.json';
 
 const { assetsLoad } = vi.hoisted(() => ({ assetsLoad: vi.fn() }));
@@ -144,5 +145,27 @@ describe('Environment-SVGs im Produktionsatlas', () => {
 
     expect(assetsLoad).not.toHaveBeenCalled();
     expect(FakeImage.sources.some((source) => source.includes('head-03-01.svg'))).toBe(false);
+  });
+
+  it('loest die NPC-Rig-Teile ueber Atlasframes auf, ohne Assets.load', async () => {
+    const { atlasTexture, loadAtlas } = await import('../atlas');
+    const { textureFor } = await import('../textures');
+    await loadAtlas(manifest.atlas, manifest.base);
+
+    for (const seed of [0, 7, 23, 64, 120]) {
+      for (const [part, path] of Object.entries(rigPartsFor(seed))) {
+        const frame = frames.get(path);
+        expect(frame, `${part}: ${path}`).toBeDefined();
+
+        const texture = textureFor(path);
+        expect(texture, `textureFor liefert null: ${path}`).not.toBeNull();
+        expect(atlasTexture(path)).toBe(texture);
+        expect(texture?.source.scaleMode).toBe('nearest');
+        expect(texture?.frame.width).toBe(frame?.width);
+        expect(texture?.frame.height).toBe(frame?.height);
+      }
+    }
+
+    expect(assetsLoad).not.toHaveBeenCalled();
   });
 });
