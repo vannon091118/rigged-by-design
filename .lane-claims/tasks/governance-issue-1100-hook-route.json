@@ -4,13 +4,14 @@
   "claimId": "lane/governance/issue-1100-hook-route",
   "branch": "lane/governance/issue-1100-hook-route",
   "baseSha": "20df9e5fa0cd586a629f9746c5e2204e1b2c3f6f",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "rbd-Route fuer hooks:check",
   "goal": "Jede Governance-Zeile aus package.json hat genau eine rbd-Route",
-  "taskType": "single",
+  "taskType": "aftercare",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "findings": [],
-  "nextAction": "Commit, PR, Merge; danach verify:all auf main.",
-  "revision": 1
+  "nextAction": "Gemergt; keine offene Arbeit fuer diese Lane.",
+  "revision": 2,
+  "closeout": "post-merge"
 }
