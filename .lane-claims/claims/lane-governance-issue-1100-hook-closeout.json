@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/issue-1100-hook-closeout",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1100-hook-closeout",
+  "baseSha": "eb13150250bdd2ed15270ce562becb0f57c586dc",
+  "issue": 1100,
+  "task": "Closeout Hook-Armung",
+  "goal": "Hook-Lane als gemergt und DONE registrieren",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1100-hook-closeout.json",
+    ".lane-claims/tasks/governance-issue-1100-hook-closeout.json",
+    ".lane-claims/claims/lane-governance-issue-1100-hook-arming.json",
+    ".lane-claims/tasks/governance-issue-1100-hook-arming.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "eb13150250bdd2ed15270ce562becb0f57c586dc"
+}
