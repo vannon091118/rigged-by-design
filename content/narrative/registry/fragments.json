@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8ab60b8062caaaf3240f93ca1dd7a2f62c20450ba2ebc8e3368ef3280168c974",
+  "contentHash": "sha256:e68ca0038779c51694fd8631f5f05e2be2a0e7159a9620cf67e31880565b8d74",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27398,6 +27398,31 @@
       "text": "Der Pruefer hatte auf die Uhr im Flur geschaut, um einen alten Eintrag zu datieren. Die Uhr geht in der Kammer nichts an: Wer eine Pruefung schreibt, nimmt ein festes Datum aus dem Buch, sonst aendert sich der Befund mit dem Tageslicht. Also steht dort jetzt eine Zahl, die immer denselben Tag beschreibt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-17-verify-state-test-time.json"
+    },
+    {
+      "contributionId": "visual-art-contract-01",
+      "turnId": "2026-11-18T07:00Z-visual-art-contract",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Im Ordner der Materialmuster liegt jetzt ein Bogen mit allen Boeden, Fassaden und Requisiten. Rita hat die neun Stellen markiert, die noch zu flach wirken, und daneben notiert, welche Moebel fuer die Wohnung fehlen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-art-contract.json"
     },
     {
       "contributionId": "warm-return-body-01",

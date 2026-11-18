@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T07:00Z-visual-art-contract",
+  "contributionId": "visual-art-contract-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Im Ordner der Materialmuster liegt jetzt ein Bogen mit allen Boeden, Fassaden und Requisiten. Rita hat die neun Stellen markiert, die noch zu flach wirken, und daneben notiert, welche Moebel fuer die Wohnung fehlen.",
+  "directives": []
+}

@@ -28,10 +28,9 @@ function chunk(type, data) {
   return out;
 }
 
-/** Liest 8-Bit-RGBA (Color Type 6), nicht interlaced. */
-export function readPng(file) {
-  const png = readFileSync(file);
-  if (!png.subarray(0, 8).equals(SIGNATURE)) throw new Error(`Kein PNG: ${file}`);
+/** Liest 8-Bit-RGBA (Color Type 6), nicht interlaced, aus einem Puffer. */
+export function decodePng(png, label) {
+  if (!png.subarray(0, 8).equals(SIGNATURE)) throw new Error(`Kein PNG: ${label}`);
   let offset = 8;
   let width = 0;
   let height = 0;
@@ -54,7 +53,7 @@ export function readPng(file) {
     offset += 12 + length;
   }
   if (bitDepth !== 8 || colorType !== 6 || interlace !== 0) {
-    throw new Error(`Atlas erwartet 8-Bit-RGBA ohne Interlace: ${file}`);
+    throw new Error(`Atlas erwartet 8-Bit-RGBA ohne Interlace: ${label}`);
   }
   const raw = inflateSync(Buffer.concat(parts));
   const stride = width * 4;
@@ -81,6 +80,11 @@ export function readPng(file) {
     previous = out;
   }
   return { width, height, data };
+}
+
+/** Liest eine PNG-Datei als 8-Bit-RGBA. */
+export function readPng(file) {
+  return decodePng(readFileSync(file), file);
 }
 
 function paeth(a, b, c) {
@@ -142,9 +146,12 @@ export function shelfPack(frames, size, padding) {
   return pages;
 }
 
-export function buildAtlasPages({ assetRoot, files, size, padding, outputDir }) {
+export function buildAtlasPages({
+  assetRoot, files, size, padding, outputDir,
+  readSource = (path) => readPng(join(assetRoot, path)),
+}) {
   const items = files.map((path) => {
-    const image = readPng(join(assetRoot, path));
+    const image = readSource(path);
     return { path, width: image.width, height: image.height, image };
   });
   const pages = shelfPack(items, size, padding);

@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/visual-phase1-art-contract",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase1-art-contract",
+  "issue": 1127,
+  "baseSha": "d7844ba07c38aa1ecab78ab6c04a80484d3d5dc2",
+  "task": "Phase 1: Art-Vertrag, SVG-Atlas und Art-Audit",
+  "goal": "Style Guide und Art-Audit festschreiben, die 17 Environment-SVGs per resvg in den bestehenden Atlas rastern und den Runtime-Ladepfad ohne SVG-Netzwerk-Fetch belegen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "scripts/",
+    "package.json",
+    "pnpm-lock.yaml",
+    "docs/",
+    "src/render/assets/",
+    "src/render/__tests__/",
+    "public/assets/casino/atlas/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "d7844ba07c38aa1ecab78ab6c04a80484d3d5dc2"
+}

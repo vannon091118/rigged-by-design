@@ -6,7 +6,8 @@
  */
 import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { buildAtlasPages } from './lib/atlas-png.mjs';
+import { Resvg } from '@resvg/resvg-js';
+import { buildAtlasPages, decodePng, readPng } from './lib/atlas-png.mjs';
 import { encodeWebp } from './lib/atlas-webp.mjs';
 import { captureConsole } from './lib/compact.mjs';
 // Sichtbare Antwort bleibt unter 500 Token; vollstaendig im Log.
@@ -58,19 +59,35 @@ const all = walk(ASSET_ROOT).filter((file) => !file.startsWith('atlas/')).sort()
 const png = all.filter((file) => file.endsWith('.png'));
 const json = all.filter((file) => file.endsWith('.json'));
 const ogg = all.filter((file) => file.endsWith('.ogg'));
+const image = (file) => file.endsWith('.png') || file.endsWith('.svg');
 
 const byTop = (top) => png.filter((file) => file.startsWith(`${top}/`));
 const asMap = (top) => Object.fromEntries(byTop(top).map((file) => [file, file]));
 
+// SVGs werden mit resvg in ihrer viewBox-Groesse gerastert; resvg liefert
+// 8-Bit-RGBA, genau das Format, das der Atlas-Decoder prueft.
+const readSource = (file) => {
+  if (!file.endsWith('.svg')) return readPng(join(ASSET_ROOT, file));
+  const rendered = new Resvg(readFileSync(join(ASSET_ROOT, file)), {
+    fitTo: { mode: 'original' },
+  }).render();
+  return decodePng(rendered.asPng(), file);
+};
+
 // Die Seiten werden aus denselben kuratierten Ordnern gebaut, die der
 // Laufzeit-Fallback packt. Damit liegt der Shelf-Plan einmal im Build fest und
 // die App laedt im Produktionspfad nur noch wenige Seiten statt 153 Bilder.
+const atlasSources = ATLAS_FOLDERS.flatMap((folder) =>
+  all.filter((file) => file.startsWith(`${folder}/`) && image(file)));
+const environmentFiles = all.filter((file) => file.startsWith('environment/') && image(file));
+
 const atlasPages = buildAtlasPages({
   assetRoot: ASSET_ROOT,
-  files: ATLAS_FOLDERS.flatMap(byTop),
+  files: atlasSources,
   size: ATLAS_SIZE,
   padding: ATLAS_PADDING,
   outputDir: join(ASSET_ROOT, 'atlas'),
+  readSource,
 }).map((page) => {
   // 1.040.593 B PNG gegen 394.592 B WebP-q95; die Seiten sind der groesste
   // Einzelposten vor dem ersten Frame. Der Laufzeitpfad laedt nur die URL.
@@ -117,8 +134,9 @@ const manifest = {
     size: ATLAS_SIZE,
     padding: ATLAS_PADDING,
     order: ATLAS_FOLDERS,
-    frameCount: ATLAS_FOLDERS.reduce((sum, folder) => sum + byTop(folder).length, 0),
-    folders: Object.fromEntries(ATLAS_FOLDERS.map((folder) => [folder, byTop(folder)])),
+    frameCount: atlasSources.length,
+    folders: Object.fromEntries(ATLAS_FOLDERS.map((folder) =>
+      [folder, atlasSources.filter((file) => file.startsWith(`${folder}/`))])),
     pages: atlasPages,
   },
   symbols,
@@ -127,7 +145,7 @@ const manifest = {
   plinko: asMap('plinko'),
   ui: asMap('ui'),
   characters: asMap('characters'),
-  environment: asMap('environment'),
+  environment: Object.fromEntries(environmentFiles.map((file) => [file, file])),
   fx: asMap('fx'),
   animations,
   emitters,

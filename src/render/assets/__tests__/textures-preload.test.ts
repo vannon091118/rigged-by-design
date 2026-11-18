@@ -2,11 +2,11 @@
  * @test-target: src/render/assets/textures.ts
  * @error-code: ERR-4022
  *
- * R8-Boot-Grenze: Der Test ruft die echte Produktionsfunktion
- * `preloadRuntimeArt` auf und beobachtet nur die `Assets.load`-Grenze. Damit
- * ist belegt, dass der Boot-Preload alle zehn realen Stadttexturen ueber
- * `Assets.load` anfordert; ein zusaetzlicher `Texture.from(url)`-Aufruf waere
- * an dieser Grenze nicht sichtbar und wird hier nicht behauptet.
+ * Rueckfall-Grenze: Der Test ruft die echte Produktionsfunktion
+ * `preloadRuntimeArt` auf, mockt aber den Atlas weg. Damit ist belegt, dass
+ * der Boot-Preload alle zehn Stadttexturen als Einzeldateien anfordert, wenn
+ * keine Atlasseite bereitsteht. Der Produktionspfad mit Atlas wird in
+ * `atlas-environment.test.ts` belegt; dort darf kein `Assets.load` fallen.
  *
  * Nicht belegt: ein vollstaendiger App-Boot, ein Screenshot oder eine
  * Pixeldarstellung. Die Cloud-Browser-Session kann Pixi/WebGL nicht
@@ -30,7 +30,7 @@ vi.mock('../atlas', () => ({
   loadAtlas: async () => undefined,
 }));
 
-describe('Stadt-Boot-Preload an der Assets.load-Grenze', () => {
+describe('Stadt-Fallback ohne Atlas an der Assets.load-Grenze', () => {
   it('fordert alle zehn realen Stadttexturen ueber die Produktionsfunktion an', async () => {
     expect(productionPreload).toBeTypeOf('function');
     // Andere Tests koennen den Modulcache bereits gefuellt haben; der

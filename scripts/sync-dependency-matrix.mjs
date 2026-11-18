@@ -34,6 +34,7 @@ const JUSTIFICATIONS = {
   yaml: ['Test', 'Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen.'],
   'gpt-tokenizer': ['Doku', 'Echte Tokenmessung (o200k_base) fuer das Pflichtdoku-Budget; kein Zeichen-Schaetzer.'],
   'ffmpeg-static': ['Assets', 'Kodiert die WAV-Musikmaster zu Opus fuer die Auslieferung; reines Build-Werkzeug, nicht im Bundle.'],
+  '@resvg/resvg-js': ['Assets', 'Rastert die Environment-SVGs buildseitig zu 8-Bit-RGBA-PNG fuer den bestehenden Atlas; reines Build-Werkzeug, kein Runtime-Import.'],
   '@capacitor/core': ['Android', 'WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben.'],
   '@capacitor/cli': ['Android', 'Capacitor-CLI: erzeugt das Android-Projekt und synchronisiert Web-Build und Huelle.'],
   '@capacitor/android': ['Android', 'Native Android-Plattform, aus der Gradle Debug- und Release-APK baut.'],

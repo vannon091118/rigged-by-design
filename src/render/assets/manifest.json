@@ -10,7 +10,7 @@
       "environment",
       "machines"
     ],
-    "frameCount": 153,
+    "frameCount": 170,
     "folders": {
       "characters": [
         "characters/arm-segment-01.png",
@@ -114,6 +114,23 @@
         "decor/wall-sconce.png"
       ],
       "environment": [
+        "environment/floor/apartment-rug.svg",
+        "environment/floor/city/doors/door.svg",
+        "environment/floor/city/facades/apartment.svg",
+        "environment/floor/city/facades/casino.svg",
+        "environment/floor/city/facades/pub.svg",
+        "environment/floor/city/facades/shop.svg",
+        "environment/floor/city/props/bench.svg",
+        "environment/floor/city/props/bus-stop.svg",
+        "environment/floor/city/props/street-light.svg",
+        "environment/floor/city/props/trash-bin.svg",
+        "environment/floor/city/props/tree.svg",
+        "environment/floor/concrete-slab.svg",
+        "environment/floor/linoleum-speckle.svg",
+        "environment/floor/stone-marble.svg",
+        "environment/floor/tile-grid.svg",
+        "environment/floor/wood-planks.svg",
+        "environment/fx/light-pool.svg",
         "environment/tiles/casino-carpet-plum.png",
         "environment/tiles/wallpaper-damask-plum.png"
       ],
@@ -193,312 +210,88 @@
             "height": 512
           },
           {
-            "path": "machines/video-poker-terminal.png",
+            "path": "environment/fx/light-pool.svg",
             "x": 0,
             "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          {
+            "path": "environment/floor/city/facades/apartment.svg",
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 192
+          },
+          {
+            "path": "environment/floor/city/facades/casino.svg",
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 192
+          },
+          {
+            "path": "environment/floor/city/facades/pub.svg",
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 192
+          },
+          {
+            "path": "environment/floor/city/facades/shop.svg",
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 192
+          },
+          {
+            "path": "machines/video-poker-terminal.png",
+            "x": 256,
+            "y": 768,
             "width": 100,
             "height": 160
           },
           {
             "path": "machines/slot-machine-front.png",
-            "x": 100,
-            "y": 512,
+            "x": 356,
+            "y": 768,
             "width": 96,
             "height": 160
           },
           {
             "path": "decor/bar-back-shelf.png",
-            "x": 196,
-            "y": 512,
+            "x": 452,
+            "y": 768,
             "width": 148,
             "height": 157
           },
           {
             "path": "machines/slot-machine-compact.png",
-            "x": 344,
-            "y": 512,
+            "x": 600,
+            "y": 768,
             "width": 108,
             "height": 156
           },
           {
             "path": "machines/casino-kiosk.png",
-            "x": 452,
-            "y": 512,
+            "x": 708,
+            "y": 768,
             "width": 100,
             "height": 148
           },
           {
             "path": "machines/slot-cabinet.png",
-            "x": 552,
-            "y": 512,
+            "x": 808,
+            "y": 768,
             "width": 104,
             "height": 145
           },
           {
             "path": "machines/storage-shelves.png",
-            "x": 656,
-            "y": 512,
+            "x": 912,
+            "y": 768,
             "width": 100,
             "height": 139
-          },
-          {
-            "path": "machines/restroom-stall.png",
-            "x": 756,
-            "y": 512,
-            "width": 144,
-            "height": 138
-          },
-          {
-            "path": "machines/service-cart.png",
-            "x": 900,
-            "y": 512,
-            "width": 88,
-            "height": 138
-          },
-          {
-            "path": "machines/casino-prize-pedestal.png",
-            "x": 0,
-            "y": 672,
-            "width": 88,
-            "height": 136
-          },
-          {
-            "path": "machines/plinko-cabinet.png",
-            "x": 88,
-            "y": 672,
-            "width": 104,
-            "height": 132
-          },
-          {
-            "path": "machines/slot-machine-side-panel.png",
-            "x": 192,
-            "y": 672,
-            "width": 48,
-            "height": 128
-          },
-          {
-            "path": "decor/egyptian-column-tall.png",
-            "x": 240,
-            "y": 672,
-            "width": 45,
-            "height": 112
-          },
-          {
-            "path": "decor/neon-column.png",
-            "x": 285,
-            "y": 672,
-            "width": 40,
-            "height": 112
-          },
-          {
-            "path": "decor/palm-neon.png",
-            "x": 325,
-            "y": 672,
-            "width": 80,
-            "height": 103
-          },
-          {
-            "path": "machines/poker-table.png",
-            "x": 405,
-            "y": 672,
-            "width": 145,
-            "height": 97
-          },
-          {
-            "path": "decor/casino-side-table.png",
-            "x": 550,
-            "y": 672,
-            "width": 128,
-            "height": 96
-          },
-          {
-            "path": "decor/potted-palm.png",
-            "x": 678,
-            "y": 672,
-            "width": 80,
-            "height": 96
-          },
-          {
-            "path": "machines/table-games/shell-game-cups-and-pearl.png",
-            "x": 758,
-            "y": 672,
-            "width": 79,
-            "height": 96
-          },
-          {
-            "path": "decor/egyptian-column-short.png",
-            "x": 837,
-            "y": 672,
-            "width": 39,
-            "height": 96
-          },
-          {
-            "path": "machines/blackjack-table.png",
-            "x": 876,
-            "y": 672,
-            "width": 140,
-            "height": 94
-          },
-          {
-            "path": "decor/casino-column.png",
-            "x": 0,
-            "y": 808,
-            "width": 44,
-            "height": 90
-          },
-          {
-            "path": "machines/cash-safe.png",
-            "x": 44,
-            "y": 808,
-            "width": 80,
-            "height": 89
-          },
-          {
-            "path": "decor/bar-counter-stools.png",
-            "x": 124,
-            "y": 808,
-            "width": 120,
-            "height": 88
-          },
-          {
-            "path": "decor/lounge-sofa.png",
-            "x": 244,
-            "y": 808,
-            "width": 89,
-            "height": 88
-          },
-          {
-            "path": "decor/potted-palm-variant.png",
-            "x": 333,
-            "y": 808,
-            "width": 62,
-            "height": 88
-          },
-          {
-            "path": "decor/potted-palm-tall.png",
-            "x": 395,
-            "y": 808,
-            "width": 59,
-            "height": 88
-          },
-          {
-            "path": "decor/egyptian-cat-statue.png",
-            "x": 454,
-            "y": 808,
-            "width": 55,
-            "height": 88
-          },
-          {
-            "path": "machines/cashier-counter.png",
-            "x": 509,
-            "y": 808,
-            "width": 144,
-            "height": 85
-          },
-          {
-            "path": "decor/casino-neon-sign.png",
-            "x": 653,
-            "y": 808,
-            "width": 96,
-            "height": 80
-          },
-          {
-            "path": "decor/velvet-rope-barrier.png",
-            "x": 749,
-            "y": 808,
-            "width": 96,
-            "height": 80
-          },
-          {
-            "path": "decor/tabletop-palm.png",
-            "x": 845,
-            "y": 808,
-            "width": 56,
-            "height": 80
-          },
-          {
-            "path": "decor/potted-plant.png",
-            "x": 901,
-            "y": 808,
-            "width": 64,
-            "height": 79
-          },
-          {
-            "path": "decor/small-podium.png",
-            "x": 0,
-            "y": 898,
-            "width": 64,
-            "height": 77
-          },
-          {
-            "path": "decor/chandelier.png",
-            "x": 64,
-            "y": 898,
-            "width": 104,
-            "height": 74
-          },
-          {
-            "path": "machines/roulette-table.png",
-            "x": 168,
-            "y": 898,
-            "width": 168,
-            "height": 72
-          },
-          {
-            "path": "machines/dice-table.png",
-            "x": 336,
-            "y": 898,
-            "width": 168,
-            "height": 68
-          },
-          {
-            "path": "decor/vip-armchair.png",
-            "x": 504,
-            "y": 898,
-            "width": 88,
-            "height": 68
-          },
-          {
-            "path": "machines/display-bezel.png",
-            "x": 592,
-            "y": 898,
-            "width": 96,
-            "height": 64
-          },
-          {
-            "path": "decor/planter-greenery.png",
-            "x": 688,
-            "y": 898,
-            "width": 80,
-            "height": 64
-          },
-          {
-            "path": "machines/cash-register.png",
-            "x": 768,
-            "y": 898,
-            "width": 80,
-            "height": 64
-          },
-          {
-            "path": "decor/cocktail-neon-sign.png",
-            "x": 848,
-            "y": 898,
-            "width": 64,
-            "height": 64
-          },
-          {
-            "path": "decor/pendant-lamp.png",
-            "x": 912,
-            "y": 898,
-            "width": 48,
-            "height": 64
-          },
-          {
-            "path": "machines/card-payment-terminal.png",
-            "x": 960,
-            "y": 898,
-            "width": 48,
-            "height": 64
           }
         ]
       },
@@ -506,751 +299,1094 @@
         "source": "atlas/atlas-1.webp",
         "frames": [
           {
-            "path": "machines/cocktail-glass.png",
+            "path": "machines/restroom-stall.png",
             "x": 0,
             "y": 0,
+            "width": 144,
+            "height": 138
+          },
+          {
+            "path": "machines/service-cart.png",
+            "x": 144,
+            "y": 0,
+            "width": 88,
+            "height": 138
+          },
+          {
+            "path": "machines/casino-prize-pedestal.png",
+            "x": 232,
+            "y": 0,
+            "width": 88,
+            "height": 136
+          },
+          {
+            "path": "machines/plinko-cabinet.png",
+            "x": 320,
+            "y": 0,
+            "width": 104,
+            "height": 132
+          },
+          {
+            "path": "environment/floor/city/props/bus-stop.svg",
+            "x": 424,
+            "y": 0,
+            "width": 96,
+            "height": 128
+          },
+          {
+            "path": "environment/floor/city/props/tree.svg",
+            "x": 520,
+            "y": 0,
+            "width": 96,
+            "height": 128
+          },
+          {
+            "path": "environment/floor/city/props/street-light.svg",
+            "x": 616,
+            "y": 0,
+            "width": 64,
+            "height": 128
+          },
+          {
+            "path": "machines/slot-machine-side-panel.png",
+            "x": 680,
+            "y": 0,
+            "width": 48,
+            "height": 128
+          },
+          {
+            "path": "decor/egyptian-column-tall.png",
+            "x": 728,
+            "y": 0,
+            "width": 45,
+            "height": 112
+          },
+          {
+            "path": "decor/neon-column.png",
+            "x": 773,
+            "y": 0,
+            "width": 40,
+            "height": 112
+          },
+          {
+            "path": "decor/palm-neon.png",
+            "x": 813,
+            "y": 0,
+            "width": 80,
+            "height": 103
+          },
+          {
+            "path": "machines/poker-table.png",
+            "x": 0,
+            "y": 138,
+            "width": 145,
+            "height": 97
+          },
+          {
+            "path": "decor/casino-side-table.png",
+            "x": 145,
+            "y": 138,
+            "width": 128,
+            "height": 96
+          },
+          {
+            "path": "decor/potted-palm.png",
+            "x": 273,
+            "y": 138,
+            "width": 80,
+            "height": 96
+          },
+          {
+            "path": "machines/table-games/shell-game-cups-and-pearl.png",
+            "x": 353,
+            "y": 138,
+            "width": 79,
+            "height": 96
+          },
+          {
+            "path": "decor/egyptian-column-short.png",
+            "x": 432,
+            "y": 138,
+            "width": 39,
+            "height": 96
+          },
+          {
+            "path": "machines/blackjack-table.png",
+            "x": 471,
+            "y": 138,
+            "width": 140,
+            "height": 94
+          },
+          {
+            "path": "decor/casino-column.png",
+            "x": 611,
+            "y": 138,
+            "width": 44,
+            "height": 90
+          },
+          {
+            "path": "machines/cash-safe.png",
+            "x": 655,
+            "y": 138,
+            "width": 80,
+            "height": 89
+          },
+          {
+            "path": "decor/bar-counter-stools.png",
+            "x": 735,
+            "y": 138,
+            "width": 120,
+            "height": 88
+          },
+          {
+            "path": "decor/lounge-sofa.png",
+            "x": 855,
+            "y": 138,
+            "width": 89,
+            "height": 88
+          },
+          {
+            "path": "decor/potted-palm-variant.png",
+            "x": 944,
+            "y": 138,
+            "width": 62,
+            "height": 88
+          },
+          {
+            "path": "decor/potted-palm-tall.png",
+            "x": 0,
+            "y": 235,
+            "width": 59,
+            "height": 88
+          },
+          {
+            "path": "decor/egyptian-cat-statue.png",
+            "x": 59,
+            "y": 235,
+            "width": 55,
+            "height": 88
+          },
+          {
+            "path": "machines/cashier-counter.png",
+            "x": 114,
+            "y": 235,
+            "width": 144,
+            "height": 85
+          },
+          {
+            "path": "decor/casino-neon-sign.png",
+            "x": 258,
+            "y": 235,
+            "width": 96,
+            "height": 80
+          },
+          {
+            "path": "decor/velvet-rope-barrier.png",
+            "x": 354,
+            "y": 235,
+            "width": 96,
+            "height": 80
+          },
+          {
+            "path": "environment/floor/city/props/trash-bin.svg",
+            "x": 450,
+            "y": 235,
+            "width": 64,
+            "height": 80
+          },
+          {
+            "path": "decor/tabletop-palm.png",
+            "x": 514,
+            "y": 235,
+            "width": 56,
+            "height": 80
+          },
+          {
+            "path": "decor/potted-plant.png",
+            "x": 570,
+            "y": 235,
+            "width": 64,
+            "height": 79
+          },
+          {
+            "path": "decor/small-podium.png",
+            "x": 634,
+            "y": 235,
+            "width": 64,
+            "height": 77
+          },
+          {
+            "path": "decor/chandelier.png",
+            "x": 698,
+            "y": 235,
+            "width": 104,
+            "height": 74
+          },
+          {
+            "path": "machines/roulette-table.png",
+            "x": 802,
+            "y": 235,
+            "width": 168,
+            "height": 72
+          },
+          {
+            "path": "machines/dice-table.png",
+            "x": 0,
+            "y": 323,
+            "width": 168,
+            "height": 68
+          },
+          {
+            "path": "decor/vip-armchair.png",
+            "x": 168,
+            "y": 323,
+            "width": 88,
+            "height": 68
+          },
+          {
+            "path": "environment/floor/city/props/bench.svg",
+            "x": 256,
+            "y": 323,
+            "width": 96,
+            "height": 64
+          },
+          {
+            "path": "machines/display-bezel.png",
+            "x": 352,
+            "y": 323,
+            "width": 96,
+            "height": 64
+          },
+          {
+            "path": "decor/planter-greenery.png",
+            "x": 448,
+            "y": 323,
+            "width": 80,
+            "height": 64
+          },
+          {
+            "path": "machines/cash-register.png",
+            "x": 528,
+            "y": 323,
+            "width": 80,
+            "height": 64
+          },
+          {
+            "path": "decor/cocktail-neon-sign.png",
+            "x": 608,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/apartment-rug.svg",
+            "x": 672,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/concrete-slab.svg",
+            "x": 736,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/linoleum-speckle.svg",
+            "x": 800,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/stone-marble.svg",
+            "x": 864,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/tile-grid.svg",
+            "x": 928,
+            "y": 323,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "environment/floor/wood-planks.svg",
+            "x": 0,
+            "y": 391,
+            "width": 64,
+            "height": 64
+          },
+          {
+            "path": "decor/pendant-lamp.png",
+            "x": 64,
+            "y": 391,
+            "width": 48,
+            "height": 64
+          },
+          {
+            "path": "machines/card-payment-terminal.png",
+            "x": 112,
+            "y": 391,
+            "width": 48,
+            "height": 64
+          },
+          {
+            "path": "machines/cocktail-glass.png",
+            "x": 160,
+            "y": 391,
             "width": 48,
             "height": 64
           },
           {
             "path": "machines/beer-glass.png",
-            "x": 48,
-            "y": 0,
+            "x": 208,
+            "y": 391,
             "width": 40,
             "height": 64
           },
           {
             "path": "decor/wall-sconce.png",
-            "x": 88,
-            "y": 0,
+            "x": 248,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "machines/bar-bottle-amber.png",
-            "x": 120,
-            "y": 0,
+            "x": 280,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "machines/bar-bottle-blue.png",
-            "x": 152,
-            "y": 0,
+            "x": 312,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "machines/bar-bottle-green.png",
-            "x": 184,
-            "y": 0,
+            "x": 344,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "machines/bar-bottle-violet.png",
-            "x": 216,
-            "y": 0,
+            "x": 376,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "machines/machine-lever.png",
-            "x": 248,
-            "y": 0,
+            "x": 408,
+            "y": 391,
             "width": 32,
             "height": 64
           },
           {
             "path": "decor/neon-upright-tube.png",
-            "x": 280,
-            "y": 0,
+            "x": 440,
+            "y": 391,
             "width": 24,
             "height": 64
           },
           {
             "path": "decor/gold-candelabra.png",
-            "x": 304,
-            "y": 0,
+            "x": 464,
+            "y": 391,
             "width": 56,
             "height": 63
           },
           {
             "path": "machines/table-games/roulette-wheel.png",
-            "x": 360,
-            "y": 0,
+            "x": 520,
+            "y": 391,
             "width": 88,
             "height": 61
           },
           {
             "path": "machines/shell-game-table.png",
-            "x": 448,
-            "y": 0,
+            "x": 608,
+            "y": 391,
             "width": 160,
             "height": 55
           },
           {
             "path": "machines/table-games/roulette-betting-layout.png",
-            "x": 608,
-            "y": 0,
+            "x": 768,
+            "y": 391,
             "width": 112,
             "height": 52
           },
           {
             "path": "machines/table-games/playing-card-ace-spades.png",
-            "x": 720,
-            "y": 0,
+            "x": 880,
+            "y": 391,
             "width": 36,
             "height": 52
           },
           {
             "path": "machines/table-games/playing-card-ace-hearts.png",
-            "x": 756,
-            "y": 0,
+            "x": 916,
+            "y": 391,
             "width": 36,
             "height": 51
           },
           {
             "path": "machines/table-games/card-back.png",
-            "x": 792,
-            "y": 0,
+            "x": 952,
+            "y": 391,
             "width": 36,
             "height": 50
           },
           {
             "path": "machines/control-button-panel.png",
-            "x": 828,
-            "y": 0,
+            "x": 0,
+            "y": 455,
             "width": 128,
             "height": 48
           },
           {
             "path": "decor/oval-neon-light.png",
-            "x": 0,
-            "y": 64,
+            "x": 128,
+            "y": 455,
             "width": 80,
             "height": 48
           },
           {
             "path": "decor/casino-newspaper.png",
-            "x": 80,
-            "y": 64,
+            "x": 208,
+            "y": 455,
             "width": 48,
             "height": 48
           },
           {
             "path": "machines/table-games/chip-stack-gold.png",
-            "x": 128,
-            "y": 64,
+            "x": 256,
+            "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "machines/table-games/chip-stack-green.png",
-            "x": 160,
-            "y": 64,
+            "x": 288,
+            "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "machines/table-games/chip-stack-violet.png",
-            "x": 192,
-            "y": 64,
+            "x": 320,
+            "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "characters/torso-outfit-05.png",
-            "x": 224,
-            "y": 64,
+            "x": 352,
+            "y": 455,
             "width": 35,
             "height": 44
           },
           {
             "path": "machines/table-games/chip-stack-blue.png",
-            "x": 259,
-            "y": 64,
+            "x": 387,
+            "y": 455,
             "width": 32,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-01.png",
-            "x": 291,
-            "y": 64,
+            "x": 419,
+            "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-03.png",
-            "x": 322,
-            "y": 64,
+            "x": 450,
+            "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-07.png",
-            "x": 353,
-            "y": 64,
+            "x": 481,
+            "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-02.png",
-            "x": 384,
-            "y": 64,
+            "x": 512,
+            "y": 455,
             "width": 30,
             "height": 44
           },
           {
             "path": "machines/table-games/chip-stack-red.png",
-            "x": 414,
-            "y": 64,
+            "x": 542,
+            "y": 455,
             "width": 32,
             "height": 43
           },
           {
             "path": "characters/torso-outfit-06.png",
-            "x": 446,
-            "y": 64,
+            "x": 574,
+            "y": 455,
             "width": 36,
             "height": 41
           },
           {
             "path": "machines/coin-tray.png",
-            "x": 482,
-            "y": 64,
+            "x": 610,
+            "y": 455,
             "width": 64,
             "height": 40
           },
           {
             "path": "characters/torso-outfit-04.png",
-            "x": 546,
-            "y": 64,
+            "x": 674,
+            "y": 455,
             "width": 36,
             "height": 40
           },
           {
             "path": "machines/chip-stack-blue.png",
-            "x": 582,
-            "y": 64,
+            "x": 710,
+            "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-gold.png",
-            "x": 614,
-            "y": 64,
+            "x": 742,
+            "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-green.png",
-            "x": 646,
-            "y": 64,
+            "x": 774,
+            "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-red.png",
-            "x": 678,
-            "y": 64,
+            "x": 806,
+            "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-violet.png",
-            "x": 710,
-            "y": 64,
+            "x": 838,
+            "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/shot-glass.png",
-            "x": 742,
-            "y": 64,
+            "x": 870,
+            "y": 455,
             "width": 24,
             "height": 40
           },
           {
             "path": "characters/torso-outfit-08.png",
-            "x": 766,
-            "y": 64,
+            "x": 894,
+            "y": 455,
             "width": 36,
             "height": 38
           },
           {
             "path": "characters/head-01-01.png",
-            "x": 802,
-            "y": 64,
+            "x": 930,
+            "y": 455,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-02.png",
-            "x": 834,
-            "y": 64,
+            "x": 962,
+            "y": 455,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-03.png",
-            "x": 866,
-            "y": 64,
+            "x": 0,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-04.png",
-            "x": 898,
-            "y": 64,
+            "x": 32,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-05.png",
-            "x": 930,
-            "y": 64,
+            "x": 64,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-06.png",
-            "x": 962,
-            "y": 64,
+            "x": 96,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-07.png",
-            "x": 0,
-            "y": 112,
+            "x": 128,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-08.png",
-            "x": 32,
-            "y": 112,
+            "x": 160,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-09.png",
-            "x": 64,
-            "y": 112,
+            "x": 192,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-01.png",
-            "x": 96,
-            "y": 112,
+            "x": 224,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-02.png",
-            "x": 128,
-            "y": 112,
+            "x": 256,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-03.png",
-            "x": 160,
-            "y": 112,
+            "x": 288,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-04.png",
-            "x": 192,
-            "y": 112,
+            "x": 320,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-05.png",
-            "x": 224,
-            "y": 112,
+            "x": 352,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-06.png",
-            "x": 256,
-            "y": 112,
+            "x": 384,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-07.png",
-            "x": 288,
-            "y": 112,
+            "x": 416,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-08.png",
-            "x": 320,
-            "y": 112,
+            "x": 448,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-02-09.png",
-            "x": 352,
-            "y": 112,
+            "x": 480,
+            "y": 503,
             "width": 32,
             "height": 36
           },
           {
             "path": "machines/table-games/dealer-button.png",
-            "x": 384,
-            "y": 112,
+            "x": 512,
+            "y": 503,
             "width": 36,
             "height": 32
           },
           {
             "path": "machines/table-games/card-shoe-marker.png",
-            "x": 420,
-            "y": 112,
+            "x": 548,
+            "y": 503,
             "width": 15,
             "height": 32
           },
           {
             "path": "characters/leg-segment-13.png",
-            "x": 435,
-            "y": 112,
+            "x": 563,
+            "y": 503,
             "width": 15,
             "height": 30
           },
           {
             "path": "characters/leg-segment-08.png",
-            "x": 450,
-            "y": 112,
+            "x": 578,
+            "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-09.png",
-            "x": 464,
-            "y": 112,
+            "x": 592,
+            "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-12.png",
-            "x": 478,
-            "y": 112,
+            "x": 606,
+            "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-01.png",
-            "x": 492,
-            "y": 112,
+            "x": 620,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-02.png",
-            "x": 505,
-            "y": 112,
+            "x": 633,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-04.png",
-            "x": 518,
-            "y": 112,
+            "x": 646,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-10.png",
-            "x": 531,
-            "y": 112,
+            "x": 659,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-11.png",
-            "x": 544,
-            "y": 112,
+            "x": 672,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-14.png",
-            "x": 557,
-            "y": 112,
+            "x": 685,
+            "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-03.png",
-            "x": 570,
-            "y": 112,
+            "x": 698,
+            "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-05.png",
-            "x": 582,
-            "y": 112,
+            "x": 710,
+            "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-06.png",
-            "x": 594,
-            "y": 112,
+            "x": 722,
+            "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "machines/table-games/suit-diamond.png",
-            "x": 606,
-            "y": 112,
+            "x": 734,
+            "y": 503,
             "width": 22,
             "height": 28
           },
           {
             "path": "characters/arm-segment-01.png",
-            "x": 628,
-            "y": 112,
+            "x": 756,
+            "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-06.png",
-            "x": 642,
-            "y": 112,
+            "x": 770,
+            "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-13.png",
-            "x": 656,
-            "y": 112,
+            "x": 784,
+            "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-02.png",
-            "x": 670,
-            "y": 112,
+            "x": 798,
+            "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-05.png",
-            "x": 683,
-            "y": 112,
+            "x": 811,
+            "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-08.png",
-            "x": 696,
-            "y": 112,
+            "x": 824,
+            "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-04.png",
-            "x": 709,
-            "y": 112,
+            "x": 837,
+            "y": 503,
             "width": 12,
             "height": 28
           },
           {
             "path": "characters/arm-segment-03.png",
-            "x": 721,
-            "y": 112,
+            "x": 849,
+            "y": 503,
             "width": 11,
             "height": 28
           },
           {
             "path": "characters/leg-segment-07.png",
-            "x": 732,
-            "y": 112,
+            "x": 860,
+            "y": 503,
             "width": 16,
             "height": 27
           },
           {
             "path": "characters/arm-segment-09.png",
-            "x": 748,
-            "y": 112,
+            "x": 876,
+            "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-11.png",
-            "x": 762,
-            "y": 112,
+            "x": 890,
+            "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-10.png",
-            "x": 776,
-            "y": 112,
+            "x": 904,
+            "y": 503,
             "width": 14,
             "height": 26
           },
           {
             "path": "machines/table-games/suit-club.png",
-            "x": 790,
-            "y": 112,
+            "x": 918,
+            "y": 503,
             "width": 24,
             "height": 25
           },
           {
             "path": "machines/table-games/suit-spade.png",
-            "x": 814,
-            "y": 112,
+            "x": 942,
+            "y": 503,
             "width": 24,
             "height": 25
           },
           {
+            "path": "environment/floor/city/doors/door.svg",
+            "x": 0,
+            "y": 539,
+            "width": 96,
+            "height": 24
+          },
+          {
             "path": "machines/table-games/poker-chip-single.png",
-            "x": 838,
-            "y": 112,
+            "x": 96,
+            "y": 539,
             "width": 26,
             "height": 24
           },
           {
             "path": "machines/table-games/suit-heart.png",
-            "x": 864,
-            "y": 112,
+            "x": 122,
+            "y": 539,
             "width": 24,
             "height": 24
           },
           {
             "path": "characters/footwear-part-14.png",
-            "x": 888,
-            "y": 112,
+            "x": 146,
+            "y": 539,
             "width": 24,
             "height": 18
           },
           {
             "path": "characters/footwear-part-01.png",
-            "x": 912,
-            "y": 112,
+            "x": 170,
+            "y": 539,
             "width": 23,
             "height": 18
           },
           {
             "path": "characters/footwear-part-09.png",
-            "x": 935,
-            "y": 112,
+            "x": 193,
+            "y": 539,
             "width": 21,
             "height": 18
           },
           {
             "path": "characters/footwear-part-10.png",
-            "x": 956,
-            "y": 112,
+            "x": 214,
+            "y": 539,
             "width": 21,
             "height": 18
           },
           {
             "path": "characters/footwear-part-11.png",
-            "x": 977,
-            "y": 112,
+            "x": 235,
+            "y": 539,
             "width": 20,
             "height": 18
           },
           {
             "path": "characters/footwear-part-13.png",
-            "x": 997,
-            "y": 112,
+            "x": 255,
+            "y": 539,
             "width": 19,
             "height": 18
           },
           {
             "path": "characters/footwear-part-03.png",
-            "x": 0,
-            "y": 148,
+            "x": 274,
+            "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-05.png",
-            "x": 10,
-            "y": 148,
+            "x": 284,
+            "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-07.png",
-            "x": 20,
-            "y": 148,
+            "x": 294,
+            "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-08.png",
-            "x": 30,
-            "y": 148,
+            "x": 304,
+            "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-02.png",
-            "x": 40,
-            "y": 148,
+            "x": 314,
+            "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-04.png",
-            "x": 49,
-            "y": 148,
+            "x": 323,
+            "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-06.png",
-            "x": 58,
-            "y": 148,
+            "x": 332,
+            "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-12.png",
-            "x": 67,
-            "y": 148,
+            "x": 341,
+            "y": 539,
             "width": 24,
             "height": 17
           },
           {
             "path": "characters/arm-segment-07.png",
-            "x": 91,
-            "y": 148,
+            "x": 365,
+            "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/arm-segment-12.png",
-            "x": 105,
-            "y": 148,
+            "x": 379,
+            "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/arm-segment-14.png",
-            "x": 119,
-            "y": 148,
+            "x": 393,
+            "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/leg-segment-15.png",
-            "x": 133,
-            "y": 148,
+            "x": 407,
+            "y": 539,
             "width": 16,
             "height": 12
           }
