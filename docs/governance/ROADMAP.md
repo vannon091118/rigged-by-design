@@ -25,7 +25,7 @@
 | P-13 | Textbausteine, Zahl aus der Registry | [Detail](../ROADMAP-DETAIL.md) |
 
 ## Jetzt
-M1/M2 belegt; offen: S1-06 (Starter-Kiste), S2-08 bis S2-12 (Wohnung, Stadt) und PR-02 bis PR-07 (Bildsatz). M3: Art-Vertrag, SVG-Atlas, drei Koepfe, NPC-Rig und LOD belegt; Editor und Sicht offen.
+M1/M2 belegt; offen: S1-06 (Starter-Kiste), S2-08 bis S2-12 (Wohnung, Stadt) und PR-02 bis PR-07 (Bildsatz). M3: Art-Vertrag, SVG-Atlas, drei Koepfe, NPC-Rig und LOD belegt; Editor und Sicht offen. Tests strukturiert.
 
 ## Als Naechstes
 M3 Render-Rework (R0-R6) mit Browserbeleg, dann M4.

@@ -11,6 +11,7 @@ import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
+import { testEvent } from './test-log';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_ENERGY_PER_DAY, cityOf, cityView, runCityAction, travel } from '../city';
 import { TICKS_PER_DAY } from '../clock';
@@ -37,7 +38,10 @@ describe('Spielerbedürfnisse im echten Spielpfad', () => {
 
     for (let i = 0; i < TICKS_PER_DAY * 2; i += 1) tickWorld(world, ledger, prng);
 
-    console.log(`[player-needs] start=${initial.hunger}/${initial.thirst} nach 2 Tagen=${world.player.needs.hunger}/${world.player.needs.thirst}`);
+    testEvent('player-needs', 'bedarf', {
+      start: `${initial.hunger}/${initial.thirst}`,
+      nachZweiTagen: `${world.player.needs.hunger}/${world.player.needs.thirst}`,
+    });
     expect(world.player.needs.hunger).toBeGreaterThan(initial.hunger);
     expect(world.player.needs.thirst).toBeGreaterThan(initial.thirst);
     expect(world.player.needs.hunger).toBeCloseTo(54, 0);

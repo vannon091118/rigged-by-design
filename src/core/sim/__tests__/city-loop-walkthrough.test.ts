@@ -7,8 +7,9 @@
  * Stadt-Popup ueber `cityCmd` geht - nur ohne Browser, damit der Loop auch in
  * einer Umgebung ohne Grafik belegbar bleibt.
  *
- * Der Lauf schreibt jede Station nach stdout. Die Ausgabe ist die Abnahme:
- * Ort, Energie, Rang, Text und Abschluss muessen in dieser Reihenfolge stehen.
+ * Der Lauf schreibt jede Station als strukturierte JSON-Zeile nach stdout.
+ * Die Reihenfolge ist die Abnahme: Ort, Energie, Rang, Text und Abschluss
+ * stehen als feste Felder in jedem Ereignis.
  * Zusaetzlich prueft der Lauf, dass die 52 Stadt-Bausteine wirklich gelesen
  * werden: ein Aufenthalt mit vielen Handlungen darf nicht immer denselben
  * Satz zeigen.
@@ -17,6 +18,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
+import { testEvent } from './test-log';
 import { CITY_ENERGY_PER_DAY, cityOf, cityView, restInCity, runCityAction, travel } from '../city';
 import { createWorld, ensureStarter } from '../templates';
 import type { WorldState } from '../types';
@@ -37,17 +39,23 @@ function step(world: WorldState, actionId: string): void {
   const branchId = actionId.startsWith('KIEZ') ? 'KIEZ' : 'MARKT';
   const branch = branchId === 'KIEZ' ? after.KIEZ : after.MARKT;
   gelesen.push(after.lastText);
-  console.log(
-    `[stadt] tag=${world.day} ort=${after.location} energie=${before.energy}->${after.energy} `
-      + `${actionId} punkte=${branch} rang=${cityView(world).branches.find((entry) => entry.id === branchId)!.tier} `
-      + `text="${after.lastText}"`,
-  );
+  testEvent('stadt', 'aktion', {
+    tag: world.day,
+    ort: after.location,
+    energie: `${before.energy}->${after.energy}`,
+    aktion: actionId,
+    punkte: branch,
+    rang: cityView(world).branches.find((entry) => entry.id === branchId)!.tier,
+    text: after.lastText,
+  });
 }
 
 function rest(world: WorldState, ledger: Ledger, prng: Prng): void {
   const before = cityOf(world).energy;
   const after = restInCity(world, ledger, prng);
-  console.log(`[stadt] tag=${world.day} TAGESABSCHLUSS energie=${before}->${after.energy} text="${after.lastText}"`);
+  testEvent('stadt', 'tagesabschluss', {
+    tag: world.day, energie: `${before}->${after.energy}`, text: after.lastText,
+  });
 }
 
 /** Spielt einen Zweig bis zum Zielrang; der Tag endet nur, wenn die Energie fehlt. */
@@ -62,10 +70,12 @@ describe('Stadt-Loop als Replay', () => {
   it('spielt Kiez bis Eingeweihter, schaltet den Markt frei und schliesst beide Zweige ab', () => {
     gelesen.length = 0;
     const { world, ledger, prng } = start();
-    console.log(`[stadt] start ort=${cityOf(world).location} energie=${cityOf(world).energy}/${CITY_ENERGY_PER_DAY}`);
+    testEvent('stadt', 'start', {
+      ort: cityOf(world).location, energie: `${cityOf(world).energy}/${CITY_ENERGY_PER_DAY}`,
+    });
 
     travel(world, 'KIEZ');
-    console.log(`[stadt] reise KIEZ besuche=${cityOf(world).visits.KIEZ}`);
+    testEvent('stadt', 'reise', { ziel: 'KIEZ', besuche: cityOf(world).visits.KIEZ });
 
     // Der Markt ist vor dem Kiez-Rang Stammgast nachweislich zu.
     expect(cityView(world).locations.find((entry) => entry.id === 'MARKT')!.locked).toBe(true);
@@ -74,25 +84,25 @@ describe('Stadt-Loop als Replay', () => {
     play(world, ledger, prng, 'KIEZ_ANSPRECHEN', 9);
     expect(cityOf(world).KIEZ).toBeGreaterThanOrEqual(9);
     expect(cityView(world).locations.find((entry) => entry.id === 'MARKT')!.locked).toBe(false);
-    console.log('[stadt] markt freigeschaltet ab Kiez-Rang Stammgast');
+    testEvent('stadt', 'markt-freigeschaltet', { ab: 'Kiez-Rang Stammgast' });
 
     play(world, ledger, prng, 'KIEZ_ANSPRECHEN', 15);
     expect(cityOf(world).completed).toContain('KIEZ');
-    console.log('[stadt] KIEZ abgeschlossen: Eingeweihter');
+    testEvent('stadt', 'zweig-abgeschlossen', { zweig: 'KIEZ', rang: 'Eingeweihter' });
 
     // Der Loop darf nicht 15-mal denselben Satz lesen: von 15 Kiez-Handlungen
     // muessen mindestens acht verschiedene Bausteine erscheinen.
     const verschieden = new Set(gelesen);
-    console.log(`[stadt] texte kiez=${verschieden.size} von ${gelesen.length} handlungen`);
+    testEvent('stadt', 'texte', { kiez: verschieden.size, handlungen: gelesen.length });
     expect(verschieden.size).toBeGreaterThanOrEqual(8);
 
     travel(world, 'MARKT');
     expect(cityOf(world).location).toBe('MARKT');
-    console.log('[stadt] reise MARKT');
+    testEvent('stadt', 'reise', { ziel: 'MARKT' });
 
     play(world, ledger, prng, 'MARKT_FEILSCHEN', 12);
     expect(cityOf(world).completed).toContain('MARKT');
-    console.log('[stadt] MARKT abgeschlossen: Marktherr');
+    testEvent('stadt', 'zweig-abgeschlossen', { zweig: 'MARKT', rang: 'Marktherr' });
 
     // Der Tag laesst sich auch nach dem Abschluss beenden und fuellt die Energie.
     rest(world, ledger, prng);
@@ -102,9 +112,11 @@ describe('Stadt-Loop als Replay', () => {
     expect(view.completed).toEqual(['KIEZ', 'MARKT']);
     expect(view.branches.every((branch) => branch.done)).toBe(true);
     expect(view.branches.every((branch) => branch.unlocked)).toBe(true);
-    console.log(
-      `[stadt] abschluss zweige=${view.completed.join('+')} tage=${world.day} `
-        + `kiez=${view.branches[0]!.points} markt=${view.branches[1]!.points}`,
-    );
+    testEvent('stadt', 'abschluss', {
+      zweige: view.completed.join('+'),
+      tage: world.day,
+      kiez: view.branches[0]!.points,
+      markt: view.branches[1]!.points,
+    });
   });
 });
