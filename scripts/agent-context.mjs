@@ -113,7 +113,7 @@ console.log(compact({
     ['Tests', result.tests.runAll ? 'vollstaendig' : `${result.tests.selected.length} ausgewaehlt${result.tests.reason ? ` (${result.tests.reason})` : ''}`],
     ['Gates', `${result.gates.length} · Cache ${cachedGates} · ${result.gates.map((gate) => gate.name).join(' ')}`],
     ['Claim', lanes.open.length === 0 ? 'keine offenen Lanes' : `${lanes.open.length} offen · ${lanes.collisions.length} Kollision`],
-    ['Hooks', hooksPath === '.githooks' ? 'aktiv' : 'nicht aktiv · pnpm run hooks:install'],
+    ['Hooks', hooksPath === '.githooks' ? 'aktiv' : 'nicht aktiv · pnpm run prepare'],
     ['Naechster', 'pnpm run agent:pretask --brief · pnpm run agent:verify'],
   ],
   details: [

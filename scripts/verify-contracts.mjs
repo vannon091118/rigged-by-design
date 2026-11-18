@@ -10,6 +10,7 @@
  *
  * Exit 0 = alle Vertraege eingehalten, Exit 1 = mindestens ein Befund.
  */
+import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { captureConsole, compact } from './lib/compact.mjs';
@@ -17,6 +18,34 @@ import { checkContracts, contractIds, loadClaims, parseIndex } from './lib/contr
 import { fail, ROOT } from './lib/report.mjs';
 
 captureConsole({ label: 'verify-contracts' });
+
+// Ein Vertrag, den git nicht ausfuehrt, ist Prosa: ohne `core.hooksPath` oder
+// ohne Modus 100755 ueberspringt git den Hook still. Der Zustand kommt aus
+// `install-hooks.mjs --check` — eine Quelle fuer Install, Bootstrap und Gate.
+const hooks = spawnSync(process.execPath, [join(ROOT, 'scripts', 'install-hooks.mjs'), '--check'], {
+  cwd: ROOT,
+  encoding: 'utf8',
+});
+if (hooks.status !== 0) {
+  console.error(
+    compact({
+      status: 'ROT',
+      headline: 'Hooks nicht scharf; kein Gate wird ausgefuehrt',
+      facts: [
+        ['Bootstrap', 'node scripts/install-hooks.mjs'],
+        ['Quelle', 'install-hooks.mjs --check'],
+      ],
+      findings: `${hooks.stdout ?? ''}${hooks.stderr ?? ''}`
+        .trim()
+        .split('\n')
+        .filter(Boolean)
+        .slice(0, 3),
+    }),
+  );
+  fail(1, 'ERR-4018', 'contracts', 'Hooks nicht scharf; `node scripts/install-hooks.mjs` armen und erneut pruefen');
+  process.exit(1);
+}
+
 const ids = contractIds(ROOT);
 const rows = parseIndex(readFileSync(join(ROOT, 'docs', 'contracts', 'README.md'), 'utf8'));
 const findings = checkContracts({ root: ROOT, ids, rows, claims: loadClaims(ROOT) });

@@ -69,7 +69,7 @@ export const COMMANDS = Object.freeze([
   { group: 'narrative', verb: 'check', run: ['scripts/verify-narrative-content.mjs'], source: ['narrative:check'], purpose: 'Narrative-Quellen gueltig' },
   { group: 'narrative', verb: 'blocks', run: ['scripts/verify-narrative-blocks.mjs'], source: ['narrative:blocks'], purpose: 'Mengenquoten der Narrative-Bloecke' },
   { group: 'narrative', verb: 'compile', run: ['scripts/compile-narrative-content.mjs', '--write'], source: ['narrative:compile'], purpose: 'Narrative-Quellen kompilieren' },
-  { group: 'hooks', verb: 'install', run: ['scripts/install-hooks.mjs'], source: ['hooks:install', 'prepare'], purpose: 'Git-Hooks auf .githooks zeigen lassen' },
+  { group: 'hooks', verb: 'install', run: ['scripts/install-hooks.mjs'], source: ['prepare'], purpose: 'Git-Hooks auf .githooks zeigen lassen' },
   { group: 'webhook', verb: 'receive', run: ['scripts/webhook-receiver.mjs'], source: ['webhook:receive'], purpose: 'GitHub-Delivery pruefen oder annehmen' },
   { group: 'webhook', verb: 'install', run: ['scripts/install-webhook.mjs'], source: ['webhook:install'], purpose: 'Repo-Webhook anlegen oder pruefen' },
   { group: 'task', verb: 'pause', run: ['scripts/task-state.mjs', 'pause'], source: ['task:pause'], purpose: 'Task-Vertrag pausieren' },

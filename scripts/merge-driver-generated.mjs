@@ -15,7 +15,7 @@
  * eine fehlende Arbeitsdatei oder Konfliktmarker in der eigenen Fassung lassen
  * den Konflikt offen (Exit 1). Es gibt keine zweite Liste generierter Pfade.
  *
- * Registrierung: `pnpm run hooks:install` setzt `merge.generated-regenerate.*`
+ * Registrierung: `pnpm run prepare` setzt `merge.generated-regenerate.*`
  * repo-lokal, `.gitattributes` weist die Pfade zu. Fehlt die Registrierung,
  * bleibt das Standardverhalten von git (Konflikt) bestehen.
  *
