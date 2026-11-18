@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-post-merge-1114",
+  "claimId": "lane/governance/post-merge-1114",
+  "branch": "lane/governance/post-merge-1114",
+  "baseSha": "c64f6d9c1d2de3af4f240e7553fef3aeaa933bd2",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout #1114: docs-fokus-stadt schliessen",
+  "goal": "Claim und Task-Vertrag aus PR #1114 stehen auf merged und DONE; kein offener Register-Rest fuer die Lane.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "findings": [],
+  "nextAction": "Nach dem Merge keine offene Arbeit fuer docs-fokus-stadt.",
+  "revision": 1
+}
