@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase1-art-contract",
   "branch": "lane/governance/visual-phase1-art-contract",
   "baseSha": "d7844ba07c38aa1ecab78ab6c04a80484d3d5dc2",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Phase 1: Art-Vertrag, SVG-Atlas und Art-Audit",
   "goal": "Style Guide, Art-Audit und resvg-Atlas liefern; die 17 SVGs kommen als geladene Atlas-Texturen ohne SVG-Fetch an.",
   "taskType": "single",
