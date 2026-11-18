@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-npc-rig",
+  "claimId": "lane/governance/visual-phase2-npc-rig",
+  "branch": "lane/governance/visual-phase2-npc-rig",
+  "baseSha": "012122088e5cc01f5a55d7ef18dba0c39491f7e3",
+  "phase": "CI_PENDING",
+  "title": "Phase 2: NPC-Rig — Koerper, Koepfe und LOD aus demselben Atlas",
+  "goal": "Torso, Arme, Beine und Schuhe je Seed aus den vorhandenen Atlasvarianten waehlen, die dritte Kopffamilie im Gast-Pfad erreichbar machen und Kopfform/Haarton im 12x16-LOD behalten.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR oeffnen, lokalen Nachweis wiederholen und mergen; danach Claim/Task auf merged/DONE ziehen.",
+  "revision": 1
+}

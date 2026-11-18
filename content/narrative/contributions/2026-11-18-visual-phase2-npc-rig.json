@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T09:10Z-visual-phase2-npc-rig",
+  "contributionId": "visual-phase2-npc-rig-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita hat die Gaesteliste gegen den Charakterbogen gelegt: Jeder Kopf hat jetzt einen eigenen Koerper, und selbst im kleinen Ueberblick bleiben Bob, Kappe und Haarton auseinanderzuhalten. Sie hat die neuen Varianten nicht gezeichnet, nur die vorhandenen richtig zugeordnet.",
+  "directives": []
+}
