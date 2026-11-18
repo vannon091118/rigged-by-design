@@ -4,14 +4,34 @@
   "claimId": "lane/governance/visual-phase2-lod-hysteresis",
   "branch": "lane/governance/visual-phase2-lod-hysteresis",
   "baseSha": "c18c4735d50bb05419ac3afcd8495b2b7d2bc7f0",
-  "phase": "READY",
+  "phase": "DONE",
   "title": "LOD-Hysterese im Band und an den Kanten testen",
   "goal": "Den echten Kameraweg durch das Hysterese-Band pruefen: fern, Detail, Wackeln im Band, zurueck, Kanten stabil; Doku und Belege nachziehen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1162,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1162",
+    "state": "merged",
+    "headSha": "e657e4dc154aaca7e6b89ecdea83cbd6704afcfb",
+    "mergedSha": "9e501873a96a786b6b59f0eb59fe77d9d333a436"
+  },
   "findings": [],
-  "nextAction": "Test und Doku fertigstellen, Gates fahren, dann Commit und PR.",
-  "revision": 1
+  "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout 9e50187).",
+  "revision": 4,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "post-merge-closeout",
+      "sha": "9e501873a96a786b6b59f0eb59fe77d9d333a436"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }

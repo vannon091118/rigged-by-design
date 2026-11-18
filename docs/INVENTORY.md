@@ -772,10 +772,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3552 |
-| Gelistete Dateien | 3552 |
+| Getrackte Dateien | 3557 |
+| Gelistete Dateien | 3557 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (192), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (197), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -789,8 +789,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 94 Datei(en)
-- `.lane-claims/tasks/` — 94 Datei(en)
+- `.lane-claims/claims/` — 98 Datei(en)
+- `.lane-claims/tasks/` — 95 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -936,6 +936,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
+- `.lane-claims/claims/lane-governance-doc-drift-simplify.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
@@ -950,6 +951,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-narrative-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1153-dead-code-default-exports.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -965,6 +967,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-output-budget-closeout.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-1122.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-1158.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-1162.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-register-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -981,7 +984,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
@@ -1058,7 +1061,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-logs-failure-only.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-merge-gate.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-output-budget-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-post-merge-1158.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-post-merge-1162.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-register-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-repo-ballast-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -1066,7 +1069,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
@@ -3172,7 +3175,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/doc-core-schema.mjs` — Der Doku-Vertrag: fuenf Pflichtdokus in `docs/governance/`, zwei Einstiege, — gelesen: 116 Zeilen
 - `scripts/lib/doc-core-structure.mjs` — Strukturpruefungen der Doku: Referenzen, drei Schichten, Owner-Hierarchie. — gelesen: 126 Zeilen
 - `scripts/lib/doc-core.mjs` — Der Doku-Kern: fuenf Pflichtdokus, ein Token-Budget, ein Cross-Check. — gelesen: 141 Zeilen
-- `scripts/lib/doc-drift.mjs` — Merge-Drift: Code ohne Doku ist ein Befund, kein Hinweis. — gelesen: 68 Zeilen
+- `scripts/lib/doc-drift.mjs` — Merge-Drift: Code ohne Doku ist ein Befund, kein Hinweis. — gelesen: 79 Zeilen
 - `scripts/lib/doc-parity.mjs` — Doku-Paritaet: `AGENTS.md`, `docs/CI.md` und `docs/GOVERNANCE.md` gegen den — gelesen: 111 Zeilen
 - `scripts/lib/doc-read.mjs` — Pflichtlektuere als Receipt: sieben Kerne, ein Hash je Dokument, ein Budget. — gelesen: 135 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 120 Zeilen
