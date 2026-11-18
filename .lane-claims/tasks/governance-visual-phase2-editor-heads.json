@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase2-editor-heads",
   "branch": "lane/governance/visual-phase2-editor-heads",
   "baseSha": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Phase 2: Charaktereditor waehlt Kopffamilie und Haarton",
   "goal": "Kopffamilie als Look-Feld fuehren, im Charaktereditor waehlen und dieselbe Kopftextur sowie denselben Haarton in Vorschau und Floor zeigen.",
   "taskType": "single",
@@ -13,10 +13,11 @@
   "pr": {
     "number": 1146,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/1146",
-    "state": "open",
-    "headSha": "13c6c2833fe2f140974335be457225037b0b63a6"
+    "state": "merged",
+    "headSha": "85c9e216be3e90257d9605fe5868237c2b94a820",
+    "mergeSha": "0e9d95eea3005978ffbaae9fe8e4fa3e273e7edb"
   },
   "findings": [],
-  "nextAction": "PR #1146 auf Mergeability und Checks pruefen, dann mergen und AFTERCARE setzen.",
-  "revision": 3
+  "nextAction": "Nachsorge: Issue #1145 mit RELEASE schliessen, Lane-Branch loeschen, main verifizieren.",
+  "revision": 4
 }
