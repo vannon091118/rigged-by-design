@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/issue-1100-hook-arming",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1100-hook-arming",
+  "baseSha": "dea3c321be1f1a19501d45abae9284482a259377",
+  "issue": 1100,
+  "task": "Hook-Armung im frischen Klon belegen",
+  "goal": "Ein Klon ohne Vorbereitung faellt im Contract-Gate auf; Hooks armen ueber prepare",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1100-hook-arming.json",
+    ".lane-claims/tasks/governance-issue-1100-hook-arming.json",
+    "scripts/install-hooks.mjs",
+    "scripts/verify-contracts.mjs",
+    "scripts/agent-pretool.mjs",
+    "scripts/agent-context.mjs",
+    "scripts/merge-driver-generated.mjs",
+    "scripts/lib/command-surface.mjs",
+    "package.json",
+    "docs/CI.md",
+    "docs/WORKFLOW-DETAIL.md",
+    "docs/governance/LAST-CHANGES.md",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "dea3c321be1f1a19501d45abae9284482a259377"
+}

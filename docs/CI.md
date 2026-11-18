@@ -112,3 +112,9 @@ Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check 
 
 - `audit:gate` prueft `pnpm audit --prod`: der einzige High-Hinweis (`picomatch` via vite/typescript-eslint, dev-only, keine Patch-Version) betrifft kein ausgeliefertes Paket.
 - Sind `gh` und REST nicht erreichbar, nutzt `verify:board-usage` einen hoechstens 24 Stunden alten, aus GitHub gelesenen Schnappschuss unter `.verify-cache/board-cache/<issue>.json`. Antwortet das Remote (Issue fehlt, geschlossen, fremder Claim), entscheidet nie der Cache.
+
+## Hooks im frischen Klon
+
+- `pnpm install` ruft `prepare` auf; `node scripts/install-hooks.mjs` setzt `core.hooksPath=.githooks`, macht alle vier Hooks auf 100755 und registriert den Merge-Driver. Ohne diesen Schritt ruft git keinen Hook auf.
+- `pnpm hooks:check` prueft denselben Zustand (Pfad, Index-Modus, Ausfuehrbarkeit) und faellt sonst mit `ERR-4018`. Das Gate `verify:contracts` ruft genau diesen Modus auf: ein Klon ohne scharfe Hooks ist im ersten regulaeren Verify sichtbar rot, statt still ohne Gate zu committen.
+- `--no-verify` ueberspringt einen Hook einmalig, aendert aber nichts am Hook-Zustand; der naechste Verify-Lauf prueft ihn erneut.
