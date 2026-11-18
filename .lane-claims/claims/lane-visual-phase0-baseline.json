@@ -1,0 +1,18 @@
+{
+  "id": "lane/visual/phase0-baseline",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/visual/phase0-baseline",
+  "issue": 1124,
+  "baseSha": "df4789cfa2ecd1231b6f0440918bc2742e8359e0",
+  "task": "Phase 0: Baseline und Beweissicherung fuer den visuellen Rework",
+  "goal": "Ist-Stand, LOD-Verhalten, Asset-Pfad und Hardcoded-Apartment belegen, bevor Render- oder Art-Code geaendert wird.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/visual-rework/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "df4789cfa2ecd1231b6f0440918bc2742e8359e0"
+}
