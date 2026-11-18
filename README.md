@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="./docs/banner.svg" alt="Rigged by Design – Neon-Banner mit Spielautomat, Kirsche, Sieben und Diamant" width="100%">
+  <img src="./docs/banner.svg" alt="Neon-Banner: nächtliche Straße mit drei Wohnhäusern, einer Laterne und einer Person vor einer beleuchteten Haustür" width="100%">
 </p>
 
 <p align="center">
-  <img alt="Testlinie lokal" src="https://img.shields.io/badge/Testlinie-lokal-brightgreen">
+  <img alt="Einzelspieler im Browser" src="https://img.shields.io/badge/Einzelspieler-Browser-blueviolet">
   <a href="https://github.com/vannon091118/rigged-by-design/tags"><img alt="Aktueller Versionstag" src="https://img.shields.io/github/v/tag/vannon091118/rigged-by-design?label=Spielstand"></a>
-  <img alt="Virtuelle Währung" src="https://img.shields.io/badge/VaCoin-100%25%20Virtuell-brightgreen">
-  <img alt="Plattform" src="https://img.shields.io/badge/Status-Bespielbare%20Simulation-blue">
+  <img alt="Virtuelle Währung ohne Echtgeld" src="https://img.shields.io/badge/VaCoin-100%25%20Virtuell-brightgreen">
+  <img alt="Status der bespielbaren Simulation" src="https://img.shields.io/badge/Status-Bespielbare%20Simulation-blue">
 </p>
 
 <h3 align="center"><em>„Der Hausvorteil ist kein Softwarefehler. Er ist die Geschäftsidee des Universums.“</em></h3>
@@ -16,171 +16,153 @@
   das unbarmherzige Gesetz der Wahrscheinlichkeit und die erstaunliche Haltbarkeit eines vererbten Sofas.
 </p>
 
----
-
 <p align="center">
-  <img src="./docs/screenshots/current/02-floor-detail-frisch.webp" alt="Floor-Übersicht des Casinos: Bar, Lounge, Klo und Lager, Gäste an Automaten und HUD mit Hauskonto und Ruf" width="90%">
+  Diese Seite ist für alle geschrieben, die spielen wollen – nicht für alle, die Code lesen wollen.<br>
+  Kein Dateiname, keine Technik, keine Ausreden. Nur du, deine Wohnung und eine Stadt, die nicht auf dich gewartet hat.
 </p>
 
-<p align="center"><em>Du wachst in deiner Wohnung auf, nimmst dein Smartphone, gehst durch die Haustür und stehst mitten im Leben. Die Stadt wartet nicht auf dich – die Stadt war schon vorher da.</em></p>
-
 ---
 
-![Banner: DIE SPIELWELT](docs/banners/spielwelt.svg)
-
-## Das Leben vor deiner Haustür: Eine Stadt, die dich ignoriert
-
-> **Fiktion, keine Produktzusage.** Die Szenen dieses Abschnitts sind Erzählung: Maja mit ihrer 7:14-Schicht, Waschsalon, Dönerbude und Schuhverschleiß gehören zur Vision, nicht zum heutigen Funktionsumfang. Was der aktuelle Build tatsächlich tut, steht in [Was heute im Laden läuft](#was-heute-im-laden-läuft-keine-versprechen-sondern-fakten).
-
-Willkommen in deiner Wohnung.
+## Du wachst in deiner Wohnung auf
 
 Sie ist nicht groß. Das Wasser aus dem Hahn braucht drei Minuten, bis es lauwarm wird, die Heizung gluckert nachts wie ein ertrinkender Matrose, und der Nachbar über dir übt seit Monaten Schlagzeug – ohne jedes Rhythmusgefühl, aber mit bewundernswerter Ausdauer. Auf dem Tisch liegt dein Smartphone mit fünf ungelesenen Nachrichten, die du lieber nicht öffnest, und die Kaffeemaschine verteilt mehr Kaffeesatz als Heißgetränk. Aber sie ist dein Zuhause. Das, was übrig bleibt, wenn man keine Ausreden mehr hat.
 
-Wenn du die Wohnungstür öffnest, klickst du dich nicht durch ein Menü. Du trittst direkt auf den nassen Gehweg einer echten, atmenden Stadt.
+<p align="center">
+  <img src="./docs/screenshots/current/24-r10-wohnung.webp" alt="Wohnung mit Bett, Kochnische, Bad und markierter Haustür, darüber das HUD mit Tageskasse und Ruf" width="90%">
+</p>
+
+<p align="center"><em>Bett, Kochnische, Bad, Flur. Und eine Haustür, die direkt auf die Straße führt.</em></p>
+
+Du klickst dich nicht durch ein Menü. Du stehst auf, nimmst dein Smartphone und öffnest die Tür. Dahinter liegt keine Etage, kein Level und kein Ladebildschirm, sondern eine Straße, die auch ohne dich funktioniert. Das ist der ganze Trick dieser Simulation: Du bist nicht der Mittelpunkt. Du bist nur der Einzige, der gerade aufgewacht ist.
+
+---
+
+![Banner: Die Spielwelt](docs/banners/spielwelt.svg)
+
+## Die Stadt ist das Spiel
+
+**Das hier ist kein Casino-Spiel.** Der Laden mit den Automaten ist ein Gebäude unter vielen – deine Startbude und die Werkbank, auf der Geld- und Wahrscheinlichkeitsmechaniken geprüft werden. Das Genre ist die Stadt: Wohnung, Straße, Nachbarschaft, Leute mit eigenen Plänen.
+
+Maja aus dem zweiten Stock eilt jeden Morgen um 7:14 Uhr zur Frühschicht und schaut demonstrativ auf den Boden, wenn du ihr im Treppenhaus begegnest. Der Kiosk an der Ecke riecht nach altem Zeitungspapier und Kaugummi; der Besitzer kennt deinen Vornamen, aber nicht aus Zuneigung, sondern weil Stammkunden die unangenehme Angewohnheit haben, wiederzukommen. Autos rollen über nasses Pflaster, Ampeln schalten stur von Rot auf Grün, und die Tauben auf den Fenstersimsen haben schon klügere Pläne geschmiedet als die meisten Menschen unten auf der Straße.
 
 <p align="center">
-  <img src="./docs/screenshots/current/21-r7-stadt.webp" alt="Stadtansicht: vier Gebäude am Straßenraster, Gehwege und Tabs für Stadt, Casino, Wohnung, Fremde Casinos und Karte" width="90%">
+  <img src="./docs/screenshots/current/21-r7-stadt.webp" alt="Stadtansicht mit vier Gebäuden am Straßenraster, Gehwegen und den Tabs für Stadt, Casino, Wohnung und Karte" width="90%">
 </p>
 
 <p align="center"><em>Der Kiez schläft nie ganz. Er döst höchstens kurz ein, bis die Straßenbahn quietscht.</em></p>
 
-Die Nachbarin im zweiten Stock, Maja, eilt jeden Morgen um 7:14 Uhr zur Frühschicht und schaut demonstrativ auf den Boden, wenn du ihr im Treppenhaus begegnest. Der Kiosk an der Ecke riecht nach altem Zeitungspapier und Kaugummi; der Besitzer kennt deinen Vornamen, aber nicht aus Zuneigung, sondern weil Stammkunden die unangenehme Angewohnheit haben, wiederzukommen. Autos rollen über nasses Pflaster, Ampeln schalten stur von Rot auf Grün, und die Tauben auf den Fenstersimsen haben schon klügere Pläne geschmiedet als die meisten Menschen unten auf der Straße.
-
-**Und irgendwo dazwischen, zwischen Spätkauf, Waschsalon und Dönerbude, steht das Casino.**
-
----
-
-## Das Casino ist nicht die Geschichte
-
-Das Casino ist nur ein Gebäude unter vielen. Eine Tür mit grellen Leuchtröhren, hinter der es nach kaltem Rauch, billigem Desinfektionsmittel und dem süßlichen Duft von Fehlentscheidungen riecht. Die Leute da drin glauben alle, sie hätten ein System. Manche haben Tabellen, manche haben Glücksbringer, manche haben nur noch die Münzen für den Rückweg in der Hosentasche.
+Die Leute um dich herum sind keine Pappaufsteller. Sie haben Wohnungen, Arbeitsplätze, Hunger, Durst, Müdigkeit und eine Laune, die man ihnen ansieht. Sie schlafen, pendeln zur Arbeit, trinken nach Feierabend ein Bier und erinnern sich daran, wer ihnen gestern gegenübergestanden hat. Wer einem Nachbarn auf der Straße folgt, sieht ihn die Tür aufstoßen und drinnen wieder dieselbe Person – niemand wird beim Raumwechsel gelöscht oder neu gewürfelt.
 
 <p align="center">
-  <img src="./docs/screenshots/current/09-slot-buehne.webp" alt="Fremdes Casino Hafenklause: Klappriger Automat mit Walzensymbolen, Einsatzstufen und Pakt-Panel" width="90%">
-</p>
-
-<p align="center"><em>Der Automat lächelt immer. Egal, wie die Walzen stehen. Alle Bilder der README stammen aus dem kanonischen Satz <code>docs/screenshots/current/</code> des aktuellen Builds.</em></p>
-
-
-Das hier ist kein Spiel über Reichtum. Wer reich werden will, sollte eine Bank erben oder Steuern sparen. Das hier ist ein Spiel über die **Physik des Scheiterns und die Kunst, trotzdem drüber zu lachen**:
-- **Der Boden wischt sich nicht von selbst:** Wenn ein Gast sein klebriges Bier verschüttet, kannst du zuschauen, wie die Kundschaft angewidert abdreht – oder du nimmst den Schrubber selbst in die Hand.
-- **Deine Schuhe haben Löcher:** Billige Treter drücken auf die Laune, durchnässte Socken senken die Geduld, aber die teuren Lederschuhe kosten ein Monatsbudget.
-- **Hunger schert sich nicht um deinen Kontostand:** Du kannst dir beim Imbiss ein kaltes Sandwich holen oder hungrig ins Bett gehen. Beides hat Konsequenzen für deine Nerven am nächsten Morgen.
-- **Gäste haben ein Gedächtnis:** Wer gestern um sein letztes Kleingeld gebracht wurde und stundenlang vor einem leeren Automaten saß, kommt heute nicht mit Blumen wieder. Er kommt mit schlechter Laune, ballt die Fäuste und sucht einen Schuldigen.
-
----
-
-![Banner: WAS HEUTE LÄUFT](docs/banners/features.svg)
-
-## Was heute im Laden läuft: Keine Versprechen, sondern Fakten
-
-Hier wird nichts geschönt und nichts herbeifabuliert. Was du siehst, läuft in der Simulation – unbarmherzig, deterministisch und mit vollem Kausalzusammenhang.
-
-Jede Zeile dieses Abschnitts nennt den Produktionspfad, in dem sie steckt. Die Abschnitte darüber sind Erzählung; hier steht nur, was der aktuelle Build belegt.
-
-### 1. Physische Handarbeit statt Tabellenklickerei
-Du steuerst deine Figur direkt durch die Straßen und Räume. Hier gibt es keine göttliche Maushand, die Probleme wegzaubert:
-- **Kisten schleppen:** Neue Geräte oder Dekorationen kommen als schwere Holzkisten auf der Straße an. Du nimmst sie eigenhändig Huckepack, wankst durch die Tür und schraubst sie dort zusammen, wo Platz ist. (`src/ui/use-floor-interaction.ts`)
-- **Der Wischmopp als Lebensretter:** Schmutzige Kacheln senken das Ansehen, klebrige Theken vertreiben die zahlende Kundschaft. Wer nicht putzt, geht unter. (`src/core/sim/stain.ts`)
-- **Nahkampf im Vorraum:** Wenn ein Gast durchdreht, weil der Automat „gezinkt“ war (was er natürlich nicht ist, die Mathematik ist nur ehrlich), hilft keine Hotline. Entweder du redest dich raus, kassierst ein blaues Auge oder verteilst selbst eins – mit echten Verletzungen, die dich tagelang humpeln lassen. (`src/core/sim/charisma-talk.ts`)
-
-### 2. Das Smartphone: Dein ständiger digitaler Vorwurf
-Dein Mobiltelefon auf dem Küchentisch ist kein Zierrat. Es ist der Kanal, über den die Realität anklopft:
-
-<p align="center">
-  <img src="./docs/screenshots/current/24-r10-wohnung.webp" alt="Wohnung: möbliertes Apartment mit Bett, Küche und Bad, markierter Haustür zur Straße und HUD" width="90%">
-</p>
-
-<p align="center"><em>Wenn das Display leuchtet, ist es selten eine Liebeserklärung. Meistens will jemand Geld.</em></p>
-
-- **Anrufe & Nachrichten:** Lieferanten fordern Vorschüsse, Nachbarn beschweren sich über Ruhestörung, und Gestalten aus deiner Vergangenheit bieten zweifelhafte Gefallen an. (`src/ui/smartphone.tsx`)
-- **Kontostand in Echtzeit:** Jeder VaCoin ist eine gebuchte Einheit. Es gibt kein magisches Guthaben; wenn das Konto leer ist, kannst du deinen eigenen Automaten nicht mehr auszahlen. (`src/store/snapshot.ts`)
-
-### 3. Autonome Stadtbewohner mit eigenem Kopf
-Die Menschen um dich herum sind keine Pappaufsteller:
-
-<p align="center">
-  <img src="./docs/screenshots/current/30-r9-stadtbewohner.webp" alt="Panel „Dein Casino“: Bewohnerliste mit Rita Kern, Boris Falk und Mira Sol samt Hunger, Laune und Arbeitsort" width="90%">
+  <img src="./docs/screenshots/current/30-r9-stadtbewohner.webp" alt="Bewohnerliste mit Rita Kern, Boris Falk und Mira Sol samt Hunger, Laune und Arbeitsort" width="90%">
 </p>
 
 <p align="center"><em>Gespräche entstehen, wenn man sich begegnet. Ob man will oder nicht.</em></p>
 
-- **Echte Tagesabläufe:** Sie schlafen in ihren Wohnungen, pendeln zur Arbeit, trinken nach Feierabend ein Bier und kehren nach Hause zurück. (`src/core/sim/city-life-movement.ts`)
-- **Räumliche Kontinuität:** Wer einem Nachbarn auf der Straße folgt, sieht ihn die Tür aufstoßen und drinnen an der Bar stehen. Niemand wird beim Raumwechsel gelöscht oder neu gewürfelt. (`src/store/scene-commands.ts`)
-- **Bedürfnisse:** Hunger, Durst, Müdigkeit und Frust steuern ihr Verhalten. Ein zufriedener Gast empfiehlt den Laden weiter; ein hungriger, betrogener Gast wirft Aschenbecher. (`src/core/sim/city-life-types.ts`)
-
-### 4. Selbstbeherrschungs-Pakt: Fremdspiel begrenzt, nicht global
-
-Der **Selbstbeherrschungs-Pakt** (Self-Exclusion) ist bewusst auf **Fremdspiel begrenzt**:
-
-- `recordExclusionPlay()` / `recordExclusionWin()` werden nur aus dem fremden Haus aufgerufen (`src/store/foreign-play.ts`): Fremd-Spins, Kartendeals und Zusatzwetten zählen in den Pakt und erhöhen den Suchtwert.
-- Eigenes Spiel im eigenen Casino (`src/store/own-play.ts`) läuft über einen separaten Geldpfad und ruft diese Funktionen nicht auf. Eigene Spins, Deals, Settlements und Risiko-Karten beeinflussen weder den Pakt-Verlustzähler noch den Suchtwert.
-- `EXCLUSION_PAUSE_TICKS = 8` (≈ 4,16 s bei `TICK_MS = 520`) ist die Pause nach Erreichen des Verlustlimits – eine Balance-Frage, kein Defekt.
-- Der Pakt wird im HUD (`src/ui/hud.tsx`), im Self-Exclusion-Panel (`src/ui/self-exclusion-panel.tsx`) und auf den Geräten (`src/ui/machine-play.tsx`) angezeigt, ohne den Scope zu missdeuten.
+Und ja: irgendwo zwischen Spätkauf, Waschsalon und Dönerbude steht dein Laden. Du kannst ihn aufbauen, putzen, betreiben – oder erst einmal durch die Stadt laufen und herausfinden, wer hier eigentlich wohnt. Beides ist ein legitimer Lebensentwurf. Einer davon bezahlt die Miete.
 
 ---
 
-![Banner: FAQ – häufige Fragen](docs/banners/faq.svg)
+![Banner: Was heute läuft](docs/banners/features.svg)
 
-## Häufig gestellte Fragen (für Leute mit Rest-Optimismus)
+## Was heute läuft
 
-<details>
-<summary><strong>Ist das hier ein klassischer Tycoon-Manager, bei dem man reich wird?</strong></summary>
+Keine Versprechen, sondern das, was der aktuelle Stand tatsächlich tut:
 
-Nein. Wenn du darauf wartest, dass Zahlen von alleine steigen, während du gemütlich Kaffee schlürfst, wirst du zusehen, wie deine Spüle überläuft, Gäste durstig abhauen, der Vermieter an die Tür hämmert und der letzte Automat den Geist aufgibt. *Rigged by Design* ist eine aktive Lebenssimulation: Du läufst selbst über den Boden, sprichst mit Leuten, trägst Kisten und löst Probleme mit Geduld, Schweiß oder Humor.
-</details>
-
-<details>
-<summary><strong>Kann ich echtes Geld einzahlen oder gewinnen?</strong></summary>
-
-Um Himmels willen, **nein**. VaCoins sind zu 100 % fiktive Spielwährung. Es gibt keine Krypto-Anbindung, keine In-App-Käufe, keine Bezahl-Schranken und keine Auszahlungen. Das Spiel parodiert die Mechanismen der Branche – es beutet dich nicht aus.
-</details>
-
-<details>
-<summary><strong>Warum zahlt mir der Automat meinen Gewinn nicht bar aus?</strong></summary>
-
-Weil die Kasse des Ladens vielleicht gerade leer ist, weil du vorher zu viele teure Wandlampen bestellt hast! Gewinne werden nicht aus der Luft gegriffen: Kann das Haus nicht zahlen, steht der Betrag als Schuld im Buch. Du musst erst wieder Umsatz machen, um deine eigenen Gäste auszuzahlen. Ehrliche Buchhaltung tut weh.
-</details>
-
-<details>
-<summary><strong>Warum schlägt mich ein Gast zusammen?</strong></summary>
-
-Weil er stundenlang verloren hat, der Automat keinen Cent ausgespuckt hat, die Bar leer war und du ihm im Vorbeigehen einen flotten Spruch gedrückt hast. Menschen haben Grenzen – und wenn du im Handgemenge den Kürzeren ziehst, humpelst du die nächsten drei Stunden langsamer durch die Nachbarschaft.
-</details>
-
-<details>
-<summary><strong>Kann ich das Spiel speichern und morgen weiterspielen?</strong></summary>
-
-Ja. Spielstände werden lokal abgespeichert. Das System sichert nicht nur dein Portemonnaie, sondern jede verschüttete Pfütze, die Laune jedes Nachbarn und die offenen Rechnungen deiner Widersacher.
-</details>
-
-<details>
-<summary><strong>Was unterscheidet das von einem Casino-Simulator?</strong></summary>
-
-Alles. Du bist kein unsichtbarer Vorstandschef, der auf Excel-Tabellen starrt. Du bist ein Typ mit abgetragenen Schuhen, der seine eigene Wohnung verlässt, seinen Boden wischt, Nachbarn ausweicht, Schulden jongliert und abends auf einem vererbten Sofa sitzt, bis ihm vor dem Röhrenfernseher die Augen zufallen. Es ist das Leben – mit Hausvorteil.
-</details>
+- **Wohnung als Raum:** Du startest im Bett, nicht in einem Menü. Bett, Kochnische, Bad und Flur sind begehbar; die Haustür führt direkt auf die Straße.
+- **Straße und Stadt:** Gebäude mit echten Türen, Gehwege, Laternen und ein Tageslauf von morgens bis nachts. Kiez, Markt und dein Laden sind Orte, keine Buttons – du gehst hin und stehst davor.
+- **Bewohner mit eigenem Kopf:** Tagesabläufe, Arbeitsplätze, Hunger, Durst, Müdigkeit und Laune. Begegnungen bleiben hängen – bei dir und bei ihnen. Ein Gast, der gestern leer ausging, kommt heute nicht mit Blumen wieder.
+- **Dein Laden:** Starter-Kiste huckepack tragen, Gerät aufstellen, Kasse öffnen, Gäste bedienen, Boden wischen, Bar kaufen. Wer nicht putzt, verliert Kundschaft; wer nicht serviert, verliert Gäste; wer beides nicht tut, verliert den Laden.
+- **Arbeit und Miete:** Am Tagesende wollen Miete und Strom bezahlt sein. Für die Handlungen in der Stadt hast du sechs Einheiten Energie; jeder neue Tag füllt sie wieder auf.
+- **Geld, das ehrlich weh tut:** VaCoins sind ganzzahlige Spielwährung ohne Echtgeld. Jede Bewegung steht im selben Buch; kann die Kasse einen Gewinn nicht auszahlen, steht der Rest als Schuld da, bis wieder Umsatz reinkommt.
+- **Smartphone als Abkürzung:** Bauen, Kaufen, Reisen, Putzen, Servieren, Inbox, Vitter, ImmoLuck. Alles davon geht auch direkt in der Welt – das Gerät nimmt dir nur die Laufwege ab.
+- **Speichern und weiterspielen:** lokal, inklusive Pfützen, Launen und offener Rechnungen. Was du anrichtest, bleibt angerichtet.
 
 ---
 
-![Banner: DIE WERKSTATT](docs/banners/werkstatt.svg)
+![Banner: Die nächste Runde](docs/banners/roadmap.svg)
 
-## Für Maschinisten & Code-Schrauber
+## Der Plan: MVP
 
-Du willst unter die Haube schauen, an den Zahnrädern drehen oder die mathematischen Verträge prüfen?
+Der MVP ist kein Konzeptpapier, sondern ein Abend, der funktioniert: **Der erste Abend trägt.** Du wachst auf, du gehst raus, du stellst etwas auf die Beine – und am Ende des Tages weißt du, ob du morgen Miete zahlen kannst. Genau das ist der Maßstab, an dem hier alles gemessen wird: Trägt es einen Abend, ist es drin. Trägt es keinen, ist es Deko.
 
-Alle technischen Details, Schnittstellen, Testlinien und Entwickler-Dokumente sind sauber ausgelagert, damit dieser Text atmen kann. Es gibt **fünf Pflichtdokus** in [`docs/governance/`](docs/governance/INDEX.md), jede vollständig höchstens 500 Token:
-- [`AGENTS.md`](docs/governance/AGENTS.md) — Vertrag, zehn Regeln und Ablauf.
-- [`PITFALLS.md`](docs/governance/PITFALLS.md) — Fallen und die Gates, die sie halten.
-- [`INDEX.md`](docs/governance/INDEX.md) — Landkarte, Budgets und Ordner-Owner.
-- [`ROADMAP.md`](docs/governance/ROADMAP.md) — Major- und Minor-Ziele.
-- [`LAST-CHANGES.md`](docs/governance/LAST-CHANGES.md) — letzte wirksame Änderungen.
+**Was der MVP kann:**
 
-Tiefe Referenzen bleiben auf Abruf: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) für Architekturverträge, [`docs/TESTING.md`](docs/TESTING.md) für die Testlinie.
+- **Der erste Abend:** Eröffnung, Aufwachen, Haustür, Straße, dein Laden. Ein Einstieg, ein Gast, ein bedienbarer Floor.
+- **Wohnung und Stadt als Raum:** kein Menü-Hüpfen, kein Teleport. Was hinter einer Tür liegt, erreichst du zu Fuß – und dieselben Leute, die draußen herumlaufen, stehen drinnen wieder vor dir.
+- **Ehrliche Darstellung:** Was du siehst, läuft wirklich so. Kein Platzhalter, keine Kulisse, keine geliehenen Materialien.
+
+**Was noch Baustelle ist:**
+
+- **Wirtschaft und Events:** Bar, Club, Arena, Wetten und E-Sport sollen die Stadt erst noch zum Vibrieren bringen.
+- **Inhalt und Erzählung:** Das Ziel sind anderthalbtausend gewertete Textbausteine – die Stadt soll mehr zu sagen haben.
+- **Abnahme und Release:** Leistung, Geräte, Präsentation. Erst wenn das sitzt, wird aus der Simulation ein Release.
+
+Was hier als Plan steht, ist gebaut, sobald es läuft – alles andere steht ehrlich unter Baustelle. Versprochen wird nichts, was der Build nicht belegt.
+
+---
+
+## Ein Abend von vorn bis hinten
+
+So fühlt sich der Spiellauf an, vom ersten Blinzeln bis zum Tagesabschluss:
+
+Du schlägst die Eröffnung weg und stehst in deiner Wohnung. Bett, Kochnische, Bad – alles da, nichts davon bezahlt sich von selbst. Also: Schuhe an, Smartphone ein, **Haustür auf**. Die Stadt empfängt dich mit nassem Pflaster und der Mitteilung, dass dein Laden gleich um die Ecke steht. Er steht leer, versteht sich. Leere Räume, eine Kasse und eine Kiste am Eingang, die niemand für dich trägt.
+
+Du schleppst die Starter-Kiste durch den Raum – ja, zu Fuß, ja, das dauert – und stellst den ersten Automaten auf eine freie Fläche. Erst dann kommt der erste Gast. Erst dann fließt das erste Geld. Die Fortschrittsleiste über allem kennt immer genau ein Ziel: erst das Gerät, dann das Bargeld für die Bar, dann Tagesmiete plus Strom aus dem Hauskonto, dann die nächste Firmenstufe. Ein Ziel zur Zeit. Das Leben ist kompliziert genug.
+
+Zwischendurch: ein Gast verschüttet etwas Klebriges, die Theke wird ranzig, jemand wird laut, weil die Walzen „gezinkt“ waren – sie waren es nicht, die Mathematik ist nur ehrlich. Du wischst, du redest, du kassierst, du servierst. Das Smartphone klingelt: Lieferant, Nachbar, Vergangenheit – irgendwer will immer Geld. Am Tagesende machst du Kasse, zahlst Miete und Strom und fällst ins Bett. Morgen ist auch noch ein Tag. Morgen will die Stadt wieder Miete.
+
+Und falls du dich fragst, ob sich das lohnt: Die Alternative ist, auf dem vererbten Sofa sitzen zu bleiben, bis dir vor dem Röhrenfernseher die Augen zufallen. Auch das ist eine Entscheidung. Sie zahlt nur keine Miete.
+
+---
+
+![Banner: Visueller Rundgang](docs/banners/galerie.svg)
+
+## Rundgang
+
+<p align="center">
+  <img src="./docs/screenshots/current/01-floor-uebersicht-frisch.webp" alt="Grundriss des eigenen Ladens mit Räumen, Theke, Automaten und HUD für Kasse, Gäste und Ruf" width="90%">
+</p>
+
+<p align="center"><em>Dein Laden am ersten Tag: leere Räume, eine Kasse und eine Kiste, die niemand für dich trägt.</em></p>
+
+<p align="center">
+  <img src="./docs/screenshots/current/25-r12-strassenlicht.webp" alt="Straßenszene bei Nacht: drei Gebäudefronten, Laternenlicht auf dem Pflaster und die Tür zum eigenen Laden" width="90%">
+</p>
+
+<p align="center"><em>Dieselbe Straße, später am Abend. Das Licht bleibt an, ob du willst oder nicht.</em></p>
+
+<p align="center">
+  <img src="./docs/screenshots/current/39-stadtbewohner.webp" alt="Stadtstraße im Hochformat mit Markt, Kiez und dem eigenen Haus als Türen am Straßenrand" width="60%">
+</p>
+
+<p align="center"><em>Alles, was du brauchst, ist eine Tür weiter. Alles, was du nicht brauchst, auch.</em></p>
+
+---
+
+![Banner: Die Werkstatt](docs/banners/werkstatt.svg)
+
+## Doku-Stand: Wo was zu finden ist
+
+Spielen braucht kein Vorwissen; Nachlesen schon gar kein Codeverständnis. Hier steht, wo was liegt:
+
+| Du willst … | Dann schau hier |
+| --- | --- |
+| Spielen | Rechner an, Repo holen, `pnpm install`, dann `pnpm dev` – die Simulation läuft im Browser. |
+| Neu hier oder lange weg | **Neu dabei? Klonen.** Schon eingezogen? Dann reicht ein **Pull** für den neuesten Stand. |
+| Wissen, was als Nächstes kommt | [`docs/governance/ROADMAP.md`](docs/governance/ROADMAP.md) und [`docs/ROADMAP-DETAIL.md`](docs/ROADMAP-DETAIL.md) – der Plan und sein Kleingedrucktes. |
+| Sehen, was sich zuletzt geändert hat | [`docs/CHANGELOG.md`](docs/CHANGELOG.md) und [`docs/governance/LAST-CHANGES.md`](docs/governance/LAST-CHANGES.md) – erst das Tagebuch, dann die letzten Zeilen. |
+| Verstehen, wie hier gearbeitet wird | [Issue-Board](https://github.com/vannon091118/rigged-by-design/issues), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`AGENTS.md`](AGENTS.md) – Auftrag, Reihenfolge und Abnahme leben im Board, nicht in irgendeiner Datei. |
+| Unter die Haube schauen | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) und [`docs/governance/INDEX.md`](docs/governance/INDEX.md) – für alle, die mitbauen wollen. |
+| Prüfen, wie getestet wird | [`docs/TESTING.md`](docs/TESTING.md) und [`docs/CI.md`](docs/CI.md) – die Prüflinien, nüchtern erklärt. |
+| Alle Dateien im Baum sehen | [`docs/INVENTORY.md`](docs/INVENTORY.md) – jede Datei, ein Satz. |
+| Bilder für die Präsentation | [`docs/screenshots/current/`](docs/screenshots/current/) – der belegte Stand, sonst nichts. |
 
 ---
 
 ## Ein ernster Absatz, ganz ohne Neonrahmen
 
-Dieses Spiel greift satirisch und schonungslos Mechanismen auf, die Glücksspiel in der Realität so gefährlich machen: Near-Miss-Effekte, Pity-Illusionen, emotionale Verstärker und schleichende Suchtdynamiken. Wir simulieren diese Systeme, um sie transparent, begreifbar und entzaubert darzustellen.
+Das Spiel parodiert Mechanismen, die Glücksspiel in der Realität so gefährlich machen: Near-Miss-Effekte, Pity-Illusionen, emotionale Verstärker und schleichende Suchtdynamiken. Die Automaten in deinem Laden sind eine Testbude für genau diese Systeme – transparent, begreifbar und entwaffnet. Es gibt kein Echtgeld, keine Einzahlung und keine Auszahlung. Was hier blinkt, will dein Geld nicht. Es will, dass du lachst – und verstehst, warum andere dafür bezahlt haben.
 
 Falls Glücksspiel für dich oder jemanden in deinem Umfeld in der realen Welt zu einem Problem geworden ist: Die **Bundeszentrale für gesundheitliche Aufklärung (BZgA)** bietet kostenlose, anonyme und kompetente Hilfe unter **0800 1 37 27 00** (oder online unter [check-dein-spiel.de](https://www.check-dein-spiel.de/)). Das meinen wir völlig ohne Ironie.
 
@@ -196,24 +178,3 @@ Falls Glücksspiel für dich oder jemanden in deinem Umfeld in der realen Welt z
   <em>Entwickelt von jemandem, der eh nichts mehr zu verlieren hat – außer seinem Lachen.<br>
   Also passen wir gut darauf auf.</em>
 </p>
-
----
-
-## Issue Board: hier wird gearbeitet
-
-Das Repository hat **eine Steuerungswahrheit**: das [Issue-Board](https://github.com/vannon091118/rigged-by-design/issues). Auftrag, Priorität, Besitz, Review, Merge-Beleg und Historie stehen dort; lokale Dateien entscheiden nichts davon.
-
-| Datentyp | Autoritative Quelle |
-| --- | --- |
-| Auftrag, Akzeptanz, fachliche Entscheidung | GitHub Issue |
-| Reihenfolge und Priorität | Issue-Labels plus kanonische Priorität ([`docs/GOVERNANCE.md`](docs/GOVERNANCE.md#maintainer-prioritäten-kanonisch)) |
-| Besitz und Übergabe | `CLAIM`- und `RELEASE`-Kommentare am Issue |
-| Diff, Reviews, Checks, Merge | Pull Request |
-| Laufzeit-Snapshot | `.lane-claims/board-state.json`, abgeleitet und regenerierbar |
-| Pfad-Allowlist und Task-Phase | `.lane-claims/` — nur lokale Kollisionssperre |
-
-**Der Ablauf in fünf Sätzen.** Ein Agent claimt ein freies Issue mit einem `CLAIM`-Kommentar, bevor er Code liest. Er arbeitet auf seinem Lane-Branch, prüft lokal (`pnpm run ci:local`) und öffnet einen Pull Request gegen `main`. Die Übergabe ist `RELEASE done <sha>` plus Label `review-waiting`. Der Maintainer reviewt gegen den Code (`ACCEPT`/`PARTIAL`/`REJECT`), merged auf exaktem Kopf und schließt das Issue; Agenten mergen nicht und schließen nie.
-
-Ein Issue wird angelegt, wenn eine eigenständige Entscheidung, Korrektur, Umsetzung oder Abnahme nötig ist. Reine Referenzdokumente brauchen kein eigenes Ticket: sie stehen in [`docs/governance/INDEX.md`](docs/governance/INDEX.md) und verweisen auf den kanonischen Vertrag. Prompts, die Verhalten regeln, sind die Ausnahme — sie haben immer ein Issue und stehen in [`docs/PROMPTS.md`](docs/PROMPTS.md).
-
-Weiterlesen: [`AGENTS.md`](AGENTS.md) (Kurzvertrag), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) (Rollen und Prioritäten), [`docs/AGENT-ONBOARDING.md`](docs/AGENT-ONBOARDING.md) (die Schleife), [`docs/WORKFLOW.md`](docs/WORKFLOW.md) (Abschluss und Merge).

@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/docs-fokus-stadt",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/docs-fokus-stadt",
+  "baseSha": "62a9b155eab285a4df5dd26cd942f3aa27d30e03",
+  "issue": 1113,
+  "task": "Issue #1113: README und Banner auf die belebte Stadt fokussieren",
+  "goal": "README, Hauptbanner, Abschnittsbanner und GitHub-Beschreibung ohne Casino-Genre und ohne Technikdetail; ausfuehrliche Abschnitte zu MVP, Spiellauf und Doku-Stand.",
+  "pathAllowlist": [
+    "README.md",
+    "docs/banner.svg",
+    "docs/banners/spielwelt.svg",
+    "docs/banners/features.svg",
+    "docs/banners/social-preview.svg",
+    "docs/INVENTORY.md",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-docs-fokus-stadt.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "62a9b155eab285a4df5dd26cd942f3aa27d30e03"
+}
