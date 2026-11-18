@@ -8,6 +8,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { testEvent, writeTestReport } from './test-log';
 import { runBalance, type DayRow } from './balance-harness';
 import { balanceReport, balanceViolations } from './balance-report';
 
@@ -41,18 +42,17 @@ describe('Betriebs-Messlauf', () => {
     const report = process.env.RBD_BALANCE_OUT;
     if (report) {
       writeFileSync(report, balanceReport(rows, SEED, { mainSha: process.env.RBD_BALANCE_SHA }));
-      console.log(`balance: Bericht geschrieben nach ${report}`);
+      testEvent('balance', 'bericht-geschrieben', { pfad: report });
     }
     const violations = balanceViolations(rows, DAYS);
     expect(violations, violations.map((entry) => `Tag ${entry.day} ${entry.field}: ${entry.detail}`).join('\n')).toHaveLength(0);
-    console.log(`seed=${SEED}\n${HEADER}`);
-    for (const row of rows) console.log(line(row));
-    console.log('phasen: stufe tage gaeste/min aktiv maxWartende wKasse wGeraet runden abbWarte chipsLeer netto/tag miete/tag loehne/tag');
+    const table = [`seed=${SEED}`, HEADER, ...rows.map(line)];
+    table.push('phasen: stufe tage gaeste/min aktiv maxWartende wKasse wGeraet runden abbWarte chipsLeer netto/tag miete/tag loehne/tag');
     for (const tier of ['BUDE', 'KASSE', 'SAAL', 'KONZERN']) {
       const phase = rows.filter((row) => row.tier === tier);
-      if (phase.length === 0) { console.log(`${tier} 0`); continue; }
+      if (phase.length === 0) { table.push(`${tier} 0`); continue; }
       const mean = (pick: (row: DayRow) => number): number => phase.reduce((sum, row) => sum + pick(row), 0) / phase.length;
-      console.log([
+      table.push([
         tier, phase.length, f(mean((row) => row.perMin)), f(mean((row) => row.active)),
         Math.max(...phase.map((row) => row.activeMax)), f(mean((row) => row.waitDesk), 0),
         f(mean((row) => row.waitDevice), 0), f(mean((row) => row.rounds)),
@@ -62,6 +62,8 @@ describe('Betriebs-Messlauf', () => {
         f(mean((row) => row.economy.wages)),
       ].join(' '));
     }
+    const logPath = writeTestReport('balance-operating', table);
+    testEvent('balance', 'bericht', { seed: SEED, tage: DAYS, zeilen: rows.length, pfad: logPath });
   });
 });
 

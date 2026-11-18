@@ -10,11 +10,16 @@
  * Die Basis ist gemessen, nicht geschaetzt (`main` d55824b4, 2026-11-17):
  * 635 Module, 14 Waisen (2.2 %), 30.2 % der Module mit Fan-in <= 1,
  * 65 Einstiegspunkte, 1 Alias-Name, 1.577.352 Doku-Bytes in 31 Dateien.
+ * Doku-Bytes nachgemessen am 2026-11-18 (`main` fe40db6b): 1.649.993 B in
+ * 43 Dateien. Das alte Limit 1.650.000 B liess damit 7 Byte Luft, also
+ * weniger als eine Inventarzeile; jedes Issue mit einer neuen Datei riss es.
  * Der dokumentierte Einstieg `src/main.tsx` und die Build-Configs unter
  * `src/Config/` sind keine Waisen: sie haben per Definition keinen Importeur.
  * Die Budgets liegen knapp darueber: sie stoppen Wachstum, ohne jede
  * Modulverschiebung rot zu machen. Ein bewusstes Anheben ist ein sichtbarer
- * Governance-Commit.
+ * Governance-Commit: Wert, Messgrundlage und Anlass stehen zusammen hier,
+ * damit die Ratsche pruefbar bleibt statt still zu wachsen. Die Anhebung auf
+ * 1.655.000 B (2026-11-18, Issue #998) ist genau das.
  *
  * Bewusst ohne TypeScript-Compiler: `imports.mjs` liest Specifier per Muster.
  * Das Gate laeuft damit auch im nackten Checkout.
@@ -35,7 +40,7 @@ export const REDUNDANCY_BUDGET = Object.freeze({
   /** Zusaetzliche Namen auf ein bereits vorhandenes Kommando in package.json. */
   aliases: 1,
   /** Bytes in docs/**.md plus AGENTS.md und README.md. */
-  docBytes: 1_650_000,
+  docBytes: 1_655_000,
 });
 
 /** Dokumentierte Einstiege: ohne Importeur per Definition, nie eine Waise. */

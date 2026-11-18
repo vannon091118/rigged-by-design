@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-998-sim-logging",
+  "claimId": "lane/governance/issue-998-sim-logging",
+  "branch": "lane/governance/issue-998-sim-logging",
+  "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
+  "phase": "IMPLEMENTING",
+  "title": "Sim-Tests loggen strukturiert statt mit console.log",
+  "goal": "Alle console.log-Aufrufe in den Sim-Testdateien durch strukturiertes Logging ersetzen und verify:light samt betroffenen Suiten gruen belegen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 1149,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1149",
+    "state": "merged"
+  },
+  "findings": [],
+  "nextAction": "Gemergt als 36ebe487; Closeout-Phasen (CI_PENDING, MERGE_PENDING, AFTERCARE, DONE) folgen im Maintainer-Nachlauf",
+  "revision": 1
+}

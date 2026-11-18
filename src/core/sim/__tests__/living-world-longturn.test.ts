@@ -14,6 +14,7 @@ import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { replaySave, toSavedGame } from '../../../store/save';
+import { testEvent } from './test-log';
 import { talkChance } from '../charisma-talk';
 import { CITY_NPCS, ensureCityVisitor } from '../city-npcs';
 import { cityOf, runCityAction, travel } from '../city';
@@ -143,7 +144,7 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     expect(world.player.needs.hunger).toBeGreaterThan(80);
     expect(world.player.needs.thirst).toBeGreaterThan(80);
     const playerBeforeMeal = { ...world.player.needs };
-    console.log(`[longturn] vorMahlzeit hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)}`);
+    testEvent('longturn', 'vor-mahlzeit', { hunger: Math.round(world.player.needs.hunger), durst: Math.round(world.player.needs.thirst) });
     const hungryReputation = world.reputation;
     const hungryVisit = runCityAction(world, 'KIEZ_ANSPRECHEN');
     const hungryGain = world.reputation - hungryReputation;
@@ -166,7 +167,9 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     runCityAction(world, 'KIEZ_ANSPRECHEN');
     const fedGain = world.reputation - fedReputation;
     expect(fedGain).toBeCloseTo(0.4, 1);
-    console.log(`[longturn] tag=${world.day} hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)} rufHungrig=+${hungryGain.toFixed(2)} rufSatt=+${fedGain.toFixed(2)} ausdauerXp=${world.player.rpg.attributeXp.endurance ?? 0} traits=${traitsBefore.join('|')} -> ${traitsAfter.join('|')} arc=${arcAfter.status} echo=${echoSeen}`);
+    testEvent('longturn', 'nach-mahlzeit', { tag: world.day, hunger: Math.round(world.player.needs.hunger), durst: Math.round(world.player.needs.thirst),
+      rufHungrig: `+${hungryGain.toFixed(2)}`, rufSatt: `+${fedGain.toFixed(2)}`, ausdauerXp: world.player.rpg.attributeXp.endurance ?? 0,
+      traits: `${traitsBefore.join('|')} -> ${traitsAfter.join('|')}`, arc: arcAfter.status, echo: echoSeen });
 
     // Der gesamte lange Turn ueberlebt einen Save/Load-Roundtrip.
     const loaded = replaySave(JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState()))))!;
