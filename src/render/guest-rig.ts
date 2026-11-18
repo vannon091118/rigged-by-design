@@ -19,6 +19,7 @@ export interface GuestRigNodes {
   readonly footwearL: Sprite;
   readonly footwearR: Sprite;
   readonly pin: Graphics;
+  readonly lod: Container;
 }
 
 /** Squash beim Antippen und der Ring am Fuss; beides reine Darstellung. */
@@ -32,6 +33,7 @@ export class GuestRig {
   readonly #legR = new Container();
   readonly #armL = new Container();
   readonly #armR = new Container();
+  readonly #lod = new Container();
   readonly #nameplate: Text;
   #detail = true;
   #facing: Facing = 'right';
@@ -53,6 +55,7 @@ export class GuestRig {
     const hair = new Graphics();
     const pin = new Graphics();
     pin.visible = false;
+    this.#lod.visible = false;
     this.#tap.ellipse(0, 15, 13, 5.5).stroke({ width: 2, color: ROLE.service, alpha: 0.9 });
     this.#tap.visible = false;
     this.#legL.position.set(-4, 3);
@@ -70,10 +73,10 @@ export class GuestRig {
     this.#nameplate = new Text({ text: isPlayer ? 'DU' : name, style: floorText.name() });
     this.#nameplate.anchor.set(0.5, 0);
     this.#nameplate.position.set(0, 18);
-    this.root.addChild(pin, this.#figure, this.#nameplate);
+    this.root.addChild(pin, this.#figure, this.#lod, this.#nameplate);
     this.nodes = {
       head: this.#head, skull, face, hair, body, legs,
-      legOther: this.#legR.children[0] as Sprite, armL, armR, footwearL, footwearR, pin,
+      legOther: this.#legR.children[0] as Sprite, armL, armR, footwearL, footwearR, pin, lod: this.#lod,
     };
   }
 
@@ -91,6 +94,7 @@ export class GuestRig {
     this.#detail = next;
     this.#figure.visible = next;
     this.nodes.pin.visible = !next;
+    this.nodes.lod.visible = !next;
     this.#nameplate.visible = next && this.#nameVisible;
   }
 
@@ -105,6 +109,7 @@ export class GuestRig {
     if (next === this.#facing) return;
     this.#facing = next;
     this.nodes.pin.scale.x = next === 'left' ? -1 : 1;
+    this.nodes.lod.scale.x = next === 'left' ? -1 : 1;
   }
 
   bump(): void {

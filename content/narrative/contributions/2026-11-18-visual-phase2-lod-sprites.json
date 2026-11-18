@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T20:48Z-visual-phase2-lod-sprites",
+  "contributionId": "visual-phase2-lod-sprites-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita haelt die drei Fernfiguren nebeneinander: Rund mit dunklem Haar, Kappe mit heller Krempe, Bob mit seitlichen Straehnen. Bei 1x sind die Kanten hart, bei 2x sitzen dieselben neun Zellen ohne neue Zeichenlinie feiner im Atlas.",
+  "directives": []
+}

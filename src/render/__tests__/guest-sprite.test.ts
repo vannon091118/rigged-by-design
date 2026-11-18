@@ -23,7 +23,8 @@ function makeNodes(): GuestRigNodes {
   const face = new Graphics();
   const hair = new Graphics();
   const pin = new Graphics();
-  return { head, skull, face, hair, body, legs, legOther, armL, armR, footwearL, footwearR, pin };
+  const lod = new Container();
+  return { head, skull, face, hair, body, legs, legOther, armL, armR, footwearL, footwearR, pin, lod };
 }
 
 describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
@@ -82,6 +83,14 @@ describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
       expect(nodes.body.tint).toBe(0xff2e88);
       expect(LOOK_HAIR_RECTS['head-03']).not.toEqual(LOOK_HAIR_RECTS['head-01']);
     });
+  });
+
+  it('haelt das LOD-Sprite-Set ohne Atlas unsichtbar und zeichnet den Fallback', () => {
+    const nodes = makeNodes();
+    new GuestPaint(nodes, { seed: 0, isPlayer: true, persona: 'STREET', portrait: false });
+    const lod = nodes.lod.children.filter((child) => child instanceof Sprite);
+    expect(lod).toHaveLength(3);
+    expect(lod.every((sprite) => !sprite.visible)).toBe(true);
   });
 
   it('gibt jeder Kopffamilie eine eigene Atlastextur', () => {
