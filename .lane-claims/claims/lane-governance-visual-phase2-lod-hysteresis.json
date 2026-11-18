@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/visual-phase2-lod-hysteresis",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase2-lod-hysteresis",
+  "baseSha": "c18c4735d50bb05419ac3afcd8495b2b7d2bc7f0",
+  "issue": 1161,
+  "task": "LOD-Hysterese im Band und an den Kanten testen",
+  "goal": "Den echten Kameraweg durch das Hysterese-Band pruefen: fern, Detail, Wackeln im Band, zurueck, Kanten stabil; Doku und Belege nachziehen.",
+  "pathAllowlist": [
+    "src/render/",
+    "docs/",
+    ".lane-claims/",
+    "content/narrative/",
+    "src/core/sim/narrative/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c18c4735d50bb05419ac3afcd8495b2b7d2bc7f0"
+}

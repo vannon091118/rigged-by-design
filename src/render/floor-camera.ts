@@ -18,6 +18,15 @@ const boundsOf = (world: number | WorldBounds): WorldBounds =>
  */
 const FOLLOW_DEAD_ZONE = 0.82;
 
+/**
+ * Naechste Detail-Stufe mit Hysterese: rein oberhalb von 1.16×fit, raus erst
+ * unter 1.08×fit. Die Kamera liefert `zoom` und `fit` pro Frame; der Aufruf
+ * aendert keinen Zustand, damit die Grenze testbar bleibt.
+ */
+export function nextDetail(current: boolean, zoom: number, fit: number): boolean {
+  return current ? zoom >= fit * 1.08 : zoom > fit * 1.16;
+}
+
 export class FloorCamera {
   #fit = 1;
   #fill = 1;
@@ -60,13 +69,7 @@ export class FloorCamera {
    * Silhouette.
    */
   get detail(): boolean {
-    const enter = this.#fit * 1.16;
-    const exit = this.#fit * 1.08;
-    if (this.#detail) {
-      if (this.#zoom < exit) this.#detail = false;
-    } else if (this.#zoom > enter) {
-      this.#detail = true;
-    }
+    this.#detail = nextDetail(this.#detail, this.#zoom, this.#fit);
     return this.#detail;
   }
 

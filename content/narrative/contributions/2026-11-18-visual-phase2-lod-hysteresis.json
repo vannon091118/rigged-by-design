@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-18T22:03Z-visual-phase2-lod-hysteresis",
+  "contributionId": "visual-phase2-lod-hysteresis-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita haelt zwei Kameraausdrucke nebeneinander: unten der Pin, oben der Rig. Dazwischen liegt ein Band, in dem die Figur bleibt, wie sie ist; erst oberhalb von 1,16 x Fit wird sie scharf, und unter 1,08 x Fit faellt sie in den Pin zurueck.",
+  "directives": []
+}
