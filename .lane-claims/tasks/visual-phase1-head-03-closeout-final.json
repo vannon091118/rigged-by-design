@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "taskId": "visual-phase1-head-03-closeout-final",
+  "claimId": "lane/governance/visual-phase1-head-03-closeout",
+  "branch": "lane/governance/visual-phase1-head-03-closeout",
+  "baseSha": "d1d31391e2713e79bc7b760e120373318da9fae1",
+  "phase": "DONE",
+  "title": "Phase 1: head-03-01 Closeout",
+  "goal": "Den Closeout-Claim nach Merge #1135 auf merged und den Vorgang auf DONE ziehen.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 1135,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1135",
+    "state": "merged",
+    "headSha": "568a15b19b99c063a7017c556c48231815369c70",
+    "mergeSha": "d1d31391e2713e79bc7b760e120373318da9fae1"
+  },
+  "findings": [],
+  "nextAction": "Abgeschlossen; Phase 2 startet mit dem NPC-Rig.",
+  "revision": 1
+}
