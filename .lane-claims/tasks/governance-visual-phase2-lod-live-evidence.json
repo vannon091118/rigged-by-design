@@ -4,14 +4,34 @@
   "claimId": "lane/governance/visual-phase2-lod-live-evidence",
   "branch": "lane/governance/visual-phase2-lod-live-evidence",
   "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
-  "phase": "READY",
+  "phase": "DONE",
   "title": "Phase 2: LOD-Wechsel im Live-Lauf belegen",
   "goal": "Drei Sichtbelege (FIT-Pin, Zoom-Rig, Rueckkehr) aus dem laufenden Produktionsbuild, Doku korrigieren, Regressionstest fuer setDetail.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1158,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1158",
+    "state": "merged",
+    "headSha": "3926b2fbc33d7391cc65463154e89cc5fa192ffa",
+    "mergedSha": "aab4b9598a4f8c32a14e2238df6bb562948217f0"
+  },
   "findings": [],
-  "nextAction": "Commit und PR; danach Merge und Closeout.",
-  "revision": 1
+  "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout aab4b95).",
+  "revision": 4,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "post-merge-closeout",
+      "sha": "aab4b9598a4f8c32a14e2238df6bb562948217f0"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }
