@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b84f8e3e58ce0ac166cd7e5788d4f45ed18323dab7c432dcc12abf5ee778605a",
+  "contentHash": "sha256:6bccdc4d6e8de5133373a293c08dc04a34afaa1183898ffd60bdfed883e1b220",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27448,6 +27448,31 @@
       "text": "Rita hat den dritten Kopf neben die beiden anderen in den Charakterbogen geklebt: silberner Bob, ein Streifen Teal, ein goldener Ohrring. Er liegt auf demselben Atlasblatt wie die ersten Familien, nicht in einem eigenen Ordner.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-head-03.json"
+    },
+    {
+      "contributionId": "visual-phase2-editor-heads-01",
+      "turnId": "2026-11-18T20:20Z-visual-phase2-editor-heads",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita oeffnet den Spiegel und klickt die drei Koepfe durch: rund mit dunklem Haar, Kappe mit Rot, Bob mit Blond. Die grosse Vorschau zeigt den Ausschnitt; nach dem Schliessen traegt die Figur auf dem Floor denselben Bob und denselben Ton.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-editor-heads.json"
     },
     {
       "contributionId": "visual-phase2-lod-heads-01",

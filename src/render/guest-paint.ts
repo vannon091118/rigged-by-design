@@ -1,10 +1,10 @@
 /** Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. */
-import { Sprite, Texture } from 'pixi.js';
+import { Graphics, Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
 import { drawActorSilhouette, silhouetteHeadFor } from './actor-silhouette';
 import { ROLE } from './art-tokens';
-import { mountHead, paintFace as drawFace, paintHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
-import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS, headFamilyFor, headTextureFor } from './guest-parts';
+import { mountHead, paintFace as drawFace, paintHair, paintLookHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
+import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS, headFamilyFor, headTextureFor, type HeadFamily } from './guest-parts';
 import { rigPartsFor } from './rig-parts';
 import { textureFor } from './assets/textures';
 import type { GuestRigNodes } from './guest-rig';
@@ -27,6 +27,9 @@ export class GuestPaint {
   #seed: number;
   readonly #isPlayer: boolean;
   #headSprite: Sprite | null;
+  #hairMask: Sprite | null = null;
+  #headFamily: HeadFamily;
+  readonly #hairTone = new Graphics();
   readonly #portrait: boolean;
   #skin: number;
   #hairColor: number;
@@ -44,7 +47,11 @@ export class GuestPaint {
     this.#hairColor = isPlayer ? 0x2a1a14 : HAIRS[(seed >> 3) % HAIRS.length]!;
     this.#outfit = isPlayer ? 0x00ffcc : PERSONA_COLORS[persona] ?? 0x9a86b8;
     this.#accessory = look?.accessory ?? 'NONE';
-    this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait);
+    this.#headFamily = look?.head ?? headFamilyFor(headTextureFor(seed)) ?? 'head-01';
+    this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait,
+      isPlayer ? this.#headFamily : null);
+    nodes.head.addChild(this.#hairTone);
+    this.#syncHairMask();
     this.#applyParts(seed);
 
     this.setPersona(persona);
@@ -74,8 +81,8 @@ export class GuestPaint {
   setSeed(seed: number): void {
     if (seed === this.#seed) return;
     this.#seed = seed;
-    this.#headSprite?.destroy();
-    this.#headSprite = mountHead(this.#nodes.head, [this.#nodes.skull, this.#nodes.face, this.#nodes.hair], seed, this.#portrait);
+    this.#headFamily = headFamilyFor(headTextureFor(seed)) ?? 'head-01';
+    this.#remountHead();
     if (!this.#isPlayer) {
       this.#skin = SKINS[seed % SKINS.length]!;
       this.#hairColor = HAIRS[(seed >> 3) % HAIRS.length]!;
@@ -102,11 +109,14 @@ export class GuestPaint {
 
   /** Look des Spielers: dieselben Flaechen, nur andere Farben und ein Accessoire. */
   setLook(next: PlayerLook, face: FaceKind | ''): void {
+    const familyChanged = next.head !== this.#headFamily;
+    this.#headFamily = next.head;
     this.#skin = hex(next.skin);
     this.#hairColor = hex(next.hair);
     this.#outfit = hex(next.outfit);
     this.#accessory = next.accessory;
-    this.#paintHead();
+    if (familyChanged) this.#remountHead();
+    else this.#paintHead();
     this.#applyBodyColors();
     paintHair(this.#nodes.hair, this.#hairState());
     this.paintFace(face || 'neutral');
@@ -124,10 +134,40 @@ export class GuestPaint {
     };
   }
 
-  /** Kopf-Textur oder Pixelkopf liegt ueber dem Schaedel; dann bleibt er leer. */
+  /** Kopf-Textur oder Pixelkopf liegt ueber dem Schaedel; der Spieler bekommt seinen Haarton darueber. */
   #paintHead(): void {
-    if (this.#headSprite) return;
-    paintSkull(this.#nodes.skull, this.#skin);
+    this.#hairTone.clear();
+    if (!this.#headSprite) {
+      paintSkull(this.#nodes.skull, this.#skin);
+      return;
+    }
+    if (this.#isPlayer) paintLookHair(this.#hairTone, this.#headFamily, this.#hairColor);
+  }
+
+  /** Nur ein Familienwechsel tauscht die Textur; Farbwechsel bleiben im Frame. */
+  #remountHead(): void {
+    const nodes = this.#nodes;
+    this.#headSprite?.destroy();
+    this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], this.#seed, this.#portrait,
+      this.#isPlayer ? this.#headFamily : null);
+    nodes.head.addChild(this.#hairTone);
+    this.#syncHairMask();
+    this.#paintHead();
+  }
+
+  /** Eigene Maske statt der sichtbaren Kopf-Sprite: die Silhouette clippt den Haarton. */
+  #syncHairMask(): void {
+    this.#hairMask?.destroy();
+    this.#hairMask = null;
+    this.#hairTone.mask = null;
+    if (!this.#headSprite || !this.#isPlayer) return;
+    const mask = new Sprite(this.#headSprite.texture);
+    mask.width = 14;
+    mask.height = 14;
+    mask.position.set(-7, -7);
+    this.#nodes.head.addChild(mask);
+    this.#hairMask = mask;
+    this.#hairTone.mask = mask;
   }
 
   /** Koerper- und Gliedmasse-Farben auf die Sprite-Tinte uebertragen. */
@@ -160,7 +200,7 @@ export class GuestPaint {
       outfit: this.#outfit,
       skin: this.#skin,
       hair: this.#hairColor,
-      head: silhouetteHeadFor(headFamilyFor(headTextureFor(this.#seed))),
+      head: silhouetteHeadFor(this.#headFamily),
     });
     if (this.#isPlayer) pin.circle(0, -8, 9).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
   }
