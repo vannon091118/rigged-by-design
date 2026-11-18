@@ -9,13 +9,13 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
+| 2026-11-18 | Claims #1092/#979 nachgezogen; Sektionskopf-Titel rot. | `.lane-claims/`, `scripts/lib/commit-msg.mjs` |
 | 2026-11-18 | `--no-verify`-Bypass: Push prueft Claim, Drift, Budget und jede Nicht-Merge-Nachricht (ERR-4006). | `.githooks/pre-push` |
 | 2026-11-18 | Hooks armen im Install; Contract-Gate meldet ungeschuetzte Klone (ERR-4018). | `scripts/install-hooks.mjs` |
 | 2026-11-17 | Fuenf Pflichtdokus; Budget echt gemessen, Drift in pre-commit/push, Board-Gate lokal ueber Cache; Tooling-Uhr lint-konform; Welttexte weltlich; Hooks 755. | `scripts/lib/doc-core.mjs`, `scripts/lib/doc-drift.mjs` |
 | 2026-11-17 | LOC-Guard deckt `scripts/` ohne Ausnahme; pretask und promote modularisiert. | #1101, `scripts/pretask.mjs`, `scripts/promote.mjs` |
 | 2026-11-17 | NPC-Identitaet: Begegnungen schreiben ueber die gebundene visitorId in die kanonische Erinnerung. | #979, `src/core/sim/narrative/memory.ts` |
 | 2026-11-17 | 10k-Lesepfad, PreToolUse-Hook und guarded Shell mit Watcher. | `scripts/lib/doc-read.mjs`, `scripts/shell-watch.mjs` |
-| 2026-11-17 | Claim-Preflight vor Push; Doku-Kern governance-geschuetzt. | `scripts/claim-preflight.mjs` |
 
 ## Regeln
 - Maximal sieben Zeilen; der aelteste Eintrag faellt heraus.

@@ -767,10 +767,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3513 |
-| Gelistete Dateien | 3513 |
+| Getrackte Dateien | 3515 |
+| Gelistete Dateien | 3515 |
 | Getrackte Ordner | 121 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (181), .lanes (1), artifacts (1), bin (1), content (1246), docs (100), packages (27), public (571), scripts (231), src (1131) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (183), .lanes (1), artifacts (1), bin (1), content (1246), docs (100), packages (27), public (571), scripts (231), src (1131) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -784,8 +784,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 88 Datei(en)
-- `.lane-claims/tasks/` — 89 Datei(en)
+- `.lane-claims/claims/` — 89 Datei(en)
+- `.lane-claims/tasks/` — 90 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -918,7 +918,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
 - `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/gov-fix-docs-index-1092.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/gov-fix-docs-index-1092.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 19 Zeilen
@@ -929,6 +929,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-board-closeout-relation.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-claim-catchup-2026-11-18.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-docs-fokus-stadt.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
@@ -1000,7 +1001,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-976-save-recovery.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-sim-issue-979-npc-identitaet.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-sim-issue-979-npc-identitaet.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
@@ -1011,11 +1012,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/docs-audit-100-fragen-981.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/docs-issue-1100-bypass-nachweis.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/gov-fix-docs-index-1092.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/gov-fix-docs-index-1092.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-live-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/tasks/governance-claim-catchup-2026-11-18.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-docs-fokus-stadt.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
@@ -1091,7 +1093,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/sim-issue-978-skill-effects.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-979-npc-identitaet.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-979-npc-identitaet.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
@@ -3119,7 +3121,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/claim-register-io.mjs` — Claim-Register-Ein-/Ausgabe: Optionen, Pfade, atomare Writes und Laden. — gelesen: 166 Zeilen
 - `scripts/lib/claim-register-maintenance.mjs` — Register-Pflege: doctor und prune. Retention ist eine eigene Entscheidung; — gelesen: 108 Zeilen
 - `scripts/lib/command-surface.mjs` — Die globale Befehlsoberflaeche: `rbd <gruppe> <aktion> [flags]`. — gelesen: 127 Zeilen
-- `scripts/lib/commit-msg.mjs` — Eine Wahrheit fuer die Pflichtsektionen einer Commit-Nachricht. — gelesen: 59 Zeilen
+- `scripts/lib/commit-msg.mjs` — Eine Wahrheit fuer die Pflichtsektionen einer Commit-Nachricht. — gelesen: 67 Zeilen
 - `scripts/lib/compact.mjs` — import { existsSync, mkdirSync, writeFileSync } from 'node:fs'; — gelesen: 235 Zeilen
 - `scripts/lib/contracts.mjs` — Vertragsregister: die eine mechanische Sicht auf `docs/contracts/`. — gelesen: 116 Zeilen
 - `scripts/lib/credentials.mjs` — Eine Aufloesungsstelle fuer das GitHub-Token. — gelesen: 91 Zeilen
@@ -3421,7 +3423,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/lane-claims-issue.test.ts` — Das Issue-Board ist die Wahrheit ueber Auftrag und Besitz. Eine neue, offene — gelesen: 46 Zeilen
 - `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 211 Zeilen
 - `src/core/governance/__tests__/logs-failure-only.test.ts` — Log-Vertrag: Dateien entstehen nur mit `--log` UND nur fuer fehlerhafte — gelesen: 102 Zeilen
-- `src/core/governance/__tests__/merge-commit-message.test.ts` — Die Pflichtsektionen sind nur dann echt, wenn der Weg vom PR-Body zur — gelesen: 80 Zeilen
+- `src/core/governance/__tests__/merge-commit-message.test.ts` — Die Pflichtsektionen sind nur dann echt, wenn der Weg vom PR-Body zur — gelesen: 93 Zeilen
 - `src/core/governance/__tests__/merge-gate.test.ts` — Das Merge-Gate ist nur so gut wie seine Lesart der echten Antwort. Der Test — gelesen: 96 Zeilen
 - `src/core/governance/__tests__/merged-index.test.ts` — Der Merge-Beleg-Index ist nur brauchbar, wenn er aus echten Merge-Commits — gelesen: 156 Zeilen
 - `src/core/governance/__tests__/narrative-blocks-cli.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 54 Zeilen

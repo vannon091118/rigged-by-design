@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/claim-catchup-2026-11-18",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-catchup-2026-11-18",
+  "baseSha": "c4c4c2ec122027368f12dc6cbd2e45c6dad20b3a",
+  "issue": 1121,
+  "task": "Claims #1092 und #979 als gemergt nachziehen und den Sektionskopf als Commit-Titel sperren",
+  "goal": "Zwei belegte Merges im Register schliessen; das Muster 'Pflichtsektion als Titel' im gemeinsamen Nachrichten-Gate schliessen, ohne Hooks zu umgehen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "scripts/lib/commit-msg.mjs",
+    "src/core/governance/__tests__/merge-commit-message.test.ts",
+    "docs/governance/LAST-CHANGES.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c4c4c2ec122027368f12dc6cbd2e45c6dad20b3a"
+}

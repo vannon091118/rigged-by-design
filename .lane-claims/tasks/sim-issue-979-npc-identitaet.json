@@ -4,14 +4,34 @@
   "claimId": "lane/sim/issue-979-npc-identitaet",
   "branch": "lane/sim/issue-979-npc-identitaet",
   "baseSha": "cb0523f373bcdfdb32499e45d5e1b451b7baebd0",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "[P2][SIM] NPC-Identitaet: eine kanonische Erinnerung ueber Stadt- und Casino-Begegnungen",
   "goal": "Stadt- und Casino-Begegnungen eines NPC schreiben ueber die gebundene visitorId in die kanonische Besuchererinnerung (Visitor.memories); die stadtseitige Projektion (CityResidentState.memories) bleibt konsistent und baut keine widerspruechliche zweite Historie auf; die Casino-Disposition waengt stadtseitige Erinnerungen mit; Retention-Grenzen (Gast 6, Bewohner 8) und Save/Load bleiben deterministisch erhalten. AC #979: Querkanal-Test Stadtbegegnung -> Casino-Besuch -> Rueckkehr, Save/Load-Erhalt, Disposition-Wirkung, Retention-Messung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1099,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1099",
+    "state": "merged",
+    "headSha": "7ba8b016a37e6f4f3f0d80790246428b5ec55a0c",
+    "mergedSha": "0ffa22b5337a9652892fe0f442cbbf3758b488c6"
+  },
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "merged-pr",
+      "sha": "0ffa22b5337a9652892fe0f442cbbf3758b488c6"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  },
   "findings": [],
-  "nextAction": "Tests gruen, claim:preflight, Branch gegen main pushen, PR oeffnen, Maintainer-Review anstoßen",
-  "revision": 1
+  "nextAction": "Gemergt als 0ffa22b5 (PR #1099, Squash); Branch ist am Remote entfernt; keine offene Arbeit.",
+  "revision": 2
 }

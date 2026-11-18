@@ -16,6 +16,10 @@ export const SECTIONS = Object.freeze([
 ]);
 
 const FORBIDDEN = /Co-authored-by:|Generated with|\bFreebuff\b|\bCodebuff\b|\bClaude\b|\bAnthropic\b|\bOpenAI\b|\bCursor\b|Signed-off-by:|\[(?:Codebuff|Freebuff)\]/i;
+// Eine Pflichtsektion ist eine Ueberschrift im Body, kein Titel. Genau dieses
+// Muster stand mehrfach als Commit-Subject in der Historie und passierte das
+// Gate, weil Titel-Laenge und Sektionen fuer sich korrekt waren.
+const MARKDOWN_SUBJECT = /^#{1,6}\s/;
 
 /** Alle Verstoesse eines Textes; `pr` prueft nur die Trailer-Regel. */
 export function messageViolations(text, { pr = false } = {}) {
@@ -25,6 +29,9 @@ export function messageViolations(text, { pr = false } = {}) {
   if (pr) return found;
   const lines = String(text ?? '').split(/\r?\n/).map((line) => line.trim());
   if (!lines[0] || lines[0].length < 8) found.push({ code: 'ERR-4006', message: 'deutscher Update-Titel fehlt' });
+  else if (MARKDOWN_SUBJECT.test(lines[0])) {
+    found.push({ code: 'ERR-4006', message: 'Titel ist eine Markdown-Ueberschrift statt einer Aussage' });
+  }
   let previous = -1;
   for (const section of SECTIONS) {
     const at = lines.indexOf(section);
@@ -52,8 +59,9 @@ export function messageViolations(text, { pr = false } = {}) {
 export function squashMessage({ title = '', body = '' } = {}) {
   const subject = String(title ?? '').replace(/\r?\n/g, ' ').trim();
   const text = String(body ?? '').replace(/\r\n/g, '\n').trim();
-  const violations = messageViolations(text);
-  if (!subject) violations.unshift({ code: 'ERR-4006', message: 'deutscher Update-Titel fehlt' });
+  // Geprueft wird die fertige Nachricht, nicht der Body allein: dessen erste
+  // Zeile ist eine Pflichtsektion und waere als Titel falsch bewertet.
+  const violations = messageViolations(`${subject}\n\n${text}`);
   if (violations.length > 0) return { ok: false, message: '', violations };
   return { ok: true, message: `${subject}\n\n${text}`, violations: [] };
 }

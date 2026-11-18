@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "governance-claim-catchup-2026-11-18",
+  "claimId": "lane/governance/claim-catchup-2026-11-18",
+  "branch": "lane/governance/claim-catchup-2026-11-18",
+  "baseSha": "c4c4c2ec122027368f12dc6cbd2e45c6dad20b3a",
+  "phase": "MERGE_PENDING",
+  "title": "Claims #1092 und #979 nachziehen; Sektionskopf-Titel sperren",
+  "goal": "Zwei belegte Merges aus dem Register nachziehen und einen Markdown-Sektionskopf als Commit-Titel mit ERR-4006 blockieren.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 1122,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1122",
+    "state": "open",
+    "headSha": "72aabcd5aaa7845ef1f3d6ac2e2fc8eb7dd9e6b3"
+  },
+  "findings": [],
+  "nextAction": "Review und Merge durch den Maintainer; danach diesen Claim auf merged und den Task auf DONE ziehen.",
+  "revision": 2
+}
