@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/visual-phase2-npc-rig-closeout",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase2-npc-rig-closeout",
+  "issue": 1139,
+  "baseSha": "337be124e5e28a3ad94c7e1420e72c2a6481fc1c",
+  "task": "Phase 2: NPC-Rig Closeout",
+  "goal": "Claim und Task nach Merge #1140 auf merged/DONE ziehen und Issue #1139 schliessen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "createdAt": "337be124e5e28a3ad94c7e1420e72c2a6481fc1c"
+}

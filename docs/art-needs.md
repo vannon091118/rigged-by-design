@@ -2,10 +2,10 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Klassifikation der Environment- und Casino-Assets, plus die Liste
-dessen, was fuer Wohnung, Strasse und NPC-Pipeline fehlt.
+**Zweck:** Klassifikation der Environment- und Casino-Assets und die Liste der
+fehlenden Assets fuer Wohnung, Strasse und NPC-Pipeline.
 
-**Stand:** 2026-11-18 · Basis `d7844ba0` ·
+**Stand:** 2026-11-18 · `d7844ba0` ·
 [Kontaktbogen](visual-rework/phase1/environment-contact-sheet.png)
 
 ## 1. Methode
@@ -14,7 +14,7 @@ Kontaktbogen: `node scripts/build-art-contact-sheet.mjs`, 27 Assets.
 Klassen: **KEEP** (passt), **REWORK** (Perspektive/Material/Kontrast),
 **REPLACE** (Grundform/Massstab), **BROKEN** (laedt nicht/beschnitten).
 
-## 2. Environment (19 Assets)
+## 2. Environment (19)
 
 | # | Asset-ID | Typ | Groesse | Klasse | Begruendung |
 | ---: | --- | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ Klassen: **KEEP** (passt), **REWORK** (Perspektive/Material/Kontrast),
 | 18 | `environment/tiles/casino-carpet-plum.png` | Teppich | 512×512 | KEEP | Wiederholbares Motiv, Gold/Plum, gute Kachelgrenze. |
 | 19 | `environment/tiles/wallpaper-damask-plum.png` | Tapete | 512×512 | KEEP | Ruhiges Damastmuster. |
 
-## 3. Relevante Casino-Assets (8 Assets)
+## 3. Casino-Assets (8)
 
 | # | Asset-ID | Typ | Groesse | Klasse | Begruendung |
 | ---: | --- | --- | --- | --- | --- |
@@ -60,10 +60,10 @@ Fehlende Assets; Platzhalter ersetzen sie **nicht**:
 
 | Bedarf | Fuer | Warum jetzt | Groesse |
 | --- | --- | --- | --- |
-| Apartment-Moebel-Set | Wohnung | `player-apartment.ts` kennt 9 Moebel; eigene Sprites fuer Bett, Sofa, Tisch, Kochzeile, Kuehlschrank, Bad und Schrank fehlen. | 32–96 px |
+| Apartment-Moebel-Set | Wohnung | `player-apartment.ts` kennt 9 Moebel; Sprites fuer Bett, Sofa, Tisch, Kochzeile, Kuehlschrank, Bad, Schrank fehlen. | 32–96 px |
 | Apartment-Boden/Wand | Wohnung | Nur Casino-Teppich und Damast-Tapete existieren; ruhige Wohnungs-Varianten fehlen. | 64/512 px |
-| Strassen-Infrastruktur | Strasse | Bordstein, Kreuzung, Hydrant, parkendes Auto und Muelltonnen-Variante fehlen; die Props decken nur Gehweg und Haltestelle. | 32–128 px |
-| NPC-Rig-Teile | NPC-Pipeline | Torso (8), Arme (14), Beine (15), Schuhe (14) sind Atlasframes und werden je Seed gewaehlt; `head-03-01.svg` ist im Gast-Pool. Editor-Set fehlt. | 32 px Basis |
-| LOD-Identitaetsframes | NPC-Pipeline | 12×16-Silhouette mit Haarton und drei Kopfformen (rund/Bob/Kappe); Sprite-Set je Familie fehlt. | 12×16 |
-| Konflikt-/Dispute-Icons | UI/Floor | Keine eigenen Icons fuer Streit, Hausverbot, Razzia; UI nutzt Text. | 16–24 px |
+| Strassen-Infrastruktur | Strasse | Bordstein, Kreuzung, Hydrant, parkendes Auto und Muelltonne fehlen; Props decken nur Gehweg und Haltestelle. | 32–128 px |
+| NPC-Rig-Teile | NPC-Pipeline | Torso (8), Arme (14), Beine (15), Schuhe (14) sind Atlasframes je Seed; `head-03-01.svg` ist im Gast-Pool. Editor-Set fehlt. | 32 px Basis |
+| LOD-Identitaetsframes | NPC-Pipeline | 12×16-Silhouette mit Haarton und drei Kopfformen; Sprite-Set je Familie fehlt. | 12×16 |
+| Konflikt-/Dispute-Icons | UI/Floor | Keine Icons fuer Streit, Hausverbot, Razzia; UI nutzt Text. | 16–24 px |
 

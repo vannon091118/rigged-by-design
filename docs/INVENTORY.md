@@ -769,10 +769,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3522 |
-| Gelistete Dateien | 3522 |
+| Getrackte Dateien | 3524 |
+| Gelistete Dateien | 3524 |
 | Getrackte Ordner | 123 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (175), .lanes (1), artifacts (1), bin (1), content (1249), docs (107), packages (27), public (572), scripts (232), src (1134) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (177), .lanes (1), artifacts (1), bin (1), content (1249), docs (107), packages (27), public (572), scripts (232), src (1134) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -786,8 +786,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 85 Datei(en)
-- `.lane-claims/tasks/` — 86 Datei(en)
+- `.lane-claims/claims/` — 86 Datei(en)
+- `.lane-claims/tasks/` — 87 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -971,7 +971,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-doc-budget.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -1047,7 +1048,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-sync-live-hooks.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
@@ -2451,7 +2453,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/37-stadtnetz-abnahme.webp` — Binaerdatei — geprueft: Signatur, 25724 B
 - `docs/screenshots/current/38-kiez-interior-abnahme.webp` — Binaerdatei — geprueft: Signatur, 24524 B
 - `docs/screenshots/current/39-stadtbewohner.webp` — Binaerdatei — geprueft: Signatur, 24278 B
-- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 135 Zeilen
+- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 133 Zeilen
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `docs/visual-rework/baseline/360x640.png` — PNG-Textur — geprueft: PNG 816x1350, 431336 B
 - `docs/visual-rework/baseline/390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 485659 B
