@@ -14,6 +14,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { ASSET, RUNTIME_ART } from '../keys';
+import { LOD_SPRITE_SHEET, lodTextureFor } from '../../actor-silhouette';
 import { rigPartsFor } from '../../rig-parts';
 import manifest from '../manifest.json';
 
@@ -145,6 +146,25 @@ describe('Environment-SVGs im Produktionsatlas', () => {
 
     expect(assetsLoad).not.toHaveBeenCalled();
     expect(FakeImage.sources.some((source) => source.includes('head-03-01.svg'))).toBe(false);
+  });
+
+  it('loest das LOD-Sprite-Sheet in neun 12x16-Zellen auf', async () => {
+    expect(ASSET.lodFamilies).toBe(LOD_SPRITE_SHEET);
+    expect(RUNTIME_ART).toContain(LOD_SPRITE_SHEET);
+    expect(manifest.characters[LOD_SPRITE_SHEET]).toBe(LOD_SPRITE_SHEET);
+    expect(manifest.atlas.folders.characters).toContain(LOD_SPRITE_SHEET);
+    expect(frames.get(LOD_SPRITE_SHEET)).toMatchObject({ width: 36, height: 48 });
+
+    const { loadAtlas } = await import('../atlas');
+    const { textureFor } = await import('../textures');
+    await loadAtlas(manifest.atlas, manifest.base);
+
+    const base = textureFor(LOD_SPRITE_SHEET);
+    expect(base).not.toBeNull();
+    const head = lodTextureFor(base!, 'cap', 'head');
+    expect(head.frame).toMatchObject({ x: base!.frame.x + 12, y: base!.frame.y + 16, width: 12, height: 16 });
+    expect(lodTextureFor(base!, 'cap', 'head')).toBe(head);
+    expect(assetsLoad).not.toHaveBeenCalled();
   });
 
   it('loest die NPC-Rig-Teile ueber Atlasframes auf, ohne Assets.load', async () => {

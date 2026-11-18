@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b84f8e3e58ce0ac166cd7e5788d4f45ed18323dab7c432dcc12abf5ee778605a",
+  "contentHash": "sha256:2225a51aa568f12540f4780eeb15b9c0760bb94d2b997935f697f214f0a43233",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27450,6 +27450,31 @@
       "source": "content/narrative/contributions/2026-11-18-visual-head-03.json"
     },
     {
+      "contributionId": "visual-phase2-editor-heads-01",
+      "turnId": "2026-11-18T20:20Z-visual-phase2-editor-heads",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita oeffnet den Spiegel und klickt die drei Koepfe durch: rund mit dunklem Haar, Kappe mit Rot, Bob mit Blond. Die grosse Vorschau zeigt den Ausschnitt; nach dem Schliessen traegt die Figur auf dem Floor denselben Bob und denselben Ton.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-editor-heads.json"
+    },
+    {
       "contributionId": "visual-phase2-lod-heads-01",
       "turnId": "2026-11-18T10:12Z-visual-phase2-lod-heads",
       "agentId": "buffy",
@@ -27473,6 +27498,31 @@
       "text": "Rita hat drei Gaeste bei 1x und 2x nebeneinandergelegt: Emil traegt die Kappe, Timo den runden Kopf, Kai den silbernen Bob. Die Namen stehen noch am Rand, aber die Konturen bleiben im kleinen Bild unterscheidbar; den Editor hat sie nicht angefasst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json"
+    },
+    {
+      "contributionId": "visual-phase2-lod-sprites-01",
+      "turnId": "2026-11-18T20:48Z-visual-phase2-lod-sprites",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita haelt die drei Fernfiguren nebeneinander: Rund mit dunklem Haar, Kappe mit heller Krempe, Bob mit seitlichen Straehnen. Bei 1x sind die Kanten hart, bei 2x sitzen dieselben neun Zellen ohne neue Zeichenlinie feiner im Atlas.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-lod-sprites.json"
     },
     {
       "contributionId": "visual-phase2-npc-rig-01",

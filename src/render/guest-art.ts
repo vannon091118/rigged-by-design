@@ -38,6 +38,9 @@ export interface GuestArt {
   readonly animate: (nowMs: number) => void;
 }
 
+const lookKey = (look: PlayerLook): string =>
+  `${look.skin}|${look.hair}|${look.outfit}|${look.accessory}|${look.head}`;
+
 export function createGuestArt(
   persona: string, name: string, isPlayer = false, phase = 0, look?: PlayerLook, portrait = false,
 ): GuestArt {
@@ -52,7 +55,7 @@ export function createGuestArt(
   let currentFace: FaceKind | '' = '';
   let currentEmotion: GuestEmotion = 'NONE';
   let currentState: ActorState = 'idle';
-  let currentLook = look ? `${look.skin}|${look.hair}|${look.outfit}|${look.accessory}` : '';
+  let currentLook = look ? lookKey(look) : '';
   let moodLow = false;
   let facing: Facing = 'right';
 
@@ -106,7 +109,7 @@ export function createGuestArt(
     setEmotion, setMood, setPersona, setSeed, setName, setNameVisible, setLod, setState, setFacing, bump, tapRing, animate,
     get facing() { return facing; },
     setLook: (next) => {
-      const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;
+      const key = lookKey(next);
       if (key === currentLook) return;
       currentLook = key;
       paint.setLook(next, currentFace);

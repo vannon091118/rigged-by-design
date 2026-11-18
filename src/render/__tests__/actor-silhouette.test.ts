@@ -2,7 +2,8 @@
 import type { Graphics } from 'pixi.js';
 import { describe, expect, it } from 'vitest';
 import {
-  SILHOUETTE, SILHOUETTE_HEADS, SILHOUETTE_PERSONAS, drawActorSilhouette, silhouetteHeadFor, silhouettePinScale,
+  LOD_SPRITE_LAYERS, LOD_SPRITE_SHEET, SILHOUETTE, SILHOUETTE_HEADS, SILHOUETTE_PERSONAS,
+  drawActorSilhouette, lodHairColor, lodSpriteFrame, silhouetteHeadFor, silhouettePinScale,
 } from '../actor-silhouette';
 
 describe('Akteur-Silhouette', () => {
@@ -46,6 +47,21 @@ describe('Akteur-Silhouette', () => {
     expect(cap.some((r) => r.w === 10 && r.h === 1)).toBe(true);
     expect(bob.filter((r) => r.w === 2 && r.h === 4 && r.y === -14)).toHaveLength(2);
     expect(round.every((r) => r.w <= 6)).toBe(true);
+  });
+
+  it('legt drei Familien als neun 12×16-Zellen in ein 36×48-Sheet', () => {
+    expect(LOD_SPRITE_SHEET).toBe('characters/lod-families.svg');
+    expect(LOD_SPRITE_LAYERS).toEqual(['body', 'head', 'hair']);
+    expect(lodSpriteFrame('round', 'body')).toEqual({ x: 0, y: 0, width: 12, height: 16 });
+    expect(lodSpriteFrame('cap', 'head')).toEqual({ x: 12, y: 16, width: 12, height: 16 });
+    expect(lodSpriteFrame('bob', 'hair')).toEqual({ x: 24, y: 32, width: 12, height: 16 });
+    const cells = SILHOUETTE_HEADS.flatMap((head) => LOD_SPRITE_LAYERS.map((layer) => JSON.stringify(lodSpriteFrame(head, layer))));
+    expect(new Set(cells).size).toBe(9);
+  });
+
+  it('hebt dunkles Haar fuer den dunklen Boden an, helles bleibt hell', () => {
+    expect(lodHairColor(0x000000)).toBeGreaterThan(0);
+    expect(lodHairColor(0xffffff)).toBe(0xffffff);
   });
 
   it('bindet die drei Kopffamilien an drei Fernformen', () => {

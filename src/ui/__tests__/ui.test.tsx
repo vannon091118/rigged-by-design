@@ -154,6 +154,14 @@ describe('UI-Integration', () => {
     expect(onLook).toHaveBeenCalledWith({ skin: '#e0b48c' });
   });
 
+  it('waehlt im Charaktereditor die Kopffamilie', () => {
+    const onLook = vi.fn();
+    render(<LookPopup view={view()} onClose={noop} onLook={onLook} />);
+    expect(screen.getByRole('button', { name: 'Rund' }).getAttribute('aria-pressed')).toBe('true');
+    fireEvent.click(screen.getByRole('button', { name: 'Bob' }));
+    expect(onLook).toHaveBeenCalledWith({ head: 'head-03' });
+  });
+
   it('zeigt echte Rivalenprofile statt hartkodierter Häuser', () => {
     render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onRisk={() => null} onTakeHome={noop} onExclusion={noop} onShellRound={() => ({ cups: 3, ballCup: 0, moves: [] })} onDealCard={() => ({ seed: 1, label: 'Test' })} onSettleCard={() => null} onAdditionalBet={() => true} />);
     const hafen = screen.getByLabelText('Profil Hafenklause');
