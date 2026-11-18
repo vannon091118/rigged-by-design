@@ -144,7 +144,7 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 3. Den lokalen Vor-PR-Nachweis `pnpm run ci:local` auf dem exakten Kopf ausführen; es gibt keinen Cloud-Testlauf, auf den gewartet werden müsste.
 4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.
 5. Der Maintainer merged im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
-6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen. Den Text baut `node scripts/merge-commit-message.mjs --title "<Titel>" --body-file <body.md>`; ohne vollständige Sektionen entsteht keine Nachricht und damit kein Merge.
+6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen. Den Text baut `node scripts/merge-commit-message.mjs --title "<Titel>" --body-file <body.md> --out <nachricht.txt>`; ohne vollständige Sektionen entsteht keine Nachricht und damit kein Merge.
 
 Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 

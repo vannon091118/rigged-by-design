@@ -60,10 +60,10 @@ describe('Squash-Nachricht aus dem PR-Body', () => {
     const bodyFile = join(dir, 'body.md');
     const msgFile = join(dir, 'message.txt');
     writeFileSync(bodyFile, `${BODY}\n`);
-    const built = node([CLI, '--title', 'Squash-Nachricht belegen', '--body-file', bodyFile]);
+    const built = node([CLI, '--title', 'Squash-Nachricht belegen', '--body-file', bodyFile, '--out', msgFile]);
     expect(built.status, built.stderr).toBe(0);
-    writeFileSync(msgFile, built.stdout);
     expect(readFileSync(msgFile, 'utf8')).toContain('### Ausblick (Nächste Schritte)');
+    expect(readFileSync(msgFile, 'utf8').split('\n')[0]).toBe('Squash-Nachricht belegen');
     const gate = node([GATE, msgFile]);
     expect(gate.status, `${gate.stdout}${gate.stderr}`).toBe(0);
   });
@@ -72,9 +72,9 @@ describe('Squash-Nachricht aus dem PR-Body', () => {
     const dir = mkdtempSync(join(tmpdir(), 'rbd-msg-'));
     const bodyFile = join(dir, 'body.md');
     writeFileSync(bodyFile, '### Changes (Was ist neu)\n- Nur ein Punkt ohne Technik und Ausblick.\n');
-    const built = node([CLI, '--title', 'Unvollstaendig', '--body-file', bodyFile]);
+    const built = node([CLI, '--title', 'Unvollstaendig', '--body-file', bodyFile, '--out', join(dir, 'message.txt')]);
     expect(built.status).toBe(1);
     expect(`${built.stdout}${built.stderr}`).toContain('ERR-4006');
-    expect(built.stdout).toBe('');
+    expect(() => readFileSync(join(dir, 'message.txt'), 'utf8')).toThrow();
   });
 });
