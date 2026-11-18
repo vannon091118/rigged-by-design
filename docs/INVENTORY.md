@@ -907,7 +907,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
 - `.githooks/post-merge` — Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877). — gelesen: 26 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
-- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 103 Zeilen
+- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 113 Zeilen
 - `.github/CODEOWNERS` — Owner je Kontrollpfad (FREEZE-0, Abschnitt 2.4). Nur Pfade, die den — gelesen: 63 Zeilen
 - `.github/ISSUE_TEMPLATE/contract.md` — Markdown-Dokument — gelesen: 65 Zeilen
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
