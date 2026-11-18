@@ -3,7 +3,6 @@
 # abgelehnt. CI prueft denselben Text (verify-commit-msg) und der main-Lauf
 # prueft den Merge-Commit; der Hook verhindert, dass der Verstoss entsteht.
 set -e
-if [ ! -d node_modules ]; then exit 0; fi
 node scripts/sanitize-commit.mjs "$1" >/dev/null 2>&1 || true
 # Prozesseigener Logpfad: ein fester Name in /tmp kollidiert zwischen
 # parallelen Worktrees und macht den Hook fuer alle ausser dem Erstbesitzer

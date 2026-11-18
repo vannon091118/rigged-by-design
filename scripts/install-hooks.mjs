@@ -31,6 +31,16 @@ function git(args) {
   }
 }
 
+/** Auf Windows (NTFS) oder mit core.fileMode=false ist das ausfuehrbare Bit
+ *  irrelevant; git fuehrt den Hook trotzdem aus, wenn der Index-Modus 100755
+ *  ist. Die statSync-Pruefung wird dann ausgelassen. */
+function isFileModeIrrelevant() {
+  const fileMode = git(['config', '--get', 'core.fileMode']);
+  if (fileMode === 'false') return true;
+  const osType = process.platform;
+  return osType === 'win32';
+}
+
 /** Index-Modus je Hook: git fuehrt nur 100755 aus. */
 function indexModes() {
   const modes = new Map();
@@ -58,7 +68,7 @@ function hookProblems() {
     if (mode !== '100755') {
       problems.push(`${hook} hat im Index Modus ${mode ?? 'unbekannt'} statt 100755; git ueberspringt ihn still.`);
     }
-    if ((statSync(join(ROOT, hook)).mode & 0o111) === 0) {
+    if (!isFileModeIrrelevant() && (statSync(join(ROOT, hook)).mode & 0o111) === 0) {
       problems.push(`${hook} ist auf der Platte nicht ausfuehrbar.`);
     }
   }

@@ -25,13 +25,12 @@ export const DEFAULT_BUDGET = { id: 'utility', cap: 200, hotZone: 140 };
  * Migrationsschuld: Dateien, die vor der Rollen-Registry schon eine 350er
  * Ausnahme trugen. Neue Eintraege sind verboten; ein Eintrag verschwindet,
  * sobald die Datei in ihre Zustaendigkeiten aufgeteilt ist.
+ *
+ * Alle vier Legacy-Dateien (App.tsx, ledger.ts, staff.ts, world-store.ts)
+ * haben inzwischen normale Rollen-Eintraege in LOC_BUDGETS und werden dort
+ * mit ihrem Rollen-Cap geprueft. LEGACY_LOC ist deshalb leer.
  */
-export const LEGACY_LOC = new Map([
-  ['src/App.tsx', { cap: 350, hotZone: 200 }],
-  ['src/core/economy/ledger.ts', { cap: 350, hotZone: 200 }],
-  ['src/core/sim/staff.ts', { cap: 350, hotZone: 200 }],
-  ['src/store/world-store.ts', { cap: 350, hotZone: 200 }],
-]);
+export const LEGACY_LOC = new Map([]);
 
 export function budgetFor(name) {
   return LOC_BUDGETS.find((budget) => budget.matches(name)) ?? DEFAULT_BUDGET;

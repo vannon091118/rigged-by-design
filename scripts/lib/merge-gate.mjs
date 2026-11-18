@@ -35,8 +35,8 @@ export function parseRulesets(data) {
 /**
  * Verdikt: gruen nur, wenn GitHub direkte Merges nach `main` serverseitig
  * verhindert und der Schutz nicht durch Admins umgangen werden kann.
- * Fehlende Status-Checks sind ein dokumentierter Befund (FREEZE-0), kein
- * Kipppunkt: sie werden genannt, aber nicht als Verstoss gezaehlt.
+ * Fehlende Required-Status-Checks zaehlen als Blocker, da sonst ein Merge
+ * ohne gruenen Verify-Lauf moeglich ist.
  */
 export function mergeGateVerdict({ protection, rulesets = [], branch = 'main' }) {
   const parsed = parseProtection(protection);
@@ -48,8 +48,10 @@ export function mergeGateVerdict({ protection, rulesets = [], branch = 'main' })
     if (!parsed.enforceAdmins) findings.push('enforce_admins ist aus: Admins koennen den Schutz umgehen');
     if (!parsed.forcePushBlocked) findings.push('Force-Push auf main ist erlaubt');
     if (!parsed.deletionsBlocked) findings.push('Loeschen von main ist erlaubt');
+    if (parsed.requiredChecks.length === 0) findings.push('keine Required-Status-Checks konfiguriert: Merge ohne gruenen Verify-Lauf moeglich');
   }
   const names = parseRulesets(rulesets);
+  if (names.length === 0) findings.push('keine serverseitige Ruleset-Erzwingung auf main: direkter Merge ohne Prüfung möglich');
   const facts = {
     branch,
     protection: Boolean(parsed),

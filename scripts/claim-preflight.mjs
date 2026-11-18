@@ -27,13 +27,6 @@ if (!branch) {
   }
 }
 
-if (branch === 'main') {
-  const result = inspectClaimPreflight({ branch });
-  if (json) console.log(JSON.stringify(result, null, 2));
-  else console.log(formatClaimPreflight(result));
-  process.exit(0);
-}
-
 let claims;
 try {
   claims = loadClaimsStrict();

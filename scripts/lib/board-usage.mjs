@@ -77,15 +77,13 @@ export function evaluateBoardUsage({
     return result();
   }
   // Eine gemergte Lane ist abgeschlossen: ihr Board-Beleg wurde beim Merge
-  // erbracht. Closeout-Pushes (Claim auf merged, Task DONE) brauchen keinen
-  // zweiten Claim am Issue und wuerden sonst dauerhaft blockieren.
+  // erbracht. Ein gemergter Claim entgeht der Board-Prüfung nicht still —
+  // er wird als Hinweis geführt, nicht als harter Block, damit die
+  // Rückverfolgbarkeit (Issue #684, Claim lane/governance/freeze-0-code)
+  // nicht verloren geht.
   if (claim.status === 'merged') {
-    return {
-      ok: true,
-      skipped: true,
-      failures,
-      facts: [['Claim', `${claim.id} · merged`], ['Board', 'abgeschlossen, kein neuer Beleg noetig']],
-    };
+    failures.push(`Claim '${claim.id}' ist merged, entgeht aber der Board-Prüfung; Rückverfolgbarkeit zum Issue #${claim.issue ?? '?'} nicht mehr überprüfbar`);
+    return result();
   }
   facts.push(['Claim', claim.id]);
   facts.push(['Issue', claim.issue ? `#${claim.issue}` : 'fehlt']);

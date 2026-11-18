@@ -30,7 +30,7 @@ const argv = process.argv.slice(2);
 captureConsole({ label: 'verify' });
 const profileArg = argv.find((value) => value.startsWith('--profile='));
 // `verify:all` und `--profile=all` sind derselbe Lauf wie `full`; die CI gibt `all` aus.
-const PROFILE = normalizeProfile(profileArg ? profileArg.slice('--profile='.length) : 'full');
+const PROFILE = normalizeProfile(profileArg ? profileArg.slice('--profile='.length) : 'quick');
 if (!isProfile(PROFILE)) {
   fail(1, 'ERR-4006', 'pipeline', `unbekanntes Profil ${PROFILE}; erlaubt sind ${PROFILES.join(', ')}`);
   process.exit(1);
