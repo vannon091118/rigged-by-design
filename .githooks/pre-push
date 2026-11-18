@@ -64,6 +64,42 @@ if [ -f scripts/verify-docs.mjs ]; then
   fi
 fi
 
+# Commit-Nachrichten: derselbe Pruefer wie der commit-msg-Hook, aber fuer
+# jeden Nicht-Merge-Commit im gepushten Bereich. Merge-Commits und ein
+# bereits aktueller main fallen heraus; ein neuer Branch ohne Upstream
+# loest sich ueber origin/main auf. Der Commit selbst bleibt unangetastet.
+if [ -f scripts/verify-commit-msg.mjs ]; then
+  # Die Basis ist der Merge-Base mit origin/main, nicht eine freie Variable:
+  # ein gesetztes BASE_REF darf den Nachrichtenbereich nicht verkleinern.
+  # origin/main fehlt nur in einem Repo ohne dieses Remote; dann greift der
+  # vorhandene BASE_REF-Pfad, den auch die Drift-Pruefung nutzt.
+  check_messages() {
+    sha="$1"
+    msg_base="origin/main"
+    git rev-parse --verify --quiet "$msg_base^{commit}" >/dev/null 2>&1 || msg_base="${BASE_REF:-origin/main}"
+    range_base="$(git merge-base "$sha" "$msg_base" 2>/dev/null || echo "$msg_base")"
+    node scripts/verify-commit-msg.mjs --range "$range_base..$sha"
+  }
+  checked=0
+  if [ ! -t 0 ]; then
+    while read -r _local_ref local_sha _remote_ref _remote_sha; do
+      [ -n "$local_sha" ] || continue
+      case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac
+      checked=1
+      if ! check_messages "$local_sha"; then
+        echo "pre-push: Commit-Nachricht verletzt - Push blockiert (ERR-4006)." >&2
+        exit 1
+      fi
+    done
+  fi
+  if [ "$checked" -eq 0 ]; then
+    if ! check_messages "$(git rev-parse HEAD)"; then
+      echo "pre-push: Commit-Nachricht verletzt - Push blockiert (ERR-4006)." >&2
+      exit 1
+    fi
+  fi
+fi
+
 # Board-Gate: die lokale Claim-Datei ist nur ein Spiegel. Gepusht wird erst,
 # wenn der Claim im verifizierten Issue-Verlauf steht. Ist das Board nicht
 # lesbar, blockiert der Hook statt zu raten.

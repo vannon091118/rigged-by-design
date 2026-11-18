@@ -766,10 +766,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3500 |
-| Gelistete Dateien | 3500 |
+| Getrackte Dateien | 3502 |
+| Gelistete Dateien | 3502 |
 | Getrackte Ordner | 121 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (171), .lanes (1), artifacts (1), bin (1), content (1246), docs (100), packages (27), public (571), scripts (229), src (1130) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (173), .lanes (1), artifacts (1), bin (1), content (1246), docs (100), packages (27), public (571), scripts (229), src (1130) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -783,8 +783,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 83 Datei(en)
-- `.lane-claims/tasks/` — 84 Datei(en)
+- `.lane-claims/claims/` — 84 Datei(en)
+- `.lane-claims/tasks/` — 85 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -907,7 +907,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
 - `.githooks/post-merge` — Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877). — gelesen: 26 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
-- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 77 Zeilen
+- `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 113 Zeilen
 - `.github/CODEOWNERS` — Owner je Kontrollpfad (FREEZE-0, Abschnitt 2.4). Nur Pfade, die den — gelesen: 63 Zeilen
 - `.github/ISSUE_TEMPLATE/contract.md` — Markdown-Dokument — gelesen: 65 Zeilen
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
@@ -946,6 +946,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1100-hook-arming.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1100-hook-closeout.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1100-hook-route.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1100-msg-push.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1100-route-closeout.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
@@ -1029,6 +1030,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1100-hook-arming.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1100-hook-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1100-hook-route.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-issue-1100-msg-push.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1100-route-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
@@ -2344,7 +2346,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 896 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1214 Zeilen
-- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 133 Zeilen
+- `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 134 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 29 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2756 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
@@ -3248,7 +3250,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 158 Zeilen
 - `scripts/verify-board-usage.mjs` — verify-board-usage: belegt, dass die Lane am Issue-Board gefuehrt wird. — gelesen: 98 Zeilen
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 28 Zeilen
-- `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 57 Zeilen
+- `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 96 Zeilen
 - `scripts/verify-contracts.mjs` — Gate: Vertragseinhaltung global. — gelesen: 80 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 117 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 116 Zeilen

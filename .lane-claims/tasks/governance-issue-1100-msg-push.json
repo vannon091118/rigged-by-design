@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1100-msg-push",
+  "claimId": "lane/governance/issue-1100-msg-push",
+  "branch": "lane/governance/issue-1100-msg-push",
+  "baseSha": "35378c7ae83af5216f5878e40f947a3760d3d3c6",
+  "phase": "DONE",
+  "title": "Commit-Nachricht im Push erzwingen",
+  "goal": "Pre-push prueft jede Nicht-Merge-Nachricht im gepushten Bereich",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Gemergt; keine offene Arbeit.",
+  "revision": 1
+}
