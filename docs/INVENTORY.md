@@ -767,10 +767,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3493 |
-| Gelistete Dateien | 3493 |
+| Getrackte Dateien | 3495 |
+| Gelistete Dateien | 3495 |
 | Getrackte Ordner | 122 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (157), .lanes (1), artifacts (1), bin (1), content (1246), docs (104), packages (27), public (571), scripts (231), src (1131) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (159), .lanes (1), artifacts (1), bin (1), content (1246), docs (104), packages (27), public (571), scripts (231), src (1131) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -784,8 +784,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 76 Datei(en)
-- `.lane-claims/tasks/` — 77 Datei(en)
+- `.lane-claims/claims/` — 77 Datei(en)
+- `.lane-claims/tasks/` — 78 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -959,7 +959,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase0-baseline.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase0-baseline.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase0-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -1072,7 +1073,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-770-floor-feedback-context.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/visual-phase0-baseline.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/visual-phase0-baseline.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/visual-phase0-closeout.json` — { — gelesen: 18 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen

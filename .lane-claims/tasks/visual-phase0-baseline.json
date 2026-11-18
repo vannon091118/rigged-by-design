@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase0-baseline",
   "branch": "lane/governance/visual-phase0-baseline",
   "baseSha": "df4789cfa2ecd1231b6f0440918bc2742e8359e0",
-  "phase": "MERGE_PENDING",
+  "phase": "DONE",
   "title": "Phase 0: Baseline und Beweissicherung",
   "goal": "Screenshots, LOD-Repro, Asset-Pfad und Hardcoded-Inventur als belastbare Ausgangslage dokumentieren.",
   "taskType": "single",
@@ -13,10 +13,11 @@
   "pr": {
     "number": 1125,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/1125",
-    "state": "open",
-    "headSha": "75db6404e29137a44f43164080d63f8272016e31"
+    "state": "merged",
+    "headSha": "409f306aee9182043bd44bfba3d46c276bb3187e",
+    "mergeSha": "f8c6de91c7659b68baa5e40bf8812e3718fdfa72"
   },
   "findings": [],
-  "nextAction": "PR #1125 reviewen und mergen; danach Claim auf merged und Task auf DONE ziehen.",
-  "revision": 2
+  "nextAction": "Abgeschlossen; Phase 1 startet mit Style Guide, Art-Needs und resvg-Atlas.",
+  "revision": 3
 }
