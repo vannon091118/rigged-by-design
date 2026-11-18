@@ -4,13 +4,14 @@
   "claimId": "lane/governance/issue-1100-hook-arming",
   "branch": "lane/governance/issue-1100-hook-arming",
   "baseSha": "dea3c321be1f1a19501d45abae9284482a259377",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Hook-Armung im frischen Klon belegen",
   "goal": "Ein Klon ohne Vorbereitung faellt im Contract-Gate auf; Hooks armen ueber prepare",
-  "taskType": "single",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "findings": [],
-  "nextAction": "Frischen Klon pruefen, PR anlegen, mergen.",
-  "revision": 1
+  "nextAction": "Gemergt; keine offene Arbeit fuer diese Lane.",
+  "revision": 5
 }

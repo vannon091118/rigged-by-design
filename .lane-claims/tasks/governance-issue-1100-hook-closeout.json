@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1100-hook-closeout",
+  "claimId": "lane/governance/issue-1100-hook-closeout",
+  "branch": "lane/governance/issue-1100-hook-closeout",
+  "baseSha": "eb13150250bdd2ed15270ce562becb0f57c586dc",
+  "phase": "DONE",
+  "title": "Closeout Hook-Armung",
+  "goal": "Hook-Lane als gemergt und DONE registrieren",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Gemergt; keine offene Arbeit fuer diese Lane.",
+  "revision": 1
+}
