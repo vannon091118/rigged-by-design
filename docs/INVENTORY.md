@@ -1078,7 +1078,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/ui-issue-770-floor-feedback-context.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/visual-phase0-baseline.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/visual-phase0-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-art-contract.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/tasks/visual-phase1-art-contract.json` — { — gelesen: 29 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
