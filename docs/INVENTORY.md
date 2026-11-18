@@ -770,10 +770,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3532 |
-| Gelistete Dateien | 3532 |
+| Getrackte Dateien | 3535 |
+| Gelistete Dateien | 3535 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (181), .lanes (1), artifacts (1), bin (1), content (1250), docs (108), packages (27), public (572), scripts (232), src (1136) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (183), .lanes (1), artifacts (1), bin (1), content (1251), docs (108), packages (27), public (572), scripts (232), src (1136) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -787,12 +787,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 88 Datei(en)
-- `.lane-claims/tasks/` — 89 Datei(en)
+- `.lane-claims/claims/` — 89 Datei(en)
+- `.lane-claims/tasks/` — 90 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1246 Datei(en)
+- `content/narrative/contributions/` — 1247 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -974,6 +974,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-doc-budget.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
@@ -1053,6 +1054,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-sync-live-hooks.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
@@ -2354,10 +2356,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-17-verify-state-test-time.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-art-contract.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-head-03.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-18-visual-phase2-editor-heads.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 27984 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4989 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 28009 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4993 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -2460,7 +2463,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/37-stadtnetz-abnahme.webp` — Binaerdatei — geprueft: Signatur, 25724 B
 - `docs/screenshots/current/38-kiez-interior-abnahme.webp` — Binaerdatei — geprueft: Signatur, 24524 B
 - `docs/screenshots/current/39-stadtbewohner.webp` — Binaerdatei — geprueft: Signatur, 24278 B
-- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 129 Zeilen
+- `docs/style-guide.md` — Style Guide — Rigged by Design — gelesen: 131 Zeilen
 - `docs/superpowers/plans/sprint1-casino-mit-gast.png` — PNG-Textur — geprueft: PNG 838x951, 287175 B
 - `docs/visual-rework/baseline/360x640.png` — PNG-Textur — geprueft: PNG 816x1350, 431336 B
 - `docs/visual-rework/baseline/390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 485659 B
@@ -3619,7 +3622,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/living-world-social-economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 113 Zeilen
 - `src/core/sim/__tests__/living-world-vertical-slice.test.ts` — Bundle 6: End-to-End Vertical Slice der Living World Engine. — gelesen: 171 Zeilen
 - `src/core/sim/__tests__/logistics.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
-- `src/core/sim/__tests__/look.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
+- `src/core/sim/__tests__/look.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/core/sim/__tests__/machine-hall.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/main-event-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 134 Zeilen
 - `src/core/sim/__tests__/mod-guards.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 34 Zeilen
@@ -3982,7 +3985,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/player-job-market.ts` — Spieler-Arbeitsmarkt: Offene Stellen aus betretbaren Betrieben der Stadt. — gelesen: 116 Zeilen
 - `src/core/sim/player-job-promotion.ts` — Beförderung im Spielerjob: Durchschnitt der letzten Schichten, Anforderungen — gelesen: 69 Zeilen
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 141 Zeilen
-- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. — gelesen: 114 Zeilen
+- `src/core/sim/player-look.ts` — Der Look des Spielers: reine Darstellung plus kaufbares Kleidungs-/Accessoire-Inventar. — gelesen: 125 Zeilen
 - `src/core/sim/player-needs-tick.ts` — Tick-Anbindung der Spielerbeduerfnisse; eigene Datei haelt tick.ts in seiner LOC-Zone. — gelesen: 18 Zeilen
 - `src/core/sim/player-needs.ts` — Spielerbeduerfnisse: Hunger und Durst als echter, gespeicherter Spielzustand. — gelesen: 153 Zeilen
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 130 Zeilen
@@ -4057,7 +4060,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 123 Zeilen
 - `src/render/__tests__/floor-interact-unhandled.test.ts` — Regression #771: Der Switch im Floor-Interact hatte keinen exhaustiven — gelesen: 23 Zeilen
 - `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 161 Zeilen
-- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 78 Zeilen
+- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 93 Zeilen
 - `src/render/__tests__/light-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/locomotion.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/motion-preference.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 16 Zeilen
@@ -4152,9 +4155,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
 - `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 115 Zeilen
-- `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
-- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 167 Zeilen
-- `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 65 Zeilen
+- `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 127 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 207 Zeilen
+- `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 82 Zeilen
 - `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Silhouette, Namensschild, Squash und Tap-Ring. — gelesen: 142 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
 - `src/render/light-pool.ts` — Licht als ein Layer, nicht als 16 gestapelte Ellipsen pro Zone. — gelesen: 81 Zeilen
@@ -4276,7 +4279,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 768 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 724 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 729 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
@@ -4316,7 +4319,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 138 Zeilen
 - `src/ui/__tests__/smartphone-apps.test.tsx` — Die drei neuen Apps sind nur über das Gerät erreichbar: das Tile muss den — gelesen: 65 Zeilen
 - `src/ui/__tests__/smartphone-window-states.test.tsx` — Ein Durchlauf auf derselben Geraeteflaeche: Home, App, Zurueck zur Home und — gelesen: 107 Zeilen
-- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 187 Zeilen
+- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 195 Zeilen
 - `src/ui/__tests__/venue-history.test.tsx` — Die Historie der Veranstaltung ist ein Leser der vorhandenen Event-Instanz: — gelesen: 43 Zeilen
 - `src/ui/__tests__/workshop-entries.test.tsx` — Beide Werkstatt-Einstiege oeffnen dieselbe Oberflaeche ueber der laufenden — gelesen: 111 Zeilen
 - `src/ui/__tests__/workshop-tiles.test.tsx` — Sechs Kacheln, sechs vorhandene Panels: jede Kachel oeffnet genau ihren — gelesen: 97 Zeilen
@@ -4391,7 +4394,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/layout-editor-transfer.ts` — Export, Import und Fehleranzeige des Layout-Editors; kennt kein Layoutwissen. — gelesen: 40 Zeilen
 - `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 154 Zeilen
 - `src/ui/layout-room-summary.tsx` — Raumkopf des Layout-Editors: Zahlen aus dem vorhandenen Raumplan. — gelesen: 17 Zeilen
-- `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 101 Zeilen
+- `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 144 Zeilen
 - `src/ui/machine-mods.tsx` — Mod-Katalog am Automaten: Gaestewirkung und Wirkung auf die echte Engine. — gelesen: 53 Zeilen
 - `src/ui/machine-operator.tsx` — Betriebskörper am Automaten: Zustand, Diagnose, Reparatur und Mods. — gelesen: 143 Zeilen
 - `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen

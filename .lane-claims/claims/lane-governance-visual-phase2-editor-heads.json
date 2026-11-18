@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/visual-phase2-editor-heads",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase2-editor-heads",
+  "baseSha": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3",
+  "issue": 1145,
+  "task": "Phase 2: Charaktereditor waehlt Kopffamilie und Haarton",
+  "goal": "Kopffamilie als Look-Feld fuehren, im Charaktereditor waehlen und dieselbe Kopftextur sowie denselben Haarton in Vorschau und Floor zeigen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/",
+    "src/core/sim/player-look.ts",
+    "src/core/sim/__tests__/look.test.ts",
+    "src/render/",
+    "src/ui/look-popup.tsx",
+    "src/ui/__tests__/ui.test.tsx",
+    "src/store/__tests__/save-roundtrip.test.ts",
+    "src/styles/popup.css",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "0e9d95eea3005978ffbaae9fe8e4fa3e273e7edb",
+  "createdAt": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3"
+}
