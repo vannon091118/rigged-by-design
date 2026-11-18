@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/visual-phase1-head-03-closeout",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/governance/visual-phase1-head-03-closeout",
+  "issue": 1133,
+  "baseSha": "d1a0dbe230c978ee3eeea3ba6bc43bd89cabce07",
+  "task": "Phase 1: head-03-01 Closeout",
+  "goal": "Claim und Task nach Merge #1134 auf merged/DONE ziehen und Issue #1133 schliessen.",
+  "pathAllowlist": [
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "d1a0dbe230c978ee3eeea3ba6bc43bd89cabce07"
+}
