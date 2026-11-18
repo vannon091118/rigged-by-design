@@ -2412,7 +2412,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 92 Zeilen
 - `docs/governance/AGENTS.md` — Agentenvertrag — gelesen: 28 Zeilen
 - `docs/governance/INDEX.md` — Doku-Index — gelesen: 22 Zeilen
-- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 21 Zeilen
+- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 23 Zeilen
 - `docs/governance/PITFALLS.md` — Pitfalls — gelesen: 21 Zeilen
 - `docs/governance/ROADMAP.md` — Roadmap — gelesen: 34 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
