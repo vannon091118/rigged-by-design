@@ -2,10 +2,8 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Ein verbindlicher Art-Vertrag fuer Environment, NPCs und den
-Charaktereditor. Die Regeln beschreiben den Bestand, nicht einen Wunschzettel:
-Was hier steht, muss in `docs/art-needs.md` als offener Bedarf auftauchen, wenn
-es noch kein Asset dafuer gibt.
+**Zweck:** Verbindlicher Art-Vertrag fuer Environment, NPCs und Editor. Was hier
+steht und noch fehlt, steht als Bedarf in `docs/art-needs.md`.
 
 **Gueltig ab:** Phase 1 (2026-11-18). Aenderungen an Palette, Perspektive oder
 LOD-Regeln brauchen eine eigene Lane und einen neuen Audit.
