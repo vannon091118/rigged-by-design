@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-lod-live-evidence",
+  "claimId": "lane/governance/visual-phase2-lod-live-evidence",
+  "branch": "lane/governance/visual-phase2-lod-live-evidence",
+  "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
+  "phase": "READY",
+  "title": "Phase 2: LOD-Wechsel im Live-Lauf belegen",
+  "goal": "Drei Sichtbelege (FIT-Pin, Zoom-Rig, Rueckkehr) aus dem laufenden Produktionsbuild, Doku korrigieren, Regressionstest fuer setDetail.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit und PR; danach Merge und Closeout.",
+  "revision": 1
+}

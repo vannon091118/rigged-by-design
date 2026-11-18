@@ -1586,8 +1586,10 @@ Die Screenshots sind physikalisch mit DPR 2 aufgenommen; die CSS-Viewports entsp
 
 ## LOD-Befund
 
-- Detail ab `1,16 × fit`, aus unter `1,08 × fit`; der Pin laedt drei Atlas-Sprites, ohne Atlas zeichnet `drawActorSilhouette`.
-- Belege: `actor-silhouette.test.ts`, `atlas-environment.test.ts`, `guest-lod-evidence.png` (DPR 1/2).
+- Detail ab `1,16 × fit`, aus unter `1,08 × fit`; bei `1,00 × fit` ist der Pin damit immer die kleinste Stufe. Der Pin laedt drei Atlas-Sprites, ohne Atlas zeichnet `drawActorSilhouette`.
+- Ein Live-Lauf im Produktionsbuild belegt den Wechsel ohne erzwungene Sichtbarkeit: `lod-fit-pins.png` (FIT, `detail=false`, `pin.visible=true`), `lod-fit-detail.png` (`1,82 × fit`, `detail=true`, Figur sichtbar) und `lod-fit-return.png` (zurueck auf FIT, wieder Pin).
+- `guest-lod-evidence.png` (DPR 1/2) zeigt die Sprite-Qualitaet der drei Kopffamilien, keinen LOD-Wechsel; als Wechsel-Beleg war die Beschreibung zu weit.
+- Belege: `actor-silhouette.test.ts`, `atlas-environment.test.ts`, `guest-rig-detail.test.ts`, `lod-fit-pins.png`, `lod-fit-detail.png`, `lod-fit-return.png`.
 
 ## Asset-Pfad
 
