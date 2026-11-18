@@ -1,8 +1,8 @@
 {
   "version": 1,
   "taskId": "visual-phase0-baseline",
-  "claimId": "lane/visual/phase0-baseline",
-  "branch": "lane/visual/phase0-baseline",
+  "claimId": "lane/governance/visual-phase0-baseline",
+  "branch": "lane/governance/visual-phase0-baseline",
   "baseSha": "df4789cfa2ecd1231b6f0440918bc2742e8359e0",
   "phase": "IMPLEMENTING",
   "title": "Phase 0: Baseline und Beweissicherung",
