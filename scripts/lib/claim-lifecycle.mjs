@@ -95,6 +95,30 @@ export function planRetention({
   };
 }
 
+/**
+ * Branch-Status fuer bereits gemergte Claims.
+ *
+ * `planReconcile` liefert Evidenz nur fuer Claims, die es gerade umstellt. Ein
+ * Claim, der schon `merged` ist, dessen Task aber noch in READY/IMPLEMENTING
+ * steht, braucht denselben Beleg - sonst bleibt der Parity-Befund des doctor
+ * dauerhaft stehen. `heads === null` heisst unerreichbar und bleibt `unknown`;
+ * ein noch vorhandener Branch bleibt `pending`.
+ */
+export function mergedClaimEvidence({ claims = [], heads = null } = {}) {
+  const evidence = new Map();
+  for (const claim of claims) {
+    if (claim?.status !== 'merged' || !claim.id) continue;
+    const branchCleanup =
+      heads === null
+        ? { state: 'unknown', evidence: 'remote-heads-unreadable' }
+        : heads.has(claim.branch)
+          ? { state: 'pending', evidence: 'remote-branch-present' }
+          : { state: 'done', evidence: 'remote-branch-absent' };
+    evidence.set(claim.id, { branchCleanup });
+  }
+  return evidence;
+}
+
 /** Ein Task schliesst nur mit belastbarem Merge-Beleg und ohne offenen Blocker. */
 export function planTaskCloseout({ tasks = [], claims = [], evidenceByClaim = new Map() } = {}) {
   const claimById = new Map(claims.map((claim) => [claim?.id, claim]));

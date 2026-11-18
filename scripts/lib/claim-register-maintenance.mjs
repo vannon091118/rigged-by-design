@@ -4,8 +4,8 @@
  */
 import { execFileSync } from 'node:child_process';
 import { unlinkSync } from 'node:fs';
-import { join } from 'node:path';
-import { claimEntryPath, planRetention } from './claim-lifecycle.mjs';
+import { join, relative, sep } from 'node:path';
+import { planRetention } from './claim-lifecycle.mjs';
 import { loadTaskContracts } from './task-contract.mjs';
 import { auditTaskClaimParity, validateNewClaim } from './lane-claims.mjs';
 
@@ -22,11 +22,27 @@ function currentBranch(cwd) {
   }
 }
 
-function claimEntryList(all, files) {
+/** Letzter Commit der Datei; ohne Historie 0, dann entscheidet der Name. */
+function commitTime(cwd, file) {
+  try {
+    return Number(
+      execFileSync('git', ['log', '-1', '--format=%ct', '--', file], {
+        cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim(),
+    ) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+// Der Pfad kommt aus dem Register, nicht aus der ID: aeltere Lane-Dateien
+// tragen einen anderen Namen als ihr Slug. `claimEntryPath` wuerde eine Datei
+// erfinden, die es nicht gibt, und `prune` koennte sie nie entfernen.
+function claimEntryList(all, files, cwd) {
   return all.map((claim) => ({
-    file: files.has(claim.id) ? claimEntryPath(claim.id) : null,
+    file: files.has(claim.id) ? relative(cwd, files.get(claim.id)).split(sep).join('/') : null,
     claim: claim.toJSON(),
-    committedAt: 0,
+    committedAt: files.has(claim.id) ? commitTime(cwd, files.get(claim.id)) : 0,
   }));
 }
 
@@ -37,8 +53,10 @@ function retentionFor({ all, files, taskList, cwd, keep = undefined }) {
     .filter((entry) => entry.contract.branch === branch || protectedClaimIds.includes(entry.contract.claimId))
     .map((entry) => entry.file);
   return planRetention({
-    tasks: taskList,
-    claims: claimEntryList(all, files),
+    // Dieselbe Sortierbasis wie `reconcile-claims`; sonst raeumen beide
+    // Werkzeuge unterschiedliche Dateien weg.
+    tasks: taskList.map((entry) => ({ ...entry, committedAt: commitTime(cwd, entry.file) })),
+    claims: claimEntryList(all, files, cwd),
     keep,
     protectedClaimIds,
     protectedTaskFiles,
