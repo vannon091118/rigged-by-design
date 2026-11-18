@@ -967,7 +967,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-audit-count-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-audit-count.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
@@ -1087,7 +1087,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/visual-phase1-audit-count-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/visual-phase1-audit-count.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/visual-phase1-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-head-03-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/visual-phase1-head-03-closeout-final.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/visual-phase1-head-03.json` — { — gelesen: 23 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
