@@ -6,15 +6,14 @@
 Casino-Assets fuer Phase 1, plus die Liste dessen, was fuer Wohnung, Strasse
 und NPC-Pipeline fehlt.
 
-**Stand:** 2026-11-18 · Basis `d7844ba0`, `head-03-01` nach Freigabe ergaenzt ·
+**Stand:** 2026-11-18 · Basis `d7844ba0` ·
 Kontaktbogen
 [`environment-contact-sheet.png`](visual-rework/phase1/environment-contact-sheet.png)
 
 ## 1. Methode
 
-Der Kontaktbogen wird mit `node scripts/build-art-contact-sheet.mjs` erzeugt. Er
-zeigt 27 Assets in zeilenweiser Reihenfolge (5 Spalten); die Tabelle nennt
-dieselbe Reihenfolge und die Quellgroesse.
+Der Kontaktbogen wird mit `node scripts/build-art-contact-sheet.mjs` erzeugt:
+27 Assets, 5 Spalten, Quellgroesse.
 
 Klassen:
 
@@ -77,6 +76,3 @@ Diese Assets fehlen und werden **nicht** durch Platzhalter ersetzt:
 | LOD-Identitaetsframes | NPC-Pipeline | Die 12×16-Silhouette existiert als Zeichnung, aber nicht als Sprite-Set je Kopf-/Outfit-Familie. | 12×16 |
 | Konflikt-/Dispute-Icons | UI/Floor | Keine eigenen Icons fuer Streit, Hausverbot und Razzia; UI nutzt Text. | 16–24 px |
 
-## 5. head-03-01
-
-Negativsuche und Freigabe: Issue #1133. Die SVG-Quelle liegt im selben Atlas.
