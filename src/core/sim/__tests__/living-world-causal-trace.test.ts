@@ -19,6 +19,7 @@ import type { CityDecisionInput } from '../city-life-score';
 import type { CityResidentState } from '../city-life-types';
 import type { CityDecisionFamily, CityLifeDecision } from '../city-life-types';
 import { TICKS_PER_DAY } from '../clock';
+import { testEvent } from './test-log';
 
 const SEED = 424242;
 const DAYS = 5;
@@ -125,11 +126,18 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
       mkdirSync(dirname(target), { recursive: true });
       writeFileSync(target, `${JSON.stringify(payload, null, 2)}\n`);
     }
-    console.log(`[living-world] seed=${SEED} days=${DAYS} decisions=${result.decisions.length} `
-      + `families=${FAMILIES.map((family) => `${family}:${counts.get(family) ?? 0}`).join(',')}`);
-    console.log(`[living-world] chain=${chain.meal.npcId} meal@${chain.meal.day}/${chain.meal.hour} `
-      + `memory=${chain.memory.outcome.memoryCreatedId}@${chain.memory.day}/${chain.memory.hour} `
-      + `use@${chain.use.day}/${chain.use.hour}->${chain.use.intent}`);
+    testEvent('living-world', 'lauf', {
+      seed: SEED,
+      days: DAYS,
+      decisions: result.decisions.length,
+      families: Object.fromEntries(FAMILIES.map((family) => [family, counts.get(family) ?? 0])),
+      chain: {
+        npc: chain.meal.npcId,
+        meal: `${chain.meal.day}/${chain.meal.hour}`,
+        memory: `${chain.memory.outcome.memoryCreatedId}@${chain.memory.day}/${chain.memory.hour}`,
+        use: `${chain.use.day}/${chain.use.hour}->${chain.use.intent}`,
+      },
+    });
   });
 
   it('fuehrt Bargeld als eigene money-Gegenprobe statt environment', () => {

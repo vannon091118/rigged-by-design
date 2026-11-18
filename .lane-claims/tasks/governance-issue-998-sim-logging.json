@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-998-sim-logging",
+  "claimId": "lane/governance/issue-998-sim-logging",
+  "branch": "lane/governance/issue-998-sim-logging",
+  "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
+  "phase": "IMPLEMENTING",
+  "title": "Sim-Tests loggen strukturiert statt mit console.log",
+  "goal": "Alle console.log-Aufrufe in den Sim-Testdateien durch strukturiertes Logging ersetzen und verify:light samt betroffenen Suiten gruen belegen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Commit erstellen, Branch pushen und PR gegen main mit review-waiting oeffnen",
+  "revision": 1
+}

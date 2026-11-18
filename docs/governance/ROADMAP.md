@@ -25,7 +25,7 @@
 | P-13 | Textbausteine, Zahl aus der Registry | [Detail](../ROADMAP-DETAIL.md) |
 
 ## Jetzt
-M1/M2 belegt; offen: S1-06, S2-08 bis S2-12 und PR-02 bis PR-07. M3: Art, Atlas, drei Koepfe, NPC-Rig, LOD, Editor belegt; Sicht offen.
+M1/M2 belegt; offen: S1-06, S2-08 bis S2-12 und PR-02 bis PR-07. M3: Art, Atlas, drei Koepfe, NPC-Rig, LOD, Editor belegt; Sicht offen; Tests strukturiert, bewacht.
 
 ## Als Naechstes
 M3 Render-Rework (R0-R6) mit Browserbeleg, dann M4.
