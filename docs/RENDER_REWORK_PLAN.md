@@ -1561,3 +1561,61 @@ ihre eigenen Belege vorliegen.
   Sichtwahrheit; der Pfad liegt ausserhalb dieses Repos.
 - [`screenshots/current/`](screenshots/current/) — kanonischer Satz für die
   Sichtabnahmen; Vergleichsbilder liegen unter `screenshots/comparison/`.
+
+## Phase 0 — Baseline 2026-11-18
+
+
+Stand: `main @ df4789cf` (2026-11-18), Branch `lane/visual/phase0-baseline`, Issue #1124.
+
+## Umgebung
+
+- Cloud-Runner mit Vite 8.3.5, Dev-Server auf Port 3000, Produktions-Build grün (1,13 s).
+- **WebGL/WebGPU-Seiten lassen sich im Cloud-Browser nicht capturen.** Screenshot und CDP laufen in Timeouts, auch bei einer minimalen Pixi-Seite. Mit `preference: 'canvas'` ist dieselbe Seite sofort screenshotbar. Die Ursache liegt in der Browser-Umgebung, nicht in der App.
+- Für die Baseline wurde der Floor vorübergehend auf den Canvas-Renderer gestellt und über einen temporären Iframe-Harness je Viewport geladen. **Beide Eingriffe sind nicht Teil dieses Commits**; `src/render/floor-stage.tsx` ist unverändert.
+
+## Screenshots
+
+| Datei | Viewport | Zustand |
+|---|---|---|
+| `visual-rework/baseline/360x640.png` | 360×640 | Casino-Floor mit HUD, 1 Gast, Storage-Hinweis |
+| `visual-rework/baseline/390x844.png` | 390×844 | Casino-Floor mit HUD, 2 Gästen, Fit-Zoom |
+| `visual-rework/baseline/768x1024-boot-splash.png` | 768×1024 | nur Splash „RIGGED BY DESIGN“, App bootet nicht |
+| `visual-rework/baseline/fresh-start-loader-390x844.png` | 390×844 | nach `localStorage.clear()` bleibt der Loader „STARTET…“ stehen |
+
+Die Screenshots sind physikalisch mit DPR 2 aufgenommen; die CSS-Viewports entsprechen den Dateinamen.
+
+## LOD-Befund
+
+- `floor-camera.ts:58-63` schaltet Detail erst oberhalb von `1,16 × fit` ein und unter `1,08 × fit` aus.
+- `guest-paint.ts:134` zeichnet im Übersichts-LOD `drawActorSilhouette`; die Silhouette ist laut `actor-silhouette.ts:10` nur `12×16` (Kopf 4, Körper 6, Bein 3).
+- In der normalen Ansicht sind Gäste damit farbige Pins ohne erkennbare Kleidung oder Gesicht. Das ist auf `360x640.png` und `390x844.png` sichtbar.
+- Belege: `actor-silhouette.test.ts` (12×16, 24×32, 5 Personas), `floor-cache.test.ts` (`lodFor` 1,12 → false, 1,13 → true). Beide grün, zusammen mit `textures-preload.test.ts` **9/9**.
+
+## Asset-Pfad
+
+- Alle 17 Environment-SVGs sind getrackt und im Runtime-Map von `manifest.json` (ab Zeile 1564) sowie in `keys.ts` registriert.
+- `atlas.folders.environment` enthält nur die zwei PNG-Tiles. Der Produktions-Atlas wird aus `*.png` gebaut; `atlas-png.mjs:57` akzeptiert ausschließlich 8-Bit-RGBA-PNGs. SVGs können dort nicht direkt hinein.
+- Entscheidung: `@resvg/resvg-js` als Dev-Dependency, SVGs auf viewBox-Größe rastern, PNGs unter `environment/atlas/` ablegen, `build-asset-manifest.mjs` erweitern und die Atlasseiten neu bauen. Danach `textures-preload.test.ts` auf Atlas-Mitgliedschaft statt Einzel-URL umstellen.
+- **Governance-Hinweis:** `package.json` und `pnpm-lock.yaml` stehen in `META_FILES` und sind für normale Lanes gesperrt. Phase 1 braucht dafür eine Governance-/Dependency-Lane oder eine ausdrückliche Freigabe.
+
+## Apartment und Customization
+
+- `player-apartment.ts` beschreibt ein kanonisches 16×16-Layout mit fünf Zonen (Schlafen, Wohnen, Bad, Küche, Flur), neun Möbeln inklusive Toilette und Waschbecken, Spawn am Bett und Haustür.
+- `room-dressing.ts` kennt nur `BAR`, `EXCHANGE`, `GAMING` und `STORAGE`. Für Apartment-Zonen gibt es **kein** Dressing; Bad, Küche und Wohnbereich bleiben leer.
+- Die Möbel stehen hart in `APARTMENT_FURNITURE_RAW`. Ein freies Platzieren gibt es nur für Casino-Möbel/Kisten (`canPlaceAt`, `use-crate-actions`), nicht in der Wohnung und nicht im Save.
+- Volle Customization braucht daher: datengetriebenes Möbelmodell, Platzierungs- und Kollisionsregeln, Save-Schema/Migration, Edit-UI und Tests. Das ist ein eigener Schnitt vor der Straße, nicht ein Nebeneffekt des Renderings.
+
+## Offene Befunde
+
+1. **768×1024 bootet nicht** im Canvas-Harness: nach über 30 s nur Splash. Ursache offen (Canvas-Größe/DPR oder Layout).
+2. **Frischer Start bleibt im Loader** nach gelöschtem Save. Der vorhandene Spielstand rendert dagegen.
+3. **Cloud-Browser kann WebGL/WebGPU nicht screenshoten.** Phase 4 muss die echte WebGL-Darstellung auf einem Gerät/Browser prüfen; Canvas-Screenshots belegen nur Layout und Logik.
+4. **resvg ist eine native Dev-Dependency.** Installation und Reproduzierbarkeit im Build müssen Phase 1 bestehen.
+5. **Customization vergrößert Phase 3 deutlich.** Wohnung, Platzierung und Save sollten eigene PRs bleiben.
+
+## Nächste Phase
+
+1. Style Guide und Art-Needs anlegen.
+2. resvg-Atlas bauen und die 17 SVGs nachweisen.
+3. Danach NPC-Pipeline (Sprite-LOD, Gesichter, Editor=Produktion).
+4. Customization-Schnitt für das Apartment, erst danach Straße und öffentlicher Ort.
