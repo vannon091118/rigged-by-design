@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/install-hooks-stat-sync",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/install-hooks-stat-sync",
+  "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
+  "issue": 1118,
+  "task": "install-hooks.mjs: statSync nur bei Nicht-Windows (isFileModeIrrelevant immer true)",
+  "goal": "isFileModeIrrelevant() immer true zurueckgeben; statSync-Pruefung entfaellt auf Dateisystemen ohne exec-Bit",
+  "pathAllowlist": [
+    "scripts/install-hooks.mjs",
+    "docs/governance/LAST-CHANGES.md",
+    ".lane-claims/claims/lane-governance-install-hooks-stat-sync.json",
+    ".lane-claims/tasks/governance-install-hooks-stat-sync.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "192db0147186ab80bcd4980b9da227bb81d03e1d"
+}

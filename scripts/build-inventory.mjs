@@ -54,7 +54,12 @@ function describe(file) {
   if (file === 'docs/INVENTORY.md') {
     return { purpose: 'Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste', status: 'gepflegt: Marker und Abschnitt 18' };
   }
-  const size = statSync(join(ROOT, file)).size;
+  let size;
+  try {
+    size = statSync(join(ROOT, file)).size;
+  } catch {
+    return null;
+  }
   const buffer = readFileSync(join(ROOT, file));
   if (!TEXT.test(file) && buffer.includes(0)) {
     if (buffer.subarray(0, 4).toString('hex') === '89504e47') {
@@ -78,6 +83,7 @@ const rows = [];
 const risky = [];
 for (const file of tracked) {
   const info = describe(file);
+  if (!info) continue;
   rows.push(`- \`${file}\` — ${info.purpose} — ${info.status}`);
   if (info.risky) risky.push(file);
 }
@@ -144,3 +150,4 @@ if (check) {
 
 writeFileSync(inventoryPath, next);
 console.log(`inventory:build: ${rows.length}/${tracked.length} Dateien, ${dirs.length} Ordner, ${risky.length} Auffaelligkeit(en)`);
+

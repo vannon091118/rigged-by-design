@@ -51,6 +51,7 @@ function indexModes() {
   return modes;
 }
 
+
 /** Leer heisst: git ruft alle vier Hooks auf. */
 function hookProblems() {
   const problems = [];
@@ -109,3 +110,4 @@ if (remaining.length > 0) {
   process.exit(1);
 }
 console.log(`hooks: armiert: core.hooksPath=.githooks, ${HOOKS.length} Hooks aktiv (100755), Merge-Driver ${DRIVER_NAME} registriert`);
+

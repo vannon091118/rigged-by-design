@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/issue-1153-dead-code-default-exports",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/issue-1153-dead-code-default-exports",
+  "baseSha": "192db0147186ab80bcd4980b9da227bb81d03e1d",
+  "issue": 1153,
+  "task": "verify-dead-code Default-Exports wieder überspringen",
+  "pathAllowlist": [
+    "scripts/verify-dead-code.mjs",
+    ".lane-claims/claims/lane-governance-issue-1153-dead-code-default-exports.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "192db0147186ab80bcd4980b9da227bb81d03e1d"
+}

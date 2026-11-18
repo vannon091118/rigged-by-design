@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2225a51aa568f12540f4780eeb15b9c0760bb94d2b997935f697f214f0a43233",
+  "contentHash": "sha256:c0244d28c9c782e0faeb9e1f3a1247ff2beb47aa9318e6bbfeabef4afafffbb0",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -27498,6 +27498,31 @@
       "text": "Rita hat drei Gaeste bei 1x und 2x nebeneinandergelegt: Emil traegt die Kappe, Timo den runden Kopf, Kai den silbernen Bob. Die Namen stehen noch am Rand, aber die Konturen bleiben im kleinen Bild unterscheidbar; den Editor hat sie nicht angefasst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json"
+    },
+    {
+      "contributionId": "visual-phase2-lod-hysteresis-01",
+      "turnId": "2026-11-18T22:03Z-visual-phase2-lod-hysteresis",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita haelt zwei Kameraausdrucke nebeneinander: unten der Pin, oben der Rig. Dazwischen liegt ein Band, in dem die Figur bleibt, wie sie ist; erst oberhalb von 1,16 x Fit wird sie scharf, und unter 1,08 x Fit faellt sie in den Pin zurueck.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-18-visual-phase2-lod-hysteresis.json"
     },
     {
       "contributionId": "visual-phase2-lod-sprites-01",
