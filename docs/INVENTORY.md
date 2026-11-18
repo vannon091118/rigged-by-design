@@ -770,10 +770,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3541 |
-| Gelistete Dateien | 3541 |
+| Getrackte Dateien | 3543 |
+| Gelistete Dateien | 3543 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (187), .lanes (1), artifacts (1), bin (1), content (1252), docs (108), packages (27), public (573), scripts (232), src (1136) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (189), .lanes (1), artifacts (1), bin (1), content (1252), docs (108), packages (27), public (573), scripts (232), src (1136) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -787,8 +787,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 91 Datei(en)
-- `.lane-claims/tasks/` — 92 Datei(en)
+- `.lane-claims/claims/` — 92 Datei(en)
+- `.lane-claims/tasks/` — 93 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -936,6 +936,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json` — { — gelesen: 24 Zeilen
@@ -1026,6 +1027,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-install-hooks-stat-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1043-redundancy-budget.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1045-claim-reconcile.json` — { — gelesen: 17 Zeilen
@@ -3108,7 +3110,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/encode-audio.mjs` — Musik-Master zu Browser-Audio: die WAV-Dateien bleiben Master und liegen — gelesen: 79 Zeilen
 - `scripts/escalation-plan.mjs` — Druckt die Eskalationsstufe zu einem Befund. Ohne Argument liest er die — gelesen: 40 Zeilen
 - `scripts/init-github.sh` — Initialisiert das Repo, setzt .gitignore, macht den ersten Commit und legt — gelesen: 47 Zeilen
-- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 101 Zeilen
+- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 106 Zeilen
 - `scripts/install-webhook.mjs` — webhook:install — den Repo-Webhook idempotent anlegen (#943). — gelesen: 153 Zeilen
 - `scripts/integrate.mjs` — Integrationscontroller: eine Pruefung vor der CI, ein Reparaturpfad. — gelesen: 199 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 197 Zeilen
