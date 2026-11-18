@@ -4,14 +4,20 @@
   "claimId": "lane/governance/visual-phase1-audit-count",
   "branch": "lane/governance/visual-phase1-audit-count",
   "baseSha": "60b1d44b1dec6939913c15c78ae5dd34f5655349",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Phase 1: Audit-Summenzeile korrigieren",
   "goal": "Die Summenzeile in docs/art-needs.md an die Tabelle angleichen; keine Asset- oder Code-Aenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1131,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1131",
+    "state": "merged",
+    "headSha": "571b898a44fee144a64dabcf5c9992847a236cb2",
+    "mergeSha": "798e9095b0227d80cb2eebf0e795db33ce4504fd"
+  },
   "findings": [],
-  "nextAction": "Korrektur committen, PR oeffnen, mergen und Issue schliessen.",
-  "revision": 1
+  "nextAction": "Abgeschlossen; Phase 2 startet mit der NPC-Pipeline.",
+  "revision": 2
 }

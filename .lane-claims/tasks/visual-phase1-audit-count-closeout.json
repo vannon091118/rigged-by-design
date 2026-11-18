@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "visual-phase1-audit-count-closeout",
+  "claimId": "lane/governance/visual-phase1-audit-count-closeout",
+  "branch": "lane/governance/visual-phase1-audit-count-closeout",
+  "baseSha": "798e9095b0227d80cb2eebf0e795db33ce4504fd",
+  "phase": "DONE",
+  "title": "Audit-Count-Closeout #1131",
+  "goal": "Register und Task-Vertrag nach dem Merge von PR #1131 nachziehen.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Automatisch nach Merge geschlossen; Closeout-PR nur fuer das Register.",
+  "revision": 1
+}
