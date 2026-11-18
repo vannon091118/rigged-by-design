@@ -942,7 +942,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 83 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-narrative-fix.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1100-hook-arming.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-issue-1100-hook-arming.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -1021,7 +1021,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1090-loc-refactor.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-narrative-fix.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-verify-all.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-1100-hook-arming.json` — { — gelesen: 16 Zeilen
+- `.lane-claims/tasks/governance-issue-1100-hook-arming.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
