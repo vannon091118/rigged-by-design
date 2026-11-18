@@ -1,5 +1,0 @@
-- [project-goals](MEMORY-SESSION-2026-11-18.md) — 2D-HD-Pixel-Art-Spiel für Smartphone/Browser, kein Casino-Fokus, Sichtbarkeitsvertrag E1/E2/E3, Stil- und Verbotene-Dinge-Regeln
-- [working-methodology](MEMORY-SESSION-2026-11-18.md) — Inventur vor Code, art-needs.md, ein System pro Schritt, Screenshot VORHER/NACHHER bei 360×640, 2er-Agenten-Teams, Governance-Vertrag
-- [codebase-structure](MEMORY-SESSION-2026-11-18.md) — src/core headless, src/render PixiJS v8, src/ui React, src/store world-store, wichtige Dateien und Ordner
-- [adversarial-code-review](MEMORY-SESSION-2026-11-18.md) — 4-Phasen-Review (Drift Tracker → Governance → Gamedesign → Tooling), A–F Noten, Konsolidierung in AUDIT-FINAL.md, alle 13 kritischen D–F Befunde aufgelöst (Gesamtnote B, 0 kritisch, 5 mittel)
-- [governance](MEMORY-SESSION-2026-11-18.md) — Owner vannon091118 (Admin), separater Maintainer vannon091118-maintainer, Claim-System als Support nicht als Gate, FREEZE-0 bewusst ohne Required-Status-Checks/Rulesets (P0-Tagesbericht erwartet exit=0)
