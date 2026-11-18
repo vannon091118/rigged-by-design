@@ -118,3 +118,16 @@ Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check 
 - `pnpm install` ruft `prepare` auf; `node scripts/install-hooks.mjs` setzt `core.hooksPath=.githooks`, macht alle vier Hooks auf 100755 und registriert den Merge-Driver. Ohne diesen Schritt ruft git keinen Hook auf.
 - `pnpm hooks:check` prueft denselben Zustand (Pfad, Index-Modus, Ausfuehrbarkeit) und faellt sonst mit `ERR-4018`. Das Gate `verify:contracts` ruft genau diesen Modus auf: ein Klon ohne scharfe Hooks ist im ersten regulaeren Verify sichtbar rot, statt still ohne Gate zu committen.
 - `--no-verify` ueberspringt einen Hook einmalig, aendert aber nichts am Hook-Zustand; der naechste Verify-Lauf prueft ihn erneut.
+
+### Nachhol-Erkennung nach `--no-verify`
+
+Ein uebersprungener Hook bleibt lokal sichtbar: der Push prueft unabhaengig vom Commit-Pfad. Belegt im frischen Klon (`d086e152`, Hooks armiert):
+
+| Verstoss (Commit mit `--no-verify`) | blockiert in | Exit |
+| --- | --- | --- |
+| Datei ohne Lane-Claim | `claim-preflight` (ERR-4019) | 1 |
+| Aenderung ohne Doku-Nachtrag | `verify-docs --drift` (ERR-4023) | 1 |
+| Doku ueber Token-Budget | `verify-docs` (ERR-4017) | 1 |
+| Konflikt in Handdateien | `integrate --check` (ERR-4019) | 1 |
+
+Die Commit-Nachricht prueft kein Push-Hook; Nachzug ist `pnpm verify:commit-msg` (ERR-4006, Exit 1) bzw. `local-ci.mjs`, das dieselbe Zeile fuehrt.
