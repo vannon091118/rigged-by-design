@@ -4,7 +4,7 @@
   "claimId": "lane/governance/visual-phase2-editor-heads",
   "branch": "lane/governance/visual-phase2-editor-heads",
   "baseSha": "fe40db6ba2e6b6447cde11b62bb01e28512e0da3",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Phase 2: Charaktereditor waehlt Kopffamilie und Haarton",
   "goal": "Kopffamilie als Look-Feld fuehren, im Charaktereditor waehlen und dieselbe Kopftextur sowie denselben Haarton in Vorschau und Floor zeigen.",
   "taskType": "single",
@@ -18,6 +18,6 @@
     "mergeSha": "0e9d95eea3005978ffbaae9fe8e4fa3e273e7edb"
   },
   "findings": [],
-  "nextAction": "Nachsorge: Issue #1145 mit RELEASE schliessen, Lane-Branch loeschen, main verifizieren.",
-  "revision": 4
+  "nextAction": "Abgeschlossen; LOD-Sprite-Set je Familie und Sichtabnahme bei 1x/2x bleiben offen.",
+  "revision": 5
 }
