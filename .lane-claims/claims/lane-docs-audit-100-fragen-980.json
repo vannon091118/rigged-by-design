@@ -12,6 +12,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "5dfbbb9edc88273966b660920ba3c0af3a22b383"
+  "status": "archived",
+  "createdAt": "5dfbbb9edc88273966b660920ba3c0af3a22b383",
+  "releasedAt": "2026-11-18T05:12:39.124Z",
+  "releasedReason": "Issue #980 am 2026-11-17 geschlossen; Doku-Beleg steht auf main in docs/AUDIT.md; kein Branch mehr am Remote."
 }

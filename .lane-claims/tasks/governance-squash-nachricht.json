@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "taskId": "governance-squash-nachricht",
+  "claimId": "lane/governance/squash-nachricht",
+  "branch": "lane/governance/squash-nachricht",
+  "baseSha": "a8f6f6fd5f42d00043b9c2d2e807c4b00aa12af6",
+  "phase": "IMPLEMENTING",
+  "title": "Squash-Nachricht aus dem PR-Body, Audit-Stand nachziehen",
+  "goal": "Ein Squash-Merge erzeugt nachweislich eine konforme Commit-Nachricht; docs/AUDIT.md nennt den verifizierten Stand.",
+  "taskType": "single",
+  "holdMerge": false,
+  "findings": [],
+  "nextAction": "Nachrichtenbauer testen, Audit-Stand schreiben, Gates fahren, PR mergen.",
+  "revision": 1
+}

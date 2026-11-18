@@ -7,6 +7,7 @@
 **Untersuchter Commit:** `52f02ec9150918922ba3720afc1a32da819eb906` (= `origin/main`, `fix(#887): Pin- und State-Vertrag … (#936)`, 2026-11-16 00:23 +0100)
 **Bestandsaufnahme:** 2026-11-15/16 · Arbeitsbaum = dieser SHA + fremde WIP zu #809
 **Board-Stand:** 96 offene Issues, 3 offene PRs zu Beginn (#933 gemergt während des Laufs), 132 Claims
+**Nachtrag 2026-11-18:** Der Prüfstand ist heute grün — `pnpm run verify` (quick, inkl. Suite) und `pnpm run verify:release` laufen auf `a8f6f6fd` durch, offen sind 8 Issues und 0 PRs, #782 ist gemergt. Die Zahlen dieser Bestandsaufnahme gelten für den 15./16.11.
 
 ## Methodik
 
@@ -22,6 +23,8 @@ Gemessene Grundlagen dieses Audits:
 | `verify-narrative-blocks` | PASS — **787/1500 gewertet, 1182 gesamt**, 14 Pools ≥ 50 |
 | Branch-Schutz (GitHub API) | `enforce_admins: true`, Force-Push/Löschen verboten, **0 Pflicht-Reviews, keine Required-Checks** |
 | Gate-Plan (`pipeline-plan.mjs`) | light 11 · dev 12 · fast 15 · quick 15 · full 17 · release 17 · 8 Profile |
+
+**Nachtrag 2026-11-18:** Diese Messwerte sind der Audit-Stand vom 15./16.11. und bleiben als Beleg stehen. Heute sind `verify:light`, `verify` (quick) und `verify:release` grün; die Suite läuft durch.
 
 ## Statusverteilung
 
@@ -748,7 +751,7 @@ Gegenprobe: Zwischen Tag und „spielbarer Build“ liegt **keine** Browserabnah
 Nebenbefund: Damit kann eine formal erfolgreiche Auslieferung stattfinden, deren Bildstand älter ist als der Code — genau der Fall, den PR-08 verhindern soll.
 Domäne: Release, alle. Prio P1 · **#656**, **#795**.
 
-## Board-Bereinigung (Stand 2026-11-15, 96 offene Issues)
+## Board-Bereinigung (Stand 2026-11-15, damals 96 offene Issues)
 
 Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig beschrieben) · **SPLIT** (zu groß) · **MERGE** (doppelt) · **CLOSE** (erledigt/gegenstandslos) · **BLOCKED** (Blockade benannt). Jedes offene Issue erscheint genau einmal.
 
@@ -773,6 +776,8 @@ Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig
 **Label-Befund:** #852 und #822 tragen **kein** `zustand-*`-Label (2 von 96). #940/#941/#942 sind korrekt gelabelt.
 
 ## Empfohlene Merge-Reihenfolge
+
+**Nachtrag 2026-11-18:** Wellen 0–2 sind abgearbeitet; #942, #927, #864, #782, #940, #941 und #884 sind geschlossen. Die Reihenfolge bleibt als damalige Empfehlung dokumentiert.
 
 **Welle 0 — Nachweis reparieren (sequenziell, blockiert alles)**
 1. **#942** — zwei rote Tests, Katalog, LOC. Ohne grünen `verify:fast` ist jede weitere Abnahme wertlos.
@@ -825,10 +830,12 @@ Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig
 
 **Das Goal-Issue bleibt offen**, bis die MERGE-Verdikte ausgeführt, #561/#563 entschieden und die fehlenden `prio-*`-Labels gesetzt sind.
 
+**Nachtrag 2026-11-18:** Goal-Issue #937 ist geschlossen; die mit MERGE verdikteten Issues (#763/#926, #634/#913, #888, #886) sind es ebenfalls. Offen bleiben die Maintainer-Entscheidungen zu #561/#563 (Label `zustand-CLOSED` bei GitHub-State `OPEN`) und die `prio-*`-Lücken.
+
 ## Verbleibende Risiken
 
-1. **Der Vor-PR-Nachweis ist auf `main` nicht grün** (#942, #927) — jede Lane arbeitet ohne belastbares Signal.
-2. **`board:sync --check` erkennt keinen veralteten Kopf** (#864) — der Lauf um 01:30Z meldete `drift: []`, während die Datei fünf Commits hinter `origin/main` lag. Nachgezogen: `head 7c309c2d`, `openIssuesCount 95`.
+1. **Der Vor-PR-Nachweis war am 15.11. rot** (#942, #927) — **erledigt am 2026-11-18:** beide Issues sind geschlossen, `pnpm run verify` (quick, inkl. Suite) und `verify:release` laufen auf `a8f6f6fd` grün.
+2. **`board:sync --check` erkannte am 15.11. keinen veralteten Kopf** (#864) — **erledigt:** `boardDrift` akzeptiert die Closeout-Relation `head == main^`; offen bleibt nur die Live-Lesbarkeit. Ohne `gh`-Token oder bei Rate-Limit meldet der Lauf `UNKNOWN` und keinen grünen Stand.
 3. **Die Rollentrennung ist Konvention, nicht Mechanik**: `required_approving_review_count: 0`, keine Required-Checks (API-Beleg). #909 ist die Folge, nicht die Ausnahme.
 4. **`service` und `cardDealing` versprechen Wirkung ohne Leser** (UD-07) — sichtbarer Fortschritt ohne mechanische Folge.
 5. **Ein Immobilienportfolio ist strukturell unmöglich** (`player.property` Singular) — Expansion würde eine Save-Migration erzwingen.
@@ -838,8 +845,7 @@ Verdikte: **KEEP** (aktuell, ausführbar) · **UPDATE** (aktuell, unvollständig
 
 ## Nächster ausführbarer Schritt
 
-**#942** — `[P0][QUALITY] Zwei rote Tests ohne WIP-Erklärung blockieren den Vor-PR-Nachweis`.
-Begründung: `player-jobs.test.ts:101` und `test-catalog.test.ts` sind ohne fremde WIP rot; solange sie rot sind, kann **kein** Issue dieser Liste mit grünem Nachweis abgeschlossen werden. Abhängigkeiten: keine. Danach **#782** (erste spielbare Handlung) als erstes Produkt-P0.
+**Nachtrag 2026-11-18:** Kein Nachweis-Issue blockiert mehr. #942 (rote Tests) und #782 (erste spielbare Handlung) sind gemergt, der Vor-PR-Nachweis ist grün; der letzte rote Punkt auf `main` war `verify:commit-msg --head` und wird durch den Merge dieser Lane mit dem PR-Body als Commit-Body geheilt. Ausführbar bleiben **#684** (P0, mechanische Erzwingung des Issue-Boards) sowie die Doku-Schulden #982, #984, #998 und #1100.
 
 
 ## Doku-Belege: Issue #980 — AUDIT-100 P1-Einträge

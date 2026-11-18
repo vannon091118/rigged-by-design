@@ -1,0 +1,28 @@
+{
+  "id": "lane/governance/squash-nachricht",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/squash-nachricht",
+  "baseSha": "a8f6f6fd5f42d00043b9c2d2e807c4b00aa12af6",
+  "issue": 1116,
+  "task": "Squash-Nachricht aus dem PR-Body bauen und Audit-Stand nachziehen",
+  "goal": "Squash-Merge erzeugt nachweislich eine konforme Commit-Nachricht; docs/AUDIT.md nennt den verifizierten Stand.",
+  "pathAllowlist": [
+    "scripts/lib/commit-msg.mjs",
+    "scripts/verify-commit-msg.mjs",
+    "scripts/merge-commit-message.mjs",
+    "scripts/lib/promote-merge.mjs",
+    "src/core/governance/__tests__/merge-commit-message.test.ts",
+    "docs/AUDIT.md",
+    "docs/ARCHITECTURE.md",
+    "docs/WORKFLOW-DETAIL.md",
+    "docs/CHANGELOG.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-squash-nachricht.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a8f6f6fd5f42d00043b9c2d2e807c4b00aa12af6"
+}

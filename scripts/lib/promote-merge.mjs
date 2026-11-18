@@ -1,7 +1,12 @@
 /**
  * Gruener Merge: erst PR-Status, Vertrag, Scope, Plan und Basis pruefen, dann
  * mit dem erhaltenen PR-Body auf dem exakten Kopf squashen. Kein Auto-Merge.
+ *
+ * Der Body wird vor dem Merge mit derselben Regel geprueft, die auch
+ * `verify-commit-msg` auf `main` anwendet: fehlen Pflichtsektionen, gibt es
+ * keinen Merge statt eines roten Kopf-Commits.
  */
+import { squashMessage } from './commit-msg.mjs';
 export function createMergeGreen({
   gh, git, headRef, verifiedPr, holdPromotion, readPlanArtifact, validatePlanArtifact,
   blockedIssues, contractHoldReason, mergeText, writeBodyFile, writeCiState, syncTaskLabels,
@@ -52,6 +57,14 @@ export function createMergeGreen({
     if (current === null) return holdPromotion(number, contract, 'PR-Body nicht lesbar');
     const composed = mergeText(current, ref);
     if (!composed.ok) return holdPromotion(number, contract, composed.reason);
+    const message = squashMessage({ title: subject(ref), body: composed.body });
+    if (!message.ok) {
+      return holdPromotion(
+        number,
+        contract,
+        `PR-Body traegt die Pflichtsektionen nicht: ${message.violations.map((hit) => hit.message).join('; ')}`,
+      );
+    }
 
     const bodyFile = writeBodyFile(composed.body, 'body.md');
     const merged = gh(['pr', 'merge', number, '--squash', '--match-head-commit', headSha, '--subject', subject(ref), '--body-file', bodyFile]) !== null;
