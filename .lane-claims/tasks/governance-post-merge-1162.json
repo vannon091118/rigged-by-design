@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "governance-post-merge-1162",
+  "claimId": "lane/governance/post-merge-1162",
+  "branch": "lane/governance/post-merge-1162",
+  "baseSha": "9e501873a96a786b6b59f0eb59fe77d9d333a436",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout #1162",
+  "goal": "Register und Task-Vertrag nach dem Merge von PR #1162 automatisch nachziehen.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Automatisch nach Merge geschlossen; Closeout-PR wird von PR Cleanup angelegt.",
+  "revision": 1
+}
