@@ -10,7 +10,7 @@
       "environment",
       "machines"
     ],
-    "frameCount": 171,
+    "frameCount": 172,
     "folders": {
       "characters": [
         "characters/arm-segment-01.png",
@@ -75,6 +75,7 @@
         "characters/leg-segment-13.png",
         "characters/leg-segment-14.png",
         "characters/leg-segment-15.png",
+        "characters/lod-families.svg",
         "characters/torso-outfit-01.png",
         "characters/torso-outfit-02.png",
         "characters/torso-outfit-03.png",
@@ -769,631 +770,638 @@
             "height": 48
           },
           {
-            "path": "machines/table-games/chip-stack-gold.png",
+            "path": "characters/lod-families.svg",
             "x": 256,
+            "y": 455,
+            "width": 36,
+            "height": 48
+          },
+          {
+            "path": "machines/table-games/chip-stack-gold.png",
+            "x": 292,
             "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "machines/table-games/chip-stack-green.png",
-            "x": 288,
+            "x": 324,
             "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "machines/table-games/chip-stack-violet.png",
-            "x": 320,
+            "x": 356,
             "y": 455,
             "width": 32,
             "height": 45
           },
           {
             "path": "characters/torso-outfit-05.png",
-            "x": 352,
+            "x": 388,
             "y": 455,
             "width": 35,
             "height": 44
           },
           {
             "path": "machines/table-games/chip-stack-blue.png",
-            "x": 387,
+            "x": 423,
             "y": 455,
             "width": 32,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-01.png",
-            "x": 419,
+            "x": 455,
             "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-03.png",
-            "x": 450,
+            "x": 486,
             "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-07.png",
-            "x": 481,
+            "x": 517,
             "y": 455,
             "width": 31,
             "height": 44
           },
           {
             "path": "characters/torso-outfit-02.png",
-            "x": 512,
+            "x": 548,
             "y": 455,
             "width": 30,
             "height": 44
           },
           {
             "path": "machines/table-games/chip-stack-red.png",
-            "x": 542,
+            "x": 578,
             "y": 455,
             "width": 32,
             "height": 43
           },
           {
             "path": "characters/torso-outfit-06.png",
-            "x": 574,
+            "x": 610,
             "y": 455,
             "width": 36,
             "height": 41
           },
           {
             "path": "machines/coin-tray.png",
-            "x": 610,
+            "x": 646,
             "y": 455,
             "width": 64,
             "height": 40
           },
           {
             "path": "characters/torso-outfit-04.png",
-            "x": 674,
+            "x": 710,
             "y": 455,
             "width": 36,
             "height": 40
           },
           {
             "path": "machines/chip-stack-blue.png",
-            "x": 710,
+            "x": 746,
             "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-gold.png",
-            "x": 742,
+            "x": 778,
             "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-green.png",
-            "x": 774,
+            "x": 810,
             "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-red.png",
-            "x": 806,
+            "x": 842,
             "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/chip-stack-violet.png",
-            "x": 838,
+            "x": 874,
             "y": 455,
             "width": 32,
             "height": 40
           },
           {
             "path": "machines/shot-glass.png",
-            "x": 870,
+            "x": 906,
             "y": 455,
             "width": 24,
             "height": 40
           },
           {
             "path": "characters/torso-outfit-08.png",
-            "x": 894,
+            "x": 930,
             "y": 455,
             "width": 36,
             "height": 38
           },
           {
             "path": "characters/head-01-01.png",
-            "x": 930,
+            "x": 966,
             "y": 455,
             "width": 32,
             "height": 36
           },
           {
             "path": "characters/head-01-02.png",
-            "x": 962,
-            "y": 455,
-            "width": 32,
-            "height": 36
-          },
-          {
-            "path": "characters/head-01-03.png",
             "x": 0,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-04.png",
+            "path": "characters/head-01-03.png",
             "x": 32,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-05.png",
+            "path": "characters/head-01-04.png",
             "x": 64,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-06.png",
+            "path": "characters/head-01-05.png",
             "x": 96,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-07.png",
+            "path": "characters/head-01-06.png",
             "x": 128,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-08.png",
+            "path": "characters/head-01-07.png",
             "x": 160,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-01-09.png",
+            "path": "characters/head-01-08.png",
             "x": 192,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-01.png",
+            "path": "characters/head-01-09.png",
             "x": 224,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-02.png",
+            "path": "characters/head-02-01.png",
             "x": 256,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-03.png",
+            "path": "characters/head-02-02.png",
             "x": 288,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-04.png",
+            "path": "characters/head-02-03.png",
             "x": 320,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-05.png",
+            "path": "characters/head-02-04.png",
             "x": 352,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-06.png",
+            "path": "characters/head-02-05.png",
             "x": 384,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-07.png",
+            "path": "characters/head-02-06.png",
             "x": 416,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-08.png",
+            "path": "characters/head-02-07.png",
             "x": 448,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-02-09.png",
+            "path": "characters/head-02-08.png",
             "x": 480,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "characters/head-03-01.svg",
+            "path": "characters/head-02-09.png",
             "x": 512,
             "y": 503,
             "width": 32,
             "height": 36
           },
           {
-            "path": "machines/table-games/dealer-button.png",
+            "path": "characters/head-03-01.svg",
             "x": 544,
+            "y": 503,
+            "width": 32,
+            "height": 36
+          },
+          {
+            "path": "machines/table-games/dealer-button.png",
+            "x": 576,
             "y": 503,
             "width": 36,
             "height": 32
           },
           {
             "path": "machines/table-games/card-shoe-marker.png",
-            "x": 580,
+            "x": 612,
             "y": 503,
             "width": 15,
             "height": 32
           },
           {
             "path": "characters/leg-segment-13.png",
-            "x": 595,
+            "x": 627,
             "y": 503,
             "width": 15,
             "height": 30
           },
           {
             "path": "characters/leg-segment-08.png",
-            "x": 610,
+            "x": 642,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-09.png",
-            "x": 624,
+            "x": 656,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-12.png",
-            "x": 638,
+            "x": 670,
             "y": 503,
             "width": 14,
             "height": 30
           },
           {
             "path": "characters/leg-segment-01.png",
-            "x": 652,
+            "x": 684,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-02.png",
-            "x": 665,
+            "x": 697,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-04.png",
-            "x": 678,
+            "x": 710,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-10.png",
-            "x": 691,
+            "x": 723,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-11.png",
-            "x": 704,
+            "x": 736,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-14.png",
-            "x": 717,
+            "x": 749,
             "y": 503,
             "width": 13,
             "height": 30
           },
           {
             "path": "characters/leg-segment-03.png",
-            "x": 730,
+            "x": 762,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-05.png",
-            "x": 742,
+            "x": 774,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "characters/leg-segment-06.png",
-            "x": 754,
+            "x": 786,
             "y": 503,
             "width": 12,
             "height": 30
           },
           {
             "path": "machines/table-games/suit-diamond.png",
-            "x": 766,
+            "x": 798,
             "y": 503,
             "width": 22,
             "height": 28
           },
           {
             "path": "characters/arm-segment-01.png",
-            "x": 788,
+            "x": 820,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-06.png",
-            "x": 802,
+            "x": 834,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-13.png",
-            "x": 816,
+            "x": 848,
             "y": 503,
             "width": 14,
             "height": 28
           },
           {
             "path": "characters/arm-segment-02.png",
-            "x": 830,
+            "x": 862,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-05.png",
-            "x": 843,
+            "x": 875,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-08.png",
-            "x": 856,
+            "x": 888,
             "y": 503,
             "width": 13,
             "height": 28
           },
           {
             "path": "characters/arm-segment-04.png",
-            "x": 869,
+            "x": 901,
             "y": 503,
             "width": 12,
             "height": 28
           },
           {
             "path": "characters/arm-segment-03.png",
-            "x": 881,
+            "x": 913,
             "y": 503,
             "width": 11,
             "height": 28
           },
           {
             "path": "characters/leg-segment-07.png",
-            "x": 892,
+            "x": 924,
             "y": 503,
             "width": 16,
             "height": 27
           },
           {
             "path": "characters/arm-segment-09.png",
-            "x": 908,
+            "x": 940,
             "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-11.png",
-            "x": 922,
+            "x": 954,
             "y": 503,
             "width": 14,
             "height": 27
           },
           {
             "path": "characters/arm-segment-10.png",
-            "x": 936,
+            "x": 968,
             "y": 503,
             "width": 14,
             "height": 26
           },
           {
             "path": "machines/table-games/suit-club.png",
-            "x": 950,
+            "x": 982,
             "y": 503,
             "width": 24,
             "height": 25
           },
           {
             "path": "machines/table-games/suit-spade.png",
-            "x": 974,
-            "y": 503,
+            "x": 0,
+            "y": 539,
             "width": 24,
             "height": 25
           },
           {
             "path": "environment/floor/city/doors/door.svg",
-            "x": 0,
+            "x": 24,
             "y": 539,
             "width": 96,
             "height": 24
           },
           {
             "path": "machines/table-games/poker-chip-single.png",
-            "x": 96,
+            "x": 120,
             "y": 539,
             "width": 26,
             "height": 24
           },
           {
             "path": "machines/table-games/suit-heart.png",
-            "x": 122,
+            "x": 146,
             "y": 539,
             "width": 24,
             "height": 24
           },
           {
             "path": "characters/footwear-part-14.png",
-            "x": 146,
+            "x": 170,
             "y": 539,
             "width": 24,
             "height": 18
           },
           {
             "path": "characters/footwear-part-01.png",
-            "x": 170,
+            "x": 194,
             "y": 539,
             "width": 23,
             "height": 18
           },
           {
             "path": "characters/footwear-part-09.png",
-            "x": 193,
+            "x": 217,
             "y": 539,
             "width": 21,
             "height": 18
           },
           {
             "path": "characters/footwear-part-10.png",
-            "x": 214,
+            "x": 238,
             "y": 539,
             "width": 21,
             "height": 18
           },
           {
             "path": "characters/footwear-part-11.png",
-            "x": 235,
+            "x": 259,
             "y": 539,
             "width": 20,
             "height": 18
           },
           {
             "path": "characters/footwear-part-13.png",
-            "x": 255,
+            "x": 279,
             "y": 539,
             "width": 19,
             "height": 18
           },
           {
             "path": "characters/footwear-part-03.png",
-            "x": 274,
+            "x": 298,
             "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-05.png",
-            "x": 284,
+            "x": 308,
             "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-07.png",
-            "x": 294,
+            "x": 318,
             "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-08.png",
-            "x": 304,
+            "x": 328,
             "y": 539,
             "width": 10,
             "height": 18
           },
           {
             "path": "characters/footwear-part-02.png",
-            "x": 314,
+            "x": 338,
             "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-04.png",
-            "x": 323,
+            "x": 347,
             "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-06.png",
-            "x": 332,
+            "x": 356,
             "y": 539,
             "width": 9,
             "height": 18
           },
           {
             "path": "characters/footwear-part-12.png",
-            "x": 341,
+            "x": 365,
             "y": 539,
             "width": 24,
             "height": 17
           },
           {
             "path": "characters/arm-segment-07.png",
-            "x": 365,
+            "x": 389,
             "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/arm-segment-12.png",
-            "x": 379,
+            "x": 403,
             "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/arm-segment-14.png",
-            "x": 393,
+            "x": 417,
             "y": 539,
             "width": 14,
             "height": 13
           },
           {
             "path": "characters/leg-segment-15.png",
-            "x": 407,
+            "x": 431,
             "y": 539,
             "width": 16,
             "height": 12
@@ -1697,6 +1705,7 @@
     "characters/leg-segment-13.png": "characters/leg-segment-13.png",
     "characters/leg-segment-14.png": "characters/leg-segment-14.png",
     "characters/leg-segment-15.png": "characters/leg-segment-15.png",
+    "characters/lod-families.svg": "characters/lod-families.svg",
     "characters/torso-outfit-01.png": "characters/torso-outfit-01.png",
     "characters/torso-outfit-02.png": "characters/torso-outfit-02.png",
     "characters/torso-outfit-03.png": "characters/torso-outfit-03.png",

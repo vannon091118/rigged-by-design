@@ -1586,10 +1586,8 @@ Die Screenshots sind physikalisch mit DPR 2 aufgenommen; die CSS-Viewports entsp
 
 ## LOD-Befund
 
-- `floor-camera.ts:58-63` schaltet Detail erst oberhalb von `1,16 × fit` ein und unter `1,08 × fit` aus.
-- `guest-paint.ts:134` zeichnet im Übersichts-LOD `drawActorSilhouette`; die Silhouette ist laut `actor-silhouette.ts:10` nur `12×16` (Kopf 4, Körper 6, Bein 3).
-- In der normalen Ansicht sind Gäste damit farbige Pins ohne erkennbare Kleidung oder Gesicht. Das ist auf `360x640.png` und `390x844.png` sichtbar.
-- Belege: `actor-silhouette.test.ts` (12×16, 24×32, 5 Personas), `floor-cache.test.ts` (`lodFor` 1,12 → false, 1,13 → true). Beide grün, zusammen mit `textures-preload.test.ts` **9/9**.
+- Detail ab `1,16 × fit`, aus unter `1,08 × fit`; der Pin laedt drei Atlas-Sprites, ohne Atlas zeichnet `drawActorSilhouette`.
+- Belege: `actor-silhouette.test.ts`, `atlas-environment.test.ts`, `guest-lod-evidence.png` (DPR 1/2).
 
 ## Asset-Pfad
 

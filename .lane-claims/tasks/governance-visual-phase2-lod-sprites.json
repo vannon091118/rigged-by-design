@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-visual-phase2-lod-sprites",
+  "claimId": "lane/governance/visual-phase2-lod-sprites",
+  "branch": "lane/governance/visual-phase2-lod-sprites",
+  "baseSha": "65a3deac38cb75b64080348b89fbcd244f68e9d3",
+  "phase": "IMPLEMENTING",
+  "title": "Phase 2: LOD-Sprite-Set je Kopffamilie bei 1x/2x",
+  "goal": "Ein 36x48-LOD-Sprite-Sheet mit drei Kopffamilien und den Layern Koerper/Kopf/Haar in den Atlas legen, per Tint in der Fernsilhouette nutzen und bei 1x/2x sichtpruefen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Sprite-Sheet, Atlasframe, LOD-Tint, Look-Key und Tests implementieren; 1x/2x-Beleg aufnehmen.",
+  "revision": 1
+}

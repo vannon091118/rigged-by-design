@@ -1,7 +1,9 @@
 /** Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. */
 import { Graphics, Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
-import { drawActorSilhouette, silhouetteHeadFor } from './actor-silhouette';
+import {
+  LOD_SPRITE_SHEET, drawActorSilhouette, lodHairColor, lodTextureFor, silhouetteHeadFor, type LodSpriteLayer,
+} from './actor-silhouette';
 import { ROLE } from './art-tokens';
 import { mountHead, paintFace as drawFace, paintHair, paintLookHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
 import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS, headFamilyFor, headTextureFor, type HeadFamily } from './guest-parts';
@@ -28,6 +30,10 @@ export class GuestPaint {
   readonly #isPlayer: boolean;
   #headSprite: Sprite | null;
   #hairMask: Sprite | null = null;
+  readonly #lodBody = new Sprite();
+  readonly #lodHead = new Sprite();
+  readonly #lodHair = new Sprite();
+  readonly #lodSprites = [this.#lodBody, this.#lodHead, this.#lodHair] as const;
   #headFamily: HeadFamily;
   readonly #hairTone = new Graphics();
   readonly #portrait: boolean;
@@ -50,6 +56,11 @@ export class GuestPaint {
     this.#headFamily = look?.head ?? headFamilyFor(headTextureFor(seed)) ?? 'head-01';
     this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait,
       isPlayer ? this.#headFamily : null);
+    for (const sprite of this.#lodSprites) {
+      sprite.anchor.set(0, 1);
+      sprite.visible = false;
+      nodes.lod.addChild(sprite);
+    }
     nodes.head.addChild(this.#hairTone);
     this.#syncHairMask();
     this.#applyParts(seed);
@@ -196,12 +207,27 @@ export class GuestPaint {
   #paintPin(): void {
     const { pin } = this.#nodes;
     pin.clear();
-    drawActorSilhouette(pin, {
-      outfit: this.#outfit,
-      skin: this.#skin,
-      hair: this.#hairColor,
-      head: silhouetteHeadFor(this.#headFamily),
-    });
+    const base = textureFor(LOD_SPRITE_SHEET);
+    if (base) {
+      this.#setLodSprite(this.#lodBody, base, 'body', this.#outfit);
+      this.#setLodSprite(this.#lodHead, base, 'head', this.#skin);
+      this.#setLodSprite(this.#lodHair, base, 'hair', lodHairColor(this.#hairColor));
+    } else {
+      for (const sprite of this.#lodSprites) sprite.visible = false;
+      drawActorSilhouette(pin, {
+        outfit: this.#outfit,
+        skin: this.#skin,
+        hair: this.#hairColor,
+        head: silhouetteHeadFor(this.#headFamily),
+      });
+    }
     if (this.#isPlayer) pin.circle(0, -8, 9).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
+  }
+
+  /** Weisses Alpha-Frame aus dem Sheet, per Tint auf den Look-Farbton gelegt. */
+  #setLodSprite(sprite: Sprite, base: Texture, layer: LodSpriteLayer, tint: number): void {
+    sprite.texture = lodTextureFor(base, silhouetteHeadFor(this.#headFamily), layer);
+    sprite.tint = tint;
+    sprite.visible = true;
   }
 }

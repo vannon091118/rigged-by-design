@@ -64,6 +64,6 @@ Fehlende Assets; Platzhalter ersetzen sie **nicht**:
 | Apartment-Boden/Wand | Wohnung | Nur Casino-Teppich und Damast-Tapete existieren; ruhige Wohnungs-Varianten fehlen. | 64/512 px |
 | Strassen-Infrastruktur | Strasse | Bordstein, Kreuzung, Hydrant, parkendes Auto und Muelltonne fehlen; Props decken nur Gehweg und Haltestelle. | 32–128 px |
 | NPC-Rig-Teile | NPC-Pipeline | Torso (8), Arme (14), Beine (15), Schuhe (14) sind Atlasframes je Seed; `head-03-01.svg` ist im Gast-Pool. Editor liest dieselben Frames. | 32 px Basis |
-| LOD-Identitaetsframes | NPC-Pipeline | 12×16-Silhouette mit Haarton und drei Kopfformen; Sprite-Set je Familie fehlt. | 12×16 |
+| LOD-Identitaetsframes | NPC-Pipeline | 36×48-Sheet mit drei Familien im Atlas. | 12×16 |
 | Konflikt-/Dispute-Icons | UI/Floor | Keine Icons fuer Streit, Hausverbot, Razzia; UI nutzt Text. | 16–24 px |
 

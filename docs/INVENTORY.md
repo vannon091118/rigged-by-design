@@ -769,10 +769,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3531 |
-| Gelistete Dateien | 3531 |
+| Getrackte Dateien | 3535 |
+| Gelistete Dateien | 3535 |
 | Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (181), .lanes (1), artifacts (1), bin (1), content (1251), docs (108), packages (27), public (572), scripts (232), src (1134) |
+| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (183), .lanes (1), artifacts (1), bin (1), content (1252), docs (108), packages (27), public (573), scripts (232), src (1134) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -786,12 +786,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 88 Datei(en)
-- `.lane-claims/tasks/` — 89 Datei(en)
+- `.lane-claims/claims/` — 89 Datei(en)
+- `.lane-claims/tasks/` — 90 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1247 Datei(en)
+- `content/narrative/contributions/` — 1248 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -814,7 +814,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `packages/gamescout/src/mcp/` — 1 Datei(en)
 - `packages/gamescout/src/types/` — 3 Datei(en)
 - `public/assets/casino/atlas/` — 2 Datei(en)
-- `public/assets/casino/characters/` — 70 Datei(en)
+- `public/assets/casino/characters/` — 71 Datei(en)
 - `public/assets/casino/decor/` — 28 Datei(en)
 - `public/assets/casino/environment/floor/` — 6 Datei(en)
 - `public/assets/casino/environment/floor/city/doors/` — 1 Datei(en)
@@ -974,6 +974,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
@@ -1053,6 +1054,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
@@ -2355,9 +2357,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-18-visual-head-03.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-editor-heads.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-heads.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-18-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 28009 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4993 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 28034 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4997 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -2374,7 +2377,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 208 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1621 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1619 Zeilen
 - `docs/ROADMAP-DETAIL.md` — Roadmap — Spiel und Präsentation — gelesen: 216 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
 - `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
@@ -2412,7 +2415,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 92 Zeilen
 - `docs/governance/AGENTS.md` — Agentenvertrag — gelesen: 28 Zeilen
 - `docs/governance/INDEX.md` — Doku-Index — gelesen: 22 Zeilen
-- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 23 Zeilen
+- `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 22 Zeilen
 - `docs/governance/PITFALLS.md` — Pitfalls — gelesen: 21 Zeilen
 - `docs/governance/ROADMAP.md` — Roadmap — gelesen: 34 Zeilen
 - `docs/run-budget.json` — { — gelesen: 12 Zeilen
@@ -2467,7 +2470,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/visual-rework/baseline/768x1024-boot-splash.png` — PNG-Textur — geprueft: PNG 816x1350, 183526 B
 - `docs/visual-rework/baseline/fresh-start-loader-390x844.png` — PNG-Textur — geprueft: PNG 816x1350, 356026 B
 - `docs/visual-rework/phase1/environment-contact-sheet.png` — PNG-Textur — geprueft: PNG 1056x1264, 111891 B
-- `docs/visual-rework/phase2/guest-lod-evidence.png` — PNG-Textur — geprueft: PNG 1400x1080, 188234 B
+- `docs/visual-rework/phase2/guest-lod-evidence.png` — PNG-Textur — geprueft: PNG 1400x1080, 161846 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 145 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
@@ -2499,7 +2502,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `packages/gamescout/tsconfig.json` — { — gelesen: 19 Zeilen
 - `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2993 Zeilen
 - `public/assets/casino/atlas/atlas-0.webp` — Binaerdatei — geprueft: Signatur, 186818 B
-- `public/assets/casino/atlas/atlas-1.webp` — Binaerdatei — geprueft: Signatur, 228360 B
+- `public/assets/casino/atlas/atlas-1.webp` — Binaerdatei — geprueft: Signatur, 228510 B
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -2562,6 +2565,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/characters/leg-segment-13.png` — PNG-Textur — geprueft: PNG 15x30, 875 B
 - `public/assets/casino/characters/leg-segment-14.png` — PNG-Textur — geprueft: PNG 13x30, 1038 B
 - `public/assets/casino/characters/leg-segment-15.png` — PNG-Textur — geprueft: PNG 16x12, 584 B
+- `public/assets/casino/characters/lod-families.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 36 48" shape-rendering="crispEdges — gelesen: 27 Zeilen
 - `public/assets/casino/characters/torso-outfit-01.png` — PNG-Textur — geprueft: PNG 31x44, 3242 B
 - `public/assets/casino/characters/torso-outfit-02.png` — PNG-Textur — geprueft: PNG 30x44, 2694 B
 - `public/assets/casino/characters/torso-outfit-03.png` — PNG-Textur — geprueft: PNG 31x44, 3220 B
@@ -4033,7 +4037,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/debug/runtime-probe-types.ts` — RBD Runtime Probe — Typen (DEV-only). — gelesen: 68 Zeilen
 - `src/debug/runtime-probe.ts` — RBD Runtime Probe — DEV-only, READ-ONLY Gameplay-Diagnose (Haupteinstieg). — gelesen: 47 Zeilen
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 50 Zeilen
-- `src/render/__tests__/actor-silhouette.test.ts` — import type { Graphics } from 'pixi.js'; — gelesen: 58 Zeilen
+- `src/render/__tests__/actor-silhouette.test.ts` — import type { Graphics } from 'pixi.js'; — gelesen: 74 Zeilen
 - `src/render/__tests__/ambient-late-texture.test.ts` — Die Lichttextur wird lazy geladen. Ein identischer Ambient-Plan darf den — gelesen: 36 Zeilen
 - `src/render/__tests__/ambient-plan.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 162 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
@@ -4055,7 +4059,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 123 Zeilen
 - `src/render/__tests__/floor-interact-unhandled.test.ts` — Regression #771: Der Switch im Floor-Interact hatte keinen exhaustiven — gelesen: 23 Zeilen
 - `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 161 Zeilen
-- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 93 Zeilen
+- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 102 Zeilen
 - `src/render/__tests__/light-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/locomotion.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/motion-preference.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 16 Zeilen
@@ -4072,18 +4076,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/staff-actor-state.test.ts` — Personal ist kein verschobener Wurzelknoten: Es bekommt Facing, Gang und — gelesen: 92 Zeilen
 - `src/render/__tests__/view-layers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 76 Zeilen
 - `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 64 Zeilen
-- `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 86 Zeilen
+- `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 127 Zeilen
 - `src/render/ambient-layer.ts` — Ambient-Schicht: statischer Schleier, statische Sonnenstrahlen und ein — gelesen: 109 Zeilen
 - `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 210 Zeilen
 - `src/render/apartment-furniture-art.ts` — Die Wohnung teilt die Möbelmechanik mit dem Casino, aber nicht dessen Optik: — gelesen: 81 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 190 Zeilen
-- `src/render/assets/__tests__/atlas-environment.test.ts` — Der Test faehrt den echten Produktionspfad `loadAtlas` + `textureFor` und — gelesen: 171 Zeilen
+- `src/render/assets/__tests__/atlas-environment.test.ts` — Der Test faehrt den echten Produktionspfad `loadAtlas` + `textureFor` und — gelesen: 191 Zeilen
 - `src/render/assets/__tests__/textures-preload.test.ts` — Rueckfall-Grenze: Der Test ruft die echte Produktionsfunktion — gelesen: 64 Zeilen
 - `src/render/assets/asset-semantics.json` — { — gelesen: 1319 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 175 Zeilen
-- `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 57 Zeilen
-- `src/render/assets/manifest.json` — { — generiert, 2145 Zeilen
+- `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 59 Zeilen
+- `src/render/assets/manifest.json` — { — generiert, 2154 Zeilen
 - `src/render/assets/textures.ts` — Texturen aus dem Pixel-Paket: erst der Laufzeit-Atlas, dann die Einzeldatei. — gelesen: 109 Zeilen
 - `src/render/city-actor-actions.ts` — Aktionen einer sichtbaren Stadtfigur: npcId statt Casino-Guest-ID. — gelesen: 28 Zeilen
 - `src/render/city-actor-sync.ts` — Stadtbewohner als Straßenfiguren. — gelesen: 140 Zeilen
@@ -4149,11 +4153,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/slot-symbols-extra.ts` — Zusatz-Symbole aus dem Pre-Alpha Pixel-Paket: gezeichnete Fallbacks, wenn die Textur nicht geladen ist. — gelesen: 191 Zeilen
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
-- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 115 Zeilen
+- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 118 Zeilen
 - `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 127 Zeilen
-- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 207 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 233 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 82 Zeilen
-- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Silhouette, Namensschild, Squash und Tap-Ring. — gelesen: 142 Zeilen
+- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Silhouette, Namensschild, Squash und Tap-Ring. — gelesen: 147 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
 - `src/render/light-pool.ts` — Licht als ein Layer, nicht als 16 gestapelte Ellipsen pro Zone. — gelesen: 81 Zeilen
 - `src/render/locomotion.ts` — Lauf- und Richtungsvertrag für Figuren. — gelesen: 37 Zeilen

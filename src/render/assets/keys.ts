@@ -27,6 +27,7 @@ export const ASSET = {
     door: 'environment/floor/city/doors/door.svg',
   },
   dealer: 'characters/head-02-01.png',
+  lodFamilies: 'characters/lod-families.svg',
   heads: [
     'characters/head-01-01.png',
     'characters/head-01-03.png',
@@ -48,6 +49,7 @@ export const RUNTIME_ART: readonly string[] = [
   ASSET.lightPool,
   ...Object.values(ASSET.floors),
   ...ASSET.heads,
+  ASSET.lodFamilies,
   ...Object.values(ASSET.city),
   'fx/particles/sparks/spark-01.png',
   'fx/particles/sparks/spark-02.png',

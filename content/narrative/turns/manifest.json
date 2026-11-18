@@ -4988,6 +4988,10 @@
     {
       "turnId": "2026-11-18T20:20Z-visual-phase2-editor-heads",
       "contributionId": "visual-phase2-editor-heads-01"
+    },
+    {
+      "turnId": "2026-11-18T20:48Z-visual-phase2-lod-sprites",
+      "contributionId": "visual-phase2-lod-sprites-01"
     }
   ]
 }
