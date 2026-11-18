@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "taskId": "governance-issue-1100-hook-route",
+  "claimId": "lane/governance/issue-1100-hook-route",
+  "branch": "lane/governance/issue-1100-hook-route",
+  "baseSha": "20df9e5fa0cd586a629f9746c5e2204e1b2c3f6f",
+  "phase": "IMPLEMENTING",
+  "title": "rbd-Route fuer hooks:check",
+  "goal": "Jede Governance-Zeile aus package.json hat genau eine rbd-Route",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "findings": [],
+  "nextAction": "Commit, PR, Merge; danach verify:all auf main.",
+  "revision": 1
+}

@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/issue-1100-hook-route",
+  "owner": "Integrator",
+  "branch": "lane/governance/issue-1100-hook-route",
+  "baseSha": "20df9e5fa0cd586a629f9746c5e2204e1b2c3f6f",
+  "issue": 1100,
+  "task": "rbd-Route fuer hooks:check",
+  "goal": "Jede Governance-Zeile aus package.json hat genau eine rbd-Route",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-issue-1100-hook-route.json",
+    ".lane-claims/tasks/governance-issue-1100-hook-route.json",
+    "scripts/lib/command-surface.mjs",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "20df9e5fa0cd586a629f9746c5e2204e1b2c3f6f"
+}
