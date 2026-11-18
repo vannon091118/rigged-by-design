@@ -772,24 +772,30 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3557 |
-| Gelistete Dateien | 3557 |
-| Getrackte Ordner | 124 |
-| Bereiche | .claude (2), .cron (2), (Wurzel) (10), .githooks (4), .github (5), .lane-claims (197), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
+| Getrackte Dateien | 3585 |
+| Gelistete Dateien | 3585 |
+| Getrackte Ordner | 130 |
+| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (15), .githooks (4), .github (5), .lane-claims (198), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
-- `./` — 10 Datei(en)
+- `./` — 15 Datei(en)
+- `.agents/skills/adversarial-code-review/` — 3 Datei(en)
+- `.agents/skills/adversarial-code-review/reports/` — 7 Datei(en)
+- `.agents/skills/run-rigged-by-design/` — 1 Datei(en)
 - `.claude/` — 1 Datei(en)
+- `.claude/skills/adversarial-code-review/` — 3 Datei(en)
+- `.claude/skills/adversarial-code-review/reports/` — 7 Datei(en)
 - `.claude/skills/run-rigged-by-design/` — 1 Datei(en)
+- `.codex/` — 1 Datei(en)
 - `.cron/` — 2 Datei(en)
 - `.githooks/` — 4 Datei(en)
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 98 Datei(en)
+- `.lane-claims/claims/` — 99 Datei(en)
 - `.lane-claims/tasks/` — 95 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
@@ -908,12 +914,34 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 ### 18.3 Dateien
 
+- `.agents/skills/adversarial-code-review/SKILL.md` — Adversarial Code Review — Rigged by Design (parallele Ausführung) — gelesen: 113 Zeilen
+- `.agents/skills/adversarial-code-review/drift-tracker.mjs` — Drift Tracker — Phase 0 des Adversarial Code Review — gelesen: 368 Zeilen
+- `.agents/skills/adversarial-code-review/driver.mjs` — import { readFileSync, existsSync, unlinkSync, writeFileSync, readdirSync } from 'fs'; — gelesen: 303 Zeilen
+- `.agents/skills/adversarial-code-review/reports/AUDIT-FINAL.md` — Adversarial Code Review — Finale Audit (Rigged by Design) — gelesen: 739 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-0-drift.md` — Adversarial Code Review — Phase 0: Drift Tracker (History-Analyse) — gelesen: 134 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-1-governance-A.md` — Phase 1 Governance — Zwischenbericht A (Adversarial Code Review) — gelesen: 150 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-1-governance-B.md` — Zwischenbericht Phase 1 (Governance) — Adversarial Code Review — gelesen: 125 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-1-governance.md` — Phase 1 Governance — Konsolidierter Bericht (Adversarial Code Review) — gelesen: 344 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-2-gamedesign-A.md` — Phase 2 (Gamedesign) — Zwischenbericht Sub-Agent A — gelesen: 231 Zeilen
+- `.agents/skills/adversarial-code-review/reports/phase-2-gamedesign-B.md` — Phase 2 Gamedesign — Zwischenbericht B (Adversarial Code Review) — gelesen: 224 Zeilen
+- `.agents/skills/run-rigged-by-design/driver.mjs` — Treiber für run-rigged-by-design Skill. — gelesen: 108 Zeilen
 - `.claude/settings.json` — { — gelesen: 15 Zeilen
+- `.claude/skills/adversarial-code-review/SKILL.md` — Adversarial Code Review — Rigged by Design (parallele Ausführung) — gelesen: 113 Zeilen
+- `.claude/skills/adversarial-code-review/drift-tracker.mjs` — Drift Tracker — Phase 0 des Adversarial Code Review — gelesen: 368 Zeilen
+- `.claude/skills/adversarial-code-review/driver.mjs` — import { readFileSync, existsSync, unlinkSync, writeFileSync, readdirSync } from 'fs'; — gelesen: 303 Zeilen
+- `.claude/skills/adversarial-code-review/reports/AUDIT-FINAL.md` — Adversarial Code Review — Finale Audit (Rigged by Design) — gelesen: 739 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-0-drift.md` — Adversarial Code Review — Phase 0: Drift Tracker (History-Analyse) — gelesen: 134 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-1-governance-A.md` — Phase 1 Governance — Zwischenbericht A (Adversarial Code Review) — gelesen: 150 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-1-governance-B.md` — Zwischenbericht Phase 1 (Governance) — Adversarial Code Review — gelesen: 125 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-1-governance.md` — Phase 1 Governance — Konsolidierter Bericht (Adversarial Code Review) — gelesen: 344 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-2-gamedesign-A.md` — Phase 2 (Gamedesign) — Zwischenbericht Sub-Agent A — gelesen: 231 Zeilen
+- `.claude/skills/adversarial-code-review/reports/phase-2-gamedesign-B.md` — Phase 2 Gamedesign — Zwischenbericht B (Adversarial Code Review) — gelesen: 224 Zeilen
 - `.claude/skills/run-rigged-by-design/driver.mjs` — Treiber für run-rigged-by-design Skill. — gelesen: 108 Zeilen
+- `.codex/hooks.json` — { — gelesen: 15 Zeilen
 - `.cron/SECURITY.md` — Sicherheit: GITHUB_TOKEN für Maintainer-Cronjob — gelesen: 22 Zeilen
 - `.cron/maintainer-prompt.md` — Maintainer-Cron-Prompt (Version 2.0) — gelesen: 39 Zeilen
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 20 Zeilen
-- `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 20 Zeilen
+- `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 19 Zeilen
 - `.githooks/post-merge` — Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877). — gelesen: 26 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
 - `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 113 Zeilen
@@ -922,7 +950,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
 - `.github/ISSUE_TEMPLATE/lane.md` — Markdown-Dokument — gelesen: 60 Zeilen
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
-- `.gitignore` — node_modules/ — gelesen: 28 Zeilen
+- `.gitignore` — node_modules/ — gelesen: 31 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
 - `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
@@ -952,6 +980,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-1090-narrative-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1153-dead-code-default-exports.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-governance-issue-574-entrance-convention.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
@@ -1125,7 +1154,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
 - `AGENTS.md` — Rigged by Design — Einstieg — gelesen: 8 Zeilen
+- `BATCH-PLAN.md` — Batch-Plan: Alle Findings lösen — Skalierbares Spiel + Einheitliche Governance — gelesen: 102 Zeilen
+- `CLAUDE.md` — CLAUDE.md — gelesen: 87 Zeilen
+- `MEMORY-SESSION-2026-11-18.md` — Memory — Adversarial Code Review Session (2026-11-18) — gelesen: 53 Zeilen
+- `MEMORY.md` — Markdown-Dokument — gelesen: 5 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 180 Zeilen
+- `SPRINT-PLAN.md` — Sprint/Batch-Plan: Behebung kritischer Audit-Befunde (Rigged by Design) — gelesen: 110 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `bin/rbd.mjs` — `rbd <gruppe> <aktion> [flags]` — die eine globale Befehlsoberflaeche. — gelesen: 77 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -3110,12 +3144,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge melden. — gelesen: 57 Zeilen
 - `scripts/build-art-contact-sheet.mjs` — Kontaktbogen fuer den Art-Audit: Environment-Assets und repraesentative — gelesen: 100 Zeilen
 - `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 177 Zeilen
-- `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 146 Zeilen
+- `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 153 Zeilen
 - `scripts/check-loc.mjs` — LOC-Guard fuer Produktcode und Werkzeuge. — gelesen: 74 Zeilen
 - `scripts/ci-status.mjs` — Kompakter CI-Status fuer den aktuellen PR-Kopf. — gelesen: 89 Zeilen
 - `scripts/ci-tag-release.mjs` — Tag und Release fuer die Version, die im gepushten Commit steht. — gelesen: 103 Zeilen
 - `scripts/claim-hygiene.mjs` — claim-hygiene: offene Claims gegen einen Issue-Status-Snapshot auditieren. — gelesen: 56 Zeilen
-- `scripts/claim-preflight.mjs` — Claim-Preflight vor dem Push: offene Claims, parallele Lanes und Rest-WIP. — gelesen: 73 Zeilen
+- `scripts/claim-preflight.mjs` — Claim-Preflight vor dem Push: offene Claims, parallele Lanes und Rest-WIP. — gelesen: 66 Zeilen
 - `scripts/claim-register.mjs` — Claim-Register: eine Datei pro Lane. — gelesen: 136 Zeilen
 - `scripts/compile-narrative-content.mjs` — NAR-10 content compiler. — gelesen: 72 Zeilen
 - `scripts/doc-audit.mjs` — Doku-Inventur und Budget-Nachweis. — gelesen: 55 Zeilen
@@ -3124,7 +3158,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/encode-audio.mjs` — Musik-Master zu Browser-Audio: die WAV-Dateien bleiben Master und liegen — gelesen: 79 Zeilen
 - `scripts/escalation-plan.mjs` — Druckt die Eskalationsstufe zu einem Befund. Ohne Argument liest er die — gelesen: 40 Zeilen
 - `scripts/init-github.sh` — Initialisiert das Repo, setzt .gitignore, macht den ersten Commit und legt — gelesen: 47 Zeilen
-- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 106 Zeilen
+- `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 113 Zeilen
 - `scripts/install-webhook.mjs` — webhook:install — den Repo-Webhook idempotent anlegen (#943). — gelesen: 153 Zeilen
 - `scripts/integrate.mjs` — Integrationscontroller: eine Pruefung vor der CI, ein Reparaturpfad. — gelesen: 199 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 197 Zeilen
@@ -3143,7 +3177,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/board-cursors.mjs` — Kommentar-Cursor fuer den Maintainer-State (#671). — gelesen: 168 Zeilen
 - `scripts/lib/board-read.mjs` — Board lesen mit zwei Wegen — ein Ergebnis. — gelesen: 90 Zeilen
 - `scripts/lib/board-state.mjs` — Board-State-Snapshot (#834): GitHub ist die Wahrheit, die Datei ist der Beleg. — gelesen: 135 Zeilen
-- `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 158 Zeilen
+- `scripts/lib/board-usage.mjs` — Board-Nutzung: das Issue ist die Wahrheit, nicht die lokale Datei. — gelesen: 156 Zeilen
 - `scripts/lib/body-paths.mjs` — Pfadklassen der Commit-/PR-Bodies. Eigene Datei, weil `body-sync.mjs` sonst — gelesen: 11 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 267 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
@@ -3175,7 +3209,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/doc-core-schema.mjs` — Der Doku-Vertrag: fuenf Pflichtdokus in `docs/governance/`, zwei Einstiege, — gelesen: 116 Zeilen
 - `scripts/lib/doc-core-structure.mjs` — Strukturpruefungen der Doku: Referenzen, drei Schichten, Owner-Hierarchie. — gelesen: 126 Zeilen
 - `scripts/lib/doc-core.mjs` — Der Doku-Kern: fuenf Pflichtdokus, ein Token-Budget, ein Cross-Check. — gelesen: 141 Zeilen
-- `scripts/lib/doc-drift.mjs` — Merge-Drift: Code ohne Doku ist ein Befund, kein Hinweis. — gelesen: 79 Zeilen
+- `scripts/lib/doc-drift.mjs` — Merge-Drift: Code ohne Doku ist ein Befund, kein Hinweis. — gelesen: 95 Zeilen
 - `scripts/lib/doc-parity.mjs` — Doku-Paritaet: `AGENTS.md`, `docs/CI.md` und `docs/GOVERNANCE.md` gegen den — gelesen: 111 Zeilen
 - `scripts/lib/doc-read.mjs` — Pflichtlektuere als Receipt: sieben Kerne, ein Hash je Dokument, ein Budget. — gelesen: 135 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 120 Zeilen
@@ -3209,7 +3243,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/lane-claim.mjs` — Ein einzelner Lane-Claim: Identitaet, Allowlist, Contracts und Serialisierung. — gelesen: 68 Zeilen
 - `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 64 Zeilen
 - `scripts/lib/loc-guard.mjs` — LOC-Guard-Kern: zaehlt Logikzeilen in src/ und scripts/ gegen die — gelesen: 147 Zeilen
-- `scripts/lib/merge-gate.mjs` — Merge-Gate: der serverseitige Zustand von `main`, lesbar und pruefbar. — gelesen: 73 Zeilen
+- `scripts/lib/merge-gate.mjs` — Merge-Gate: der serverseitige Zustand von `main`, lesbar und pruefbar. — gelesen: 75 Zeilen
 - `scripts/lib/merged-index.mjs` — Deterministischer Merge-Beleg-Index aus der lokalen Git-Historie. — gelesen: 180 Zeilen
 - `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 153 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 277 Zeilen
@@ -3277,7 +3311,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/worktree-isolation.mjs` — Technische Worktree-Isolation fuer Agenten. — gelesen: 91 Zeilen
 - `scripts/lib/worktree-lifecycle.mjs` — Worker-Worktree-Lifecycle: Neuaufbau nur mit belegtem Merge. — gelesen: 74 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt den vollstaendigen PR-Diff in einen abgegrenzten Automationsbereich. — gelesen: 145 Zeilen
-- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
+- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 37 Zeilen
 - `scripts/local-ci.mjs` — Der lokale CI-Runner. Er ersetzt die frueheren GitHub-Workflows fuer — gelesen: 95 Zeilen
 - `scripts/merge-commit-message.mjs` — Squash-Nachricht aus dem PR-Body: Titelzeile plus die drei Pflichtsektionen. — gelesen: 86 Zeilen
 - `scripts/merge-driver-generated.mjs` — merge-driver-generated: git-Merge-Driver fuer generierte Artefakte (#877). — gelesen: 92 Zeilen
@@ -3308,7 +3342,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 28 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 68 Zeilen
 - `scripts/verify-contracts.mjs` — Gate: Vertragseinhaltung global. — gelesen: 80 Zeilen
-- `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 117 Zeilen
+- `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 116 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker, flacher Wurzelbaum und interne Anker. — gelesen: 116 Zeilen
 - `scripts/verify-headless-core.mjs` — verify:headless - `src/core/` darf keine UI-, Renderer-, Pixi-, React- oder — gelesen: 23 Zeilen
 - `scripts/verify-impact-graph.mjs` — Impact-Graph-Gate: Der Impact-Pfad darf keinen TypeScript-Compiler laden. — gelesen: 29 Zeilen

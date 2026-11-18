@@ -10,6 +10,8 @@
 /.githooks/               @vannon091118
 /.cron/                   @vannon091118
 /.claude/                 @vannon091118
+/.agents/                 @vannon091118
+/.codex/                  @vannon091118
 /AGENTS.md                @vannon091118
 /README.md                @vannon091118
 
@@ -61,3 +63,4 @@
 /docs/CI.md                       @vannon091118
 /docs/contracts/                  @vannon091118
 /docs/evidence/                   @vannon091118
+

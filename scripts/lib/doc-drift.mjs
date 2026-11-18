@@ -13,6 +13,8 @@
  * Die Pruefung liest nur die Dateiliste; sie ruft keine Generatoren und keine
  * Tests. Damit kostet sie im Hook wenige Millisekunden.
  */
+import { readFileSync } from 'node:fs';
+
 export const LAST_CHANGES = 'docs/governance/LAST-CHANGES.md';
 export const ROADMAP = 'docs/governance/ROADMAP.md';
 
@@ -21,6 +23,19 @@ export const GAME_HOT_ZONE = /^src\/(?:core|store|render|ui)\//;
 export const DEV_TEST_BRIDGE = /^src\/core\/governance\//;
 /** Generierte oder abgeleitete Dateien zaehlen nicht als Code-Aenderung. */
 export const GENERATED = /(?:\.generated\.ts|registry\/fragments\.json|^public\/assets\/)/;
+
+/** Ein Doku-Eintrag ist nur dann gueltig, wenn er konkrete Aenderungen nennt. */
+function docContentOk(path) {
+  let text;
+  try {
+    text = readFileSync(path, 'utf8');
+  } catch {
+    return false;
+  }
+  return text.split('\n').some(
+    (line) => line.trim().length >= 10 && !/^\s*[-*]\s*$/.test(line.trim()),
+  );
+}
 
 const norm = (path) => String(path ?? '').split('\\').join('/');
 
@@ -33,27 +48,28 @@ export function driftProblems(files = []) {
   const hot = code.filter((path) => GAME_HOT_ZONE.test(path) && !DEV_TEST_BRIDGE.test(path));
   const problems = [];
 
-  // Ob ein Pflichtdoku-Pfad im Commit steht; pro Pfad nur einmal auswerten (Memoization).
-  const docContentOk = (() => {
-    const cache = new Map();
-    return (path) => {
-      if (cache.has(path)) return cache.get(path);
-      const ok = changed.includes(path);
-      cache.set(path, ok);
-      return ok;
-    };
-  })();
-
-  /** Prueft ein Pflichtdoku und meldet Drift, wenn es fehlt. */
-  const checkDocFile = (path, label) => {
-    if (!docContentOk(path)) {
-      problems.push(`${label} geaendert, aber ${path} fehlt im selben Commit.`);
+  if (code.length > 0) {
+    if (!changed.includes(LAST_CHANGES)) {
+      problems.push(
+        `Code geaendert (${code.slice(0, 4).join(', ')}${code.length > 4 ? ', ...' : ''}), aber ${LAST_CHANGES} fehlt im selben Commit.`,
+      );
+    } else if (!docContentOk(LAST_CHANGES)) {
+      problems.push(
+        `${LAST_CHANGES} ist im Commit, aber ein Eintrag ohne konkrete Aenderungsbeschreibung ist kein Doku-Beleg.`,
+      );
     }
-  };
-
-  if (code.length > 0) checkDocFile(LAST_CHANGES, 'Code');
-  if (hot.length > 0) checkDocFile(ROADMAP, 'Spiel-Hot-Zone');
-
+  }
+  if (hot.length > 0) {
+    if (!changed.includes(ROADMAP)) {
+      problems.push(
+        `Spiel-Hot-Zone geaendert (${hot.slice(0, 4).join(', ')}${hot.length > 4 ? ', ...' : ''}), aber ${ROADMAP} fehlt im selben Commit.`,
+      );
+    } else if (!docContentOk(ROADMAP)) {
+      problems.push(
+        `${ROADMAP} ist im Commit, aber ein Eintrag ohne konkrete Aenderungsbeschreibung ist kein Doku-Beleg.`,
+      );
+    }
+  }
   return problems;
 }
 
