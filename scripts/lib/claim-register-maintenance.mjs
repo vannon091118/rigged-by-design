@@ -85,7 +85,7 @@ export function doctor({ io }) {
   const retention = retentionFor({ all, files, taskList: contracts.entries, cwd: io.cwd });
   if (retention.removeTasks.length > 0 || retention.removeClaims.length > 0) {
     const count = retention.removeTasks.length + retention.removeClaims.length;
-    violations.push(`Retention: ${count} alte Datei(en) ueber dem 10-Task-Limit; 'claim:register prune --apply' ausfuehren`);
+    violations.push(`Retention: ${count} alte Datei(en) ueber dem Budget von ${retention.keep} abgeschlossenen Nachweisen; 'claim:register prune --apply' ausfuehren`);
   }
   if (io.options.json) {
     console.log(JSON.stringify({ ok: violations.length === 0, claims: all.length, retention, violations }, null, 2));
@@ -112,7 +112,7 @@ export function prune({ io, fail }) {
     console.log(JSON.stringify({ ok: true, applied: Boolean(io.options.apply), retention }, null, 2));
   } else {
     for (const file of remove) console.log(`${io.options.apply ? 'entfernt' : 'wuerde entfernen'}: ${file}`);
-    if (remove.length === 0) console.log(`claim:register: retention OK (${retention.closedTasks}/${retention.keep} abgeschlossene Tasks)`);
+    if (remove.length === 0) console.log(`claim:register: retention OK (${retention.activeTasks} aktiv, ${retention.closedTasks}/${retention.keep} abgeschlossene Nachweise)`);
   }
   if (!io.options.apply) return;
   for (const file of remove) {

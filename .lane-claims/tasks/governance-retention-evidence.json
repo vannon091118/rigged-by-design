@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-retention-evidence",
+  "claimId": "lane/governance/retention-evidence",
+  "branch": "lane/governance/retention-evidence",
+  "baseSha": "5396ea2306f901c33767e71416bc54349f8dfc58",
+  "phase": "IMPLEMENTING",
+  "title": "Retention haelt abgeschlossene Lanes als Nachweis",
+  "goal": "Aktive Lanes nicht gegen das Budget zaehlen; die neuesten zehn abgeschlossenen Tasks samt Claim als Merge-Beleg behalten.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
+  "revision": 1
+}

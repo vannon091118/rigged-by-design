@@ -150,9 +150,9 @@ Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`
 
 ### Post-Merge und Retention
 
-Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanup` ruft `scripts/post-merge-closeout.mjs` auf: der Claim des Heads wird `merged`, der Task `DONE`, die 10-Task-Retention läuft, und die Änderung geht als eigener Closeout-PR gegen `main`. Der Closeout-Task trägt `closeout: post-merge` und bleibt ein eigener, ausdrücklicher DONE-Pfad. Der Workflow schreibt nie direkt auf `main`.
+Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanup` ruft `scripts/post-merge-closeout.mjs` auf: der Claim des Heads wird `merged`, der Task `DONE`, die Retention läuft (alle aktiven Tasks plus die letzten zehn abgeschlossenen als Nachweis), und die Änderung geht als eigener Closeout-PR gegen `main`. Der Closeout-Task trägt `closeout: post-merge` und bleibt ein eigener, ausdrücklicher DONE-Pfad. Der Workflow schreibt nie direkt auf `main`.
 
-Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- und Retention-Logik aus. `claim:register prune` zeigt die Kandidaten ohne `--apply` nur an; `doctor` meldet mehr als zehn geschlossene Tasks als Befund.
+Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- und Retention-Logik aus. `claim:register prune` zeigt die Kandidaten ohne `--apply` nur an; `doctor` meldet abgeschlossene Tasks über dem Nachweis-Budget von zehn als Befund. Aktive Lanes zählen nicht gegen dieses Budget und verdrängen keinen Merge-Beleg.
 
 Danach prüft `node scripts/claim-hygiene.mjs --check` alle Claims gegen den Board-Snapshot: Ein offener Claim auf einem belegten geschlossenen Issue ist ein Closeout-Verstoss (Exit 1), ein unbekannter Status bleibt sichtbar und wird nicht geraten. Der Precommit ruft denselben Audit auf; der Maintainer zieht den Claim anschließend mit `node scripts/reconcile-claims.mjs --apply` nach.
 
