@@ -53,6 +53,7 @@ export class FloorView {
   readonly #editor = new EditorOverlay();
   #flashId = -1;
   #lastTap: TapMark | null = null;
+  #zoomDone = false;
   #view: GameView;
   #destroyed = false;
 
@@ -132,6 +133,16 @@ export class FloorView {
   }
 
   fit(): void { this.#rig.fit(); }
+
+  zoomToPlayer(): void {
+    if (this.#zoomDone) return;
+    const p = this.#player.root;
+    // Guard: erst zoomen, wenn Position gesetzt (0,0 könnte gültig sein, aber nur beim ersten Tick)
+    if (p.x === 0 && p.y === 0) return;
+    this.#rig.zoomToPlayer(p.x, p.y);
+    this.#zoomDone = true;
+  }
+
   zoom(factor: number): void { this.#rig.zoom(factor); }
   setBudget(particles: number, lights: number): void { this.#fx.setBudget(particles, lights); }
 
@@ -238,5 +249,7 @@ export class FloorView {
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
     this.#rig.shake(this.#fx.offset(now));
     this.#entities.furniture(this.#flashId)?.animate(now);
+    // Nachholen: falls onFirstFrame zu früh feuerte (Position noch 0,0)
+    if (!this.#zoomDone) this.zoomToPlayer();
   };
 }

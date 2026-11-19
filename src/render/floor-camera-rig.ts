@@ -3,7 +3,7 @@
  * Haelt keinen Spielzustand; die Buehne haengt nur ihre Ebenen ein und folgt dem Ergebnis.
  */
 import { Container, Rectangle } from 'pixi.js';
-import { TILE } from '../core/sim/types';
+import { TILE, REGION } from '../core/sim/types';
 import { FloorCamera, type WorldBounds } from './floor-camera';
 import { screenToTile } from './floor-math';
 
@@ -50,10 +50,48 @@ export class FloorCameraRig {
 
   fit(): void {
     this.cam.overview();
+    this.updateLod();
+    this.apply();
   }
 
   zoom(factor: number): void {
     this.cam.zoomStep(factor);
+  }
+
+  /** Zoomen auf den Bereich um die Spielerfigur, einmalig beim Start. */
+  zoomToPlayer(x: number, y: number): void {
+    // Race-Condition-Guard: Position 0,0 ist noch nicht gesetzt (erst im ersten EntitySync-Tick)
+    // Aber LOD muss trotzdem initialisiert werden
+    if (x === 0 && y === 0) {
+      this.updateLod();
+      return;
+    }
+    const bounds = this.#bounds();
+    const screenW = this.#deps.screen.width;
+    const screenH = this.#deps.screen.height;
+    const worldPx = bounds.width * TILE;
+    // Prüfen: passt die WELT in den Viewport? (mit 4% Rand wie bei fit)
+    // Wenn die Welt kleiner als REGION ist (z.B. Wohnung 16x16), zoomt man auf die Welt
+    const fits = worldPx <= screenW * 0.96 && worldPx <= screenH * 0.96;
+    if (!fits) {
+      // Zu gross für Viewport → Übersicht statt Nah-Zoom
+      this.fit();
+      return;
+    }
+    const areaX = Math.floor(x / REGION) * REGION;
+    const areaY = Math.floor(y / REGION) * REGION;
+    this.cam.zoomToArea({ id: 'player', index: -1, x: areaX, y: areaY, w: REGION, h: REGION }, bounds);
+    // Target ist gesetzt — einmal step() laufen lassen, damit #zoom/#focus auf Target gehen
+    this.cam.step();
+    // Und sofort anwenden mit den neuen Werten
+    this.cam.apply(this.root, screenW, screenH, bounds, this.#deps.pixelRatio?.() ?? 1);
+    this.#base.x = this.root.position.x;
+    this.#base.y = this.root.position.y;
+    this.#dirty = false;
+    // LOD nach Zoom anwenden
+    this.updateLod();
+    // Callback feuern damit FloorView #cameraApplied bekommt
+    this.#deps.onApplied(this.#lod, this.root.scale.x);
   }
 
   /** Neue Vorlage oder Groesse: Uebersicht neu setzen, Trefferflaeche mitziehen. */

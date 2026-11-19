@@ -70,6 +70,11 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setPlaceError('');
   };
 
+  const handleFirstFrame = useCallback(() => {
+    stage.current?.zoomToPlayer();
+    onFirstFrame?.();
+  }, [onFirstFrame]);
+
   const setters = { setPopup, setPopupAnchor, setBuildOpen, setPerspective };
   const openPopup = (next: Popup): void => openPopupWith(setters, next);
   const changePerspective = (next: Perspective): void => switchPerspective(setters, perspective, next);
@@ -125,7 +130,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
             if (ghostId && tap.target.kind === 'floor') crates.tapFloor(tap.target.x, tap.target.y);
             else interaction.tap(tap);
           }}
-          onFirstFrame={onFirstFrame}
+          onFirstFrame={handleFirstFrame}
         />
 
         <CityDoorAccessLayer view={view} interaction={interaction} perspective={perspective} popup={popup} buildOpen={buildOpen} editorOpen={editorOpen} />
