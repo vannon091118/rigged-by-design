@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/retention-evidence",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/retention-evidence",
+  "baseSha": "5396ea2306f901c33767e71416bc54349f8dfc58",
+  "issue": 1170,
+  "task": "Retention haelt abgeschlossene Lanes als Nachweis",
+  "goal": "Aktive Lanes nicht gegen das Budget zaehlen; die neuesten zehn abgeschlossenen Tasks samt Claim als Merge-Beleg behalten.",
+  "pathAllowlist": [
+    "scripts/lib/claim-lifecycle.mjs",
+    "scripts/lib/claim-register-maintenance.mjs",
+    "scripts/reconcile-claims.mjs",
+    "scripts/post-merge-closeout.mjs",
+    "src/core/governance/__tests__/claim-lifecycle.test.ts",
+    "docs/WORKFLOW-DETAIL.md",
+    ".lane-claims/claims/lane-governance-retention-evidence.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "5396ea2306f901c33767e71416bc54349f8dfc58"
+}
