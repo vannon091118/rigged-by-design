@@ -30,7 +30,8 @@
     "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
     "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
     "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
-    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt"
+    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt",
+    "issueStates (2026-11-19): 28 Claim-Issues live ueber die GitHub-API geprueft; 24 zuvor unbekannte Status aufgeloest, offen ist nur #1100 (Governance-LOC-Lane), alle anderen geschlossen."
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [
@@ -743,5 +744,35 @@
       "reason": "Governance-Budget maxNewGovernanceIssues=0; kein blockierender Effekt",
       "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e"
     }
-  ]
+  ],
+  "issueStates": {
+    "640": "closed",
+    "668": "closed",
+    "669": "closed",
+    "685": "closed",
+    "759": "closed",
+    "760": "closed",
+    "761": "closed",
+    "764": "closed",
+    "765": "closed",
+    "767": "closed",
+    "768": "closed",
+    "770": "closed",
+    "772": "closed",
+    "773": "closed",
+    "774": "closed",
+    "775": "closed",
+    "802": "closed",
+    "811": "closed",
+    "853": "closed",
+    "864": "closed",
+    "886": "closed",
+    "980": "closed",
+    "981": "closed",
+    "1090": "closed",
+    "1100": "open",
+    "1118": "closed",
+    "1166": "closed",
+    "1170": "closed"
+  }
 }
