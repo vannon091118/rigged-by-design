@@ -20,5 +20,19 @@
   },
   "findings": [],
   "nextAction": "Nachweis bleibt im Register (zehn abgeschlossene Nachweise).",
-  "revision": 1
+  "revision": 2,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "post-merge-closeout",
+      "sha": "5aba60c9dcda1e8d65f593db828bd5ec903f162b"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }

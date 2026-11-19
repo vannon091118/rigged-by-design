@@ -19,7 +19,7 @@
   },
   "findings": [],
   "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout 5aba60c).",
-  "revision": 2,
+  "revision": 3,
   "aftercare": {
     "claim": {
       "status": "merged",
@@ -30,8 +30,8 @@
       "phase": "DONE"
     },
     "branch": {
-      "state": "pending",
-      "evidence": "remote-branch-present"
+      "state": "done",
+      "evidence": "remote-branch-absent"
     }
   }
 }
