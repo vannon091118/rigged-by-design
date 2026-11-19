@@ -27,7 +27,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { planReconcile } from './lib/claim-reconcile.mjs';
-import { claimEntryPath, planRetention, planTaskCloseout } from './lib/claim-lifecycle.mjs';
+import { claimEntryPath, mergedClaimEvidence, planRetention, planTaskCloseout } from './lib/claim-lifecycle.mjs';
 import { loadClaimsStrict, saveClaims } from './lib/lane-claims.mjs';
 import { loadTaskContracts, writeTaskContract } from './lib/task-contract.mjs';
 import { ROOT } from './lib/report.mjs';
@@ -58,7 +58,7 @@ const commitTime = (file) => {
 };
 
 const claims = loadClaimsStrict();
-const { changes, unresolved } = planReconcile({ claims, git });
+const { changes, unresolved, remoteHeads: heads } = planReconcile({ claims, git });
 
 const taskLoad = loadTaskContracts();
 if (taskLoad.errors.length > 0) {
@@ -75,6 +75,12 @@ const claimViews = claims.map((claim) => (typeof claim.toJSON === 'function' ? c
 // Der Beleg traegt PR-Nummer/Kopf/Merge-SHA und den separaten Branch-Status
 // bis in den Task-Vertrag; der Branch wird hier nicht geloescht.
 const evidenceByClaim = new Map(changes.map((change) => [change.id, change]));
+// Ein Claim, der schon `merged` ist, taucht in `changes` nicht mehr auf. Ein
+// veralteter READY/IMPLEMENTING-Task braucht seinen Branch-Status trotzdem,
+// sonst bleibt der Parity-Befund des doctor dauerhaft stehen.
+for (const [id, entry] of mergedClaimEvidence({ claims: claimViews, heads })) {
+  if (!evidenceByClaim.has(id)) evidenceByClaim.set(id, entry);
+}
 const taskChanges = planTaskCloseout({ tasks: taskLoad.tasks, claims: claimViews, evidenceByClaim });
 const updatedTasks = taskLoad.tasks.map((task) => {
   const change = taskChanges.find((entry) => entry.file === task.file);

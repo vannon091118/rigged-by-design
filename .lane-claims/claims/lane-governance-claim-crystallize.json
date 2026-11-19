@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/claim-crystallize",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-crystallize",
+  "baseSha": "f212ef9ccee9b2daf471cf3ebb33b5dbf01fb127",
+  "issue": 1166,
+  "task": "Claim-Register: haengende Parity-Claims schliessen und Pfadfehler in doctor/prune beheben",
+  "goal": "Ein gemergter Claim fuehrt seinen Task zuverlaessig auf DONE; doctor und prune arbeiten auf echten Registerpfaden und derselben Commit-Zeit wie reconcile.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "scripts/lib/claim-lifecycle.mjs",
+    "scripts/reconcile-claims.mjs",
+    "scripts/lib/claim-register-maintenance.mjs",
+    "src/core/governance/__tests__/",
+    "docs/ARCHITECTURE.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f212ef9ccee9b2daf471cf3ebb33b5dbf01fb127"
+}
