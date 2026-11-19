@@ -80,10 +80,10 @@ export function evaluateBoardUsage({
   // erbracht. Ein gemergter Claim entgeht der Board-Prüfung nicht still —
   // er wird als Hinweis geführt, nicht als harter Block, damit die
   // Rückverfolgbarkeit (Issue #684, Claim lane/governance/freeze-0-code)
-  // nicht verloren geht.
+  // nicht verloren geht. Der Closeout-Branch führt denselben Claim weiter.
   if (claim.status === 'merged') {
-    failures.push(`Claim '${claim.id}' ist merged, entgeht aber der Board-Prüfung; Rückverfolgbarkeit zum Issue #${claim.issue ?? '?'} nicht mehr überprüfbar`);
-    return result();
+    facts.push(['Board', `merged · ${claim.mergedEvidence ?? 'ohne Beleg'}`]);
+    return { ok: true, skipped: true, failures, facts };
   }
   facts.push(['Claim', claim.id]);
   facts.push(['Issue', claim.issue ? `#${claim.issue}` : 'fehlt']);
