@@ -1,0 +1,19 @@
+{
+  "id": "lane/sim/issue-656-screenshot-saetze",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-656-screenshot-saetze",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 656,
+  "task": "Kanonisch für Screenshot-Sätze (frei von #675). Keine Frieregel/Guard. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/",
+    ".lane-claims/claims/issue-656-screenshot-saetze.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}
