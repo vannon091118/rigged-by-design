@@ -709,6 +709,7 @@
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
       "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "669": "erledigt - Weltliche Mini-Szenen (ambient-dokumentation) bereits im Narrative-System implementiert: content/narrative/vocabulary/classification.json:144 Vokabular-Eintrag; content/narrative/registry/fragments.json Registry-Eintraege fuer ambient-dokumentation; mehrere pool-documentation-*.json Beitraege existieren",
       "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
       "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
