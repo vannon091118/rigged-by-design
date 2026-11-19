@@ -17,6 +17,8 @@
 | 2026-11-18 | LOD traegt Kopf und Haarton; Seed folgt dem Namen. | `actor-silhouette.ts` |
 | 2026-11-19 | PerfGovernor haertert gegen Flappen bei konstanter Grenz-FPS-Belastung; Hochschalten nur, wenn Zielstufe Last als "gut" einstuft. | `perf-governor.ts`, `perf-governor.test.ts` |
 
+| 2026-11-19 | Issue #776 abgeschlossen: Stadtbegegnungen nur am gemeinsamen Ort und in Reichweite — Merge-Beleg 56313e2b (Merge PR #849). selectSocialEncounter mit Orts-Tag + 2.5m Radius + Kapazitaet 3 in social-encounter.ts, settleArrival in city-life-movement.ts, 7 Testfaelle in encounter-location.test.ts, narrative-Baustein city-encounter-place-776 in city-scene-Pool. | .lane-claims/board-state.json, src/core/sim/social-encounter.ts, src/core/sim/city-life-movement.ts, src/core/sim/__tests__/encounter-location.test.ts |
+
 ## Regeln
 - Maximal sieben Zeilen; der aelteste Eintrag faellt heraus.
 - Jede Zeile nennt Datum, Aenderung und Beleg.
