@@ -707,7 +707,7 @@
       "651": "OFFEN · keine First-Frame-Messung unter Slow 4G",
       "652": "OFFEN · RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (existiert als city-actor-sync.ts)",
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
-      "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
+      "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
       "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
