@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/post-merge-1171",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/post-merge-1171",
+  "baseSha": "5396ea2306f901c33767e71416bc54349f8dfc58",
+  "issue": 1170,
+  "task": "Post-Merge-Closeout #1171",
+  "goal": "Claim und Task der Retention-Lane nach dem Merge schliessen; beide bleiben als Nachweis.",
+  "pathAllowlist": [
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "5aba60c9dcda1e8d65f593db828bd5ec903f162b",
+  "createdAt": "5396ea2306f901c33767e71416bc54349f8dfc58"
+}

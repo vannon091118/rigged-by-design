@@ -3,11 +3,11 @@
  *
  * Zwei getrennte Entscheidungen, beide rein und ohne Dateisystem:
  *
- * - `planRetention` haelt hoechstens `keep` Tasks. Aktive Tasks bleiben immer,
- *   abgeschlossene Tasks werden nach ihrem letzten Commit sortiert; nur die
- *   neuesten fuellen die freien Plaetze. Zugehoerige Claim-Dateien gehen mit,
- *   offene oder geparkte Claims bleiben. Das Legacy-Register `claims.json`
- *   wird nie beschnitten.
+ * - `planRetention` haelt alle aktiven Tasks und die neuesten `keep`
+ *   abgeschlossenen Tasks als Nachweis. Aktive Lanes zaehlen nicht gegen das
+ *   Budget: eine volle Warteschlange verdraengt keinen Merge-Beleg mehr.
+ *   Zugehoerige Claim-Dateien gehen mit, offene oder geparkte Claims bleiben.
+ *   Das Legacy-Register `claims.json` wird nie beschnitten.
  * - `planTaskCloseout` zieht einen Task nach belegtem Merge von
  *   `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE`; ein veraltetes
  *   `READY`/`IMPLEMENTING` wird nur bei nachweislich entferntem Branch
@@ -19,7 +19,9 @@
  */
 import { validateTaskContract } from './task-contract.mjs';
 
-export const TASK_RETENTION_LIMIT = 10;
+// Budget fuer abgeschlossene Nachweise (Task + Claim-Datei). Aktive Lanes
+// laufen getrennt und werden nie geloescht; sie zaehlen hier nicht mit.
+export const CLOSED_TASK_RETENTION_LIMIT = 10;
 export const CLOSEABLE_PHASES = Object.freeze(['CI_PENDING', 'MERGE_PENDING', 'AFTERCARE']);
 export const ACTIVE_CLAIM_STATUSES = Object.freeze(['open', 'parked']);
 
@@ -32,15 +34,15 @@ export function claimEntryPath(id) {
   return slug ? `.lane-claims/claims/${slug}.json` : '';
 }
 
-/** Alle aktiven Tasks und die neuesten abgeschlossenen Tasks bis zum Limit. */
+/** Alle aktiven Tasks und die neuesten `keep` abgeschlossenen Nachweise. */
 export function planRetention({
   tasks = [],
   claims = [],
-  keep = TASK_RETENTION_LIMIT,
+  keep = CLOSED_TASK_RETENTION_LIMIT,
   protectedTaskFiles = [],
   protectedClaimIds = [],
 } = {}) {
-  const limit = Number.isInteger(Number(keep)) && Number(keep) >= 0 ? Number(keep) : TASK_RETENTION_LIMIT;
+  const limit = Number.isInteger(Number(keep)) && Number(keep) >= 0 ? Number(keep) : CLOSED_TASK_RETENTION_LIMIT;
   // `claims` sind Register-Eintraege mit Datei und Claim; die aktive Lane
   // haengt am Claim selbst, nicht am Dateinamen.
   const claimById = new Map(claims.map((entry) => [entry?.claim?.id, entry?.claim]));
@@ -51,10 +53,10 @@ export function planRetention({
   const closed = tasks
     .filter((task) => task?.contract?.phase === 'DONE' && !hasActiveClaim(task))
     .sort(newestFirst);
-  // Aktive Tasks sind nicht loeschbar; sie belegen ihre Plaetze zuerst. Bei
-  // mehr als `limit` aktiven Tasks bleibt die Liste bewusst ueber dem Limit.
-  const closedSlots = Math.max(0, limit - active.length);
-  const retainedTasks = [...active, ...closed.slice(0, closedSlots)];
+  // Aktive Tasks sind nicht loeschbar und verbrauchen das Nachweis-Budget
+  // nicht. Sonst entfernt eine volle Warteschlange jeden Merge-Beleg sofort
+  // und die Lane ist nach ihrem Merge nicht mehr nachvollziehbar.
+  const retainedTasks = [...active, ...closed.slice(0, limit)];
   const retainedFiles = new Set(retainedTasks.map((task) => task.file));
   for (const file of protectedTaskFiles) retainedFiles.add(file);
   // Ein geschuetzter Task zaehlt fuer seine Claim-Datei, auch wenn er nicht in
@@ -93,6 +95,30 @@ export function planRetention({
     removeTasks,
     removeClaims: removeClaims.sort(),
   };
+}
+
+/**
+ * Branch-Status fuer bereits gemergte Claims.
+ *
+ * `planReconcile` liefert Evidenz nur fuer Claims, die es gerade umstellt. Ein
+ * Claim, der schon `merged` ist, dessen Task aber noch in READY/IMPLEMENTING
+ * steht, braucht denselben Beleg - sonst bleibt der Parity-Befund des doctor
+ * dauerhaft stehen. `heads === null` heisst unerreichbar und bleibt `unknown`;
+ * ein noch vorhandener Branch bleibt `pending`.
+ */
+export function mergedClaimEvidence({ claims = [], heads = null } = {}) {
+  const evidence = new Map();
+  for (const claim of claims) {
+    if (claim?.status !== 'merged' || !claim.id) continue;
+    const branchCleanup =
+      heads === null
+        ? { state: 'unknown', evidence: 'remote-heads-unreadable' }
+        : heads.has(claim.branch)
+          ? { state: 'pending', evidence: 'remote-branch-present' }
+          : { state: 'done', evidence: 'remote-branch-absent' };
+    evidence.set(claim.id, { branchCleanup });
+  }
+  return evidence;
 }
 
 /** Ein Task schliesst nur mit belastbarem Merge-Beleg und ohne offenen Blocker. */

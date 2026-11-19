@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 466 Dateien — contract 232 · integration 129 · governance 92 · statistics 6 · performance 7.
+Summe: 467 Dateien — contract 232 · integration 129 · governance 93 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -175,6 +175,7 @@ Summe: 466 Dateien — contract 232 · integration 129 · governance 92 · stati
 | `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` | pipeline | governance | ja | `scripts/lib/claim-reconcile.mjs` |
 | `src/core/governance/__tests__/claim-evidence.test.ts` | pipeline | governance | ja | `scripts/lib/claim-evidence.mjs` |
 | `src/core/governance/__tests__/claim-hygiene.test.ts` | pipeline | governance | ja | `scripts/lib/claim-hygiene.mjs` |
+| `src/core/governance/__tests__/claim-lifecycle-evidence.test.ts` | pipeline | governance | ja | `scripts/lib/claim-lifecycle.mjs` |
 | `src/core/governance/__tests__/claim-lifecycle.test.ts` | pipeline | governance | ja | `scripts/lib/claim-lifecycle.mjs` |
 | `src/core/governance/__tests__/claim-preflight.test.ts` | pipeline | governance | ja | `scripts/lib/claim-preflight.mjs` |
 | `src/core/governance/__tests__/claim-save-scope.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
@@ -772,16 +773,16 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3585 |
-| Gelistete Dateien | 3585 |
+| Getrackte Dateien | 3484 |
+| Gelistete Dateien | 3484 |
 | Getrackte Ordner | 130 |
-| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (15), .githooks (4), .github (5), .lane-claims (198), .lanes (1), artifacts (1), bin (1), content (1253), docs (111), packages (27), public (573), scripts (232), src (1138) |
+| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (93), .lanes (1), artifacts (1), bin (1), content (1254), docs (116), packages (27), public (573), scripts (232), src (1140) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
-- `./` — 15 Datei(en)
+- `./` — 11 Datei(en)
 - `.agents/skills/adversarial-code-review/` — 3 Datei(en)
 - `.agents/skills/adversarial-code-review/reports/` — 7 Datei(en)
 - `.agents/skills/run-rigged-by-design/` — 1 Datei(en)
@@ -795,16 +796,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 99 Datei(en)
-- `.lane-claims/tasks/` — 95 Datei(en)
+- `.lane-claims/claims/` — 44 Datei(en)
+- `.lane-claims/tasks/` — 45 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1249 Datei(en)
+- `content/narrative/contributions/` — 1250 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 29 Datei(en)
+- `docs/` — 34 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/evidence/` — 6 Datei(en)
@@ -863,14 +864,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/__tests__/` — 1 Datei(en)
 - `src/core/contracts/` — 7 Datei(en)
 - `src/core/contracts/__tests__/` — 7 Datei(en)
-- `src/core/economy/` — 4 Datei(en)
+- `src/core/economy/` — 5 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 21 Datei(en)
 - `src/core/games/__tests__/` — 27 Datei(en)
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 115 Datei(en)
+- `src/core/governance/__tests__/` — 116 Datei(en)
 - `src/core/governance/fixtures/` — 1 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
@@ -945,80 +946,33 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/post-merge` — Generierte Artefakte nach einem Merge aus den Quellen nachziehen (#877). — gelesen: 26 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
 - `.githooks/pre-push` — Schnelle Integrationspruefung vor dem Push. — gelesen: 113 Zeilen
-- `.github/CODEOWNERS` — Owner je Kontrollpfad (FREEZE-0, Abschnitt 2.4). Nur Pfade, die den — gelesen: 63 Zeilen
+- `.github/CODEOWNERS` — Owner je Kontrollpfad (FREEZE-0, Abschnitt 2.4). Nur Pfade, die den — gelesen: 66 Zeilen
 - `.github/ISSUE_TEMPLATE/contract.md` — Markdown-Dokument — gelesen: 65 Zeilen
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
 - `.github/ISSUE_TEMPLATE/lane.md` — Markdown-Dokument — gelesen: 60 Zeilen
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 31 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 780 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 956 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-981.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-archive-integration-2026-11-16.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-board-closeout-relation.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-board-live-sync.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-board-reconcile-858.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-contracts-enforcement.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-doc-drift-simplify.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/lane-governance-freeze-0-code.json` — { — gelesen: 58 Zeilen
-- `.lane-claims/claims/lane-governance-hook-live-proof.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1039-verify-state.json` — { — gelesen: 57 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1043-redundancy-budget.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1045-claim-reconcile.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1047-verify-state-concurrency.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1049-verify-state-cache.json` — { — gelesen: 34 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1051-verify-state-test-time.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1054-state-sections.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-narrative-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-verify-all.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-issue-1153-dead-code-default-exports.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/lane-governance-issue-574-entrance-convention.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-issue-685-stale-claim-audit.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-766-main-repair.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-issue-847-dead-exports.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/claims/lane-governance-issue-857-mission-profile.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-issue-860-doc-anchors.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
-- `.lane-claims/claims/lane-governance-issue-998-closeout.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-issue-998-sim-logging.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-logs-failure-only.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-merge-gate.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-output-budget-closeout.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-1122.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-1158.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-1162.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-register-closeout.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-repo-ballast-closeout.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-ledger-loc-budget.json` — { — gelesen: 28 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-1171.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-retention-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-sync-live-hooks.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-tagesbericht-evidence.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase0-baseline.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase0-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-art-contract.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-audit-count-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-audit-count.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-doc-budget.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-head-03-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase1-head-03.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-editor-heads.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-visual-phase2-npc-rig.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-governance-webhook-delivery.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-render-issue-640-city-actor-frame.json` — { — gelesen: 27 Zeilen
@@ -1026,7 +980,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-render-issue-772-furniture-action-roles.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-render-issue-773-city-actor-roles.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-render-issue-774-city-door-access.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-render-issue-972-baseline-render-lifecycle.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-render-residence-role.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-render-staff-actor-state.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-519-employment.json` — { — gelesen: 23 Zeilen
@@ -1043,35 +996,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-775-city-tile-occupancy.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-issue-853-world-test-timeout.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-sim-issue-976-save-recovery.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-sim-issue-978-skill-effects.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-issue-767-action-card-actions.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-ui-issue-770-floor-feedback-context.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/merged-index.json` — { — gelesen: 288 Zeilen
 - `.lane-claims/tasks/docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/docs-audit-100-fragen-981.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-archive-integration-2026-11-16.json` — { — gelesen: 16 Zeilen
-- `.lane-claims/tasks/governance-board-closeout-relation.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-board-live-sync.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-board-reconcile-858.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-contracts-enforcement.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-freeze-0-code.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/governance-hook-live-proof.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-install-hooks-stat-sync.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1039-verify-state.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1043-redundancy-budget.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1045-claim-reconcile.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1047-verify-state-concurrency.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1049-verify-state-cache.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1051-verify-state-test-time.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-1054-state-sections.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-clock-fix.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-full-gate-repair.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-loc-refactor.json` — { — gelesen: 17 Zeilen
@@ -1079,45 +1011,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-1090-verify-all.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-issue-685-stale-claim-audit.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-766-main-repair.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-issue-847-dead-exports.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-857-mission-profile.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-issue-860-doc-anchors.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-998-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-issue-998-sim-logging.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-logs-failure-only.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-merge-gate.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-output-budget-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-post-merge-1162.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/governance-register-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-repo-ballast-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-ledger-loc-budget.json` — { — gelesen: 37 Zeilen
+- `.lane-claims/tasks/governance-post-merge-1171.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/tasks/governance-retention-evidence.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-sync-live-hooks.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-tagesbericht-evidence.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-editor-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-heads.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-hysteresis.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-live-evidence.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-lod-sprites.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-npc-rig-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-visual-phase2-npc-rig.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-webhook-delivery.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/lane-sim-issue-802-player-npc-kontakte.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/lane-sim-issue-973-life-sim-day-clean.json` — { — gelesen: 42 Zeilen
-- `.lane-claims/tasks/lane-sim-issue-973-life-sim-day.json` — { — gelesen: 42 Zeilen
-- `.lane-claims/tasks/lane-sim-issue-976-save-recovery.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/tasks/lane-sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/tasks/render-issue-515-scene-frame.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-640-city-actor-frame.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/render-issue-768-city-actor-floor-target.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-772-furniture-action-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-773-city-actor-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-issue-774-city-door-access.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/render-issue-972-baseline-render-lifecycle.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/render-residence-role.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/render-staff-actor-state.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-519-employment.json` — { — gelesen: 17 Zeilen
@@ -1134,32 +1042,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-775-city-tile-occupancy.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-787-esport-roles.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-853-world-test-timeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-issue-977-pickweighted-zyklisch.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/tasks/sim-issue-978-skill-effects.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/store-issue-1057-life-sim-day-typecheck.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ui-issue-767-action-card-actions.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/ui-issue-770-floor-feedback-context.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/visual-phase0-baseline.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/visual-phase0-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-art-contract.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/tasks/visual-phase1-audit-count-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-audit-count.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/visual-phase1-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-doc-budget.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/visual-phase1-head-03-closeout-final.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/visual-phase1-head-03.json` — { — gelesen: 23 Zeilen
 - `.lanes/identity.json` — { — gelesen: 11 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
 - `AGENTS.md` — Rigged by Design — Einstieg — gelesen: 8 Zeilen
-- `BATCH-PLAN.md` — Batch-Plan: Alle Findings lösen — Skalierbares Spiel + Einheitliche Governance — gelesen: 102 Zeilen
-- `CLAUDE.md` — CLAUDE.md — gelesen: 87 Zeilen
-- `MEMORY-SESSION-2026-11-18.md` — Memory — Adversarial Code Review Session (2026-11-18) — gelesen: 53 Zeilen
-- `MEMORY.md` — Markdown-Dokument — gelesen: 5 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 180 Zeilen
-- `SPRINT-PLAN.md` — Sprint/Batch-Plan: Behebung kritischer Audit-Befunde (Rigged by Design) — gelesen: 110 Zeilen
 - `artifacts/living-world/trace-424242-5d.json` — { — gelesen: 56074 Zeilen
 - `bin/rbd.mjs` — `rbd <gruppe> <aktion> [flags]` — die eine globale Befehlsoberflaeche. — gelesen: 77 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
@@ -2411,16 +2302,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-hysteresis.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 28059 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 5001 Zeilen
+- `content/narrative/contributions/2026-11-19-ledger-pruefung-extrahiert.json` — { — gelesen: 24 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 28084 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 5005 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1753 Zeilen
 - `docs/AUDIT-ARCHIVE-2026-11-16.md` — Abrechnung der Archiv-Tags 2026-11-16 — gelesen: 251 Zeilen
 - `docs/AUDIT.md` — Produkt-Audit rigged-by-design — gelesen: 902 Zeilen
+- `docs/BATCH-PLAN.md` — Batch-Plan: Alle Findings lösen — Skalierbares Spiel + Einheitliche Governance — gelesen: 102 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1216 Zeilen
 - `docs/CI.md` — CI: Lokale Gates und Repository-Verwaltung — gelesen: 134 Zeilen
+- `docs/CLAUDE.md` — CLAUDE.md — gelesen: 87 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 30 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2756 Zeilen
 - `docs/FLAG.md` — FLAG — vermischte Bezeichnungen (Governance ↔ Spiel/Präsentation) — gelesen: 101 Zeilen
@@ -2428,9 +2322,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOC-REARCHITECTURE-2026-11-16.md` — LOC-, Redundanz- und Sinnvollkeits-Audit 2026-11-16 — gelesen: 250 Zeilen
 - `docs/MECHANICS.md` — Mechaniken: ein Ablauf, live aus GitHub — gelesen: 208 Zeilen
+- `docs/MEMORY-SESSION-2026-11-18.md` — Memory — Adversarial Code Review Session (2026-11-18) — gelesen: 53 Zeilen
+- `docs/MEMORY.md` — Markdown-Dokument — gelesen: 5 Zeilen
 - `docs/PROMPTS.md` — Prompt-Register — gelesen: 24 Zeilen
 - `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1629 Zeilen
 - `docs/ROADMAP-DETAIL.md` — Roadmap — Spiel und Präsentation — gelesen: 216 Zeilen
+- `docs/SPRINT-PLAN.md` — Sprint/Batch-Plan: Behebung kritischer Audit-Befunde (Rigged by Design) — gelesen: 110 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 100 Zeilen
 - `docs/UD-01.md` — UD-01: Tageskreislauf — Ablauf und Verträge — gelesen: 91 Zeilen
 - `docs/UD-13.md` — UD-13: Ortswirtschaft — Übersicht — gelesen: 79 Zeilen
@@ -2466,7 +2363,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/evidence/living-world-weight-tuning.md` — Living World: Mehrseed-Lauf und Tie-Break-Gewichtung — gelesen: 92 Zeilen
 - `docs/evidence/p0-merge-gate-tagesbericht-2026-11-16.md` — Markdown-Dokument — gelesen: 92 Zeilen
 - `docs/governance/AGENTS.md` — Agentenvertrag — gelesen: 28 Zeilen
-- `docs/governance/INDEX.md` — Doku-Index — gelesen: 22 Zeilen
+- `docs/governance/INDEX.md` — Doku-Index — gelesen: 19 Zeilen
 - `docs/governance/LAST-CHANGES.md` — Last Changes — gelesen: 23 Zeilen
 - `docs/governance/PITFALLS.md` — Pitfalls — gelesen: 21 Zeilen
 - `docs/governance/ROADMAP.md` — Roadmap — gelesen: 34 Zeilen
@@ -2526,6 +2423,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/visual-rework/phase2/lod-fit-detail.png` — PNG-Textur — geprueft: PNG 1592x1472, 393617 B
 - `docs/visual-rework/phase2/lod-fit-pins.png` — PNG-Textur — geprueft: PNG 1592x1472, 371146 B
 - `docs/visual-rework/phase2/lod-fit-return.png` — PNG-Textur — geprueft: PNG 1592x1472, 398739 B
+- `fix-index.cjs` — const fs = require("fs"); let c = fs.readFileSync("docs/governance/INDEX.md", "utf8"); c = c.replace("`n**Gove — gelesen: 1 Zeilen
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 145 Zeilen
 - `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
@@ -3188,7 +3086,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/claim-collisions.mjs` — Reine Kollisionslogik fuer Lane-Claims. — gelesen: 104 Zeilen
 - `scripts/lib/claim-evidence.mjs` — Merge-Nachweis fuer Lane-Claims. — gelesen: 169 Zeilen
 - `scripts/lib/claim-hygiene.mjs` — Claim-Hygiene: offene Lane-Claims gegen den Issue-Status pruefen. — gelesen: 120 Zeilen
-- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 154 Zeilen
+- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 180 Zeilen
 - `scripts/lib/claim-merge-filter.mjs` — export { filterMergedCollisions } from './claim-merged-filter.mjs'; — gelesen: 106 Zeilen
 - `scripts/lib/claim-merged-filter.mjs` — Kollisionen gegen belegte Merges filtern: eine Lane, deren Arbeit — gelesen: 93 Zeilen
 - `scripts/lib/claim-pr-index.mjs` — Merge-Beleg-Index: gemergte Pull Requests je Head-Branch. — gelesen: 80 Zeilen
@@ -3196,7 +3094,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/claim-reconcile.mjs` — Lesender Reconcile-Plan fuer offene Claims. — gelesen: 108 Zeilen
 - `scripts/lib/claim-register-commands.mjs` — Register-Befehle, die Claims anlegen oder fortschreiben: add und update. — gelesen: 95 Zeilen
 - `scripts/lib/claim-register-io.mjs` — Claim-Register-Ein-/Ausgabe: Optionen, Pfade, atomare Writes und Laden. — gelesen: 166 Zeilen
-- `scripts/lib/claim-register-maintenance.mjs` — Register-Pflege: doctor und prune. Retention ist eine eigene Entscheidung; — gelesen: 108 Zeilen
+- `scripts/lib/claim-register-maintenance.mjs` — Register-Pflege: doctor und prune. Retention ist eine eigene Entscheidung; — gelesen: 126 Zeilen
 - `scripts/lib/command-surface.mjs` — Die globale Befehlsoberflaeche: `rbd <gruppe> <aktion> [flags]`. — gelesen: 127 Zeilen
 - `scripts/lib/commit-msg.mjs` — Eine Wahrheit fuer die Pflichtsektionen einer Commit-Nachricht. — gelesen: 67 Zeilen
 - `scripts/lib/compact.mjs` — import { existsSync, mkdirSync, writeFileSync } from 'node:fs'; — gelesen: 235 Zeilen
@@ -3320,7 +3218,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 251 Zeilen
 - `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 240 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 242 Zeilen
-- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 160 Zeilen
+- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 167 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 73 Zeilen
 - `scripts/run-budget.mjs` — run-budget — externer Stop-Vertrag für einen Lauf. — gelesen: 81 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 147 Zeilen
@@ -3391,7 +3289,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
 - `src/core/economy/ledger-integrity.ts` — Buchungspruefung als reine Funktionen: kein Geld, nur Nachvollziehbarkeit. — gelesen: 68 Zeilen
 - `src/core/economy/ledger-tick-guard.ts` — `verifyIncremental()` ist der guenstige Tickpfad. Er läuft nach `tickWorld` — gelesen: 57 Zeilen
-- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 271 Zeilen
+- `src/core/economy/ledger-verification.ts` — Ledger-Pruefung: Replay-Checkpoint, Vollvergleich, Tickvergleich und Diagnose. — gelesen: 156 Zeilen
+- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 170 Zeilen
 - `src/core/economy/vacoin.ts` — VaCoin (VC) - Geld als ganzzahlige Mikro-Einheiten. — gelesen: 92 Zeilen
 - `src/core/games/__tests__/contracts.test.ts` — Eine Runde ist eine Aktion plus Result; die Auszahlung folgt vollstaendig aus beidem. — gelesen: 78 Zeilen
 - `src/core/games/__tests__/dice-bets.test.ts` — Jedes Wettfeld am Wuerfeltisch muss exakt sagen, wann es gewinnt, und seine — gelesen: 63 Zeilen
@@ -3473,7 +3372,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` — Der lesende Reconcile: eine Branch auf `main` oder ein gemergter PR mit — gelesen: 110 Zeilen
 - `src/core/governance/__tests__/claim-evidence.test.ts` — Ein geloeschter Branch ist kein Merge-Nachweis. Genau dieser Fall steht — gelesen: 196 Zeilen
 - `src/core/governance/__tests__/claim-hygiene.test.ts` — Ein offener Claim auf einem belegten geschlossenen Issue ist ein — gelesen: 74 Zeilen
-- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 196 Zeilen
+- `src/core/governance/__tests__/claim-lifecycle-evidence.test.ts` — Ein Claim, der schon `merged` ist, taucht im Reconcile-Plan nicht mehr auf. — gelesen: 41 Zeilen
+- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 207 Zeilen
 - `src/core/governance/__tests__/claim-preflight.test.ts` — Der Pre-Push-Audit muss offene Claims und Rest-WIP auch nach einem — gelesen: 170 Zeilen
 - `src/core/governance/__tests__/claim-save-scope.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 33 Zeilen
 - `src/core/governance/__tests__/cli-surface.test.ts` — Die globale Befehlsoberflaeche ist vertraglich: jede Governance-Zeile aus — gelesen: 85 Zeilen
