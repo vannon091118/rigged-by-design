@@ -15,7 +15,7 @@
 | 2026-11-18 | Sim-Tests strukturiert loggen (#998); Doku-Ratchet sichtbar auf 1.655.000 B. | `test-log.ts`, `redundancy-metrics.mjs` |
 | 2026-11-18 | Editor waehlt Kopffamilie und Haarton; Vorschau und Floor lesen denselben Look. | `player-look.ts`, `look-popup.tsx` |
 | 2026-11-18 | LOD traegt Kopf und Haarton; Seed folgt dem Namen. | `actor-silhouette.ts` |
-| 2026-11-18 | Phase 2: NPC-Rig waehlt Koerpervarianten und drei Kopfformen. | `src/render/rig-parts.ts` |
+| 2026-11-19 | PerfGovernor haertert gegen Flappen bei konstanter Grenz-FPS-Belastung; Hochschalten nur, wenn Zielstufe Last als "gut" einstuft. | `perf-governor.ts`, `perf-governor.test.ts` |
 
 ## Regeln
 - Maximal sieben Zeilen; der aelteste Eintrag faellt heraus.
