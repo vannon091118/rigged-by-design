@@ -358,7 +358,7 @@
       "lastCommentId": null,
       "lastCommentAt": null,
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "656": {
       "kind": "issues",
@@ -430,7 +430,7 @@
       "lastCommentId": 6875023346,
       "lastCommentAt": "2026-11-14T09:11:53Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "671": {
       "kind": "issues",
@@ -438,7 +438,7 @@
       "lastCommentId": 6875740348,
       "lastCommentAt": "2026-11-14T10:13:36Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "675": {
       "kind": "issues",
@@ -462,7 +462,7 @@
       "lastCommentId": 6875510657,
       "lastCommentAt": "2026-11-14T09:53:30Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "BLOCKIERT"
     },
     "685": {
       "kind": "issues",
@@ -470,7 +470,7 @@
       "lastCommentId": 6875719247,
       "lastCommentAt": "2026-11-14T10:11:40Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "776": {
       "kind": "issues",
@@ -478,7 +478,39 @@
       "lastCommentId": 6888473270,
       "lastCommentAt": "2026-11-15T05:20Z",
       "lastScanAt": "2026-11-15T03:21Z",
-      "status": "OK"
+      "status": "erledigt"
+    },
+    "693": {
+      "kind": "issues",
+      "number": 693,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "694": {
+      "kind": "issues",
+      "number": 694,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "731": {
+      "kind": "issues",
+      "number": 731,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "733": {
+      "kind": "issues",
+      "number": 733,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
     }
   },
   "pullRequests": {
@@ -706,6 +738,20 @@
       "650": "OFFEN · Wand-Occlusion ohne Bildbeleg",
       "651": "OFFEN · keine First-Frame-Messung unter Slow 4G",
       "652": "OFFEN · RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (existiert als city-actor-sync.ts)",
+      "655": "erledigt · Alt-Texte gegen Bildzustand geprüft; Commit 16c96483, Branch lane/sim/issue-655-alt-text-bildzustand",
+      "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
+      "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
+      "684": "BLOCKIERT · P0-Tracking teilweise erfüllt (pretask fail-closed), Label-Hygiene und #677-State offen; fehlende User-Entscheidung",
+      "685": "erledigt · Stale-Claim-Audit mit Beleg; Commit 6ad4049a, Branch lane/governance/issue-685-stale-claim-audit",
+      "693": "erledigt · Autorisierung in work-claim.mjs umgesetzt und abgetestet; Commit 9758bb9c, Branch lane/governance/issue-693-work-claim-autorisierung",
+      "694": "erledigt · Delegation aufgelöst (#648 closed, #693 erledigt); Commit 18ce9011, Branch lane/governance/issue-694-delegation-offen",
+      "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
+      "731": "erledigt · CityActorSync vollständig getestet; Commits 2d917434, 620b5e0f, Branch lane/render/issue-731-city-actor-sync-test",
+      "733": "erledigt · Abnahme 2/4 erfüllt, Ersatz-Bausteine pro Pool vorhanden; Commit 2963b47a, Branch lane/sim/issue-733-abnahme-veraltet",
+      "669": "erledigt · Weltliche Mini-Szenen im Narrative-System implementiert; Commit 57451aa8, Branch lane/narrative/issue-669-worldly-mini-scenes",
+      "671": "erledigt · Board-State auf erledigt gesetzt (Board-Cursor bereits implementiert); Commit a079802a, Branch lane/sim/issue-671",
+      "776": "erledigt · Merge-Beleg 56313e2b; Commit 9e2a3b40, Branch lane/sim/issue-776-geschlossen"
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
       "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",

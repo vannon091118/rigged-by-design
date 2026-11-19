@@ -1,0 +1,18 @@
+{
+  "id": "lane/sim/issue-657-asset-herkunft-lizenz",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-657-asset-herkunft-lizenz",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 657,
+  "task": "Asset-Herkunft/Lizenz inventarisieren. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "content/",
+    "docs/",
+    ".lane-claims/claims/issue-657-asset-herkunft-lizenz.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

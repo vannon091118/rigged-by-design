@@ -1,0 +1,17 @@
+{
+  "id": "lane/sim/issue-776-geschlossen",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-776-geschlossen",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 776,
+  "task": "Issue #776 ist geschlossen (Merge-Beleg 56313e2b, Remote-Branch entfernt). Entscheidung mit Beleg dokumentieren.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

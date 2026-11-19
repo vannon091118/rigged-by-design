@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/issue-684-enforcement-tracking",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/governance/issue-684-enforcement-tracking",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 684,
+  "task": "P0 Blocker: Enforcement-Tracking — pretask fail-closed vorhanden, Label-Hygiene und State-Issue offen. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "scripts/",
+    "src/core/governance/",
+    ".lane-claims/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}
