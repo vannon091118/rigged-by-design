@@ -3,13 +3,14 @@
  * @error-code: ERR-4019
  *
  * Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die
- * gerade bearbeitete Lane bleiben. Geschlossene Tasks werden nach Commit-Zeit
- * sortiert; nur die neuesten zehn behalten ihren Platz. Der Closeout zieht
- * einen Task nur mit gemergtem Claim und ohne offenen Blocker auf DONE.
+ * gerade bearbeitete Lane bleiben. Aktive Lanes zaehlen nicht gegen das
+ * Nachweis-Budget; von den geschlossenen Tasks behalten die neuesten zehn
+ * ihren Platz. Der Closeout zieht einen Task nur mit gemergtem Claim und
+ * ohne offenen Blocker auf DONE.
  */
 import { describe, expect, it } from 'vitest';
 import {
-  TASK_RETENTION_LIMIT,
+  CLOSED_TASK_RETENTION_LIMIT,
   claimEntryPath,
   planRetention,
   planTaskCloseout,
@@ -70,12 +71,21 @@ describe('claim retention', () => {
     const plan = planRetention({ tasks, claims: [], keep: 2 });
     expect(plan.retainedTasks).toEqual([
       '.lane-claims/tasks/active.json',
+      '.lane-claims/tasks/middle.json',
       '.lane-claims/tasks/new.json',
     ]);
-    expect(plan.removeTasks).toEqual([
-      '.lane-claims/tasks/middle.json',
-      '.lane-claims/tasks/old.json',
-    ]);
+    expect(plan.removeTasks).toEqual(['.lane-claims/tasks/old.json']);
+  });
+
+  it('verdraengt abgeschlossene Nachweise nicht durch volle aktive Lanes', () => {
+    const tasks = [
+      ...Array.from({ length: 42 }, (_, index) => task(`active-${index}`, 'IMPLEMENTING', index + 1)),
+      task('closed', 'DONE', 0),
+    ];
+    const plan = planRetention({ tasks, claims: [] });
+    expect(plan.removeTasks).toEqual([]);
+    expect(plan.retainedTasks).toContain('.lane-claims/tasks/closed.json');
+    expect(plan.retainedTasks).toHaveLength(43);
   });
 
   it('behaelt hoechstens zehn abgeschlossene Tasks und offene Claims', () => {
@@ -83,7 +93,8 @@ describe('claim retention', () => {
     const claims = tasks.map((_entry, index) => claim(`t${index}`, index === 0 ? 'open' : 'merged'));
     const plan = planRetention({ tasks, claims });
     expect(plan.closedTasks).toBe(11);
-    expect(plan.retainedTasks).toHaveLength(TASK_RETENTION_LIMIT);
+    expect(plan.activeTasks).toBe(1);
+    expect(plan.retainedTasks).toHaveLength(CLOSED_TASK_RETENTION_LIMIT + 1);
     expect(plan.removeTasks).not.toContain('.lane-claims/tasks/t0.json');
     expect(plan.removeTasks).toContain('.lane-claims/tasks/t1.json');
     expect(plan.retainedClaims).toContain('.lane-claims/claims/lane-governance-t0.json');
