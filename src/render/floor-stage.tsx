@@ -10,6 +10,7 @@ import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
 export interface FloorHandle {
   fit: () => void;
+  zoomToPlayer: () => void;
   zoom: (factor: number) => void;
   cellAt: (clientX: number, clientY: number) => { x: number; y: number } | null;
   project: (worldX: number, worldY: number) => ScreenAnchor | null;
@@ -36,6 +37,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
 
   useImperativeHandle(ref, () => ({
     fit: () => floor.current?.fit(),
+    zoomToPlayer: () => floor.current?.zoomToPlayer(),
     zoom: (factor: number) => floor.current?.zoom(factor),
     cellAt: (clientX: number, clientY: number) => floor.current?.cellAt(clientX, clientY) ?? null,
     project: (worldX: number, worldY: number) => floor.current?.project(worldX, worldY) ?? null,
