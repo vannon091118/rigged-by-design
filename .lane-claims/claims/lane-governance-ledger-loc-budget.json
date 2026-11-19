@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/ledger-loc-budget",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/governance/ledger-loc-budget",
+  "baseSha": "859f7b7f27f46dc76d68fefff368d448e36c886b",
+  "issue": 1179,
+  "task": "Ledger unter das LOC-Budget ohne Ausnahme",
+  "goal": "Pruef-Logik des Ledgers in ein eigenes Modul ziehen, @loc-exception entfernen und das Budget der Rolle engine einhalten - ohne Verhaltens- oder API-Aenderung.",
+  "pathAllowlist": [
+    "src/core/economy/ledger.ts",
+    "src/core/economy/ledger-verification.ts",
+    "docs/INVENTORY.md",
+    "docs/governance/LAST-CHANGES.md",
+    "docs/governance/ROADMAP.md",
+    ".lane-claims/tasks/",
+    ".lane-claims/board-state.json",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-ledger-loc-budget.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "859f7b7f27f46dc76d68fefff368d448e36c886b"
+}

@@ -25,7 +25,7 @@
 | P-13 | Textbausteine, Zahl aus der Registry | [Detail](../ROADMAP-DETAIL.md) |
 
 ## Jetzt
-M1/M2 belegt; offen: S1-06, S2-08 bis S2-12 und PR-02 bis PR-07. M3: Art, Atlas, drei Koepfe, NPC-Rig, LOD-Set, Editor belegt; LOD-Wechsel live belegt (FIT-Pin, Zoom-Rig), Hysterese getestet; Sicht der uebrigen Szenen offen; Tests strukturiert, bewacht.
+M1/M2 belegt; offen: S1-06, S2-08 bis S2-12 und PR-02 bis PR-07. M3: Art, Atlas, drei Koepfe, NPC-Rig, LOD-Set, Editor belegt; LOD-Wechsel live belegt, Hysterese getestet; Sicht der uebrigen Szenen offen; Tests strukturiert, bewacht. M4: Ledger modularisiert.
 
 ## Als Naechstes
 M3 Render-Rework (R0-R6) mit Browserbeleg, dann M4.

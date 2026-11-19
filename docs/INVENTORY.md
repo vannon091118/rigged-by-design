@@ -773,10 +773,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3480 |
-| Gelistete Dateien | 3480 |
+| Getrackte Dateien | 3484 |
+| Gelistete Dateien | 3484 |
 | Getrackte Ordner | 130 |
-| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (91), .lanes (1), artifacts (1), bin (1), content (1253), docs (116), packages (27), public (573), scripts (232), src (1139) |
+| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (93), .lanes (1), artifacts (1), bin (1), content (1254), docs (116), packages (27), public (573), scripts (232), src (1140) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -796,12 +796,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 43 Datei(en)
-- `.lane-claims/tasks/` — 44 Datei(en)
+- `.lane-claims/claims/` — 44 Datei(en)
+- `.lane-claims/tasks/` — 45 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1249 Datei(en)
+- `content/narrative/contributions/` — 1250 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -864,7 +864,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/__tests__/` — 1 Datei(en)
 - `src/core/contracts/` — 7 Datei(en)
 - `src/core/contracts/__tests__/` — 7 Datei(en)
-- `src/core/economy/` — 4 Datei(en)
+- `src/core/economy/` — 5 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 21 Datei(en)
 - `src/core/games/__tests__/` — 27 Datei(en)
@@ -953,7 +953,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 31 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 778 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 780 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 956 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
@@ -969,6 +969,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/claims/lane-governance-ledger-loc-budget.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-1171.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-retention-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
@@ -1012,6 +1013,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-ledger-loc-budget.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-post-merge-1171.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/tasks/governance-retention-evidence.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
@@ -2300,8 +2302,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-hysteresis.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-lod-sprites.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-18-visual-phase2-npc-rig.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 28059 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 5001 Zeilen
+- `content/narrative/contributions/2026-11-19-ledger-pruefung-extrahiert.json` — { — gelesen: 24 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 28084 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 5005 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 207 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/AGENT-ONBOARDING.md` — Agent-Onboarding — rigged-by-design — gelesen: 234 Zeilen
@@ -3286,7 +3289,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
 - `src/core/economy/ledger-integrity.ts` — Buchungspruefung als reine Funktionen: kein Geld, nur Nachvollziehbarkeit. — gelesen: 68 Zeilen
 - `src/core/economy/ledger-tick-guard.ts` — `verifyIncremental()` ist der guenstige Tickpfad. Er läuft nach `tickWorld` — gelesen: 57 Zeilen
-- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 271 Zeilen
+- `src/core/economy/ledger-verification.ts` — Ledger-Pruefung: Replay-Checkpoint, Vollvergleich, Tickvergleich und Diagnose. — gelesen: 156 Zeilen
+- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 170 Zeilen
 - `src/core/economy/vacoin.ts` — VaCoin (VC) - Geld als ganzzahlige Mikro-Einheiten. — gelesen: 92 Zeilen
 - `src/core/games/__tests__/contracts.test.ts` — Eine Runde ist eine Aktion plus Result; die Auszahlung folgt vollstaendig aus beidem. — gelesen: 78 Zeilen
 - `src/core/games/__tests__/dice-bets.test.ts` — Jedes Wettfeld am Wuerfeltisch muss exakt sagen, wann es gewinnt, und seine — gelesen: 63 Zeilen

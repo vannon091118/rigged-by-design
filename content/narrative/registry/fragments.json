@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c0244d28c9c782e0faeb9e1f3a1247ff2beb47aa9318e6bbfeabef4afafffbb0",
+  "contentHash": "sha256:d7c8e99c56db9353f7823480d057f17b8e741af20129179484392514acd63e2f",
   "fragments": [
     {
       "contributionId": "action-card-overflow-01",
@@ -10758,6 +10758,31 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "ledger-pruefung-extrahiert-01",
+      "turnId": "2026-11-19T02:36Z-ledger-pruefung-extrahiert",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legt zwei Ausdrucke nebeneinander: links die Salden und Buchungen des Ledgers, rechts die Pruefung mit Checkpoint und Replay. Der Stapel links ist duenn geworden, seit die Pruefung ihre eigene Mappe hat; die Bilanzsumme steht unveraendert auf null.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-19-ledger-pruefung-extrahiert.json"
     },
     {
       "contributionId": "ledger-tick-guard-01",

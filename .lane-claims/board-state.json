@@ -9,6 +9,7 @@
   "status": "READY",
   "summary": "Board-Sync (#834) live nachgezogen: 13 offene Issues, 0 offene PRs. Prioritaet: 80% Spielarbeit, 20% Governance. Offene Issues: #684 (P0 Blocked), #968, #972, #976 (P1 Save), #977 (P2 RNG), #979 (P2 SIM), #980 (DOKU P1), #981 (DOKU P2), #982 (DOKU P1/P2), #984 (GOVERNANCE P1), #985 (GAMEPLAY P1/P2), #984 (GOVERNANCE P1), #998 (TECH-DEBT). Keine offene PR-Warteschlange. Kopf: Closeout-Relation head == main^ (Snapshot-Commit kann seinen eigenen SHA nicht enthalten).",
   "lastActions": [
+    "issueStates (2026-11-19): #1179 als offen nachgetragen (Ledger unter dem LOC-Budget)",
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
     "Geschlossen als konsolidiert: #561/#563/#564 (Lebenddokumente, ersetzt durch GOVERNANCE kanonische Prioritaeten + ROADMAP + board-state)",
@@ -773,6 +774,7 @@
     "1100": "open",
     "1118": "closed",
     "1166": "closed",
-    "1170": "closed"
+    "1170": "closed",
+    "1179": "open"
   }
 }
