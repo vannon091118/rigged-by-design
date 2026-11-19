@@ -1,0 +1,18 @@
+{
+  "id": "lane/sim/issue-658-asset-lizenz-pruefung",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-658-asset-lizenz-pruefung",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 658,
+  "task": "Asset-Lizenz-Prüfung durchführen. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "content/",
+    "docs/",
+    ".lane-claims/claims/issue-658-asset-lizenz-pruefung.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

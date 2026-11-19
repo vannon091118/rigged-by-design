@@ -713,7 +713,8 @@
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
       "731": "OFFEN · city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle)",
-      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen"
+      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen",
+      "658": "OFFEN · Keine Asset-Lizenz-Prüfung im Code: grep license|lizenz|copyright|attribution in src, content, docs = 0 Treffer (außer Doku-Hinweise ohne Prüfung); keine LICENSE-Datei im Repo-Root; docs/ARCHITECTURE.md:515-516 nennt keine Lizenz/keinen Urheber, Nachweis als offener Punkt in docs/ROADMAP.md"
     }
   },
   "newIssuesThisRun": [
