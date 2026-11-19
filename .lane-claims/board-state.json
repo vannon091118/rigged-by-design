@@ -712,7 +712,7 @@
       "669": "erledigt - Weltliche Mini-Szenen (ambient-dokumentation) bereits im Narrative-System implementiert: content/narrative/vocabulary/classification.json:144 Vokabular-Eintrag; content/narrative/registry/fragments.json Registry-Eintraege fuer ambient-dokumentation; mehrere pool-documentation-*.json Beitraege existieren",
       "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
-      "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
+      "685": "erledigt · Stale-Claim-Frist (staleHours=2) in scripts/lib/issue-claim.mjs:129,187; gh-Retry (attempts=2) in scripts/lib/issue-claim.mjs:213; Tests src/core/governance/__tests__/work-claim-authorization.test.ts:91,101-102,117",
       "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",

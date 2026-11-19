@@ -17,6 +17,8 @@
 | 2026-11-18 | Sim-Tests strukturiert loggen (#998); Doku-Ratchet sichtbar auf 1.655.000 B. | `test-log.ts`, `redundancy-metrics.mjs` |
 | 2026-11-18 | Editor waehlt Kopffamilie und Haarton; Vorschau und Floor lesen denselben Look. | `player-look.ts`, `look-popup.tsx` |
 | 2026-11-18 | LOD traegt Kopf und Haarton; Seed folgt dem Namen. | `actor-silhouette.ts` |
+| 2026-11-19 | Issue #685: Stale-Claim-Frist (72h/2h) und gh-Retry im Code belegt und abgetestet. | .lane-claims/board-state.json decision.685, scripts/lib/issue-claim.mjs:129/187/213, work-claim-authorization.test.ts:91/101-102/117 |
+| 2026-11-19 | PerfGovernor haertert gegen Flappen bei konstanter Grenz-FPS-Belastung; Hochschalten nur, wenn Zielstufe Last als "gut" einstuft. | `perf-governor.ts`, `perf-governor.test.ts` |
 | 2026-11-19 | PerfGovernor haertert gegen Flappen
 | 2026-11-19 | Issue #668 board-state korrigiert: wiederholte Meta-/Content-Vertragsbausteine bereits entfernt (Commit ff9ba37a, PR #699); Entscheidung auf erledigt gesetzt | .lane-claims/board-state.json | bei konstanter Grenz-FPS-Belastung; Hochschalten nur, wenn Zielstufe Last als "gut" einstuft. | `perf-governor.ts`, `perf-governor.test.ts` |
 

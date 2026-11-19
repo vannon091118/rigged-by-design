@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/issue-685-stale-claim-audit-active",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/governance/issue-685-stale-claim-audit",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 685,
+  "task": "Issue #685: 72h-Stale-Claim-Frist und gh-Retry belegen. Sammel-Issue: Stale-Claim-Frist nur Doku; Cron-/Token-Punkte ausserhalb des Repos. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "scripts/lib/issue-claim.mjs",
+    "src/core/governance/__tests__/work-claim-authorization.test.ts",
+    ".lane-claims/**",
+    "docs/",
+    ".lane-claims/claims/issue-685-stale-claim-audit-active.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}
