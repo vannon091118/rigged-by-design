@@ -356,7 +356,10 @@
       "lastCommentId": null,
       "lastCommentAt": null,
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "OK",
+      "decision": "erledigt",
+      "decisionBeleg": "scripts/lib/readme-media.mjs (Alt-Text- und Bildpfad-Prüfung gegen README), src/core/governance/__tests__/readme-media.test.ts (5/5 Tests grün): Jedes Bild braucht einen sprechenden Alt-Text und muss existieren; Dateiname oder leerer Text ist kein Alt-Text.",
+      "decisionAt": "2026-11-19"
     },
     "656": {
       "kind": "issues",
