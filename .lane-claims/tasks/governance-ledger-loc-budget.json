@@ -4,14 +4,34 @@
   "claimId": "lane/governance/ledger-loc-budget",
   "branch": "lane/governance/ledger-loc-budget",
   "baseSha": "859f7b7f27f46dc76d68fefff368d448e36c886b",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Ledger unter das LOC-Budget ohne Ausnahme",
   "goal": "Pruef-Logik des Ledgers in ein eigenes Modul ziehen, @loc-exception entfernen und das Budget der Rolle engine einhalten - ohne Verhaltens- oder API-Aenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 1181,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1181",
+    "state": "merged",
+    "headSha": "b4d6d5ac06765101c578f54a9bdbf8e98e75355f",
+    "mergedSha": "b1508b2a9bf40ab310901e5c1e6ecb84dffc1a83"
+  },
   "findings": [],
-  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
-  "revision": 1
+  "nextAction": "Abgeschlossen (Merge b1508b2).",
+  "revision": 5,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "Lane-Baum liegt auf main",
+      "sha": "b1508b2a9bf40ab310901e5c1e6ecb84dffc1a83"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
 }
