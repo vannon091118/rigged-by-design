@@ -773,10 +773,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3481 |
-| Gelistete Dateien | 3481 |
+| Getrackte Dateien | 3480 |
+| Gelistete Dateien | 3480 |
 | Getrackte Ordner | 130 |
-| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (92), .lanes (1), artifacts (1), bin (1), content (1253), docs (116), packages (27), public (573), scripts (232), src (1139) |
+| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (91), .lanes (1), artifacts (1), bin (1), content (1253), docs (116), packages (27), public (573), scripts (232), src (1139) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -796,7 +796,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 44 Datei(en)
+- `.lane-claims/claims/` — 43 Datei(en)
 - `.lane-claims/tasks/` — 44 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
@@ -960,7 +960,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-981.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-generated-artifacts.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen
