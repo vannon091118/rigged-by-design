@@ -9,6 +9,7 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
+| 2026-11-19 | Issue #696 Nachrichtentypen: Task 1-3 erfuellt, Task 4/6 offen (keine dedizierten messageType-Felder, nur InboxSource in smartphone-views.ts:42-47), Task 5 entblockt durch #693 | .lane-claims/board-state.json |
 | 2026-11-18 | LOD-Hysterese: Kantenverlauf unter, ueber und im Band getestet; Test scheitert an einer Schwelle, `enter == exit` und vertauschten Kanten. | `floor-camera-hysteresis.test.ts` |
 | 2026-11-18 | LOD-Wechsel im Live-Lauf belegt: FIT zeigt den Pin, Zoom den Rig; alter Pin-Beleg als reine Sprite-Sicht korrigiert. | `lod-fit-pins.png`, `lod-fit-detail.png` |
 | 2026-11-18 | LOD-Sprite-Set: drei Familien × Koerper/Kopf/Haar im Atlas, Tint im Pin. | `lod-families.svg`, `actor-silhouette.ts` |
