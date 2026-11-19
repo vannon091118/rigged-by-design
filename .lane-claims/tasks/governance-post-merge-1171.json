@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "taskId": "governance-post-merge-1171",
+  "claimId": "lane/governance/post-merge-1171",
+  "branch": "lane/governance/post-merge-1171",
+  "baseSha": "5396ea2306f901c33767e71416bc54349f8dfc58",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout #1171",
+  "goal": "Register nach dem Merge von PR #1171 nachziehen.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 1171,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/1171",
+    "state": "merged",
+    "headSha": "212a6a52f17e9d1ae6723db7807ec1b0a03a2360",
+    "mergedSha": "5aba60c9dcda1e8d65f593db828bd5ec903f162b"
+  },
+  "findings": [],
+  "nextAction": "Nachweis bleibt im Register (zehn abgeschlossene Nachweise).",
+  "revision": 2,
+  "aftercare": {
+    "claim": {
+      "status": "merged",
+      "evidence": "post-merge-closeout",
+      "sha": "5aba60c9dcda1e8d65f593db828bd5ec903f162b"
+    },
+    "task": {
+      "phase": "DONE"
+    },
+    "branch": {
+      "state": "done",
+      "evidence": "remote-branch-absent"
+    }
+  }
+}

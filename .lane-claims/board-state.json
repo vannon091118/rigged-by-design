@@ -9,6 +9,7 @@
   "status": "READY",
   "summary": "Board-Sync (#834) live nachgezogen: 13 offene Issues, 0 offene PRs. Prioritaet: 80% Spielarbeit, 20% Governance. Offene Issues: #684 (P0 Blocked), #968, #972, #976 (P1 Save), #977 (P2 RNG), #979 (P2 SIM), #980 (DOKU P1), #981 (DOKU P2), #982 (DOKU P1/P2), #984 (GOVERNANCE P1), #985 (GAMEPLAY P1/P2), #984 (GOVERNANCE P1), #998 (TECH-DEBT). Keine offene PR-Warteschlange. Kopf: Closeout-Relation head == main^ (Snapshot-Commit kann seinen eigenen SHA nicht enthalten).",
   "lastActions": [
+    "issueStates (2026-11-19): #1179 als offen nachgetragen (Ledger unter dem LOC-Budget)",
     "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
     "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
     "Geschlossen als konsolidiert: #561/#563/#564 (Lebenddokumente, ersetzt durch GOVERNANCE kanonische Prioritaeten + ROADMAP + board-state)",
@@ -30,7 +31,8 @@
     "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
     "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
     "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
-    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt"
+    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt",
+    "issueStates (2026-11-19): 28 Claim-Issues live ueber die GitHub-API geprueft; 24 zuvor unbekannte Status aufgeloest, offen ist nur #1100 (Governance-LOC-Lane), alle anderen geschlossen."
   ],
   "activeClaims": [],
   "mergedClaimsThisRun": [
@@ -420,7 +422,7 @@
       "lastCommentId": 6875023558,
       "lastCommentAt": "2026-11-14T09:11:54Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "669": {
       "kind": "issues",
@@ -705,10 +707,12 @@
       "651": "OFFEN · keine First-Frame-Messung unter Slow 4G",
       "652": "OFFEN · RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (existiert als city-actor-sync.ts)",
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
-      "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
+      "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "669": "erledigt - Weltliche Mini-Szenen (ambient-dokumentation) bereits im Narrative-System implementiert: content/narrative/vocabulary/classification.json:144 Vokabular-Eintrag; content/narrative/registry/fragments.json Registry-Eintraege fuer ambient-dokumentation; mehrere pool-documentation-*.json Beitraege existieren",
+      "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
-      "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
+      "685": "erledigt · Stale-Claim-Frist (staleHours=2) in scripts/lib/issue-claim.mjs:129,187; gh-Retry (attempts=2) in scripts/lib/issue-claim.mjs:213; Tests src/core/governance/__tests__/work-claim-authorization.test.ts:91,101-102,117",
       "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 weiterhin offen (keine dedizierten messageType-Felder im Code, nur InboxSource in src/core/sim/smartphone-views.ts:42-47), Task 5 entblockt (#693 erledigt: work-claim.mjs Autorisierung + Tests)",
@@ -743,5 +747,36 @@
       "reason": "Governance-Budget maxNewGovernanceIssues=0; kein blockierender Effekt",
       "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e"
     }
-  ]
+  ],
+  "issueStates": {
+    "640": "closed",
+    "668": "closed",
+    "669": "closed",
+    "685": "closed",
+    "759": "closed",
+    "760": "closed",
+    "761": "closed",
+    "764": "closed",
+    "765": "closed",
+    "767": "closed",
+    "768": "closed",
+    "770": "closed",
+    "772": "closed",
+    "773": "closed",
+    "774": "closed",
+    "775": "closed",
+    "802": "closed",
+    "811": "closed",
+    "853": "closed",
+    "864": "closed",
+    "886": "closed",
+    "980": "closed",
+    "981": "closed",
+    "1090": "closed",
+    "1100": "open",
+    "1118": "closed",
+    "1166": "closed",
+    "1170": "closed",
+    "1179": "open"
+  }
 }

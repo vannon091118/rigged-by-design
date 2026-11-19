@@ -177,7 +177,7 @@ const allTasks = [
     file: closeoutTaskFile,
     contract: closeoutTask,
     // Der neue Closeout ist der neueste geschlossene Task und belegt einen
-    // der zehn Plaetze; die uebrigen neun kommen aus der Historie.
+    // der zehn Nachweis-Plaetze; aktive Lanes zaehlen nicht dagegen.
     committedAt: Number.MAX_SAFE_INTEGER,
   },
 ];
@@ -222,7 +222,7 @@ const body = [
   '',
   '### Changes (Was ist neu)',
   `- Claim \`${featureClaim.id}\` steht auf \`merged\`, der zugehoerige Task auf \`DONE\`.`,
-  `- Die Lane-Claims und Task-Vertraege sind auf die letzten zehn Tasks retention-begrenzt.`,
+  `- Die Lane-Claims und Task-Vertraege behalten alle aktiven Lanes plus die letzten zehn abgeschlossenen Tasks als Nachweis.`,
   '',
   '### Technische Basis & Kausalität',
   `- PR #${number} wurde als \`${mergeSha.slice(0, 7)}\` nach \`main\` gemergt; der Beleg ist der Merge-Commit, nicht die Basis.`,

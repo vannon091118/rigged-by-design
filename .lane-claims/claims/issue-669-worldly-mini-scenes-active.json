@@ -1,0 +1,17 @@
+{
+  "id": "lane/narrative/issue-669-worldly-mini-scenes-active",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/narrative/issue-669-worldly-mini-scenes",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 669,
+  "task": "Ältestes freies P2-Issue (NARRATIVE-P2-Cluster #663-669) übernehmen und bearbeiten. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "content/narrative/",
+    ".lane-claims/claims/issue-669-worldly-mini-scenes-active.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}
