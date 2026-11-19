@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/issue-693-work-claim-autorisierung",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/governance/issue-693-work-claim-autorisierung",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 693,
+  "task": "Autorisierung nicht umgesetzt: work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "scripts/lib/work-claim.mjs",
+    "src/core/governance/__tests__/",
+    ".lane-claims/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "lane/sim/issue-655-alt-text-bildzustand",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-655-alt-text-bildzustand",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 655,
+  "task": "Alt-Texte gegen Bildzustand prüfen und abgleichen. Entscheidung: erledigt/offen/blockiert mit Beleg.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/",
+    ".lane-claims/claims/issue-655-alt-text-bildzustand.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/issue-694-delegation-offen",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/governance/issue-694-delegation-offen",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 694,
+  "task": "Delegation offen: #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

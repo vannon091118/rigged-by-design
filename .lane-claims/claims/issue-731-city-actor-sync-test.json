@@ -1,0 +1,17 @@
+{
+  "id": "lane/render/issue-731-city-actor-sync-test",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/render/issue-731-city-actor-sync-test",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 731,
+  "task": "city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle). Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "src/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

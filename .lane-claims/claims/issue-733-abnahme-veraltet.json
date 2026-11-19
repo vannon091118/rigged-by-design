@@ -1,0 +1,18 @@
+{
+  "id": "lane/sim/issue-733-abnahme-veraltet",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-733-abnahme-veraltet",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 733,
+  "task": "Abnahme 2/4 veraltet; Ersatz-Bausteine fehlen. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "content/",
+    "docs/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

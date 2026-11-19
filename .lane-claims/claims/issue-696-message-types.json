@@ -1,0 +1,18 @@
+{
+  "id": "lane/sim/issue-696-message-types",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-696-message-types",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 696,
+  "task": "Task 1-3 erfüllt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693. Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}

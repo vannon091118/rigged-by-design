@@ -1,0 +1,19 @@
+{
+  "id": "lane/sim/issue-671",
+  "owner": "Maintainer-Owner",
+  "branch": "lane/sim/issue-671",
+  "baseSha": "df0847787ecc48ae45dd07873a211f675f926fac",
+  "issue": 671,
+  "task": "Issue #671 prüfen und Entscheidung mit Beleg treffen.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/",
+    ".lane-claims/claims/issue-671.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "active",
+  "createdAt": "df0847787ecc48ae45dd07873a211f675f926fac"
+}
