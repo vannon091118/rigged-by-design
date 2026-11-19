@@ -713,7 +713,8 @@
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
       "731": "OFFEN · city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle)",
-      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen"
+      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen",
+      "671": "erledigt · Kommentar-Eingaenge mit Lesemarken im Maintainer-State abgesichert: scripts/lib/board-cursors.mjs (CURSOR_STATUS, ingestComments, pendingEntries), src/core/governance/__tests__/worker-claim-gate.test.ts Board-Cursor-Tests, Commit 4750661a feat(#671) (PR #698, merged)"
     }
   },
   "newIssuesThisRun": [
