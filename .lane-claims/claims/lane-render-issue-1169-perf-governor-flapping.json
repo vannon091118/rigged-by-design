@@ -1,0 +1,19 @@
+{
+  "id": "lane/render/issue-1169-perf-governor-flapping",
+  "owner": "Quality-/Capability-Owner",
+  "branch": "fix/perf-governor-flapping",
+  "baseSha": "01a730cdee1f067fe6dcfc301ce070bf6797a409",
+  "issue": 1169,
+  "task": "PerfGovernor haertern gegen Flappen bei konstanter Grenz-FPS-Belastung",
+  "pathAllowlist": [
+    "src/render/perf-governor.ts",
+    "src/render/__tests__/perf-governor.test.ts",
+    "docs/governance/LAST-CHANGES.md",
+    ".lane-claims/claims/lane-render-issue-1169-perf-governor-flapping.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "01a730cdee1f067fe6dcfc301ce070bf6797a409"
+}
