@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-ledger-loc-budget",
+  "claimId": "lane/governance/ledger-loc-budget",
+  "branch": "lane/governance/ledger-loc-budget",
+  "baseSha": "859f7b7f27f46dc76d68fefff368d448e36c886b",
+  "phase": "IMPLEMENTING",
+  "title": "Ledger unter das LOC-Budget ohne Ausnahme",
+  "goal": "Pruef-Logik des Ledgers in ein eigenes Modul ziehen, @loc-exception entfernen und das Budget der Rolle engine einhalten - ohne Verhaltens- oder API-Aenderung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.",
+  "revision": 1
+}
