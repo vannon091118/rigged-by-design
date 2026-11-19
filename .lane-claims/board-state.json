@@ -708,7 +708,7 @@
       "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
-      "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
+      "685": "erledigt · Stale-Claim-Frist (staleHours=2) in scripts/lib/issue-claim.mjs:129,187; gh-Retry (attempts=2) in scripts/lib/issue-claim.mjs:213; Tests src/core/governance/__tests__/work-claim-authorization.test.ts:91,101-102,117",
       "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
