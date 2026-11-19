@@ -1,0 +1,2 @@
+
+- Issue #684: Enforcement-Tracking BLOCKIERT — pretask fail-closed vorhanden (scripts/lib/pretask-issues.mjs ISSUE_LABELS, scripts/lib/pretask-setup.mjs, scripts/lib/pretask-worker.mjs, src/core/governance/__tests__/pretask-blocked-issues.test.ts). Label-Hygiene offen: keine Issue-Label-Hygiene, nur claim-hygiene.mjs für Claims (scripts/claim-hygiene.mjs, docs/GOVERNANCE.md:264). State-Issue #677 offen: docs/GOVERNANCE.md:373-391. board-state issueTriage.decisions.684 auf BLOCKIERT gesetzt. Claim: .lane-claims/claims/issue-684-enforcement-tracking.json.
