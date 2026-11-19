@@ -79,10 +79,9 @@ class WorldStore {
       this.#prng = new Prng(loaded.prngState);
       this.#notice = 'Spielstand geladen.';
     } else {
-      // Kein automatischer Start: Ladefehler erhalten, UI/Player entscheiden.
-      // Der ursprüngliche Stand blieb bei loadWorld() unverändert erhalten;
-      // lastLoadError liefert die Ursache für den Recovery-Dialog.
-      this.#notice = 'Kein gespeicherter Stand gefunden oder Ladefehler. Bitte Recovery starten.';
+      // Kein Save vorhanden: neuer Start durch createNewGame.
+      // Ein frischer Spieler darf nicht mit einem leeren Ledger (0 VC) starten.
+      this.newGame('SMALL');
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
   }
@@ -125,7 +124,8 @@ class WorldStore {
   undoLayout(): boolean { return this.#layoutEditor.undo(); } redoLayout(): boolean { return this.#layoutEditor.redo(); } canUndoLayout(): boolean { return this.#layoutEditor.canUndo(); } canRedoLayout(): boolean { return this.#layoutEditor.canRedo(); }
   exportLayout(): string { return this.#layoutTransfer.export(); } importLayout(text: string): { readonly ok: boolean; readonly issues: readonly string[] } { return this.#layoutTransfer.import(text); }
   installMod(itemId: number, mod: ModId): void { this.#guard(() => { this.#notice = installModCmd(this.#world, this.#ledger, itemId, mod); }); } addReel(itemId: number): void { this.#guard(() => { this.#notice = addReelCmd(this.#world, this.#ledger, itemId); }); } setBet(itemId: number, vc: number): void { this.#guard(() => { this.#notice = setBetCmd(this.#world, itemId, vc); }); } setSlotOdds(itemId: number, profile: import('../core/games/slot-profile').SlotProfile): void { this.#guard(() => { this.#notice = setSlotOddsCmd(this.#world, itemId, profile); }); }
-  pickupMop(mopId: number): void { this.#guard(() => { this.#notice = pickupMopCmd(this.#world, mopId); }); } dropMop(): void { this.#guard(() => { this.#notice = dropMopCmd(this.#world); }); } cleanStain(stainId: number): void { this.#guard(() => { this.#notice = cleanStainCmd(this.#world, this.#ledger, stainId); }); } getMopAtToilet(toiletId?: number): void { this.#guard(() => { this.#notice = getMopAtToiletCmd(this.#world, toiletId); }); } businessWork(): BusinessWorkView { return businessActiveWorkView(this.#world); } workBusiness(taskId: BusinessWorkTaskId): void { this.#guard(() => { this.#notice = workBusinessTask(this.#world, this.#ledger, this.#prng, taskId); }); }
+  pickupMop(mopId: number): void { this.#guard(() => { this.#notice = pickupMopCmd(this.#world, mopId); }); } dropMop(): void { this.#guard(() => { this.#notice = dropMopCmd(this.#world); }); } cleanStain(stainId: number): void { this.#guard(() => { this.#notice = cleanStainCmd(this.#world, this.#ledger, stainId); }); } getMopAtToilet(toiletId?: number): void { this.#guard(() => { this.#notice = getMopAtToiletCmd(this.#world, toiletId); }); }
+ businessWork(): BusinessWorkView { return businessActiveWorkView(this.#world); } workBusiness(taskId: BusinessWorkTaskId): void { this.#guard(() => { this.#notice = workBusinessTask(this.#world, this.#ledger, this.#prng, taskId); }); }
   acceptJob(rivalId: RivalId, jobId: PlayerJobId): void { this.#guard(() => { acceptJobCmd(this.#world, rivalId, jobId); this.#notice = this.#world.lastEvent; }); } quitJob(): void { this.#guard(() => { quitJobCmd(this.#world); this.#notice = this.#world.lastEvent; }); } requestJobTask(): void { this.#guard(() => { const result = requestJobTaskCmd(this.#world); this.#notice = result.started ? 'Arbeit aufgenommen.' : `In Warteschlange (Position ${result.queuePosition + 1}).`; }); }
   visitForeign(rivalId: RivalId): void { this.#guard(() => { visitForeignCmd(this.#world, rivalId); this.#notice = this.#world.lastEvent; }); } leaveForeign(): void { this.#guard(() => { leaveForeignCmd(this.#world); this.#notice = this.#world.lastEvent; }); } buyBar(): void { this.#guard(() => { buyBarCmd(this.#world, this.#ledger, this.#world.tick); this.#notice = this.#world.lastEvent; }); }
   takeDrink(barId?: number): void { this.#event(() => { this.#notice = takeDrinkCmd(this.#world, barId); }); } serveDrink(guestId: number): void { this.#event(() => { this.#notice = serveDrinkCmd(this.#world, this.#ledger, guestId); }); } eatAtHome(): void { this.#guard(() => { eatAtHome(this.#world); this.#notice = this.#world.lastEvent; }); } drinkAtHome(): void { this.#guard(() => { drinkAtHome(this.#world); this.#notice = this.#world.lastEvent; }); } moveTo(point: Point): void { moveToCmd(this.#world, point); this.#emit(false); }
