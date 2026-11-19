@@ -712,7 +712,7 @@
       "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
       "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
       "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
-      "731": "OFFEN · city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle)",
+      "731": "erledigt · city-actor-sync.test.ts deckt actorProgress ab (4 Faelle) PLUS city-actor-sync-lifecycle.test.ts deckt sync() und animate() ab (5 Faelle, z.B. Figuren-Kennung über Ticks, Snapshot-Position sofort, Tiefe, Nicht-CITY-Cleanup); Beleg: src/render/__tests__/city-actor-sync.test.ts, src/render/__tests__/city-actor-sync-lifecycle.test.ts",
       "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen"
     }
   },
