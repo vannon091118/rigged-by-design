@@ -422,7 +422,7 @@
       "lastCommentId": 6875023558,
       "lastCommentAt": "2026-11-14T09:11:54Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "erledigt"
     },
     "669": {
       "kind": "issues",
@@ -709,6 +709,7 @@
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
       "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
       "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
       "685": "OFFEN · Sammel-Issue; Stale-Claim-Frist nur Doku, Cron-/Token-Punkte ausserhalb des Repos",
       "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
