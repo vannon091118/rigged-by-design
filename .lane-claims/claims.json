@@ -938,6 +938,7 @@
     "owner": "Governance-Owner",
     "branch": "lane/governance/post-merge-1167",
     "baseSha": "3fc06b26f3bdc0037302f6d220065637659b67a5",
+    "issue": 1166,
     "task": "Post-Merge-Closeout #1167",
     "goal": "Claim und Task der gemergten Lane claim-crystallize nach dem Merge schliessen.",
     "pathAllowlist": [
@@ -950,7 +951,6 @@
     "status": "merged",
     "mergedEvidence": "post-merge-closeout",
     "mergedSha": "3fc06b26f3bdc0037302f6d220065637659b67a5",
-    "issue": 1166,
     "createdAt": "3fc06b26f3bdc0037302f6d220065637659b67a5"
   }
 ]

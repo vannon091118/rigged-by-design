@@ -9,6 +9,7 @@
 ## Letzte Änderungen
 | Datum | Änderung | Beleg |
 | --- | --- | --- |
+| 2026-11-19 | Ledger-Pruefung als eigenes Modul; `@loc-exception` entfernt, Budget der Rolle `engine` eingehalten, Verhalten unveraendert. | `ledger-verification.ts`, `check:loc` |
 | 2026-11-18 | LOD-Hysterese: Kantenverlauf unter, ueber und im Band getestet; Test scheitert an einer Schwelle, `enter == exit` und vertauschten Kanten. | `floor-camera-hysteresis.test.ts` |
 | 2026-11-18 | LOD-Wechsel im Live-Lauf belegt: FIT zeigt den Pin, Zoom den Rig; alter Pin-Beleg als reine Sprite-Sicht korrigiert. | `lod-fit-pins.png`, `lod-fit-detail.png` |
 | 2026-11-18 | LOD-Sprite-Set: drei Familien × Koerper/Kopf/Haar im Atlas, Tint im Pin. | `lod-families.svg`, `actor-silhouette.ts` |

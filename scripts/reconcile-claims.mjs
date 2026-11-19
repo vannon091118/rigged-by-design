@@ -15,8 +15,9 @@
  * Nach dem Claim-Beleg laufen zwei Lifecycle-Schritte:
  * - `planTaskCloseout` zieht Tasks mit gemergtem Claim von CI_PENDING,
  *   MERGE_PENDING oder AFTERCARE auf DONE.
- * - `planRetention` haelt die letzten zehn Tasks; aktive Tasks, offene Claims
- *   und die gerade bearbeitete Lane bleiben immer erhalten.
+ * - `planRetention` haelt alle aktiven Tasks und die letzten zehn
+ *   abgeschlossenen Tasks als Nachweis; offene Claims und die gerade
+ *   bearbeitete Lane bleiben immer erhalten.
  *
  * Aufruf: `node scripts/reconcile-claims.mjs [--apply] [--json] [--check]`
  * Ohne `--apply` wird nur berichtet; mit `--apply` wird das Register atomar

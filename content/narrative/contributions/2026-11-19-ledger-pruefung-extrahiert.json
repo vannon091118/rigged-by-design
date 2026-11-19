@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-19T02:36Z-ledger-pruefung-extrahiert",
+  "contributionId": "ledger-pruefung-extrahiert-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita legt zwei Ausdrucke nebeneinander: links die Salden und Buchungen des Ledgers, rechts die Pruefung mit Checkpoint und Replay. Der Stapel links ist duenn geworden, seit die Pruefung ihre eigene Mappe hat; die Bilanzsumme steht unveraendert auf null.",
+  "directives": []
+}
