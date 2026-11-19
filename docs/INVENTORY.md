@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main`, keine Required-Status-Checks, kein
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 466 Dateien — contract 232 · integration 129 · governance 92 · statistics 6 · performance 7.
+Summe: 467 Dateien — contract 232 · integration 129 · governance 93 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -175,6 +175,7 @@ Summe: 466 Dateien — contract 232 · integration 129 · governance 92 · stati
 | `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` | pipeline | governance | ja | `scripts/lib/claim-reconcile.mjs` |
 | `src/core/governance/__tests__/claim-evidence.test.ts` | pipeline | governance | ja | `scripts/lib/claim-evidence.mjs` |
 | `src/core/governance/__tests__/claim-hygiene.test.ts` | pipeline | governance | ja | `scripts/lib/claim-hygiene.mjs` |
+| `src/core/governance/__tests__/claim-lifecycle-evidence.test.ts` | pipeline | governance | ja | `scripts/lib/claim-lifecycle.mjs` |
 | `src/core/governance/__tests__/claim-lifecycle.test.ts` | pipeline | governance | ja | `scripts/lib/claim-lifecycle.mjs` |
 | `src/core/governance/__tests__/claim-preflight.test.ts` | pipeline | governance | ja | `scripts/lib/claim-preflight.mjs` |
 | `src/core/governance/__tests__/claim-save-scope.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
@@ -772,10 +773,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 3477 |
-| Gelistete Dateien | 3477 |
+| Getrackte Dateien | 3481 |
+| Gelistete Dateien | 3481 |
 | Getrackte Ordner | 130 |
-| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (89), .lanes (1), artifacts (1), bin (1), content (1253), docs (116), packages (27), public (573), scripts (232), src (1138) |
+| Bereiche | .agents (11), .claude (12), .codex (1), .cron (2), (Wurzel) (11), .githooks (4), .github (5), .lane-claims (92), .lanes (1), artifacts (1), bin (1), content (1253), docs (116), packages (27), public (573), scripts (232), src (1139) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -795,8 +796,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.lane-claims/` — 4 Datei(en)
-- `.lane-claims/claims/` — 42 Datei(en)
-- `.lane-claims/tasks/` — 43 Datei(en)
+- `.lane-claims/claims/` — 44 Datei(en)
+- `.lane-claims/tasks/` — 44 Datei(en)
 - `.lanes/` — 1 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `bin/` — 1 Datei(en)
@@ -870,7 +871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 115 Datei(en)
+- `src/core/governance/__tests__/` — 116 Datei(en)
 - `src/core/governance/fixtures/` — 1 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
@@ -952,14 +953,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 31 Zeilen
 - `.lane-claims/actors.json` — { — gelesen: 7 Zeilen
-- `.lane-claims/board-state.json` — { — gelesen: 747 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
+- `.lane-claims/board-state.json` — { — gelesen: 778 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 956 Zeilen
 - `.lane-claims/claims/issue-668-repeat-meta-remove.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/issue-669-worldly-mini-scenes.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-981.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-claim-crystallize.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-generated-artifacts.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen
@@ -969,6 +970,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-issue-765-pretask-fixtures.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-issue-886-board-contract.json` — { — gelesen: 41 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-1171.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-retention-evidence.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-wip-consolidation-20261114.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-issue-515-scene-frame.json` — { — gelesen: 24 Zeilen
@@ -1000,7 +1003,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/docs-audit-100-fragen-981.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-claim-crystallize.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-install-hooks-stat-sync.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-clock-fix.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-issue-1090-full-gate-repair.json` — { — gelesen: 17 Zeilen
@@ -1011,6 +1013,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-issue-765-pretask-fixtures.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-issue-864-board-artifact-reconcile.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-issue-886-board-contract.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-1171.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/tasks/governance-retention-evidence.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-wip-consolidation-20261114.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/issue-668-repeat-meta-remove.json` — { — gelesen: 17 Zeilen
@@ -3080,7 +3084,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/claim-collisions.mjs` — Reine Kollisionslogik fuer Lane-Claims. — gelesen: 104 Zeilen
 - `scripts/lib/claim-evidence.mjs` — Merge-Nachweis fuer Lane-Claims. — gelesen: 169 Zeilen
 - `scripts/lib/claim-hygiene.mjs` — Claim-Hygiene: offene Lane-Claims gegen den Issue-Status pruefen. — gelesen: 120 Zeilen
-- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 178 Zeilen
+- `scripts/lib/claim-lifecycle.mjs` — Claim-Lifecycle: Retention und Post-Merge-Closeout. — gelesen: 180 Zeilen
 - `scripts/lib/claim-merge-filter.mjs` — export { filterMergedCollisions } from './claim-merged-filter.mjs'; — gelesen: 106 Zeilen
 - `scripts/lib/claim-merged-filter.mjs` — Kollisionen gegen belegte Merges filtern: eine Lane, deren Arbeit — gelesen: 93 Zeilen
 - `scripts/lib/claim-pr-index.mjs` — Merge-Beleg-Index: gemergte Pull Requests je Head-Branch. — gelesen: 80 Zeilen
@@ -3212,7 +3216,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 251 Zeilen
 - `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 240 Zeilen
 - `scripts/promote.mjs` — Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge — gelesen: 242 Zeilen
-- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 166 Zeilen
+- `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 167 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 73 Zeilen
 - `scripts/run-budget.mjs` — run-budget — externer Stop-Vertrag für einen Lauf. — gelesen: 81 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 147 Zeilen
@@ -3365,7 +3369,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/claim-evidence-reconcile.test.ts` — Der lesende Reconcile: eine Branch auf `main` oder ein gemergter PR mit — gelesen: 110 Zeilen
 - `src/core/governance/__tests__/claim-evidence.test.ts` — Ein geloeschter Branch ist kein Merge-Nachweis. Genau dieser Fall steht — gelesen: 196 Zeilen
 - `src/core/governance/__tests__/claim-hygiene.test.ts` — Ein offener Claim auf einem belegten geschlossenen Issue ist ein — gelesen: 74 Zeilen
-- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 223 Zeilen
+- `src/core/governance/__tests__/claim-lifecycle-evidence.test.ts` — Ein Claim, der schon `merged` ist, taucht im Reconcile-Plan nicht mehr auf. — gelesen: 41 Zeilen
+- `src/core/governance/__tests__/claim-lifecycle.test.ts` — Retention ist keine blinde Loeschung: aktive Tasks, offene Claims und die — gelesen: 207 Zeilen
 - `src/core/governance/__tests__/claim-preflight.test.ts` — Der Pre-Push-Audit muss offene Claims und Rest-WIP auch nach einem — gelesen: 170 Zeilen
 - `src/core/governance/__tests__/claim-save-scope.test.ts` — import { execFileSync } from 'node:child_process'; — gelesen: 33 Zeilen
 - `src/core/governance/__tests__/cli-surface.test.ts` — Die globale Befehlsoberflaeche ist vertraglich: jede Governance-Zeile aus — gelesen: 85 Zeilen
