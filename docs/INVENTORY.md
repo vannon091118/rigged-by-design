@@ -960,7 +960,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-docs-audit-100-fragen-980.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-docs-audit-100-fragen-981.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-generated-artifacts.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-generated-artifacts.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-install-hooks-stat-sync.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-clock-fix.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-issue-1090-loc-refactor.json` — { — gelesen: 81 Zeilen

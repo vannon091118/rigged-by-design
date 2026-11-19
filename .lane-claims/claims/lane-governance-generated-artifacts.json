@@ -14,6 +14,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "8303e24aa762901de4a07debcf1ed0196e385674"
+  "status": "merged",
+  "createdAt": "8303e24aa762901de4a07debcf1ed0196e385674",
+  "mergedEvidence": "Lane-Baum liegt auf main",
+  "mergedSha": "5002d16d8ada7e12ab626e6c3e6de7104f6d58d7"
 }
