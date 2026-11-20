@@ -1,0 +1,38 @@
+{
+  "name": "main-protection",
+  "target": "branch",
+  "enforcement": "active",
+  "include": ["refs/heads/main"],
+  "rules": [
+    {
+      "type": "pull_request_required",
+      "required_approving_review_count": 1,
+      "dismiss_stale_reviews_on_push": true,
+      "require_code_owner_reviews": true,
+      "bypass_pull_request_allowances": []
+    },
+    {
+      "type": "required_status_checks",
+      "strict": true,
+      "contexts": [
+        "typecheck",
+        "lint",
+        "verify:light"
+      ]
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "admin_enforced"
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": "vannon091118",
+      "actor_type": "User",
+      "bypass_mode": "always"
+    }
+  ],
+  "freeze0_note": "Kein zweites lokales Merge-System außerhalb von GitHub Branch Protection + CODEOWNERS. Owner-Principal (vannon091118) behält Merge-Capability."
+}
