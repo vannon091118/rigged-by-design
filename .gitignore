@@ -29,3 +29,6 @@ plugins/
 
 # Claude Code worktrees (embedded repos, not part of outer repo)
 .claude/worktrees/
+
+# Lokale Sicherheitskopien der lane-claims (nie committen)
+.lane-claims/*.bak

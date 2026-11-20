@@ -137,7 +137,6 @@ describe('FloorCamera: Detail-Hysterese an der Schwelle', () => {
     const up = frames(cam);
     expect(flips(up)).toBe(1);
     const switchedOn = up.find((sample) => sample.detail);
-    expect(switchedOn).toBeDefined();
     expect(switchedOn?.zoom).toBeGreaterThan(enter);
     expect(up.at(-1)?.detail).toBe(true);
 
@@ -158,7 +157,7 @@ describe('FloorCamera: Detail-Hysterese an der Schwelle', () => {
     const down = frames(cam);
     expect(flips(down)).toBe(1);
     const switchedOff = down.find((sample) => !sample.detail);
-    expect(switchedOff).toBeDefined();
+    expect(switchedOff?.zoom).toBeLessThan(exit);
     expect(switchedOff?.zoom).toBeLessThan(exit);
     expect(down.at(-1)?.detail).toBe(false);
 

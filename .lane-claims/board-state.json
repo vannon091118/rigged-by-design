@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-17T10:18:00Z",
+  "generatedAt": "2026-11-20T08:24:00Z",
   "generatedBy": "maintainer",
-  "head": "1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
+  "head": "370c4fa",
   "headMessage": "docs: add UD documentation for gameplay issues #972-#974",
   "base": "origin/main @ 1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
   "worktree": "/data/data/com.hermesagent.android/files/home/rigged-by-design",
@@ -110,7 +110,7 @@
       "lastCommentId": 6868618783,
       "lastCommentAt": "2026-11-14T00:37:26Z",
       "lastScanAt": "2026-11-14T10:15:40.092Z",
-      "status": "OK"
+      "status": "closed"
     },
     "537": {
       "kind": "issues",
@@ -751,7 +751,7 @@
       "733": "erledigt · Abnahme 2/4 erfüllt, Ersatz-Bausteine pro Pool vorhanden; Commit 2963b47a, Branch lane/sim/issue-733-abnahme-veraltet",
       "669": "erledigt · Weltliche Mini-Szenen im Narrative-System implementiert; Commit 57451aa8, Branch lane/narrative/issue-669-worldly-mini-scenes",
       "671": "erledigt · Board-State auf erledigt gesetzt (Board-Cursor bereits implementiert); Commit a079802a, Branch lane/sim/issue-671",
-      "776": "erledigt · Merge-Beleg 56313e2b; Commit 9e2a3b40, Branch lane/sim/issue-776-geschlossen"
+      "776": "erledigt · Merge-Beleg 56313e2b; Commit 9e2a3b40, Branch lane/sim/issue-776-geschlossen",
       "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
       "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
       "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
@@ -815,7 +815,10 @@
     "811": "closed",
     "853": "closed",
     "864": "closed",
+    "696": "closed",
+    "884": "closed",
     "886": "closed",
+    "862": "closed",
     "980": "closed",
     "981": "closed",
     "1090": "closed",

@@ -93,7 +93,7 @@ describe('Environment-SVGs im Produktionsatlas', () => {
     for (const path of svgPaths) {
       expect(manifest.atlas.folders.environment).toContain(path);
       const frame = frames.get(path);
-      expect(frame, `Atlas-Frame fehlt: ${path}`).toBeDefined();
+      expect(frame?.width, `Atlas-Frame fehlt: ${path}`).toBeGreaterThan(0);
 
       const texture = textureFor(path);
       expect(texture, `textureFor liefert null: ${path}`).not.toBeNull();
