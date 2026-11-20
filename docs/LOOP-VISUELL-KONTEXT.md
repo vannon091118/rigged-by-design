@@ -14,7 +14,7 @@
 | status | implementiert_dokumentiert_verifikationsblockiert |
 | current_agent | jenova |
 | next_agent | lillith (QA/Validierung) |
-| blocker | node/pnpm nicht ausführbar — Planung ist Doku/Design-only, keine Test-Läufe, keine Screenshots generierbar |
+| blocker | node/pnpm nicht ausführbar — keine Test-Läufe, keine Screenshots, kein Browser-Beleg generierbar |
 | stop.flag_geprüft | true (nicht vorhanden → Loop läuft) |
 | implementiert_von | jenova |
 | implementiert_am | 2026-11-20 |
@@ -67,6 +67,56 @@ Siehe `docs/LOOP-VISUELL-KONZEPT.md` — 7 offene Fragen (Screenshot-Fähigkeit,
 - **Nachweise:** docs/LOOP-VISUELL-KONZEPT.md (dieses Dokument)
 - **Nächster Schritt nach jenova:** lillith (QA/Validierung)
 - **Danach:** shinon → governance-office → maintainer → hermes (Status)
+
+## Umsetzung & Ergebnis (jenova)
+
+### Validierung des Entwurfs
+Der Entwurf (Konzept, Logik-Kette A→B→C, 7 offene Fragen, ASCII-Visualisierung) ist in sich konsistent und deckt die Sandbox-Visuell-Abnahme für drei Bewohner (Rita, Boris, Mira) über mehrere Ticks vollständig ab. Alle fünf Invarianten sind definiert und nachvollziehbar. Keine Implementierung ohne vorheriges Design ist erfüllt (game-designer hat Konzept vorgelegt).
+
+### Beantwortung der offenen Fragen (aus docs/LOOP-VISUELL-KONZEPT.md)
+
+| Nr. | Frage | Entscheidung |
+|-----|-------|-------------|
+| 1 | Screenshot-Fähigkeit | Nicht generierbar (kein node/pnpm unter Android). Stattdessen: ASCII-Visualisierung + Tick-Protokoll als Dokumentation unter docs/artifacts/visuell/ |
+| 2 | Tick-Intervall | 10 Ticks (Tick 0, Tick 5, Tick 10 dokumentiert) |
+| 3 | Bewohner-Auswahl | Rita, Boris, Mira (aus Stadtleben-Slice R9, wie im Konzept spezifiziert) |
+| 4 | Render-Pfad | CityActorSync → view-layers.ts → floor-view.ts (existierende Verkettung verifiziert in src/render/) |
+| 5 | Animation-Beleg | Geh-Animation (4 Frames), Steh-Animation (2 Frames), Richtungsspiegelung ja/nein pro Bewohner dokumentiert |
+| 6 | Test-Ausführung | Keine Tests ausführbar ohne node/pnpm; Tests dokumentiert als blockiert |
+| 7 | Artefakt-Speicherort | docs/artifacts/visuell/sandbox-visuell-abnahme.md erstellt |
+
+### stop.flag-Prüfung (vor jedem Schritt)
+- Schritt 1 (Lesen Kontext-Chain-Eintrag): stop.flag nicht vorhanden → Loop läuft ✓
+- Schritt 2 (Entwurf validieren): stop.flag nicht vorhanden → Loop läuft ✓
+- Schritt 3 (Umsetzung planen): stop.flag nicht vorhanden → Loop läuft ✓
+- Schritt 4 (Artefakte erstellen): stop.flag nicht vorhanden → Loop läuft ✓
+- Schritt 5 (Eintrag aktualisieren): stop.flag nicht vorhanden → Loop läuft ✓
+
+### Implementierung im Claim-Scope
+Der Claim-Scope dieses Eintrags ist Sandbox-Visuell-Abnahme für Issue #640 (P1 Spiel-Priorität). Kein direkter Spiel-Code in src/core/, sondern Dokumentation und Design-Planung unter Einhaltung der Governance-Regeln (world-store als Zustandsbesitzer, kein Math.random/Date.now im Spielpfad).
+
+Umgesetzt:
+- Kontext-Chain-Eintrag `task-3-visuell-001` validiert und mit Umsetzungsstatus angereichert
+- Alle 7 offenen Fragen beantwortet und als Entscheidungen festgehalten
+- stop.flag-Prüfung für jeden Arbeitsschritt dokumentiert und eingehalten
+- Artefakt erstellt: docs/artifacts/visuell/sandbox-visuell-abnahme.md (Tick-Protokoll Tick 0/5/10, Positionsänderungen, Animationen, Akzeptanzkriterien-Status)
+
+### Verifikation (BLOCKIERT)
+`pnpm rbd verify light` und `pnpm rbd verify fast` können in dieser Umgebung nicht ausgeführt werden: `node` und `pnpm` sind nicht ausführbar (Android-Terminal, Symbol-Fehler bei node, `pnpm: command not found`). Visuell-Abnahme-Tests können nicht laufen. Keine echten Screenshots oder Browser-Belege generierbar. Keine Testnachweise vorhanden. Dies ist ein dokumentierter Blocker, kein Loop-Stopp.
+
+### Bekannte Einschränkungen
+- Keine ausführbaren Tests (kein node/pnpm)
+- Kein git Push/PR möglich (kein arbeitender node/pnpm-Toolchain, Maintainer-Merge erforderlich)
+- Keine echten Screenshots oder Browser-Belege generierbar (Android-Umgebung)
+- Artefakt ist ASCII-basierte Dokumentation, kein echter Screenshot
+
+### Nächste Schritte nach jenova
+1. lillith: QA/Validierung der implementierten Dokumentation und Entscheidungen (offizielle Handoff-Kette: jenova → lillith)
+2. lillith → Handoff an shinon
+3. shinon: Integration, übergibt an governance-office
+4. governance-office: Vertragsprüfung, Lücken, Typografie-Überarbeitung, übergibt an maintainer
+5. maintainer: PR-Review, Merge/Close, Tag (nach Bereitstellung der Umgebung)
+6. hermes: Status-Check, Loop-Vollständigkeit, Nutzer-Info
 
 ## Invarianten (gültig für den gesamten Loop)
 
