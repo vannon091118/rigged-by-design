@@ -34,7 +34,7 @@ describe('NPC-Rig-Teile aus dem Atlas', () => {
       for (const [part, path] of Object.entries(rigPartsFor(seed))) {
         expect(characters[path], `${part}: ${path}`).toBe(path);
         expect(manifest.atlas.folders.characters).toContain(path);
-        expect(frames.get(path), `Frame fehlt: ${path}`).toBeDefined();
+        expect(frames.get(path)?.width, `Frame fehlt: ${path}`).toBeGreaterThan(0);
       }
     }
   });
@@ -44,7 +44,7 @@ describe('NPC-Rig-Teile aus dem Atlas', () => {
       for (let variant = 1; variant <= total; variant += 1) {
         const path = `characters/${stem}-${String(variant).padStart(2, '0')}.png`;
         expect(characters[path], path).toBe(path);
-        expect(frames.get(path), `Frame fehlt: ${path}`).toBeDefined();
+        expect(frames.get(path)?.width, `Frame fehlt: ${path}`).toBeGreaterThan(0);
       }
     }
   });
