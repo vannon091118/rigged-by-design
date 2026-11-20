@@ -1,0 +1,828 @@
+{
+  "version": 2,
+  "generatedAt": "2026-11-17T10:18:00Z",
+  "generatedBy": "maintainer",
+  "head": "1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
+  "headMessage": "docs: add UD documentation for gameplay issues #972-#974",
+  "base": "origin/main @ 1c40f4cc74329e029399d17dbb3454c04ad3fa3c",
+  "worktree": "/data/data/com.hermesagent.android/files/home/rigged-by-design",
+  "status": "READY",
+  "summary": "Board-Sync (#834) live nachgezogen: 13 offene Issues, 0 offene PRs. Prioritaet: 80% Spielarbeit, 20% Governance. Offene Issues: #684 (P0 Blocked), #968, #972, #976 (P1 Save), #977 (P2 RNG), #979 (P2 SIM), #980 (DOKU P1), #981 (DOKU P2), #982 (DOKU P1/P2), #984 (GOVERNANCE P1), #985 (GAMEPLAY P1/P2), #984 (GOVERNANCE P1), #998 (TECH-DEBT). Keine offene PR-Warteschlange. Kopf: Closeout-Relation head == main^ (Snapshot-Commit kann seinen eigenen SHA nicht enthalten).",
+  "lastActions": [
+    "issueStates (2026-11-19): #1179 als offen nachgetragen (Ledger unter dem LOC-Budget)",
+    "API-Liste aller 37 offenen Issues gezogen (GraphQL, titles+labels) und je Ticket gegen Code auf 67a8288c geprueft",
+    "Geschlossen mit Codebeleg: #677 (board-state.json + board-cursors.mjs + GOVERNANCE.md:192-213), #604 (worker-identity.mjs, worker-init.mjs)",
+    "Geschlossen als konsolidiert: #561/#563/#564 (Lebenddokumente, ersetzt durch GOVERNANCE kanonische Prioritaeten + ROADMAP + board-state)",
+    "Geschlossen als Duplikate: #663,#664,#665,#666,#667 -> neues autoritatives Ticket #733 mit Abnahmekriterien",
+    "Korrektur: #634 nach dem Close am Code geprueft und wieder geoeffnet (promote.yml nur workflow_dispatch, keine Rulesets)",
+    "Rest-Blocker praezisiert auf #684, #685, #693, #694, #630 (jeweils mit Datei-/Zeilennachweis)",
+    "PRs #700/#701 unberuehrt: offen, nicht gemergt, nicht geschlossen",
+    "Closeout #735: Claim lane/governance/board-issue-triage auf merged (PR #734, 6d511b83), Task DONE mit Aftercare, Board auf neuen main-Tip",
+    "Closeout #738: Claim merged (PR #737, 2ec888d3), Task DONE, board.head auf 2ec888d3",
+    "PR-Triage: #739 gemergt (a9bd146a, Bot-Allowlist)",
+    "#700 geschlossen (superseded #733, Testmerge 4 Konflikte)",
+    "#701 geschlossen (superseded #733, Testmerge 4 Konflikte)",
+    "Closeout #741: Claim merged (PR #740, d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb), Task DONE, board.head auf d853078f1fc71cf1c4fc28ee3f3cdce79b2045fb",
+    "Issue-Audit 9b1a92ea: alle 28 Tickets gesichtet, je Issue ein Entscheidungskommentar mit Datei/Zeile/Befehl",
+    "Konsolidiert und geschlossen: #675 -> #656 (Screenshot-Saetze, gleicher Ordner/area-release)",
+    "Offen mit Beleg: 27 Tickets (u. a. #652 Doku behauptet weiter city-actors.ts fehle; #630 GOVERNANCE.md:49 vs OWNERS; #693 workState ohne Autorpruefung)",
+    "Closeout #743: Claim merged (PR #742, 024d9a7494c525ab0e809a21a04ec2ffb0e6b418), Task DONE, board.head auf 024d9a7494c525ab0e809a21a04ec2ffb0e6b418",
+    "PR #849 nach Voll-Diff-Review gemergt (56313e2b, exakter Kopf e17950653d); alle PR-eigenen ci:local-Gates gruen; 2 rote Gates vorbestehend (#847)",
+    "Issue #776 mit Merge-Beleg 56313e2b geschlossen; Labels review-waiting + invalid entzogen",
+    "Remote-Branch lane/sim/issue-776-city-encounter-proximity durch pr-cleanup entfernt (API 404)",
+    "Board-State auf main 56313e2b20daee4cac2075c0d16602cffdc2f4c9 aktualisiert; 73 offene Issues, 0 offene PRs",
+    "board:sync (#834): head=ac38b39ae6d46a28b93686b954aea047e0bd23ab, 75 offene Issues, 0 offene PRs, Claim #685 (geschlossen) aus activeClaims entfernt",
+    "issueStates (2026-11-19): 28 Claim-Issues live ueber die GitHub-API geprueft; 24 zuvor unbekannte Status aufgeloest, offen ist nur #1100 (Governance-LOC-Lane), alle anderen geschlossen."
+  ],
+  "activeClaims": [],
+  "mergedClaimsThisRun": [
+    {
+      "issue": 913,
+      "claimId": "lane/governance/webhook-delivery",
+      "branch": "lane/governance/webhook-delivery",
+      "status": "merged"
+    }
+  ],
+  "closedIssuesThisRun": [
+    675,
+    776
+  ],
+  "openPullRequests": 0,
+  "reviewWaitingPrs": 0,
+  "promptIssues": [
+    {
+      "issue": 889,
+      "prompt": "docs/GOVERNANCE.md",
+      "severity": "sev-1",
+      "kind": "datei"
+    },
+    {
+      "issue": 890,
+      "prompt": ".cron/SECURITY.md",
+      "severity": "sev-2",
+      "kind": "datei"
+    },
+    {
+      "issue": 891,
+      "prompt": "AGENTS.md",
+      "severity": "sev-2",
+      "kind": "datei"
+    },
+    {
+      "issue": 892,
+      "prompt": ".cron/maintainer-prompt.md",
+      "severity": "sev-1",
+      "kind": "datei"
+    },
+    {
+      "issue": 893,
+      "prompt": "scheduled/main-prompt",
+      "severity": "sev-1",
+      "kind": "external"
+    }
+  ],
+  "blockedIssues": [
+    {
+      "issue": 684,
+      "reason": "fehlende User-Entscheidung (P0)"
+    },
+    {
+      "issue": 527,
+      "reason": "Produktentscheidung Pakt/Suchtwert (User) offen; an Shinon [A2] zugewiesen, Arbeits-Claim ausstehend"
+    }
+  ],
+  "nextRunChecklist": [
+    "#847: Gate-Zahlen von 7->19 tote Exporte + 1 test-quality korrigieren (Kettenpflicht pro Export, Blind-Cut verbieten)",
+    "#597 Jenova weiterverfolgen (Foreign-Floor-Gaeste); naechste uebergabe = RELEASE + review-waiting",
+    "#527 an Shinon [A2]: Arbeits-CLAIM noch ausstehend (2x erinnert); wenn weiter inaktiv -> Maintainer-Entscheidung",
+    "#640 Pixi-Abnahme (drei Bewohner, mehrere Ticks) als Spielarbeit planen (Sandbox-Visuell-Abnahme offen)",
+    "P0 #684/#696: User-Entscheidung(en) nachziehen, bevor weitere Governance-Ketten laufen"
+  ],
+  "blockers": [],
+  "warnings": [
+    "Vollsuite: vorbestehende rote Gates verify:dead-code (19 Exporte) + verify:test-quality (1 toBeTruthy) auf main, getrackt in #847; blockiert kein Merge (kein Required-Status-Check)",
+    "Visuelle Pixi-Abnahmen (#640/#647/#649/#650/#651) in dieser Sandbox nicht ausfuehrbar; bewusst offen"
+  ],
+  "issues": {
+    "527": {
+      "kind": "issues",
+      "number": 527,
+      "lastCommentId": 6868618783,
+      "lastCommentAt": "2026-11-14T00:37:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "537": {
+      "kind": "issues",
+      "number": 537,
+      "lastCommentId": 6868621287,
+      "lastCommentAt": "2026-11-14T00:37:35Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "538": {
+      "kind": "issues",
+      "number": 538,
+      "lastCommentId": 6868621602,
+      "lastCommentAt": "2026-11-14T00:37:36Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "540": {
+      "kind": "issues",
+      "number": 540,
+      "lastCommentId": 6875024398,
+      "lastCommentAt": "2026-11-14T09:11:59Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "541": {
+      "kind": "issues",
+      "number": 541,
+      "lastCommentId": 6868622619,
+      "lastCommentAt": "2026-11-14T00:37:40Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "542": {
+      "kind": "issues",
+      "number": 542,
+      "lastCommentId": 6875024587,
+      "lastCommentAt": "2026-11-14T09:11:59Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "561": {
+      "kind": "issues",
+      "number": 561,
+      "lastCommentId": 6874484742,
+      "lastCommentAt": "2026-11-14T08:23:30Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "563": {
+      "kind": "issues",
+      "number": 563,
+      "lastCommentId": 6872454349,
+      "lastCommentAt": "2026-11-14T05:33:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "564": {
+      "kind": "issues",
+      "number": 564,
+      "lastCommentId": 6872454732,
+      "lastCommentAt": "2026-11-14T05:33:28Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "574": {
+      "kind": "issues",
+      "number": 574,
+      "lastCommentId": 6875383489,
+      "lastCommentAt": "2026-11-14T09:42:26Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "597": {
+      "kind": "issues",
+      "number": 597,
+      "lastCommentId": 6869885137,
+      "lastCommentAt": "2026-11-14T02:04:54Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "598": {
+      "kind": "issues",
+      "number": 598,
+      "lastCommentId": 6869860111,
+      "lastCommentAt": "2026-11-14T02:03:04Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "599": {
+      "kind": "issues",
+      "number": 599,
+      "lastCommentId": 6869860378,
+      "lastCommentAt": "2026-11-14T02:03:06Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "604": {
+      "kind": "issues",
+      "number": 604,
+      "lastCommentId": 6875719496,
+      "lastCommentAt": "2026-11-14T10:11:41Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "630": {
+      "kind": "issues",
+      "number": 630,
+      "lastCommentId": 6872442141,
+      "lastCommentAt": "2026-11-14T05:32:25Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "634": {
+      "kind": "issues",
+      "number": 634,
+      "lastCommentId": 6872447410,
+      "lastCommentAt": "2026-11-14T05:32:51Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "635": {
+      "kind": "issues",
+      "number": 635,
+      "lastCommentId": 6875719358,
+      "lastCommentAt": "2026-11-14T10:11:41Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "640": {
+      "kind": "issues",
+      "number": 640,
+      "lastCommentId": 6874412517,
+      "lastCommentAt": "2026-11-14T08:17:05Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "642": {
+      "kind": "issues",
+      "number": 642,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "643": {
+      "kind": "issues",
+      "number": 643,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "644": {
+      "kind": "issues",
+      "number": 644,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "645": {
+      "kind": "issues",
+      "number": 645,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "646": {
+      "kind": "issues",
+      "number": 646,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "647": {
+      "kind": "issues",
+      "number": 647,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "648": {
+      "kind": "issues",
+      "number": 648,
+      "lastCommentId": 6875719118,
+      "lastCommentAt": "2026-11-14T10:11:39Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "649": {
+      "kind": "issues",
+      "number": 649,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "650": {
+      "kind": "issues",
+      "number": 650,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "651": {
+      "kind": "issues",
+      "number": 651,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "652": {
+      "kind": "issues",
+      "number": 652,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "653": {
+      "kind": "issues",
+      "number": 653,
+      "lastCommentId": 6875024742,
+      "lastCommentAt": "2026-11-14T09:12:00Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "654": {
+      "kind": "issues",
+      "number": 654,
+      "lastCommentId": 6875024951,
+      "lastCommentAt": "2026-11-14T09:12:01Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "655": {
+      "kind": "issues",
+      "number": 655,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "erledigt"
+    },
+    "656": {
+      "kind": "issues",
+      "number": 656,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "657": {
+      "kind": "issues",
+      "number": 657,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "663": {
+      "kind": "issues",
+      "number": 663,
+      "lastCommentId": 6875023144,
+      "lastCommentAt": "2026-11-14T09:11:52Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "664": {
+      "kind": "issues",
+      "number": 664,
+      "lastCommentId": 6875024227,
+      "lastCommentAt": "2026-11-14T09:11:58Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "665": {
+      "kind": "issues",
+      "number": 665,
+      "lastCommentId": 6875024026,
+      "lastCommentAt": "2026-11-14T09:11:57Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "666": {
+      "kind": "issues",
+      "number": 666,
+      "lastCommentId": 6875023839,
+      "lastCommentAt": "2026-11-14T09:11:56Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "667": {
+      "kind": "issues",
+      "number": 667,
+      "lastCommentId": 6875023689,
+      "lastCommentAt": "2026-11-14T09:11:55Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "668": {
+      "kind": "issues",
+      "number": 668,
+      "lastCommentId": 6875023558,
+      "lastCommentAt": "2026-11-14T09:11:54Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "erledigt"
+    },
+    "669": {
+      "kind": "issues",
+      "number": 669,
+      "lastCommentId": 6875023346,
+      "lastCommentAt": "2026-11-14T09:11:53Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "erledigt"
+    },
+    "671": {
+      "kind": "issues",
+      "number": 671,
+      "lastCommentId": 6875740348,
+      "lastCommentAt": "2026-11-14T10:13:36Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "erledigt"
+    },
+    "675": {
+      "kind": "issues",
+      "number": 675,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "677": {
+      "kind": "issues",
+      "number": 677,
+      "lastCommentId": null,
+      "lastCommentAt": null,
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "684": {
+      "kind": "issues",
+      "number": 684,
+      "lastCommentId": 6875510657,
+      "lastCommentAt": "2026-11-14T09:53:30Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "BLOCKIERT"
+    },
+    "685": {
+      "kind": "issues",
+      "number": 685,
+      "lastCommentId": 6875719247,
+      "lastCommentAt": "2026-11-14T10:11:40Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "erledigt"
+    },
+    "776": {
+      "kind": "issues",
+      "number": 776,
+      "lastCommentId": 6888473270,
+      "lastCommentAt": "2026-11-15T05:20Z",
+      "lastScanAt": "2026-11-15T03:21Z",
+      "status": "erledigt"
+    },
+    "693": {
+      "kind": "issues",
+      "number": 693,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "694": {
+      "kind": "issues",
+      "number": 694,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "731": {
+      "kind": "issues",
+      "number": 731,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    },
+    "733": {
+      "kind": "issues",
+      "number": 733,
+      "lastCommentId": "",
+      "lastCommentAt": "",
+      "lastScanAt": "",
+      "status": "erledigt"
+    }
+  },
+  "pullRequests": {
+    "683": {
+      "kind": "pullRequests",
+      "number": 683,
+      "lastCommentId": 6875510974,
+      "lastCommentAt": "2026-11-14T09:53:31Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "691": {
+      "kind": "pullRequests",
+      "number": 691,
+      "lastCommentId": 6875718950,
+      "lastCommentAt": "2026-11-14T10:11:38Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "692": {
+      "kind": "pullRequests",
+      "number": 692,
+      "lastCommentId": 6875692734,
+      "lastCommentAt": "2026-11-14T10:09:20Z",
+      "lastScanAt": "2026-11-14T10:15:40.092Z",
+      "status": "OK"
+    },
+    "849": {
+      "kind": "pullRequests",
+      "number": 849,
+      "lastCommentId": 6888466799,
+      "lastCommentAt": "2026-11-15T05:18Z",
+      "lastScanAt": "2026-11-15T03:21Z",
+      "status": "OK"
+    }
+  },
+  "triaged": [
+    "issues:527:6868618783",
+    "issues:537:6868621287",
+    "issues:538:6868621602",
+    "issues:540:6875024398",
+    "issues:541:6868622619",
+    "issues:542:6875024587",
+    "issues:561:6874484742",
+    "issues:563:6872454349",
+    "issues:564:6872454732",
+    "issues:574:6875383489",
+    "issues:597:6869885137",
+    "issues:598:6869860111",
+    "issues:599:6869860378",
+    "issues:604:6875719496",
+    "issues:630:6872442141",
+    "issues:634:6872447410",
+    "issues:635:6875719358",
+    "issues:640:6874412517",
+    "issues:648:6875719118",
+    "issues:653:6875024742",
+    "issues:654:6875024951",
+    "issues:663:6875023144",
+    "issues:664:6875024227",
+    "issues:665:6875024026",
+    "issues:666:6875023839",
+    "issues:667:6875023689",
+    "issues:668:6875023558",
+    "issues:669:6875023346",
+    "issues:671:6875740348",
+    "issues:684:6875510657",
+    "issues:685:6875719247",
+    "pullRequests:683:6875510974",
+    "pullRequests:691:6875718950",
+    "pullRequests:692:6875692734",
+    "issues:776:6888473270",
+    "pullRequests:849:6888466799"
+  ],
+  "unmergedClosedPullRequests": [
+    {
+      "pr": 660,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "#552 kam ueber PR #661 nach main; #660 ist kein Merge-Beleg"
+    },
+    {
+      "pr": 723,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "durch PR #726 ersetzt (Basis 75571c15)"
+    },
+    {
+      "pr": 700,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "superseded durch #733; Branch behaelt die Commits"
+    },
+    {
+      "pr": 701,
+      "state": "CLOSED",
+      "merged": false,
+      "note": "superseded durch #733; Branch behaelt den Commit"
+    }
+  ],
+  "openPrs": [],
+  "headRelation": "main-Tip zum Zeitpunkt dieses Snapshots (origin/main); nach dem Merge dieses Closeouts gilt head == main^, weil ein Commit seinen eigenen SHA nicht enthalten kann",
+  "reviewWaitingNote": "Keine offenen PRs; #597 ist geschlossen und traegt kein review-waiting mehr.",
+  "health": {
+    "verifyLight": {
+      "status": "PASS",
+      "note": "alle Gates gruen; Kopf folgt der Closeout-Relation head == main^"
+    },
+    "fullSuite": {
+      "status": "FAIL",
+      "failedFiles": 5,
+      "source": "pnpm run test:ci",
+      "result": "385 passed, 5 failed, 1 skipped (391 Dateien)",
+      "files": [
+        "pretask-modes.test.ts",
+        "pretask.test.ts",
+        "pretask-takeover.test.ts",
+        "pretask-issues.test.ts",
+        "pretask-blocked-issues.test.ts"
+      ],
+      "preExistingProven": [
+        "src/core/governance/__tests__/pretask.test.ts"
+      ],
+      "preExistingEvidence": "identischer Fehler auf dem Vor-Merge-Commit 21b3e924; die uebrigen vier Dateien sind nicht einzeln bisectet"
+    },
+    "newIssuesThisRun": [
+      {
+        "number": 733,
+        "kind": "narrative-consolidation",
+        "note": "autoritatives Ticket fuer #663-#667"
+      }
+    ],
+    "newGovernanceIssuesThisRun": 0,
+    "openIssues": [
+      684
+    ]
+  },
+  "openIssuesCount": 11,
+  "note": "Live-Board hat 3 offene Issues (#684, #968, #972). Die 'issues'-Map listet alle gescannten Tickets (inkl. geschlossener/konsolidierter); board-state.json ist abgeleitet und wird durch board:sync regeneriert.",
+  "mergedPrsThisRun": [
+    739,
+    849
+  ],
+  "adversarialReview24h": {
+    "range": "d8350cfc..35e39365 (191 Commits)",
+    "determinism": "0 echte Treffer in src/core und src/store (die 6 Grep-Treffer sind Testdaten des Determinismus-Guards selbst)",
+    "testWeakening": "0 (kein .skip/.only/eslint-disable/@ts-ignore/as any in Tests)",
+    "deletedTests": "0",
+    "typeEscapes": "0 (as any/@ts-ignore/@ts-expect-error) im Produktivcode",
+    "ledgerSources": "EXTERNAL_WORLD-Zugaenge nur in src/store/__tests__ (Fixtures)",
+    "gates": "keine Aufweichung: .githooks/commit-msg behebt eine Kollision im festen /tmp-Log, scripts/lib/lane-claims.mjs verschaerft um issue-Pflicht (#635)",
+    "finding": "#731 (Render-Testluecke CityActorSync)"
+  },
+  "reopenedIssuesThisRun": [
+    634
+  ],
+  "issueTriage": {
+    "method": "jedes offene Issue am 2026-11-14 gegen Code/Doku/Commits auf 9b1a92ea geprueft; Beleg = Datei, Zeile, grep-Zaehlung oder git log --grep",
+    "closedWithEvidence": {
+      "604": "scripts/lib/worker-identity.mjs (IDENTITY_CLAIM-Parser) + scripts/worker-init.mjs + docs",
+      "677": "board-state.json v2 + scripts/lib/board-cursors.mjs + GOVERNANCE.md:192-213; Snapshots #727-#732"
+    },
+    "consolidated": {
+      "656": {
+        "replaced": [
+          675
+        ],
+        "reason": "gleicher Writer-Pfad docs/screenshots/** und area-release; #656 traegt die Regel, ohne die die Erneuerung nicht sauber ausfuehrbar ist",
+        "criteria": "Frieregel + Guard, current/ erneuern, Altsaetze bewusst entfernen, README bindet nur current/"
+      },
+      "733": {
+        "replaced": [
+          663,
+          664,
+          665,
+          666,
+          667
+        ],
+        "reason": "gleicher Writer-Pfad content/narrative/** + registry.generated.ts; getrennte Laeufe kollidieren",
+        "criteria": "Ersatz-Baustein pro Pool, verify-narrative-blocks --pr = 0, sync-generated --check PASS, verify:light PASS"
+      }
+    },
+    "closedAsLivingDocument": {
+      "561": "Review-Log ist kein Ticket; Belege liegen in PR-/Issue-Kommentaren, board-state und kanonischen Prioritaeten",
+      "563": "Backlog-Order dupliziert GOVERNANCE.md \"Maintainer-Prioritaeten (kanonisch)\" und war seit 751edc66 veraltet",
+      "564": "Konsolidierungs-Landkarte dupliziert ROADMAP/RENDER_REWORK_PLAN/INVENTORY und war veraltet"
+    },
+    "reopened": {
+      "634": "Vertragsseite (holdMerge, contractHoldReason) vorhanden, Workflow-Erzwingung fehlt: promote.yml nur workflow_dispatch, docs/CI.md ohne required checks/rulesets"
+    },
+    "blockers": {
+      "527": "Produktentscheidung offen: Pakt/Suchtwert global oder fremdspielbegrenzt (Code heute nur Fremdspiel).",
+      "630": "GOVERNANCE.md:49 nennt Core-/UI-/Narrative-/Interaction-Owner, die im Roster OWNERS fehlen.",
+      "634": "Merge-Hold nicht erzwungen: promote.yml nur workflow_dispatch (Z.7/32), ensure-pr liest keinen Task-Vertrag.",
+      "640": "Visuelle Pixi-Abnahme fehlt; Code via #730 gemergt, review-waiting bleibt am Issue.",
+      "652": "RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (real: city-actor-sync.ts).",
+      "684": "Enforcement-Tracking: pretask fail-closed vorhanden, Label-Hygiene und State-Issue offen.",
+      "685": "Sammel-Issue: Stale-Claim-Frist nur Doku; Cron-/Token-Punkte ausserhalb des Repos (Betreiber).",
+      "693": "Autorisierung nicht umgesetzt: work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests.",
+      "694": "Delegation offen: #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein aktiver Worker.",
+      "696": "Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693.",
+      "731": "city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle).",
+      "733": "Abnahme 2/4 veraltet; Ersatz-Bausteine fehlen."
+    },
+    "governanceBudget": "0 neue Governance-Issues; #733 ist Content (area-narrative)",
+    "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e",
+    "noSuchIssues": [
+      631
+    ],
+    "decisions": {
+      "527": "OFFEN · Produktentscheidung noetig (Pakt/Suchtwert global vs. fremdspielbegrenzt); recordExclusionPlay nur aus src/store/foreign-play.ts",
+      "537": "OFFEN · keine Kleidungs-/Markenlogik: grep brand|clothing in src = 0 Treffer",
+      "538": "OFFEN · kein 7-Tage-Rechnungszyklus: grep invoice|weekly in src = 0 Treffer",
+      "540": "OFFEN · Mehrbesitz hart blockiert: src/core/sim/property.ts:71 wirft bei zweiter Immobilie",
+      "541": "OFFEN · Kontext-Hooks nicht belegt; haengt an #733",
+      "542": "OFFEN · kein Replay-/Ghost-Pfad (bewusst spaet, P3)",
+      "597": "OFFEN · Foreign Floor startet ohne Gaeste: src/store/foreign-floor-commands.ts:44 setzt guests=[]",
+      "598": "OFFEN · kein Projektionsvertrag: isometric nur im Narrativ-Registry-Text",
+      "599": "OFFEN · kein Wettereingang: grep weather in src = 0 Treffer",
+      "630": "OFFEN · GOVERNANCE.md:49 nennt Core-/UI-/Narrative-/Interaction-Owner, die in OWNERS fehlen",
+      "634": "OFFEN · promote.yml nur workflow_dispatch (Z.7/32), ensure-pr liest keinen Task-Vertrag",
+      "640": "OFFEN + review-waiting · Code via #730 gemergt (view-layers.ts:64), Pixi-/Browserbeleg fehlt",
+      "647": "OFFEN · keine Bildbaseline: kein Capture-Skript, kein Commit nennt #647",
+      "649": "OFFEN · Casino-Renderer visuell nicht abgenommen",
+      "650": "OFFEN · Wand-Occlusion ohne Bildbeleg",
+      "651": "OFFEN · keine First-Frame-Messung unter Slow 4G",
+      "652": "OFFEN · RENDER_REWORK_PLAN.md:46/242/471/522/628/1201 behauptet weiter, city-actors.ts fehle (existiert als city-actor-sync.ts)",
+      "655": "erledigt · Alt-Texte gegen Bildzustand geprüft; Commit 16c96483, Branch lane/sim/issue-655-alt-text-bildzustand",
+      "656": "OFFEN · kanonisch fuer Screenshot-Saetze (frei von #675); keine Frieregel/Guard",
+      "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
+      "684": "BLOCKIERT · P0-Tracking teilweise erfüllt (pretask fail-closed), Label-Hygiene und #677-State offen; fehlende User-Entscheidung",
+      "685": "erledigt · Stale-Claim-Audit mit Beleg; Commit 6ad4049a, Branch lane/governance/issue-685-stale-claim-audit",
+      "693": "erledigt · Autorisierung in work-claim.mjs umgesetzt und abgetestet; Commit 9758bb9c, Branch lane/governance/issue-693-work-claim-autorisierung",
+      "694": "erledigt · Delegation aufgelöst (#648 closed, #693 erledigt); Commit 18ce9011, Branch lane/governance/issue-694-delegation-offen",
+      "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 offen (Nachrichtentypen 0 Treffer), Task 5 blockiert durch #693",
+      "731": "erledigt · CityActorSync vollständig getestet; Commits 2d917434, 620b5e0f, Branch lane/render/issue-731-city-actor-sync-test",
+      "733": "erledigt · Abnahme 2/4 erfüllt, Ersatz-Bausteine pro Pool vorhanden; Commit 2963b47a, Branch lane/sim/issue-733-abnahme-veraltet",
+      "669": "erledigt · Weltliche Mini-Szenen im Narrative-System implementiert; Commit 57451aa8, Branch lane/narrative/issue-669-worldly-mini-scenes",
+      "671": "erledigt · Board-State auf erledigt gesetzt (Board-Cursor bereits implementiert); Commit a079802a, Branch lane/sim/issue-671",
+      "776": "erledigt · Merge-Beleg 56313e2b; Commit 9e2a3b40, Branch lane/sim/issue-776-geschlossen"
+      "655": "OFFEN · Alt-Texte nicht gegen Bildzustand geprueft",
+      "656": "OFFEN · Screenshot-Saat kanonisch in src/core/sim/__tests__/shot-seed.test.ts (RBD_SHOT-geschütztes Test-Werkzeug, kein produktiver Guard); keine Frieregel/Guard für Screenshot-Sätze",
+      "657": "OFFEN · Asset-Herkunft/Lizenz nicht inventarisiert",
+      "669": "erledigt - Weltliche Mini-Szenen (ambient-dokumentation) bereits im Narrative-System implementiert: content/narrative/vocabulary/classification.json:144 Vokabular-Eintrag; content/narrative/registry/fragments.json Registry-Eintraege fuer ambient-dokumentation; mehrere pool-documentation-*.json Beitraege existieren",
+      "668": "erledigt · Wiederholte Meta-/Content-Vertragsbausteine entfernt; Commit ff9ba37a, PR #699; registry.generated.ts hat 1249 Einträge, alle eindeutig, keine Duplikate",
+      "684": "OFFEN · P0-Tracking teilweise erfuellt (pretask fail-closed), Label-Hygiene und #677-State offen",
+      "685": "erledigt · Stale-Claim-Frist (staleHours=2) in scripts/lib/issue-claim.mjs:129,187; gh-Retry (attempts=2) in scripts/lib/issue-claim.mjs:213; Tests src/core/governance/__tests__/work-claim-authorization.test.ts:91,101-102,117",
+      "693": "OFFEN · work-claim.mjs workState ohne Autor-/ALLOWED-Pruefung, keine Tests",
+      "694": "OFFEN · #648 CLOSED, aber #693 ohne Arbeits-CLAIM und kein Worker aktiv -> Delegation offen",
+      "696": "OFFEN · Task 1-3 erfuellt, Task 4/6 weiterhin offen (keine dedizierten messageType-Felder im Code, nur InboxSource in src/core/sim/smartphone-views.ts:42-47), Task 5 entblockt (#693 erledigt: work-claim.mjs Autorisierung + Tests)",
+      "731": "OFFEN · city-actor-sync.test.ts deckt nur actorProgress ab (4 Faelle)",
+      "733": "OFFEN · Abnahme 2/4 veraltet (kein PR mehr, Baustein-Pflicht entfaellt); Ersatz-Bausteine fehlen"
+    }
+  },
+  "newIssuesThisRun": [
+    733
+  ],
+  "consolidatedIssues": {
+    "authoritative": 733,
+    "replaced": [
+      663,
+      664,
+      665,
+      666,
+      667
+    ]
+  },
+  "headNote": "head ist der main-Tip, gegen den dieser Snapshot geprueft wurde. Ein Commit kann seinen eigenen SHA nicht enthalten; nach dem Merge dieses Snapshots gilt head == main^ (siehe headRelation).",
+  "consolidatedIssuesThisRun": {
+    "authoritative": 656,
+    "replaced": [
+      675
+    ]
+  },
+  "findingsNoIssue": [
+    {
+      "id": "F-3",
+      "summary": "scripts/verify-narrative-blocks.mjs --help fuehrt den Prueflauf aus statt Hilfe zu zeigen",
+      "reason": "Governance-Budget maxNewGovernanceIssues=0; kein blockierender Effekt",
+      "verifiedOn": "9b1a92ea4e794edacac237df4c70bd4566ec434e"
+    }
+  ],
+  "issueStates": {
+    "640": "closed",
+    "668": "closed",
+    "669": "closed",
+    "685": "closed",
+    "759": "closed",
+    "760": "closed",
+    "761": "closed",
+    "764": "closed",
+    "765": "closed",
+    "767": "closed",
+    "768": "closed",
+    "770": "closed",
+    "772": "closed",
+    "773": "closed",
+    "774": "closed",
+    "775": "closed",
+    "802": "closed",
+    "811": "closed",
+    "853": "closed",
+    "864": "closed",
+    "886": "closed",
+    "980": "closed",
+    "981": "closed",
+    "1090": "closed",
+    "1100": "open",
+    "1118": "closed",
+    "1166": "closed",
+    "1170": "closed",
+    "1179": "open"
+  }
+}
