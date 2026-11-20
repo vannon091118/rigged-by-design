@@ -10,7 +10,7 @@
 | erstellt_am | 2026-11-20 |
 | erstellt_von | game-designer |
 | status | implementiert_dokumentiert_verifikationsblockiert |
-| next_agent | shinon (Integration fortführen) |
+| next_agent | governance-office |
 | priorität | hoch |
 | blocker | node/pnpm nicht ausführbar in dieser Umgebung — pnpm rbd verify light/fast kann nicht laufen |
 | stop.flag_geprüft | true (nicht vorhanden → Loop läuft) |

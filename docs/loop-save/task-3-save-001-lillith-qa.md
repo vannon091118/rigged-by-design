@@ -11,7 +11,7 @@
 | priorität | P0 (Kette), P1 (Issue #976) |
 | erstellt_am | 2026-11-20 |
 | erstellt_von | lillith (QA/Development Worker Sekundär) |
-| status | qa_abgeschlossen_uebergabe_bereit |
+| status | qa_abgeschlossen |
 | governance_flag | .lane-claims/board-state.json Zeile 754-755 invalides JSON (fehlendes Komma nach Key 776) — an governance-office weitergeleitet |
 | current_agent | lillith |
 | next_agent | shinon (Integration Worker) |

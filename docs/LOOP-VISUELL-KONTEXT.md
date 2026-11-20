@@ -11,7 +11,7 @@
 | priorität | P1 (Spiel-Priorität) |
 | erstellt_am | 2026-11-20 |
 | erstellt_von | game-designer |
-| status | implementiert_dokumentiert_verifikationsblockiert |
+| status | q_acceptiert_handoff_shinon |
 | current_agent | jenova |
 | next_agent | lillith (QA/Validierung) |
 | blocker | node/pnpm nicht ausführbar — keine Test-Läufe, keine Screenshots, kein Browser-Beleg generierbar |
