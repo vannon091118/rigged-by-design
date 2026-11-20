@@ -28,7 +28,7 @@ export function createMergeGreen({
         return holdPromotion(number, contract, `${blockerFindings(contract).length} offene Blocker im Task-Vertrag`);
       }
     } else {
-      warn(`PR #${number}: kein Task-Vertrag am Kopf; Legacy-Merge mit Warnung`);
+      return holdPromotion(number, null, 'FEHLGESCHLAGEN: kein Task-Vertrag am Kopf des Branches (fail-closed)');
     }
 
     const plan = readPlanArtifact();
